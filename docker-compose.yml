@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   frontend:
     container_name: edusport-frontend
@@ -13,4 +13,6 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     command: npm run dev

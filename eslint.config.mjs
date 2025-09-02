@@ -22,4 +22,21 @@ const eslintConfig = [
   },
 ];
 
+eslintConfig.push({
+  rules: {
+    semi: ["error", "always"],
+    quotes: ["error", "double"],
+    indent: ["error", 2],
+    "no-trailing-spaces": "error",
+    "eol-last": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"],
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "never"],
+    "space-before-function-paren": ["error", "never"],
+    "keyword-spacing": ["error", { before: true, after: true }],
+    "space-infix-ops": "error",
+    "no-multiple-empty-lines": ["error", { max: 1 }],
+  },
+});
+
 export default eslintConfig;
