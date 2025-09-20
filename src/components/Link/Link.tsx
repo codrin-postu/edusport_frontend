@@ -9,6 +9,7 @@ interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 
 const variantClasses: Record<LinkVariants, string> = {
   header: "text-[#282828] hover:text-blue-800",
+  footer: "text-white hover:text-gray-300",
   default: "text-blue-600 hover:text-blue-800",
 };
 

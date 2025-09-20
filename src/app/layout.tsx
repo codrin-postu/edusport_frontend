@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        {children}
+        <main className="pt-38">{children}</main>
         <Footer />
       </body>
     </html>

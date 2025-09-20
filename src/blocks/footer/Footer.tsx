@@ -1,3 +1,7 @@
+import { Link } from "@/components";
+import { cn } from "@/utils/cn";
+import { LinkVariants } from "@/utils/constants";
+import { MAX_CONTENT_WIDTH } from "@/utils/style-constants";
 import Image from "next/image";
 import React from "react";
 
@@ -23,7 +27,7 @@ const footerLinks = [
 
 //TODO: Rename footer areas to more descriptive names
 
-const FooterAreaA: React.FC = () => (
+const ContactArea: React.FC = () => (
   <div className="md:w-3/10 w-full flex flex-col items-start mb-8 md:mb-0">
     <Image
       src="/logo.png"
@@ -54,28 +58,22 @@ const FooterAreaA: React.FC = () => (
   </div>
 );
 
-const FooterAreaB: React.FC = () => (
-  <div className="md:w-7/10 w-full flex flex-col justify-between items-start">
+const LinksMapArea: React.FC = () => (
+  <div className="md:w-7/10 w-full flex flex-col justify-between items-end">
     <nav className="mb-15 w-full">
-      <ul className="flex flex-col md:flex-row md:space-x-60">
+      <ul className="flex flex-col md:flex-row md:justify-end lg:space-x-60 md:space-x-40">
         {footerLinks.map((link) => (
           <li key={link.href} className="relative group text-start pe-10">
-            <a
-              href={link.href}
-              className="text-white no-underline font-medium hover:underline"
-            >
+            <Link href={link.href} variant={LinkVariants.FOOTER}>
               {link.label}
-            </a>
+            </Link>
             {link.subLinks && link.subLinks.length > 0 && (
               <ul className="mt-9 flex flex-col items-start gap-2">
                 {link.subLinks.map((subLink) => (
                   <li key={subLink.href}>
-                    <a
-                      href={subLink.href}
-                      className="text-white/80 no-underline hover:underline"
-                    >
+                    <Link href={subLink.href} variant={LinkVariants.FOOTER}>
                       {subLink.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -84,7 +82,7 @@ const FooterAreaB: React.FC = () => (
         ))}
       </ul>
     </nav>
-    <div className="w-full md:max-w-[1120px] h-[350px] rounded overflow-hidden">
+    <div className="w-full md:max-w-[1120px] h-[350px] rounded-lg overflow-hidden">
       <iframe
         title="EduSport Location"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537363153169!3d-37.81720997975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f1f1f1f1%3A0x5045675218ce6e0!2s123%20Main%20St%2C%20City%2C%20Country!5e0!3m2!1sen!2s!4v1680000000000!5m2!1sen!2s"
@@ -99,34 +97,53 @@ const FooterAreaB: React.FC = () => (
   </div>
 );
 
-const FooterAreaC: React.FC = () => (
+const BottomLinksArea: React.FC = () => (
   <div className="pt-10 flex flex-row justify-between text-sm opacity-80 w-full">
     <span>
       &copy; {new Date().getFullYear()} EduSport. All rights reserved.
     </span>
     <div className="flex flex-col md:flex-row md:space-x-12 space-y-2 md:space-y-0">
-      <a href="/terms" className="hover:underline">
+      <Link href="/term" variant={LinkVariants.FOOTER}>
         Terms & Conditions
-      </a>
-      <a href="/privacy" className="hover:underline">
+      </Link>
+      <Link href="/privacy" variant={LinkVariants.FOOTER}>
         Privacy Policy
-      </a>
-      <a href="/cookies" className="hover:underline">
+      </Link>
+      <Link href="/cookies" variant={LinkVariants.FOOTER}>
         Cookies
-      </a>
+      </Link>
     </div>
   </div>
 );
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#193976] text-white py-16 px-20">
-      <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-0">
-          <FooterAreaA />
-          <FooterAreaB />
+    <footer className={cn("bg-[#193976]", "text-white", "py-16", "px-20")}>
+      <div
+        className={cn(
+          "flex",
+          "flex-col",
+          "items-center",
+          "mx-auto",
+          `max-w-[${MAX_CONTENT_WIDTH}]`,
+        )}
+      >
+        <div
+          className={cn(
+            "flex",
+            "flex-col",
+            "md:flex-row",
+            "gap-8",
+            "md:gap-0",
+            "w-full",
+            "justify-center",
+            "items-center",
+          )}
+        >
+          <ContactArea />
+          <LinksMapArea />
         </div>
-        <FooterAreaC />
+        <BottomLinksArea />
       </div>
     </footer>
   );
