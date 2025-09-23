@@ -1,7 +1,5 @@
-export default function Home() {
-  return (
-    <div style={{ minHeight: "100vh" }}>
-      <h2>Empty page</h2>
-    </div>
-  );
+import HomePage from "./homepage/_View";
+
+export default function Page() {
+  return <HomePage />;
 }
