@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer, Header } from "../blocks";
+import { Footer, Header } from "../components/blocks";
 
 export const metadata: Metadata = {
   title: "Scoala de patinaj EduSport",
