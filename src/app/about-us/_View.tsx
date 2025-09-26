@@ -1,6 +1,6 @@
 import React from "react";
 
-const DesprePage: React.FC = () => {
+const AboutUsPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">Despre Noi</h1>
@@ -11,4 +11,4 @@ const DesprePage: React.FC = () => {
   );
 };
 
-export default DesprePage;
+export default AboutUsPage;

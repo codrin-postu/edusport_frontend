@@ -1,6 +1,6 @@
 import React from "react";
 
-const IstoricPage: React.FC = () => {
+const HistoryPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">Istoricul Nostru</h1>
@@ -11,4 +11,4 @@ const IstoricPage: React.FC = () => {
   );
 };
 
-export default IstoricPage;
+export default HistoryPage;

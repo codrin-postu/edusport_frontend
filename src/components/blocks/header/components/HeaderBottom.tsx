@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "@/components/link/Link";
+import Link from "@/components/ui/link";
 import { LinkVariants } from "@/utils/constants";
 import {
   NavigationMenu,
@@ -28,20 +28,20 @@ const navigationItems: NavigationItem[] = [
   {
     label: "Despre Noi",
     dropdown: [
-      { label: "Echipa", href: "/despre-noi/echipa" },
-      { label: "Istoric", href: "/despre-noi/istoric" },
-      { label: "Misiune", href: "/despre-noi/misiune" },
+      { label: "Echipa", href: "/about-us/team" },
+      { label: "Istoric", href: "/about-us/history" },
+      { label: "Misiune", href: "/about-us/mission" },
     ],
   },
-  { label: "Cursuri", href: "/cursuri" },
+  { label: "Cursuri", href: "/courses" },
   {
     label: "Program",
     dropdown: [
       { label: "Program Cursuri", href: "/program" },
-      { label: "Evenimente Speciale", href: "/evenimente" },
+      { label: "Evenimente Speciale", href: "/events" },
     ],
   },
-  { label: "Noutati", href: "/noutati" },
+  { label: "Noutati", href: "/news" },
   { label: "Contact", href: "/contact" },
 ];
 

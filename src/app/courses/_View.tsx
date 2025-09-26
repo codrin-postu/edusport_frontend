@@ -1,6 +1,6 @@
 import React from "react";
 
-const CursuriPage: React.FC = () => {
+const CoursesPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">Cursurile Noastre</h1>
@@ -11,4 +11,4 @@ const CursuriPage: React.FC = () => {
   );
 };
 
-export default CursuriPage;
+export default CoursesPage;

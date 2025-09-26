@@ -1,6 +1,6 @@
 import React from "react";
 
-const EvenimentePage: React.FC = () => {
+const EventsPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">Evenimente Speciale</h1>
@@ -11,4 +11,4 @@ const EvenimentePage: React.FC = () => {
   );
 };
 
-export default EvenimentePage;
+export default EventsPage;

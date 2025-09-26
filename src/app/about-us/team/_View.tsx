@@ -1,6 +1,6 @@
 import React from "react";
 
-const EchipaPage: React.FC = () => {
+const TeamPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-6">Echipa Noastră</h1>
@@ -11,4 +11,4 @@ const EchipaPage: React.FC = () => {
   );
 };
 
-export default EchipaPage;
+export default TeamPage;

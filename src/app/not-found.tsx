@@ -26,10 +26,10 @@ export default function NotFound() {
           <div className="text-sm text-gray-500">
             <p>Sau încercați una din aceste pagini:</p>
             <div className="mt-2 space-x-4">
-              <Link href="/despre-noi" className="text-edusport-blue hover:underline">
+              <Link href="/about-us" className="text-edusport-blue hover:underline">
                 Despre Noi
               </Link>
-              <Link href="/cursuri" className="text-edusport-blue hover:underline">
+              <Link href="/courses" className="text-edusport-blue hover:underline">
                 Cursuri
               </Link>
               <Link href="/contact" className="text-edusport-blue hover:underline">
