@@ -24,7 +24,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   scheduleGroups,
 }) => {
   return (
-    <section className={cn("py-16", "bg-gray-50")}>
+    <section className={cn("py-16")}>
       <div
         className={cn(
           "w-full",
@@ -48,7 +48,15 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
           >
             Programul Cursurilor
           </h2>
-          <div className={cn("space-y-8", "mb-12")}>
+          <div
+            className={cn(
+              "grid",
+              "grid-cols-1",
+              "md:grid-cols-2",
+              "gap-8",
+              "mb-12",
+            )}
+          >
             {scheduleGroups.map((group, groupIndex) => (
               <div
                 key={groupIndex}

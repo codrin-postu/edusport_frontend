@@ -7,3 +7,5 @@ export { Header };
 export { Footer };
 export { PricingCard };
 export { ArticleCard };
+import { Calendar } from "./calendar";
+export { Calendar };

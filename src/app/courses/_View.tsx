@@ -2,7 +2,6 @@ import { cn } from "@/utils/cn";
 import {
   CoursesHeaderSection,
   ScheduleSection,
-  SeasonCalendarSection,
   SeasonCalendarView,
   PricingSection,
 } from "./blocks";

@@ -26,11 +26,11 @@ interface MonthData {
   offDates: WeekendInfo[];
 }
 
-interface SeasonCalendarSectionProps {
+interface SeasonTableViewProps {
   seasonCalendar: MonthData[];
 }
 
-const SeasonCalendarSection: React.FC<SeasonCalendarSectionProps> = ({
+const SeasonTableView: React.FC<SeasonTableViewProps> = ({
   seasonCalendar,
 }) => {
   const getMonthNumber = (monthName: string): number => {
@@ -326,4 +326,4 @@ const SeasonCalendarSection: React.FC<SeasonCalendarSectionProps> = ({
   );
 };
 
-export default SeasonCalendarSection;
+export default SeasonTableView;

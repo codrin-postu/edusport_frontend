@@ -61,3 +61,5 @@ This is a Next.js 15 frontend application for EduSport, a skating school website
 ## Current State
 The application has basic Header and Footer components implemented with placeholder content. The main page is currently empty and ready for content development.
 - Make sure to add "use client" to components which are using useState
+- Use /components/blocks when adding new reusable blocks and also rememember to follow the directory/file/component naming already existing
+- use "use client" directive if using any hooks/state
