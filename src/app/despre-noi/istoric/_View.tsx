@@ -86,14 +86,13 @@ const HistoryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <PageHeroSection
-        variant="light"
         backgroundImage="/images/hero-background.png"
         title={["DESPRE", "NOI"]}
       >
-        <h1 className="text-4xl md:text-6xl font-semibold text-gray-900 leading-[1.1] tracking-tight">
+        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
           Despre Noi
         </h1>
-        <p className="text-gray-900/60 text-base font-light">
+        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
           Educație prin sport, pentru o viață sănătoasă și activă. Educație
           pentru sport, în vederea obținerii înaltei performanțe.
         </p>

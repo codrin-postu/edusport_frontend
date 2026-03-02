@@ -140,23 +140,39 @@ const WeekendRow: React.FC<{
 const MonthColumn: React.FC<{
   group: MonthGroup;
   nextActiveWeekend: WeekendDate | null;
-}> = ({ group, nextActiveWeekend }) => (
-  <div className="overflow-hidden">
-    {/* Month label — acts as table header */}
-    <div className="px-4 py-2 border-b border-gray-200">
-      <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 capitalize">
-        {group.label}
-      </span>
-    </div>
+}> = ({ group, nextActiveWeekend }) => {
+  const allPast = group.cards.every((c) => isWeekendInPast(c.weekend));
+  const [collapsed, setCollapsed] = useState(allPast);
 
-    {/* Weekend rows */}
-    <div className="divide-y divide-gray-100">
-      {group.cards.map((card, i) => (
-        <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
-      ))}
+  return (
+    <div className="overflow-hidden">
+      {/* Month label — acts as table header */}
+      <div
+        className={cn(
+          "px-4 py-2 border-b border-gray-200 flex items-center justify-between",
+          allPast && "sm:cursor-default cursor-pointer select-none",
+        )}
+        onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
+      >
+        <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 capitalize">
+          {group.label}
+        </span>
+        {allPast && (
+          <span className="sm:hidden text-gray-300 text-xs">
+            {collapsed ? "▸" : "▾"}
+          </span>
+        )}
+      </div>
+
+      {/* Weekend rows */}
+      <div className={cn("divide-y divide-gray-100", collapsed && "hidden sm:block")}>
+        {group.cards.map((card, i) => (
+          <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 

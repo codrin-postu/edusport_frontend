@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/utils/cn";
 import {
   Table,
@@ -11,9 +13,10 @@ import {
   parseWeekendDates,
   getNextActiveWeekend,
   isNextWeekend,
+  isWeekendInPast,
   WeekendDate,
 } from "@/utils/date";
-import React from "react";
+import React, { useState } from "react";
 
 interface WeekendInfo {
   weekend: string;
@@ -86,6 +89,25 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
     );
   };
 
+  const isMonthFullyPast = (monthData: MonthData): boolean => {
+    const monthName = monthData.month.split(" ")[0];
+    const year = monthData.month.includes("2026") ? 2026 : 2025;
+    const monthNumber = getMonthNumber(monthName);
+    const allDates = [...monthData.courseDates, ...monthData.offDates];
+    if (allDates.length === 0) return false;
+    return allDates.every((dateInfo) =>
+      parseWeekendDates(dateInfo.weekend, monthNumber, year).every(
+        isWeekendInPast,
+      ),
+    );
+  };
+
+  const [collapsed, setCollapsed] = useState<Record<number, boolean>>(() =>
+    Object.fromEntries(
+      seasonCalendar.map((m, i) => [i, isMonthFullyPast(m)]),
+    ),
+  );
+
   return (
     <section className={cn("py-16", "bg-white")}>
       <div
@@ -127,7 +149,10 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {seasonCalendar.map((monthData, index) => (
+                {seasonCalendar.map((monthData, index) => {
+                  const isPast = isMonthFullyPast(monthData);
+                  const isCollapsed = isPast && (collapsed[index] ?? true);
+                  return (
                   <TableRow
                     key={index}
                     className={cn(
@@ -142,12 +167,29 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
                         "text-edusport-blue",
                         "min-w-[150px]",
                         "py-3",
+                        isPast && "md:cursor-default cursor-pointer select-none",
                       )}
+                      onClick={
+                        isPast
+                          ? () =>
+                              setCollapsed((prev) => ({
+                                ...prev,
+                                [index]: !prev[index],
+                              }))
+                          : undefined
+                      }
                     >
-                      {monthData.month}
+                      <div className="flex items-center gap-1">
+                        <span>{monthData.month}</span>
+                        {isPast && (
+                          <span className="md:hidden text-gray-400 text-xs leading-none">
+                            {isCollapsed ? "▸" : "▾"}
+                          </span>
+                        )}
+                      </div>
                     </TableCell>
-                    <TableCell className={cn("py-3")}>
-                      <div className={cn("flex", "flex-wrap", "gap-2")}>
+                    <TableCell className="py-3">
+                      <div className={cn("flex", "flex-wrap", "gap-2", isCollapsed && "hidden md:flex")}>
                         {monthData.courseDates.map((dateInfo, dateIndex) => {
                           const monthName = monthData.month.split(" ")[0];
                           const year = monthData.month.includes("2026")
@@ -235,7 +277,8 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
                         })}
                       </div>
                     </TableCell>
-                    <TableCell className={cn("py-3")}>
+                    <TableCell className="py-3">
+                      <div className={isCollapsed ? "hidden md:block" : undefined}>
                       {monthData.offDates.length > 0 ? (
                         <div className={cn("flex", "flex-wrap", "gap-2")}>
                           {monthData.offDates.map((dateInfo, dateIndex) => (
@@ -314,9 +357,11 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
                           Niciun weekend liber
                         </span>
                       )}
+                      </div>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

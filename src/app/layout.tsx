@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className="bg-edusport-blue">
         <Header />
         <main
-          className="relative z-10 pt-20 bg-white lg:overflow-clip"
+          className="relative z-10 pt-20 pb-24 md:pb-32 bg-white lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}

@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
+import PageHeroSection from "@/components/blocks/page-hero-section";
 
 // ---------------------------------------------------------------------------
 // Trainer data — update this list each season as needed
@@ -53,32 +54,19 @@ const TRAINERS: Trainer[] = [
 const TeamPage: React.FC = () => {
   return (
     <div className={cn("min-h-screen", "bg-white")}>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ height: "280px" }}>
-        <Image
-          src="/images/hero-background.png"
-          alt="Echipa EduSport"
-          fill
-          className="object-cover object-center"
-          priority
-        />
+      <PageHeroSection
+        backgroundImage="/images/hero-background.png"
+        title={["ECHIPA"]}
+      >
+        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+          Echipa Noastră
+        </h1>
+        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+          Antrenorii și instructorii care ghidează cursanții Școlii de Patinaj EduSport.
+        </p>
+      </PageHeroSection>
 
-        {/* Content */}
-        <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 h-full flex items-center">
-          <div className="flex flex-col gap-3 max-w-xl">
-            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-tight tracking-tight">
-              Echipa Noastră
-            </h1>
-            <p className="text-gray-900/60 text-sm font-light">
-              Antrenorii și instructorii care ghidează cursanții Școlii de Patinaj EduSport.
-            </p>
-          </div>
-        </div>
-
-
-      </section>
-
-      <section className="bg-white py-16 md:py-20">
+      <section className="relative z-10 bg-white py-16 md:py-20">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Introduction */}
           <div className="max-w-2xl mb-14">
