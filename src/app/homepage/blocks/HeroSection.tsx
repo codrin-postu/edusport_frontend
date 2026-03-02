@@ -1,131 +1,129 @@
 import Link from "@/components/ui/link";
-import { Button } from "@/components/ui/button";
+import SpotlightButton from "@/components/ui/spotlight-button";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import heroBackground from "/public/images/hero-section-background.png";
+import heroBackground from "/public/images/hero-background.png";
 import React from "react";
+import SkateParallax from "./SkateParallax";
+
+const TYPEWRITER_TEXT = "Clubul Sportiv";
+// Typewriter duration in ms — must match hero-typewriter animation in globals.css
+const TYPEWRITER_DURATION_MS = 900;
+const TYPEWRITER_DELAY_MS = 100;
+// Each EDUSPORT letter animates in after the typewriter + a per-letter stagger
+const EDUSPORT_START_MS = TYPEWRITER_DELAY_MS + TYPEWRITER_DURATION_MS + 200;
+const LETTER_STAGGER_MS = 50;
+
+const BrandingTitle: React.FC = () => (
+  <span className="inline-flex">
+    {"EDUSPORT".split("").map((letter, index) => (
+      <span
+        key={index}
+        className="hero-letter text-branding-font text-edusport-blue"
+        style={{
+          animationDelay: `${EDUSPORT_START_MS + index * LETTER_STAGGER_MS}ms`,
+          animationDuration: "350ms",
+        }}
+      >
+        {letter}
+      </span>
+    ))}
+  </span>
+);
 
 const HeroSection: React.FC = () => {
   return (
     <section
       className={cn(
         "relative",
-        "max-h-[500px]",
-        "md:max-h-[600px]",
-        "lg:max-h-[760px]",
-        "flex",
-        "items-start",
-        "justify-start",
+        "h-screen",
+        "max-h-[1200px]",
+        "2xl:overflow-hidden",
       )}
     >
-      <Image
-        src={heroBackground}
-        alt="Hero section background"
-        fill
-        className={cn("object-cover", "object-top")}
-        priority
-      />
-      {/* Mobile/Tablet Overlay */}
-      <div
-        className={cn("absolute", "inset-0", "bg-white/30", "md:hidden")}
-      ></div>
+      <div className="overflow-x-clip h-full">
+        {/* Background */}
+        <Image
+          src={heroBackground}
+          alt="Hero background"
+          fill
+          className={cn("object-cover", "object-center")}
+          priority
+        />
 
-      {/* Desktop Gradient Overlay */}
-      <div
-        className={cn(
-          "absolute",
-          "inset-0",
-          "bg-gradient-to-r",
-          "from-white",
-          "via-white/30",
-          "via-20%",
-          "to-transparent",
-          "hidden",
-          "md:block",
-        )}
-      ></div>
-
-      {/* Content Container */}
-      <div
-        className={cn(
-          "relative",
-          "w-full",
-          "max-w-content",
-          "mx-auto",
-          "px-4",
-          "md:px-8",
-          "lg:px-12",
-        )}
-      >
-        {/* Content */}
+        {/* Content area */}
         <div
           className={cn(
-            "text-center",
-            "md:text-left",
-            "text-edusport-navy",
-            "max-w-4xl",
-            "md:max-w-[50%]",
-            "pt-16",
-            "pb-16",
+            "relative",
+            "h-full",
+            "flex",
+            "flex-col",
+            "items-center",
+            "justify-start",
+            "2xl:justify-center",
+            "pt-28",
             "md:pt-24",
-            "md:pb-24",
-            "lg:pt-48",
-            "lg:pb-48",
+            "lg:pt-32",
+            "2xl:pt-0",
           )}
         >
-          <h1
+          {/* Title + motto — above skate */}
+          <div
             className={cn(
-              "mb-4",
-              "md:mb-6",
-              "italic",
-              "leading-none",
-              "text-3xl",
-              "md:text-5xl",
-              "lg:text-6xl",
-              "xl:text-7xl",
-              "font-semibold",
-              "text-edusport-navy",
+              "relative",
+              "z-30",
+              "text-center",
+              "px-4",
+              "flex",
+              "flex-col",
+              "items-center",
+              "gap-4",
+              "md:gap-6",
             )}
           >
-            Clubul Sportiv de Patinaj EduSport
-          </h1>
-          <p
-            className={cn(
-              "text-base",
-              "md:text-lg",
-              "lg:text-xl",
-              "xl:text-2xl",
-              "mb-6",
-              "md:mb-8",
-              "max-w-xl",
-              "md:max-w-2xl",
-              "text-edusport-navy",
-              "mx-auto",
-              "md:mx-0",
-            )}
-          >
-            Școala de patinaj artistic care transformă pasiunea în performanță.
-            Alătură-te comunității noastre și descoperă magia patinajului!
-          </p>
-          <Button
-            asChild
-            className={cn(
-              "bg-edusport-blue",
-              "text-white",
-              "px-6",
-              "md:px-8",
-              "py-3",
-              "md:py-4",
-              "rounded-lg",
-              "text-base",
-              "md:text-lg",
-              "font-semibold",
-              "hover:bg-edusport-blue/90",
-              "transition-colors",
-            )}
-          >
-            <Link href="/courses">Descoperă Cursurile</Link>
-          </Button>
+            <div className="flex flex-col gap-0">
+              <p className="self-start font-sans font-light text-edusport-navy/50 text-base sm:text-base md:text-lg tracking-widest uppercase">
+                <span className="inline-flex items-center">
+                  <span className="hero-typewriter">{TYPEWRITER_TEXT}</span>
+                  <span className="hero-cursor" aria-hidden="true">|</span>
+                </span>
+              </p>
+              <h1 className="leading-none text-[2.75rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+                <BrandingTitle />
+              </h1>
+            </div>
+
+            <p
+              className={cn(
+                "font-sans",
+                "text-edusport-navy/60",
+                "font-light",
+                "italic",
+                "text-lg",
+                "sm:text-xl",
+                "md:text-2xl",
+                "lg:text-3xl",
+                "self-start",
+              )}
+            >
+              Educație prin sport
+            </p>
+          </div>
+
+          {/* Skate — Framer Motion isolated to this component */}
+          <SkateParallax />
+
+          {/* Button — above skate */}
+          <div className={cn("relative", "z-30", "mt-16", "md:mt-12")}>
+            <Link href="/courses">
+              <SpotlightButton
+                variant="black"
+                className="px-12 py-5 text-xl font-semibold rounded-full"
+              >
+                Descoperă Cursurile
+              </SpotlightButton>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

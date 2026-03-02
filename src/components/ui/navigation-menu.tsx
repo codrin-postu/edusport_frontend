@@ -92,7 +92,7 @@ function NavigationMenuTrigger({
     >
       {children}{" "}
       <ChevronDownIcon
-        className="relative top-[1px] ml-1 size-3 transition duration-200 group-data-[state=open]:rotate-180"
+        className="relative top-[1px] ml-1 size-4 transition duration-200 group-data-[state=open]:rotate-180"
         aria-hidden="true"
       />
     </NavigationMenuPrimitive.Trigger>
@@ -107,10 +107,20 @@ function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn([
-        "data-[motion^=from-]:animate-in",
-        "data-[motion^=to-]:animate-out",
+        // slide-in from left when coming from start, from right when from end
+        "data-[motion=from-start]:animate-in",
+        "data-[motion=from-start]:slide-in-from-left-4",
+        "data-[motion=from-end]:animate-in",
+        "data-[motion=from-end]:slide-in-from-right-4",
+        // slide-out to right when going to end, to left when going to start
+        "data-[motion=to-start]:animate-out",
+        "data-[motion=to-start]:slide-out-to-right-4",
+        "data-[motion=to-end]:animate-out",
+        "data-[motion=to-end]:slide-out-to-left-4",
+        // fade for open/close
         "data-[motion^=from-]:fade-in",
         "data-[motion^=to-]:fade-out",
+        "duration-200",
         "top-0",
         "left-0",
         "w-full",
@@ -163,6 +173,9 @@ function NavigationMenuViewport({
           "relative",
           "mt-1.5",
           "h-[var(--radix-navigation-menu-viewport-height)]",
+          "transition-[width,height]",
+          "duration-200",
+          "ease-[cubic-bezier(0.25,0.1,0.25,1)]",
           "w-full",
           "overflow-hidden",
           "rounded-md",

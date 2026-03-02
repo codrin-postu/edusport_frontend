@@ -1,150 +1,225 @@
 import { Link } from "@/components";
+import { Text } from "@/components/ui/text";
 import { cn } from "@/utils/cn";
-import { LinkVariants } from "@/utils/constants";
-import { MAX_CONTENT_WIDTH } from "@/utils/style-constants";
-import Image from "next/image";
+import { BRAND_NAME, LinkVariants } from "@/utils/constants";
 import React from "react";
 
-const footerLinks = [
-  {
-    label: "Acasa",
-    href: "/",
-  },
-  {
-    label: "Despre Noi",
-    href: "/about",
-    subLinks: [
-      { label: "Echipa", href: "/about/team" },
-      { label: "Istoric", href: "/about/history" },
+const footerSections = {
+  left: [
+    {
+      title: "Meniu",
+      items: [
+        { label: "Despre noi", href: "/about", type: "link" },
+        { label: "Cursuri de patinaj", href: "/courses", type: "link" },
+        { label: "Program", href: "/schedule", type: "link" },
+        { label: "Regulament", href: "/rules", type: "link" },
+      ],
+    },
+    {
+      title: "Informații legale",
+      items: [
+        { label: "Termeni și condiții", href: "/terms", type: "link" },
+        { label: "Politica de Cookies", href: "/cookies", type: "link" },
+        {
+          label: "Politica de confidentialitate",
+          href: "/privacy",
+          type: "link",
+        },
+        { label: "ANPC", href: "/anpc", type: "link" },
+        {
+          label: "Solutionarea online a litigiilor",
+          href: "/odr",
+          type: "link",
+        },
+      ],
+    },
+  ],
+  right: {
+    title: "Contacteaza-ne",
+    items: [
+      { label: "0723 623 712", type: "phone" },
+      { label: "scoala.de.patinaj@gmail.com", type: "email" },
+      {
+        label: "Facebook",
+        href: "https://facebook.com",
+        type: "social",
+        icon: "facebook",
+      },
+      {
+        label: "Instagram",
+        href: "https://instagram.com",
+        type: "social",
+        icon: "instagram",
+      },
     ],
   },
-  {
-    label: "Cursuri",
-    href: "/courses",
-    subLinks: [{ label: "Cursuri de Grup", href: "/courses/group" }],
-  },
-];
+};
 
-//TODO: Rename footer areas to more descriptive names
+const FooterBrandName: React.FC = () => {
+  return (
+    <div
+      className={cn(
+        "absolute -bottom-[2vw] -left-[2vw]",
+        "lg:left-1/2 lg:-translate-x-1/2 lg:-bottom-[30px]",
+      )}
+    >
+      <Text variant="branding" className="text-branding-xl">
+        {BRAND_NAME}
+      </Text>
+    </div>
+  );
+};
 
-const ContactArea: React.FC = () => (
-  <div className="md:w-3/10 w-full flex flex-col items-start mb-8 md:mb-0">
-    <Image
-      src="/logo.png"
-      alt="EduSport Logo"
-      width={128}
-      height={96}
-      className="mb-4 h-24 w-32"
-    />
-    <div className="mb-4">
-      <p className="font-normal">Contact</p>
-    </div>
-    <div className="mb-4">
-      <p>Adresa: 123 Main St, City, Country</p>
-      <p>Telefon: (123) 456-7890</p>
-    </div>
-    <div className="flex gap-3">
-      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-        <Image
-          src="/icons/facebook.svg"
-          alt="Facebook"
-          width={24}
-          height={24}
-          className="w-6 h-6"
+const FooterLink: React.FC<{ label: string; href: string }> = ({
+  label,
+  href,
+}) => {
+  return (
+    <Link
+      href={href}
+      className="text-base font-base"
+      variant={LinkVariants.FOOTER_ANIMATED}
+      linkType="external"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const FooterText: React.FC<{ label: string }> = ({ label }) => {
+  return <Text className="text-white">{label}</Text>;
+};
+
+const FooterPhone: React.FC<{ label: string }> = ({ label }) => {
+  return (
+    <Link
+      href={`tel:${label.replace(/\s/g, "")}`}
+      className="text-base font-base"
+      variant={LinkVariants.FOOTER_ANIMATED}
+      linkType="phone"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const FooterEmail: React.FC<{ label: string }> = ({ label }) => {
+  return (
+    <Link
+      href={`mailto:${label}`}
+      className="text-base font-base"
+      variant={LinkVariants.FOOTER_ANIMATED}
+      linkType="email"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const FooterSocialLink: React.FC<{ label: string; href: string }> = ({
+  label,
+  href,
+}) => {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-base font-base"
+      variant={LinkVariants.FOOTER_ANIMATED}
+      linkType="external"
+    >
+      {label}
+    </Link>
+  );
+};
+
+const renderFooterItem = (
+  item: { label: string; href?: string; type: string; icon?: string },
+  itemIndex: number,
+) => {
+  switch (item.type) {
+    case "link":
+      return (
+        <FooterLink key={itemIndex} label={item.label} href={item.href!} />
+      );
+    case "text":
+      return <FooterText key={itemIndex} label={item.label} />;
+    case "phone":
+      return <FooterPhone key={itemIndex} label={item.label} />;
+    case "email":
+      return <FooterEmail key={itemIndex} label={item.label} />;
+    case "social":
+      return (
+        <FooterSocialLink
+          key={itemIndex}
+          label={item.label}
+          href={item.href!}
         />
-      </a>
-      {/*TODO: Add more social icons here */}
-    </div>
-  </div>
-);
+      );
+    default:
+      return null;
+  }
+};
 
-const LinksMapArea: React.FC = () => (
-  <div className="md:w-7/10 w-full flex flex-col justify-between items-end">
-    <nav className="mb-15 w-full">
-      <ul className="flex flex-col md:flex-row md:justify-end lg:space-x-60 md:space-x-40">
-        {footerLinks.map((link) => (
-          <li key={link.href} className="relative group text-start pe-10">
-            <Link href={link.href} variant={LinkVariants.FOOTER}>
-              {link.label}
-            </Link>
-            {link.subLinks && link.subLinks.length > 0 && (
-              <ul className="mt-9 flex flex-col items-start gap-2">
-                {link.subLinks.map((subLink) => (
-                  <li key={subLink.href}>
-                    <Link href={subLink.href} variant={LinkVariants.FOOTER}>
-                      {subLink.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
+const FooterContent: React.FC = () => {
+  return (
+    <div className="flex flex-col md:flex-row max-footer-content lg:justify-between gap-8 md:gap-12 px-22 py-10 mx-auto">
+      {/* On mobile: all sections in column */}
+      {/* On md: all 3 sections in row */}
+      {/* On lg+: first 2 sections grouped left, contact on right */}
+
+      {/* Left group - Menu sections */}
+      <div className="contents md:contents lg:flex lg:flex-row lg:gap-12">
+        {footerSections.left.map((section, index) => (
+          <div key={index} className="flex flex-col gap-3">
+            <Text
+              variant="heading"
+              className="font-semibold text-lg lg:text-2xl text-white"
+            >
+              {section.title}
+            </Text>
+            <div className="flex flex-col gap-3">
+              {section.items.map((item, itemIndex) =>
+                renderFooterItem(item, itemIndex),
+              )}
+            </div>
+          </div>
         ))}
-      </ul>
-    </nav>
-    <div className="w-full md:max-w-[1120px] h-[350px] rounded-lg overflow-hidden">
-      <iframe
-        title="EduSport Location"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537363153169!3d-37.81720997975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f1f1f1f1%3A0x5045675218ce6e0!2s123%20Main%20St%2C%20City%2C%20Country!5e0!3m2!1sen!2s!4v1680000000000!5m2!1sen!2s"
-        width="100%"
-        height="100%"
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      />
-    </div>
-  </div>
-);
+      </div>
 
-const BottomLinksArea: React.FC = () => (
-  <div className="pt-10 flex flex-row justify-between text-sm opacity-80 w-full">
-    <span>
-      &copy; {new Date().getFullYear()} EduSport. All rights reserved.
-    </span>
-    <div className="flex flex-col md:flex-row md:space-x-12 space-y-2 md:space-y-0">
-      <Link href="/term" variant={LinkVariants.FOOTER}>
-        Terms & Conditions
-      </Link>
-      <Link href="/privacy" variant={LinkVariants.FOOTER}>
-        Privacy Policy
-      </Link>
-      <Link href="/cookies" variant={LinkVariants.FOOTER}>
-        Cookies
-      </Link>
+      {/* Right group - Contact section */}
+      <div className="flex flex-col gap-3">
+        <Text
+          variant="heading"
+          className="font-semibold text-lg lg:text-2xl text-white"
+        >
+          {footerSections.right.title}
+        </Text>
+        <div className="flex flex-col gap-3">
+          {footerSections.right.items.map((item, itemIndex) =>
+            renderFooterItem(item, itemIndex),
+          )}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Footer: React.FC = () => {
   return (
-    <footer className={cn("bg-[#193976]", "text-white", "py-16", "px-20")}>
-      <div
-        className={cn(
-          "flex",
-          "flex-col",
-          "items-center",
-          "mx-auto",
-          `max-w-[${MAX_CONTENT_WIDTH}]`,
-        )}
-      >
-        <div
-          className={cn(
-            "flex",
-            "flex-col",
-            "md:flex-row",
-            "gap-8",
-            "md:gap-0",
-            "w-full",
-            "justify-center",
-            "items-center",
-          )}
-        >
-          <ContactArea />
-          <LinksMapArea />
-        </div>
-        <BottomLinksArea />
-      </div>
+    <footer
+      className={cn(
+        "relative",
+        "overflow-hidden",
+        "bg-edusport-blue",
+        "w-full",
+        "min-h-[250px]",
+        "pb-[10vw] 2xl:pb-[9.5em]",
+      )}
+    >
+      <FooterContent />
+      <FooterBrandName />
     </footer>
   );
 };

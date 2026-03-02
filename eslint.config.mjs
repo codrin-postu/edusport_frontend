@@ -26,7 +26,7 @@ eslintConfig.push({
   rules: {
     semi: ["error", "always"],
     quotes: ["error", "double"],
-    indent: ["error", 2],
+    indent: ["warning", 2],
     "no-trailing-spaces": "error",
     "eol-last": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],

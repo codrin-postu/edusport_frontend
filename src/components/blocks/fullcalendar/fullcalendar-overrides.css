@@ -1,0 +1,348 @@
+/* FullCalendar CSS overrides — scoped to .fc to avoid global bleed */
+
+.fc {
+  --fc-border-color: oklch(0.922 0 0);
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: oklch(0.922 0 0);
+  --fc-button-text-color: oklch(0.421 0.2593 264.52);
+  --fc-button-hover-bg-color: oklch(0.421 0.2593 264.52 / 0.08);
+  --fc-button-hover-border-color: oklch(0.421 0.2593 264.52);
+  --fc-button-active-bg-color: oklch(0.421 0.2593 264.52);
+  --fc-button-active-border-color: oklch(0.421 0.2593 264.52);
+  --fc-button-active-text-color: white;
+  --fc-today-bg-color: oklch(0.421 0.2593 264.52 / 0.06);
+  --fc-neutral-bg-color: transparent;
+  --fc-page-bg-color: white;
+  font-family: "Inter", "Roboto", sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Month/year title */
+.fc .fc-toolbar-title {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: oklch(0.18 0.12 264);
+}
+
+/* Toolbar buttons */
+.fc .fc-button {
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: background-color 0.15s, border-color 0.15s;
+  box-shadow: none !important;
+}
+
+.fc .fc-button:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* Hide prev/next buttons when disabled (at season boundaries) */
+.fc .fc-button:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Day-of-week header row */
+.fc .fc-col-header-cell-cushion {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: oklch(0.556 0 0);
+  text-decoration: none;
+  padding: 6px 0;
+}
+
+/* Day number */
+.fc .fc-daygrid-day-number {
+  font-size: 0.78rem;
+  color: oklch(0.45 0 0);
+  text-decoration: none;
+  padding: 4px 6px;
+}
+
+/* Today's day number highlight */
+.fc .fc-day-today .fc-daygrid-day-number {
+  font-weight: 700;
+  color: oklch(0.421 0.2593 264.52);
+}
+
+/* Remove default event border/box-shadow so our classes fully control appearance */
+.fc .fc-daygrid-event {
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  border: none;
+  box-shadow: none;
+}
+
+
+.fc .fc-daygrid-event .fc-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* "+N more" overflow link */
+.fc .fc-daygrid-more-link {
+  font-size: 0.67rem;
+  color: oklch(0.5 0 0);
+}
+
+/* --- Event type colours --- */
+
+/* Curs — transparent background, teal bullet + text */
+.fc-event-curs,
+.fc-event-next-weekend {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: oklch(0.45 0.15 184) !important;
+  box-shadow: none !important;
+}
+
+/* Teal dot for the list-item bullet */
+.fc-event-curs .fc-daygrid-event-dot,
+.fc-event-next-weekend .fc-daygrid-event-dot {
+  border-color: oklch(0.55 0.15 184) !important;
+}
+
+/* Liber (off weekend) — muted gray */
+.fc-event-liber {
+  background-color: oklch(0.87 0 0) !important;
+  border-color: oklch(0.75 0 0) !important;
+  color: oklch(0.45 0 0) !important;
+}
+
+/* National holidays — amber */
+.fc-event-holiday {
+  background-color: oklch(0.87 0.14 85) !important;
+  border-color: oklch(0.72 0.17 85) !important;
+  color: oklch(0.32 0.1 85) !important;
+}
+
+/* School vacations — indigo/purple */
+.fc-event-vacation {
+  background-color: oklch(0.87 0.09 280) !important;
+  border-color: oklch(0.70 0.13 280) !important;
+  color: oklch(0.35 0.1 280) !important;
+}
+
+/* Cursuri event — inline layout */
+.fc-curs-event {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  overflow: visible;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+/* "Cursuri" label must not be bold */
+.fc-curs-event .fc-event-title {
+  font-weight: 400 !important;
+}
+
+.fc-curs-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: oklch(0.55 0.15 184);
+}
+
+/* Tooltip — white card, portalled to body, appears above the event */
+.fc-curs-tooltip {
+  position: fixed;
+  transform: translateY(-100%);
+  z-index: 9999;
+  background: #ffffff;
+  border: 1px solid oklch(0.91 0 0);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px oklch(0 0 0 / 0.1), 0 1px 4px oklch(0 0 0 / 0.06);
+  padding: 10px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+  pointer-events: auto;
+  animation: fc-tooltip-in 0.12s ease both;
+}
+
+@keyframes fc-tooltip-in {
+  from { opacity: 0; transform: translateY(calc(-100% - 4px)); }
+  to   { opacity: 1; transform: translateY(-100%); }
+}
+
+.fc-curs-tooltip-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: oklch(0.25 0.06 264);
+  letter-spacing: 0.01em;
+}
+
+.fc-curs-tooltip-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fc-curs-tooltip-hours span {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: oklch(0.45 0.05 184);
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-curs-tooltip-link {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: oklch(0.421 0.2593 264.52);
+  text-decoration: none;
+  margin-top: 2px;
+  border-top: 1px solid oklch(0.93 0 0);
+  padding-top: 6px;
+}
+
+.fc-curs-tooltip-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Mobile only: dot-only, no text ─────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .fc-curs-desktop-title {
+    display: none;
+  }
+
+  .fc-curs-event {
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .fc-curs-dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* ── Mobile modal ────────────────────────────────────────────────────────────── */
+.fc-mobile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: oklch(0 0 0 / 0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fc-backdrop-in 0.15s ease both;
+}
+
+@keyframes fc-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fc-mobile-modal {
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  padding: 20px 20px 32px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fc-modal-in 0.18s ease both;
+}
+
+@keyframes fc-modal-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.fc-mobile-modal .fc-curs-tooltip-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.fc-mobile-modal .fc-curs-tooltip-hours span {
+  font-size: 0.88rem;
+}
+
+.fc-mobile-modal .fc-curs-tooltip-link {
+  font-size: 0.82rem;
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.fc-mobile-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.fc-mobile-modal-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: oklch(0.45 0 0);
+  text-transform: capitalize;
+}
+
+.fc-mobile-modal-back {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: oklch(0.421 0.2593 264.52);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.fc-mobile-modal-close {
+  font-size: 1rem;
+  color: oklch(0.6 0 0);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.fc-mobile-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.fc-mobile-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: oklch(0.25 0.06 264);
+  cursor: pointer;
+  text-align: left;
+}
+
+.fc-mobile-modal-item:active {
+  background: oklch(0.96 0 0);
+}
+
+.fc-mobile-modal-chevron {
+  margin-left: auto;
+  font-size: 1rem;
+  color: oklch(0.65 0 0);
+}

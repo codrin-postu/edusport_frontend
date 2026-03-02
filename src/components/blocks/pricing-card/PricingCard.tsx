@@ -21,60 +21,28 @@ const PricingCard: React.FC<PricingCardProps> = ({
   bottomItem,
 }) => {
   return (
-    <div className={cn("bg-white", "p-6", "rounded-lg", "shadow-md")}>
-      <h3
-        className={cn(
-          "text-xl",
-          "font-semibold",
-          "mb-4",
-          "text-edusport-blue",
-          "font-['Roboto']",
-        )}
-      >
+    <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col gap-6">
+      <h3 className="text-sm font-medium tracking-widest uppercase text-edusport-blue">
         {title}
       </h3>
-      <div className={cn("space-y-3", "mb-6")}>
+      <div className="flex flex-col gap-4">
         {priceItems.map((item, index) => (
-          <div
-            key={index}
-            className={cn("flex", "justify-between", "items-center")}
-          >
-            <span className={cn("text-gray-600", "font-['Roboto']")}>
-              {item.label}
-            </span>
-            <span
-              className={cn("text-lg", "font-bold", "text-edusport-blue", "font-['Roboto']")}
-            >
+          <div key={index} className="flex justify-between items-baseline gap-4">
+            <span className="text-gray-500 font-light text-sm">{item.label}</span>
+            <span className="text-edusport-navy font-semibold text-lg whitespace-nowrap">
               {item.price}
             </span>
           </div>
         ))}
-        {bottomItem && (
-          <div
-            className={cn(
-              "flex",
-              "justify-between",
-              "items-center",
-              "pt-2",
-              "border-t",
-            )}
-          >
-            <span className={cn("text-sm", "text-gray-500", "font-['Roboto']")}>
-              {bottomItem.label}
-            </span>
-            <span
-              className={cn(
-                "text-sm",
-                "font-semibold",
-                "text-edusport-blue",
-                "font-['Roboto']",
-              )}
-            >
-              {bottomItem.price}
-            </span>
-          </div>
-        )}
       </div>
+      {bottomItem && (
+        <div className="flex justify-between items-baseline gap-4 pt-4 border-t border-gray-100">
+          <span className="text-gray-400 font-light text-xs">{bottomItem.label}</span>
+          <span className="text-gray-500 font-medium text-sm whitespace-nowrap">
+            {bottomItem.price}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

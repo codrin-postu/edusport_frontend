@@ -1,5 +1,5 @@
-import Link from "@/components/ui/link";
 import { cn } from "@/utils/cn";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 
 interface ArticleCardProps {
@@ -7,11 +7,9 @@ interface ArticleCardProps {
   date: string;
   excerpt?: string;
   href?: string;
-  imagePlaceholder?: string;
+  image?: string;
   className?: string;
-  imageClassName?: string;
-  contentClassName?: string;
-  detailed?: boolean;
+  category?: string;
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({
@@ -19,80 +17,61 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   date,
   excerpt,
   href = "#",
-  imagePlaceholder = "Imagine Articol",
+  image,
   className,
-  imageClassName,
-  contentClassName,
-  detailed = false,
+  category,
 }) => {
-  const showExcerpt = detailed && excerpt;
-
   return (
-    <Link
+    <a
       href={href}
       className={cn(
-        "block",
-        "bg-white",
-        "rounded-lg",
-        "shadow-md",
-        "overflow-hidden",
-        "hover:shadow-lg",
-        "transition-shadow",
-        "cursor-pointer",
-        className,
+        "group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start hover:opacity-75 transition-opacity",
+        className
       )}
     >
-      <div className={cn(detailed && "md:flex")}>
-        <div className={cn(detailed ? "md:w-2/5" : "w-full")}>
-          <div
-            className={cn(
-              "bg-gray-200",
-              "flex",
-              "items-center",
-              "justify-center",
-              detailed ? "h-48 md:h-full" : "h-32",
-              imageClassName,
-            )}
-          >
-            <p className={cn("text-gray-500", detailed ? "text-base" : "text-sm")}>
-              {imagePlaceholder}
-            </p>
-          </div>
+      {/* Thumbnail */}
+      {image ? (
+        <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden bg-gray-100 shrink-0">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
         </div>
-        <div
-          className={cn(
-            detailed ? "md:w-3/5 p-6" : "p-4",
-            contentClassName,
+      ) : (
+        <div className="hidden sm:flex w-32 aspect-square bg-gray-100 items-center justify-center shrink-0">
+          <div className="w-8 h-8 bg-gray-200 rounded" />
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-center gap-2 mb-0.5">
+          {category && (
+            <span className="text-xs font-medium text-edusport-blue">
+              {category}
+            </span>
           )}
-        >
-          <div
-            className={cn(
-              "text-edusport-blue",
-              "mb-2",
-              detailed ? "text-sm" : "text-xs",
-            )}
-          >
+          {category && (
+            <span className="text-gray-300">·</span>
+          )}
+          <span className="text-xs text-gray-400 font-light">
             {date}
-          </div>
-          <h3
-            className={cn(
-              "font-bold",
-              "text-gray-800",
-              "mb-3",
-              detailed ? "text-xl" : "text-sm",
-              !showExcerpt && "leading-tight",
-            )}
-          >
-            {title}
-          </h3>
-          {showExcerpt && (
-            <p className={cn("text-gray-600", "text-sm", detailed && "mb-4")}>
-              {excerpt}
-            </p>
-          )}
+          </span>
         </div>
+        <h3 className="text-lg font-semibold text-gray-900 leading-snug">
+          {title}
+        </h3>
+        {excerpt && (
+          <p className="text-sm text-gray-500 font-light leading-relaxed line-clamp-2">
+            {excerpt}
+          </p>
+        )}
+        <span className="inline-flex items-center gap-1 text-xs font-medium text-edusport-blue mt-1">
+          Citește mai mult <ArrowRight className="w-3 h-3" />
+        </span>
       </div>
-    </Link>
+    </a>
   );
 };
 
