@@ -38,14 +38,9 @@ const articles = [
 ];
 
 /* ── Hero card ── */
-const HeroCard: React.FC<(typeof articles)[0] & { index: number; numberSide: "left" | "right" }> = ({
-  title,
-  excerpt,
-  date,
-  image,
-  index,
-  numberSide,
-}) => (
+const HeroCard: React.FC<
+  (typeof articles)[0] & { index: number; numberSide: "left" | "right" }
+> = ({ title, excerpt, date, image, index, numberSide }) => (
   <div className="relative w-full md:max-w-2xl">
     {/* Number — desktop only, left or right side */}
     <div
@@ -57,7 +52,11 @@ const HeroCard: React.FC<(typeof articles)[0] & { index: number; numberSide: "le
     >
       <span
         className="text-branding-font text-edusport-blue leading-none"
-        style={{ fontSize: "clamp(2rem, 5vw, 4rem)", transform: "rotate(-12deg)", display: "inline-block" }}
+        style={{
+          fontSize: "clamp(2rem, 5vw, 4rem)",
+          transform: "rotate(-12deg)",
+          display: "inline-block",
+        }}
       >
         {String(index).padStart(2, "0")}
       </span>
@@ -70,7 +69,7 @@ const HeroCard: React.FC<(typeof articles)[0] & { index: number; numberSide: "le
         ...(numberSide === "left"
           ? { left: "-0.75rem", transform: "translateX(-100%)" }
           : { right: "-0.75rem", transform: "translateX(100%)" }),
-        top: "7rem",
+        top: "5rem",
         width: 96,
         height: 67,
         overflow: "visible",
@@ -140,7 +139,9 @@ const HeroCard: React.FC<(typeof articles)[0] & { index: number; numberSide: "le
               {title}
             </h3>
             {excerpt && (
-              <p className="text-sm text-gray-500 line-clamp-2 hidden md:block">{excerpt}</p>
+              <p className="text-sm text-gray-500 line-clamp-2 hidden md:block">
+                {excerpt}
+              </p>
             )}
           </div>
 
@@ -236,7 +237,6 @@ const LatestArticleSection: React.FC = () => {
       </div>
 
       <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-
         {/* Extra horizontal padding so numbers have space outside cards on desktop */}
         <div className="max-w-5xl mx-auto flex flex-col gap-6 px-3 sm:px-6 lg:px-24">
           {/* Header */}
@@ -251,7 +251,10 @@ const LatestArticleSection: React.FC = () => {
 
           {/* Articles — 2 rows, hero style, alternating number sides */}
           <div className="flex flex-col gap-10">
-            <div className="flex justify-end" style={{ marginTop: "calc(9rem + 100px)" }}>
+            <div
+              className="flex justify-end"
+              style={{ marginTop: "calc(9rem + 100px)" }}
+            >
               <HeroCard {...hero} index={1} numberSide="left" />
             </div>
             <div className="flex justify-start">

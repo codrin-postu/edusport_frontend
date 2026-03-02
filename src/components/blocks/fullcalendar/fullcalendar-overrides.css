@@ -1,3 +1,91 @@
+/* ── Custom header ────────────────────────────────────────────────────────────── */
+.fc-custom-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.fc-custom-header-title {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: oklch(0.18 0.12 264);
+  line-height: 1;
+}
+
+.fc-custom-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fc-custom-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: oklch(0.55 0 0);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+  padding: 0;
+}
+
+.fc-custom-nav-btn:hover:not(:disabled) {
+  background-color: oklch(0.95 0 0);
+  color: oklch(0.3 0 0);
+}
+
+.fc-custom-nav-btn:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fc-custom-today-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.fc-custom-today-btn:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.fc-custom-today-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1.5px solid oklch(0.65 0.12 264);
+  color: oklch(0.45 0.1 264);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.fc-custom-today-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: oklch(0.55 0.1 264);
+}
+
 /* FullCalendar CSS overrides — scoped to .fc to avoid global bleed */
 
 .fc {
@@ -65,10 +153,18 @@
   padding: 4px 6px;
 }
 
-/* Today's day number highlight */
+/* Today — no background on the cell, outlined circle on the day number only */
+.fc .fc-day-today {
+  background-color: transparent !important;
+}
+
 .fc .fc-day-today .fc-daygrid-day-number {
   font-weight: 700;
-  color: oklch(0.421 0.2593 264.52);
+  color: oklch(0.45 0.1 264);
+  border: 1.5px solid oklch(0.65 0.12 264);
+  border-radius: 6px;
+  padding: 1px 4px;
+  line-height: 1.4;
 }
 
 /* Remove default event border/box-shadow so our classes fully control appearance */
@@ -225,6 +321,21 @@
     cursor: pointer;
   }
 
+  /* Block events (liber, holiday, vacation) pass clicks through to the day cell
+     so the mobile modal can pick them up. Must also disable on the harness wrapper
+     that FullCalendar renders around each block event. */
+  .fc .fc-event-liber,
+  .fc .fc-event-holiday,
+  .fc .fc-event-vacation,
+  .fc .fc-event-liber *,
+  .fc .fc-event-holiday *,
+  .fc .fc-event-vacation *,
+  .fc-daygrid-event-harness:has(.fc-event-liber),
+  .fc-daygrid-event-harness:has(.fc-event-holiday),
+  .fc-daygrid-event-harness:has(.fc-event-vacation) {
+    pointer-events: none;
+  }
+
   .fc-curs-dot {
     width: 8px;
     height: 8px;
@@ -345,4 +456,30 @@
   margin-left: auto;
   font-size: 1rem;
   color: oklch(0.65 0 0);
+}
+
+/* ── Mobile modal event-type dot colours ────────────────────────────────────── */
+.fc-mobile-modal-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: oklch(0.55 0.15 184); /* default: curs teal */
+}
+
+.fc-mobile-modal-dot--curs,
+.fc-mobile-modal-dot--next {
+  background-color: oklch(0.55 0.15 184);
+}
+
+.fc-mobile-modal-dot--liber {
+  background-color: oklch(0.65 0 0);
+}
+
+.fc-mobile-modal-dot--holiday {
+  background-color: oklch(0.72 0.17 85);
+}
+
+.fc-mobile-modal-dot--vacation {
+  background-color: oklch(0.70 0.13 280);
 }

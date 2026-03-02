@@ -40,7 +40,9 @@ function buildGroupedWeekends(
   const merged: WeekendCardData[] = [
     ...activeWeekends.map((w) => ({ weekend: w, type: "curs" as const })),
     ...offWeekends.map((w) => ({ weekend: w, type: "liber" as const })),
-  ].sort((a, b) => a.weekend.startDate.getTime() - b.weekend.startDate.getTime());
+  ].sort(
+    (a, b) => a.weekend.startDate.getTime() - b.weekend.startDate.getTime(),
+  );
 
   const groups: MonthGroup[] = [];
   for (const card of merged) {
@@ -62,7 +64,9 @@ const LegendDot: React.FC<{ color: string; label: string }> = ({
   label,
 }) => (
   <span className="inline-flex items-center gap-1.5">
-    <span className={cn("inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0", color)} />
+    <span
+      className={cn("inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0", color)}
+    />
     <span>{label}</span>
   </span>
 );
@@ -92,12 +96,21 @@ const WeekendRow: React.FC<{
       <span
         className={cn(
           "w-2 h-2 rounded-full flex-shrink-0 mr-3",
-          isNext ? "bg-green-500" : card.type === "curs" ? "bg-teal-400" : "bg-gray-200",
+          isNext
+            ? "bg-green-500"
+            : card.type === "curs"
+              ? "bg-teal-400"
+              : "bg-gray-200",
         )}
       />
 
       {/* Date */}
-      <span className={cn("flex-1 tabular-nums", isPast ? "text-gray-600" : "text-gray-700")}>
+      <span
+        className={cn(
+          "flex-1 tabular-nums",
+          isPast ? "text-gray-600" : "text-gray-700",
+        )}
+      >
         {startLabel}
         {endLabel ? ` – ${endLabel}` : ""}
       </span>
@@ -112,7 +125,9 @@ const WeekendRow: React.FC<{
         <span
           className={cn(
             "text-xs",
-            card.type === "curs" ? "text-teal-600 font-medium" : "text-gray-400",
+            card.type === "curs"
+              ? "text-teal-600 font-medium"
+              : "text-gray-400",
           )}
         >
           {card.type === "curs" ? "Curs" : "Liber"}
@@ -155,16 +170,19 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
     "calendar",
   );
 
+  // Open at the current month, clamped to the season bounds
   const calendarInitialDate = useMemo(() => {
     const seasonStart = new Date(2025, 9, 1); // Oct 2025
-    const seasonEnd = new Date(2026, 4, 31);  // May 2026
+    const seasonEnd = new Date(2026, 4, 1); // May 2026 (last valid month start)
     const today = new Date();
-    const clamped = today < seasonStart ? seasonStart : today > seasonEnd ? seasonEnd : today;
+    const clamped =
+      today < seasonStart ? seasonStart : today > seasonEnd ? seasonEnd : today;
     return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
   }, []);
 
   const calendarEvents = useMemo(
-    () => buildCalendarEvents(allActiveWeekends, allOffWeekends, nextActiveWeekend),
+    () =>
+      buildCalendarEvents(allActiveWeekends, allOffWeekends, nextActiveWeekend),
     [allActiveWeekends, allOffWeekends, nextActiveWeekend],
   );
 
