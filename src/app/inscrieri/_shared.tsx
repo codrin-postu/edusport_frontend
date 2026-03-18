@@ -48,10 +48,7 @@ export const StepIndicator: React.FC<{ current: number }> = ({ current }) => (
               !active && !done && "border-transparent text-gray-300",
             )}
           >
-            {/* Step icon — hidden when done */}
             {!done && <Icon className="w-3.5 h-3.5 shrink-0" />}
-
-            {/* Check icon — shown when done, animates in */}
             {done && (
               <svg
                 key={`check-${i}`}
@@ -68,7 +65,6 @@ export const StepIndicator: React.FC<{ current: number }> = ({ current }) => (
                 />
               </svg>
             )}
-
             {step.label}
           </div>
         </React.Fragment>
