@@ -189,6 +189,7 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
           Înapoi
         </button>
         <button
+          type="button"
           onClick={onSubmit}
           disabled={!canSubmit || status === "sending"}
           className={cn(

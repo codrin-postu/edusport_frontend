@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/utils/cn";
 import { FieldLabel, SelectField } from "@/components/ui/form-field";
 import { motion } from "motion/react";

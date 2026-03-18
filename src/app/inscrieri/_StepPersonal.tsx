@@ -1,3 +1,5 @@
+"use client";
+
 import { FieldLabel } from "@/components/ui/form-field";
 import { motion } from "motion/react";
 import React from "react";
