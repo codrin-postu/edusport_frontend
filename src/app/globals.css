@@ -209,3 +209,30 @@ h1.text-branding-font {
     @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
   }
 }
+
+/* Înscrieri form animations */
+@keyframes inscrieri-check-pop {
+  0%   { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+  65%  { transform: scale(1.25) rotate(4deg);  opacity: 1; }
+  100% { transform: scale(1)   rotate(0deg);   opacity: 1; }
+}
+@keyframes inscrieri-pill-glow {
+  0%   { box-shadow: 0 0 0 0px oklch(0.421 0.2593 264.52 / 0.4); }
+  100% { box-shadow: 0 0 0 6px oklch(0.421 0.2593 264.52 / 0); }
+}
+@keyframes inscrieri-line-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@layer utilities {
+  .animate-check-pop {
+    animation: inscrieri-check-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-pill-glow {
+    animation: inscrieri-pill-glow 1.2s 0.1s ease-out;
+  }
+  .animate-line-fill {
+    animation: inscrieri-line-fill 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
