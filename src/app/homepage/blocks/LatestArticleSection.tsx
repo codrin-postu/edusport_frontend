@@ -251,15 +251,25 @@ const LatestArticleSection: React.FC = () => {
 
           {/* Articles — 2 rows, hero style, alternating number sides */}
           <div className="flex flex-col gap-10">
-            <div
+            <motion.div
               className="flex justify-end"
               style={{ marginTop: "calc(9rem + 100px)" }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+              viewport={{ once: true, margin: "-80px" }}
             >
               <HeroCard {...hero} index={1} numberSide="left" />
-            </div>
-            <div className="flex justify-start">
+            </motion.div>
+            <motion.div
+              className="flex justify-start"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
+              viewport={{ once: true, margin: "-80px" }}
+            >
               <HeroCard {...grid[0]} index={2} numberSide="right" />
-            </div>
+            </motion.div>
           </div>
 
           {/* Bottom CTA */}
