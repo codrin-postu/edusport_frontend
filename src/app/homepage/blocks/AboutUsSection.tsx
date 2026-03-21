@@ -101,6 +101,10 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ cms }) => {
       }
       const scrolled = -el.getBoundingClientRect().top;
       const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) {
+        setStep(0);
+        return;
+      }
       if (scrolled <= 0) {
         setStep(0);
         return;
@@ -274,6 +278,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ cms }) => {
                 {panels.map((panel, i) => (
                   <div
                     key={i}
+                    aria-hidden={i !== step}
                     style={{
                       position: i === step ? "relative" : "absolute",
                       inset: i !== step ? "0" : undefined,
