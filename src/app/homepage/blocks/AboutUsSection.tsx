@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { useInView } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "@/components/ui/link";
 import { PATHS } from "@/components/ui/skating-figure";
@@ -79,8 +79,12 @@ const AboutUsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [step, setStep] = useState(0);
 
-  // Fade-in: detect when section first enters the viewport
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  // Fade-in: opacity 0→1 as section scrolls up into view, completing right as it sticks
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"],
+  });
+  const containerOpacity = useTransform(scrollYProgress, [0.4, 1], [0, 1]);
 
   // Sticky scroll: map scroll position to step 0 | 1 | 2
   useEffect(() => {
@@ -105,13 +109,10 @@ const AboutUsSection: React.FC = () => {
 
   return (
     <section ref={sectionRef} className="bg-white" style={{ height: "300vh" }}>
-      {/* Sticky viewport — fades in when section enters view */}
-      <div
+      {/* Sticky viewport — fades in as section scrolls into view */}
+      <motion.div
         className="sticky top-0 h-screen overflow-hidden"
-        style={{
-          opacity: isInView ? 1 : 0,
-          transition: "opacity 0.7s cubic-bezier(0.22,1,0.36,1)",
-        }}
+        style={{ opacity: containerOpacity }}
       >
         {/* Progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-100 z-10">
@@ -308,7 +309,7 @@ const AboutUsSection: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
