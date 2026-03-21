@@ -54,7 +54,7 @@ const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, 
       <LazySection minHeight="600px">
         <LatestArticleSection articles={latestArticles} />
       </LazySection>
-      <div className="bg-[#eef2fb] h-24 -mb-24 md:h-32 md:-mb-32" aria-hidden="true" />
+      <div className="bg-white h-24 -mb-24 md:h-32 md:-mb-32" aria-hidden="true" />
     </div>
   );
 };

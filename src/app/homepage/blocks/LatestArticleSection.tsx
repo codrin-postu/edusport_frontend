@@ -263,7 +263,7 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
   const listArticles = rest.slice(0, 4);
 
   return (
-    <section className="relative mt-16 pt-20 pb-0 bg-[#eef2fb]">
+    <section className="relative mt-16 pt-20 pb-0 bg-white">
       <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-24">
           {/* Eyebrow */}
