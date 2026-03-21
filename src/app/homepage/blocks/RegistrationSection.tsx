@@ -7,6 +7,7 @@ import { ArrowUpRight, Calendar, Clock, MapPin } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useRef } from "react";
 import { ScrollSkatingFigure } from "@/components/ui/skating-figure";
+import type { HomepageRegistration } from "../_types";
 
 /* ------------------------------------------------------------------ */
 /* Ghost branding text                                                  */
@@ -37,66 +38,35 @@ const BoldTextStrip: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Cross-square transition strip                                        */
-/* ------------------------------------------------------------------ */
-
-const SQUARE_SIZE = 36;
-const ROWS = 2;
-
-// Stable style objects — computed once from module-level constants
-const CROSS_ROW_STYLE_EVEN: React.CSSProperties = {
-  height: SQUARE_SIZE,
-  backgroundImage: `repeating-linear-gradient(
-    90deg,
-    white 0px,
-    white ${SQUARE_SIZE}px,
-    transparent ${SQUARE_SIZE}px,
-    transparent ${SQUARE_SIZE * 2}px
-  )`,
-  backgroundSize: `${SQUARE_SIZE * 2}px ${SQUARE_SIZE}px`,
-};
-
-const CROSS_ROW_STYLE_ODD: React.CSSProperties = {
-  height: SQUARE_SIZE,
-  backgroundImage: `repeating-linear-gradient(
-    90deg,
-    transparent 0px,
-    transparent ${SQUARE_SIZE}px,
-    white ${SQUARE_SIZE}px,
-    white ${SQUARE_SIZE * 2}px
-  )`,
-  backgroundSize: `${SQUARE_SIZE * 2}px ${SQUARE_SIZE}px`,
-};
-
-const CrossTransition: React.FC = () => (
-  <div
-    aria-hidden
-    className="absolute bottom-0 left-0 w-full pointer-events-none"
-    style={{ height: SQUARE_SIZE * ROWS }}
-  >
-    <div style={CROSS_ROW_STYLE_EVEN} />
-    <div style={CROSS_ROW_STYLE_ODD} />
-  </div>
-);
-
-/* ------------------------------------------------------------------ */
 /* Main section                                                        */
 /* ------------------------------------------------------------------ */
 
-const RegistrationSection: React.FC = () => {
+interface RegistrationSectionProps {
+  cms?: HomepageRegistration | null;
+}
+
+const RegistrationSection: React.FC<RegistrationSectionProps> = ({ cms }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  const seasonLabel = cms?.seasonLabel ?? "Sezonul 2025–2026";
+  const heading = cms?.heading ?? "Sezonul a început!";
+  const body = cms?.body ?? "Visezi să aluneci grațios pe gheață? La Școala de Patinaj EduSport te așteptăm într-un mediu prietenos și plin de energie, indiferent dacă ești la primii pași sau vrei să îți perfecționezi tehnica.";
+  const bodySecondary = cms?.bodySecondary ?? "Cursurile sunt deschise pentru toate nivelurile — începători, intermediari și avansați — cu antrenori foști sportivi de performanță. Ne vedem sâmbăta și duminica, 4 octombrie 2025, la patinoarul Cotroceni On Ice din AFI Cotroceni.";
+  const scheduleDays = cms?.scheduleDays ?? "Sâmbătă & Duminică";
+  const scheduleTimes = cms?.scheduleTimes ?? "10:00–10:50 & 11:00–11:50";
+  const locationName = cms?.locationName ?? "AFI Cotroceni";
+  const ctaPrimaryLabel = cms?.ctaPrimaryLabel ?? "Înscrie-te";
+  const ctaPrimaryUrl = cms?.ctaPrimaryUrl ?? "/inscrieri";
+  const ctaSecondaryLabel = cms?.ctaSecondaryLabel ?? "Află mai mult";
+  const ctaSecondaryUrl = cms?.ctaSecondaryUrl ?? "/cursuri";
+  const pricesLinkLabel = cms?.pricesLinkLabel ?? "Vezi prețurile";
+  const pricesLinkUrl = cms?.pricesLinkUrl ?? "/cursuri#preturi";
+
   return (
-    <section className="bg-white">
-      <div className="w-full">
-        {/* Banner */}
-        <div
-          ref={sectionRef}
-          className="relative overflow-hidden py-16 md:py-20 bg-edusport-blue"
-          style={{
-            paddingBottom: `calc(4rem + ${SQUARE_SIZE * ROWS}px)`,
-          }}
-        >
+    <div
+      ref={sectionRef}
+      className="relative overflow-hidden py-16 md:py-20 bg-edusport-blue"
+    >
           {/* Ghost branding text — right side */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2 hidden md:flex">
             <BoldTextStrip />
@@ -115,67 +85,56 @@ const RegistrationSection: React.FC = () => {
             className="hidden md:block"
           />
 
-          {/* Cross-square seam at the bottom */}
-          <CrossTransition />
-
           <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
             <div className="relative flex flex-col gap-8 max-w-2xl">
               {/* Label */}
               <div className="flex items-center gap-3">
                 <p className="text-xs font-semibold tracking-widest uppercase text-white/60">
-                  Sezonul 2025–2026
+                  {seasonLabel}
                 </p>
               </div>
 
               {/* Heading + summary */}
               <div className="flex flex-col gap-4">
                 <h2 className="text-4xl md:text-5xl font-semibold text-white leading-tight">
-                  Sezonul a început!
+                  {heading}
                 </h2>
                 <p className="text-white text-lg font-light leading-relaxed">
-                  Visezi să aluneci grațios pe gheață? La Școala de Patinaj
-                  EduSport te așteptăm într-un mediu prietenos și plin de
-                  energie, indiferent dacă ești la primii pași sau vrei să îți
-                  perfecționezi tehnica.
+                  {body}
                 </p>
-                <p className="text-white text-base font-light leading-relaxed">
-                  Cursurile sunt deschise pentru toate nivelurile —{" "}
-                  <span className="font-medium">
-                    începători, intermediari și avansați
-                  </span>{" "}
-                  — cu antrenori foști sportivi de performanță. Ne vedem sâmbăta
-                  și duminica,{" "}
-                  <span className="font-medium">4 octombrie 2025</span>, la
-                  patinoarul Cotroceni On Ice din AFI Cotroceni.
-                </p>
+                {bodySecondary && (
+                  <p className="text-white text-lg font-light leading-relaxed">
+                    {bodySecondary}
+                  </p>
+                )}
               </div>
 
               {/* Schedule strip */}
               <div className="flex flex-wrap gap-x-6 gap-y-1 text-white/80 text-sm font-light">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 shrink-0" />
-                  Sâmbătă &amp; Duminică
+                  {scheduleDays}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4 h-4 shrink-0" />
-                  10:00–10:50 &amp; 11:00–11:50
+                  {scheduleTimes}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 shrink-0" />
-                  AFI Cotroceni
+                  {locationName}
                 </span>
               </div>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-3 sm:items-start">
-                <Link href="#" className="w-full sm:w-auto">
+                <Link href={ctaPrimaryUrl} className="w-full sm:w-auto">
                   <SpotlightButton
                     variant="white"
                     hoverColor="oklch(0.25 0.12 264)"
                     hoverTextColor="white"
                     className="w-full sm:w-auto px-10 py-4 text-base font-semibold rounded-full"
                   >
-                    Înscrie-te
+                    {ctaPrimaryLabel}
                   </SpotlightButton>
                 </Link>
                 <Button
@@ -183,23 +142,21 @@ const RegistrationSection: React.FC = () => {
                   className="w-full sm:w-auto px-8 py-4 h-auto text-base font-medium rounded-full !bg-transparent text-white border-white hover:!bg-white hover:text-black"
                   asChild
                 >
-                  <Link href="/inscrieri">Află mai mult</Link>
+                  <Link href={ctaSecondaryUrl}>{ctaSecondaryLabel}</Link>
                 </Button>
               </div>
 
               {/* Prices link */}
               <Link
-                href="/inscrieri#preturi"
+                href={pricesLinkUrl}
                 className="group relative inline-flex items-center gap-1 text-sm text-white/60 hover:text-white transition-colors after:absolute after:left-0 after:bottom-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left w-fit"
               >
-                Vezi prețurile
+                {pricesLinkLabel}
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+    </div>
   );
 };
 
