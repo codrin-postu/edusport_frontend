@@ -24,18 +24,28 @@ function rv(p: number, s: number, e: number): number {
 }
 
 interface SquareTransitionProps {
-  background?: React.ReactNode;  // registration content — visible until canvas covers it
-  bgStyle?: React.CSSProperties; // solid bg override (e.g. dark gradient for closed state)
-  children?: React.ReactNode;    // overlay revealed after wipe completes
+  background?: React.ReactNode;           // registration content — visible until canvas covers it
+  bgStyle?: React.CSSProperties;          // solid bg override (e.g. dark gradient for closed state)
+  children?: React.ReactNode;             // overlay revealed after wipe completes
+  childScrollBudget?: number;             // extra viewport-heights of scroll allocated after wipe
+  onChildScrollProgress?: (p: number) => void; // fires each scroll tick during post-wipe phase, 0→1
 }
 
-export default function SquareTransition({ background, bgStyle, children }: SquareTransitionProps): React.ReactElement {
-  const wrapRef          = useRef<HTMLDivElement>(null);
-  const canvasRef        = useRef<HTMLCanvasElement>(null);
-  const childrenRef      = useRef<HTMLDivElement>(null);
-  const backgroundRef    = useRef<HTMLDivElement>(null);
-  const regOverflowRef   = useRef(0); // px registration content overflows viewport
-  const childOverflowRef = useRef(0); // px About Us content overflows viewport
+export default function SquareTransition({
+  background,
+  bgStyle,
+  children,
+  childScrollBudget = 0,
+  onChildScrollProgress,
+}: SquareTransitionProps): React.ReactElement {
+  const wrapRef       = useRef<HTMLDivElement>(null);
+  const canvasRef     = useRef<HTMLCanvasElement>(null);
+  const childrenRef   = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const regOverflowRef          = useRef(0);
+  const childScrollBudgetPxRef  = useRef(0);
+  const onChildScrollProgressRef = useRef(onChildScrollProgress);
+  onChildScrollProgressRef.current = onChildScrollProgress;
 
   useEffect(() => {
     const wrap   = wrapRef.current;
@@ -58,11 +68,11 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
       const regEl = backgroundRef.current?.firstElementChild as HTMLElement | null;
       regOverflowRef.current = Math.max(0, (regEl?.scrollHeight ?? 0) - H);
 
-      // Children (About Us) overflow: childrenRef has no fixed height so scrollHeight is accurate.
-      childOverflowRef.current = Math.max(0, (childrenRef.current?.scrollHeight ?? 0) - H);
+      // Explicit child scroll budget — no scrollHeight measurement needed.
+      childScrollBudgetPxRef.current = childScrollBudget * H;
 
-      // Wrapper = 200vh animation + registration pre-scroll + About Us post-scroll
-      wrap.style.height = `calc(200vh + ${regOverflowRef.current}px + ${childOverflowRef.current}px)`;
+      // Wrapper = 200vh animation + registration pre-scroll + child scroll budget
+      wrap.style.height = `calc(200vh + ${regOverflowRef.current}px + ${childScrollBudgetPxRef.current}px)`;
     }
 
     function getScrolled(): number {
@@ -72,10 +82,8 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
 
     function getP(): number {
       if (!wrap) return 0;
-      // Animation p only counts scroll after the registration pre-scroll phase.
-      // Animation portion = total wrap height - H - both overflows = 200vh - H = 1×H (100vh).
       const animScrolled = Math.max(0, getScrolled() - regOverflowRef.current);
-      const animTotal = wrap.offsetHeight - H - regOverflowRef.current - childOverflowRef.current;
+      const animTotal = wrap.offsetHeight - H - regOverflowRef.current - childScrollBudgetPxRef.current;
       return animTotal > 0 ? Math.max(0, Math.min(1, animScrolled / animTotal)) : 0;
     }
 
@@ -90,12 +98,13 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
         backgroundRef.current.style.transform = `translateY(-${preScrolled}px)`;
       }
 
-      // Post-animation phase: translate About Us content up driven by page scroll.
-      if (childrenRef.current && childOverflowRef.current > 0) {
-        const animTotal = wrap.offsetHeight - H - regOverflowRef.current - childOverflowRef.current;
+      // Post-animation phase: fire scroll progress callback for child panel switching.
+      if (childScrollBudgetPxRef.current > 0) {
+        const animTotal = wrap.offsetHeight - H - regOverflowRef.current - childScrollBudgetPxRef.current;
         const childScrollStart = regOverflowRef.current + animTotal;
         const childScrolled = Math.max(0, scrolled - childScrollStart);
-        childrenRef.current.style.transform = `translateY(-${Math.min(childScrolled, childOverflowRef.current)}px)`;
+        const childProgress = Math.min(1, childScrolled / childScrollBudgetPxRef.current);
+        onChildScrollProgressRef.current?.(childProgress);
       }
 
       ctx.clearRect(0, 0, W, H);
@@ -147,7 +156,6 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
 
     const resizeObserver = new ResizeObserver(() => { resize(); draw(getP()); });
     resizeObserver.observe(wrap);
-    if (childrenRef.current) resizeObserver.observe(childrenRef.current);
     resize();
     draw(0);
 
@@ -163,7 +171,7 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
       resizeObserver.disconnect();
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [childScrollBudget]);
 
   return (
     <div ref={wrapRef} className="relative" style={{ height: "200vh" }}>
@@ -179,7 +187,7 @@ export default function SquareTransition({ background, bgStyle, children }: Squa
         {/* Children overlay — revealed imperatively once canvas is fully white */}
         <div
           ref={childrenRef}
-          className="absolute inset-0 z-10 pt-4 md:pt-[12vh]"
+          className="absolute inset-0 z-10"
           style={{ opacity: 0, pointerEvents: "none" }}
         >
           {children}

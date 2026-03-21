@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import HeroSection from "./blocks/HeroSection";
@@ -35,6 +35,10 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, latestArticles }) => {
+  // Driven by SquareTransition's post-wipe scroll phase (0→1 over 2 viewports).
+  // Passed into AboutUsSection to switch panels 0→1→2 without a separate scroll section.
+  const [aboutScrollProgress, setAboutScrollProgress] = useState(0);
+
   return (
     <div>
       <OrganizationJsonLd />
@@ -43,14 +47,22 @@ const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, 
         ctaLabel={cms.hero?.ctaLabel}
         ctaUrl={cms.hero?.ctaUrl}
       />
+      {/*
+        childScrollBudget={2} adds 2 viewport-heights of scroll after the wipe
+        so the user can advance through About Us panels 0→1→2 while still inside
+        SquareTransition's sticky viewport. No separate sticky section needed.
+      */}
       <SquareTransition
         background={
           registrationOpen
             ? <RegistrationSection cms={cms.registration} />
             : <RegistrationClosedSection cms={cms.registrationClosed} />
         }
-      />
-      <AboutUsSection cms={cms.about} />
+        childScrollBudget={2}
+        onChildScrollProgress={setAboutScrollProgress}
+      >
+        <AboutUsSection scrollProgress={aboutScrollProgress} />
+      </SquareTransition>
       <LazySection minHeight="600px">
         <LatestArticleSection articles={latestArticles} />
       </LazySection>
