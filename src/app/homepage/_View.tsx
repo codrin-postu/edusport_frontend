@@ -4,6 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import HeroSection from "./blocks/HeroSection";
+import LazySection from "./LazySection";
 import type { HomepageCms } from "./_types";
 import type { LatestArticleData } from "./blocks/LatestArticleSection";
 
@@ -25,10 +26,6 @@ const AboutUsSection = dynamic(() => import("./blocks/AboutUsSection"), {
 const LatestArticleSection = dynamic(
   () => import("./blocks/LatestArticleSection"),
   { ssr: true },
-);
-const LinesTransition = dynamic(
-  () => import("./blocks/LinesTransition"),
-  { ssr: false },
 );
 
 interface HomePageProps {
@@ -54,9 +51,10 @@ const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, 
         }
       />
       <AboutUsSection cms={cms.about} />
-      <LinesTransition>
+      <LazySection minHeight="600px">
         <LatestArticleSection articles={latestArticles} />
-      </LinesTransition>
+      </LazySection>
+      <div className="bg-[#eef2fb] h-24 -mb-24 md:h-32 md:-mb-32" aria-hidden="true" />
     </div>
   );
 };
