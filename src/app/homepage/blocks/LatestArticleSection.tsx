@@ -261,15 +261,26 @@ const LatestArticleSection: React.FC = () => {
             >
               <HeroCard {...hero} index={1} numberSide="left" />
             </motion.div>
-            <motion.div
-              className="flex justify-start"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
-              viewport={{ once: true, margin: "-80px" }}
-            >
-              <HeroCard {...grid[0]} index={2} numberSide="right" />
-            </motion.div>
+            {grid.map((article, i) => (
+              <motion.div
+                key={article.id}
+                className={`flex ${i % 2 === 0 ? "justify-start" : "justify-end"}`}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeOut",
+                  delay: 0.25 + i * 0.15,
+                }}
+                viewport={{ once: true, margin: "-80px" }}
+              >
+                <HeroCard
+                  {...article}
+                  index={i + 2}
+                  numberSide={i % 2 === 0 ? "right" : "left"}
+                />
+              </motion.div>
+            ))}
           </div>
 
           {/* Bottom CTA */}
