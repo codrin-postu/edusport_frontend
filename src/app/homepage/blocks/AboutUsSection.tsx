@@ -126,7 +126,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ cms }) => {
   return (
     <section
       ref={sectionRef}
-      className="bg-white overflow-hidden"
+      className="bg-white"
       style={{ height: "300vh" }}
     >
       <div className="sticky top-0 h-screen overflow-hidden">
