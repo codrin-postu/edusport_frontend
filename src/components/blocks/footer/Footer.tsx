@@ -170,7 +170,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">
-          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white">
+          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white mb-3">
             WhatsApp
           </Text>
           <WhatsAppQR size={84} url={waUrl} />
