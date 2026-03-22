@@ -7,13 +7,14 @@ const CHANNEL_URL = "https://whatsapp.com/channel/0029Vaqul3WC6ZvanAX0DY06";
 
 interface WhatsAppQRProps {
   size: number;
+  url?: string;
 }
 
-export const WhatsAppQR: React.FC<WhatsAppQRProps> = ({ size }) => {
+export const WhatsAppQR: React.FC<WhatsAppQRProps> = ({ size, url = CHANNEL_URL }) => {
   return (
     <div className="bg-white rounded-lg p-[7px] inline-flex">
       <QRCodeSVG
-        value={CHANNEL_URL}
+        value={url}
         size={size}
         bgColor="#ffffff"
         fgColor="#7C3AED"
