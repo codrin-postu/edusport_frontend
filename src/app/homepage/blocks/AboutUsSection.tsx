@@ -97,12 +97,12 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
         />
       </div>
 
-      <div className="w-full flex-1 flex items-center">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-12 w-full">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="w-full flex-1 flex items-center py-10 md:py-0">
+        <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 w-full">
+          <div className="grid md:grid-cols-2 md:gap-12 lg:gap-16 items-center">
 
-            {/* LEFT: Notebook — verbatim */}
-            <div className="relative md:order-first">
+            {/* LEFT: Notebook — hidden on mobile, shown on md+ */}
+            <div className="relative md:order-first hidden md:block">
               {/* Stacked pages behind */}
               <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-sm bg-gray-100 border border-gray-200/60" />
               <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-sm bg-gray-50 border border-gray-200/80" />
@@ -221,7 +221,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
             </div>
 
             {/* RIGHT: Text panels */}
-            <div className="relative min-h-[320px] md:order-last">
+            <div className="relative min-h-[260px] md:min-h-[320px] md:order-last">
               {/* Ghost number */}
               <div
                 aria-hidden
@@ -250,14 +250,14 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
                     {panel.eyebrow}
                   </p>
                   <h2
-                    className="font-['League_Spartan'] text-[clamp(28px,4vw,44px)] font-extrabold text-gray-900 leading-tight mb-5"
+                    className="font-['League_Spartan'] text-[clamp(26px,5vw,44px)] font-extrabold text-gray-900 leading-tight mb-3 md:mb-5"
                     style={{ letterSpacing: "-0.5px" }}
                   >
                     {panel.heading.split("\n").map((line, j) => (
                       <React.Fragment key={j}>{j > 0 && <br />}{line}</React.Fragment>
                     ))}
                   </h2>
-                  <p className="text-[15px] text-gray-400 leading-relaxed mb-7 max-w-sm">
+                  <p className="text-[15px] text-gray-400 leading-relaxed mb-4 md:mb-7 max-w-sm">
                     {panel.body}
                   </p>
                   <Link
@@ -268,7 +268,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
                   {/* Step counter — decorative only */}
-                  <div className="flex items-center gap-2.5 mt-7">
+                  <div className="flex items-center gap-2.5 mt-4 md:mt-7">
                     <div className="w-5 h-px bg-gray-300" />
                     <span className="text-[10px] text-gray-300 uppercase tracking-[0.15em] select-none">
                       0{i + 1} / 03
