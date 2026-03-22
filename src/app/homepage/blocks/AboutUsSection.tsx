@@ -97,13 +97,12 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
         />
       </div>
 
-      <div className="w-full flex-1 flex items-center py-10 md:py-0">
+      <div className="w-full flex-1 flex items-center py-6 md:py-0">
         <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 w-full">
-          {/* On mobile: relative+overflow-hidden so the notebook crops at the edge */}
-          <div className="relative overflow-hidden md:overflow-visible md:grid md:grid-cols-2 md:gap-12 lg:gap-16 md:items-center">
+          <div className="md:grid md:grid-cols-2 md:gap-12 lg:gap-16 md:items-center">
 
-            {/* LEFT: Notebook — decorative peek on mobile (absolute + faded), full column on desktop */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[55%] opacity-[0.13] pointer-events-none md:static md:translate-y-0 md:w-auto md:opacity-100 md:pointer-events-auto md:order-first">
+            {/* LEFT: Notebook — clipped strip on mobile (shows top ~150px), full column on desktop */}
+            <div className="relative overflow-hidden h-[150px] md:h-auto md:overflow-visible mb-5 md:mb-0 md:order-first">
               {/* Stacked pages behind */}
               <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-sm bg-gray-100 border border-gray-200/60" />
               <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-sm bg-gray-50 border border-gray-200/80" />
@@ -221,8 +220,8 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
               </div>
             </div>
 
-            {/* RIGHT: Text panels — z-10 ensures they render above the faded notebook on mobile */}
-            <div className="relative z-10 min-h-[260px] md:min-h-[320px] md:order-last">
+            {/* RIGHT: Text panels */}
+            <div className="relative min-h-[260px] md:min-h-[320px] md:order-last">
               {/* Ghost number */}
               <div
                 aria-hidden
