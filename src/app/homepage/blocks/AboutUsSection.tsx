@@ -101,8 +101,13 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
         <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 w-full">
           <div className="md:grid md:grid-cols-2 md:gap-12 lg:gap-16 md:items-center">
 
-            {/* LEFT: Notebook — clipped strip on mobile (shows top ~150px), full column on desktop */}
-            <div className="relative overflow-hidden h-[150px] md:h-auto md:overflow-visible mb-5 md:mb-0 md:order-first">
+            {/* LEFT: Notebook — gradient-faded on mobile (~55vw, max 300px), full column on desktop */}
+            <div className="relative overflow-hidden h-[55vw] max-h-[300px] md:h-auto md:overflow-visible md:order-first">
+              {/* Gradient overlay — fades notebook into white at bottom, mobile only */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-32 md:hidden pointer-events-none z-10"
+                style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.55) 55%, white 100%)" }}
+              />
               {/* Stacked pages behind */}
               <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-sm bg-gray-100 border border-gray-200/60" />
               <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-sm bg-gray-50 border border-gray-200/80" />
