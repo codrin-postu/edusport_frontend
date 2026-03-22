@@ -143,9 +143,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
       {/* Meniu + Informații legale */}
       {footerLeftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
-          <p className="text-[10.5px] font-bold uppercase tracking-[1.2px] text-white mb-[10px]">
+          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white">
             {section.title}
-          </p>
+          </Text>
           <div className="flex flex-col gap-3">
             {section.items.map((item, itemIndex) =>
               <FooterItem key={itemIndex} {...item} />,
@@ -156,9 +156,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
 
       {/* Contactează-ne */}
       <div className="flex flex-col gap-3">
-        <p className="text-[10.5px] font-bold uppercase tracking-[1.2px] text-white mb-[10px]">
+        <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white">
           Contacteaza-ne
-        </p>
+        </Text>
         <div className="flex flex-col gap-3">
           {contactItems.map((item, itemIndex) =>
             <FooterItem key={itemIndex} {...item} />,
@@ -170,9 +170,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">
-          <p className="text-[10.5px] font-bold uppercase tracking-[1.2px] text-white mb-[10px]">
+          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white">
             WhatsApp
-          </p>
+          </Text>
           <WhatsAppQR size={84} url={waUrl} />
           <p className="text-[12px] text-white/45 leading-[1.55] mt-[10px] mb-[12px]">
             Intră pentru a primi ultimele informații
@@ -195,9 +195,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
 
         {/* Tablet + Desktop: caption → QR + divider + link row */}
         <div className="flex-col gap-0 hidden md:flex">
-          <p className="text-[10.5px] font-bold uppercase tracking-[1.2px] text-white mb-[10px]">
+          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-white">
             WhatsApp
-          </p>
+          </Text>
           <p className="text-[12px] text-white/45 leading-[1.55] mb-[12px]">
             Intră pentru a primi ultimele informații
           </p>
