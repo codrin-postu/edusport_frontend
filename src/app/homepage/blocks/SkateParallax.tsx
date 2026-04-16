@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import skate from "/public/images/edea_skate_transparent.png";
+import skate from "../../../../public/images/edea_skate_stylized.png";
 import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/utils/cn";
 
@@ -41,6 +41,7 @@ const SkateParallax: React.FC = () => {
         alt="Edea ice skate"
         width={420}
         height={420}
+        sizes="(max-width: 640px) 520px, (max-width: 768px) 600px, 720px"
         className="w-full h-auto drop-shadow-2xl"
         priority
       />

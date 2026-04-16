@@ -2,7 +2,7 @@ import Link from "@/components/ui/link";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import heroBackground from "/public/images/hero-background.png";
+import heroBackground from "../../../../public/images/hero-background.png";
 import React from "react";
 import SkateParallax from "./SkateParallax";
 
@@ -31,7 +31,21 @@ const BrandingTitle: React.FC = () => (
   </span>
 );
 
-const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  motto?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({
+  motto,
+  ctaLabel,
+  ctaUrl,
+}) => {
+  const displayMotto = motto ?? "Educație prin sport";
+  const displayCtaLabel = ctaLabel ?? "Descoperă Cursurile";
+  const displayCtaUrl = ctaUrl ?? "/cursuri";
+
   return (
     <section
       className={cn(
@@ -47,6 +61,7 @@ const HeroSection: React.FC = () => {
           src={heroBackground}
           alt="Hero background"
           fill
+          sizes="100vw"
           className={cn("object-cover", "object-center")}
           priority
         />
@@ -106,7 +121,7 @@ const HeroSection: React.FC = () => {
                 "self-start",
               )}
             >
-              Educație prin sport
+              {displayMotto}
             </p>
           </div>
 
@@ -115,12 +130,12 @@ const HeroSection: React.FC = () => {
 
           {/* Button — above skate */}
           <div className={cn("relative", "z-30", "mt-16", "md:mt-12")}>
-            <Link href="/courses">
+            <Link href={displayCtaUrl}>
               <SpotlightButton
                 variant="black"
                 className="px-12 py-5 text-xl font-semibold rounded-full"
               >
-                Descoperă Cursurile
+                {displayCtaLabel}
               </SpotlightButton>
             </Link>
           </div>

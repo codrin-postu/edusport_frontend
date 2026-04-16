@@ -24,7 +24,7 @@ export default function LazySection({
           observer.disconnect();
         }
       },
-      { rootMargin }
+      { rootMargin },
     );
     observer.observe(el);
     return () => observer.disconnect();

@@ -146,11 +146,12 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
         </div>
 
         {/* Below image: title+excerpt | divider | date */}
-        <div className="flex items-stretch py-5 pb-7 bg-white ring-1 ring-gray-100">
+        <div className="flex items-stretch py-5 pb-7 bg-white">
           <div className="flex-1 pl-4 pr-6 flex flex-col gap-2">
             <h3 className="text-base md:text-2xl font-bold text-gray-900 leading-tight">
               {title}
             </h3>
+            <p className="text-xs text-gray-400 lg:hidden">{date}</p>
             {excerpt && (
               <p className="text-sm text-gray-500 line-clamp-2 hidden md:block">
                 {excerpt}
@@ -158,9 +159,9 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
             )}
           </div>
 
-          <div className="hidden md:block w-px bg-gray-200 self-stretch" />
+          <div className="hidden lg:block w-px bg-gray-200 self-stretch" />
 
-          <div className="hidden md:flex flex-col items-center justify-center px-8 min-w-[130px]">
+          <div className="hidden lg:flex flex-col items-center justify-center px-8 min-w-[130px]">
             <DateStack date={date} />
           </div>
         </div>
@@ -222,7 +223,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
 
 /* ── Article list ── */
 const ArticleList: React.FC<{ articles: LatestArticleData[] }> = ({ articles }) => (
-  <div className="flex-[4] flex flex-col justify-between">
+  <div className="flex-[4] w-full lg:w-auto flex flex-col justify-between">
     <div>
       {articles.map((article, i) => (
         <motion.div

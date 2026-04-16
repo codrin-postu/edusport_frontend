@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { OrganizationJsonLd } from "@/components/JsonLd";
 import HeroSection from "./blocks/HeroSection";
 import LazySection from "./LazySection";
 import type { HomepageCms } from "./_types";
@@ -41,7 +40,6 @@ const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, 
 
   return (
     <div>
-      <OrganizationJsonLd />
       <HeroSection
         motto={cms.hero?.motto}
         ctaLabel={cms.hero?.ctaLabel}

@@ -54,7 +54,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
 
   return (
     <div
-      className="relative overflow-hidden py-16 md:py-20"
+      className="relative h-full flex flex-col justify-start md:justify-center pt-20 pb-8"
       style={{
         background:
           "linear-gradient(135deg, oklch(0.18 0.04 264) 0%, oklch(0.28 0.06 264) 60%, oklch(0.32 0.05 240) 100%)",
