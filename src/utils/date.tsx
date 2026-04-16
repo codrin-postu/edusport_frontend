@@ -2,6 +2,7 @@ export interface WeekendDate {
   startDate: Date;
   endDate: Date;
   displayText: string;
+  description?: string | null;
 }
 
 export function parseWeekendDates(dateStr: string, month: number, year: number): WeekendDate[] {
@@ -16,14 +17,14 @@ export function parseWeekendDates(dateStr: string, month: number, year: number):
       return {
         startDate: new Date(year, month - 1, startDay),
         endDate: new Date(year, month - 1, endDay),
-        displayText: `${start}-${end}`
+        displayText: `${start}-${end}`,
       };
     } else {
       const day = parseInt(dateRange.trim());
       return {
         startDate: new Date(year, month - 1, day),
         endDate: new Date(year, month - 1, day),
-        displayText: dateRange.trim()
+        displayText: dateRange.trim(),
       };
     }
   });
