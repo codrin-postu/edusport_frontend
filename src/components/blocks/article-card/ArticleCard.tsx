@@ -1,5 +1,6 @@
 import { cn } from "@/utils/cn";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 interface ArticleCardProps {
@@ -25,17 +26,19 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     <a
       href={href}
       className={cn(
-        "group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start hover:opacity-75 transition-opacity",
-        className
+        "group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start hover:opacity-75 transition-opacity outline-none",
+        className,
       )}
     >
       {/* Thumbnail */}
       {image ? (
         <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden bg-gray-100 shrink-0">
-          <img
+          <Image
             src={image}
             alt={title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, 128px"
           />
         </div>
       ) : (

@@ -12,8 +12,11 @@ interface PageHeroSectionProps {
   backgroundImage?: string;
   title?: string[];
   breadcrumb?: BreadcrumbItem[];
-  variant?: "blue" | "light";
+  variant?: "blue" | "light" | "purple" | "dark";
 }
+
+const DARK_GRADIENT =
+  "linear-gradient(135deg, oklch(0.18 0.04 264) 0%, oklch(0.28 0.06 264) 60%, oklch(0.32 0.05 240) 100%)";
 
 const PageHeroSection: React.FC<PageHeroSectionProps> = ({
   children,
@@ -23,6 +26,8 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({
   variant = "blue",
 }) => {
   const isLight = variant === "light";
+  const isPurple = variant === "purple";
+  const isDark = variant === "dark";
 
   return (
     <section className="sticky top-20 z-0">
@@ -38,13 +43,15 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({
           />
         </div>
         {/* Solid colour overlay */}
-        {!isLight && <div className="absolute inset-0 bg-edusport-blue/90" />}
+        {!isLight && !isPurple && !isDark && <div className="absolute inset-0 bg-edusport-blue/90" />}
+        {isPurple && <div className="absolute inset-0 bg-purple-700/90" />}
+        {isDark && <div className="absolute inset-0" style={{ background: DARK_GRADIENT }} />}
 
         {/* Ghost branding text — right side */}
         {title && (
           <div
             aria-hidden
-            className={`absolute right-0 top-16 pr-2 hidden md:flex flex-col gap-0 items-end opacity-[0.1] pointer-events-none select-none`}
+            className={"absolute right-0 top-16 pr-2 hidden md:flex flex-col gap-0 items-end opacity-[0.1] pointer-events-none select-none"}
           >
             {title.map((word) => (
               <span

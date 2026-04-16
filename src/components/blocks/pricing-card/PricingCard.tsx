@@ -1,18 +1,11 @@
 import { cn } from "@/utils/cn";
 import React from "react";
-
-interface PriceItem {
-  label: string;
-  price: string;
-}
+import type { PriceItem } from "@/app/cursuri/_types_pricing";
 
 interface PricingCardProps {
   title: string;
   priceItems: PriceItem[];
-  bottomItem?: {
-    label: string;
-    price: string;
-  };
+  bottomItem?: PriceItem;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({

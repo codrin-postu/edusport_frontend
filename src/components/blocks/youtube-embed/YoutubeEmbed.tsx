@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import { ArrowUpRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef } from "react";
+import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef, memo } from "react";
 
 function extractVideoId(url: string): string {
   const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
@@ -43,7 +43,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
   const postToPlayer = useCallback((action: object) => {
     iframeRef.current?.contentWindow?.postMessage(
       JSON.stringify({ event: "command", ...action }),
-      "*",
+      "https://www.youtube-nocookie.com",
     );
   }, []);
 
@@ -216,4 +216,4 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
 
 YoutubeEmbed.displayName = "YoutubeEmbed";
 
-export default YoutubeEmbed;
+export default memo(YoutubeEmbed);
