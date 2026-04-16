@@ -1,26 +1,33 @@
 import { useMemo } from "react";
 import { getNextActiveWeekend } from "@/utils/date";
 import {
-  MonthData,
   getAllActiveWeekends,
   getAllOffWeekends,
   createCalendarModifiers,
 } from "@/utils/calendar-helpers";
+import type { CalendarEvent } from "@/app/cursuri/program/_types";
 
-export const useSeasonCalendar = (seasonCalendar: MonthData[]) => {
+export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
   const allActiveWeekends = useMemo(
-    () => getAllActiveWeekends(seasonCalendar),
-    [seasonCalendar],
+    () => getAllActiveWeekends(calendarEvents),
+    [calendarEvents],
   );
 
   const allOffWeekends = useMemo(
-    () => getAllOffWeekends(seasonCalendar),
-    [seasonCalendar],
+    () => getAllOffWeekends(calendarEvents),
+    [calendarEvents],
   );
 
   const nextActiveWeekend = useMemo(
     () => getNextActiveWeekend(allActiveWeekends),
     [allActiveWeekends],
+  );
+
+  const specialEvents = useMemo(
+    () => calendarEvents.filter(
+      (e) => e.type === "holiday" || e.type === "vacation" || e.type === "eveniment" || e.type === "concurs",
+    ),
+    [calendarEvents],
   );
 
   const modifiers = useMemo(
@@ -47,6 +54,7 @@ export const useSeasonCalendar = (seasonCalendar: MonthData[]) => {
     allActiveWeekends,
     allOffWeekends,
     nextActiveWeekend,
+    specialEvents,
     modifiers,
     modifiersClassNames,
   };

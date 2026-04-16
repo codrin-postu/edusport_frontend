@@ -8,7 +8,7 @@
 }
 
 .fc-custom-header-title {
-  font-family: "League Spartan", sans-serif;
+  font-family: var(--font-league-spartan), sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: oklch(0.18 0.12 264);
@@ -107,7 +107,7 @@
 
 /* Month/year title */
 .fc .fc-toolbar-title {
-  font-family: "League Spartan", sans-serif;
+  font-family: var(--font-league-spartan), sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: oklch(0.18 0.12 264);
@@ -161,10 +161,12 @@
 .fc .fc-day-today .fc-daygrid-day-number {
   font-weight: 700;
   color: oklch(0.45 0.1 264);
+  display: inline-block;
   border: 1.5px solid oklch(0.65 0.12 264);
   border-radius: 6px;
-  padding: 1px 4px;
+  padding: 1px 5px;
   line-height: 1.4;
+  margin: 3px;
 }
 
 /* Remove default event border/box-shadow so our classes fully control appearance */
@@ -192,40 +194,60 @@
 
 /* --- Event type colours --- */
 
-/* Curs — transparent background, teal bullet + text */
-.fc-event-curs,
-.fc-event-next-weekend {
-  background-color: transparent !important;
-  border-color: transparent !important;
-  color: oklch(0.45 0.15 184) !important;
+/* Curs — teal background block, one per day */
+.fc-event-curs {
+  background-color: oklch(0.78 0.12 184) !important;
+  border-color: oklch(0.62 0.16 184) !important;
+  color: oklch(0.22 0.12 184) !important;
   box-shadow: none !important;
 }
 
-/* Teal dot for the list-item bullet */
+/* Next upcoming weekend — slightly more vivid teal */
+.fc-event-next-weekend {
+  background-color: oklch(0.72 0.15 184) !important;
+  border-color: oklch(0.55 0.19 184) !important;
+  color: oklch(0.18 0.12 184) !important;
+  box-shadow: none !important;
+}
+
 .fc-event-curs .fc-daygrid-event-dot,
 .fc-event-next-weekend .fc-daygrid-event-dot {
-  border-color: oklch(0.55 0.15 184) !important;
+  display: none !important;
 }
 
 /* Liber (off weekend) — muted gray */
 .fc-event-liber {
-  background-color: oklch(0.87 0 0) !important;
-  border-color: oklch(0.75 0 0) !important;
-  color: oklch(0.45 0 0) !important;
+  background-color: oklch(0.78 0 0) !important;
+  border-color: oklch(0.65 0 0) !important;
+  color: oklch(0.32 0 0) !important;
 }
 
 /* National holidays — amber */
 .fc-event-holiday {
-  background-color: oklch(0.87 0.14 85) !important;
-  border-color: oklch(0.72 0.17 85) !important;
-  color: oklch(0.32 0.1 85) !important;
+  background-color: oklch(0.78 0.16 85) !important;
+  border-color: oklch(0.62 0.19 85) !important;
+  color: oklch(0.24 0.10 85) !important;
 }
 
 /* School vacations — indigo/purple */
 .fc-event-vacation {
-  background-color: oklch(0.87 0.09 280) !important;
-  border-color: oklch(0.70 0.13 280) !important;
-  color: oklch(0.35 0.1 280) !important;
+  background-color: oklch(0.78 0.12 280) !important;
+  border-color: oklch(0.60 0.16 280) !important;
+  color: oklch(0.25 0.10 280) !important;
+}
+
+/* Eveniment — orange */
+.fc-event-eveniment {
+  background-color: oklch(0.78 0.17 55) !important;
+  border-color: oklch(0.62 0.21 55) !important;
+  color: oklch(0.24 0.12 55) !important;
+}
+
+/* Concurs — rose/red */
+.fc-event-concurs {
+  background-color: oklch(0.78 0.14 15) !important;
+  border-color: oklch(0.62 0.20 15) !important;
+  color: oklch(0.25 0.14 15) !important;
 }
 
 /* Cursuri event — inline layout */
@@ -233,25 +255,20 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
   width: 100%;
   overflow: visible;
   white-space: nowrap;
   font-weight: 400;
 }
 
-/* "Cursuri" label must not be bold */
-.fc-curs-event .fc-event-title {
-  font-weight: 400 !important;
+.fc-curs-desktop-title {
+  font-size: 0.68rem;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.fc-curs-dot {
-  flex-shrink: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: oklch(0.55 0.15 184);
-}
 
 /* Tooltip — white card, portalled to body, appears above the event */
 .fc-curs-tooltip {
@@ -310,36 +327,31 @@
   text-decoration: underline;
 }
 
-/* ── Mobile only: dot-only, no text ─────────────────────────────────────────── */
+/* ── Mobile only ─────────────────────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  .fc-curs-desktop-title {
-    display: none;
-  }
-
   .fc-curs-event {
-    justify-content: center;
     cursor: pointer;
   }
 
-  /* Block events (liber, holiday, vacation) pass clicks through to the day cell
-     so the mobile modal can pick them up. Must also disable on the harness wrapper
-     that FullCalendar renders around each block event. */
+  /* Block events pass clicks through to the day cell so the mobile modal can pick them up. */
   .fc .fc-event-liber,
   .fc .fc-event-holiday,
   .fc .fc-event-vacation,
+  .fc .fc-event-eveniment,
+  .fc .fc-event-concurs,
   .fc .fc-event-liber *,
   .fc .fc-event-holiday *,
   .fc .fc-event-vacation *,
+  .fc .fc-event-eveniment *,
+  .fc .fc-event-concurs *,
   .fc-daygrid-event-harness:has(.fc-event-liber),
   .fc-daygrid-event-harness:has(.fc-event-holiday),
-  .fc-daygrid-event-harness:has(.fc-event-vacation) {
+  .fc-daygrid-event-harness:has(.fc-event-vacation),
+  .fc-daygrid-event-harness:has(.fc-event-eveniment),
+  .fc-daygrid-event-harness:has(.fc-event-concurs) {
     pointer-events: none;
   }
 
-  .fc-curs-dot {
-    width: 8px;
-    height: 8px;
-  }
 }
 
 /* ── Mobile modal ────────────────────────────────────────────────────────────── */
@@ -482,4 +494,12 @@
 
 .fc-mobile-modal-dot--vacation {
   background-color: oklch(0.70 0.13 280);
+}
+
+.fc-mobile-modal-dot--eveniment {
+  background-color: oklch(0.72 0.18 55);
+}
+
+.fc-mobile-modal-dot--concurs {
+  background-color: oklch(0.72 0.18 15);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { EventInput } from "@fullcalendar/core";
+import type { EventInput } from "@fullcalendar/core";
 import React from "react";
 
 const FullCalendarWrapper = dynamic(() => import("./FullCalendarWrapper"), {

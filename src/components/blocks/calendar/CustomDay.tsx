@@ -38,12 +38,12 @@ const CustomDay: React.FC<
     allActiveWeekends,
     allOffWeekends,
     nextActiveWeekend,
-    (date, formatStr) => format(date, formatStr, { locale: ro })
+    (date, formatStr) => format(date, formatStr, { locale: ro }),
   );
 
   const dayClasses = cn(
     props.className,
-    "h-6 w-6 m-auto text-xs flex items-center justify-center cursor"
+    "h-6 w-6 m-auto text-xs flex items-center justify-center cursor",
   );
 
   if (tooltipContent) {

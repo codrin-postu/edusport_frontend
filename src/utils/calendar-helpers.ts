@@ -1,81 +1,41 @@
-import { parseWeekendDates, getNextActiveWeekend, WeekendDate } from "@/utils/date";
+import { WeekendDate } from "@/utils/date";
+import type { CalendarEvent } from "@/app/cursuri/program/_types";
 
-export interface WeekendInfo {
-  weekend: string;
-  days: string[];
+// ─── WeekendDate helpers ──────────────────────────────────────────────────────
+
+function isoToWeekendDate(event: CalendarEvent): WeekendDate {
+  const start = new Date(event.startDate + "T00:00:00");
+  const end = new Date(event.endDate + "T00:00:00");
+  const startDay = start.getDate();
+  const endDay = end.getDate();
+  const displayText =
+    start.getTime() === end.getTime()
+      ? String(startDay)
+      : `${startDay}-${endDay}`;
+  return { startDate: start, endDate: end, displayText, description: event.description };
 }
 
-export interface MonthData {
-  month: string;
-  courseDates: WeekendInfo[];
-  offDates: WeekendInfo[];
+export function getAllActiveWeekends(events: CalendarEvent[]): WeekendDate[] {
+  return events
+    .filter((e) => e.type === "curs")
+    .map(isoToWeekendDate)
+    .sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
 }
 
-export const MONTH_MAPPINGS = {
-  Octombrie: 10,
-  Noiembrie: 11,
-  Decembrie: 12,
-  Ianuarie: 1,
-  Februarie: 2,
-  Martie: 3,
-  Aprilie: 4,
-  Mai: 5,
-} as const;
+export function getAllOffWeekends(events: CalendarEvent[]): WeekendDate[] {
+  return events.filter((e) => e.type === "liber").map(isoToWeekendDate);
+}
 
-export const getMonthNumber = (monthName: string): number => {
-  return MONTH_MAPPINGS[monthName as keyof typeof MONTH_MAPPINGS] || 1;
-};
-
-export const getAllActiveWeekends = (seasonCalendar: MonthData[]): WeekendDate[] => {
-  const allWeekends: WeekendDate[] = [];
-
-  seasonCalendar.forEach((month) => {
-    month.courseDates.forEach((dateInfo) => {
-      const monthName = month.month.split(" ")[0];
-      const year = month.month.includes("2026") ? 2026 : 2025;
-      const monthNumber = getMonthNumber(monthName);
-      const weekendDates = parseWeekendDates(
-        dateInfo.weekend,
-        monthNumber,
-        year,
-      );
-      allWeekends.push(...weekendDates);
-    });
-  });
-
-  return allWeekends.sort(
-    (a, b) => a.startDate.getTime() - b.startDate.getTime(),
-  );
-};
-
-export const getAllOffWeekends = (seasonCalendar: MonthData[]): WeekendDate[] => {
-  const allWeekends: WeekendDate[] = [];
-
-  seasonCalendar.forEach((month) => {
-    month.offDates.forEach((dateInfo) => {
-      const monthName = month.month.split(" ")[0];
-      const year = month.month.includes("2026") ? 2026 : 2025;
-      const monthNumber = getMonthNumber(monthName);
-      const weekendDates = parseWeekendDates(
-        dateInfo.weekend,
-        monthNumber,
-        year,
-      );
-      allWeekends.push(...weekendDates);
-    });
-  });
-
-  return allWeekends;
-};
+// ─── Modifiers (kept for any DayPicker usage) ─────────────────────────────────
 
 export const createCalendarModifiers = (
   allActiveWeekends: WeekendDate[],
   allOffWeekends: WeekendDate[],
-  nextActiveWeekend: WeekendDate | null
+  nextActiveWeekend: WeekendDate | null,
 ) => {
   const createDateRange = (weekend: WeekendDate): Date[] => {
     const dates = [];
-    let current = new Date(weekend.startDate);
+    const current = new Date(weekend.startDate);
     while (current <= weekend.endDate) {
       dates.push(new Date(current));
       current.setDate(current.getDate() + 1);
@@ -103,22 +63,22 @@ export const getTooltipContent = (
   allActiveWeekends: WeekendDate[],
   allOffWeekends: WeekendDate[],
   nextActiveWeekend: WeekendDate | null,
-  formatFn: (date: Date, format: string, options?: any) => string
+  formatFn: (date: Date, format: string, options?: unknown) => string,
 ): string | null => {
   const dayOfWeek = date.getDay();
-  if (dayOfWeek !== 0 && dayOfWeek !== 6) return null; // Not weekend
+  if (dayOfWeek !== 0 && dayOfWeek !== 6) return null;
 
+  const isNext = nextActiveWeekend && isDateInWeekends(date, [nextActiveWeekend]);
   const isActive = isDateInWeekends(date, allActiveWeekends);
   const isOff = isDateInWeekends(date, allOffWeekends);
-  const isNext = nextActiveWeekend && isDateInWeekends(date, [nextActiveWeekend]);
 
-  if (isNext) {
-    return `Următorul weekend activ - ${formatFn(date, "d MMM yyyy")}`;
-  } else if (isActive) {
-    return `Cursuri programate - ${formatFn(date, "d MMM yyyy")}`;
-  } else if (isOff) {
-    return `Weekend liber - ${formatFn(date, "d MMM yyyy")}`;
-  }
+  if (isNext) return `Următorul weekend activ - ${formatFn(date, "d MMM yyyy")}`;
+  if (isActive) return `Cursuri programate - ${formatFn(date, "d MMM yyyy")}`;
+  if (isOff) return `Weekend liber - ${formatFn(date, "d MMM yyyy")}`;
 
   return null;
 };
+
+// ─── Legacy exports removed ───────────────────────────────────────────────────
+// MonthData, MONTH_MAPPINGS, getMonthNumber, getAllActiveWeekends(MonthData[]),
+// getAllOffWeekends(MonthData[]) are no longer needed — data is now flat CalendarEvent[].

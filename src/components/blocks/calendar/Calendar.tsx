@@ -6,10 +6,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/utils/cn";
 import { WeekendDate } from "@/utils/date";
 import CustomDay from "./CustomDay";
+import type { CalendarDay, Modifiers } from "react-day-picker";
 
 interface CalendarProps {
-  modifiers: any;
-  modifiersClassNames: any;
+  modifiers: Record<string, Date[]>;
+  modifiersClassNames: Record<string, string>;
   allActiveWeekends: WeekendDate[];
   allOffWeekends: WeekendDate[];
   nextActiveWeekend: WeekendDate | null;
@@ -30,7 +31,7 @@ const Calendar: React.FC<CalendarProps> = ({
   defaultMonth = new Date(2025, 9, 1),
   className,
 }) => {
-  const CustomDayWithProps = (props: any) => (
+  const CustomDayWithProps = (props: { day: CalendarDay; modifiers: Modifiers } & React.HTMLAttributes<HTMLDivElement>) => (
     <CustomDay
       {...props}
       allActiveWeekends={allActiveWeekends}
@@ -70,7 +71,7 @@ const Calendar: React.FC<CalendarProps> = ({
             "[&_th]:text-xs",
             "[&_th]:font-medium",
             "[&_th]:text-center",
-            className
+            className,
           )}
         />
       </div>
