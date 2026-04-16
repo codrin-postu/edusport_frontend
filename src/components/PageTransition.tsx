@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useAnimate } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SkateLoader } from "./SkateLoader";
 
 const PANELS = [
   { color: "var(--color-edusport-blue)" },
@@ -13,13 +14,15 @@ const PANELS = [
 const SLIDE = 0.45;
 const STAGGER = 0.15;
 const COVER_MS = (STAGGER * (PANELS.length - 1) + SLIDE) * 1000;
-const HOLD_MS = 100;
+const HOLD_MS = 0;
 
 export function PageTransitionOverlay() {
   const pathname = usePathname();
   const router = useRouter();
   const pathnameRef = useRef(pathname);
   const animatingRef = useRef(false);
+  const spinnerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const [scope0, animate0] = useAnimate();
   const [scope1, animate1] = useAnimate();
@@ -32,20 +35,28 @@ export function PageTransitionOverlay() {
     scopes.forEach((scope, i) => {
       if (!scope.current) return;
       scope.current.style.display = "block";
-      animators[i](scope.current, { y: "0%" }, {
+      animators[i](scope.current, { y: ["100%", "0%"] }, {
         duration: SLIDE,
         delay: i * STAGGER,
         ease: [0.76, 0, 0.24, 1],
       });
     });
+    spinnerTimerRef.current = setTimeout(() => {
+      setShowSpinner(true);
+    }, COVER_MS);
   }, [scopes, animators]);
 
   const uncover = useCallback(() => {
+    if (spinnerTimerRef.current !== null) {
+      clearTimeout(spinnerTimerRef.current);
+      spinnerTimerRef.current = null;
+    }
+    setShowSpinner(false);
     // Reverse order so the top panel peels away first, revealing each color
     scopes.forEach((scope, i) => {
       if (!scope.current) return;
       const reverseIndex = PANELS.length - 1 - i;
-      animators[i](scope.current, { y: "-100%" }, {
+      animators[i](scope.current, { y: ["0%", "-100%"] }, {
         duration: SLIDE,
         delay: reverseIndex * STAGGER,
         ease: [0.76, 0, 0.24, 1],
@@ -55,11 +66,16 @@ export function PageTransitionOverlay() {
       scopes.forEach((scope) => {
         if (!scope.current) return;
         scope.current.style.display = "none";
-        scope.current.style.transform = "translateY(100%)";
       });
       animatingRef.current = false;
     }, (STAGGER * (PANELS.length - 1) + SLIDE) * 1000 + 50);
   }, [scopes, animators]);
+
+  useEffect(() => {
+    return () => {
+      if (spinnerTimerRef.current !== null) clearTimeout(spinnerTimerRef.current);
+    };
+  }, []);
 
   // When pathname changes, the new page is mounted → uncover
   useEffect(() => {
@@ -68,7 +84,17 @@ export function PageTransitionOverlay() {
 
     // Small hold so the new page has time to paint
     const t = setTimeout(() => {
-      window.scrollTo(0, 0);
+      const hash = window.location.hash;
+      if (hash) {
+        const el = document.querySelector(hash);
+        if (el) {
+          el.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+      } else {
+        window.scrollTo(0, 0);
+      }
       uncover();
     }, HOLD_MS);
     return () => clearTimeout(t);
@@ -83,13 +109,20 @@ export function PageTransitionOverlay() {
       const href = anchor.getAttribute("href");
       if (
         !href ||
+        anchor.target === "_blank" ||
         href.startsWith("http") ||
         href.startsWith("mailto") ||
         href.startsWith("tel") ||
-        href.startsWith("#") ||
-        href === pathnameRef.current
+        href.startsWith("#")
       )
         return;
+
+      // Only animate when navigating away from the landing page
+      if (pathnameRef.current !== "/") return;
+
+      // Skip transition if only query params are changing (same pathname)
+      const hrefPathname = href.split("?")[0];
+      if (hrefPathname === pathnameRef.current) return;
 
       // Prevent default navigation — we control when it happens
       e.preventDefault();
@@ -102,24 +135,37 @@ export function PageTransitionOverlay() {
 
       // 2. Navigate AFTER the cover animation completes
       setTimeout(() => {
-        router.push(href);
+        try {
+          router.push(href);
+        } catch {
+          uncover();
+          animatingRef.current = false;
+        }
       }, COVER_MS);
     }
 
     window.addEventListener("click", handleClick, true);
     return () => window.removeEventListener("click", handleClick, true);
-  }, [cover, router]);
+  }, [cover, uncover, router]);
 
   return (
     <>
+      {showSpinner && (
+        <div
+          className="fixed inset-0 flex items-center justify-center pointer-events-none"
+          style={{ zIndex: 203 }}
+        >
+          <SkateLoader />
+        </div>
+      )}
       {PANELS.map((panel, i) => (
         <div
           key={i}
           ref={scopes[i]}
-          className="fixed inset-x-0 top-20 bottom-0 pointer-events-none"
+          className="fixed inset-0 pointer-events-none"
           style={{
             backgroundColor: panel.color,
-            zIndex: 90 + i,
+            zIndex: 200 + i,
             display: "none",
             transform: "translateY(100%)",
           }}
