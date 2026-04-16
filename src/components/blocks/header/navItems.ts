@@ -4,10 +4,17 @@ export interface DropdownItem {
   description?: string;
 }
 
+export interface PromoCard {
+  title: string;
+  description: string;
+  gradient: string;
+}
+
 export interface NavItem {
   label: string;
   href?: string;
   image?: string;
+  promo?: PromoCard;
   dropdown?: DropdownItem[];
 }
 
@@ -16,16 +23,21 @@ export const navItems: NavItem[] = [
   {
     label: "Despre Noi",
     image: "/images/menu/about_image.png",
+    promo: {
+      title: "Despre Noi",
+      description: "Află povestea clubului, cunoaște echipa și descoperă realizările noastre.",
+      gradient: "from-purple-600 to-purple-500",
+    },
     dropdown: [
+      {
+        label: "Istoric",
+        href: "/despre-noi",
+        description: "Povestea clubului nostru",
+      },
       {
         label: "Echipa",
         href: "/despre-noi/echipa",
         description: "Cunoaste instructorii nostri",
-      },
-      {
-        label: "Istoric",
-        href: "/despre-noi/istoric",
-        description: "Povestea clubului nostru",
       },
       {
         label: "Realizari",
@@ -37,6 +49,11 @@ export const navItems: NavItem[] = [
   {
     label: "Cursuri",
     image: "/images/courses_generated.png",
+    promo: {
+      title: "Cursuri Patinaj",
+      description: "Tot ce trebuie să știi despre cursurile Școlii de Patinaj EduSport.",
+      gradient: "from-edusport-blue to-blue-500",
+    },
     dropdown: [
       {
         label: "Scoala de Patinaj - AFI Cotroceni",

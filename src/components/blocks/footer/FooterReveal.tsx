@@ -2,10 +2,15 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Footer from "./Footer";
+import type { SiteContactInfo } from "./Footer";
 
 const DESKTOP_BREAKPOINT = 1024; // lg
 
-const FooterReveal: React.FC = () => {
+interface FooterRevealProps {
+  contactInfo?: SiteContactInfo;
+}
+
+const FooterReveal: React.FC<FooterRevealProps> = ({ contactInfo }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -50,7 +55,7 @@ const FooterReveal: React.FC = () => {
       ref={wrapperRef}
       className={isDesktop ? "fixed bottom-0 left-0 right-0 z-0" : "relative"}
     >
-      <Footer />
+      <Footer contactInfo={contactInfo} />
     </div>
   );
 };

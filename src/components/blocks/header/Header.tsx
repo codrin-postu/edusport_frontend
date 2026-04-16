@@ -2,12 +2,15 @@
 
 import { Menu } from "lucide-react";
 import { motion } from "motion/react";
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { useState, useCallback, useEffect } from "react";
+import Link from "next/link";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import MenuPanel from "./components/MenuPanel";
 import HeaderTop from "./components/HeaderTop";
 import NavigationMenuInteractive from "./components/NavigationMenuInteractive";
 import { desktopNavItems } from "./navItems";
+import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 
 const CascadingText: React.FC<{ text: string; className?: string }> = ({
   text,
@@ -49,7 +52,7 @@ const MenuButton = React.forwardRef<
 >(({ isOpen, onToggle }, ref) => {
   return (
     <button
-      className="group flex items-center gap-2 text-gray-900 w-24 justify-end"
+      className="group flex items-center gap-2 text-gray-900 w-28 justify-end"
       onClick={onToggle}
     >
       <span className="font-light text-lg">Meniu</span>
@@ -79,19 +82,33 @@ const MenuButton = React.forwardRef<
 
 MenuButton.displayName = "MenuButton";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  registrationOpen?: boolean;
+  contactInfo?: SiteContactInfo;
+}
+
+const Header: React.FC<HeaderProps> = ({ registrationOpen, contactInfo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuButtonRef = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 400);
-    };
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 400);
   }, []);
+
+  const pathname = usePathname();
+  const toggleMenu = useCallback(() => setIsMenuOpen((open) => !open), []);
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+
+  useEffect(() => {
+    closeMenu();
+  }, [pathname, closeMenu]);
+
+  React.useEffect(() => {
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <>
@@ -102,7 +119,7 @@ const Header: React.FC = () => {
           animate={{ height: isScrolled ? "0rem" : "2rem" }}
           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <HeaderTop />
+          <HeaderTop contactInfo={contactInfo} />
         </motion.div>
         <motion.header
           className="w-full bg-white h-20"
@@ -118,7 +135,7 @@ const Header: React.FC = () => {
         >
           <div className="h-full w-full max-w-content mx-auto px-4 flex justify-between items-center">
             {/* Left side - Brand */}
-            <a href="/" className="flex flex-col">
+            <Link href="/" className="flex flex-col">
               <span className="text-sm text-gray-900 tracking-wider">
                 CLUBUL SPORTIV
               </span>
@@ -126,7 +143,7 @@ const Header: React.FC = () => {
                 text="EDUSPORT"
                 className="text-lg text-branding-font tracking-wider"
               />
-            </a>
+            </Link>
 
             {/* Center - Desktop nav (lg+) */}
             <div className="hidden lg:flex flex-1 justify-start pl-8">
@@ -136,18 +153,20 @@ const Header: React.FC = () => {
             {/* Right side */}
             <div className="flex items-center gap-4">
               {/* CTA: hidden on mobile, visible on tablet+  */}
-              <SpotlightButton
+              <Link
+                href={registrationOpen !== false ? "/inscrieri" : "/cursuri"}
                 className="hidden md:block"
-                animationDuration={0.7}
               >
-                Inscrie-te la cursuri
-              </SpotlightButton>
+                <SpotlightButton animationDuration={0.7}>
+                  {registrationOpen !== false ? "Inscrie-te la cursuri" : "Cursuri"}
+                </SpotlightButton>
+              </Link>
               {/* Meniu: hidden on desktop */}
               <div className="lg:hidden">
                 <MenuButton
                   ref={menuButtonRef}
                   isOpen={isMenuOpen}
-                  onToggle={() => setIsMenuOpen(!isMenuOpen)}
+                  onToggle={toggleMenu}
                 />
               </div>
             </div>
@@ -156,8 +175,9 @@ const Header: React.FC = () => {
       </div>
       <MenuPanel
         isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+        onClose={closeMenu}
         buttonRef={menuButtonRef}
+        registrationOpen={registrationOpen}
       />
     </>
   );
