@@ -1,9 +1,45 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:ui.shadcn.com)"
+      "mcp__dual-graph__graph_continue",
+      "mcp__dual-graph__graph_read",
+      "mcp__dual-graph__fallback_rg",
+      "mcp__dual-graph__graph_register_edit"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash \"/Users/codrin/Documents/Programming/edusport_frontend/.dual-graph/prime.sh\""
+          }
+        ]
+      }
     ],
-    "deny": [],
-    "ask": []
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash \"/Users/codrin/Documents/Programming/edusport_frontend/.dual-graph/prime.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash \"/Users/codrin/Documents/Programming/edusport_frontend/.dual-graph/stop.sh\""
+          }
+        ]
+      }
+    ]
   }
 }
