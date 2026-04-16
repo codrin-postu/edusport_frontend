@@ -16,7 +16,7 @@ import {
   isWeekendInPast,
   WeekendDate,
 } from "@/utils/date";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface WeekendInfo {
   weekend: string;
@@ -33,149 +33,172 @@ interface SeasonTableViewProps {
   seasonCalendar: MonthData[];
 }
 
-const SeasonTableView: React.FC<SeasonTableViewProps> = ({
-  seasonCalendar,
-}) => {
-  const getMonthNumber = (monthName: string): number => {
-    const months: Record<string, number> = {
-      Octombrie: 10,
-      Noiembrie: 11,
-      Decembrie: 12,
-      Ianuarie: 1,
-      Februarie: 2,
-      Martie: 3,
-      Aprilie: 4,
-      Mai: 5,
-    };
-    return months[monthName] || 1;
-  };
+const MONTH_NUMBER: Record<string, number> = {
+  Octombrie: 10,
+  Noiembrie: 11,
+  Decembrie: 12,
+  Ianuarie: 1,
+  Februarie: 2,
+  Martie: 3,
+  Aprilie: 4,
+  Mai: 5,
+};
 
-  const getAllActiveWeekends = (): WeekendDate[] => {
-    const allWeekends: WeekendDate[] = [];
+function getMonthNumber(monthName: string): number {
+  return MONTH_NUMBER[monthName] ?? 1;
+}
 
-    seasonCalendar.forEach((month) => {
-      month.courseDates.forEach((dateInfo) => {
-        const monthName = month.month.split(" ")[0];
-        const year = month.month.includes("2026") ? 2026 : 2025;
-        const monthNumber = getMonthNumber(monthName);
+function getYearFromMonthLabel(monthLabel: string): number {
+  return monthLabel.includes("2026") ? 2026 : 2025;
+}
 
-        const weekendDates = parseWeekendDates(
-          dateInfo.weekend,
-          monthNumber,
-          year,
-        );
-        allWeekends.push(...weekendDates);
-      });
-    });
+function getAllActiveWeekends(seasonCalendar: MonthData[]): WeekendDate[] {
+  const allWeekends: WeekendDate[] = [];
+  for (const monthData of seasonCalendar) {
+    const monthName = monthData.month.split(" ")[0];
+    const year = getYearFromMonthLabel(monthData.month);
+    const monthNumber = getMonthNumber(monthName);
+    for (const dateInfo of monthData.courseDates) {
+      allWeekends.push(...parseWeekendDates(dateInfo.weekend, monthNumber, year));
+    }
+  }
+  return allWeekends.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+}
 
-    return allWeekends.sort(
-      (a, b) => a.startDate.getTime() - b.startDate.getTime(),
-    );
-  };
+function isMonthFullyPast(monthData: MonthData): boolean {
+  const monthName = monthData.month.split(" ")[0];
+  const year = getYearFromMonthLabel(monthData.month);
+  const monthNumber = getMonthNumber(monthName);
+  const allDates = [...monthData.courseDates, ...monthData.offDates];
+  if (allDates.length === 0) return false;
+  return allDates.every((dateInfo) =>
+    parseWeekendDates(dateInfo.weekend, monthNumber, year).every(isWeekendInPast),
+  );
+}
 
-  const allActiveWeekends = getAllActiveWeekends();
-  const nextActiveWeekend = getNextActiveWeekend(allActiveWeekends);
+// ── Tooltip ──────────────────────────────────────────────────────────────────
 
-  const isCurrentWeekendNext = (
-    dateInfo: WeekendInfo,
-    monthName: string,
-    year: number,
-  ): boolean => {
+const tooltipClass = cn(
+  "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1",
+  "bg-gray-900 text-white text-xs rounded whitespace-nowrap",
+  "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10",
+);
+
+const tooltipArrowClass = cn(
+  "absolute top-full left-1/2 -translate-x-1/2",
+  "border-4 border-transparent border-t-gray-900",
+);
+
+const TooltipWrapper: React.FC<{ label: string; children: React.ReactNode }> = ({
+  label,
+  children,
+}) => (
+  <div className="group relative">
+    {children}
+    <div className={tooltipClass}>
+      {label}
+      <div className={tooltipArrowClass} />
+    </div>
+  </div>
+);
+
+// ── Date badge ────────────────────────────────────────────────────────────────
+
+const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
+  dateInfo,
+  isNext,
+}) => (
+  <TooltipWrapper label={dateInfo.days.join(", ")}>
+    <span
+      className={cn(
+        "inline-flex items-center px-2 py-1 rounded text-xs border cursor-help",
+        isNext
+          ? "bg-green-400 text-green-950 font-bold border-green-600"
+          : "bg-green-50 text-green-700 font-medium border-green-150",
+      )}
+    >
+      <div
+        className={cn(
+          "w-2 h-2 rounded-full mr-1",
+          isNext ? "bg-green-600 animate-pulse" : "bg-green-400",
+        )}
+      />
+      {dateInfo.weekend}
+    </span>
+  </TooltipWrapper>
+);
+
+const OffDateBadge: React.FC<{ dateInfo: WeekendInfo }> = ({ dateInfo }) => (
+  <TooltipWrapper label={dateInfo.days.join(", ")}>
+    <span className="inline-flex items-center px-2 py-1 bg-red-50 text-red-700 rounded text-xs font-medium border border-red-150 cursor-help">
+      <div className="w-2 h-2 bg-red-400 rounded-full mr-1" />
+      {dateInfo.weekend}
+    </span>
+  </TooltipWrapper>
+);
+
+// ── Main component ────────────────────────────────────────────────────────────
+
+const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => {
+  const allActiveWeekends = useMemo(
+    () => getAllActiveWeekends(seasonCalendar),
+    [seasonCalendar],
+  );
+  const nextActiveWeekend = useMemo(
+    () => getNextActiveWeekend(allActiveWeekends),
+    [allActiveWeekends],
+  );
+
+  const isWeekendNext = (dateInfo: WeekendInfo, monthName: string, year: number): boolean => {
     const monthNumber = getMonthNumber(monthName);
     const weekendDates = parseWeekendDates(dateInfo.weekend, monthNumber, year);
-
-    return weekendDates.some((weekend) =>
-      isNextWeekend(weekend, nextActiveWeekend),
-    );
-  };
-
-  const isMonthFullyPast = (monthData: MonthData): boolean => {
-    const monthName = monthData.month.split(" ")[0];
-    const year = monthData.month.includes("2026") ? 2026 : 2025;
-    const monthNumber = getMonthNumber(monthName);
-    const allDates = [...monthData.courseDates, ...monthData.offDates];
-    if (allDates.length === 0) return false;
-    return allDates.every((dateInfo) =>
-      parseWeekendDates(dateInfo.weekend, monthNumber, year).every(
-        isWeekendInPast,
-      ),
-    );
+    return weekendDates.some((weekend) => isNextWeekend(weekend, nextActiveWeekend));
   };
 
   const [collapsed, setCollapsed] = useState<Record<number, boolean>>(() =>
     Object.fromEntries(
-      seasonCalendar.map((m, i) => [i, isMonthFullyPast(m)]),
+      seasonCalendar.map((monthData, i) => [i, isMonthFullyPast(monthData)]),
     ),
   );
 
   return (
-    <section className={cn("py-16", "bg-white")}>
-      <div
-        className={cn(
-          "w-full",
-          "max-w-content",
-          "mx-auto",
-          "px-4",
-          "md:px-8",
-          "lg:px-12",
-        )}
-      >
-        <div className={cn("max-w-6xl", "mx-auto")}>
-          <h2
-            className={cn(
-              "text-3xl",
-              "font-bold",
-              "text-gray-800",
-              "mb-8",
-              "text-center",
-              "font-['League_Spartan']",
-            )}
-          >
+    <section className="py-16 bg-white">
+      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center font-['League_Spartan']">
             Calendar Sezon 2025-2026
           </h2>
-          <div>
-            <Table>
-              <TableHeader>
-                <TableRow className={cn("bg-gray-100", "hover:bg-gray-100")}>
-                  <TableHead className={cn("text-gray-700", "font-semibold")}>
-                    Luna
-                  </TableHead>
-                  <TableHead className={cn("text-gray-700", "font-semibold")}>
-                    Program Cursuri
-                  </TableHead>
-                  <TableHead className={cn("text-gray-700", "font-semibold")}>
-                    Weekenduri Libere
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {seasonCalendar.map((monthData, index) => {
-                  const isPast = isMonthFullyPast(monthData);
-                  const isCollapsed = isPast && (collapsed[index] ?? true);
-                  return (
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-100 hover:bg-gray-100">
+                <TableHead className="text-gray-700 font-semibold">Luna</TableHead>
+                <TableHead className="text-gray-700 font-semibold">Program Cursuri</TableHead>
+                <TableHead className="text-gray-700 font-semibold">Weekenduri Libere</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {seasonCalendar.map((monthData, rowIndex) => {
+                const isPast = isMonthFullyPast(monthData);
+                const isCollapsed = isPast && (collapsed[rowIndex] ?? true);
+                const monthName = monthData.month.split(" ")[0];
+                const year = getYearFromMonthLabel(monthData.month);
+
+                return (
                   <TableRow
-                    key={index}
+                    key={rowIndex}
                     className={cn(
-                      index % 2 === 0 ? "bg-gray-50" : "bg-white",
-                      "hover:bg-edusport-blue/5",
-                      "transition-colors",
+                      rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white",
+                      "hover:bg-edusport-blue/5 transition-colors",
                     )}
                   >
                     <TableCell
                       className={cn(
-                        "font-semibold",
-                        "text-edusport-blue",
-                        "min-w-[150px]",
-                        "py-3",
+                        "font-semibold text-edusport-blue min-w-[150px] py-3",
                         isPast && "md:cursor-default cursor-pointer select-none",
                       )}
                       onClick={
                         isPast
-                          ? () =>
-                              setCollapsed((prev) => ({
-                                ...prev,
-                                [index]: !prev[index],
-                              }))
+                          ? () => setCollapsed((prev) => ({ ...prev, [rowIndex]: !prev[rowIndex] }))
                           : undefined
                       }
                     >
@@ -188,183 +211,37 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="py-3">
-                      <div className={cn("flex", "flex-wrap", "gap-2", isCollapsed && "hidden md:flex")}>
-                        {monthData.courseDates.map((dateInfo, dateIndex) => {
-                          const monthName = monthData.month.split(" ")[0];
-                          const year = monthData.month.includes("2026")
-                            ? 2026
-                            : 2025;
-                          const isNext = isCurrentWeekendNext(
-                            dateInfo,
-                            monthName,
-                            year,
-                          );
 
-                          return (
-                            <div
-                              key={dateIndex}
-                              className={cn("group", "relative")}
-                            >
-                              <span
-                                className={cn(
-                                  "inline-flex",
-                                  "items-center",
-                                  "px-2",
-                                  "py-1",
-                                  isNext ? "bg-green-200" : "bg-green-50",
-                                  isNext ? "text-green-900" : "text-green-700",
-                                  "rounded",
-                                  "text-xs",
-                                  isNext ? "font-bold" : "font-medium",
-                                  "border",
-                                  isNext
-                                    ? "border-green-400"
-                                    : "border-green-150",
-                                  "cursor-help",
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "w-2",
-                                    "h-2",
-                                    isNext ? "bg-green-600" : "bg-green-400",
-                                    "rounded-full",
-                                    "mr-1",
-                                    isNext ? "animate-pulse" : "",
-                                  )}
-                                ></div>
-                                {dateInfo.weekend}
-                              </span>
-                              <div
-                                className={cn(
-                                  "absolute",
-                                  "bottom-full",
-                                  "left-1/2",
-                                  "transform",
-                                  "-translate-x-1/2",
-                                  "mb-2",
-                                  "px-2",
-                                  "py-1",
-                                  "bg-gray-900",
-                                  "text-white",
-                                  "text-xs",
-                                  "rounded",
-                                  "whitespace-nowrap",
-                                  "opacity-0",
-                                  "group-hover:opacity-100",
-                                  "transition-opacity",
-                                  "pointer-events-none",
-                                  "z-10",
-                                )}
-                              >
-                                {dateInfo.days.join(", ")}
-                                <div
-                                  className={cn(
-                                    "absolute",
-                                    "top-full",
-                                    "left-1/2",
-                                    "transform",
-                                    "-translate-x-1/2",
-                                    "border-4",
-                                    "border-transparent",
-                                    "border-t-gray-900",
-                                  )}
-                                ></div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                    <TableCell className="py-3">
+                      <div className={cn("flex flex-wrap gap-2", isCollapsed && "hidden md:flex")}>
+                        {monthData.courseDates.map((dateInfo, dateIndex) => (
+                          <CourseDateBadge
+                            key={dateIndex}
+                            dateInfo={dateInfo}
+                            isNext={isWeekendNext(dateInfo, monthName, year)}
+                          />
+                        ))}
                       </div>
                     </TableCell>
+
                     <TableCell className="py-3">
                       <div className={isCollapsed ? "hidden md:block" : undefined}>
-                      {monthData.offDates.length > 0 ? (
-                        <div className={cn("flex", "flex-wrap", "gap-2")}>
-                          {monthData.offDates.map((dateInfo, dateIndex) => (
-                            <div
-                              key={dateIndex}
-                              className={cn("group", "relative")}
-                            >
-                              <span
-                                className={cn(
-                                  "inline-flex",
-                                  "items-center",
-                                  "px-2",
-                                  "py-1",
-                                  "bg-red-50",
-                                  "text-red-700",
-                                  "rounded",
-                                  "text-xs",
-                                  "font-medium",
-                                  "border",
-                                  "border-red-150",
-                                  "cursor-help",
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "w-2",
-                                    "h-2",
-                                    "bg-red-400",
-                                    "rounded-full",
-                                    "mr-1",
-                                  )}
-                                ></div>
-                                {dateInfo.weekend}
-                              </span>
-                              <div
-                                className={cn(
-                                  "absolute",
-                                  "bottom-full",
-                                  "left-1/2",
-                                  "transform",
-                                  "-translate-x-1/2",
-                                  "mb-2",
-                                  "px-2",
-                                  "py-1",
-                                  "bg-gray-900",
-                                  "text-white",
-                                  "text-xs",
-                                  "rounded",
-                                  "whitespace-nowrap",
-                                  "opacity-0",
-                                  "group-hover:opacity-100",
-                                  "transition-opacity",
-                                  "pointer-events-none",
-                                  "z-10",
-                                )}
-                              >
-                                {dateInfo.days.join(", ")}
-                                <div
-                                  className={cn(
-                                    "absolute",
-                                    "top-full",
-                                    "left-1/2",
-                                    "transform",
-                                    "-translate-x-1/2",
-                                    "border-4",
-                                    "border-transparent",
-                                    "border-t-gray-900",
-                                  )}
-                                ></div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className={cn("text-gray-400", "text-xs")}>
-                          Niciun weekend liber
-                        </span>
-                      )}
+                        {monthData.offDates.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {monthData.offDates.map((dateInfo, dateIndex) => (
+                              <OffDateBadge key={dateIndex} dateInfo={dateInfo} />
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400 text-xs">Niciun weekend liber</span>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </section>

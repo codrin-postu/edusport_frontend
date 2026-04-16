@@ -1,3 +1,4 @@
+import Section from "@/components/ui/section";
 import { cn } from "@/utils/cn";
 import { Info } from "lucide-react";
 import Image from "next/image";
@@ -5,33 +6,29 @@ import React from "react";
 
 interface ScheduleGroup {
   timeSlot: string;
-  schedule: string;
-  duration: string;
+  schedule?: string;
+  duration?: string;
   courses: string[];
 }
 
 interface ScheduleSectionProps {
   scheduleGroups: ScheduleGroup[];
+  scheduleSubtitle?: string | null;
+  disclaimers?: string[] | null;
 }
-
-const disclaimers = [
-  "Programul cursurilor poate suferi modificări în funcție de evenimentele desfășurate de patinoar sau alte situații ce obligă clubul să reprogrameze cursurile. În acest caz cursanții vor fi anunțați în cel mai scurt timp posibil. Ședințele care n-au fost ținute din motive obiective, vor fi reprogramate la o dată ulterioară.",
-  "Grupa / ora la care va fi încadrat cursantul va fi comunicată după înscriere, urmând ca programarea finală a orei să fie stabilită după testarea efectivă a cursantului (în prima oră de curs).",
-  "Avansarea copiilor de la o grupă la alta se va face de către instructori doar în momentul în care cursantul va realiza corect elementele tehnice necesare pentru elementele lucrate la următoarea grupă.",
-  "Fiecare instructor se va ocupa de un număr de 8–10 cursanți/ședință la grupele Primii Pași și Începători și 15 cursanți/ședință la grupele Intermediari și Avansați.",
-];
 
 const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   scheduleGroups,
+  scheduleSubtitle,
+  disclaimers,
 }) => {
   return (
-    <section className={cn("py-12 md:py-16", "overflow-hidden")}>
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <Section className={cn("py-12 md:py-16", "overflow-hidden")}>
         {/* Notebook page */}
         <div className="max-w-4xl mx-auto relative">
           {/* Yoga sticker — right side of notebook, below the pencil */}
           <div
-            className="absolute pointer-events-none"
+            className="hidden md:block absolute pointer-events-none"
             style={{
               top: "110px",
               right: "-1rem",
@@ -104,13 +101,13 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                 className="text-gray-800 font-semibold text-xl"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
-                Sâmbătă &amp; Duminică · 50 min / ședință
+                {scheduleSubtitle || "Sâmbătă & Duminică · 50 min / ședință"}
               </p>
 
               {/* Two-column layout on wide screens */}
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-dashed sm:divide-[#c8d8e8]">
-                {scheduleGroups.map((group, gi) => (
-                  <div key={gi} className={gi === 1 ? "sm:pl-6" : "sm:pr-6"}>
+                {scheduleGroups.map((group, groupIndex) => (
+                  <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
                     {/* Time slot line */}
                     <p
                       className="text-gray-800 font-bold text-lg"
@@ -120,9 +117,9 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                     </p>
 
                     {/* Course names — each on its own ruled line */}
-                    {group.courses.map((course, ci) => (
+                    {group.courses.map((course, courseIndex) => (
                       <p
-                        key={ci}
+                        key={courseIndex}
                         className="text-gray-600 text-sm"
                         style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
                       >
@@ -174,7 +171,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
           {/* Pencil overlaid at a shallow angle across the top */}
           <div
-            className="absolute top-0 right-0 pointer-events-none"
+            className="hidden md:block absolute top-0 right-0 pointer-events-none"
             style={{
               transform: "translate(10%, -38%) rotate(12deg)",
               width: "500px",
@@ -204,7 +201,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               </p>
             </div>
             <ul className="space-y-3">
-              {disclaimers.map((text, i) => (
+              {(disclaimers ?? []).map((text, i) => (
                 <li
                   key={i}
                   className="flex gap-3 text-sm text-gray-600 leading-relaxed"
@@ -216,8 +213,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             </ul>
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 };
 

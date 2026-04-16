@@ -1,5 +1,55 @@
+import type { Metadata } from "next";
 import EventsPage from "./_View";
+import { fetchArticles, strapiMediaUrl } from "@/lib/strapi-article";
+import type { Event } from "./_data";
 
-export default function Page() {
-  return <EventsPage />;
+export const metadata: Metadata = {
+  title: "Evenimente",
+  description:
+    "Evenimente de patinaj artistic organizate de EduSport. Spectacole, competiții și întâlniri sportive.",
+  alternates: { canonical: "/cursuri/evenimente" },
+  openGraph: {
+    title: "Evenimente | EduSport",
+    description: "Evenimente de patinaj artistic organizate de EduSport.",
+    type: "website",
+    locale: "ro_RO",
+    images: [{ url: "/images/courses_generated.png", width: 1200, height: 630, alt: "EduSport - Școala de Patinaj" }],
+  },
+};
+
+export const revalidate = 300;
+
+export default async function Page() {
+  try {
+    const strapiEvents = await fetchArticles("evenimente");
+    const now = Date.now();
+
+    const mapped: Event[] = strapiEvents.map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      date: a.eventDate ?? a.date,
+      location: a.eventLocation,
+      coverImage: a.coverImage ? strapiMediaUrl(a.coverImage.url) : undefined,
+      excerpt: a.description ?? "",
+      body: "",
+      admissionInfo: a.eventAdmissionInfo,
+    }));
+
+    const upcoming = mapped
+      .filter((e) => new Date(e.date).getTime() >= now)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    const past = mapped
+      .filter((e) => new Date(e.date).getTime() < now)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    return (
+      <EventsPage
+        currentEvent={upcoming[0] ?? null}
+        pastEvents={past.slice(0, 5)}
+      />
+    );
+  } catch {
+    return <EventsPage currentEvent={null} pastEvents={[]} />;
+  }
 }

@@ -8,14 +8,24 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 interface CoursesBannerSectionProps {
   currentSeason: string;
   isRegistrationOpen: boolean;
+  title: string;
+  scheduleDays: string;
+  scheduleTimes: string;
+  locationName: string;
+  locationUrl: string;
 }
 
 const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
   currentSeason,
   isRegistrationOpen,
+  title,
+  scheduleDays,
+  scheduleTimes,
+  locationName,
+  locationUrl,
 }) => {
   return (
-    <PageHeroSection title={["SCOALA", "DE", "PATINAJ"]}>
+    <PageHeroSection title={["SCOALA", "DE", "PATINAJ"]} variant={isRegistrationOpen ? "blue" : "dark"}>
       {/* Season + pill */}
       <div className="flex items-center gap-3 flex-wrap">
         <span className="text-xs font-semibold tracking-widest uppercase text-white/50">
@@ -36,27 +46,27 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
 
       {/* Heading */}
       <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
-        Școala de Patinaj
+        {title}
       </h1>
 
       {/* Quick info row */}
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-white/70 text-sm font-light border-t border-white/10 pt-5">
         <span className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 shrink-0" />
-          Sâmbătă &amp; Duminică
+          {scheduleDays}
         </span>
         <span className="flex items-center gap-1.5">
           <Clock className="w-3.5 h-3.5 shrink-0" />
-          10:00–10:50 &amp; 11:00–11:50
+          {scheduleTimes}
         </span>
         <a
-          href="https://maps.app.goo.gl/gmrERwQePvxYY6zx6"
+          href={locationUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 hover:text-white transition-colors"
         >
           <MapPin className="w-3.5 h-3.5 shrink-0" />
-          AFI Palace Cotroceni
+          {locationName}
         </a>
       </div>
 

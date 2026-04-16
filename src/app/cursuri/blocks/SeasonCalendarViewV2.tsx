@@ -3,10 +3,10 @@
 import { cn } from "@/utils/cn";
 import React, { useMemo, useState } from "react";
 import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
-import { MonthData } from "@/utils/calendar-helpers";
+import type { CalendarEvent } from "@/app/cursuri/program/_types";
 import { buildCalendarEvents } from "@/utils/fullcalendar-helpers";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
-import { FullCalendarClient } from "@/components/blocks";
+import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
@@ -18,7 +18,12 @@ const CALENDAR_VIEW_OPTIONS = [
 ];
 
 interface SeasonCalendarViewV2Props {
-  seasonCalendar: MonthData[];
+  seasonCalendar: CalendarEvent[];
+  seasonLabel?: string;
+  /** "YYYY-MM" — first month of the season */
+  seasonStart?: string | null;
+  /** "YYYY-MM" — last month of the season (inclusive) */
+  seasonEnd?: string | null;
 }
 
 // ─── Weekend card data ────────────────────────────────────────────────────────
@@ -36,7 +41,21 @@ interface MonthGroup {
 function buildGroupedWeekends(
   activeWeekends: WeekendDate[],
   offWeekends: WeekendDate[],
+  seasonStart: string, // "YYYY-MM-DD" inclusive start
+  seasonEnd: string,   // "YYYY-MM-DD" exclusive end
 ): MonthGroup[] {
+  // Pre-seed all months in the season range so empty months still get a column
+  const groups: MonthGroup[] = [];
+  const cursor = new Date(seasonStart);
+  const end = new Date(seasonEnd);
+  while (cursor < end) {
+    groups.push({
+      label: format(cursor, "LLLL yyyy", { locale: ro }),
+      cards: [],
+    });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+
   const merged: WeekendCardData[] = [
     ...activeWeekends.map((w) => ({ weekend: w, type: "curs" as const })),
     ...offWeekends.map((w) => ({ weekend: w, type: "liber" as const })),
@@ -44,14 +63,11 @@ function buildGroupedWeekends(
     (a, b) => a.weekend.startDate.getTime() - b.weekend.startDate.getTime(),
   );
 
-  const groups: MonthGroup[] = [];
   for (const card of merged) {
     const label = format(card.weekend.startDate, "LLLL yyyy", { locale: ro });
-    const last = groups[groups.length - 1];
-    if (last && last.label === label) {
-      last.cards.push(card);
-    } else {
-      groups.push({ label, cards: [card] });
+    const group = groups.find((g) => g.label === label);
+    if (group) {
+      group.cards.push(card);
     }
   }
   return groups;
@@ -65,7 +81,8 @@ const LegendDot: React.FC<{ color: string; label: string }> = ({
 }) => (
   <span className="inline-flex items-center gap-1.5">
     <span
-      className={cn("inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0", color)}
+      className="inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0"
+      style={{ background: color }}
     />
     <span>{label}</span>
   </span>
@@ -107,7 +124,7 @@ const WeekendRow: React.FC<{
       {/* Date */}
       <span
         className={cn(
-          "flex-1 tabular-nums",
+          "flex-1 tabular-nums whitespace-nowrap",
           isPast ? "text-gray-600" : "text-gray-700",
         )}
       >
@@ -117,9 +134,8 @@ const WeekendRow: React.FC<{
 
       {/* Status label */}
       {isNext ? (
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-600">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          Următor
+        <span className="text-xs font-medium text-green-600">
+          Curs
         </span>
       ) : (
         <span
@@ -178,33 +194,56 @@ const MonthColumn: React.FC<{
 
 const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   seasonCalendar,
+  seasonLabel = "2025–2026",
+  seasonStart,
+  seasonEnd,
 }) => {
-  const { allActiveWeekends, allOffWeekends, nextActiveWeekend } =
+  const { allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents } =
     useSeasonCalendar(seasonCalendar);
 
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
     "calendar",
   );
 
+  // Derive FC valid range from seasonStart/seasonEnd ("YYYY-MM")
+  // validRangeEnd is exclusive in FullCalendar → add 1 month past seasonEnd
+  const fcValidStart = seasonStart ? `${seasonStart}-01` : "2025-10-01";
+  const fcValidEnd = useMemo(() => {
+    const end = seasonEnd ?? "2026-05";
+    const [y, m] = end.split("-").map(Number);
+    const next = m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, "0")}`;
+    return `${next}-01`;
+  }, [seasonEnd]);
+
   // Open at the current month, clamped to the season bounds
   const calendarInitialDate = useMemo(() => {
-    const seasonStart = new Date(2025, 9, 1); // Oct 2025
-    const seasonEnd = new Date(2026, 4, 1); // May 2026 (last valid month start)
+    const start = new Date(fcValidStart);
+    const end = new Date(fcValidEnd);
     const today = new Date();
-    const clamped =
-      today < seasonStart ? seasonStart : today > seasonEnd ? seasonEnd : today;
+    const clamped = today < start ? start : today >= end ? new Date(end.getFullYear(), end.getMonth() - 1, 1) : today;
     return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
-  }, []);
+  }, [fcValidStart, fcValidEnd]);
 
   const calendarEvents = useMemo(
     () =>
-      buildCalendarEvents(allActiveWeekends, allOffWeekends, nextActiveWeekend),
-    [allActiveWeekends, allOffWeekends, nextActiveWeekend],
+      buildCalendarEvents(allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents),
+    [allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents],
   );
 
+  // Filter weekends to the season bounds before building the list view
+  const { filteredActive, filteredOff } = useMemo(() => {
+    const start = new Date(fcValidStart);
+    const end = new Date(fcValidEnd); // exclusive
+    const inRange = (w: WeekendDate) => w.startDate >= start && w.startDate < end;
+    return {
+      filteredActive: allActiveWeekends.filter(inRange),
+      filteredOff: allOffWeekends.filter(inRange),
+    };
+  }, [allActiveWeekends, allOffWeekends, fcValidStart, fcValidEnd]);
+
   const groupedWeekends = useMemo(
-    () => buildGroupedWeekends(allActiveWeekends, allOffWeekends),
-    [allActiveWeekends, allOffWeekends],
+    () => buildGroupedWeekends(filteredActive, filteredOff, fcValidStart, fcValidEnd),
+    [filteredActive, filteredOff, fcValidStart, fcValidEnd],
   );
 
   return (
@@ -232,7 +271,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             "leading-snug",
           )}
         >
-          2025–2026
+          {seasonLabel}
         </h2>
         <p className="text-gray-500 text-sm mb-8">
           Datele în care se desfășoară cursurile și weekend-urile libere.
@@ -253,16 +292,18 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             <FullCalendarClient
               events={calendarEvents}
               initialDate={calendarInitialDate}
-              validRangeStart="2025-10-01"
-              validRangeEnd="2026-06-01"
+              validRangeStart={fcValidStart}
+              validRangeEnd={fcValidEnd}
             />
 
             {/* Legend */}
             <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-500">
-              <LegendDot color="bg-teal-500/80" label="Curs programat" />
-              <LegendDot color="bg-gray-300" label="Weekend liber" />
-              <LegendDot color="bg-amber-300" label="Sărbătoare legală" />
-              <LegendDot color="bg-indigo-300" label="Vacanță școlară" />
+              <LegendDot color="oklch(0.78 0.12 184)" label="Weekend Curs" />
+              <LegendDot color="oklch(0.78 0 0)" label="Weekend liber" />
+              <LegendDot color="oklch(0.78 0.16 85)" label="Sărbătoare legală" />
+              <LegendDot color="oklch(0.78 0.12 280)" label="Vacanță școlară" />
+              <LegendDot color="oklch(0.78 0.17 55)" label="Eveniment" />
+              <LegendDot color="oklch(0.78 0.14 15)" label="Concurs" />
             </div>
           </div>
         )}
@@ -284,11 +325,11 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             <div className="mt-8 pt-6 border-t border-gray-200 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
               <span className="inline-flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-teal-400 flex-shrink-0" />
-                Curs programat
+                Weekend cursuri
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-                Următor weekend
+                Următoarele cursuri
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-gray-200 flex-shrink-0" />

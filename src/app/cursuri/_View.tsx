@@ -2,46 +2,38 @@ import { cn } from "@/utils/cn";
 import { CoursesBannerSection } from "./blocks";
 import dynamic from "next/dynamic";
 import React from "react";
+import type { PricingTier } from "./_data";
+import type { CoursePageContent } from "./_types";
+import AboutSection from "./blocks/AboutSection";
+import InfoSection from "./blocks/InfoSection";
 
-const AboutSection = dynamic(() => import("./blocks/AboutSection"), { ssr: true });
 const PricingSection = dynamic(() => import("./blocks/PricingSection"), { ssr: true });
-const InfoSection = dynamic(() => import("./blocks/InfoSection"), { ssr: true });
 
-const CoursesPage: React.FC = () => {
-  const currentSeason = "Octombrie 2025 - Mai 2026";
-  const isRegistrationOpen = true;
+interface CoursesPageProps {
+  pricingData: PricingTier[] | null;
+  footerNotes: string[] | null;
+  currentSeason: string;
+  isRegistrationOpen: boolean;
+  cursuriPageData: CoursePageContent;
+}
 
-  const pricingData = [
-    {
-      title: "Pentru Membri",
-      priceItems: [
-        { label: "Abonament 6 ședințe grup", price: "520 RON" },
-        { label: "Abonament 8 ședințe grup", price: "590 RON" },
-      ],
-      bottomItem: {
-        label: "Taxa de membru (o dată/sezon)",
-        price: "250 RON",
-      },
-    },
-    {
-      title: "Pentru Non-membri",
-      priceItems: [
-        { label: "1 ședință grup", price: "150 RON" },
-        { label: "Abonament 6 ședințe grup", price: "720 RON" },
-        { label: "Abonament 8 ședințe grup", price: "790 RON" },
-      ],
-    },
-  ];
-
+const CoursesPage: React.FC<CoursesPageProps> = ({
+  pricingData,
+  footerNotes,
+  currentSeason,
+  isRegistrationOpen,
+  cursuriPageData,
+}) => {
   return (
     <div className={cn("min-h-screen", "bg-white")}>
       <CoursesBannerSection
         currentSeason={currentSeason}
         isRegistrationOpen={isRegistrationOpen}
+        {...cursuriPageData.banner}
       />
 
       <div className="relative z-10 bg-white">
-        <AboutSection />
+        <AboutSection {...cursuriPageData.aboutSection} />
 
         {/* Wave: white → gray-50 */}
         <div className="relative -mt-px overflow-hidden leading-none bg-gray-50">
@@ -50,8 +42,12 @@ const CoursesPage: React.FC = () => {
           </svg>
         </div>
 
-        <PricingSection pricingData={pricingData} />
-        <InfoSection />
+        <PricingSection
+          pricingData={pricingData}
+          footerNotes={footerNotes}
+          {...cursuriPageData.promoCard}
+        />
+        <InfoSection {...cursuriPageData.infoSection} />
       </div>
     </div>
   );
