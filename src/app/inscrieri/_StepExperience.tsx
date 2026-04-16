@@ -62,7 +62,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({ form, onChange, onNext,
             id="priorExperience"
             name="priorExperience"
             required
-            rows={3}
+            rows={2}
             placeholder="Descrieți pe scurt experiența anterioară a copilului pe gheață..."
             value={form.priorExperience}
             onChange={onChange}
@@ -76,7 +76,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({ form, onChange, onNext,
             id="expectations"
             name="expectations"
             required
-            rows={3}
+            rows={2}
             placeholder="Ce doriți să învețe copilul la curs..."
             value={form.expectations}
             onChange={onChange}

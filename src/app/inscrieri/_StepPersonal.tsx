@@ -56,33 +56,32 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
           />
         </motion.div>
 
-        <motion.div variants={fieldItem} className="grid sm:grid-cols-2 gap-5">
-          <div>
-            <FieldLabel htmlFor="childBirthDate">Data nașterii *</FieldLabel>
-            <input
-              id="childBirthDate"
-              name="childBirthDate"
-              type="text"
-              required
-              placeholder="ex: 15 martie 2018"
-              value={form.childBirthDate}
-              onChange={onChange}
-              className={inputBase}
-            />
-          </div>
-          <div>
-            <FieldLabel htmlFor="shirtSize">Mărime tricou & înălțime *</FieldLabel>
-            <input
-              id="shirtSize"
-              name="shirtSize"
-              type="text"
-              required
-              placeholder="ex: 128 cm / mărime 8 ani"
-              value={form.shirtSize}
-              onChange={onChange}
-              className={inputBase}
-            />
-          </div>
+        <motion.div variants={fieldItem}>
+          <FieldLabel htmlFor="childBirthDate">Data nașterii *</FieldLabel>
+          <input
+            id="childBirthDate"
+            name="childBirthDate"
+            type="text"
+            required
+            placeholder="ex: 15 martie 2018"
+            value={form.childBirthDate}
+            onChange={onChange}
+            className={inputBase}
+          />
+        </motion.div>
+
+        <motion.div variants={fieldItem}>
+          <FieldLabel htmlFor="shirtSize">Mărime tricou & înălțime *</FieldLabel>
+          <input
+            id="shirtSize"
+            name="shirtSize"
+            type="text"
+            required
+            placeholder="ex: 128 cm / mărime 8 ani"
+            value={form.shirtSize}
+            onChange={onChange}
+            className={inputBase}
+          />
         </motion.div>
       </motion.div>
 
@@ -99,33 +98,32 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
         animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.12, delayChildren: 0.34 } } }}
       >
-        <motion.div variants={fieldItem} className="grid sm:grid-cols-2 gap-5">
-          <div>
-            <FieldLabel htmlFor="parentName">Nume complet părinte *</FieldLabel>
-            <input
-              id="parentName"
-              name="parentName"
-              type="text"
-              required
-              placeholder="Numele complet al părintelui"
-              value={form.parentName}
-              onChange={onChange}
-              className={inputBase}
-            />
-          </div>
-          <div>
-            <FieldLabel htmlFor="phone">Telefon *</FieldLabel>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              required
-              placeholder="+40 7xx xxx xxx"
-              value={form.phone}
-              onChange={onChange}
-              className={inputBase}
-            />
-          </div>
+        <motion.div variants={fieldItem}>
+          <FieldLabel htmlFor="parentName">Nume complet părinte *</FieldLabel>
+          <input
+            id="parentName"
+            name="parentName"
+            type="text"
+            required
+            placeholder="Numele complet al părintelui"
+            value={form.parentName}
+            onChange={onChange}
+            className={inputBase}
+          />
+        </motion.div>
+
+        <motion.div variants={fieldItem}>
+          <FieldLabel htmlFor="phone">Telefon *</FieldLabel>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            placeholder="+40 7xx xxx xxx"
+            value={form.phone}
+            onChange={onChange}
+            className={inputBase}
+          />
         </motion.div>
       </motion.div>
 

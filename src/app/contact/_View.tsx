@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Phone, Send, ChevronDown, ExternalLink } from "lucide-react";
+import { Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { FieldLabel, inputBase, SelectField } from "@/components/ui/form-field";
+import SectionHeader from "@/components/ui/section-header";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 
 // ---------------------------------------------------------------------------
 // Contact reasons
@@ -19,41 +22,6 @@ const CONTACT_REASONS = [
   { value: "feedback", label: "Feedback" },
   { value: "altele", label: "Altele" },
 ];
-
-// ---------------------------------------------------------------------------
-// Contact info items
-// ---------------------------------------------------------------------------
-
-const CONTACT_INFO = [
-  {
-    icon: Phone,
-    label: "Telefon",
-    value: "+40 723 623 712",
-    href: "tel:+40723623712",
-    linkType: "phone",
-  },
-  {
-    icon: Mail,
-    label: "E-mail",
-    value: "scoala.de.patinaj@gmail.com",
-    href: "mailto:scoala.de.patinaj@gmail.com",
-    linkType: "email",
-  },
-  {
-    icon: ExternalLink,
-    label: "Facebook",
-    value: "Scoala de Patinaj EduSport",
-    href: "https://www.facebook.com/scoaladepatinaj",
-    linkType: "external",
-  },
-  {
-    icon: ExternalLink,
-    label: "Facebook",
-    value: "Clubul Sportiv EduSport",
-    href: "https://www.facebook.com/edusportclub",
-    linkType: "external",
-  },
-] as const;
 
 // ---------------------------------------------------------------------------
 // Contact info card
@@ -88,25 +56,6 @@ const ContactInfoCard: React.FC<{
 };
 
 // ---------------------------------------------------------------------------
-// Form field components
-// ---------------------------------------------------------------------------
-
-const FieldLabel: React.FC<{ htmlFor: string; children: React.ReactNode }> = ({
-  htmlFor,
-  children,
-}) => (
-  <label
-    htmlFor={htmlFor}
-    className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
-  >
-    {children}
-  </label>
-);
-
-const inputBase =
-  "w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 outline-none focus:border-edusport-blue focus:bg-white transition-colors placeholder:text-gray-400";
-
-// ---------------------------------------------------------------------------
 // Contact form
 // ---------------------------------------------------------------------------
 
@@ -138,7 +87,7 @@ const ContactForm: React.FC = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
 
@@ -225,30 +174,15 @@ const ContactForm: React.FC = () => {
       </div>
 
       {/* Reason */}
-      <div>
-        <FieldLabel htmlFor="reason">Motivul contactării *</FieldLabel>
-        <div className="relative">
-          <select
-            id="reason"
-            name="reason"
-            required
-            value={form.reason}
-            onChange={handleChange}
-            className={cn(
-              inputBase,
-              "appearance-none pr-10 cursor-pointer",
-              !form.reason && "text-gray-400",
-            )}
-          >
-            {CONTACT_REASONS.map((r) => (
-              <option key={r.value} value={r.value} disabled={r.value === ""}>
-                {r.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-        </div>
-      </div>
+      <SelectField
+        id="reason"
+        name="reason"
+        label="Motivul contactării *"
+        required
+        value={form.reason}
+        onChange={handleChange}
+        options={CONTACT_REASONS}
+      />
 
       {/* Message */}
       <div>
@@ -296,11 +230,40 @@ const ContactForm: React.FC = () => {
 // Page
 // ---------------------------------------------------------------------------
 
-const ContactPage: React.FC = () => {
+const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
+  contactInfo = {},
+}) => {
+  const contactItems = [
+    contactInfo.phone && {
+      icon: Phone,
+      label: "Telefon",
+      value: contactInfo.phone,
+      href: `tel:${contactInfo.phone.replace(/\s/g, "")}`,
+    },
+    contactInfo.email && {
+      icon: Mail,
+      label: "E-mail",
+      value: contactInfo.email,
+      href: `mailto:${contactInfo.email}`,
+    },
+    contactInfo.facebookUrl1 && {
+      icon: ExternalLink,
+      label: "Facebook",
+      value: "Scoala de Patinaj EduSport",
+      href: contactInfo.facebookUrl1,
+    },
+    contactInfo.facebookUrl2 && {
+      icon: ExternalLink,
+      label: "Facebook",
+      value: "Clubul Sportiv EduSport",
+      href: contactInfo.facebookUrl2,
+    },
+  ].filter(Boolean) as { icon: React.ElementType; label: string; value: string; href: string }[];
+
   return (
     <div className="min-h-screen bg-white">
       <PageHeroSection title={["CONTACT"]} backgroundImage="/images/courses.png">
-        <h1 className="text-4xl md:text-5xl font-semibold text-white">
+        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
           Contact
         </h1>
         <p className="text-white/70 text-base font-light border-t border-white/10 pt-4 max-w-md">
@@ -314,21 +277,14 @@ const ContactPage: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Left — contact info */}
             <div className="flex flex-col gap-8">
-              <div>
-                <p className="text-xs font-semibold text-edusport-blue uppercase tracking-widest mb-2">
-                  Datele noastre
-                </p>
-                <h2 className="text-3xl font-semibold text-gray-900 leading-tight">
-                  Ia legătura cu noi
-                </h2>
-                <p className="mt-3 text-gray-500 text-sm leading-relaxed max-w-sm">
-                  Fie că vrei să te înscrii la cursuri, ai o întrebare sau
-                  dorești o colaborare, suntem bucuroși să te ajutăm.
-                </p>
-              </div>
+              <SectionHeader
+                eyebrow="Datele noastre"
+                title="Ia legătura cu noi"
+                description="Fie că vrei să te înscrii la cursuri, ai o întrebare sau dorești o colaborare, suntem bucuroși să te ajutăm."
+              />
 
               <div className="flex flex-col gap-3">
-                {CONTACT_INFO.map((item) => (
+                {contactItems.map((item) => (
                   <ContactInfoCard
                     key={`${item.label}-${item.value}`}
                     icon={item.icon}

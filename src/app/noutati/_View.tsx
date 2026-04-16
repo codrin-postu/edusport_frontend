@@ -3,10 +3,15 @@
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import ArticleCard from "@/components/blocks/article-card";
+import Section from "@/components/ui/section";
+import SectionHeader from "@/components/ui/section-header";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import React, { useRef, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ChevronLeft, ChevronRight, ChevronDown, ArrowRight } from "lucide-react";
-import { ARTICLES, CATEGORY_LABELS, type CategoryKey } from "./_data";
+import { CATEGORY_LABELS, type CategoryKey } from "./_data";
+import type { Article } from "./_data";
 
 // ---------------------------------------------------------------------------
 // Categories
@@ -30,8 +35,6 @@ const CATEGORIES: CategoryOption[] = [
 // Helpers
 // ---------------------------------------------------------------------------
 
-const ITEMS_PER_PAGE = 6;
-
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("ro-RO", {
     day: "numeric",
@@ -40,45 +43,66 @@ function formatDate(iso: string) {
   });
 }
 
+function buildUrl(params: { page: number; category: string; search: string }) {
+  const q = new URLSearchParams();
+  if (params.page > 1) q.set("page", String(params.page));
+  if (params.category && params.category !== "toate") q.set("category", params.category);
+  if (params.search) q.set("search", params.search);
+  const qs = q.toString();
+  return `/noutati${qs ? `?${qs}` : ""}`;
+}
+
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
 
 function SearchBar({
   value,
-  onChange,
+  category,
+  navigate,
 }: {
   value: string;
-  onChange: (v: string) => void;
+  category: string;
+  navigate: (url: string) => void;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const search = inputRef.current?.value ?? "";
+    navigate(buildUrl({ page: 1, category, search }));
+  }
+
   return (
-    <div className="relative w-full max-w-md">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+    <form onSubmit={handleSubmit} className="relative w-full max-w-md flex">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
       <input
+        ref={inputRef}
         type="text"
+        name="search"
         placeholder="Caută articole..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        defaultValue={value}
         className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 outline-none focus:border-edusport-blue transition-colors"
       />
-    </div>
+    </form>
   );
 }
 
 function CategoryFilter({
   active,
-  onChange,
+  search,
+  navigate,
 }: {
   active: string;
-  onChange: (key: string) => void;
+  search: string;
+  navigate: (url: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const isFiltered = active !== "toate";
   const activeLabel = CATEGORIES.find((c) => c.key === active)?.label;
 
-  // Close on outside click
-  useEffect(() => {
+  React.useEffect(() => {
     if (!open) return;
     function handleClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -100,7 +124,7 @@ function CategoryFilter({
           <ChevronDown
             className={cn(
               "absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 transition-transform",
-              open && "rotate-180"
+              open && "rotate-180",
             )}
           />
         </button>
@@ -111,14 +135,14 @@ function CategoryFilter({
               <button
                 key={cat.key}
                 onClick={() => {
-                  onChange(cat.key);
                   setOpen(false);
+                  navigate(buildUrl({ page: 1, category: cat.key, search }));
                 }}
                 className={cn(
                   "w-full text-left px-3 py-2 text-sm transition-colors",
                   active === cat.key
                     ? "bg-edusport-blue/5 text-edusport-blue font-medium"
-                    : "text-gray-600 hover:bg-gray-50"
+                    : "text-gray-600 hover:bg-gray-50",
                 )}
               >
                 {cat.label}
@@ -130,7 +154,7 @@ function CategoryFilter({
 
       {isFiltered && (
         <button
-          onClick={() => onChange("toate")}
+          onClick={() => navigate(buildUrl({ page: 1, category: "toate", search }))}
           className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
         >
           Resetează
@@ -142,43 +166,47 @@ function CategoryFilter({
 
 function Pagination({
   currentPage,
-  totalPages,
-  onPageChange,
+  pageCount,
+  category,
+  search,
+  navigate,
 }: {
   currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  pageCount: number;
+  category: string;
+  search: string;
+  navigate: (url: string) => void;
 }) {
-  if (totalPages <= 1) return null;
+  if (pageCount <= 1) return null;
 
   return (
     <div className="flex items-center justify-center gap-1 pt-12">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => navigate(buildUrl({ page: currentPage - 1, category, search }))}
         disabled={currentPage === 1}
         className="flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:pointer-events-none transition-colors"
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
 
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+      {Array.from({ length: pageCount }, (_, i) => i + 1).map((p) => (
         <button
-          key={page}
-          onClick={() => onPageChange(page)}
+          key={p}
+          onClick={() => navigate(buildUrl({ page: p, category, search }))}
           className={cn(
-            "w-9 h-9 rounded-lg text-sm font-medium transition-colors",
-            page === currentPage
+            "w-9 h-9 rounded-lg text-sm font-medium transition-colors flex items-center justify-center",
+            p === currentPage
               ? "bg-edusport-blue text-white"
-              : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              : "text-gray-500 hover:bg-gray-100 hover:text-gray-700",
           )}
         >
-          {page}
+          {p}
         </button>
       ))}
 
       <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => navigate(buildUrl({ page: currentPage + 1, category, search }))}
+        disabled={currentPage === pageCount}
         className="flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 disabled:opacity-30 disabled:pointer-events-none transition-colors"
       >
         <ChevronRight className="w-4 h-4" />
@@ -187,58 +215,59 @@ function Pagination({
   );
 }
 
+function ArticleSkeleton() {
+  return (
+    <div className="flex flex-col divide-y divide-gray-200 animate-pulse">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="grid sm:grid-cols-[96px_1fr] gap-4 py-6 items-start">
+          <div className="hidden sm:block w-24 aspect-video rounded-lg bg-gray-200" />
+          <div className="flex flex-col gap-2">
+            <div className="h-3 w-24 bg-gray-200 rounded" />
+            <div className="h-4 w-3/4 bg-gray-200 rounded" />
+            <div className="h-3 w-full bg-gray-200 rounded" />
+            <div className="h-3 w-2/3 bg-gray-200 rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
-const NoutatiPage: React.FC = () => {
-  const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("toate");
-  const [currentPage, setCurrentPage] = useState(1);
+interface NoutatiPageProps {
+  articles: Article[];
+  featuredArticle: Article | null;
+  total: number;
+  pageCount: number;
+  currentPage: number;
+  currentCategory: CategoryKey | "toate";
+  currentSearch: string;
+}
 
-  // Sort by newest first
-  const sortedArticles = useMemo(
-    () => [...ARTICLES].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
-    []
-  );
+const NoutatiPage: React.FC<NoutatiPageProps> = ({
+  articles,
+  featuredArticle,
+  total,
+  pageCount,
+  currentPage,
+  currentCategory,
+  currentSearch,
+}) => {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  // Filter
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    return sortedArticles.filter((article) => {
-      const matchesCategory =
-        activeCategory === "toate" || article.category === activeCategory;
-      const matchesSearch =
-        !q ||
-        article.title.toLowerCase().includes(q) ||
-        article.description.toLowerCase().includes(q);
-      return matchesCategory && matchesSearch;
+  function navigate(url: string) {
+    startTransition(() => {
+      router.push(url, { scroll: false });
     });
-  }, [sortedArticles, search, activeCategory]);
-
-  // Pagination
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-  const safePage = Math.min(currentPage, totalPages);
-  const paged = filtered.slice(
-    (safePage - 1) * ITEMS_PER_PAGE,
-    safePage * ITEMS_PER_PAGE
-  );
-
-  // Reset to page 1 when filters change
-  const handleSearchChange = (v: string) => {
-    setSearch(v);
-    setCurrentPage(1);
-  };
-  const handleCategoryChange = (key: string) => {
-    setActiveCategory(key);
-    setCurrentPage(1);
-  };
+  }
 
   return (
     <div className={cn("min-h-screen", "bg-white")}>
-      <PageHeroSection
-        title={["NOUTĂȚI"]}
-      >
+      <PageHeroSection title={["NOUTĂȚI"]}>
         <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
           Noutăți
         </h1>
@@ -249,22 +278,19 @@ const NoutatiPage: React.FC = () => {
       </PageHeroSection>
 
       <div className="relative z-10 bg-white">
-        {/* Latest article — featured */}
-        {sortedArticles.length > 0 && (
-          <section className="py-16 md:py-20">
-            <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-              <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-10">
-                Cel mai recent articol
-              </p>
+        {/* Featured article — always the globally newest */}
+        {featuredArticle && (
+          <Section className="py-16 md:py-20">
+              <SectionHeader eyebrow="Cel mai recent articol" title="Noutăți" className="mb-10" />
 
               <a
-                href={`/noutati/${sortedArticles[0].slug}`}
-                className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center"
+                href={`/noutati/${featuredArticle.slug}`}
+                className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center outline-none"
               >
                 <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden bg-gray-100">
                   <Image
-                    src={sortedArticles[0].coverImage}
-                    alt={sortedArticles[0].title}
+                    src={featuredArticle.coverImage}
+                    alt={featuredArticle.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -273,20 +299,20 @@ const NoutatiPage: React.FC = () => {
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs font-medium text-edusport-blue">
-                      {CATEGORY_LABELS[sortedArticles[0].category]}
+                      {CATEGORY_LABELS[featuredArticle.category]}
                     </span>
                     <span className="text-gray-300">·</span>
                     <span className="text-xs text-gray-400 font-light">
-                      {formatDate(sortedArticles[0].date)}
+                      {formatDate(featuredArticle.date)}
                     </span>
                   </div>
 
                   <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 leading-snug group-hover:text-edusport-blue transition-colors">
-                    {sortedArticles[0].title}
+                    {featuredArticle.title}
                   </h2>
 
                   <p className="text-gray-500 text-base font-light leading-relaxed border-t border-gray-100 pt-4">
-                    {sortedArticles[0].description}
+                    {featuredArticle.description}
                   </p>
 
                   <span className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue group-hover:gap-3 transition-all w-fit">
@@ -295,63 +321,61 @@ const NoutatiPage: React.FC = () => {
                   </span>
                 </div>
               </a>
-            </div>
-          </section>
+          </Section>
         )}
 
-        {/* Rest of articles */}
-        <section className="bg-gray-50 pt-12 pb-40 md:pt-16 md:pb-56">
-          <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+        {/* Articles list */}
+        <Section className="bg-gray-50 pt-12 pb-40 md:pt-16 md:pb-56">
             {/* Filters */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
-              <SearchBar value={search} onChange={handleSearchChange} />
-              <CategoryFilter
-                active={activeCategory}
-                onChange={handleCategoryChange}
-              />
+              <SearchBar value={currentSearch} category={currentCategory} navigate={navigate} />
+              <CategoryFilter active={currentCategory} search={currentSearch} navigate={navigate} />
             </div>
 
             {/* Results count */}
             <p className="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-8">
-              {filtered.length}{" "}
-              {filtered.length === 1 ? "articol" : "articole"} găsite
+              {total} {total === 1 ? "articol" : "articole"} găsite
             </p>
 
-            {/* Articles list */}
-            {paged.length > 0 ? (
-              <div className="flex flex-col divide-y divide-gray-200">
-                {paged.map((article) => (
-                  <ArticleCard
-                    key={article.slug}
-                    title={article.title}
-                    date={formatDate(article.date)}
-                    excerpt={article.description}
-                    image={article.coverImage}
-                    href={`/noutati/${article.slug}`}
-                    category={CATEGORY_LABELS[article.category]}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-lg font-semibold text-gray-300">
-                  Niciun articol găsit
-                </p>
-                <p className="text-sm text-gray-400 mt-2 max-w-sm">
-                  Încercați să modificați criteriile de căutare sau să selectați
-                  o altă categorie.
-                </p>
-              </div>
-            )}
+            {/* Articles */}
+            <div className={cn("transition-opacity duration-200", isPending && "opacity-40 pointer-events-none")}>
+              {isPending ? (
+                <ArticleSkeleton />
+              ) : articles.length > 0 ? (
+                <div className="flex flex-col divide-y divide-gray-200">
+                  {articles.map((article) => (
+                    <ArticleCard
+                      key={article.slug}
+                      title={article.title}
+                      date={formatDate(article.date)}
+                      excerpt={article.description}
+                      image={article.coverImage}
+                      href={`/noutati/${article.slug}`}
+                      category={CATEGORY_LABELS[article.category]}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <p className="text-lg font-semibold text-gray-300">
+                    Niciun articol găsit
+                  </p>
+                  <p className="text-sm text-gray-400 mt-2 max-w-sm">
+                    Încercați să modificați criteriile de căutare sau să selectați
+                    o altă categorie.
+                  </p>
+                </div>
+              )}
+            </div>
 
-            {/* Pagination */}
             <Pagination
-              currentPage={safePage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              currentPage={currentPage}
+              pageCount={pageCount}
+              category={currentCategory}
+              search={currentSearch}
+              navigate={navigate}
             />
-          </div>
-        </section>
+        </Section>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { CheckCircle } from "lucide-react";
 import { motion } from "motion/react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StepConfirm from "./_StepConfirm";
 import StepExperience from "./_StepExperience";
 import StepPersonal from "./_StepPersonal";
@@ -17,6 +17,11 @@ const RegistrationForm: React.FC = () => {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -78,14 +83,16 @@ const RegistrationForm: React.FC = () => {
     );
 
   return (
-    <motion.div
-      key={step}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {stepContent}
-    </motion.div>
+    <div ref={formRef}>
+      <motion.div
+        key={step}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {stepContent}
+      </motion.div>
+    </div>
   );
 };
 

@@ -1,18 +1,13 @@
 import { cn } from "@/utils/cn";
-import { ARTICLES, CATEGORY_LABELS, type Article } from "../_data";
+import { CATEGORY_LABELS, type CategoryKey } from "../_data";
+import type { BlockNode } from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, CalendarDays, ChevronRight, Tag } from "lucide-react";
+import { CalendarDays, ChevronRight, Tag } from "lucide-react";
 import { notFound } from "next/navigation";
-
-// ---------------------------------------------------------------------------
-// Data access — will be replaced by Strapi fetch
-// ---------------------------------------------------------------------------
-
-function getArticle(slug: string): Article | undefined {
-  return ARTICLES.find((a) => a.slug === slug);
-}
+import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -30,20 +25,44 @@ function formatDate(iso: string) {
 // Page
 // ---------------------------------------------------------------------------
 
-interface Props {
+interface ArticleData {
   slug: string;
+  title: string;
+  description: string;
+  date: string;
+  category: CategoryKey;
+  coverImage: string;
+  body: BlockNode[] | null; // null = legacy mock HTML not available
 }
 
-const ArticleDetailPage: React.FC<Props> = ({ slug }) => {
-  const article = getArticle(slug);
+interface Props {
+  article: ArticleData;
+}
 
+const ArticleDetailPage: React.FC<Props> = ({ article }) => {
   if (!article) {
     notFound();
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app";
+
   return (
     <div className={cn("min-h-screen", "bg-white")}>
-      {/* Top bar — breadcrumb + back (pt-8 accounts for HeaderTop bar) */}
+      <ArticleJsonLd
+        title={article.title}
+        description={article.description}
+        date={article.date}
+        image={article.coverImage}
+        url={`${siteUrl}/noutati/${article.slug}`}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Acasă", url: siteUrl },
+          { name: "Noutăți", url: `${siteUrl}/noutati` },
+          { name: article.title, url: `${siteUrl}/noutati/${article.slug}` },
+        ]}
+      />
+      {/* Top bar — breadcrumb */}
       <div className="bg-white border-b border-gray-100 pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-gray-400">
@@ -51,11 +70,10 @@ const ArticleDetailPage: React.FC<Props> = ({ slug }) => {
             <ChevronRight className="w-3 h-3 shrink-0" />
             <span className="text-gray-600 truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
-
         </div>
       </div>
 
-      {/* Cover image — capped height on desktop */}
+      {/* Cover image */}
       <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-gray-100 overflow-hidden">
         <Image
           src={article.coverImage}
@@ -83,30 +101,28 @@ const ArticleDetailPage: React.FC<Props> = ({ slug }) => {
                 </span>
               </div>
 
-              <h1 className="text-2xl md:text-4xl font-semibold text-gray-900 leading-snug tracking-tight mb-8">
+              <h1 className="text-2xl md:text-4xl font-semibold text-gray-900 leading-snug tracking-tight mb-4">
                 {article.title}
               </h1>
 
-              {/* Body — rendered from mock HTML */}
-              <div
-                className="prose prose-gray prose-base max-w-none font-light leading-relaxed
-                  prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:tracking-tight
-                  prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-                  prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
-                  prose-p:text-gray-600 prose-p:mb-5
-                  prose-a:text-edusport-blue prose-a:no-underline hover:prose-a:underline
-                  prose-strong:text-gray-800
-                  prose-blockquote:border-l-edusport-blue prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-                  prose-table:text-sm
-                  prose-th:bg-gray-50 prose-th:px-4 prose-th:py-2.5 prose-th:text-left prose-th:font-semibold prose-th:text-gray-700
-                  prose-td:px-4 prose-td:py-2.5 prose-td:border-t prose-td:border-gray-100
-                  prose-ul:text-gray-600 prose-li:text-gray-600"
-                dangerouslySetInnerHTML={{ __html: article.body }}
-              />
+              {/* Mobile-only date — sidebar is hidden on mobile */}
+              <div className="flex items-center gap-2 mb-8 lg:hidden">
+                <CalendarDays className="w-3.5 h-3.5 text-edusport-blue/60 shrink-0" />
+                <span className="text-sm text-gray-500 font-light">{formatDate(article.date)}</span>
+              </div>
+
+              {/* Body — Strapi Blocks */}
+              {article.body && article.body.length > 0 ? (
+                <StrapiBlocks blocks={article.body} />
+              ) : (
+                <p className="text-gray-400 italic text-sm">
+                  Conținutul acestui articol nu este disponibil momentan.
+                </p>
+              )}
             </div>
 
             {/* Sidebar */}
-            <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
+            <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-28">
               <div className="border border-gray-100 p-6 flex flex-col gap-4">
                 <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
                   Detalii articol
