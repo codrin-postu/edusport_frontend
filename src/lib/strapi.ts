@@ -3,7 +3,7 @@ import { cache } from "react";
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
-const strapiRequest = cache(async (path: string, params?: string, revalidate: number | false = 3600) => {
+const strapiRequest = cache(async(path: string, params?: string, revalidate: number | false = 3600) => {
   const url = `${STRAPI_URL}/api/${path}${params ? `?${params}` : ""}`;
   const res = await fetch(url, {
     headers: STRAPI_TOKEN
