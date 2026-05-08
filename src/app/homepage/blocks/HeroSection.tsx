@@ -7,7 +7,7 @@ import React from "react";
 import SkateParallax from "./SkateParallax";
 
 const TYPEWRITER_TEXT = "Clubul Sportiv";
-// Typewriter duration in ms — must match hero-typewriter animation in globals.css
+// Typewriter duration in ms - must match hero-typewriter animation in globals.css
 const TYPEWRITER_DURATION_MS = 900;
 const TYPEWRITER_DELAY_MS = 100;
 // Each EDUSPORT letter animates in after the typewriter + a per-letter stagger
@@ -64,6 +64,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           sizes="100vw"
           className={cn("object-cover", "object-center")}
           priority
+          placeholder="blur"
         />
 
         {/* Content area */}
@@ -82,7 +83,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             "2xl:pt-0",
           )}
         >
-          {/* Title + motto — above skate */}
+          {/* Title + motto - above skate */}
           <div
             className={cn(
               "relative",
@@ -125,10 +126,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
           </div>
 
-          {/* Skate — Framer Motion isolated to this component */}
+          {/* Skate - Framer Motion isolated to this component */}
           <SkateParallax />
 
-          {/* Button — above skate */}
+          {/* Button - above skate */}
           <div className={cn("relative", "z-30", "mt-16", "md:mt-12")}>
             <Link href={displayCtaUrl}>
               <SpotlightButton

@@ -1,4 +1,4 @@
-export type CalendarEventType = "curs" | "liber" | "holiday" | "vacation" | "eveniment" | "concurs";
+export type CalendarEventType = "curs" | "liber" | "anulat" | "holiday" | "vacation" | "eveniment" | "concurs";
 
 export interface CalendarEvent {
   type: CalendarEventType;
@@ -10,16 +10,14 @@ export interface CalendarEvent {
 
 export interface ScheduleGroup {
   timeSlot: string;
-  schedule?: string;
-  duration?: string;
   courses: string[];
 }
 
 export interface ProgramPageData {
   seasonLabel: string;
-  /** "YYYY-MM" — first month of the season, inclusive */
+  /** "YYYY-MM" - first month of the season, inclusive */
   seasonStart?: string | null;
-  /** "YYYY-MM" — last month of the season, inclusive */
+  /** "YYYY-MM" - last month of the season, inclusive */
   seasonEnd?: string | null;
   bannerTitle?: string | null;
   bannerSubtitle?: string | null;

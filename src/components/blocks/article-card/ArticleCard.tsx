@@ -2,6 +2,7 @@ import { cn } from "@/utils/cn";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
 
 interface ArticleCardProps {
   title: string;
@@ -39,6 +40,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, 128px"
+            placeholder="blur"
+            blurDataURL={SHIMMER_DATA_URL}
           />
         </div>
       ) : (

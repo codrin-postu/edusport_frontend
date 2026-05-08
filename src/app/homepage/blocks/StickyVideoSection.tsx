@@ -8,11 +8,11 @@ import YoutubeEmbed, { YoutubeEmbedHandle } from "@/components/blocks/youtube-em
 const HEADER_H = 112;
 const VIEWPORT_H = `calc(100svh - ${HEADER_H}px)`;
 
-// ViewBox: 1440 × 900 — curves stay in the top half (y < 500)
+// ViewBox: 1440 × 900 - curves stay in the top half (y < 500)
 // Left pair: drop from top, curve off the left edge
 // Right pair: drop from top, curve off the right edge, more spread vertically
 const PATHS = [
-  // ── LEFT PAIR — gentle arc from top, curves to left edge ──
+  // ── LEFT PAIR - gentle arc from top, curves to left edge ──
   {
     d: "M 380,30 C 370,180 300,320 120,390 C 20,425 -60,430 -90,431",
     width: 38,
@@ -24,7 +24,7 @@ const PATHS = [
     inputRange: [0.03, 0.17] as [number, number],
   },
 
-  // ── RIGHT PAIR — vertical drop, sharp late turn to right edge ──
+  // ── RIGHT PAIR - vertical drop, sharp late turn to right edge ──
   {
     d: "M 1060,30 C 1060,200 1080,380 1200,480 C 1310,560 1480,570 1540,571",
     width: 38,
@@ -36,7 +36,7 @@ const PATHS = [
     inputRange: [0.03, 0.17] as [number, number],
   },
 
-  // ── FROM BOTTOM — travel up and exit off the top edge ──
+  // ── FROM BOTTOM - travel up and exit off the top edge ──
   // Thick, bottom-left, sweeps up and exits top
   {
     d: "M -60,920 C 60,760 180,580 280,380 C 360,220 400,80 410,-20",
@@ -62,7 +62,7 @@ const PATHS = [
     inputRange: [0.05, 0.17] as [number, number],
   },
 
-  // ── FROM RIGHT EDGE — travel all the way to left edge and off ──
+  // ── FROM RIGHT EDGE - travel all the way to left edge and off ──
   // Thick horizontal, crosses full width
   {
     d: "M 1560,420 C 1400,418 1100,416 800,415 C 500,414 200,414 -60,414",
@@ -163,7 +163,7 @@ const StickyVideoSection: React.FC = () => {
           marginLeft: "calc((100% - 100vw) / 2)",
         }}
       >
-        {/* Curves — scroll-drawn, fade out as video comes in */}
+        {/* Curves - scroll-drawn, fade out as video comes in */}
         <motion.div className="absolute inset-0" style={{ opacity: curvesOpacity }}>
           <svg
             aria-hidden
@@ -185,7 +185,7 @@ const StickyVideoSection: React.FC = () => {
           </svg>
         </motion.div>
 
-        {/* Video — fades in over the curves */}
+        {/* Video - fades in over the curves */}
         <motion.div className="absolute inset-0" style={{ opacity: videoOpacity }}>
           <YoutubeEmbed ref={embedRef} url="https://www.youtube.com/watch?v=G-0eleYxj2w" cover />
         </motion.div>

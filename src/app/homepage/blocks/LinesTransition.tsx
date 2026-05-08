@@ -14,12 +14,12 @@ interface Band {
 const BANDS: Band[] = [
   { xFrac: 0.00,  wFrac: 0.205, dist: 2 },
   { xFrac: 0.20,  wFrac: 0.205, dist: 1 },
-  { xFrac: 0.40,  wFrac: 0.205, dist: 0 }, // center — rises first
+  { xFrac: 0.40,  wFrac: 0.205, dist: 0 }, // center - rises first
   { xFrac: 0.60,  wFrac: 0.205, dist: 1 },
   { xFrac: 0.795, wFrac: 0.205, dist: 2 },
 ];
 
-// Target background colour — must match LatestArticleSection bg
+// Target background colour - must match LatestArticleSection bg
 const BG = "238,242,251"; // #eef2fb brand-blue tint
 
 // p range where children overlay fades in (all bands fully up by ~0.62)

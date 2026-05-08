@@ -21,7 +21,12 @@ export const revalidate = 300;
 
 export default async function Page() {
   try {
-    const strapiEvents = await fetchArticles("evenimente");
+    // Treat both "evenimente" and "competitii" articles as events on this page.
+    const [evenimente, competitii] = await Promise.all([
+      fetchArticles("evenimente"),
+      fetchArticles("competitii"),
+    ]);
+    const strapiEvents = [...evenimente, ...competitii];
     const now = Date.now();
 
     const mapped: Event[] = strapiEvents.map((a) => ({

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchArticleBySlug, fetchArticles, strapiMediaUrl } from "@/lib/strapi-article";
-import { CURRENT_EVENT, PAST_EVENTS } from "../_data";
 import EventDetailPage from "./_View";
 
 export const revalidate = 300;
@@ -9,8 +8,13 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
-    const events = await fetchArticles("evenimente");
-    return events.map((e) => ({ slug: e.slug }));
+    // Both "evenimente" and "competitii" surface on the events listing,
+    // so prebuild detail pages for both.
+    const [evenimente, competitii] = await Promise.all([
+      fetchArticles("evenimente"),
+      fetchArticles("competitii"),
+    ]);
+    return [...evenimente, ...competitii].map((e) => ({ slug: e.slug }));
   } catch {
     return [];
   }
@@ -34,12 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       image = article.coverImage ? strapiMediaUrl(article.coverImage.url) : undefined;
     }
   } catch {
-    const all = [...(CURRENT_EVENT ? [CURRENT_EVENT] : []), ...PAST_EVENTS];
-    const mock = all.find((e) => e.slug === slug);
-    if (mock) {
-      title = mock.title;
-      description = mock.excerpt ?? "";
-    }
+    // Strapi unavailable — keep generic metadata; the page itself will 404.
   }
 
   return {
@@ -64,35 +63,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { slug } = await params;
 
-  let event = null;
-
+  let strapiArticle = null;
   try {
-    const strapiArticle = await fetchArticleBySlug(slug);
-    if (strapiArticle) {
-      event = {
-        slug: strapiArticle.slug,
-        title: strapiArticle.title,
-        date: strapiArticle.eventDate ?? strapiArticle.date,
-        location: strapiArticle.eventLocation,
-        coverImage: strapiArticle.coverImage
-          ? strapiMediaUrl(strapiArticle.coverImage.url)
-          : undefined,
-        excerpt: strapiArticle.description ?? "",
-        body: strapiArticle.body ?? null,
-        admissionInfo: strapiArticle.eventAdmissionInfo,
-      };
-    }
+    strapiArticle = await fetchArticleBySlug(slug);
   } catch {
-    // fall back to mock data
+    notFound();
   }
 
-  // Fall back to mock data if Strapi unavailable
-  if (!event) {
-    const all = [...(CURRENT_EVENT ? [CURRENT_EVENT] : []), ...PAST_EVENTS];
-    const mock = all.find((e) => e.slug === slug);
-    if (!mock) notFound();
-    event = { ...mock, body: null };
-  }
+  if (!strapiArticle) notFound();
+
+  const event = {
+    slug: strapiArticle.slug,
+    title: strapiArticle.title,
+    // The actual article category — drives meta-row + sidebar labels.
+    category: strapiArticle.category,
+    // Posted date (used in the meta row above the title).
+    date: strapiArticle.date,
+    // Event datetime (used in the sidebar + EventJsonLd startDate).
+    eventDate: strapiArticle.eventDate,
+    location: strapiArticle.eventLocation,
+    coverImage: strapiArticle.coverImage
+      ? strapiMediaUrl(strapiArticle.coverImage.url)
+      : undefined,
+    excerpt: strapiArticle.description ?? "",
+    body: strapiArticle.body ?? null,
+    admissionInfo: strapiArticle.eventAdmissionInfo,
+  };
 
   return <EventDetailPage event={event} />;
 }

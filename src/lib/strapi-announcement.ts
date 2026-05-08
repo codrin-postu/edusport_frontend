@@ -56,14 +56,14 @@ export async function fetchAnnouncement(): Promise<Announcement | null> {
 
     if (data?.isActive !== true) {
       if (process.env.NODE_ENV === "development") {
-        console.log("[announcement] not shown — isActive:", data?.isActive);
+        console.log("[announcement] not shown - isActive:", data?.isActive);
       }
       return null;
     }
 
     if (data.expiresAt && new Date(data.expiresAt) < new Date()) {
       if (process.env.NODE_ENV === "development") {
-        console.log("[announcement] not shown — expired:", data.expiresAt);
+        console.log("[announcement] not shown - expired:", data.expiresAt);
       }
       return null;
     }
@@ -71,7 +71,7 @@ export async function fetchAnnouncement(): Promise<Announcement | null> {
     const message = data.announceContent?.message;
     if (!message) {
       if (process.env.NODE_ENV === "development") {
-        console.log("[announcement] not shown — missing announceContent.message");
+        console.log("[announcement] not shown - missing announceContent.message");
       }
       return null;
     }

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useAnimate } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { SkateLoader } from "./SkateLoader";
 
 const PANELS = [
@@ -21,12 +21,11 @@ export function PageTransitionOverlay() {
   const router = useRouter();
   const pathnameRef = useRef(pathname);
   const animatingRef = useRef(false);
-  const spinnerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [showSpinner, setShowSpinner] = useState(false);
 
   const [scope0, animate0] = useAnimate();
   const [scope1, animate1] = useAnimate();
   const [scope2, animate2] = useAnimate();
+  const [scopeSpinner, animateSpinner] = useAnimate();
 
   const animators = [animate0, animate1, animate2];
   const scopes = [scope0, scope1, scope2];
@@ -41,18 +40,36 @@ export function PageTransitionOverlay() {
         ease: [0.76, 0, 0.24, 1],
       });
     });
-    spinnerTimerRef.current = setTimeout(() => {
-      setShowSpinner(true);
-    }, COVER_MS);
-  }, [scopes, animators]);
+    // Diamond stays stationary; panel 3's slide-up "reveals" it via a
+    // clip-path inset whose top edge tracks panel 3's leading edge.
+    if (scopeSpinner.current) {
+      scopeSpinner.current.style.display = "flex";
+      animateSpinner(
+        scopeSpinner.current,
+        { clipPath: ["inset(100% 0 0 0)", "inset(0% 0 0 0)"] },
+        {
+          duration: SLIDE,
+          delay: (PANELS.length - 1) * STAGGER,
+          ease: [0.76, 0, 0.24, 1],
+        },
+      );
+    }
+  }, [scopes, animators, scopeSpinner, animateSpinner]);
 
   const uncover = useCallback(() => {
-    if (spinnerTimerRef.current !== null) {
-      clearTimeout(spinnerTimerRef.current);
-      spinnerTimerRef.current = null;
+    // Panel 3 leaves first (delay 0). The diamond is clipped from the bottom
+    // upward in lockstep, so panel 3's trailing edge "hides" the diamond.
+    if (scopeSpinner.current) {
+      animateSpinner(
+        scopeSpinner.current,
+        { clipPath: ["inset(0% 0 0 0)", "inset(0 0 100% 0)"] },
+        {
+          duration: SLIDE,
+          delay: 0,
+          ease: [0.76, 0, 0.24, 1],
+        },
+      );
     }
-    setShowSpinner(false);
-    // Reverse order so the top panel peels away first, revealing each color
     scopes.forEach((scope, i) => {
       if (!scope.current) return;
       const reverseIndex = PANELS.length - 1 - i;
@@ -67,15 +84,13 @@ export function PageTransitionOverlay() {
         if (!scope.current) return;
         scope.current.style.display = "none";
       });
+      if (scopeSpinner.current) {
+        scopeSpinner.current.style.display = "none";
+        scopeSpinner.current.style.clipPath = "inset(100% 0 0 0)";
+      }
       animatingRef.current = false;
     }, (STAGGER * (PANELS.length - 1) + SLIDE) * 1000 + 50);
-  }, [scopes, animators]);
-
-  useEffect(() => {
-    return () => {
-      if (spinnerTimerRef.current !== null) clearTimeout(spinnerTimerRef.current);
-    };
-  }, []);
+  }, [scopes, animators, scopeSpinner, animateSpinner]);
 
   // When pathname changes, the new page is mounted → uncover
   useEffect(() => {
@@ -124,7 +139,7 @@ export function PageTransitionOverlay() {
       const hrefPathname = href.split("?")[0];
       if (hrefPathname === pathnameRef.current) return;
 
-      // Prevent default navigation — we control when it happens
+      // Prevent default navigation - we control when it happens
       e.preventDefault();
 
       if (animatingRef.current) return;
@@ -150,14 +165,6 @@ export function PageTransitionOverlay() {
 
   return (
     <>
-      {showSpinner && (
-        <div
-          className="fixed inset-0 flex items-center justify-center pointer-events-none"
-          style={{ zIndex: 203 }}
-        >
-          <SkateLoader />
-        </div>
-      )}
       {PANELS.map((panel, i) => (
         <div
           key={i}
@@ -171,6 +178,17 @@ export function PageTransitionOverlay() {
           }}
         />
       ))}
+      <div
+        ref={scopeSpinner}
+        className="fixed inset-0 flex items-center justify-center pointer-events-none"
+        style={{
+          zIndex: 203,
+          display: "none",
+          clipPath: "inset(100% 0 0 0)",
+        }}
+      >
+        <SkateLoader />
+      </div>
     </>
   );
 }

@@ -2,8 +2,8 @@
 
 import { motion } from "motion/react";
 
-const GEM_TOTAL   = 2.1;   // seconds — full cycle (bounce + rest)
-const SHIMMER_DUR = 2.4;   // seconds — colour shimmer
+const GEM_TOTAL   = 2.1;   // seconds - full cycle (bounce + rest)
+const SHIMMER_DUR = 2.4;   // seconds - colour shimmer
 
 function Shadow() {
   return (
@@ -74,18 +74,6 @@ export function SkateLoader() {
 
       {/* Shadow synced to bounce */}
       <Shadow />
-
-      {/* Dot trail */}
-      <div className="flex gap-2 items-center mt-3">
-        {[0, 0.25, 0.5].map((delay) => (
-          <motion.span
-            key={delay}
-            className="block w-1.5 h-1.5 rounded-full bg-white/50"
-            animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.3, 0.8] }}
-            transition={{ duration: 1, repeat: Infinity, delay, ease: "easeInOut" }}
-          />
-        ))}
-      </div>
     </div>
   );
 }

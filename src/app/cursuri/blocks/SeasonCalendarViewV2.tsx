@@ -1,17 +1,19 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
 import type { CalendarEvent } from "@/app/cursuri/program/_types";
 import { buildCalendarEvents } from "@/utils/fullcalendar-helpers";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { renderMarkdown } from "@/utils/markdown";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 
-// Stable reference — avoids re-creating the array on every render of the toggle
+// Stable reference - avoids re-creating the array on every render of the toggle
 const CALENDAR_VIEW_OPTIONS = [
   { value: "calendar" as const, label: "Calendar complet" },
   { value: "weekends" as const, label: "Weekenduri sezon" },
@@ -20,17 +22,19 @@ const CALENDAR_VIEW_OPTIONS = [
 interface SeasonCalendarViewV2Props {
   seasonCalendar: CalendarEvent[];
   seasonLabel?: string;
-  /** "YYYY-MM" — first month of the season */
+  /** "YYYY-MM" - first month of the season */
   seasonStart?: string | null;
-  /** "YYYY-MM" — last month of the season (inclusive) */
+  /** "YYYY-MM" - last month of the season (inclusive) */
   seasonEnd?: string | null;
 }
 
 // ─── Weekend card data ────────────────────────────────────────────────────────
 
+type WeekendKind = "curs" | "liber" | "anulat";
+
 interface WeekendCardData {
   weekend: WeekendDate;
-  type: "curs" | "liber";
+  type: WeekendKind;
 }
 
 interface MonthGroup {
@@ -41,6 +45,7 @@ interface MonthGroup {
 function buildGroupedWeekends(
   activeWeekends: WeekendDate[],
   offWeekends: WeekendDate[],
+  cancelledWeekends: WeekendDate[],
   seasonStart: string, // "YYYY-MM-DD" inclusive start
   seasonEnd: string,   // "YYYY-MM-DD" exclusive end
 ): MonthGroup[] {
@@ -59,6 +64,7 @@ function buildGroupedWeekends(
   const merged: WeekendCardData[] = [
     ...activeWeekends.map((w) => ({ weekend: w, type: "curs" as const })),
     ...offWeekends.map((w) => ({ weekend: w, type: "liber" as const })),
+    ...cancelledWeekends.map((w) => ({ weekend: w, type: "anulat" as const })),
   ].sort(
     (a, b) => a.weekend.startDate.getTime() - b.weekend.startDate.getTime(),
   );
@@ -88,12 +94,19 @@ const LegendDot: React.FC<{ color: string; label: string }> = ({
   </span>
 );
 
+const STATE_LABEL: Record<WeekendKind, string> = {
+  curs: "Curs",
+  liber: "Liber",
+  anulat: "Curs anulat",
+};
+
 const WeekendRow: React.FC<{
   card: WeekendCardData;
   nextActiveWeekend: WeekendDate | null;
 }> = ({ card, nextActiveWeekend }) => {
   const isPast = isWeekendInPast(card.weekend);
-  const isNext = isNextWeekend(card.weekend, nextActiveWeekend);
+  const isCancelled = card.type === "anulat";
+  const isNext = !isCancelled && isNextWeekend(card.weekend, nextActiveWeekend);
 
   const startLabel = format(card.weekend.startDate, "d MMM", { locale: ro });
   const endLabel =
@@ -101,12 +114,18 @@ const WeekendRow: React.FC<{
       ? format(card.weekend.endDate, "d MMM", { locale: ro })
       : null;
 
-  return (
+  const stateLabel = isNext ? "Curs" : STATE_LABEL[card.type];
+  const description = card.weekend.description ?? null;
+  const hasDescription = !!description && description.trim().length > 0;
+
+  const row = (
     <div
       className={cn(
         "flex items-center justify-between px-4 py-2.5 text-sm transition-colors",
         isPast ? "opacity-40" : "",
         isNext && "bg-green-50",
+        isCancelled && "bg-red-50",
+        hasDescription && "cursor-help hover:bg-gray-50",
       )}
     >
       {/* Status dot */}
@@ -115,9 +134,11 @@ const WeekendRow: React.FC<{
           "w-2 h-2 rounded-full flex-shrink-0 mr-3",
           isNext
             ? "bg-green-500"
-            : card.type === "curs"
-              ? "bg-teal-400"
-              : "bg-gray-200",
+            : isCancelled
+              ? "bg-red-500"
+              : card.type === "curs"
+                ? "bg-teal-400"
+                : "bg-gray-200",
         )}
       />
 
@@ -126,6 +147,7 @@ const WeekendRow: React.FC<{
         className={cn(
           "flex-1 tabular-nums whitespace-nowrap",
           isPast ? "text-gray-600" : "text-gray-700",
+          isCancelled && "line-through text-gray-500",
         )}
       >
         {startLabel}
@@ -133,23 +155,39 @@ const WeekendRow: React.FC<{
       </span>
 
       {/* Status label */}
-      {isNext ? (
-        <span className="text-xs font-medium text-green-600">
-          Curs
-        </span>
-      ) : (
-        <span
-          className={cn(
-            "text-xs",
-            card.type === "curs"
-              ? "text-teal-600 font-medium"
-              : "text-gray-400",
-          )}
-        >
-          {card.type === "curs" ? "Curs" : "Liber"}
-        </span>
-      )}
+      <span
+        className={cn(
+          "text-xs",
+          isNext
+            ? "text-green-600 font-medium"
+            : isCancelled
+              ? "text-red-600 font-medium"
+              : card.type === "curs"
+                ? "text-teal-600 font-medium"
+                : "text-gray-400",
+        )}
+      >
+        {stateLabel}
+      </span>
     </div>
+  );
+
+  if (!hasDescription) return row;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{row}</TooltipTrigger>
+      <TooltipContent
+        side="top"
+        sideOffset={6}
+        className="max-w-[360px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-4 py-3 text-sm space-y-2"
+      >
+        <p className="text-xs font-semibold uppercase tracking-wider text-edusport-blue/70">
+          {stateLabel}
+        </p>
+        <div className="space-y-2">{renderMarkdown(description)}</div>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
@@ -162,7 +200,7 @@ const MonthColumn: React.FC<{
 
   return (
     <div className="overflow-hidden">
-      {/* Month label — acts as table header */}
+      {/* Month label - acts as table header */}
       <div
         className={cn(
           "px-4 py-2 border-b border-gray-200 flex items-center justify-between",
@@ -198,12 +236,43 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   seasonStart,
   seasonEnd,
 }) => {
-  const { allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents } =
+  const { allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, specialEvents } =
     useSeasonCalendar(seasonCalendar);
 
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
     "calendar",
   );
+
+  // Defer FullCalendar bundle until the container scrolls near the viewport.
+  // Saves ~50–80 KB of initial JS on /cursuri/program.
+  const calendarContainerRef = useRef<HTMLDivElement>(null);
+  const [shouldMountCalendar, setShouldMountCalendar] = useState(false);
+
+  useEffect(() => {
+    if (shouldMountCalendar) return;
+    const node = calendarContainerRef.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldMountCalendar(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShouldMountCalendar(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [shouldMountCalendar]);
 
   // Derive FC valid range from seasonStart/seasonEnd ("YYYY-MM")
   // validRangeEnd is exclusive in FullCalendar → add 1 month past seasonEnd
@@ -224,26 +293,46 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
     return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
   }, [fcValidStart, fcValidEnd]);
 
+  // eslint-disable-next-line no-console
+  console.log("[SeasonCalendarViewV2] season props:", {
+    seasonStart,
+    seasonEnd,
+    fcValidStart,
+    fcValidEnd,
+    calendarInitialDate,
+    today: new Date().toISOString(),
+    seasonCalendarLength: seasonCalendar?.length ?? 0,
+    firstEventDates: seasonCalendar?.slice(0, 3).map((e) => ({ start: e.startDate, end: e.endDate, type: e.type })),
+    lastEventDates: seasonCalendar?.slice(-3).map((e) => ({ start: e.startDate, end: e.endDate, type: e.type })),
+  });
+
   const calendarEvents = useMemo(
     () =>
-      buildCalendarEvents(allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents),
-    [allActiveWeekends, allOffWeekends, nextActiveWeekend, specialEvents],
+      buildCalendarEvents(
+        allActiveWeekends,
+        allOffWeekends,
+        nextActiveWeekend,
+        specialEvents,
+        allCancelledWeekends,
+      ),
+    [allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, specialEvents],
   );
 
   // Filter weekends to the season bounds before building the list view
-  const { filteredActive, filteredOff } = useMemo(() => {
+  const { filteredActive, filteredOff, filteredCancelled } = useMemo(() => {
     const start = new Date(fcValidStart);
     const end = new Date(fcValidEnd); // exclusive
     const inRange = (w: WeekendDate) => w.startDate >= start && w.startDate < end;
     return {
       filteredActive: allActiveWeekends.filter(inRange),
       filteredOff: allOffWeekends.filter(inRange),
+      filteredCancelled: allCancelledWeekends.filter(inRange),
     };
-  }, [allActiveWeekends, allOffWeekends, fcValidStart, fcValidEnd]);
+  }, [allActiveWeekends, allOffWeekends, allCancelledWeekends, fcValidStart, fcValidEnd]);
 
   const groupedWeekends = useMemo(
-    () => buildGroupedWeekends(filteredActive, filteredOff, fcValidStart, fcValidEnd),
-    [filteredActive, filteredOff, fcValidStart, fcValidEnd],
+    () => buildGroupedWeekends(filteredActive, filteredOff, filteredCancelled, fcValidStart, fcValidEnd),
+    [filteredActive, filteredOff, filteredCancelled, fcValidStart, fcValidEnd],
   );
 
   return (
@@ -288,18 +377,30 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
         {/* Calendar view */}
         {activeView === "calendar" && (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6">
-            <FullCalendarClient
-              events={calendarEvents}
-              initialDate={calendarInitialDate}
-              validRangeStart={fcValidStart}
-              validRangeEnd={fcValidEnd}
-            />
+          <div
+            ref={calendarContainerRef}
+            className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6"
+          >
+            {shouldMountCalendar ? (
+              <FullCalendarClient
+                events={calendarEvents}
+                initialDate={calendarInitialDate}
+                validRangeStart={fcValidStart}
+                validRangeEnd={fcValidEnd}
+              />
+            ) : (
+              <div
+                className="flex items-center justify-center bg-gray-50 rounded-xl border border-gray-200"
+                style={{ minHeight: 600 }}
+                aria-hidden="true"
+              />
+            )}
 
             {/* Legend */}
             <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-500">
               <LegendDot color="oklch(0.78 0.12 184)" label="Weekend Curs" />
               <LegendDot color="oklch(0.78 0 0)" label="Weekend liber" />
+              <LegendDot color="oklch(0.65 0.22 25)" label="Curs anulat" />
               <LegendDot color="oklch(0.78 0.16 85)" label="Sărbătoare legală" />
               <LegendDot color="oklch(0.78 0.12 280)" label="Vacanță școlară" />
               <LegendDot color="oklch(0.78 0.17 55)" label="Eveniment" />
@@ -308,7 +409,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           </div>
         )}
 
-        {/* Weekend view — borderless table layout */}
+        {/* Weekend view - borderless table layout */}
         {activeView === "weekends" && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-gray-200">
@@ -334,6 +435,10 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
               <span className="inline-flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-gray-200 flex-shrink-0" />
                 Weekend liber
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                Curs anulat
               </span>
             </div>
           </>

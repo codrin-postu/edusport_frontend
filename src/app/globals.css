@@ -127,7 +127,7 @@ h1.text-branding-font {
   }
 }
 
-/* Hero section CSS animations — run immediately without JS */
+/* Hero section CSS animations - run immediately without JS */
 @keyframes hero-typewriter {
   from {
     width: 0;

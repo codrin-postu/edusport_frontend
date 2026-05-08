@@ -3,19 +3,33 @@ import { getNextActiveWeekend } from "@/utils/date";
 import {
   getAllActiveWeekends,
   getAllOffWeekends,
+  getAllCancelledWeekends,
   createCalendarModifiers,
 } from "@/utils/calendar-helpers";
 import type { CalendarEvent } from "@/app/cursuri/program/_types";
 
 export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
-  const allActiveWeekends = useMemo(
-    () => getAllActiveWeekends(calendarEvents),
+  // The backend stores section-default sentinels as `meta-default` events
+  // alongside real ones. Filter them out up front so no downstream consumer
+  // accidentally renders or counts them as calendar events.
+  const events = useMemo(
+    () => calendarEvents.filter((e) => (e.type as string) !== "meta-default"),
     [calendarEvents],
   );
 
+  const allActiveWeekends = useMemo(
+    () => getAllActiveWeekends(events),
+    [events],
+  );
+
   const allOffWeekends = useMemo(
-    () => getAllOffWeekends(calendarEvents),
-    [calendarEvents],
+    () => getAllOffWeekends(events),
+    [events],
+  );
+
+  const allCancelledWeekends = useMemo(
+    () => getAllCancelledWeekends(events),
+    [events],
   );
 
   const nextActiveWeekend = useMemo(
@@ -24,10 +38,10 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
   );
 
   const specialEvents = useMemo(
-    () => calendarEvents.filter(
+    () => events.filter(
       (e) => e.type === "holiday" || e.type === "vacation" || e.type === "eveniment" || e.type === "concurs",
     ),
-    [calendarEvents],
+    [events],
   );
 
   const modifiers = useMemo(
@@ -53,6 +67,7 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
   return {
     allActiveWeekends,
     allOffWeekends,
+    allCancelledWeekends,
     nextActiveWeekend,
     specialEvents,
     modifiers,

@@ -3,20 +3,23 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { CursEventInfo } from "./types";
+import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
 
 // An event has a detail view if it has a description OR is a curs/next type
 function hasDetail(event: CursEventInfo): boolean {
   return !!(event.description) || event.type === "curs" || event.type === "next";
 }
 
-// ── Mobile detail sheet — shown when user taps an event in the list ────────────
+// ── Mobile detail sheet - shown when user taps an event in the list ────────────
 
 export const MobileDetailSheet: React.FC<{
   event: CursEventInfo;
   onBack: () => void;
   onClose: () => void;
-}> = ({ event, onBack, onClose }) =>
-  createPortal(
+}> = ({ event, onBack, onClose }) => {
+  const { image, body } = extractFirstImage(event.description);
+  const hasContent = !!body && body.trim().length > 0;
+  return createPortal(
     <div className="fc-mobile-modal-backdrop" onPointerDown={onClose}>
       <div
         className="fc-mobile-modal"
@@ -30,12 +33,19 @@ export const MobileDetailSheet: React.FC<{
             ✕
           </button>
         </div>
+        {image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="fc-mobile-modal-image"
+            src={resolveAssetUrl(image.url)}
+            alt={image.alt}
+            loading="lazy"
+          />
+        )}
         <span className="fc-curs-tooltip-title">{event.title}</span>
-        {event.description && (
+        {hasContent && (
           <span className="fc-curs-tooltip-hours">
-            {event.description.split("·").map((slot, i) => (
-              <span key={i}>{slot.trim()}</span>
-            ))}
+            {renderMarkdown(body)}
           </span>
         )}
         {(event.type === "curs" || event.type === "next") && (
@@ -51,8 +61,9 @@ export const MobileDetailSheet: React.FC<{
     </div>,
     document.body,
   );
+};
 
-// ── Mobile list sheet — shown when user taps a day ────────────────────────────
+// ── Mobile list sheet - shown when user taps a day ────────────────────────────
 
 export const MobileListSheet: React.FC<{
   events: CursEventInfo[];

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { resolveAssetUrl } from "@/utils/markdown";
 import AccomplishmentsPage from "./_View";
 import type { Season, GalleryImage, Placement } from "./_data";
 
@@ -22,8 +23,7 @@ export const metadata: Metadata = {
 // ---------------------------------------------------------------------------
 
 interface RealizariPageCms {
-  bannerTitle?: string | null;
-  bannerSubtitle?: string | null;
+  banner?: { bannerTitle?: string | null; bannerSubtitle?: string | null } | null;
   notableAchievements?: string[] | null;
   galleryImages?: { url: string; alternativeText?: string | null }[] | null;
 }
@@ -46,13 +46,6 @@ interface StrapiCompetition {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
-
-function strapiImageUrl(url: string): string {
-  if (url.startsWith("http")) return url;
-  return `${STRAPI_URL}${url}`;
-}
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
@@ -100,21 +93,21 @@ export default async function Page() {
     ),
     fetchStrapi<StrapiCompetition[]>(
       "competitions",
-      "populate=*&sort=date:desc",
+      "populate[participants]=true&sort=date:desc",
     ).catch(() => [] as StrapiCompetition[]),
   ]);
 
   const seasons = groupIntoSeasons(rawCompetitions);
 
   const galleryImages: GalleryImage[] = (cms.galleryImages ?? []).map((img) => ({
-    src: strapiImageUrl(img.url),
+    src: resolveAssetUrl(img.url),
     alt: img.alternativeText ?? "",
   }));
 
   return (
     <AccomplishmentsPage
-      bannerTitle={cms.bannerTitle ?? undefined}
-      bannerSubtitle={cms.bannerSubtitle ?? undefined}
+      bannerTitle={cms.banner?.bannerTitle ?? undefined}
+      bannerSubtitle={cms.banner?.bannerSubtitle ?? undefined}
       notableAchievements={cms.notableAchievements ?? []}
       galleryImages={galleryImages}
       seasons={seasons}

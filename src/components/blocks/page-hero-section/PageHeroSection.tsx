@@ -47,7 +47,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({
         {isPurple && <div className="absolute inset-0 bg-purple-700/90" />}
         {isDark && <div className="absolute inset-0" style={{ background: DARK_GRADIENT }} />}
 
-        {/* Ghost branding text — right side */}
+        {/* Ghost branding text - right side */}
         {title && (
           <div
             aria-hidden

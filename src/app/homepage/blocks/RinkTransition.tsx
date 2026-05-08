@@ -344,7 +344,7 @@ function drawRinkside(ctx: CanvasRenderingContext2D, rk: RinkGeometry): void {
   }
 }
 
-// ── drawMarkings: no-op — hockey lines removed, clean ice ──
+// ── drawMarkings: no-op - hockey lines removed, clean ice ──
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function drawMarkings(
   _ctx: CanvasRenderingContext2D,

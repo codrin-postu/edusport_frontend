@@ -27,37 +27,36 @@ export default async function Page() {
   let cms: HomepageCms = {};
   let latestArticles: LatestArticleData[] | undefined;
 
-  try {
-    const [settings, homepage, articlesResult] = await Promise.all([
-      fetchStrapi<{ registration?: { open?: boolean } }>(
-        "site-settings",
-        "fields[0]=registration",
-      ),
-      fetchStrapi<HomepageCms>("homepage", "populate=*"),
-      fetchArticlesPaginated({ page: 1, pageSize: 2 }),
-    ]);
+  const [settingsResult, homepageResult, articlesPromiseResult] = await Promise.allSettled([
+    fetchStrapi<{ registration?: { open?: boolean } }>(
+      "site-settings",
+      "fields[0]=registration",
+    ),
+    fetchStrapi<HomepageCms>(
+      "homepage",
+      "populate[hero]=true&populate[registration]=true&populate[registrationClosed]=true&populate[about][populate]=*",
+    ),
+    fetchArticlesPaginated({ page: 1, pageSize: 2 }),
+  ]);
 
-    if (settings?.registration?.open !== undefined) {
-      registrationOpen = settings.registration.open;
-    }
-    if (homepage) {
-      cms = homepage;
-    }
-    if (articlesResult.articles.length > 0) {
-      latestArticles = articlesResult.articles.map((a) => ({
-        title: a.title,
-        excerpt: a.description ?? "",
-        date: new Date(a.date).toLocaleDateString("ro-RO", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        }),
-        image: a.coverImage ? strapiMediaUrl(a.coverImage.url) : "/images/courses_generated.png",
-        slug: a.slug,
-      }));
-    }
-  } catch {
-    // Fall through with defaults
+  if (settingsResult.status === "fulfilled" && settingsResult.value?.registration?.open !== undefined) {
+    registrationOpen = settingsResult.value.registration.open;
+  }
+  if (homepageResult.status === "fulfilled" && homepageResult.value) {
+    cms = homepageResult.value;
+  }
+  if (articlesPromiseResult.status === "fulfilled" && articlesPromiseResult.value.articles.length > 0) {
+    latestArticles = articlesPromiseResult.value.articles.map((a) => ({
+      title: a.title,
+      excerpt: a.description ?? "",
+      date: new Date(a.date).toLocaleDateString("ro-RO", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      image: a.coverImage ? strapiMediaUrl(a.coverImage.url) : "/images/courses_generated.png",
+      slug: a.slug,
+    }));
   }
 
   return (

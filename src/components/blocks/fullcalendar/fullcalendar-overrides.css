@@ -44,7 +44,7 @@
 }
 
 .fc-custom-nav-btn:disabled {
-  visibility: hidden;
+  opacity: 0.25;
   pointer-events: none;
 }
 
@@ -86,7 +86,7 @@
   color: oklch(0.55 0.1 264);
 }
 
-/* FullCalendar CSS overrides — scoped to .fc to avoid global bleed */
+/* FullCalendar CSS overrides - scoped to .fc to avoid global bleed */
 
 .fc {
   --fc-border-color: oklch(0.922 0 0);
@@ -153,7 +153,7 @@
   padding: 4px 6px;
 }
 
-/* Today — no background on the cell, outlined circle on the day number only */
+/* Today - no background on the cell, outlined circle on the day number only */
 .fc .fc-day-today {
   background-color: transparent !important;
 }
@@ -194,7 +194,7 @@
 
 /* --- Event type colours --- */
 
-/* Curs — teal background block, one per day */
+/* Curs - teal background block, one per day */
 .fc-event-curs {
   background-color: oklch(0.78 0.12 184) !important;
   border-color: oklch(0.62 0.16 184) !important;
@@ -202,7 +202,7 @@
   box-shadow: none !important;
 }
 
-/* Next upcoming weekend — slightly more vivid teal */
+/* Next upcoming weekend - slightly more vivid teal */
 .fc-event-next-weekend {
   background-color: oklch(0.72 0.15 184) !important;
   border-color: oklch(0.55 0.19 184) !important;
@@ -215,42 +215,42 @@
   display: none !important;
 }
 
-/* Liber (off weekend) — muted gray */
+/* Liber (off weekend) - muted gray */
 .fc-event-liber {
   background-color: oklch(0.78 0 0) !important;
   border-color: oklch(0.65 0 0) !important;
   color: oklch(0.32 0 0) !important;
 }
 
-/* National holidays — amber */
+/* National holidays - amber */
 .fc-event-holiday {
   background-color: oklch(0.78 0.16 85) !important;
   border-color: oklch(0.62 0.19 85) !important;
   color: oklch(0.24 0.10 85) !important;
 }
 
-/* School vacations — indigo/purple */
+/* School vacations - indigo/purple */
 .fc-event-vacation {
   background-color: oklch(0.78 0.12 280) !important;
   border-color: oklch(0.60 0.16 280) !important;
   color: oklch(0.25 0.10 280) !important;
 }
 
-/* Eveniment — orange */
+/* Eveniment - orange */
 .fc-event-eveniment {
   background-color: oklch(0.78 0.17 55) !important;
   border-color: oklch(0.62 0.21 55) !important;
   color: oklch(0.24 0.12 55) !important;
 }
 
-/* Concurs — rose/red */
+/* Concurs - rose/red */
 .fc-event-concurs {
   background-color: oklch(0.78 0.14 15) !important;
   border-color: oklch(0.62 0.20 15) !important;
   color: oklch(0.25 0.14 15) !important;
 }
 
-/* Cursuri event — inline layout */
+/* Cursuri event - inline layout */
 .fc-curs-event {
   position: relative;
   display: flex;
@@ -270,7 +270,7 @@
 }
 
 
-/* Tooltip — white card, portalled to body, appears above the event */
+/* Tooltip - white card, portalled to body, appears above the event */
 .fc-curs-tooltip {
   position: fixed;
   transform: translateY(-100%);
@@ -288,9 +288,56 @@
   animation: fc-tooltip-in 0.12s ease both;
 }
 
+/* Image variant - side-by-side layout: image on the left, body on the right.
+ * Wider tooltip so both columns have room to breathe. */
+.fc-curs-tooltip--with-image {
+  flex-direction: row;
+  gap: 14px;
+  align-items: stretch;
+  width: 540px;
+  max-width: calc(100vw - 32px);
+}
+
+.fc-curs-tooltip--with-image .fc-curs-tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.fc-curs-tooltip-image {
+  flex: 0 0 auto;
+  width: 180px;
+  height: 135px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid oklch(0.91 0 0);
+}
+
+/* Same variant on the body wrapper when there's no image - keep the column
+ * stack the rest of the tooltip relies on. */
+.fc-curs-tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 @keyframes fc-tooltip-in {
   from { opacity: 0; transform: translateY(calc(-100% - 4px)); }
   to   { opacity: 1; transform: translateY(-100%); }
+}
+
+/* When the tooltip would overflow the top edge of the viewport we flip it to
+ * sit below the anchor instead, so no `translateY` clamping is needed. */
+.fc-curs-tooltip--below {
+  transform: none;
+  animation: fc-tooltip-in-below 0.12s ease both;
+}
+
+@keyframes fc-tooltip-in-below {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .fc-curs-tooltip-title {
@@ -304,13 +351,50 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.fc-curs-tooltip-hours span {
   font-size: 0.72rem;
   font-weight: 400;
   color: oklch(0.45 0.05 184);
   font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.fc-curs-tooltip-hours :is(p, h2, h3, h4, ul, ol) {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.fc-curs-tooltip-hours :is(h2, h3, h4) {
+  font-weight: 600;
+  color: oklch(0.25 0.06 264);
+}
+
+.fc-curs-tooltip-hours :is(ul, ol) {
+  padding-left: 1.1em;
+}
+
+.fc-curs-tooltip-hours strong {
+  font-weight: 600;
+  color: oklch(0.25 0.06 264);
+}
+
+.fc-curs-tooltip-hours img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.fc-curs-tooltip-hours a {
+  color: oklch(0.421 0.2593 264.52);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  pointer-events: auto;
+}
+
+.fc-curs-tooltip-hours a:hover {
+  text-decoration: none;
 }
 
 .fc-curs-tooltip-link {
@@ -388,13 +472,22 @@
   to   { transform: translateY(0);    opacity: 1; }
 }
 
+.fc-mobile-modal-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+
 .fc-mobile-modal .fc-curs-tooltip-title {
   font-size: 0.95rem;
   font-weight: 600;
 }
 
-.fc-mobile-modal .fc-curs-tooltip-hours span {
+.fc-mobile-modal .fc-curs-tooltip-hours {
   font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .fc-mobile-modal .fc-curs-tooltip-link {

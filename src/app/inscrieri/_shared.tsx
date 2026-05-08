@@ -3,7 +3,7 @@ import { inputBaseOnCard } from "@/components/ui/form-field";
 import { User, CalendarDays, ClipboardCheck, ChevronRight } from "lucide-react";
 import React from "react";
 
-// inputBase alias for inscrieri — on-card variant (white bg + focus ring)
+// inputBase alias for inscrieri - on-card variant (white bg + focus ring)
 export const inputBase = inputBaseOnCard;
 
 // ---------------------------------------------------------------------------

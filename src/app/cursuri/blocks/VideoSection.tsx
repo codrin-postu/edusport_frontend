@@ -14,7 +14,7 @@ const VideoSection: React.FC = () => {
               Cum arată cursurile noastre
             </h2>
             <p className="text-gray-500 font-light leading-relaxed">
-              O privire în lumea patinajului EduSport — energie, progres și
+              O privire în lumea patinajului EduSport - energie, progres și
               multă distracție pe gheață.
             </p>
           </div>

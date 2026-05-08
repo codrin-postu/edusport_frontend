@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { fetchArticleBySlug, fetchArticles, strapiMediaUrl } from "@/lib/strapi-article";
-import { ARTICLES } from "../_data";
+import {
+  fetchArticleBySlug,
+  fetchArticles,
+  strapiMediaUrl,
+} from "@/lib/strapi-article";
 import ArticleDetailPage from "./_View";
 
 export const revalidate = 300;
@@ -33,14 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (article) {
       title = article.title;
       description = article.description ?? "";
-      image = article.coverImage ? strapiMediaUrl(article.coverImage.url) : undefined;
+      image = article.coverImage
+        ? strapiMediaUrl(article.coverImage.url)
+        : undefined;
     }
   } catch {
-    const mock = ARTICLES.find((a) => a.slug === slug);
-    if (mock) {
-      title = mock.title;
-      description = mock.description ?? "";
-    }
+    // Strapi unavailable — keep generic metadata; the page itself will 404.
   }
 
   return {
@@ -65,33 +66,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { slug } = await params;
 
-  let article = null;
-
+  let strapiArticle = null;
   try {
-    const strapiArticle = await fetchArticleBySlug(slug);
-    if (strapiArticle) {
-      article = {
-        slug: strapiArticle.slug,
-        title: strapiArticle.title,
-        description: strapiArticle.description ?? "",
-        date: strapiArticle.date,
-        category: strapiArticle.category,
-        coverImage: strapiArticle.coverImage
-          ? strapiMediaUrl(strapiArticle.coverImage.url)
-          : "/images/courses_generated.png",
-        body: strapiArticle.body ?? null,
-      };
-    }
+    strapiArticle = await fetchArticleBySlug(slug);
   } catch {
-    // fall back to mock data
+    notFound();
   }
 
-  // Fall back to mock data if Strapi is unavailable
-  if (!article) {
-    const mock = ARTICLES.find((a) => a.slug === slug);
-    if (!mock) notFound();
-    article = { ...mock, body: null };
-  }
+  if (!strapiArticle) notFound();
+
+  const article = {
+    slug: strapiArticle.slug,
+    title: strapiArticle.title,
+    description: strapiArticle.description ?? "",
+    // Always the article's posted date — never overridden by eventDate.
+    date: strapiArticle.date,
+    category: strapiArticle.category,
+    coverImage: strapiArticle.coverImage
+      ? strapiMediaUrl(strapiArticle.coverImage.url)
+      : "/images/courses_generated.png",
+    body: strapiArticle.body ?? null,
+    // Event-only metadata, surfaced separately in the sidebar.
+    eventDate: strapiArticle.eventDate,
+    eventLocation: strapiArticle.eventLocation,
+    eventAdmissionInfo: strapiArticle.eventAdmissionInfo,
+  };
 
   return <ArticleDetailPage article={article} />;
 }

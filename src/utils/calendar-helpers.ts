@@ -26,6 +26,13 @@ export function getAllOffWeekends(events: CalendarEvent[]): WeekendDate[] {
   return events.filter((e) => e.type === "liber").map(isoToWeekendDate);
 }
 
+export function getAllCancelledWeekends(events: CalendarEvent[]): WeekendDate[] {
+  return events
+    .filter((e) => e.type === "anulat")
+    .map(isoToWeekendDate)
+    .sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+}
+
 // ─── Modifiers (kept for any DayPicker usage) ─────────────────────────────────
 
 export const createCalendarModifiers = (
@@ -81,4 +88,4 @@ export const getTooltipContent = (
 
 // ─── Legacy exports removed ───────────────────────────────────────────────────
 // MonthData, MONTH_MAPPINGS, getMonthNumber, getAllActiveWeekends(MonthData[]),
-// getAllOffWeekends(MonthData[]) are no longer needed — data is now flat CalendarEvent[].
+// getAllOffWeekends(MonthData[]) are no longer needed - data is now flat CalendarEvent[].

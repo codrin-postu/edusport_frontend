@@ -191,7 +191,7 @@ interface EventsPageProps {
 
 const EventsPage: React.FC<EventsPageProps> = ({ currentEvent, pastEvents }) => {
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-white", "flex", "flex-col")}>
       <PageHeroSection title={["EVENIMENTE"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Evenimente" }]}>
         <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
           Evenimente
@@ -202,7 +202,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ currentEvent, pastEvents }) => 
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10 bg-white flex-1">
         {currentEvent ? (
           <CurrentEventSection event={currentEvent} />
         ) : (

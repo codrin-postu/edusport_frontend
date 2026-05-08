@@ -59,7 +59,11 @@ const HomePage: React.FC<HomePageProps> = ({ registrationOpen = true, cms = {}, 
         childScrollBudget={2}
         onChildScrollProgress={setAboutScrollProgress}
       >
-        <AboutUsSection scrollProgress={aboutScrollProgress} />
+        <AboutUsSection
+          scrollProgress={aboutScrollProgress}
+          panels={cms.about?.panels ?? null}
+          notebook={cms.about?.notebook ?? null}
+        />
       </SquareTransition>
       <LazySection minHeight="600px">
         <LatestArticleSection articles={latestArticles} />

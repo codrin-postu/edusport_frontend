@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { FooterReveal, Header } from "../components/blocks";
 import { LazyPageTransition } from "../components/LazyPageTransition";
+import NavigationProgress from "../components/NavigationProgress";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
 import { AnnouncementPopup } from "@/components/blocks/announcement-popup";
@@ -101,7 +102,7 @@ export default async function RootLayout({
     contactInfo = settings?.contact ?? {};
     registrationOpen = settings?.registration?.open;
   } catch {
-    // Fall through with empty — footer uses hardcoded defaults
+    // Fall through with empty - footer uses hardcoded defaults
   }
 
   const announcement = await fetchAnnouncement();
@@ -112,6 +113,7 @@ export default async function RootLayout({
     >
       <body className="bg-edusport-blue">
         <OrganizationJsonLd telephone={contactInfo.phone} email={contactInfo.email} />
+        <NavigationProgress />
         <Header registrationOpen={registrationOpen} contactInfo={contactInfo} />
         <main
           className="relative z-10 pt-20 pb-24 md:pb-32 bg-white lg:overflow-clip"

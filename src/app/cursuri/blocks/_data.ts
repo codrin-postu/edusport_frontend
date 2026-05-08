@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Cursuri blocks data — replace with CMS/API data when ready
+// Cursuri blocks data - replace with CMS/API data when ready
 // ---------------------------------------------------------------------------
 
 export const SCHEDULE_DISCLAIMERS: string[] = [

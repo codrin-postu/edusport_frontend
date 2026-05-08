@@ -29,8 +29,19 @@ export default async function Page() {
   let isRegistrationOpen = IS_REGISTRATION_OPEN;
   let cursuriPageData = CURSURI_PAGE_DATA;
 
-  try {
-    const pricing = await fetchStrapi<CoursePricingData>("pricing");
+  const [pricingResult, settingsResult, cursuriPageResult] = await Promise.allSettled([
+    fetchStrapi<CoursePricingData>("pricing"),
+    fetchStrapi<{
+      registration?: { currentSeason?: string; open?: boolean };
+    }>("site-settings", "fields[0]=registration"),
+    fetchStrapi<CoursePageContent>(
+      "cursuri-page",
+      "populate[banner]=true&populate[aboutSection]=true&populate[promoCard]=true&populate[infoSection]=true",
+    ),
+  ]);
+
+  if (pricingResult.status === "fulfilled") {
+    const pricing = pricingResult.value;
     const tiers = pricing?.tiers;
     if (tiers?.memberTiers?.length || tiers?.nonMemberTiers?.length) {
       pricingData = [
@@ -58,34 +69,24 @@ export default async function Page() {
       ];
     }
     if (pricing?.footerNotes?.length) footerNotes = pricing.footerNotes;
-  } catch {
-    // Fall through with null — PricingSection renders error state
   }
 
-  try {
-    const settings = await fetchStrapi<{
-      registration?: { currentSeason?: string; open?: boolean };
-    }>("site-settings", "fields[0]=registration");
+  if (settingsResult.status === "fulfilled") {
+    const settings = settingsResult.value;
     if (settings?.registration?.currentSeason)
       currentSeason = settings.registration.currentSeason;
     if (settings?.registration?.open !== undefined)
       isRegistrationOpen = settings.registration.open;
-  } catch {
-    // Fall through with hardcoded defaults
   }
 
-  try {
-    const cms = await fetchStrapi<CoursePageContent>("cursuri-page", "populate=*");
-    if (cms) {
-      cursuriPageData = {
-        banner: cms.banner ?? CURSURI_PAGE_DATA.banner,
-        aboutSection: cms.aboutSection ?? CURSURI_PAGE_DATA.aboutSection,
-        promoCard: cms.promoCard ?? CURSURI_PAGE_DATA.promoCard,
-        infoSection: cms.infoSection ?? CURSURI_PAGE_DATA.infoSection,
-      };
-    }
-  } catch {
-    // Fall through with hardcoded defaults
+  if (cursuriPageResult.status === "fulfilled" && cursuriPageResult.value) {
+    const cms = cursuriPageResult.value;
+    cursuriPageData = {
+      banner: cms.banner ?? CURSURI_PAGE_DATA.banner,
+      aboutSection: cms.aboutSection ?? CURSURI_PAGE_DATA.aboutSection,
+      promoCard: cms.promoCard ?? CURSURI_PAGE_DATA.promoCard,
+      infoSection: cms.infoSection ?? CURSURI_PAGE_DATA.infoSection,
+    };
   }
 
   return (

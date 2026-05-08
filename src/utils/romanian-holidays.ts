@@ -1,6 +1,6 @@
 export interface HolidayEntry {
   start: string; // "YYYY-MM-DD"
-  end: string; // "YYYY-MM-DD" (inclusive — event converter adds +1 day for FullCalendar's exclusive end)
+  end: string; // "YYYY-MM-DD" (inclusive - event converter adds +1 day for FullCalendar's exclusive end)
   title: string;
   type: "holiday" | "vacation";
 }
@@ -18,7 +18,7 @@ export const ROMANIAN_HOLIDAYS_2025_2026: HolidayEntry[] = [
 ];
 
 // Romanian school vacation periods for 2025-2026 academic year
-// Source: approximate MECTS calendar — verify before publishing
+// Source: approximate MECTS calendar - verify before publishing
 export const SCHOOL_VACATIONS_2025_2026: HolidayEntry[] = [
   { start: "2025-10-25", end: "2025-11-02", title: "Vacanță de toamnă", type: "vacation" },
   { start: "2025-12-20", end: "2026-01-11", title: "Vacanță de iarnă", type: "vacation" },

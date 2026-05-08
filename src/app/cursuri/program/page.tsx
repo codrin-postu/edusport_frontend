@@ -19,19 +19,26 @@ export const metadata: Metadata = {
   },
 };
 
-// No caching — always fetch fresh from Strapi during development.
+// No caching - always fetch fresh from Strapi during development.
 // Switch to: export const revalidate = 300; once content is stable.
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 type CmsShape = {
   banner?: { title?: string; subtitle?: string } | null;
   pageInfo?: {
-    seasonLabel?: string;
     scheduleSubtitle?: string;
   } | null;
   scheduleGroups?: ScheduleGroup[];
   calendarEvents?: CalendarEvent[];
   disclaimers?: { id: number; text: string }[];
+};
+
+type SiteSettingsShape = {
+  registration?: {
+    currentSeason?: string;
+    seasonStartDate?: string; // "YYYY-MM-DD"
+    seasonEndDate?: string;   // "YYYY-MM-DD"
+  };
 };
 
 function deriveSeasonBounds(events: CalendarEvent[]): { seasonStart: string; seasonEnd: string } | null {
@@ -44,35 +51,64 @@ function deriveSeasonBounds(events: CalendarEvent[]): { seasonStart: string; sea
   };
 }
 
+// Site-settings now owns the canonical season window. Convert the registration
+// ISO dates ("YYYY-MM-DD") to "YYYY-MM" for the calendar's valid range.
+function seasonBoundsFromSiteSettings(
+  start: string | undefined,
+  end: string | undefined,
+): { seasonStart: string; seasonEnd: string } | null {
+  const isoMonth = /^\d{4}-\d{2}/;
+  if (!start || !end) return null;
+  if (!isoMonth.test(start) || !isoMonth.test(end)) return null;
+  return { seasonStart: start.slice(0, 7), seasonEnd: end.slice(0, 7) };
+}
+
 export default async function Page() {
   let data: ProgramPageData = PROGRAM_PAGE_DATA;
 
-  try {
-    const cms = await fetchStrapi<CmsShape>("program-page", "populate=*", false);
-    if (cms) {
-      const calendarEvents = cms.calendarEvents?.length
-        ? cms.calendarEvents
-        : PROGRAM_PAGE_DATA.calendarEvents;
-      const bounds = deriveSeasonBounds(calendarEvents);
+  // Pull site-settings in parallel - it owns the canonical season window
+  // (start/end dates and label) that program-page used to carry.
+  const [cmsResult, siteSettingsResult] = await Promise.allSettled([
+    fetchStrapi<CmsShape>(
+      "program-page",
+      "populate[banner]=true&populate[pageInfo]=true&populate[scheduleGroups][populate]=*&populate[calendarEvents]=true&populate[disclaimers]=true",
+      false,
+    ),
+    fetchStrapi<SiteSettingsShape>("site-settings", "fields[0]=registration"),
+  ]);
 
-      data = {
-        seasonLabel: cms.pageInfo?.seasonLabel ?? PROGRAM_PAGE_DATA.seasonLabel,
-        seasonStart: bounds?.seasonStart ?? PROGRAM_PAGE_DATA.seasonStart,
-        seasonEnd: bounds?.seasonEnd ?? PROGRAM_PAGE_DATA.seasonEnd,
-        bannerTitle: cms.banner?.title ?? PROGRAM_PAGE_DATA.bannerTitle,
-        bannerSubtitle: cms.banner?.subtitle ?? PROGRAM_PAGE_DATA.bannerSubtitle,
-        scheduleSubtitle: cms.pageInfo?.scheduleSubtitle ?? PROGRAM_PAGE_DATA.scheduleSubtitle,
-        scheduleGroups: cms.scheduleGroups?.length
-          ? cms.scheduleGroups
-          : PROGRAM_PAGE_DATA.scheduleGroups,
-        calendarEvents,
-        disclaimers: cms.disclaimers?.length
-          ? cms.disclaimers.map((d) => d.text)
-          : PROGRAM_PAGE_DATA.disclaimers,
-      };
-    }
-  } catch {
-    // Strapi unavailable — fall through with PROGRAM_PAGE_DATA
+  const cms = cmsResult.status === "fulfilled" ? cmsResult.value : null;
+  const settings =
+    siteSettingsResult.status === "fulfilled" ? siteSettingsResult.value : null;
+  const reg = settings?.registration;
+
+  if (cms) {
+    const calendarEvents = cms.calendarEvents?.length
+      ? cms.calendarEvents
+      : PROGRAM_PAGE_DATA.calendarEvents;
+
+    // Prefer site-settings dates; fall back to deriving from events; finally
+    // fall back to the static seed data.
+    const bounds =
+      seasonBoundsFromSiteSettings(reg?.seasonStartDate, reg?.seasonEndDate)
+      ?? deriveSeasonBounds(calendarEvents);
+
+    data = {
+      seasonLabel:
+        reg?.currentSeason ?? PROGRAM_PAGE_DATA.seasonLabel,
+      seasonStart: bounds?.seasonStart ?? PROGRAM_PAGE_DATA.seasonStart,
+      seasonEnd: bounds?.seasonEnd ?? PROGRAM_PAGE_DATA.seasonEnd,
+      bannerTitle: cms.banner?.title ?? PROGRAM_PAGE_DATA.bannerTitle,
+      bannerSubtitle: cms.banner?.subtitle ?? PROGRAM_PAGE_DATA.bannerSubtitle,
+      scheduleSubtitle: cms.pageInfo?.scheduleSubtitle ?? PROGRAM_PAGE_DATA.scheduleSubtitle,
+      scheduleGroups: cms.scheduleGroups?.length
+        ? cms.scheduleGroups
+        : PROGRAM_PAGE_DATA.scheduleGroups,
+      calendarEvents,
+      disclaimers: cms.disclaimers?.length
+        ? cms.disclaimers.map((d) => d.text)
+        : PROGRAM_PAGE_DATA.disclaimers,
+    };
   }
 
   return <ProgramPage data={data} />;

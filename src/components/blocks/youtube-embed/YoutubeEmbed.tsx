@@ -103,7 +103,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
       onMouseLeave={() => setHovered(false)}
       onClick={togglePlay}
     >
-      {/* iframe — sized to cover the container regardless of aspect ratio */}
+      {/* iframe - sized to cover the container regardless of aspect ratio */}
       <iframe
         ref={iframeRef}
         src={embedUrl}
@@ -128,7 +128,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         }}
       />
 
-      {/* Pause cover — thumbnail + blur blocks YouTube's related videos UI */}
+      {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
       <AnimatePresence>
         {!playing && (
           <motion.div
@@ -154,7 +154,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
 
-      {/* Play/Pause button — visible only on hover */}
+      {/* Play/Pause button - visible only on hover */}
       <AnimatePresence>
         {hovered && (
           <motion.div

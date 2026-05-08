@@ -22,9 +22,9 @@ const STAT_ICONS = [
 
 const DEFAULT_MILESTONES = [
   { year: "2012", title: "Înființarea Clubului", description: "Asociația Clubul Sportiv EduSport a fost înființată în luna aprilie 2012, ca persoană juridică română de drept privat, fără scop patrimonial, polisportivă, apolitică și non-profit." },
-  { year: "2013", title: "Cupa EduSport — ediția I", description: "Prima ediție a Cupei EduSport – Patinaj Artistic pe Role Inline, 28–29 iunie 2013, marcând debutul clubului ca organizator de competiții." },
-  { year: "2014", title: "Cupa EduSport — ediția a II-a", description: "A doua ediție a Cupei EduSport – Patinaj Artistic pe Role Inline, 6–8 august 2014. Sportivii EduSport participă tot mai activ la competiții naționale, obținând primele medalii." },
-  { year: "2017", title: "EduSport Trophy — prima competiție internațională", description: "EduSport Trophy – International Figure Skating Competition in Single Skating (Seniors, Juniors, Advanced Novices, Basic Novices, Chicks & Cubs), 4–7 ianuarie 2017, Otopeni. În aceeași perioadă a fost organizată și EduSport Recreational Cup." },
+  { year: "2013", title: "Cupa EduSport - ediția I", description: "Prima ediție a Cupei EduSport – Patinaj Artistic pe Role Inline, 28–29 iunie 2013, marcând debutul clubului ca organizator de competiții." },
+  { year: "2014", title: "Cupa EduSport - ediția a II-a", description: "A doua ediție a Cupei EduSport – Patinaj Artistic pe Role Inline, 6–8 august 2014. Sportivii EduSport participă tot mai activ la competiții naționale, obținând primele medalii." },
+  { year: "2017", title: "EduSport Trophy - prima competiție internațională", description: "EduSport Trophy – International Figure Skating Competition in Single Skating (Seniors, Juniors, Advanced Novices, Basic Novices, Chicks & Cubs), 4–7 ianuarie 2017, Otopeni. În aceeași perioadă a fost organizată și EduSport Recreational Cup." },
   { year: "2019", title: "Rezultate la nivel internațional", description: "Sportivii EduSport reprezintă România la competiții internaționale de patinaj artistic, aducând primele medalii la nivel internațional." },
   { year: "2024", title: "Cea mai mare Școală de Patinaj din București", description: "Cu aproximativ 150 de copii pe sezon (din care 100 participanți constanți), EduSport operează cea mai mare Școală de Patinaj din București, cu cursuri organizate pe mai multe niveluri, de la primii pași la avansați." },
 ];

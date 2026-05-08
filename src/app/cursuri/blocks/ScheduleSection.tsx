@@ -6,8 +6,6 @@ import React from "react";
 
 interface ScheduleGroup {
   timeSlot: string;
-  schedule?: string;
-  duration?: string;
   courses: string[];
 }
 
@@ -26,7 +24,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <Section className={cn("py-12 md:py-16", "overflow-hidden")}>
         {/* Notebook page */}
         <div className="max-w-4xl mx-auto relative">
-          {/* Yoga sticker — right side of notebook, below the pencil */}
+          {/* Yoga sticker - right side of notebook, below the pencil */}
           <div
             className="hidden md:block absolute pointer-events-none"
             style={{
@@ -86,7 +84,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               ))}
             </div>
 
-            {/* Page content — left-padded past margin */}
+            {/* Page content - left-padded past margin */}
             <div className="pl-[88px] pr-6 pb-8" style={{ paddingTop: "16px" }}>
               {/* Section label */}
               <p
@@ -116,21 +114,21 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                       {group.timeSlot}
                     </p>
 
-                    {/* Course names — each on its own ruled line */}
+                    {/* Course names - each on its own ruled line */}
                     {group.courses.map((course, courseIndex) => (
                       <p
                         key={courseIndex}
                         className="text-gray-600 text-sm"
                         style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
                       >
-                        — {course}
+                        - {course}
                       </p>
                     ))}
                   </div>
                 ))}
               </div>
             </div>
-            {/* Pencil doodle — scattered hand-drawn stars */}
+            {/* Pencil doodle - scattered hand-drawn stars */}
             <div className="absolute bottom-0 right-0 left-[88px] pointer-events-none" style={{ height: "90px" }}>
               <svg
                 width="100%"
@@ -141,27 +139,27 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ opacity: 0.15 }}
               >
-                {/* Large star — bottom right area */}
+                {/* Large star - bottom right area */}
                 <g transform="translate(420,30) rotate(15)">
                   <path d="M0,-18 L4,-7 L16,-7 L7,0 L10,12 L0,5 L-10,12 L-7,0 L-16,-7 L-4,-7 Z" stroke="#2a1a0a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
-                {/* Medium star — mid right, higher */}
+                {/* Medium star - mid right, higher */}
                 <g transform="translate(360,55) rotate(-20)">
                   <path d="M0,-13 L3,-5 L11,-5 L5,0 L7,9 L0,4 L-7,9 L-5,0 L-11,-5 L-3,-5 Z" stroke="#2a1a0a" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
-                {/* Small star — lower mid */}
+                {/* Small star - lower mid */}
                 <g transform="translate(290,68) rotate(8)">
                   <path d="M0,-9 L2,-3 L8,-3 L3,1 L5,7 L0,3 L-5,7 L-3,1 L-8,-3 L-2,-3 Z" stroke="#2a1a0a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
-                {/* Tiny star — scattered upper-ish */}
+                {/* Tiny star - scattered upper-ish */}
                 <g transform="translate(460,62) rotate(-10)">
                   <path d="M0,-7 L1.5,-2.5 L6,-2.5 L2.5,0.5 L4,5 L0,2.5 L-4,5 L-2.5,0.5 L-6,-2.5 L-1.5,-2.5 Z" stroke="#2a1a0a" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
-                {/* Tiny star — far left scatter */}
+                {/* Tiny star - far left scatter */}
                 <g transform="translate(160,72) rotate(25)">
                   <path d="M0,-7 L1.5,-2.5 L6,-2.5 L2.5,0.5 L4,5 L0,2.5 L-4,5 L-2.5,0.5 L-6,-2.5 L-1.5,-2.5 Z" stroke="#2a1a0a" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
-                {/* Medium star — left area */}
+                {/* Medium star - left area */}
                 <g transform="translate(220,45) rotate(-35)">
                   <path d="M0,-10 L2,-4 L9,-4 L4,0 L6,7 L0,3 L-6,7 L-4,0 L-9,-4 L-2,-4 Z" stroke="#2a1a0a" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>

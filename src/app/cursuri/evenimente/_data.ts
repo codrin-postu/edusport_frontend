@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Events data — replace with Strapi API calls when ready
+// Events data - replace with Strapi API calls when ready
 // ---------------------------------------------------------------------------
 
 export interface Event {
@@ -23,9 +23,9 @@ export const CURRENT_EVENT: Event | null = {
   coverImage: "/images/courses.png",
   excerpt:
     "Vă invităm la spectacolul anual de Crăciun al Școlii de Patinaj EduSport! Cursanții din toate grupele vor urca pe gheață pentru o demonstrație specială de patinaj artistic, plină de magie și bucurie.",
-  body: `Vă invităm cu drag la cel mai așteptat eveniment al sezonului — Spectacolul de Crăciun 2025 al Școlii de Patinaj EduSport!
+  body: `Vă invităm cu drag la cel mai așteptat eveniment al sezonului - Spectacolul de Crăciun 2025 al Școlii de Patinaj EduSport!
 
-Cursanții din toate grupele — de la Primii Pași până la Avansați — vor urca pe gheață pentru a demonstra tot ce au învățat în acest sezon, într-o atmosferă plină de magie și spiritul sărbătorilor de iarnă.
+Cursanții din toate grupele - de la Primii Pași până la Avansați - vor urca pe gheață pentru a demonstra tot ce au învățat în acest sezon, într-o atmosferă plină de magie și spiritul sărbătorilor de iarnă.
 
 Intrarea este gratuită pentru toți membrii familiei cursanților. Locurile în tribune sunt limitate, vă rugăm să confirmați prezența prin mesaj pe canalul de WhatsApp.
 
@@ -52,7 +52,7 @@ export const PAST_EVENTS: Event[] = [
     location: "Patinoarul Cotroceni On Ice",
     coverImage: "/images/courses.png",
     excerpt:
-      "Ediția 2024 a spectacolului anual de Crăciun — o seară plină de emoție și momente frumoase pe gheață, cu toți cursanții școlii.",
+      "Ediția 2024 a spectacolului anual de Crăciun - o seară plină de emoție și momente frumoase pe gheață, cu toți cursanții școlii.",
     body: "",
     tags: ["Spectacol", "Crăciun"],
   },
@@ -62,7 +62,7 @@ export const PAST_EVENTS: Event[] = [
     date: "2024-11-16T10:00:00",
     location: "Patinoarul Cotroceni On Ice",
     excerpt:
-      "A doua ediție a cupei interne, cu participare record — peste 40 de cursanți din toate grupele s-au înscris în competiție.",
+      "A doua ediție a cupei interne, cu participare record - peste 40 de cursanți din toate grupele s-au înscris în competiție.",
     body: "",
     tags: ["Competiție"],
   },

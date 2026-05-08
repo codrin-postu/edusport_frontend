@@ -19,7 +19,7 @@ function toExclusiveEnd(date: Date): string {
   return toLocalDateStr(d);
 }
 
-// Special events come in as ISO strings already — just add 1 day for FC exclusivity.
+// Special events come in as ISO strings already - just add 1 day for FC exclusivity.
 function isoToExclusiveEnd(isoDate: string): string {
   const d = new Date(isoDate + "T00:00:00");
   d.setDate(d.getDate() + 1);
@@ -31,10 +31,11 @@ export function buildCalendarEvents(
   allOffWeekends: WeekendDate[],
   nextActiveWeekend: WeekendDate | null,
   specialEvents: CalendarEvent[],
+  allCancelledWeekends: WeekendDate[] = [],
 ): EventInput[] {
   const events: EventInput[] = [];
 
-  // Course weekends (teal) — one dot per day so Saturday and Sunday each get their own marker
+  // Course weekends (teal) - one dot per day so Saturday and Sunday each get their own marker
   allActiveWeekends.forEach((w) => {
     const isNext =
       nextActiveWeekend !== null &&
@@ -57,6 +58,19 @@ export function buildCalendarEvents(
     if (w.startDate.getTime() !== w.endDate.getTime()) {
       events.push({ ...sharedProps, start: toLocalDateStr(w.endDate), end: toExclusiveEnd(w.endDate) });
     }
+  });
+
+  // Cancelled weekends (red) - formerly active courses now marked anulat
+  allCancelledWeekends.forEach((w) => {
+    events.push({
+      title: "Curs anulat",
+      start: toLocalDateStr(w.startDate),
+      end: toExclusiveEnd(w.endDate),
+      allDay: true,
+      display: "block",
+      classNames: ["fc-event-anulat"],
+      extendedProps: { type: "anulat", displayText: w.displayText, description: w.description ?? null },
+    });
   });
 
   // Off weekends (gray)

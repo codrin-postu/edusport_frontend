@@ -2,13 +2,13 @@
 
 import React, { useEffect, useRef } from "react";
 
-const SIZE = 56; // square side in px — no gap
+const SIZE = 56; // square side in px - no gap
 
 // Phase p-ranges
 // PHASE1_S > 0 is intentional: gives a brief pinned idle window before animation begins,
 // and ensures p < PHASE1_S is true at p=0 so registration buttons are interactive.
-const PHASE1_S = 0.12, PHASE1_E = 0.65; // diagonal sweep — (r+c)%2===0
-const PHASE2_S = 0.45, PHASE2_E = 0.82; // L→R gap fill — (r+c)%2===1
+const PHASE1_S = 0.12, PHASE1_E = 0.65; // diagonal sweep - (r+c)%2===0
+const PHASE2_S = 0.45, PHASE2_E = 0.82; // L→R gap fill - (r+c)%2===1
 const REVEAL_S = 0.78, REVEAL_E = 0.98; // children overlay fade-in
 
 // Diagonal wave: slight sine wobble on the TL→BR front
@@ -24,7 +24,7 @@ function rv(p: number, s: number, e: number): number {
 }
 
 interface SquareTransitionProps {
-  background?: React.ReactNode;           // registration content — visible until canvas covers it
+  background?: React.ReactNode;           // registration content - visible until canvas covers it
   bgStyle?: React.CSSProperties;          // solid bg override (e.g. dark gradient for closed state)
   children?: React.ReactNode;             // overlay revealed after wipe completes
   childScrollBudget?: number;             // extra viewport-heights of scroll allocated after wipe
@@ -68,7 +68,7 @@ export default function SquareTransition({
       const regEl = backgroundRef.current?.firstElementChild as HTMLElement | null;
       regOverflowRef.current = Math.max(0, (regEl?.scrollHeight ?? 0) - H);
 
-      // Explicit child scroll budget — no scrollHeight measurement needed.
+      // Explicit child scroll budget - no scrollHeight measurement needed.
       childScrollBudgetPxRef.current = childScrollBudget * H;
 
       // Wrapper = 200vh animation + registration pre-scroll + child scroll budget
@@ -114,7 +114,7 @@ export default function SquareTransition({
 
       ctx.fillStyle = "#fff";
 
-      // Phase 1: (r+c)%2===0 — TL→BR diagonal with sine wobble on the front
+      // Phase 1: (r+c)%2===0 - TL→BR diagonal with sine wobble on the front
       const p1 = rv(p, PHASE1_S, PHASE1_E);
       if (p1 > 0) {
         const front = easeOut(p1) * (cols + rows + 2);
@@ -128,7 +128,7 @@ export default function SquareTransition({
         }
       }
 
-      // Phase 2: (r+c)%2===1 — simple L→R sweep fills the checkerboard gaps
+      // Phase 2: (r+c)%2===1 - simple L→R sweep fills the checkerboard gaps
       const p2 = rv(p, PHASE2_S, PHASE2_E);
       if (p2 > 0) {
         const front = easeOut(p2) * (cols + 2);
@@ -176,15 +176,15 @@ export default function SquareTransition({
   return (
     <div ref={wrapRef} className="relative" style={{ height: "200vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Solid background — fills full viewport, prevents white line */}
+        {/* Solid background - fills full viewport, prevents white line */}
         <div className="absolute inset-0 z-0 bg-edusport-blue" style={bgStyle} />
-        {/* Registration content — interactive at p=0, blocked once animation starts */}
+        {/* Registration content - interactive at p=0, blocked once animation starts */}
         <div ref={backgroundRef} className="absolute inset-0 z-[1]">
           {background}
         </div>
-        {/* Canvas — pointer-events-none so touches reach registration beneath */}
+        {/* Canvas - pointer-events-none so touches reach registration beneath */}
         <canvas ref={canvasRef} className="absolute inset-0 z-[5] w-full h-full pointer-events-none" />
-        {/* Children overlay — revealed imperatively once canvas is fully white */}
+        {/* Children overlay - revealed imperatively once canvas is fully white */}
         <div
           ref={childrenRef}
           className="absolute inset-0 z-10"

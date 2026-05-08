@@ -30,12 +30,27 @@ export interface HomepageRegistrationClosed {
   contactUrl?: string | null;
 }
 
-export interface HomepageAbout {
+export interface HomepageAboutPanel {
   eyebrow?: string | null;
   heading?: string | null;
   body?: string | null;
   ctaLabel?: string | null;
   ctaUrl?: string | null;
+}
+
+export type HomepageNotebookLineStyle = "normal" | "strikethrough" | "scratched";
+
+export interface HomepageNotebookLine {
+  text?: string | null;
+  style?: HomepageNotebookLineStyle | null;
+  indent?: boolean | null;
+  dim?: boolean | null;
+  replacement?: string | null;
+}
+
+export interface HomepageAbout {
+  panels?: HomepageAboutPanel[] | null;
+  notebook?: HomepageNotebookLine[] | null;
 }
 
 export interface HomepageCms {

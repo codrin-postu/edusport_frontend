@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 86400; // 24h — regulations rarely change
+export const revalidate = 86400; // 24h - regulations rarely change
 
 export default async function Page() {
   let categories: RegulationCategory[] = [];
@@ -30,7 +30,7 @@ export default async function Page() {
     );
     categories = data?.categories ?? [];
   } catch {
-    // Fall through with empty array — _View renders an empty state
+    // Fall through with empty array - _View renders an empty state
   }
 
   return <RegulamentPage categories={categories} />;

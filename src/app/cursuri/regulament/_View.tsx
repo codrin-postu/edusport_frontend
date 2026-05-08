@@ -98,7 +98,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                 .reduce((sum, c) => sum + c.rules.length, 0);
               return (
                 <div key={category.title}>
-                  {/* Category header — clickable toggle */}
+                  {/* Category header - clickable toggle */}
                   <button
                     onClick={() => toggle(category.title)}
                     className="w-full flex items-center gap-3 py-4 text-left hover:opacity-70 transition-opacity"

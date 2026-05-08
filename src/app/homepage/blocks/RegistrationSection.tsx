@@ -51,7 +51,7 @@ const RegistrationSection: React.FC<RegistrationSectionProps> = ({ cms }) => {
   const seasonLabel = cms?.seasonLabel ?? "Sezonul 2025–2026";
   const heading = cms?.heading ?? "Sezonul a început!";
   const body = cms?.body ?? "Visezi să aluneci grațios pe gheață? La Școala de Patinaj EduSport te așteptăm într-un mediu prietenos și plin de energie, indiferent dacă ești la primii pași sau vrei să îți perfecționezi tehnica.";
-  const bodySecondary = cms?.bodySecondary ?? "Cursurile sunt deschise pentru toate nivelurile — începători, intermediari și avansați — cu antrenori foști sportivi de performanță. Ne vedem sâmbăta și duminica, 4 octombrie 2025, la patinoarul Cotroceni On Ice din AFI Cotroceni.";
+  const bodySecondary = cms?.bodySecondary ?? "Cursurile sunt deschise pentru toate nivelurile - începători, intermediari și avansați - cu antrenori foști sportivi de performanță. Ne vedem sâmbăta și duminica, 4 octombrie 2025, la patinoarul Cotroceni On Ice din AFI Cotroceni.";
   const scheduleDays = cms?.scheduleDays ?? "Sâmbătă & Duminică";
   const scheduleTimes = cms?.scheduleTimes ?? "10:00–10:50 & 11:00–11:50";
   const locationName = cms?.locationName ?? "AFI Cotroceni";
@@ -67,7 +67,7 @@ const RegistrationSection: React.FC<RegistrationSectionProps> = ({ cms }) => {
       ref={sectionRef}
       className="relative h-full flex flex-col justify-start md:justify-center pt-20 pb-8 bg-edusport-blue"
     >
-          {/* Ghost branding text — right side */}
+          {/* Ghost branding text - right side */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2 hidden md:flex">
             <BoldTextStrip />
           </div>

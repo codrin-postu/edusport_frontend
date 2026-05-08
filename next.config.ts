@@ -49,6 +49,13 @@ const nextConfig: NextConfig = {
 
   // Compression
   compress: true,
+
+  // Tree-shake icon imports to avoid pulling the entire lucide-react package
+  modularizeImports: {
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
+    },
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);

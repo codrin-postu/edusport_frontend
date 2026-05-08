@@ -17,12 +17,21 @@ interface FullCalendarWrapperProps {
   validRangeEnd?: string;
 }
 
+function clampToRange(validStart: string, validEnd: string): string {
+  const today = new Date();
+  const start = new Date(validStart);
+  const end = new Date(validEnd);
+  const clamped = today < start ? start : today >= end ? new Date(end.getFullYear(), end.getMonth() - 1, 1) : today;
+  return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
+}
+
 const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
   events,
-  initialDate = "2025-10-01",
+  initialDate,
   validRangeStart = "2025-10-01",
   validRangeEnd = "2026-06-01",
 }) => {
+  const resolvedInitialDate = initialDate ?? clampToRange(validRangeStart, validRangeEnd);
   const calRef = useRef<FullCalendar>(null);
   const [mobileSheet, setMobileSheet] = useState<{
     events: CursEventInfo[];
@@ -43,7 +52,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
       const toYearMonth = (d: Date) => d.getFullYear() * 12 + d.getMonth();
       setIsCurrentMonth(toYearMonth(today) === toYearMonth(currentStart));
 
-      // validRangeStart/End are "YYYY-MM-DD" strings parsed as UTC — convert to local
+      // validRangeStart/End are "YYYY-MM-DD" strings parsed as UTC - convert to local
       const parseYearMonth = (s: string) => {
         const [year, month] = s.split("-").map(Number);
         return year * 12 + (month - 1);
@@ -55,7 +64,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
     [validRangeStart, validRangeEnd],
   );
 
-  // datesSet fires after every navigation and on mount —
+  // datesSet fires after every navigation and on mount -
   // that's the only place we need to sync. Calling syncHeader() imperatively
   // right after api.prev/next reads the old view before it has updated.
   const handlePrev = useCallback(() => calRef.current?.getApi().prev(), []);
@@ -78,7 +87,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
         ref={calRef}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        initialDate={initialDate}
+        initialDate={resolvedInitialDate}
         validRange={{ start: validRangeStart, end: validRangeEnd }}
         events={events}
         headerToolbar={false}

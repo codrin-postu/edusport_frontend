@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Info, AlertTriangle, CheckCircle2, XCircle, X } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { renderMarkdown } from "@/utils/markdown";
 
 type AnnouncementType = "info" | "warning" | "success" | "error";
 
@@ -99,9 +100,9 @@ export function AnnouncementPopup({ announcement }: AnnouncementPopupProps) {
             {/* Row 1: icon + message + close */}
             <div className="flex items-start gap-3">
               <Icon className={cn("w-4 h-4 shrink-0 mt-0.5", config.iconColor)} />
-              <p className="flex-1 text-sm text-gray-800 leading-snug">
-                {announcement.message}
-              </p>
+              <div className="flex-1 text-sm text-gray-800 leading-snug space-y-2 [&_p]:leading-snug">
+                {renderMarkdown(announcement.message)}
+              </div>
               <button
                 onClick={handleDismiss}
                 aria-label="Închide anunțul"
@@ -111,7 +112,7 @@ export function AnnouncementPopup({ announcement }: AnnouncementPopupProps) {
               </button>
             </div>
 
-            {/* Row 2: CTA button — full width on mobile, auto on desktop */}
+            {/* Row 2: CTA button - full width on mobile, auto on desktop */}
             {announcement.ctaLabel && announcement.ctaUrl && (
               <a
                 href={announcement.ctaUrl}

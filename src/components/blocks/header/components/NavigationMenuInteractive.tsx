@@ -136,7 +136,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                   transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   className="flex"
                 >
-                  {/* Left — Promo card (square) */}
+                  {/* Left - Promo card (square) */}
                   {activeItem!.promo && activeItem!.dropdown!.length > 0 && (
                     <Link
                       href={activeItem!.dropdown![0].href}
@@ -165,7 +165,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                     </Link>
                   )}
 
-                  {/* Right — Links */}
+                  {/* Right - Links */}
                   <div className="flex flex-col py-3 px-2 min-w-[360px]">
                     <p className="px-3 pb-2 text-[10px] font-semibold tracking-widest uppercase text-gray-400">
                       {activeItem!.label}

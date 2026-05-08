@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import type { BlockNode } from "@/lib/strapi-article";
+import type { BlockNode, CategoryKey } from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -27,7 +27,9 @@ function formatDate(iso: string) {
 interface EventData {
   slug: string;
   title: string;
-  date: string;
+  category: CategoryKey;
+  date: string; // posted date (used in the meta row)
+  eventDate?: string; // event datetime (used in the sidebar + EventJsonLd)
   location?: string;
   coverImage?: string;
   excerpt: string;
@@ -35,6 +37,17 @@ interface EventData {
   admissionInfo?: string;
   tags?: string[];
 }
+
+// Singular Romanian descriptors for the supported event-like categories.
+const SINGULAR_LABEL: Partial<Record<CategoryKey, string>> = {
+  evenimente: "Eveniment",
+  competitii: "Competiție",
+};
+
+const SIDEBAR_HEADER: Partial<Record<CategoryKey, string>> = {
+  evenimente: "Detalii eveniment",
+  competitii: "Detalii competiție",
+};
 
 interface Props {
   event: EventData;
@@ -52,7 +65,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       <EventJsonLd
         name={event.title}
         description={event.excerpt}
-        startDate={event.date}
+        startDate={event.eventDate ?? event.date}
         location={event.location}
         image={event.coverImage}
         url={`${siteUrl}/cursuri/evenimente/${event.slug}`}
@@ -64,7 +77,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
           { name: event.title, url: `${siteUrl}/cursuri/evenimente/${event.slug}` },
         ]}
       />
-      {/* Top bar — breadcrumb */}
+      {/* Top bar - breadcrumb */}
       <div className="bg-white border-b border-gray-100 pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
           <nav className="flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-gray-400">
@@ -97,7 +110,9 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
             {/* Main content */}
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-xs font-medium text-edusport-blue">Eveniment</span>
+                <span className="text-xs font-medium text-edusport-blue">
+                  {SINGULAR_LABEL[event.category] ?? "Eveniment"}
+                </span>
                 <span className="text-gray-300">·</span>
                 <span className="text-xs text-gray-400 font-light">{formatDate(event.date)}</span>
               </div>
@@ -121,16 +136,16 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
             <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
               <div className="border border-gray-100 p-6 flex flex-col gap-4">
                 <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
-                  Detalii eveniment
+                  {SIDEBAR_HEADER[event.category] ?? "Detalii eveniment"}
                 </p>
                 <div className="flex flex-col gap-3 text-sm text-gray-600 font-light">
                   <span className="flex items-start gap-3">
                     <CalendarDays className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
-                    {formatDate(event.date)}
+                    {formatDate(event.eventDate ?? event.date)}
                   </span>
                   <span className="flex items-start gap-3">
                     <Clock className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
-                    {new Date(event.date).toLocaleTimeString("ro-RO", {
+                    {new Date(event.eventDate ?? event.date).toLocaleTimeString("ro-RO", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}

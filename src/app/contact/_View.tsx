@@ -77,7 +77,9 @@ const ContactForm: React.FC = () => {
     reason: "",
     message: "",
   });
+  const [botField, setBotField] = useState("");
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -87,13 +89,38 @@ const ContactForm: React.FC = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
+    setErrorMessage("");
 
-    // Placeholder — replace with your actual submission logic
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    setStatus("sent");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, _botField: botField }),
+      });
+      const json = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !json.ok) {
+        setErrorMessage(json.error ?? "Ceva nu a mers. Încearcă din nou.");
+        setStatus("error");
+        return;
+      }
+      setStatus("sent");
+    } catch {
+      setErrorMessage("Conexiune eșuată. Verifică internetul și încearcă din nou.");
+      setStatus("error");
+    }
+  };
+
+  const resetForm = () => {
+    setForm({ name: "", email: "", phone: "", reason: "", message: "" });
+    setBotField("");
+    setErrorMessage("");
+    setStatus("idle");
   };
 
   if (status === "sent") {
@@ -109,16 +136,7 @@ const ContactForm: React.FC = () => {
           Îți mulțumim pentru mesaj. Te vom contacta în cel mai scurt timp.
         </p>
         <button
-          onClick={() => {
-            setForm({
-              name: "",
-              email: "",
-              phone: "",
-              reason: "",
-              message: "",
-            });
-            setStatus("idle");
-          }}
+          onClick={resetForm}
           className="mt-2 text-sm text-edusport-blue underline underline-offset-4 hover:opacity-70 transition-opacity"
         >
           Trimite un alt mesaj
@@ -129,6 +147,24 @@ const ContactForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Honeypot — visually hidden, real users never fill this. */}
+      <input
+        type="text"
+        name="_botField"
+        tabIndex={-1}
+        autoComplete="off"
+        value={botField}
+        onChange={(e) => setBotField(e.target.value)}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          width: 1,
+          height: 1,
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
       {/* Name */}
       <div>
         <FieldLabel htmlFor="name">Nume complet *</FieldLabel>
@@ -198,6 +234,16 @@ const ContactForm: React.FC = () => {
           className={cn(inputBase, "resize-none")}
         />
       </div>
+
+      {/* Error */}
+      {status === "error" && errorMessage && (
+        <div
+          role="alert"
+          className="px-4 py-3 border border-red-200 bg-red-50 text-sm text-red-700"
+        >
+          {errorMessage}
+        </div>
+      )}
 
       {/* Submit */}
       <button
@@ -275,7 +321,7 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
       <section className="relative z-10 bg-white">
         <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Left — contact info */}
+            {/* Left - contact info */}
             <div className="flex flex-col gap-8">
               <SectionHeader
                 eyebrow="Datele noastre"
@@ -296,7 +342,7 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
               </div>
             </div>
 
-            {/* Right — form */}
+            {/* Right - form */}
             <div className="bg-gray-50 p-6 md:p-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-1">
                 Trimite-ne un mesaj

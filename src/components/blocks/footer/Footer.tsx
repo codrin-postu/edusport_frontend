@@ -166,7 +166,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
         </div>
       </div>
 
-      {/* WhatsApp — 4th column */}
+      {/* WhatsApp - 4th column */}
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">

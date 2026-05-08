@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { resolveAssetUrl } from "@/utils/markdown";
 import TeamPage from "./_View";
 
 export const metadata: Metadata = {
@@ -15,8 +16,6 @@ export const metadata: Metadata = {
     images: [{ url: "/images/courses_generated.png", width: 1200, height: 630, alt: "EduSport - Școala de Patinaj" }],
   },
 };
-
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 
 interface StrapiPhoto {
   url: string;
@@ -49,7 +48,7 @@ export default async function Page() {
     name: m.name,
     role: m.role ?? "",
     bio: m.bio ?? "",
-    image: m.photo?.url ? `${STRAPI_URL}${m.photo.url}` : undefined,
+    image: m.photo?.url ? resolveAssetUrl(m.photo.url) : undefined,
     teaches: m.groups ?? [],
   }));
 

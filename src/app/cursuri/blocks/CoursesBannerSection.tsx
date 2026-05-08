@@ -1,6 +1,7 @@
 import Link from "@/components/ui/link";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { Button } from "@/components/ui/button";
+import { Pill } from "@/components/ui/pill";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
@@ -25,22 +26,19 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
   locationUrl,
 }) => {
   return (
-    <PageHeroSection title={["SCOALA", "DE", "PATINAJ"]} variant={isRegistrationOpen ? "blue" : "dark"}>
+    <PageHeroSection
+      title={["SCOALA", "DE", "PATINAJ"]}
+      variant={isRegistrationOpen ? "blue" : "dark"}
+    >
       {/* Season + pill */}
       <div className="flex items-center gap-3 flex-wrap">
         <span className="text-xs font-semibold tracking-widest uppercase text-white/50">
           Sezonul {currentSeason}
         </span>
         {isRegistrationOpen ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-400/30 text-green-300 text-xs font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            Înscrieri deschise
-          </span>
+          <Pill variant="success" shape="slanted">Înscrieri deschise</Pill>
         ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/20 border border-red-400/30 text-red-300 text-xs font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-            Înscrieri închise
-          </span>
+          <Pill variant="error" shape="slanted">Înscrieri închise</Pill>
         )}
       </div>
 

@@ -4,6 +4,7 @@ import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "@/components/ui/link";
 import { PATHS } from "@/components/ui/skating-figure";
+import type { HomepageAboutPanel, HomepageNotebookLine } from "../_types";
 
 const NOTEBOOK_LINES = 12;
 
@@ -17,13 +18,13 @@ interface NotebookLine {
   replacement?: string;
 }
 
-const NOTEBOOK_CONTENT: NotebookLine[] = [
+const DEFAULT_NOTEBOOK: NotebookLine[] = [
   { text: "Plan", style: "normal" },
   { text: "", style: "normal" },
   { text: "Muzică:", style: "normal", dim: true },
-  { text: "Swan Lake — Tchaikovsky", style: "strikethrough", indent: true },
+  { text: "Swan Lake - Tchaikovsky", style: "strikethrough", indent: true },
   {
-    text: "Clair de Lune — Debussy",
+    text: "Clair de Lune - Debussy",
     style: "scratched",
     indent: true,
     replacement: "Comptine d'un autre été",
@@ -50,11 +51,11 @@ type Panel = {
   ctaUrl: string;
 };
 
-const PANELS: Panel[] = [
+const DEFAULT_PANELS: Panel[] = [
   {
     eyebrow: "Cine suntem",
     heading: "Asociație non-profit\npentru sport și educație",
-    body: "Fondată în 2012, EduSport este o asociație non-profit dedicată dezvoltării sportive și educative a tinerilor — de la primii pași pe gheață până la podiumuri naționale.",
+    body: "Fondată în 2012, EduSport este o asociație non-profit dedicată dezvoltării sportive și educative a tinerilor - de la primii pași pe gheață până la podiumuri naționale.",
     ctaLabel: "Despre noi",
     ctaUrl: "/despre-noi",
   },
@@ -74,14 +75,47 @@ const PANELS: Panel[] = [
   },
 ];
 
+// Per-field fallback to the default for that index so an admin who fills out
+// only a couple of fields still gets a coherent panel rendered.
+function resolvePanels(cms: HomepageAboutPanel[] | null | undefined): Panel[] {
+  if (!cms) return DEFAULT_PANELS;
+  return DEFAULT_PANELS.map((def, i) => {
+    const p = cms[i];
+    if (!p) return def;
+    return {
+      eyebrow: p.eyebrow?.trim() || def.eyebrow,
+      heading: p.heading?.trim() || def.heading,
+      body: p.body?.trim() || def.body,
+      ctaLabel: p.ctaLabel?.trim() || def.ctaLabel,
+      ctaUrl: p.ctaUrl?.trim() || def.ctaUrl,
+    };
+  });
+}
+
+function resolveNotebook(cms: HomepageNotebookLine[] | null | undefined): NotebookLine[] {
+  if (!cms || cms.length === 0) return DEFAULT_NOTEBOOK;
+  return cms.map((l) => ({
+    text: l.text ?? "",
+    style: (l.style === "strikethrough" || l.style === "scratched" ? l.style : "normal") as LineStyle,
+    indent: !!l.indent,
+    dim: !!l.dim,
+    replacement: l.replacement ?? undefined,
+  }));
+}
+
 interface AboutUsSectionProps {
   /** 0–1 scroll progress from SquareTransition's post-wipe phase, drives panel switching */
   scrollProgress?: number;
-  cms?: unknown;
+  /** CMS-driven panel content; falls back per-field to the default copy. */
+  panels?: HomepageAboutPanel[] | null;
+  /** CMS-driven notebook lines for the doodled "Plan" sidebar; falls back to defaults. */
+  notebook?: HomepageNotebookLine[] | null;
 }
 
-const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) => {
-  // Derive step purely from scroll progress — no state, no scroll listener needed.
+const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0, panels: cmsPanels, notebook: cmsNotebook }) => {
+  const PANELS = React.useMemo(() => resolvePanels(cmsPanels), [cmsPanels]);
+  const NOTEBOOK = React.useMemo(() => resolveNotebook(cmsNotebook), [cmsNotebook]);
+  // Derive step purely from scroll progress - no state, no scroll listener needed.
   const step = Math.min(2, Math.floor(scrollProgress * 3));
 
   return (
@@ -101,9 +135,9 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
         <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 w-full">
           <div className="md:grid md:grid-cols-2 md:gap-12 lg:gap-16 md:items-center">
 
-            {/* LEFT: Notebook — gradient-faded on mobile (~55vw, max 300px), full column on desktop */}
+            {/* LEFT: Notebook - gradient-faded on mobile (~55vw, max 300px), full column on desktop */}
             <div className="relative overflow-hidden h-[55vw] max-h-[300px] md:h-auto md:overflow-visible md:order-first">
-              {/* Gradient overlay — fades notebook into white at bottom, mobile only */}
+              {/* Gradient overlay - fades notebook into white at bottom, mobile only */}
               <div
                 className="absolute bottom-0 left-0 right-0 h-32 md:hidden pointer-events-none z-10"
                 style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.55) 55%, white 100%)" }}
@@ -154,7 +188,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
                 {/* Ruled lines */}
                 <div className="pl-10">
                   <div className="pt-8 pb-4">
-                    {Array.from({ length: NOTEBOOK_LINES }).map((_, i) => (
+                    {Array.from({ length: Math.max(NOTEBOOK_LINES, NOTEBOOK.length) }).map((_, i) => (
                       <div key={i} className="h-9 border-b border-gray-100" />
                     ))}
                   </div>
@@ -162,7 +196,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
 
                 {/* Text content overlaid on lines */}
                 <div className="absolute inset-0 pt-8 pb-4 pl-[4.5rem] pr-5 flex flex-col pointer-events-none">
-                  {NOTEBOOK_CONTENT.map((line, i) => (
+                  {NOTEBOOK.map((line, i) => (
                     <div key={i} className="h-9 flex items-center relative">
                       {line.text && (
                         <span
@@ -272,7 +306,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0 }) =
                     {panel.ctaLabel}
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
-                  {/* Step counter — decorative only */}
+                  {/* Step counter - decorative only */}
                   <div className="flex items-center gap-2.5 mt-4 md:mt-7">
                     <div className="w-5 h-px bg-gray-300" />
                     <span className="text-[10px] text-gray-300 uppercase tracking-[0.15em] select-none">

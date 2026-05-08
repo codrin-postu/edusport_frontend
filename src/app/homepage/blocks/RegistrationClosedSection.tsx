@@ -46,7 +46,7 @@ interface RegistrationClosedSectionProps {
 const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ cms }) => {
   const seasonLabel = cms?.seasonLabel ?? "Sezonul 2025–2026";
   const heading = cms?.heading ?? "Ne vedem în următorul sezon!";
-  const body = cms?.body ?? "Înscrierile pentru sezonul curent sunt închise. Urmărește-ne pentru vești despre sezonul următor — anunțurile despre deschiderea înscrierilor apar primele pe canalul nostru de WhatsApp și pe rețelele sociale.";
+  const body = cms?.body ?? "Înscrierile pentru sezonul curent sunt închise. Urmărește-ne pentru vești despre sezonul următor - anunțurile despre deschiderea înscrierilor apar primele pe canalul nostru de WhatsApp și pe rețelele sociale.";
   const whatsappLabel = cms?.whatsappLabel ?? "Alătură-te pe WhatsApp";
   const whatsappUrl = cms?.whatsappUrl ?? "https://whatsapp.com/channel/placeholder";
   const contactLabel = cms?.contactLabel ?? "Contactează-ne";
@@ -60,7 +60,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
           "linear-gradient(135deg, oklch(0.18 0.04 264) 0%, oklch(0.28 0.06 264) 60%, oklch(0.32 0.05 240) 100%)",
       }}
     >
-          {/* Ghost branding text — right side */}
+          {/* Ghost branding text - right side */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2 hidden md:flex">
             <BoldTextStrip />
           </div>

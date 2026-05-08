@@ -8,14 +8,10 @@ export const PROGRAM_PAGE_DATA: ProgramPageData = {
   scheduleGroups: [
     {
       timeSlot: "10:00 - 10:50",
-      schedule: "Sâmbătă și Duminică",
-      duration: "50 minute",
       courses: ["Primii Pași", "Intermediari Silver", "Avansați Silver"],
     },
     {
       timeSlot: "11:00 - 11:50",
-      schedule: "Sâmbătă și Duminică",
-      duration: "50 minute",
       courses: ["Începători", "Intermediari Bronze", "Avansați Bronze"],
     },
   ],

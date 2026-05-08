@@ -4,7 +4,8 @@ import Link from "@/components/ui/link";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { ARTICLES, CATEGORY_LABELS, type CategoryKey } from "@/app/noutati/_data";
+import { CATEGORY_LABELS, type CategoryKey } from "@/app/noutati/_data";
+import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
@@ -17,23 +18,7 @@ export interface LatestArticleData {
   category?: CategoryKey;
 }
 
-const FALLBACK_ARTICLES: LatestArticleData[] = [...ARTICLES]
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 5)
-  .map((a) => ({
-    title: a.title,
-    excerpt: a.description,
-    date: new Date(a.date).toLocaleDateString("ro-RO", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }),
-    image: a.coverImage,
-    slug: a.slug,
-    category: a.category,
-  }));
-
-/* ── Loop flourish SVG — left variant ── */
+/* ── Loop flourish SVG - left variant ── */
 const LoopFlourish: React.FC = () => (
   <svg
     aria-hidden
@@ -103,7 +88,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
   index,
 }) => (
   <div className="relative w-full flex-[5]">
-    {/* Number — desktop only */}
+    {/* Number - desktop only */}
     <div className="hidden lg:flex absolute top-4 left-0 -translate-x-full pr-5 flex-col items-center leading-none select-none">
       <span
         className="text-branding-font text-edusport-blue leading-none"
@@ -135,6 +120,9 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
               fill
               loading="lazy"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              placeholder="blur"
+              blurDataURL={SHIMMER_DATA_URL}
             />
           )}
           {/* Category badge */}
@@ -259,8 +247,8 @@ interface LatestArticleSectionProps {
 }
 
 const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles }) => {
-  const displayArticles = articles && articles.length > 0 ? articles : FALLBACK_ARTICLES;
-  const [hero, ...rest] = displayArticles;
+  if (!articles || articles.length === 0) return null;
+  const [hero, ...rest] = articles;
   const listArticles = rest.slice(0, 4);
 
   return (

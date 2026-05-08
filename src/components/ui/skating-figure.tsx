@@ -4,14 +4,14 @@ import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import React from "react";
 
 /* ------------------------------------------------------------------ */
-/* Path definitions — all in a 100×200 viewBox                         */
+/* Path definitions - all in a 100×200 viewBox                         */
 /* ------------------------------------------------------------------ */
 
 // Each path goes top-to-bottom within the 100×200 space.
 // Origin: top-center area. All hand-crafted cubic beziers.
 
 export const PATHS: Record<string, string> = {
-  // A smooth curve right then kinks back left — the classic "3" shape
+  // A smooth curve right then kinks back left - the classic "3" shape
   "3-turn":
     "M 50 10 C 75 10 85 35 75 55 C 65 75 45 78 45 78 C 45 78 65 82 75 105 C 85 128 70 155 45 165",
 
@@ -27,7 +27,7 @@ export const PATHS: Record<string, string> = {
   "c-step":
     "M 65 10 C 90 25 90 80 65 100 C 90 120 90 160 65 175",
 
-  // An S-curve — curves one way then the other
+  // An S-curve - curves one way then the other
   "s-step":
     "M 40 10 C 75 15 80 50 60 75 C 40 100 25 130 60 165",
 
@@ -35,7 +35,7 @@ export const PATHS: Record<string, string> = {
   counter:
     "M 50 10 C 25 10 15 40 30 65 C 40 82 55 85 55 85 C 55 85 30 90 20 115 C 10 140 25 165 55 175",
 
-  // Two 3-turns back to back — curves right, kinks, curves left, kinks again
+  // Two 3-turns back to back - curves right, kinks, curves left, kinks again
   "3-turn-combo":
     "M 30 5 C 60 5 72 28 62 48 C 52 68 35 70 35 70 C 35 70 55 74 68 95 C 80 115 72 138 55 150 C 38 162 20 158 20 158 C 20 158 38 162 50 182 C 62 200 58 175 45 190",
 };
@@ -126,7 +126,7 @@ export const SkatingFigureLine: React.FC<SkatingFigureLineProps> = ({
 };
 
 /* ------------------------------------------------------------------ */
-/* Scroll-driven wrapper — convenience component                        */
+/* Scroll-driven wrapper - convenience component                        */
 /* ------------------------------------------------------------------ */
 
 interface ScrollSkatingFigureProps extends SkatingFigureLineProps {

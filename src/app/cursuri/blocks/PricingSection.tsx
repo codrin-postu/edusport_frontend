@@ -59,7 +59,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 
           {/* 3-column grid */}
           <div className="grid lg:grid-cols-3 gap-5 items-stretch">
-            {/* Promo card — blue branding */}
+            {/* Promo card - blue branding */}
             <div
               className="relative overflow-hidden rounded-3xl p-10 py-12 flex flex-col gap-6 min-h-[520px]"
               style={{
@@ -106,7 +106,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               </div>
             </div>
 
-            {/* Pricing cards — 2-col at md, dissolve into parent 3-col at lg */}
+            {/* Pricing cards - 2-col at md, dissolve into parent 3-col at lg */}
             <div className="grid md:grid-cols-2 lg:contents gap-5 items-stretch">
               {pricingData === null || !members || !nonMembers ? (
                 <div className="md:col-span-2 lg:col-span-2 rounded-3xl bg-white border border-gray-100 flex items-center justify-center min-h-[520px] px-8">
@@ -117,7 +117,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                 </div>
               ) : (
                 <>
-                  {/* Members card — outlined */}
+                  {/* Members card - outlined */}
                   <div className="relative rounded-3xl bg-white border-2 border-edusport-blue flex flex-col overflow-hidden min-h-[520px]">
                     <div className="bg-edusport-blue px-6 flex items-center justify-between shrink-0" style={{ height: 50 }}>
                       <span className="text-xs font-semibold tracking-widest uppercase text-white">
@@ -165,7 +165,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                     )}
                   </div>
 
-                  {/* Non-members card — plain */}
+                  {/* Non-members card - plain */}
                   <div className="rounded-3xl bg-white border border-gray-100 flex flex-col overflow-hidden min-h-[520px]">
                     <div className="bg-gray-50 border-b border-gray-100 px-6 flex items-center shrink-0" style={{ height: 50 }}>
                       <span className="text-xs font-semibold tracking-widest uppercase text-gray-500">

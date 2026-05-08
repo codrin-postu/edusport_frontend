@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { strapiMediaUrl } from "@/lib/strapi-article";
+import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
 import type {
   BlockNode,
   TextNode,
@@ -139,6 +140,9 @@ function RenderBlock({ node }: { node: BlockNode }) {
               alt={img.image.alternativeText ?? ""}
               fill
               className="object-cover"
+              sizes="(min-width: 1024px) 768px, 100vw"
+              placeholder="blur"
+              blurDataURL={SHIMMER_DATA_URL}
             />
           </div>
           {caption && (
