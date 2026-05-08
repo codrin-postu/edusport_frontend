@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "@/components/ui/link";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
@@ -7,7 +5,7 @@ import React from "react";
 import { CATEGORY_LABELS, type CategoryKey } from "@/app/noutati/_data";
 import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
+import { RevealOnScroll } from "./_animations";
 
 export interface LatestArticleData {
   title: string;
@@ -214,19 +212,16 @@ const ArticleList: React.FC<{ articles: LatestArticleData[] }> = ({ articles }) 
   <div className="flex-[4] w-full lg:w-auto flex flex-col justify-between">
     <div>
       {articles.map((article, i) => (
-        <motion.div
+        <RevealOnScroll
           key={article.slug}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 + i * 0.15 }}
-          viewport={{ once: true, margin: "-80px" }}
+          delay={0.25 + i * 0.15}
         >
           <ArticleListItem
             {...article}
             index={i + 2}
             isLast={i === articles.length - 1}
           />
-        </motion.div>
+        </RevealOnScroll>
       ))}
     </div>
     <div className="mt-6 flex justify-end">
@@ -262,15 +257,9 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
 
           {/* Grid: featured left + list right */}
           <div className="flex gap-10 items-start flex-col lg:flex-row">
-            <motion.div
-              className="w-full flex-[5]"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-              viewport={{ once: true, margin: "-80px" }}
-            >
+            <RevealOnScroll className="w-full flex-[5]" delay={0.1}>
               <FeaturedCard {...hero} index={1} />
-            </motion.div>
+            </RevealOnScroll>
             <ArticleList articles={listArticles} />
           </div>
         </div>

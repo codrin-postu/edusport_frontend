@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchArticlesPaginated, strapiMediaUrl } from "@/lib/strapi-article";
 import HomePage from "./homepage/_View";
+import LatestArticleSection, { type LatestArticleData } from "./homepage/blocks/LatestArticleSection";
+import RegistrationSection from "./homepage/blocks/RegistrationSection";
+import RegistrationClosedSection from "./homepage/blocks/RegistrationClosedSection";
 import type { HomepageCms } from "./homepage/_types";
-import type { LatestArticleData } from "./homepage/blocks/LatestArticleSection";
 
 export const metadata: Metadata = {
   title: { absolute: "EduSport - Școala de Patinaj" },
@@ -63,7 +65,9 @@ export default async function Page() {
     <HomePage
       registrationOpen={registrationOpen}
       cms={cms}
-      latestArticles={latestArticles}
+      registrationSlot={<RegistrationSection cms={cms.registration} />}
+      registrationClosedSlot={<RegistrationClosedSection cms={cms.registrationClosed} />}
+      latestArticlesSlot={<LatestArticleSection articles={latestArticles} />}
     />
   );
 }

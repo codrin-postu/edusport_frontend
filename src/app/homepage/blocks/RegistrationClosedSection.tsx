@@ -1,39 +1,9 @@
-"use client";
-
 import Link from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "motion/react";
 import React from "react";
+import { BoldTextStripClient } from "./_animations";
 import type { HomepageRegistrationClosed } from "../_types";
-
-/* ------------------------------------------------------------------ */
-/* Ghost branding text                                                  */
-/* ------------------------------------------------------------------ */
-
-const BoldTextStrip: React.FC = () => {
-  const words = ["SCOALA", "DE", "PATINAJ"];
-  return (
-    <div className="flex flex-col gap-0 items-end opacity-[0.1] pointer-events-none select-none">
-      {words.map((word, i) => (
-        <motion.span
-          key={word}
-          className="text-branding-font text-white leading-none"
-          style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)" }}
-          initial={{ x: 60, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{
-            delay: 0.15 + i * 0.1,
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </div>
-  );
-};
 
 /* ------------------------------------------------------------------ */
 /* Main section                                                        */
@@ -62,7 +32,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
     >
           {/* Ghost branding text - right side */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2 hidden md:flex">
-            <BoldTextStrip />
+            <BoldTextStripClient />
           </div>
 
           <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">

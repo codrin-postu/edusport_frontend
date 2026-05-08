@@ -1,6 +1,9 @@
 import type { ProgramPageData } from "./_types";
 
 export const PROGRAM_PAGE_DATA: ProgramPageData = {
+  bannerTitle: "Program Cursuri",
+  bannerSubtitle:
+    "Orarul sesiunilor pe grupe de vârstă și nivel. Verifică weekendurile cu cursuri în calendarul de mai jos.",
   seasonLabel: "2025–2026",
   seasonStart: "2025-10",
   seasonEnd: "2026-05",
