@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { FieldLabel, inputBase, SelectField } from "@/components/ui/form-field";
+import { FieldLabel, inputBase } from "@/components/ui/form-field";
+import { Select } from "@/components/ui/select";
 import SectionHeader from "@/components/ui/section-header";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
@@ -210,15 +211,20 @@ const ContactForm: React.FC = () => {
       </div>
 
       {/* Reason */}
-      <SelectField
-        id="reason"
-        name="reason"
-        label="Motivul contactării *"
-        required
-        value={form.reason}
-        onChange={handleChange}
-        options={CONTACT_REASONS}
-      />
+      <div>
+        <FieldLabel htmlFor="reason">Motivul contactării *</FieldLabel>
+        <Select
+          id="reason"
+          name="reason"
+          value={form.reason}
+          onValueChange={(value) =>
+            setForm((prev) => ({ ...prev, reason: value }))
+          }
+          options={CONTACT_REASONS}
+          placeholder="Selectează motivul contactării..."
+          required
+        />
+      </div>
 
       {/* Message */}
       <div>

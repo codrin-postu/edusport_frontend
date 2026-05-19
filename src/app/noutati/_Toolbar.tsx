@@ -1,15 +1,9 @@
 "use client";
 
-import { cn } from "@/utils/cn";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import React, { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, ChevronDown } from "lucide-react";
+import { Search } from "lucide-react";
+import { Select } from "@/components/ui/select";
 import { CATEGORIES, buildUrl } from "./_helpers";
 import type { CategoryKey } from "./_data";
 
@@ -30,7 +24,6 @@ export default function Toolbar({
   }
 
   const isFiltered = currentCategory !== "toate";
-  const activeLabel = CATEGORIES.find((c) => c.key === currentCategory)?.label;
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
@@ -40,42 +33,21 @@ export default function Toolbar({
         navigate={navigate}
       />
       <div className="flex items-center gap-3">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="group flex items-center gap-2 min-w-[180px] pl-3 pr-8 py-2.5 text-sm border border-gray-200 bg-gray-50 text-gray-600 outline-none cursor-pointer transition-colors relative">
-              {activeLabel}
-              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 transition-transform group-data-[state=open]:rotate-180" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            sideOffset={1}
-            className="w-[var(--radix-dropdown-menu-trigger-width)] max-w-[calc(100vw-2rem)] min-w-0 bg-white border-gray-200 shadow-lg rounded-none p-0"
-          >
-            {CATEGORIES.map((cat) => (
-              <DropdownMenuItem
-                key={cat.key}
-                onSelect={() =>
-                  navigate(
-                    buildUrl({
-                      page: 1,
-                      category: cat.key,
-                      search: currentSearch,
-                    }),
-                  )
-                }
-                className={cn(
-                  "rounded-none cursor-pointer px-3 py-2 text-sm transition-colors",
-                  currentCategory === cat.key
-                    ? "bg-edusport-blue/5 text-edusport-blue font-medium focus:bg-edusport-blue/5 focus:text-edusport-blue"
-                    : "text-gray-600 focus:bg-gray-50 focus:text-gray-600",
-                )}
-              >
-                {cat.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Select
+          value={currentCategory}
+          onValueChange={(value) =>
+            navigate(
+              buildUrl({
+                page: 1,
+                category: value as CategoryKey | "toate",
+                search: currentSearch,
+              }),
+            )
+          }
+          options={CATEGORIES.map((c) => ({ value: c.key, label: c.label }))}
+          size="compact"
+          className="min-w-[180px]"
+        />
 
         {isFiltered && (
           <button
