@@ -1,4 +1,12 @@
-export type CalendarEventType = "curs" | "liber" | "anulat" | "holiday" | "vacation" | "eveniment" | "concurs";
+export type CalendarEventType =
+  | "curs"
+  | "liber"
+  | "anulat"
+  | "holiday"
+  | "vacation"
+  | "eveniment"
+  | "concurs"
+  | "curs-special";
 
 export interface CalendarEvent {
   type: CalendarEventType;
@@ -6,6 +14,10 @@ export interface CalendarEvent {
   endDate: string;   // "YYYY-MM-DD" (inclusive)
   title?: string | null;
   description?: string | null; // shown in tooltip/mobile sheet (e.g. "10:00–10:50 · 11:00–11:50")
+  /** "curs-special" only - label shown on the calendar tile. */
+  courseLabel?: string | null;
+  /** "curs-special" only - e.g. "10:00–11:30". */
+  timeSlot?: string | null;
 }
 
 export interface ScheduleGroup {

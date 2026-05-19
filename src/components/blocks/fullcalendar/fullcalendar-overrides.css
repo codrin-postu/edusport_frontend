@@ -229,11 +229,11 @@
   color: oklch(0.24 0.10 85) !important;
 }
 
-/* School vacations - indigo/purple */
+/* School vacations - same amber as holidays */
 .fc-event-vacation {
-  background-color: oklch(0.78 0.12 280) !important;
-  border-color: oklch(0.60 0.16 280) !important;
-  color: oklch(0.25 0.10 280) !important;
+  background-color: oklch(0.78 0.16 85) !important;
+  border-color: oklch(0.62 0.19 85) !important;
+  color: oklch(0.24 0.10 85) !important;
 }
 
 /* Eveniment - orange */
@@ -248,6 +248,21 @@
   background-color: oklch(0.78 0.14 15) !important;
   border-color: oklch(0.62 0.20 15) !important;
   color: oklch(0.25 0.14 15) !important;
+}
+
+/* Curs special - indigo/purple, distinct from regular weekend cursuri */
+.fc-event-curs-special {
+  background-color: oklch(0.78 0.12 280) !important;
+  border-color: oklch(0.60 0.16 280) !important;
+  color: oklch(0.25 0.10 280) !important;
+}
+
+/* Curs anulat - red, struck-through */
+.fc-event-anulat {
+  background-color: oklch(0.65 0.22 25) !important;
+  border-color: oklch(0.55 0.24 25) !important;
+  color: oklch(0.98 0.02 25) !important;
+  text-decoration: line-through;
 }
 
 /* Cursuri event - inline layout */
@@ -284,6 +299,7 @@
   flex-direction: column;
   gap: 6px;
   min-width: 160px;
+  max-width: min(320px, calc(100vw - 32px));
   pointer-events: auto;
   animation: fc-tooltip-in 0.12s ease both;
 }
@@ -294,7 +310,7 @@
   flex-direction: row;
   gap: 14px;
   align-items: stretch;
-  width: 540px;
+  width: 420px;
   max-width: calc(100vw - 32px);
 }
 

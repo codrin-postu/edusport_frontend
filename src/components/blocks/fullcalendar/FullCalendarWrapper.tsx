@@ -105,7 +105,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
             return <CursEvent title={info.event.title} description={description ?? undefined} />;
           }
           // Special events with a description get a hover tooltip (no regulament link)
-          if (description && (type === "holiday" || type === "vacation" || type === "eveniment" || type === "concurs")) {
+          if (description && (type === "holiday" || type === "vacation" || type === "eveniment" || type === "concurs" || type === "anulat" || type === "curs-special")) {
             return <SpecialEventWithTooltip title={info.event.title} description={description} />;
           }
           return true;

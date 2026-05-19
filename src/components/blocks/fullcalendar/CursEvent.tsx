@@ -26,11 +26,17 @@ const DesktopTooltip: React.FC<{
     { top: pos.topAbove, left: pos.left, below: false },
   );
 
+  const clampPassesRef = useRef(0);
+
   useLayoutEffect(() => {
+    clampPassesRef.current = 0;
     setPlacement({ top: pos.topAbove, left: pos.left, below: false });
   }, [pos.topAbove, pos.left]);
 
   useLayoutEffect(() => {
+    // Cap at 2 passes to avoid oscillation when the tooltip is wider than
+    // the usable viewport (both edges overflow → would loop forever).
+    if (clampPassesRef.current >= 2) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -38,25 +44,22 @@ const DesktopTooltip: React.FC<{
     let nextLeft = placement.left;
     let nextBelow = placement.below;
 
-    // Flip vertical if the tooltip overflows the top of the viewport.
     if (!nextBelow && rect.top < VIEWPORT_MARGIN) {
       nextTop = pos.topBelow;
       nextBelow = true;
     }
 
-    // Clamp horizontal - width does not change between above/below placements.
-    if (rect.right > window.innerWidth - VIEWPORT_MARGIN) {
-      nextLeft -= rect.right - (window.innerWidth - VIEWPORT_MARGIN);
-    }
-    if (rect.left < VIEWPORT_MARGIN) {
+    const maxRight = window.innerWidth - VIEWPORT_MARGIN;
+    if (rect.right > maxRight) {
+      nextLeft -= rect.right - maxRight;
+    } else if (rect.left < VIEWPORT_MARGIN) {
       nextLeft += VIEWPORT_MARGIN - rect.left;
     }
 
     if (nextTop !== placement.top || nextLeft !== placement.left || nextBelow !== placement.below) {
+      clampPassesRef.current += 1;
       setPlacement({ top: nextTop, left: nextLeft, below: nextBelow });
     }
-    // Only re-run when the source position shifts; placement's own update above
-    // settles within at most one extra render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placement.top, placement.left, placement.below, pos.topBelow]);
 
@@ -110,8 +113,8 @@ function useTooltip() {
     if (anchorRef.current) {
       const rect = anchorRef.current.getBoundingClientRect();
       setPos({
-        topAbove: rect.top - 8,
-        topBelow: rect.bottom + 8,
+        topAbove: rect.top - 4,
+        topBelow: rect.bottom + 4,
         left: rect.left,
       });
     }

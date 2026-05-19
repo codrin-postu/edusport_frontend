@@ -39,7 +39,12 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
 
   const specialEvents = useMemo(
     () => events.filter(
-      (e) => e.type === "holiday" || e.type === "vacation" || e.type === "eveniment" || e.type === "concurs",
+      (e) =>
+        e.type === "holiday" ||
+        e.type === "vacation" ||
+        e.type === "eveniment" ||
+        e.type === "concurs" ||
+        e.type === "curs-special",
     ),
     [events],
   );

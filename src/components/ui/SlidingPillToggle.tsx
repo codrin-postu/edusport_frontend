@@ -13,6 +13,7 @@ interface SlidingPillToggleProps<T extends string> {
   value: T;
   onChange: (value: T) => void;
   className?: string;
+  disabled?: boolean;
 }
 
 function SlidingPillToggle<T extends string>({
@@ -20,9 +21,11 @@ function SlidingPillToggle<T extends string>({
   value,
   onChange,
   className,
+  disabled,
 }: SlidingPillToggleProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -35,12 +38,17 @@ function SlidingPillToggle<T extends string>({
       width: activeBtn.offsetWidth,
       transform: `translateX(${activeBtn.offsetLeft}px)`,
     });
+    setReady(true);
   }, [value, options]);
+
+  const handleChange = disabled ? () => {} : onChange;
 
   return (
     <div
+      aria-disabled={disabled || undefined}
       className={cn(
         "relative inline-flex rounded-full border border-gray-200 bg-white p-1 shadow-sm",
+        disabled && "pointer-events-none opacity-60",
         className,
       )}
     >
@@ -56,12 +64,14 @@ function SlidingPillToggle<T extends string>({
         {options.map((option) => (
           <button
             key={option.value}
-            onClick={() => onChange(option.value)}
+            onClick={() => handleChange(option.value)}
             className={cn(
               "relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full select-none",
-              value === option.value
-                ? "text-white"
-                : "text-gray-500 hover:text-gray-700",
+              !ready
+                ? "text-gray-500"
+                : value === option.value
+                  ? "text-white"
+                  : "text-gray-500 hover:text-gray-700",
             )}
           >
             {option.label}

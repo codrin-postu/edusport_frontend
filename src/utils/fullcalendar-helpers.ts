@@ -107,18 +107,29 @@ export function buildCalendarEvents(
         classNames = ["fc-event-concurs"];
         defaultTitle = "Concurs";
         break;
+      case "curs-special":
+        classNames = ["fc-event-curs-special"];
+        defaultTitle = "Curs special";
+        break;
       default:
         classNames = ["fc-event-holiday"];
         defaultTitle = "Special";
     }
+    const isCursSpecial = e.type === "curs-special";
+    const tileTitle = isCursSpecial
+      ? (e.courseLabel?.trim() || e.title?.trim() || defaultTitle)
+      : (e.title ?? defaultTitle);
+    const tooltipDescription = isCursSpecial && e.timeSlot
+      ? `**${e.timeSlot}**${e.description ? `\n\n${e.description}` : ""}`
+      : e.description ?? null;
     events.push({
-      title: e.title ?? defaultTitle,
+      title: tileTitle,
       start: e.startDate,
       end: isoToExclusiveEnd(e.endDate),
       allDay: true,
       display: "block",
       classNames,
-      extendedProps: { type: e.type, description: e.description ?? null },
+      extendedProps: { type: e.type, description: tooltipDescription },
     });
   });
 

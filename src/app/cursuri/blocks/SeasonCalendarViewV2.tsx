@@ -8,7 +8,8 @@ import { buildCalendarEvents } from "@/utils/fullcalendar-helpers";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { renderMarkdown } from "@/utils/markdown";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
@@ -81,19 +82,6 @@ function buildGroupedWeekends(
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const LegendDot: React.FC<{ color: string; label: string }> = ({
-  color,
-  label,
-}) => (
-  <span className="inline-flex items-center gap-1.5">
-    <span
-      className="inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0"
-      style={{ background: color }}
-    />
-    <span>{label}</span>
-  </span>
-);
-
 const STATE_LABEL: Record<WeekendKind, string> = {
   curs: "Curs",
   liber: "Liber",
@@ -116,7 +104,8 @@ const WeekendRow: React.FC<{
 
   const stateLabel = isNext ? "Curs" : STATE_LABEL[card.type];
   const description = card.weekend.description ?? null;
-  const hasDescription = !!description && description.trim().length > 0;
+  const hasDescription =
+    isCancelled && !!description && description.trim().length > 0;
 
   const row = (
     <div
@@ -177,16 +166,22 @@ const WeekendRow: React.FC<{
   return (
     <Tooltip>
       <TooltipTrigger asChild>{row}</TooltipTrigger>
-      <TooltipContent
-        side="top"
-        sideOffset={6}
-        className="max-w-[360px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-4 py-3 text-sm space-y-2"
-      >
-        <p className="text-xs font-semibold uppercase tracking-wider text-edusport-blue/70">
-          {stateLabel}
-        </p>
-        <div className="space-y-2">{renderMarkdown(description)}</div>
-      </TooltipContent>
+      <TooltipPrimitive.Portal>
+        <TooltipPrimitive.Content
+          side="top"
+          align="center"
+          sideOffset={2}
+          collisionPadding={12}
+          className="z-50 max-w-[320px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-3 py-2.5 text-[0.72rem] leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+        >
+          <p className="text-[0.68rem] font-semibold uppercase tracking-wider text-edusport-blue/70">
+            {stateLabel}
+          </p>
+          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-gray-900">
+            {renderMarkdown(description)}
+          </div>
+        </TooltipPrimitive.Content>
+      </TooltipPrimitive.Portal>
     </Tooltip>
   );
 };
@@ -372,6 +367,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             options={CALENDAR_VIEW_OPTIONS}
             value={activeView}
             onChange={setActiveView}
+            disabled={!shouldMountCalendar && activeView === "calendar"}
           />
         </div>
 
@@ -395,53 +391,20 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                 aria-hidden="true"
               />
             )}
-
-            {/* Legend */}
-            <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-500">
-              <LegendDot color="oklch(0.78 0.12 184)" label="Weekend Curs" />
-              <LegendDot color="oklch(0.78 0 0)" label="Weekend liber" />
-              <LegendDot color="oklch(0.65 0.22 25)" label="Curs anulat" />
-              <LegendDot color="oklch(0.78 0.16 85)" label="Sărbătoare legală" />
-              <LegendDot color="oklch(0.78 0.12 280)" label="Vacanță școlară" />
-              <LegendDot color="oklch(0.78 0.17 55)" label="Eveniment" />
-              <LegendDot color="oklch(0.78 0.14 15)" label="Concurs" />
-            </div>
           </div>
         )}
 
         {/* Weekend view - borderless table layout */}
         {activeView === "weekends" && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-gray-200">
-              {groupedWeekends.map((group) => (
-                <MonthColumn
-                  key={group.label}
-                  group={group}
-                  nextActiveWeekend={nextActiveWeekend}
-                />
-              ))}
-            </div>
-
-            {/* Legend */}
-            <div className="mt-8 pt-6 border-t border-gray-200 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
-              <span className="inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-teal-400 flex-shrink-0" />
-                Weekend cursuri
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-                Următoarele cursuri
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-gray-200 flex-shrink-0" />
-                Weekend liber
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-                Curs anulat
-              </span>
-            </div>
-          </>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-gray-200">
+            {groupedWeekends.map((group) => (
+              <MonthColumn
+                key={group.label}
+                group={group}
+                nextActiveWeekend={nextActiveWeekend}
+              />
+            ))}
+          </div>
         )}
       </div>
     </section>
