@@ -1,0 +1,32 @@
+# Production deploy workflow for the Next.js frontend.
+#
+# DISABLED BY DEFAULT. The top-level `if: false` guard prevents this job from
+# running until the four required secrets are configured and the guard is
+# flipped to `if: github.ref == 'refs/heads/main'` (or similar).
+#
+# Required repository secrets:
+#   VM_HOST            - DNS name or IP of the production VM
+#   VM_USER            - SSH user with deploy permissions (e.g. `deploy`)
+#   VM_SSH_KEY         - Private SSH key matching an authorised_keys entry on the VM
+#   VM_FRONTEND_PATH   - Absolute path to the repo on the VM (e.g. /opt/edusport/edusport_frontend)
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into VM and run deploy script
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd ${{ secrets.VM_FRONTEND_PATH }}
+            ./scripts/deploy.sh

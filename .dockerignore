@@ -1,0 +1,46 @@
+# Keep the build context lean. Everything below is either reproduced inside the
+# image (node_modules, .next) or has no business shipping to production.
+
+node_modules
+.next
+out
+build
+coverage
+
+.git
+.gitignore
+.gitattributes
+
+# Local env files; .env.production is read at runtime via env_file, not COPYed.
+.env
+.env.*
+!.env.example
+
+# Editor / OS noise
+.DS_Store
+.vscode
+.idea
+*.swp
+
+# Tooling caches and worktrees
+.worktrees
+.dual-graph
+.superpowers
+.claude
+*.tsbuildinfo
+.eslintcache
+
+# Docs are not needed at runtime
+docs
+
+# Dockerfiles themselves don't need to be inside the image
+Dockerfile
+Dockerfile.production
+docker-compose.yml
+docker-compose.production.yml
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

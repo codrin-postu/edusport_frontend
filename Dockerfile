@@ -1,3 +1,5 @@
+# Development image. Used by docker-compose.yml for local dev only.
+# The production image lives in Dockerfile.production.
 FROM node:24.6-alpine
 
 WORKDIR /app

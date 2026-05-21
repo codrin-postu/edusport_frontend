@@ -14,8 +14,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "motion/react"],
   },
 
-  // Enable static optimization where possible
-  output: undefined, // 'standalone' for Docker, undefined for standard deployment
+  // Standalone output ships only the files server.js needs at runtime.
+  // Required by Dockerfile.production.
+  output: "standalone",
 
   // Image optimization
   images: {

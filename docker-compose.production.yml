@@ -1,0 +1,28 @@
+# Production compose file for the Next.js frontend.
+# The dev image lives in docker-compose.yml; this file is only used on the VM.
+# The reverse proxy (defined in the backend repo) joins the same external
+# network and is the only service with published ports on the host.
+
+services:
+  frontend:
+    container_name: edusport-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    expose:
+      - "3000"
+    networks:
+      - edusport_net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+networks:
+  edusport_net:
+    external: true
