@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { resolveAssetUrl } from "@/utils/markdown";
 import AccomplishmentsPage from "./_View";
-import type { Season, GalleryImage, Placement } from "./_data";
+import type { Season, GalleryImage } from "./_data";
 
 export const metadata: Metadata = {
   title: "Realizări",
@@ -38,7 +38,7 @@ interface StrapiCompetition {
   participants?: {
     athleteName: string;
     category?: string | null;
-    placement?: Placement | null;
+    placement?: string | number | null;
     score?: number | null;
   }[] | null;
 }
@@ -71,7 +71,7 @@ function groupIntoSeasons(competitions: StrapiCompetition[]): Season[] {
       results: (comp.participants ?? []).map((p) => ({
         athlete: p.athleteName,
         category: p.category ?? "",
-        placement: p.placement ?? "top10",
+        placement: Number(p.placement) || 99,
         score: p.score ?? 0,
       })),
     });

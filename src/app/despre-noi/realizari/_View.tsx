@@ -1,21 +1,18 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
-import { Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trophy, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { Select } from "@/components/ui/select";
 import {
-  PLACEMENT_CONFIG,
-  type Placement,
+  getPlacementInfo,
   type Season,
   type GalleryImage,
 } from "./_data";
-
-const PLACEMENT_RANK: Record<Placement, number> = {
-  gold: 1, silver: 2, bronze: 3, "4th": 4, "5th": 5, "6th": 6, top10: 7,
-};
 
 // ---------------------------------------------------------------------------
 // Gallery Carousel
@@ -27,6 +24,7 @@ const DESKTOP_PER_PAGE = 3;
 function GalleryCarousel({ images }: { images: GalleryImage[] }) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const total = images.length;
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -104,16 +102,25 @@ function GalleryCarousel({ images }: { images: GalleryImage[] }) {
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
         >
           {images.map((img, i) => (
-            <div
+            <button
               key={i}
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shrink-0"
+              type="button"
+              onClick={() => setLightboxIndex(i)}
+              aria-label={`Deschide imaginea: ${img.alt}`}
+              className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue"
               style={{ width: "calc((100% - 1.5rem) / 3)" }}
             >
-              <Image src={img.src} alt={img.alt} fill sizes="400px" className="object-cover" />
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="400px"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-3 pt-8">
-                <p className="text-xs text-white/90 font-light">{img.alt}</p>
+                <p className="text-xs text-white/90 font-light text-left">{img.alt}</p>
               </div>
-            </div>
+            </button>
           ))}
         </motion.div>
 
@@ -133,7 +140,16 @@ function GalleryCarousel({ images }: { images: GalleryImage[] }) {
 
       {/* Mobile: single image carousel */}
       <div className="md:hidden">
-        <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 select-none">
+        <div
+          className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 select-none cursor-zoom-in"
+          onClick={() => setLightboxIndex(current)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") setLightboxIndex(current);
+          }}
+          aria-label={`Deschide imaginea: ${images[current].alt}`}
+        >
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={current}
@@ -195,7 +211,147 @@ function GalleryCarousel({ images }: { images: GalleryImage[] }) {
           </button>
         </div>
       </div>
+
+      <Lightbox
+        images={images}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onChange={setLightboxIndex}
+      />
     </div>
+  );
+}
+
+function Lightbox({
+  images,
+  index,
+  onClose,
+  onChange,
+}: {
+  images: GalleryImage[];
+  index: number | null;
+  onClose: () => void;
+  onChange: (i: number) => void;
+}) {
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") onChange((index + 1) % images.length);
+      else if (e.key === "ArrowLeft")
+        onChange((index - 1 + images.length) % images.length);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [index, images.length, onChange, onClose]);
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <AnimatePresence>
+      {index !== null && (
+        <motion.div
+          className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={onClose}
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Închide"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Desktop: side nav buttons */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange((index - 1 + images.length) % images.length);
+            }}
+            aria-label="Imaginea anterioară"
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white items-center justify-center transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange((index + 1) % images.length);
+            }}
+            aria-label="Imaginea următoare"
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white items-center justify-center transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="relative w-full max-w-5xl max-h-full aspect-[4/3]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={images[index].src}
+              alt={images[index].alt}
+              fill
+              sizes="100vw"
+              className="object-contain"
+              priority
+            />
+            {images[index].alt && (
+              <p className="absolute bottom-0 inset-x-0 text-center text-white/85 text-sm pt-6 pb-2 bg-gradient-to-t from-black/40 to-transparent">
+                {images[index].alt}
+              </p>
+            )}
+          </motion.div>
+
+          {/* Mobile: nav buttons below the image */}
+          <div
+            className="flex sm:hidden items-center gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() =>
+                onChange((index - 1 + images.length) % images.length)
+              }
+              aria-label="Imaginea anterioară"
+              className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="text-white/70 text-xs tabular-nums">
+              {index + 1} / {images.length}
+            </span>
+            <button
+              type="button"
+              onClick={() => onChange((index + 1) % images.length)}
+              aria-label="Imaginea următoare"
+              className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -309,16 +465,18 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
           {/* Category filter */}
           {allCategories.length > 0 && (
             <div className="mb-10">
-              <select
-                value={activeCategory ?? ""}
-                onChange={(e) => setActiveCategory(e.target.value || null)}
-                className="w-full sm:w-64 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl appearance-none cursor-pointer focus:outline-none focus:border-edusport-blue/40 focus:ring-2 focus:ring-edusport-blue/10 transition-colors"
-              >
-                <option value="">Toate categoriile</option>
-                {allCategories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
+              <Select
+                value={activeCategory ?? "__all"}
+                onValueChange={(value) =>
+                  setActiveCategory(value === "__all" ? null : value)
+                }
+                options={[
+                  { value: "__all", label: "Toate categoriile" },
+                  ...allCategories.map((cat) => ({ value: cat, label: cat })),
+                ]}
+                size="compact"
+                className="w-full sm:w-64"
+              />
             </div>
           )}
 
@@ -330,7 +488,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                   ...comp,
                   results: [...comp.results]
                     .filter((r) => activeCategory === null || r.category === activeCategory)
-                    .sort((a, b) => PLACEMENT_RANK[a.placement] - PLACEMENT_RANK[b.placement]),
+                    .sort((a, b) => a.placement - b.placement),
                 }))
                 .filter((comp) => comp.results.length > 0);
               const resultCount = filteredComps.reduce((s, c) => s + c.results.length, 0);
@@ -396,28 +554,60 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                             {isCompOpen && (
                               <div className="flex flex-col gap-1.5 mt-2 mb-2">
                                 {comp.results.map((result, idx) => {
-                                  const config = PLACEMENT_CONFIG[result.placement];
+                                  const info = getPlacementInfo(result.placement);
                                   return (
                                     <div
                                       key={idx}
-                                      className={cn(
-                                        "flex items-center gap-3 px-4 py-2.5 rounded-xl border",
-                                        config.bg,
-                                        config.border,
-                                      )}
+                                      className="relative overflow-hidden flex items-center gap-3 px-4 py-2.5 rounded-xl border border-gray-100 bg-white"
                                     >
-                                      <div className={cn("w-2 h-2 rounded-full shrink-0", config.dot)} />
-                                      <span className="text-sm font-medium text-gray-900 min-w-0">
+                                      {info.accent && (
+                                        <svg
+                                          aria-hidden
+                                          className="absolute inset-y-0 -left-4 h-full w-20 pointer-events-none"
+                                          viewBox="0 0 80 100"
+                                          preserveAspectRatio="none"
+                                          fill="none"
+                                          style={{ color: info.accent }}
+                                        >
+                                          {/* Thick slanted line */}
+                                          <path
+                                            d="M 46 -10 L 22 110"
+                                            stroke="currentColor"
+                                            strokeWidth="11"
+                                            opacity="0.22"
+                                          />
+                                          {/* Second thick slanted line */}
+                                          <path
+                                            d="M 63 -10 L 39 110"
+                                            stroke="currentColor"
+                                            strokeWidth="11"
+                                            opacity="0.28"
+                                          />
+                                          {/* Thin slanted line */}
+                                          <path
+                                            d="M 75.5 -10 L 51.5 110"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            opacity="0.32"
+                                          />
+                                        </svg>
+                                      )}
+                                      <span className="relative text-sm font-medium text-gray-900 min-w-0">
                                         {result.athlete}
                                       </span>
-                                      <span className="text-xs text-gray-400 font-light hidden sm:inline">
+                                      <span className="relative text-xs text-gray-400 font-light hidden sm:inline">
                                         {result.category}
                                       </span>
-                                      <span className="ml-auto text-xs text-gray-400 font-light tabular-nums shrink-0 w-16 text-right">
+                                      <span className="relative ml-auto text-xs text-gray-400 font-light tabular-nums shrink-0 w-16 text-right">
                                         {result.score.toFixed(2)} pts
                                       </span>
-                                      <span className={cn("text-xs font-semibold uppercase tracking-wider shrink-0 w-14 text-right", config.text)}>
-                                        {config.label}
+                                      <span
+                                        className={cn(
+                                          "relative text-xs font-semibold uppercase tracking-wider shrink-0 w-16 text-right",
+                                          info.textClass,
+                                        )}
+                                      >
+                                        {info.label}
                                       </span>
                                     </div>
                                   );

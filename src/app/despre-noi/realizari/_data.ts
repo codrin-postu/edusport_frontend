@@ -2,7 +2,8 @@
 // Types
 // ---------------------------------------------------------------------------
 
-export type Placement = "gold" | "silver" | "bronze" | "4th" | "5th" | "6th" | "top10";
+/** Raw placement value (1-based finishing position). */
+export type Placement = number;
 
 export interface Result {
   athlete: string;
@@ -34,15 +35,47 @@ export interface GalleryImage {
 // Helpers
 // ---------------------------------------------------------------------------
 
-export const PLACEMENT_CONFIG: Record<Placement, { label: string; bg: string; border: string; text: string; dot: string }> = {
-  gold:   { label: "Aur",     bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", dot: "bg-amber-400" },
-  silver: { label: "Argint",  bg: "bg-gray-50",  border: "border-gray-200",  text: "text-gray-600",  dot: "bg-gray-400" },
-  bronze: { label: "Bronz",   bg: "bg-orange-50", border: "border-orange-200", text: "text-orange-700", dot: "bg-orange-400" },
-  "4th":  { label: "Locul 4", bg: "bg-white",    border: "border-gray-100",  text: "text-gray-500",  dot: "bg-gray-300" },
-  "5th":  { label: "Locul 5", bg: "bg-white",    border: "border-gray-100",  text: "text-gray-500",  dot: "bg-gray-300" },
-  "6th":  { label: "Locul 6", bg: "bg-white",    border: "border-gray-100",  text: "text-gray-500",  dot: "bg-gray-300" },
-  top10:  { label: "Top 10",  bg: "bg-white",    border: "border-gray-100",  text: "text-gray-400",  dot: "bg-gray-200" },
+export interface PlacementInfo {
+  /** Display label: "Aur", "Argint", "Bronz", or "Locul N". */
+  label: string;
+  /** Accent colour for top-3 podium positions; null otherwise. */
+  accent: string | null;
+  /** Class for the placement text colour. */
+  textClass: string;
+}
+
+const PODIUM_ACCENT: Record<number, string> = {
+  1: "#f59e0b", // amber-500
+  2: "#9ca3af", // gray-400
+  3: "#ea580c", // orange-600
 };
+
+const PODIUM_LABEL: Record<number, string> = {
+  1: "Aur",
+  2: "Argint",
+  3: "Bronz",
+};
+
+const PODIUM_TEXT: Record<number, string> = {
+  1: "text-yellow-600",
+  2: "text-gray-600",
+  3: "text-orange-800",
+};
+
+export function getPlacementInfo(placement: Placement): PlacementInfo {
+  if (placement === 1 || placement === 2 || placement === 3) {
+    return {
+      label: PODIUM_LABEL[placement],
+      accent: PODIUM_ACCENT[placement],
+      textClass: PODIUM_TEXT[placement],
+    };
+  }
+  return {
+    label: `Locul ${placement}`,
+    accent: null,
+    textClass: "text-gray-500",
+  };
+}
 
 export function countResults(seasons: Season[]) {
   let gold = 0, silver = 0, bronze = 0, total = 0;
@@ -50,9 +83,9 @@ export function countResults(seasons: Season[]) {
     for (const comp of season.competitions)
       for (const result of comp.results) {
         total++;
-        if (result.placement === "gold") gold++;
-        else if (result.placement === "silver") silver++;
-        else if (result.placement === "bronze") bronze++;
+        if (result.placement === 1) gold++;
+        else if (result.placement === 2) silver++;
+        else if (result.placement === 3) bronze++;
       }
   return { gold, silver, bronze, total };
 }
