@@ -9,7 +9,10 @@ import type { SubmitStatus } from "./_types";
 
 interface StepConfirmProps {
   onBack: () => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (
+    e: React.FormEvent,
+    agreements: { gdpr: boolean; regulament: boolean },
+  ) => void;
   status: SubmitStatus;
 }
 
@@ -190,7 +193,9 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
         </button>
         <button
           type="button"
-          onClick={onSubmit}
+          onClick={(e) =>
+            onSubmit(e, { gdpr: gdprAccepted, regulament: regulamentAccepted })
+          }
           disabled={!canSubmit || status === "sending"}
           className={cn(
             "flex items-center justify-center gap-2 px-8 py-3.5",

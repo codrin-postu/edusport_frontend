@@ -20,54 +20,53 @@ export const STEPS = [
 // Step indicator
 // ---------------------------------------------------------------------------
 
+// Slanted parallelogram segment - shape matches the `Pill` component's
+// "slanted" variant so the stepper visually echoes the brand pill.
+const SEGMENT_CLIP = "polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%)";
+
 export const StepIndicator: React.FC<{ current: number }> = ({ current }) => (
-  <div className="flex items-center gap-1 mb-10 overflow-x-auto pb-2">
+  <div className="flex items-stretch gap-1 mb-10 overflow-x-auto pb-2">
     {STEPS.map((step, i) => {
       const Icon = step.icon;
       const done = i < current;
       const active = i === current;
+      const filled = done || active;
       return (
-        <React.Fragment key={step.label}>
-          {i > 0 && (
-            <div className="h-px flex-1 min-w-6 max-w-16 bg-gray-200 relative overflow-hidden">
-              <div
-                key={`fill-${i}-${done}`}
-                className={cn(
-                  "absolute inset-y-0 left-0 bg-edusport-blue",
-                  done ? "animate-line-fill" : "w-0",
-                )}
-              />
-            </div>
+        <div
+          key={step.label}
+          aria-current={active ? "step" : undefined}
+          style={{ clipPath: SEGMENT_CLIP }}
+          className={cn(
+            "flex-1 min-w-[110px] flex items-center justify-center gap-2 px-6 py-3",
+            "text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap",
+            "transition-all duration-300",
+            filled
+              ? "bg-edusport-blue text-white"
+              : "bg-gray-100 text-gray-400",
+            active && "shadow-sm",
           )}
-          <div
-            key={`pill-${i}-${active}`}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-300",
-              done && "bg-edusport-blue border-edusport-blue text-white",
-              active && "border-edusport-blue text-edusport-blue bg-edusport-blue/5 animate-pill-glow",
-              !active && !done && "border-transparent text-gray-300",
-            )}
-          >
-            {!done && <Icon className="w-3.5 h-3.5 shrink-0" />}
-            {done && (
-              <svg
-                key={`check-${i}`}
-                className="w-3.5 h-3.5 shrink-0 animate-check-pop"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M5 13l4 4L19 7"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-            {step.label}
-          </div>
-        </React.Fragment>
+        >
+          {done ? (
+            <svg
+              key={`check-${i}`}
+              className="w-3.5 h-3.5 shrink-0 animate-check-pop"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <path
+                d="M5 13l4 4L19 7"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ) : (
+            <Icon className="w-3.5 h-3.5 shrink-0" />
+          )}
+          <span>{step.label}</span>
+        </div>
       );
     })}
   </div>

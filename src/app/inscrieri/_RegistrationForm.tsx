@@ -29,11 +29,18 @@ const RegistrationForm: React.FC = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleValueChange = (name: keyof FormState) => (value: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async(
+    e: React.FormEvent,
+    agreements: { gdpr: boolean; regulament: boolean },
+  ) => {
     e.preventDefault();
     setStatus("sending");
     try {
-      await submitToGoogleForms(form);
+      await submitToGoogleForms(form, agreements);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -75,6 +82,7 @@ const RegistrationForm: React.FC = () => {
       <StepExperience
         form={form}
         onChange={handleChange}
+        onValueChange={handleValueChange}
         onNext={nextStep}
         onBack={prevStep}
       />

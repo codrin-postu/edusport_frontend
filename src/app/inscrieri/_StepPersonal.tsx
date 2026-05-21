@@ -57,13 +57,15 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
         </motion.div>
 
         <motion.div variants={fieldItem}>
-          <FieldLabel htmlFor="childBirthDate">Data nașterii *</FieldLabel>
+          <FieldLabel htmlFor="childBirthDate">
+            Data nașterii copilului *
+          </FieldLabel>
           <input
             id="childBirthDate"
             name="childBirthDate"
             type="text"
             required
-            placeholder="ex: 15 martie 2018"
+            placeholder="ex: 25 decembrie 2018"
             value={form.childBirthDate}
             onChange={onChange}
             className={inputBase}
