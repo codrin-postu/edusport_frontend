@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 300; // 5 min
+export const revalidate = 3600; // 1 hour — editor changes are pushed via /api/revalidate webhook
 
 export default async function Page() {
   let registrationOpen = true;
@@ -30,15 +30,12 @@ export default async function Page() {
   let latestArticles: LatestArticleData[] | undefined;
 
   const [settingsResult, homepageResult, articlesPromiseResult] = await Promise.allSettled([
-    fetchStrapi<{ registration?: { open?: boolean } }>(
-      "site-settings",
-      "fields[0]=registration",
-    ),
-    fetchStrapi<HomepageCms>(
-      "homepage",
-      "populate[hero]=true&populate[registration]=true&populate[registrationClosed]=true&populate[about][populate]=*",
-    ),
-    fetchArticlesPaginated({ page: 1, pageSize: 2 }),
+    // No params → shares the same cache key as layout's site-settings fetch,
+    // so React's request-scoped `cache()` dedupes both calls.
+    fetchStrapi<{ registration?: { open?: boolean } }>("site-settings"),
+    // All fields on `homepage` are JSON custom-fields — no populate needed.
+    fetchStrapi<HomepageCms>("homepage"),
+    fetchArticlesPaginated({ page: 1, pageSize: 5 }),
   ]);
 
   if (settingsResult.status === "fulfilled" && settingsResult.value?.registration?.open !== undefined) {

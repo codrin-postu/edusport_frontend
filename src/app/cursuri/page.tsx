@@ -30,14 +30,12 @@ export default async function Page() {
   let cursuriPageData = CURSURI_PAGE_DATA;
 
   const [pricingResult, settingsResult, cursuriPageResult] = await Promise.allSettled([
+    // All three single-types are 100% JSON custom-fields — no populate needed.
     fetchStrapi<CoursePricingData>("pricing"),
     fetchStrapi<{
       registration?: { currentSeason?: string; open?: boolean };
-    }>("site-settings", "fields[0]=registration"),
-    fetchStrapi<CoursePageContent>(
-      "cursuri-page",
-      "populate[banner]=true&populate[aboutSection]=true&populate[promoCard]=true&populate[infoSection]=true",
-    ),
+    }>("site-settings"),
+    fetchStrapi<CoursePageContent>("cursuri-page"),
   ]);
 
   if (pricingResult.status === "fulfilled") {
@@ -58,7 +56,7 @@ export default async function Page() {
             : {}),
         },
         {
-          title: "Pentru Non-membri",
+          title: "Pentru Neafiliati",
           priceItems: (tiers.nonMemberTiers ?? []).map((t) => ({
             label: t.label,
             price: t.price,

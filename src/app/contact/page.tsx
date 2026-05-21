@@ -25,7 +25,6 @@ export default async function Page() {
   try {
     const settings = await fetchStrapi<{ contact?: SiteContactInfo }>(
       "site-settings",
-      "populate=contact",
     );
     contactInfo = settings?.contact ?? {};
   } catch (err) {

@@ -71,10 +71,11 @@ export default async function Page() {
   const [cmsResult, siteSettingsResult] = await Promise.allSettled([
     fetchStrapi<CmsShape>(
       "program-page",
-      "populate[banner]=true&populate[pageInfo]=true&populate[scheduleGroups][populate]=*&populate[calendarEvents]=true&populate[disclaimers]=true",
+      // Only `disclaimers` is a real component; the rest are JSON custom-fields.
+      "populate[disclaimers]=true",
       false,
     ),
-    fetchStrapi<SiteSettingsShape>("site-settings", "fields[0]=registration"),
+    fetchStrapi<SiteSettingsShape>("site-settings"),
   ]);
 
   const cms = cmsResult.status === "fulfilled" ? cmsResult.value : null;

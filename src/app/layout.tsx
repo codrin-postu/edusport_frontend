@@ -95,10 +95,11 @@ export default async function RootLayout({
   let contactInfo: SiteContactInfo = {};
   let registrationOpen: boolean | undefined;
   try {
+    // Both fields are JSON custom-fields, returned by default — no populate.
     const settings = await fetchStrapi<{
       contact?: SiteContactInfo;
       registration?: { open?: boolean };
-    }>("site-settings", "populate=*");
+    }>("site-settings");
     contactInfo = settings?.contact ?? {};
     registrationOpen = settings?.registration?.open;
   } catch {
