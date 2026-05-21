@@ -84,7 +84,7 @@ export default async function Page({ params }: Props) {
     location: strapiArticle.eventLocation,
     coverImage: strapiArticle.coverImage
       ? strapiMediaUrl(strapiArticle.coverImage.url)
-      : undefined,
+      : "/images/courses_generated.png",
     excerpt: strapiArticle.description ?? "",
     body: strapiArticle.body ?? null,
     admissionInfo: strapiArticle.eventAdmissionInfo,

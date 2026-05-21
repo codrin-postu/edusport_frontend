@@ -34,7 +34,9 @@ export default async function Page() {
       title: a.title,
       date: a.eventDate ?? a.date,
       location: a.eventLocation,
-      coverImage: a.coverImage ? strapiMediaUrl(a.coverImage.url) : undefined,
+      coverImage: a.coverImage
+        ? strapiMediaUrl(a.coverImage.url)
+        : "/images/courses_generated.png",
       excerpt: a.description ?? "",
       body: "",
       admissionInfo: a.eventAdmissionInfo,

@@ -43,8 +43,7 @@ function CurrentEventSection({ event }: { event: Event }) {
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold backdrop-blur-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <div className="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold backdrop-blur-sm">
                 În curând
               </div>
             </div>

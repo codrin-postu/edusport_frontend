@@ -55,7 +55,7 @@ export default async function Page({
   const search = searchParam ?? "";
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50 -mb-24 md:-mb-32 pb-24 md:pb-32">
       <PageHeroSection title={["NOUTĂȚI"]}>
         <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
           Noutăți

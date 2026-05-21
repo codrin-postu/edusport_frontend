@@ -16,7 +16,7 @@ export interface SiteContactInfo {
 }
 
 type FooterItemData =
-  | { type: "link"; label: string; href: string }
+  | { type: "link"; label: string; href: string; external?: boolean }
   | { type: "text"; label: string }
   | { type: "phone"; label: string }
   | { type: "email"; label: string }
@@ -35,8 +35,6 @@ const footerLeftSections = [
   {
     title: "Informații legale",
     items: [
-      // TODO: create /termeni-si-conditii page
-      { label: "Termeni și condiții", href: "/terms", type: "link" as const },
       // TODO: create /politica-cookies page
       { label: "Politica de Cookies", href: "/cookies", type: "link" as const },
       {
@@ -44,13 +42,17 @@ const footerLeftSections = [
         href: "/protectia-datelor",
         type: "link" as const,
       },
-      // TODO: create /anpc page
-      { label: "ANPC", href: "/anpc", type: "link" as const },
-      // TODO: create /odr page
+      {
+        label: "ANPC",
+        href: "https://anpc.ro/",
+        type: "link" as const,
+        external: true,
+      },
       {
         label: "Solutionarea online a litigiilor",
-        href: "/odr",
+        href: "https://ec.europa.eu/consumers/odr/",
         type: "link" as const,
+        external: true,
       },
     ],
   },
@@ -102,6 +104,10 @@ const FooterItem: React.FC<FooterItemData> = (item) => {
     item.type === "email" ? `mailto:${item.label}` :
     item.href;
 
+  const isExternal =
+    item.type === "social" ||
+    (item.type === "link" && item.external === true);
+
   const linkType = (
     item.type === "phone" ? "phone" :
     item.type === "email" ? "email" :
@@ -114,7 +120,7 @@ const FooterItem: React.FC<FooterItemData> = (item) => {
       className="text-base font-base"
       variant={LinkVariants.FOOTER_ANIMATED}
       linkType={linkType}
-      {...(item.type === "social" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {item.label}
     </Link>

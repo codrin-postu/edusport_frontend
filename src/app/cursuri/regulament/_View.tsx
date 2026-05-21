@@ -9,7 +9,6 @@ import {
   Layers,
   ShieldAlert,
   MessageCircle,
-  ExternalLink,
   ChevronDown,
 } from "lucide-react";
 
@@ -202,10 +201,9 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
               <div className="relative shrink-0">
                 <a
                   href="/inscrieri"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-white/15 hover:bg-white/25 border border-white/20 rounded-full px-6 py-3 transition-colors"
+                  className="inline-flex items-center text-sm font-semibold text-white bg-white/15 hover:bg-white/25 border border-white/20 rounded-full px-6 py-3 transition-colors"
                 >
                   Înscrie-te acum
-                  <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
             </div>
