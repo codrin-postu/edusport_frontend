@@ -259,12 +259,14 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0, pan
               </div>
             </div>
 
-            {/* RIGHT: Text panels */}
-            <div className="relative min-h-[260px] md:min-h-[320px] md:order-last">
+            {/* RIGHT: Text panels — stacked in a single grid cell so the
+                 container always sizes to the tallest panel and there's no
+                 layout shift when the active step changes. */}
+            <div className="relative grid grid-cols-1 md:order-last">
               {/* Ghost number */}
               <div
                 aria-hidden
-                className="absolute right-0 top-1/2 -translate-y-1/2 font-['League_Spartan'] text-[clamp(80px,12vw,160px)] font-black leading-none pointer-events-none select-none"
+                className="col-start-1 row-start-1 self-center justify-self-end font-['League_Spartan'] text-[clamp(80px,12vw,160px)] font-black leading-none pointer-events-none select-none"
                 style={{ color: "rgba(0,0,0,0.03)" }}
               >
                 0{step + 1}
@@ -274,15 +276,18 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ scrollProgress = 0, pan
                 <div
                   key={i}
                   aria-hidden={i !== step}
+                  className="col-start-1 row-start-1"
                   style={{
-                    position: i === step ? "relative" : "absolute",
-                    inset: i !== step ? "0" : undefined,
                     opacity: i === step ? 1 : 0,
                     transform: i === step
                       ? "translateY(0)"
                       : i < step ? "translateY(-28px)" : "translateY(28px)",
                     transition: "opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1)",
-                    pointerEvents: i === step ? "auto" : "none",
+                    // Inherit from SquareTransition's childrenRef so the panel
+                    // only swallows clicks once the wipe is complete. Forcing
+                    // "auto" here covers the registration CTAs underneath
+                    // while the SquareTransition is still in its idle state.
+                    pointerEvents: i === step ? undefined : "none",
                   }}
                 >
                   <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-edusport-blue mb-3.5">

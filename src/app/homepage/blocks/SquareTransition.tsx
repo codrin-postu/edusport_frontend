@@ -43,6 +43,7 @@ export default function SquareTransition({
   const childrenRef   = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const regOverflowRef          = useRef(0);
+  const contentOverflowRef      = useRef(0);
   const childScrollBudgetPxRef  = useRef(0);
   const onChildScrollProgressRef = useRef(onChildScrollProgress);
   onChildScrollProgressRef.current = onChildScrollProgress;
@@ -66,7 +67,11 @@ export default function SquareTransition({
 
       // Registration overflow: backgroundRef is h-full/overflow-hidden so measure its first child.
       const regEl = backgroundRef.current?.firstElementChild as HTMLElement | null;
-      regOverflowRef.current = Math.max(0, (regEl?.scrollHeight ?? 0) - H);
+      contentOverflowRef.current = Math.max(0, (regEl?.scrollHeight ?? 0) - H);
+      // Add a half-viewport reading buffer so users get time to interact with
+      // the registration CTAs before the canvas wipe starts on tablet/mobile.
+      const readingBuffer = H * 0.5;
+      regOverflowRef.current = contentOverflowRef.current + readingBuffer;
 
       // Explicit child scroll budget - no scrollHeight measurement needed.
       childScrollBudgetPxRef.current = childScrollBudget * H;
@@ -93,8 +98,10 @@ export default function SquareTransition({
       const scrolled = getScrolled();
 
       // Pre-scroll phase: translate registration content up to reveal its bottom on small screens.
+      // Clamp to actual content overflow so the reading-buffer portion of regOverflowRef
+      // doesn't keep sliding already-visible content off-screen.
       if (backgroundRef.current) {
-        const preScrolled = Math.min(scrolled, regOverflowRef.current);
+        const preScrolled = Math.min(scrolled, contentOverflowRef.current);
         backgroundRef.current.style.transform = `translateY(-${preScrolled}px)`;
       }
 

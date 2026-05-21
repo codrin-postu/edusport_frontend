@@ -29,9 +29,9 @@ const SkateParallax: React.FC = () => {
         "z-20",
         "w-[520px]",
         "sm:w-[600px]",
-        "md:w-[580px]",
-        "lg:w-[640px]",
-        "xl:w-[720px]",
+        "md:w-[520px]",
+        "lg:w-[560px]",
+        "xl:w-[620px]",
         "pointer-events-none",
         "select-none",
       )}
