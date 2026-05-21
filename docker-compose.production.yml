@@ -14,6 +14,10 @@ services:
       - .env.production
     expose:
       - "3000"
+    ports:
+      # Bound to VM loopback only. nginx on the host reverse-proxies the
+      # public domain to this port.
+      - "127.0.0.1:3000:3000"
     networks:
       - edusport_net
     healthcheck:
