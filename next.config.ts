@@ -34,6 +34,16 @@ const nextConfig: NextConfig = {
         hostname: "**.strapi.io",
         pathname: "/uploads/**",
       },
+      // Production Strapi host — set NEXT_PUBLIC_STRAPI_IMAGE_HOST in env.
+      ...(process.env.NEXT_PUBLIC_STRAPI_IMAGE_HOST
+        ? [
+          {
+            protocol: "https" as const,
+            hostname: process.env.NEXT_PUBLIC_STRAPI_IMAGE_HOST,
+            pathname: "/uploads/**",
+          },
+        ]
+        : []),
     ],
   },
 
