@@ -1,24 +1,30 @@
-# Production deploy workflow for the Next.js frontend.
+# Manual deploy for the Next.js frontend.
 #
-# DISABLED BY DEFAULT. The top-level `if: false` guard prevents this job from
-# running until the four required secrets are configured and the guard is
-# flipped to `if: github.ref == 'refs/heads/main'` (or similar).
+# Trigger:
+#   GitHub → Actions → Deploy frontend → Run workflow → pick a branch/tag.
 #
-# Required repository secrets:
+# Required repository secrets (Settings → Secrets and variables → Actions):
 #   VM_HOST            - DNS name or IP of the production VM
-#   VM_USER            - SSH user with deploy permissions (e.g. `deploy`)
-#   VM_SSH_KEY         - Private SSH key matching an authorised_keys entry on the VM
+#   VM_USER            - SSH user on the VM (e.g. `codrin`)
+#   VM_SSH_KEY         - Private SSH key matching an authorized_keys entry on the VM
 #   VM_FRONTEND_PATH   - Absolute path to the repo on the VM (e.g. /opt/edusport/edusport_frontend)
 
-name: deploy
+name: Deploy frontend
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or tag to deploy (defaults to main)"
+        required: false
+        default: main
+
+concurrency:
+  group: deploy-frontend-${{ inputs.ref }}
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - name: SSH into VM and run deploy script
@@ -28,5 +34,8 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
-            cd ${{ secrets.VM_FRONTEND_PATH }}
+            set -euo pipefail
+            cd "${{ secrets.VM_FRONTEND_PATH }}"
+            git fetch --prune
+            git reset --hard "origin/${{ inputs.ref }}"
             ./scripts/deploy.sh
