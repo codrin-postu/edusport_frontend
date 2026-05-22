@@ -64,8 +64,11 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  // `||` instead of `??` so an empty string (e.g. a build with a missing
+  // env arg) also falls back to the default, rather than crashing with
+  // `Invalid URL` and breaking page-data collection.
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://edusport.codrin.space",
   ),
   openGraph: {
     type: "website",
