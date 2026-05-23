@@ -87,6 +87,26 @@ export const CATEGORY_LABELS: Record<CategoryKey, string> = {
   tips: "Tips",
 };
 
+/**
+ * Shape stored by the admin's custom Video field (plugin::component-preview.video-embed).
+ *  - mode='url': external YouTube/Vimeo URL — rendered as an iframe.
+ *  - mode='upload': absolute URL to a Strapi-hosted video file — rendered as <video>.
+ */
+export interface StrapiVideoField {
+  mode: "url" | "upload";
+  url: string;
+  mime?: string;
+}
+
+export interface StrapiMediaImage {
+  id?: number;
+  url: string;
+  alternativeText?: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+}
+
 // Raw Strapi API response shape for an article
 // Note: fetchStrapi() returns json.data directly.
 // For collections json.data is an array, so fetchStrapi<StrapiArticle[]> gives us the array.
@@ -102,12 +122,9 @@ export interface StrapiArticle {
   eventDate?: string; // ISO datetime, only for category=evenimente
   eventLocation?: string;
   eventAdmissionInfo?: string;
-  coverImage?: {
-    url: string;
-    alternativeText?: string;
-    width?: number;
-    height?: number;
-  };
+  coverImage?: StrapiMediaImage;
+  gallery?: StrapiMediaImage[];
+  video?: StrapiVideoField | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -121,6 +138,11 @@ export async function fetchArticles(category?: CategoryKey): Promise<StrapiArtic
     "populate[coverImage][fields][1]": "alternativeText",
     "populate[coverImage][fields][2]": "width",
     "populate[coverImage][fields][3]": "height",
+    "populate[gallery][fields][0]": "url",
+    "populate[gallery][fields][1]": "alternativeText",
+    "populate[gallery][fields][2]": "width",
+    "populate[gallery][fields][3]": "height",
+    "populate[gallery][fields][4]": "caption",
     "sort[0]": "date:desc",
     "pagination[pageSize]": "100",
   });
@@ -147,6 +169,11 @@ export async function fetchArticlesPaginated(opts: {
     "populate[coverImage][fields][1]": "alternativeText",
     "populate[coverImage][fields][2]": "width",
     "populate[coverImage][fields][3]": "height",
+    "populate[gallery][fields][0]": "url",
+    "populate[gallery][fields][1]": "alternativeText",
+    "populate[gallery][fields][2]": "width",
+    "populate[gallery][fields][3]": "height",
+    "populate[gallery][fields][4]": "caption",
     "sort[0]": "date:desc",
     "pagination[page]": String(page),
     "pagination[pageSize]": String(pageSize),
@@ -175,10 +202,81 @@ export async function fetchArticleBySlug(slug: string): Promise<StrapiArticle | 
     "populate[coverImage][fields][1]": "alternativeText",
     "populate[coverImage][fields][2]": "width",
     "populate[coverImage][fields][3]": "height",
+    "populate[gallery][fields][0]": "url",
+    "populate[gallery][fields][1]": "alternativeText",
+    "populate[gallery][fields][2]": "width",
+    "populate[gallery][fields][3]": "height",
+    "populate[gallery][fields][4]": "caption",
   });
 
   const data = await fetchStrapi<StrapiArticle[]>("articles", params.toString(), 300);
   return data?.[0] ?? null;
+}
+
+/**
+ * Fetch a single article by Strapi documentId, with optional draft status.
+ * Used by the admin Preview flow to render unpublished versions. Drafts
+ * require the STRAPI_API_TOKEN to have read access to draft entries.
+ *
+ * Bypasses Next.js's data cache (revalidate=0) so each preview load shows
+ * the latest unpublished edits.
+ */
+export async function fetchArticleByDocumentId(
+  documentId: string,
+  status: "draft" | "published" = "draft",
+): Promise<StrapiArticle | null> {
+  const params = new URLSearchParams({
+    "filters[documentId][$eq]": documentId,
+    status,
+    "populate[coverImage][fields][0]": "url",
+    "populate[coverImage][fields][1]": "alternativeText",
+    "populate[coverImage][fields][2]": "width",
+    "populate[coverImage][fields][3]": "height",
+    "populate[gallery][fields][0]": "url",
+    "populate[gallery][fields][1]": "alternativeText",
+    "populate[gallery][fields][2]": "width",
+    "populate[gallery][fields][3]": "height",
+    "populate[gallery][fields][4]": "caption",
+  });
+
+  const data = await fetchStrapi<StrapiArticle[]>("articles", params.toString(), false);
+  return data?.[0] ?? null;
+}
+
+/**
+ * Convert a YouTube/Vimeo URL to its embed form. Returns null when the URL
+ * isn't recognised — caller should fall back to a plain anchor.
+ *
+ * Kept here (not in StrapiBlocks) so the article-level Video field can reuse
+ * the same provider detection without depending on the Blocks renderer.
+ */
+export function resolveVideoEmbed(url: string): { provider: "youtube" | "vimeo"; embedUrl: string } | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  const host = parsed.hostname.toLowerCase();
+
+  if (host === "youtu.be") {
+    const id = parsed.pathname.replace(/^\//, "").split("/")[0];
+    if (id) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${id}` };
+  }
+  if (host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")) {
+    const v = parsed.searchParams.get("v");
+    if (v) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${v}` };
+    const m = parsed.pathname.match(/^\/(embed|shorts)\/([\w-]+)/);
+    if (m) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${m[2]}` };
+  }
+  if (host === "vimeo.com" || host === "www.vimeo.com") {
+    const id = parsed.pathname.replace(/^\//, "").split("/")[0];
+    if (/^\d+$/.test(id)) return { provider: "vimeo", embedUrl: `https://player.vimeo.com/video/${id}` };
+  }
+  if (host === "player.vimeo.com") {
+    return { provider: "vimeo", embedUrl: url };
+  }
+  return null;
 }
 
 /** Resolve a Strapi media URL to an absolute URL */
