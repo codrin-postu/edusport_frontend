@@ -19,7 +19,9 @@ import { SearchBar } from "./_components/SearchBar";
 import { SportspersonCard } from "./_components/SportspersonCard";
 import { Spotlight } from "./_components/Spotlight";
 
-export const revalidate = 300;
+// Reads `searchParams.page` + `searchParams.search`, so the page must be
+// rendered dynamically per request — can't be statically pre-rendered.
+export const dynamic = "force-dynamic";
 
 /** Cards shown per page. Spotlight is bonus on page 1; not counted here. */
 const PAGE_SIZE = 8;

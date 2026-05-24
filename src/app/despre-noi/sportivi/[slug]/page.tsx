@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
-  fetchPublicSportspeople,
   fetchSportspersonBySlug,
   fetchCompetitionsByAthlete,
 } from "@/lib/strapi-sportsperson";
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import SportspersonView from "./_View";
 
-export const revalidate = 300;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  try {
-    const sportspeople = await fetchPublicSportspeople();
-    return sportspeople.map((sp) => ({ slug: sp.slug }));
-  } catch {
-    return [];
-  }
-}
+// The page reads `searchParams.compPage` for the istoric pagination, so
+// it cannot be statically pre-rendered. `force-dynamic` keeps the page
+// server-rendered on every request; React `cache()` inside the fetch
+// helpers still dedupes calls within a single render.
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
