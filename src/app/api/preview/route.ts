@@ -48,7 +48,7 @@ export async function GET(request: Request): Promise<Response> {
     // Dev with a secret configured — still enforce, but the error message
     // tells the developer which side to fix.
     return new Response(
-      `Forbidden: secret mismatch (frontend has STRAPI_PREVIEW_SECRET set, ` +
+      "Forbidden: secret mismatch (frontend has STRAPI_PREVIEW_SECRET set, " +
         `incoming secret param ${secret ? "differs" : "is missing"})`,
       { status: 403 },
     );
