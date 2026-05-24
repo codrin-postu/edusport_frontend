@@ -7,6 +7,9 @@ export type Placement = number;
 
 export interface Result {
   athlete: string;
+  /** Set when the participant has a linked sportsperson with a public
+   *  profile. The name renders as a link to /despre-noi/sportivi/<slug>. */
+  athleteSlug?: string;
   category: string;
   placement: Placement;
   score: number;

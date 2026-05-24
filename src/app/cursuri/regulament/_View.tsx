@@ -38,7 +38,7 @@ const ICON_BG_MAP: Record<string, string> = {
 
 const RegulamentPage: React.FC<Props> = ({ categories }) => {
   const [openSections, setOpenSections] = useState<Set<string>>(
-    () => new Set(categories.length > 0 ? [categories[0].title] : []),
+    () => new Set(categories.map((c) => c.title)),
   );
 
   const toggle = (title: string) =>

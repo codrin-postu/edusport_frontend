@@ -86,6 +86,8 @@ export default async function Page({ params }: Props) {
       ? strapiMediaUrl(strapiArticle.coverImage.url)
       : "/images/courses_generated.png",
     body: strapiArticle.body ?? null,
+    gallery: strapiArticle.gallery,
+    video: strapiArticle.video,
     // Event-only metadata, surfaced separately in the sidebar.
     eventDate: strapiArticle.eventDate,
     eventLocation: strapiArticle.eventLocation,

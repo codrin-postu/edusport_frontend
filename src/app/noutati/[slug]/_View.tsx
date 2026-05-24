@@ -1,6 +1,12 @@
 import { cn } from "@/utils/cn";
 import { CATEGORY_LABELS, type CategoryKey } from "../_data";
-import type { BlockNode } from "@/lib/strapi-article";
+import {
+  type BlockNode,
+  type StrapiMediaImage,
+  type StrapiVideoField,
+  resolveVideoEmbed,
+  strapiMediaUrl,
+} from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,6 +14,7 @@ import { CalendarDays, ChevronRight, Clock, MapPin, Tag, Ticket } from "lucide-r
 import { notFound } from "next/navigation";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -33,10 +40,61 @@ interface ArticleData {
   category: CategoryKey;
   coverImage: string;
   body: BlockNode[] | null; // null = body unavailable
+  gallery?: StrapiMediaImage[];
+  video?: StrapiVideoField | null;
   eventDate?: string; // ISO datetime, populated for evenimente + competitii
   eventLocation?: string;
   eventAdmissionInfo?: string;
 }
+
+// ---------------------------------------------------------------------------
+// Article-level Video field renderer
+//
+// Mode 'url' → YouTube/Vimeo iframe via resolveVideoEmbed. Falls back to a
+// plain anchor when the URL doesn't match a known provider.
+// Mode 'upload' → native <video controls> served from Strapi.
+// ---------------------------------------------------------------------------
+const ArticleVideo: React.FC<{ video: StrapiVideoField }> = ({ video }) => {
+  if (!video.url) return null;
+  if (video.mode === "upload") {
+    return (
+      <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+        <video
+          src={strapiMediaUrl(video.url)}
+          controls
+          preload="metadata"
+          className="absolute inset-0 w-full h-full"
+        />
+      </div>
+    );
+  }
+  const embed = resolveVideoEmbed(video.url);
+  if (!embed) {
+    return (
+      <a
+        href={video.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-edusport-blue underline underline-offset-2"
+      >
+        {video.url}
+      </a>
+    );
+  }
+  return (
+    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+      <iframe
+        src={embed.embedUrl}
+        title="Video"
+        className="absolute inset-0 w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
+    </div>
+  );
+};
 
 // Sidebar header text per category (event-like categories show event details).
 const SIDEBAR_HEADER: Partial<Record<CategoryKey, string>> = {
@@ -122,6 +180,14 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                 <span className="text-sm text-gray-500 font-light">{formatDate(article.date)}</span>
               </div>
 
+              {/* Article-level video (separate field from body) — placed
+                  above body so editors can lead with a feature clip. */}
+              {article.video?.url && (
+                <div className="mb-8">
+                  <ArticleVideo video={article.video} />
+                </div>
+              )}
+
               {/* Body - Strapi Blocks */}
               {article.body && article.body.length > 0 ? (
                 <StrapiBlocks blocks={article.body} />
@@ -129,6 +195,23 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                 <p className="text-gray-400 italic text-sm">
                   Conținutul acestui articol nu este disponibil momentan.
                 </p>
+              )}
+
+              {/* Gallery — same carousel + lightbox used on /despre-noi/realizari.
+                  Handles arbitrary counts (3-up desktop window with prev/next
+                  controls, swipe + dots/counter on mobile, fullscreen
+                  lightbox with arrow-key nav). */}
+              {article.gallery && article.gallery.length > 0 && (
+                <div className="mt-10">
+                  <GalleryCarousel
+                    images={article.gallery.map((img) => ({
+                      src: strapiMediaUrl(img.url),
+                      alt: img.alternativeText ?? img.caption ?? "",
+                    }))}
+                    eyebrow="Galerie"
+                    className="mb-0"
+                  />
+                </div>
               )}
             </div>
 

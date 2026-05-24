@@ -37,7 +37,7 @@ h1.text-branding-font {
 }
 
 @theme {
-  --color-edusport-blue: oklch(0.421 0.2593 264.52);
+  --color-edusport-blue: #2138b8;
   --color-light: oklch(0.9827 0.0026 286.35);
   --max-content-width: 1280px;
   --max-footer-width: 1480px;

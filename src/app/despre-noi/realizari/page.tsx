@@ -40,6 +40,13 @@ interface StrapiCompetition {
     category?: string | null;
     placement?: string | number | null;
     score?: number | null;
+    /** Linked sportsperson — only populated for club athletes. Null/missing
+     *  means it's an external participant (other clubs) and we keep the
+     *  athleteName string as the display value. */
+    sportsperson?: {
+      slug: string;
+      showPublicPage: boolean;
+    } | null;
   }[] | null;
 }
 
@@ -70,6 +77,10 @@ function groupIntoSeasons(competitions: StrapiCompetition[]): Season[] {
       level: comp.level ?? "national",
       results: (comp.participants ?? []).map((p) => ({
         athlete: p.athleteName,
+        // Only expose the slug when the linked profile is public — keeps
+        // private/hidden sportspeople from leaking via the realizari page.
+        athleteSlug:
+          p.sportsperson?.showPublicPage ? p.sportsperson.slug : undefined,
         category: p.category ?? "",
         placement: Number(p.placement) || 99,
         score: p.score ?? 0,
@@ -93,7 +104,7 @@ export default async function Page() {
     ),
     fetchStrapi<StrapiCompetition[]>(
       "competitions",
-      "populate[participants]=true&sort=date:desc",
+      "populate[participants][populate][sportsperson][fields][0]=slug&populate[participants][populate][sportsperson][fields][1]=showPublicPage&sort=date:desc",
     ).catch(() => [] as StrapiCompetition[]),
   ]);
 
