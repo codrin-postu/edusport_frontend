@@ -146,7 +146,7 @@ const SportspersonView: React.FC<Props> = ({
             color: "transparent",
             WebkitTextStroke: "1.5px rgba(255,255,255,0.12)",
             fontFamily: "var(--font-climate-crisis), sans-serif",
-            fontVariationSettings: '"YEAR" 1979',
+            fontVariationSettings: "\"YEAR\" 1979",
           }}
         >
           {pad(1)}
@@ -513,7 +513,7 @@ function SectionWatermark({
       style={{
         color: colour,
         fontFamily: "var(--font-climate-crisis), sans-serif",
-        fontVariationSettings: '"YEAR" 1979',
+        fontVariationSettings: "\"YEAR\" 1979",
       }}
     >
       {children}
@@ -582,7 +582,7 @@ function HeroStat({
         )}
         style={{
           fontFamily: "var(--font-climate-crisis), sans-serif",
-          fontVariationSettings: '"YEAR" 1979',
+          fontVariationSettings: "\"YEAR\" 1979",
         }}
       >
         {value}
@@ -660,7 +660,7 @@ function DespreCellWithNum({
           color: "transparent",
           WebkitTextStroke: "1.5px #fbbf24",
           fontFamily: "var(--font-climate-crisis), sans-serif",
-          fontVariationSettings: '"YEAR" 1979',
+          fontVariationSettings: "\"YEAR\" 1979",
         }}
       >
         {num}
