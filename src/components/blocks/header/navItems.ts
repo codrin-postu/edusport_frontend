@@ -40,6 +40,11 @@ export const navItems: NavItem[] = [
         description: "Cunoaste instructorii nostri",
       },
       {
+        label: "Sportivi",
+        href: "/despre-noi/sportivi",
+        description: "Profilurile sportivilor clubului",
+      },
+      {
         label: "Realizari",
         href: "/despre-noi/realizari",
         description: "Performantele si premiile noastre",

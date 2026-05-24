@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { Trophy, ChevronDown } from "lucide-react";
@@ -11,7 +12,6 @@ import {
   type GalleryImage,
 } from "./_data";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
-
 
 // ---------------------------------------------------------------------------
 // Page
@@ -254,9 +254,18 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                                           />
                                         </svg>
                                       )}
-                                      <span className="relative text-sm font-medium text-gray-900 min-w-0">
-                                        {result.athlete}
-                                      </span>
+                                      {result.athleteSlug ? (
+                                        <Link
+                                          href={`/despre-noi/sportivi/${result.athleteSlug}`}
+                                          className="relative text-sm font-medium text-gray-900 min-w-0 hover:text-edusport-blue transition-colors underline-offset-2 hover:underline"
+                                        >
+                                          {result.athlete}
+                                        </Link>
+                                      ) : (
+                                        <span className="relative text-sm font-medium text-gray-900 min-w-0">
+                                          {result.athlete}
+                                        </span>
+                                      )}
                                       <span className="relative text-xs text-gray-400 font-light hidden sm:inline">
                                         {result.category}
                                       </span>
