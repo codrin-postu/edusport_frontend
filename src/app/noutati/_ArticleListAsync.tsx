@@ -1,8 +1,8 @@
 import ArticleCard from "@/components/blocks/article-card";
+import { Pagination } from "@/components/Pagination";
 import { fetchArticlesPaginated } from "@/lib/strapi-article";
 import { CATEGORY_LABELS, type CategoryKey } from "./_data";
 import { PAGE_SIZE, formatDate, mapStrapiArticle } from "./_helpers";
-import Pagination from "./_Pagination";
 
 interface ArticleListAsyncProps {
   page: number;
@@ -71,9 +71,13 @@ export default async function ArticleListAsync({
 
       <Pagination
         currentPage={page}
-        pageCount={pageCount}
-        category={category}
-        search={search}
+        totalPages={pageCount}
+        basePath="/noutati"
+        ariaLabel="Paginare articole"
+        extraQuery={{
+          ...(category !== "toate" ? { category } : {}),
+          ...(search ? { search } : {}),
+        }}
       />
     </>
   );
