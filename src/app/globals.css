@@ -73,12 +73,9 @@ h1.text-branding-font {
 
   --color-light: oklch(0.9827 0.0026 286.35);
 
-  /* ── Retro palette (landing-v2 70s pilot) ───────────────────────────
-     A warm accent layer applied to /landing-v2 only. Kept as its own
-     tokens so the rest of the app's brand palette above is untouched.
-     Blue is kept but softened to a pastel scheme colour (never the
-     saturated #2138b8 as a section fill). navy reuses --color-navy. */
-  --color-retro-cream: #fbf8f1;   /* near-white warm base (landing-v2 surfaces) */
+  /* Retro palette — the site-wide 70s theme. Blue softened to a pastel
+     scheme colour (never the saturated #2138b8 as a section fill). */
+  --color-retro-cream: #fbf8f1;
   --color-mustard: #efb22b;       /* warm gold — layers CTA + accents */
   --color-orange: #ea7233;
   --color-rust: #be3330;          /* brick red — eyebrows, hover underlines */
@@ -333,22 +330,16 @@ h1.text-branding-font {
   }
 }
 
-/* ── landing-v2 retro footer ────────────────────────────────────────────
-   The site Footer is global (rendered by the root layout), so its retro
-   look is scoped to landing-v2 via the `lv2-nav` flag the page stamps on
-   <html> (same pattern as the nav treatment in HeroSection). Navy fill
-   instead of saturated brand blue, extra breathing room before the pinned
-   EDUSPORT wordmark, and a mustard link-hover tint. The FooterBrandName
-   wordmark itself is untouched. */
+/* Retro footer — navy fill, breathing room before the pinned EDUSPORT
+   wordmark, mustard link-hover. Restyles the global Footer via the lv2-nav
+   flag on <html> without editing the component. */
 html.lv2-nav footer {
   background-color: var(--color-navy) !important;
   padding-bottom: clamp(190px, 17vw, 280px) !important;
 }
 
-/* landing-v2 is full-bleed and its last section (the closing pastel banner)
-   should sit flush to the footer. The global <main> adds pb-24/md:pb-32 white
-   padding (breathing room for normal content pages) that shows as an empty
-   white band below the banner here — zero it on landing-v2 only. */
+/* The global <main> adds pb-24/md:pb-32 breathing room that would show as a
+   band above the footer register band — zero it. */
 html.lv2-nav main {
   padding-bottom: 0 !important;
 }
@@ -374,8 +365,8 @@ html.lv2-nav footer a:hover span {
 html.lv2-nav footer a[aria-label]:hover {
   color: var(--color-mustard) !important;
 }
-/* Match the companion column typography on landing-v2: League Spartan column
-   headings at 17px, links at 14px (Text headings render as span.text-lg). */
+/* Footer column typography: League Spartan headings at 17px, links at 14px
+   (Text headings render as span.text-lg). */
 html.lv2-nav footer span.text-lg {
   font-family: "League Spartan", sans-serif;
   font-weight: 700 !important;
@@ -385,9 +376,8 @@ html.lv2-nav footer a {
   font-size: 0.875rem !important;
 }
 
-/* ── Layers CTA (landing-v2 retro primary button) ───────────────────────
-   Real CSS (not Tailwind arbitrary props) so the spring-overshoot + snap-pop
-   are guaranteed to compile. Two offset layers fan to the bottom-right on
+/* Layers CTA (retro primary button). Real CSS so the spring-overshoot +
+   snap-pop compile reliably. Two offset layers fan to the bottom-right on
    hover; the face snaps onto the stack on click. */
 .lcta { position: relative; isolation: isolate; border-radius: 0; padding: 0; border: 0; background: transparent; }
 /* Put the default display in the `components` layer so Tailwind's `utilities`
@@ -426,11 +416,9 @@ html.lv2-nav footer a {
   .lcta-layer, .lcta-face { transition: none; }
 }
 
-/* ── landing-v2 retro NAV (scoped by lv2-nav on <html>) ─────────────────
-   The Header is global; these rules restyle it only on landing-v2. Bar goes
-   cream (see HeroSection), top links become uppercase Inter with a brick
-   underline, and the dropdown becomes a square panel with a warm top stripe
-   and brick left-bar hover (no chevrons/arrows). */
+/* Retro NAV. Restyles the global Header via lv2-nav on <html>: cream bar,
+   uppercase Inter links with a brick underline, and a square dropdown panel
+   with a warm top stripe + brick left-bar hover (no chevrons/arrows). */
 html.lv2-nav .gap-x-5.h-12 > button,
 html.lv2-nav .gap-x-5.h-12 > a {
   font-family: var(--font-inter), system-ui, sans-serif;

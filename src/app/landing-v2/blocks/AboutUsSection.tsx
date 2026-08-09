@@ -4,15 +4,10 @@ import React, { useMemo } from "react";
 import Link from "@/components/ui/link";
 import type { HomepageAboutPanel } from "../_types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// About Us — landing-v2 retro pilot. Faithful port of the locked
-// `about-ribbon-v5` mockup: cream surface, League Spartan headings, brick
-// eyebrows + underline CTAs, a figure-skater photo brush-masked in section 1,
-// and one stepped 5-stripe ribbon (concentric arcs → constant gap) threading
-// the sections. Section 2 is pulled UP into the ribbon's empty area; section 3
-// is reversed (content right) and nudged down. Geometry constants match the
-// mockup exactly.
-// ─────────────────────────────────────────────────────────────────────────────
+// About Us: cream surface, League Spartan headings, a brush-masked skater in
+// section 1, and one stepped 5-stripe ribbon (concentric arcs = constant gap)
+// threading the sections. Section 2 is pulled UP into the ribbon's empty area;
+// section 3 is reversed (content right) and nudged down.
 
 interface Panel {
   eyebrow: string;
@@ -235,7 +230,7 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
     <p className="text-sm leading-relaxed text-navy/60 max-w-[440px] mb-5">{panel.body}</p>
     <Link
       href={panel.ctaUrl}
-      className="relative inline-block w-fit text-[12.5px] font-bold uppercase tracking-[0.04em] text-navy pb-[3px] after:absolute after:left-0 after:bottom-0 after:h-[2.5px] after:w-0 after:bg-rust after:transition-[width] after:duration-200 hover:after:w-full"
+      className="link-underline-rust inline-block w-fit text-[12.5px] font-bold uppercase tracking-[0.04em] text-navy"
     >
       {panel.ctaLabel}
     </Link>

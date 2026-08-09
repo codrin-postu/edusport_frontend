@@ -5,13 +5,8 @@ import RegistrationWaveDivider from "./RegistrationWaveDivider";
 import RegistrationPinwheelGrid from "./RegistrationPinwheelGrid";
 
 /**
- * V2 of RegistrationScrollFrame for /landing-v2 (retro pilot).
- *
- * Pastel-blue background (the softened scheme blue, not the saturated brand
- * blue). The scroll-driven skate loop + ghost EDUSPORT text were retired here
- * in favour of the 70s scallop / pinwheel grid, which zooms in on scroll. The
- * `ScrollSkatingFigure` and ghost-branding components remain available for
- * reuse elsewhere.
+ * Registration frame: pastel background with the wave-divider seam into the
+ * hero and the 70s pinwheel grid that zooms in on scroll.
  */
 
 interface RegistrationScrollFrameV2Props {

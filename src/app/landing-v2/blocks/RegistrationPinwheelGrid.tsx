@@ -3,16 +3,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * 70s scallop / pinwheel grid backdrop for the landing-v2 registration
- * section. A grid of cells, each split into four quarter-circle "pie"
- * quadrants in the warm palette; the TL + BR quadrants are flipped so they
- * point outward (the pinwheel). Each quadrant zooms + fades in individually,
- * staggered top-to-bottom, when the section scrolls into view. Rendered on a
- * transparent background so the pastel section colour shows through the gaps.
+ * 70s pinwheel grid backdrop for the registration section: cells split into
+ * four quarter-circle quadrants (TL + BR flipped to point outward). Each
+ * quadrant zooms + fades in, staggered, on scroll into view; transparent bg so
+ * the pastel section shows through the gaps.
  *
- * Ported from the locked `registration-70s.html` mockup (option A). The
- * mockup's `Math.random()` stagger is replaced with a deterministic hash so
- * server and client render identically (no hydration mismatch).
+ * The stagger uses a deterministic hash (not Math.random) so server and client
+ * render identically (no hydration mismatch).
  */
 
 const COLS = [

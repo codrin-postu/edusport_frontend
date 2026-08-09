@@ -6,10 +6,9 @@ import { RegistrationScrollFrameV2 } from "./RegistrationScrollFrameV2";
 import type { HomepageRegistration } from "../_types";
 
 /**
- * V2 of RegistrationSection for /landing-v2.
- *
- * Identical to the live `RegistrationSection` except it wraps with the V2 frame
- * (which renders the enlarged scroll-driven loop figure beside the panel).
+ * Registration panel (season-open): season label, heading, body, schedule, the
+ * layers primary CTA + ghost secondary, and the prices link. Wrapped by
+ * `RegistrationScrollFrameV2` for the pastel frame + pinwheel.
  */
 
 interface RegistrationSectionV2Props {
@@ -87,7 +86,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms }) =>
 
           <Link
             href={pricesLinkUrl}
-            className="relative w-fit text-sm font-semibold text-navy pb-[3px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust after:transition-[width] after:duration-200 hover:after:w-full"
+            className="link-underline-rust w-fit text-sm font-semibold text-navy"
           >
             {pricesLinkLabel}
           </Link>

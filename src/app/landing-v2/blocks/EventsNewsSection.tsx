@@ -13,17 +13,9 @@ import {
 } from "./EventResultsSection";
 
 /**
- * "Evenimente și noutăți" — merged Actualitate hub for /landing-v2.
- *
- * Replaces the separate EventResultsSection + LatestArticlesRetro sections,
- * which read as two adjacent "latest updates" blocks. Layout (approved in the
- * brainstorm companion, variant V1):
- *   - top: next-event card (left) + news column (featured + list, right)
- *   - full-width below: recent podiums as a 3-across grid (no dividers)
- *
- * Reuses the real `EventCard` + medal marker-tag helpers from
- * `EventResultsSection`. The old EventResultsSection / LatestArticlesRetro
- * components are kept in the tree only for their exported types/helpers.
+ * "Evenimente și noutăți" — one Actualitate hub: next-event card + news column
+ * on top, recent podiums as a full-width 3-across grid below. Reuses
+ * `EventCard` + the medal marker-tag helpers from `EventResultsSection`.
  */
 
 interface EventsNewsSectionProps {
@@ -87,7 +79,7 @@ function NewsColumn({ articles }: { articles: LatestArticleData[] }) {
         </p>
         <Link
           href="/noutati"
-          className="relative text-sm font-bold text-navy pb-[3px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust after:transition-[width] after:duration-200 hover:after:w-full shrink-0"
+          className="link-underline-rust text-sm font-bold text-navy shrink-0"
         >
           Vezi toate
         </Link>
@@ -158,7 +150,7 @@ function PodiumsGrid({ medals }: { medals: RecentMedal[] }) {
         </p>
         <Link
           href="/despre-noi/realizari"
-          className="relative text-sm font-bold text-navy pb-[3px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust after:transition-[width] after:duration-200 hover:after:w-full shrink-0"
+          className="link-underline-rust text-sm font-bold text-navy shrink-0"
         >
           Vezi toate
         </Link>

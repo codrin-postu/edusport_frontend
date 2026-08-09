@@ -101,7 +101,7 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
         html.lv2-nav-dark header.bg-white .nav-dropdown-panel * {
           color: var(--color-ink) !important;
         }
-        /* The landing-v2 hero adds a white ::before to the nav bar for its
+        /* The home hero adds a white ::before to the nav bar for its
            scroll-to-solid effect, which would otherwise cover the colour above.
            Paint that layer the strip colour (and force it full-height) so the
            nav actually matches the picture section's background. */

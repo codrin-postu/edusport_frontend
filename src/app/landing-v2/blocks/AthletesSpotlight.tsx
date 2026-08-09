@@ -8,15 +8,10 @@ import type {
 import { SportspersonCard } from "../../despre-noi/sportivi/_components/SportspersonCard";
 
 /**
- * Athletes spotlight on /landing-v2 (retro pilot).
- *
- * Layout "C" (chosen in the brainstorm): a two-column section that fills the
- * space and signals the club has far more than the featured few. Left column =
- * title + intro + a big "N+ sportivi legitimați" number + the "Vezi toți"
- * layers CTA. Right column = two featured `SportspersonCard`s (retro skin).
- *
- * The big number uses `totalCount` (the real athlete roster size) when it's
- * meaningfully larger than the 2 shown; otherwise it falls back to "50+".
+ * Athletes spotlight: title + intro + a big "N+ sportivi legitimați" number +
+ * "Vezi toți" CTA on the left, two featured retro `SportspersonCard`s on the
+ * right. The number uses the real roster size (`totalCount`) when it's
+ * meaningfully larger than the 2 shown, else falls back to "50+".
  */
 
 interface AthletesSpotlightProps {
@@ -38,13 +33,10 @@ const EMPTY_STATS: SportspersonStats = {
 
 export default function AthletesSpotlight({ athletes, stats, totalCount }: AthletesSpotlightProps) {
   if (!athletes.length) {
-    // Visible placeholder so the section doesn't silently disappear when
-    // Strapi returns no athletes. Helps tell "no data" apart from a render
-    // crash during debugging.
     return (
       <section className="bg-retro-cream py-20 md:py-28">
         <div className="max-w-content mx-auto px-6 md:px-8 text-center text-navy/40 text-sm">
-          (Niciun sportiv încărcat — verifică <code>landing-v2</code> terminal log.)
+          Niciun sportiv încărcat momentan.
         </div>
       </section>
     );

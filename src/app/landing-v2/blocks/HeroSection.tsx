@@ -13,23 +13,11 @@ const HeroWordmarkMorph = dynamic(() => import("./HeroWordmarkMorph"), {
 });
 
 /**
- * Hero V2 — editorial layout shared across 5 background variants.
+ * Home hero. z-order: background (0) → weaving line (5) → EDUSPORT wordmark
+ * (10) → eyebrow / CTA / next-event strip (30).
  *
- * The variant is chosen on the server in `page.tsx` and passed in via props,
- * so the correct background renders on the SSR pass (no hydration flash).
- *
- * Layering (z-index):
- *   z-0  background
- *   z-5  weaving line animation (behind the wordmark)
- *   z-10 EDUSPORT wordmark
- *   z-20 SkateParallax (above wordmark, can bleed below the hero into the
- *        blue registration section, hence no `overflow-hidden` on the section)
- *   z-30 eyebrow / motto / CTA (above the skate so the supporting copy
- *        is always readable even when the skate drifts up into it)
- *
- * `HERO_VARIANTS` and the `HeroVariant` type live in `./HeroVariant.ts` so
- * server components can import the runtime array (a `"use client"` export
- * comes through as `undefined` on the server side).
+ * `HeroVariant` lives in `./HeroVariant.ts` so server components can import it
+ * (a `"use client"` export comes through as `undefined` on the server).
  */
 
 export type { HeroVariant };
@@ -146,12 +134,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
 
   const ink = videoOn ? "var(--color-retro-cream)" : "var(--color-navy)";
 
-  // Landing-v2 nav behaviour (scoped to this page via <html> classes, read by
-  // the <style> block below — keeps the shared Header untouched):
-  //   • lv2-nav            → enable the transparent-over-hero nav treatment
-  //   • lv2-nav-entrance   → play the slide-in entrance (re-runs on each arrival)
-  //   • lv2-hero-dark      → dark hero variant (G) → white nav text
-  //   • lv2-nav-solid      → past 20vh: white bar slides in, text reverts to dark
+  // Home-hero nav states, read by the <style> block below (base retro nav is
+  // global; these add the transparent-over-hero entrance, home only):
+  //   • lv2-nav-entrance → slide-in entrance
+  //   • lv2-hero-dark    → dark hero → white nav text
+  //   • lv2-nav-solid    → past 20vh: solid bar slides in, text reverts to dark
   useEffect(() => {
     const html = document.documentElement;
     const darkHero = safeVariant === "G";
@@ -177,19 +164,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
   }, [safeVariant]);
 
   return (
-    // No overflow-hidden on the section — the SkateParallax has a negative
-    // `bottom` and we want it to bleed into the blue registration section
-    // below. Inner wrapper uses `overflow-x-clip` instead so the wordmark's
-    // 1% horizontal bleed stays clipped on the x-axis only.
-    //
-    // `-mt-20` pulls the hero up by 80px so it sits flush against the top of
-    // the page, behind the fixed (solid white) nav. The nav is left at its
-    // default appearance — no transparent/in-hero treatment.
+    // Inner wrapper uses overflow-x-clip (not overflow-hidden) so the
+    // wordmark's 1% horizontal bleed clips on the x-axis only. `-mt-20` pulls
+    // the hero up behind the fixed nav.
     <section className="relative h-screen max-h-[1200px] -mt-20">
       <style>{`
-        /* ── landing-v2 nav: transparent over hero → white on scroll ────────
-           Targets the shared Header's DOM via structure (no Header.tsx edits).
-           div:has(> header.bg-white) is the fixed outer wrapper. */
+        /* Nav transparent over hero → solid on scroll. Targets the shared
+           Header's DOM via structure (no Header.tsx edits). */
         html.lv2-nav div:has(> header.bg-white) { background-color: transparent !important; }
 
         /* Main bar transparent; a white ::before grows DOWN from the top on
@@ -365,7 +346,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
               <span className="flex-1" />
               <NextLink
                 href={nextEvent.href}
-                className="relative shrink-0 text-2xs font-bold uppercase tracking-[0.04em] pb-[2px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust after:transition-[width] after:duration-200 hover:after:w-full"
+                className="link-underline-rust shrink-0 text-2xs font-bold uppercase tracking-[0.04em]"
                 style={{ color: ink, transition: "color .7s ease" }}
               >
                 Vezi

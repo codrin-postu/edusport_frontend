@@ -1,17 +1,11 @@
 import React from "react";
 
 /**
- * Hero → registration seam for /landing-v2 (retro pilot).
+ * Hero → registration seam: a band of touching warm wave-stripes resolving into
+ * the pastel registration fill.
  *
- * A solid band of parallel warm "tube-lines" (mustard / orange / brick /
- * burgundy) that TOUCH (no cream gaps), flowing across the width with an
- * irregular wave and resolving into the pastel registration fill below.
- *
- * The paths run from x=-80 to x=1280 (past both viewport edges) and the SVG
- * uses `overflow: visible`, so the stroke END-CAPS sit off-screen — you never
- * see a flat cut edge at the left/right of the screen (the frame's
- * `overflow-x-clip` hides the overshoot). Each stripe is the same wave shifted
- * vertically by a constant, so they stay parallel with a constant gap.
+ * Paths run x=-80..1280 (past both edges) with SVG `overflow: visible`, so the
+ * stroke end-caps sit off-screen — no flat cut edge at the viewport sides.
  */
 
 // Irregular multi-bump wave; each stripe is this shifted up by `dy`.
