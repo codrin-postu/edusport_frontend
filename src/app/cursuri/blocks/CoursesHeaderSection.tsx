@@ -31,7 +31,7 @@ const CoursesHeaderSection: React.FC<CoursesHeaderSectionProps> = ({
               "md:text-5xl",
               "font-bold",
               "mb-4",
-              "font-['League_Spartan']",
+              "font-display",
             )}
           >
             Cursurile Noastre

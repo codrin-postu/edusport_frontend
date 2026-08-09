@@ -29,7 +29,7 @@ export const PLACEMENT_LABEL: Record<1 | 2 | 3, string> = {
 export const PLACEMENT_TAG: Record<1 | 2 | 3, string> = {
   1: "bg-mustard text-navy",
   2: "bg-silver text-navy",
-  3: "bg-bronze text-[var(--color-retro-cream)]",
+  3: "bg-bronze text-retro-cream",
 };
 
 function formatRoDate(iso: string): string {
@@ -63,10 +63,7 @@ export function EventCard({ event }: { event: Event }) {
         <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-navy mb-3">
           Eveniment următor
         </p>
-        <h3
-          className="font-['League_Spartan'] font-extrabold text-navy leading-[1.05] mb-4"
-          style={{ fontSize: "clamp(26px, 3.4vw, 40px)", letterSpacing: "-0.3px" }}
-        >
+        <h3 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px] mb-4">
           {event.title}
         </h3>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-navy/60 mb-4">

@@ -6,7 +6,7 @@ import { useInView } from "motion/react";
 // Mirrors the 4 evergreen numbers surfaced on /despre-noi.
 // Split into value + suffix so the number can count up on scroll.
 const STATS = [
-  { value: 10, suffix: "+", label: "Competiții pe an", bg: "bg-rust", text: "text-[var(--color-retro-cream)]" },
+  { value: 10, suffix: "+", label: "Competiții pe an", bg: "bg-rust", text: "text-retro-cream" },
   { value: 150, suffix: "", label: "Copii pe sezon", bg: "bg-orange", text: "text-navy" },
   { value: 500, suffix: "+", label: "Sportivi formați", bg: "bg-mustard", text: "text-navy" },
   { value: 13, suffix: "+", label: "Ani de activitate", bg: "bg-pastel", text: "text-navy" },
@@ -60,10 +60,7 @@ export default function StatsStrip() {
             key={s.label}
             className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center py-16 md:py-20 px-4`}
           >
-            <span
-              className="font-['League_Spartan'] font-extrabold leading-none"
-              style={{ fontSize: "clamp(48px, 6vw, 80px)", letterSpacing: "-0.02em" }}
-            >
+            <span className="font-display text-display-lg font-extrabold leading-none tracking-[-0.02em]">
               <CountUp target={s.value} suffix={s.suffix} run={inView} />
             </span>
             <span className="mt-4 text-3xs md:text-2xs font-bold tracking-[0.24em] uppercase opacity-80">

@@ -44,7 +44,7 @@ const SWEEP_DURATION = "0.3s";
 const layersFaceStyles: Record<LayersFace, string> = {
   black: "bg-black text-white",
   white: "bg-white text-navy",
-  cream: "bg-[var(--color-retro-cream)] text-navy",
+  cream: "bg-retro-cream text-navy",
 };
 
 /**

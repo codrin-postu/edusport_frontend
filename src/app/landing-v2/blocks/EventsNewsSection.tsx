@@ -42,16 +42,13 @@ export default function EventsNewsSection({ event, medals, articles }: EventsNew
   const topCols = showEvent && showNews ? "md:grid-cols-[1.15fr_0.95fr]" : "md:grid-cols-1";
 
   return (
-    <section className="bg-[var(--color-retro-cream)] py-20 md:py-28">
+    <section className="bg-retro-cream py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-8">
         {/* Header */}
         <p className="text-2xs font-bold tracking-[0.2em] uppercase text-navy mb-2">
           Actualitate
         </p>
-        <h2
-          className="font-['League_Spartan'] font-extrabold text-navy leading-[1.05] mb-12 md:mb-14"
-          style={{ fontSize: "clamp(26px, 3.4vw, 40px)", letterSpacing: "-0.3px" }}
-        >
+        <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px] mb-12 md:mb-14">
           Evenimente și noutăți
         </h2>
 
@@ -117,7 +114,7 @@ function NewsColumn({ articles }: { articles: LatestArticleData[] }) {
               </span>
             )}
           </div>
-          <h3 className="font-['League_Spartan'] font-bold text-navy leading-tight mt-3 mb-1.5 text-xl md:text-2xl">
+          <h3 className="font-display font-bold text-navy leading-tight mt-3 mb-1.5 text-xl md:text-2xl">
             {featured.title}
           </h3>
           {featured.excerpt && (

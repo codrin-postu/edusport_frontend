@@ -103,9 +103,23 @@ h1.text-branding-font {
   --text-label--letter-spacing: 0.08em;
   --text-logo: var(--font-size-branding-xl); /* brand wordmark clamp */
 
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.1;
+  --text-eyebrow--letter-spacing: 0.2em;
+
+  /* Retro display headings (League Spartan). Fluid, one scale for all sections. */
+  --text-display-sm: clamp(26px, 3.4vw, 40px);
+  --text-display-md: clamp(30px, 4.2vw, 48px);
+  --text-display-lg: clamp(48px, 6vw, 80px);
+  --text-display-xl: clamp(64px, 8vw, 108px);
+
   --max-content-width: 1280px;
   --max-footer-width: 1480px;
   --font-size-branding-xl: clamp(2rem, 12.8vw, 12rem);
+
+  --font-display: var(--font-league-spartan), "League Spartan", sans-serif;
+
+  --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.12);
 }
 
 @theme inline {
@@ -267,6 +281,28 @@ h1.text-branding-font {
     @apply after:scale-x-0 after:origin-right;
     @apply after:transition-transform after:duration-300;
     @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
+  }
+
+  /* Retro building blocks — shared across the site theme. */
+  .link-underline-rust {
+    @apply relative pb-[3px];
+    @apply after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust;
+    @apply after:transition-[width] after:duration-200;
+    @apply hover:after:w-full;
+  }
+  .retro-eyebrow {
+    @apply text-eyebrow font-bold uppercase text-navy;
+  }
+  .marker-tag {
+    @apply inline-flex items-center justify-center px-2 py-1;
+    @apply border-[1.5px] border-navy;
+    @apply text-2xs font-extrabold uppercase tracking-[0.04em];
+  }
+  .btn-retro-ghost {
+    @apply inline-flex items-center justify-center px-8 py-3.5;
+    @apply border-[1.5px] border-navy text-navy;
+    @apply text-sm font-bold uppercase tracking-[0.03em];
+    @apply transition-colors hover:bg-black hover:text-white;
   }
 }
 

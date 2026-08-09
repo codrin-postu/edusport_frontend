@@ -42,7 +42,7 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
     // Strapi returns no athletes. Helps tell "no data" apart from a render
     // crash during debugging.
     return (
-      <section className="bg-[var(--color-retro-cream)] py-20 md:py-28">
+      <section className="bg-retro-cream py-20 md:py-28">
         <div className="max-w-content mx-auto px-6 md:px-8 text-center text-navy/40 text-sm">
           (Niciun sportiv încărcat — verifică <code>landing-v2</code> terminal log.)
         </div>
@@ -54,14 +54,13 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
   const bigNumber = totalCount && totalCount > 3 ? `${totalCount}+` : "50+";
 
   return (
-    <section className="bg-[var(--color-retro-cream)] py-20 md:py-28">
+    <section className="bg-retro-cream py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1.15fr] gap-12 md:gap-14 items-center">
           {/* Left — copy + big number + CTA */}
           <div>
             <h2
-              className="font-['League_Spartan'] font-extrabold text-navy leading-[1.05]"
-              style={{ fontSize: "clamp(26px, 3.4vw, 40px)", letterSpacing: "-0.3px" }}
+              className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px]"
             >
               Sportivii noștri
             </h2>
@@ -71,10 +70,7 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
             </p>
 
             <div className="mt-8 mb-8">
-              <span
-                className="block font-['League_Spartan'] font-black text-navy leading-[0.9]"
-                style={{ fontSize: "clamp(64px, 8vw, 108px)" }}
-              >
+              <span className="block font-display text-display-xl font-black text-navy leading-[0.9]">
                 {bigNumber}
               </span>
               <span className="block text-sm font-bold uppercase tracking-[0.08em] text-rust mt-2">

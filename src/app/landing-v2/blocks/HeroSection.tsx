@@ -338,7 +338,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
               href="/noutati"
               className={`inline-flex items-center justify-center w-full sm:w-auto border-[1.5px] bg-transparent px-8 py-3.5 text-sm font-bold uppercase tracking-[0.03em] transition-colors ${
                 videoOn
-                  ? "border-[var(--color-retro-cream)] text-[var(--color-retro-cream)] hover:bg-[var(--color-retro-cream)] hover:text-navy"
+                  ? "border-[var(--color-retro-cream)] text-retro-cream hover:bg-retro-cream hover:text-navy"
                   : "border-navy text-navy hover:bg-black hover:text-white"
               }`}
             >

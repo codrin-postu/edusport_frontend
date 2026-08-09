@@ -123,7 +123,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
   const mobilePaths = useMemo(ribbonPathsMobile, []);
 
   return (
-    <section className="relative bg-[var(--color-retro-cream)] overflow-hidden py-6 md:py-10">
+    <section className="relative bg-retro-cream overflow-hidden py-6 md:py-10">
       {/* Mobile: the ribbon sits as a faint, out-of-flow background (doesn't
           push any content). Desktop uses the in-flow full-bleed ribbon below. */}
       <svg
@@ -218,8 +218,8 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
       {panel.eyebrow}
     </div>
     <h2
-      className="font-['League_Spartan'] font-black text-navy mb-3.5"
-      style={{ fontSize: "clamp(30px, 4.2vw, 48px)", lineHeight: accent ? 1.3 : 0.98, letterSpacing: "-0.5px" }}
+      className="font-display text-display-md font-black text-navy tracking-[-0.5px] mb-3.5"
+      style={{ lineHeight: accent ? 1.3 : 0.98 }}
     >
       {panel.heading.split("\n").map((line, j) => (
         <React.Fragment key={j}>

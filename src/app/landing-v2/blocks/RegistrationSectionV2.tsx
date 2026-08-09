@@ -40,7 +40,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms }) =>
           </p>
 
           <div className="flex flex-col gap-4">
-            <h2 className="font-['League_Spartan'] text-4xl md:text-5xl font-extrabold text-navy leading-[1.05]">
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold text-navy leading-[1.05]">
               {heading}
             </h2>
             <p className="text-navy/85 text-sm md:text-base font-normal leading-relaxed">

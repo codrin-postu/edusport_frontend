@@ -254,7 +254,7 @@ const RetroPanel: React.FC<{
             onClick={onClose}
           />
           <motion.div
-            className="fixed z-[999] overflow-hidden bg-[var(--color-retro-cream)] flex flex-col
+            className="fixed z-[999] overflow-hidden bg-retro-cream flex flex-col
               inset-x-0 bottom-0
               md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
               md:border-[1.5px] md:border-navy md:shadow-[8px_8px_0_rgba(14,26,60,0.16)]"

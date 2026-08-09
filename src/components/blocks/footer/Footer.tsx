@@ -310,7 +310,7 @@ const RegisterBand: React.FC = () => (
     <div className="max-w-content mx-auto px-6 md:px-8 py-9 md:py-11 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10 text-center lg:text-left">
       <div className="lg:max-w-[54%]">
         <h2
-          className="font-['League_Spartan'] font-extrabold text-navy leading-[1.05]"
+          className="font-display font-extrabold text-navy leading-[1.05]"
           style={{ fontSize: "clamp(24px, 3vw, 38px)", letterSpacing: "-0.4px" }}
         >
           Începe aventura pe gheață
@@ -319,7 +319,7 @@ const RegisterBand: React.FC = () => (
           Cursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.
         </p>
       </div>
-      <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch lg:items-center justify-center w-full lg:w-auto lg:shrink-0">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-center w-full sm:w-auto lg:shrink-0">
         <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-sm">
           Înscrieri
         </SpotlightButton>
