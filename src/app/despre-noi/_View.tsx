@@ -113,7 +113,7 @@ const HistoryPage: React.FC<Props> = ({
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["DESPRE", "NOI"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi" },
         ]}

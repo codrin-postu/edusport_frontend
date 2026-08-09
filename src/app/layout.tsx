@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, Roboto, League_Spartan, Libre_Bodoni, Caveat } from "next/font/google";
+import { Inter, League_Spartan, Caveat, Lora, Anton } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { FooterReveal, Header } from "../components/blocks";
-import { LazyPageTransition } from "../components/LazyPageTransition";
 import NavigationProgress from "../components/NavigationProgress";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
@@ -19,25 +18,25 @@ const inter = Inter({
   display: "swap",
 });
 
-const roboto = Roboto({
-  subsets: ["latin", "latin-ext"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
 const leagueSpartan = League_Spartan({
   subsets: ["latin", "latin-ext"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-league-spartan",
   display: "swap",
 });
 
-const libreBodoni = Libre_Bodoni({
+const lora = Lora({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
-  variable: "--font-libre-bodoni",
+  variable: "--font-lora",
+  display: "swap",
+});
+
+const anton = Anton({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400"],
+  variable: "--font-anton",
   display: "swap",
 });
 
@@ -113,7 +112,7 @@ export default async function RootLayout({
   return (
     <html
       lang="ro"
-      className={`${inter.variable} ${roboto.variable} ${leagueSpartan.variable} ${libreBodoni.variable} ${caveat.variable} ${climateCrisis.variable}`}
+      className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable} ${anton.variable}`}
     >
       <body className="bg-edusport-blue">
         <OrganizationJsonLd telephone={contactInfo.phone} email={contactInfo.email} />
@@ -125,9 +124,8 @@ export default async function RootLayout({
         >
           {children}
         </main>
-        <FooterReveal contactInfo={contactInfo} />
+        <FooterReveal contactInfo={contactInfo} registrationOpen={registrationOpen} />
         {announcement && <AnnouncementPopup announcement={announcement} />}
-        <LazyPageTransition />
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
             src={process.env.NEXT_PUBLIC_UMAMI_URL ?? "https://analytics.umami.is/script.js"}

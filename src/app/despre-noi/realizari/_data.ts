@@ -48,9 +48,9 @@ export interface PlacementInfo {
 }
 
 const PODIUM_ACCENT: Record<number, string> = {
-  1: "#f59e0b", // amber-500
-  2: "#9ca3af", // gray-400
-  3: "#ea580c", // orange-600
+  1: "var(--color-medal-gold)",
+  2: "var(--color-medal-silver)",
+  3: "var(--color-medal-bronze)",
 };
 
 const PODIUM_LABEL: Record<number, string> = {

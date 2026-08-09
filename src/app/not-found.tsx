@@ -54,7 +54,7 @@ export default function NotFound() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <motion.h1
-            className="text-[8rem] md:text-[11rem] font-bold leading-none tracking-tight"
+            className="text-9xl md:text-[11rem] font-bold leading-none tracking-tight"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}

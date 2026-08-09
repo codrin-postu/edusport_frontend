@@ -12,7 +12,7 @@ interface PageHeroSectionProps {
   backgroundImage?: string;
   title?: string[];
   breadcrumb?: BreadcrumbItem[];
-  variant?: "blue" | "light" | "purple" | "dark";
+  variant?: "blue" | "light" | "dark";
 }
 
 const DARK_GRADIENT =
@@ -26,7 +26,6 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({
   variant = "blue",
 }) => {
   const isLight = variant === "light";
-  const isPurple = variant === "purple";
   const isDark = variant === "dark";
 
   return (
@@ -43,8 +42,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({
           />
         </div>
         {/* Solid colour overlay */}
-        {!isLight && !isPurple && !isDark && <div className="absolute inset-0 bg-edusport-blue/90" />}
-        {isPurple && <div className="absolute inset-0 bg-purple-700/90" />}
+        {!isLight && !isDark && <div className="absolute inset-0 bg-edusport-blue/90" />}
         {isDark && <div className="absolute inset-0" style={{ background: DARK_GRADIENT }} />}
 
         {/* Ghost branding text - right side */}

@@ -172,9 +172,9 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="z-50 max-w-[320px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-3 py-2.5 text-[0.72rem] leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="z-50 max-w-[320px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
         >
-          <p className="text-[0.68rem] font-semibold uppercase tracking-wider text-edusport-blue/70">
+          <p className="text-3xs font-semibold uppercase tracking-wider text-edusport-blue/70">
             {stateLabel}
           </p>
           <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-gray-900">

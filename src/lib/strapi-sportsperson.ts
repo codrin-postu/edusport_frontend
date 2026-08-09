@@ -1,9 +1,5 @@
 // ---------------------------------------------------------------------------
 // Sportsperson types, fetch helpers, and derived-stats computation
-//
-// Strapi-side: api::sportsperson.sportsperson + relation from
-// competition.participant.sportsperson. The relation is optional — external
-// athletes leave it empty and keep the participant.athleteName string only.
 // ---------------------------------------------------------------------------
 
 import { fetchStrapi, fetchStrapiPaginated } from "./strapi";
@@ -28,8 +24,8 @@ export interface StrapiSportsperson {
   /** Disciplines (many-to-many). Editable in the admin via the Discipline
    *  collection — administrators add/remove entries as the club grows. */
   disciplines?: StrapiDiscipline[] | null;
-  /** Linked coach (team-member). Populated subset on detail fetch. */
-  coach?: StrapiSportspersonCoach | null;
+  /** Linked coaches (many-to-many, team-members). Populated on detail fetch. */
+  coaches?: StrapiSportspersonCoach[] | null;
   /** Choreographers (many-to-many, team-members). Each athlete can list one
    *  or more coregrafe from the club's team. */
   choreographers?: StrapiSportspersonCoach[] | null;
@@ -111,8 +107,8 @@ const DETAIL_POPULATE_PARAMS = {
   "populate[gallery][fields][2]": "width",
   "populate[gallery][fields][3]": "height",
   "populate[gallery][fields][4]": "caption",
-  "populate[coach][fields][0]": "name",
-  "populate[coach][fields][1]": "role",
+  "populate[coaches][fields][0]": "name",
+  "populate[coaches][fields][1]": "role",
   "populate[choreographers][fields][0]": "name",
   "populate[choreographers][fields][1]": "role",
   // Nested populate: a season component holds an inner `programs`
@@ -279,6 +275,14 @@ export async function fetchSportspersonBySlug(
   return data?.[0] ?? null;
 }
 
+interface RawParticipantJSON {
+  documentId?: string;
+  name?: string;
+  category?: string | null;
+  placement?: number | null;
+  score?: number | null;
+}
+
 interface RawCompetitionForAthlete {
   documentId: string;
   name: string;
@@ -286,46 +290,33 @@ interface RawCompetitionForAthlete {
   location?: string | null;
   level?: "national" | "international" | null;
   season?: string | null;
-  participants?: {
-    category?: string | null;
-    placement?: string | number | null;
-    score?: number | null;
-    sportsperson?: { documentId?: string } | null;
-  }[] | null;
+  participantData?: RawParticipantJSON[] | null;
 }
 
-/** Parse Strapi's placement value (string enum like "1", "2", ... or "gold")
- *  into a numeric position. Returns undefined for unknown values. */
-function parsePlacement(raw: string | number | null | undefined): number | undefined {
+/** Coerce a placement value to a number. Returns undefined for null/undefined. */
+export function parsePlacement(raw: number | null | undefined): number | undefined {
   if (raw === null || raw === undefined) return undefined;
-  if (typeof raw === "number") return raw;
-  // Strapi enum stores "1".."50" as strings.
-  const n = Number(raw);
-  if (Number.isFinite(n) && n > 0) return n;
-  // Legacy seed values used in some entries: "gold" / "silver" / "bronze" / "top10" / "4th"…
-  const lower = raw.toLowerCase();
-  if (lower === "gold") return 1;
-  if (lower === "silver") return 2;
-  if (lower === "bronze") return 3;
-  const ordinal = raw.match(/^(\d+)(?:st|nd|rd|th)?$/i);
-  if (ordinal) return Number(ordinal[1]);
-  return undefined;
+  return raw;
 }
 
 /**
  * All competitions where this sportsperson is linked via at least one
- * participant row. Strapi returns the entire competition (with all
- * participants) even when filtered by a nested relation, so we re-narrow
- * client-side to keep only THIS athlete's rows.
+ * participant component row. Strapi returns the entire competition (with all
+ * participants) so we narrow client-side to only THIS athlete's rows.
  */
 export async function fetchCompetitionsByAthlete(
   documentId: string,
 ): Promise<SportspersonCompetition[]> {
   const params = new URLSearchParams({
-    "filters[participants][sportsperson][documentId][$eq]": documentId,
+    "filters[sportspeople][documentId][$eq]": documentId,
     "sort[0]": "date:desc",
     "pagination[pageSize]": "200",
-    "populate[participants][populate][sportsperson][fields][0]": "documentId",
+    "fields[0]": "name",
+    "fields[1]": "date",
+    "fields[2]": "location",
+    "fields[3]": "level",
+    "fields[4]": "season",
+    "fields[5]": "participantData",
   });
   const raw = await fetchStrapi<RawCompetitionForAthlete[]>(
     "competitions",
@@ -333,35 +324,28 @@ export async function fetchCompetitionsByAthlete(
     300,
   );
   if (!raw) return [];
-  const out: SportspersonCompetition[] = [];
-  for (const c of raw) {
-    const mine = (c.participants ?? []).filter(
-      (p) => p.sportsperson?.documentId === documentId,
-    );
-    if (mine.length === 0) continue;
-    out.push({
-      documentId: c.documentId,
-      name: c.name,
-      date: c.date,
-      location: c.location ?? undefined,
-      level: c.level ?? undefined,
-      season: c.season ?? undefined,
-      participantsForThisAthlete: mine.map((p) => ({
+  return raw.map((c) => ({
+    documentId: c.documentId,
+    name: c.name,
+    date: c.date,
+    location: c.location ?? undefined,
+    level: c.level ?? undefined,
+    season: c.season ?? undefined,
+    participantsForThisAthlete: (c.participantData ?? [])
+      .filter((p) => p.documentId === documentId)
+      .map((p) => ({
         category: p.category ?? undefined,
-        placement: parsePlacement(p.placement),
+        placement: p.placement ?? undefined,
         score: p.score ?? undefined,
       })),
-    });
-  }
-  return out;
+  }));
 }
 
 /**
  * Bulk variant of fetchCompetitionsByAthlete — one request that pulls every
  * competition where ANY of the supplied sportspeople appears as a
- * participant. Returns a Map keyed by sportsperson.documentId so a list
- * view (sportivi index) can compute per-athlete stats without N round-
- * trips. Empty input → empty Map (skips the query).
+ * participant component. Returns a Map keyed by sportsperson.documentId.
+ * Empty input → empty Map (skips the query).
  */
 export async function fetchCompetitionsForAthletes(
   documentIds: string[],
@@ -370,14 +354,15 @@ export async function fetchCompetitionsForAthletes(
   const params = new URLSearchParams({
     "sort[0]": "date:desc",
     "pagination[pageSize]": "500",
-    "populate[participants][populate][sportsperson][fields][0]": "documentId",
+    "fields[0]": "name",
+    "fields[1]": "date",
+    "fields[2]": "location",
+    "fields[3]": "level",
+    "fields[4]": "season",
+    "fields[5]": "participantData",
   });
-  // Use $in to fetch any competition that has at least one of these athletes.
   documentIds.forEach((id, i) => {
-    params.append(
-      `filters[participants][sportsperson][documentId][$in][${i}]`,
-      id,
-    );
+    params.append(`filters[sportspeople][documentId][$in][${i}]`, id);
   });
   const raw = await fetchStrapi<RawCompetitionForAthlete[]>(
     "competitions",
@@ -388,16 +373,10 @@ export async function fetchCompetitionsForAthletes(
   for (const id of documentIds) result.set(id, []);
   if (!raw) return result;
   for (const c of raw) {
-    // One competition can include multiple of OUR athletes — bucket each
-    // participant row under its athlete's documentId.
-    const perAthlete = new Map<string, RawCompetitionForAthlete["participants"]>();
-    for (const p of c.participants ?? []) {
-      const docId = p?.sportsperson?.documentId;
-      if (!docId || !result.has(docId)) continue;
-      if (!perAthlete.has(docId)) perAthlete.set(docId, []);
-      perAthlete.get(docId)!.push(p);
-    }
-    for (const [docId, rows] of perAthlete) {
+    const participants = c.participantData ?? [];
+    const presentIds = new Set(participants.map((p) => p.documentId).filter(Boolean));
+    for (const docId of documentIds) {
+      if (!presentIds.has(docId)) continue;
       result.get(docId)!.push({
         documentId: c.documentId,
         name: c.name,
@@ -405,11 +384,13 @@ export async function fetchCompetitionsForAthletes(
         location: c.location ?? undefined,
         level: c.level ?? undefined,
         season: c.season ?? undefined,
-        participantsForThisAthlete: (rows ?? []).map((p) => ({
-          category: p.category ?? undefined,
-          placement: parsePlacement(p.placement),
-          score: p.score ?? undefined,
-        })),
+        participantsForThisAthlete: participants
+          .filter((p) => p.documentId === docId)
+          .map((p) => ({
+            category: p.category ?? undefined,
+            placement: p.placement ?? undefined,
+            score: p.score ?? undefined,
+          })),
       });
     }
   }

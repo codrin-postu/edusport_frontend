@@ -37,7 +37,7 @@ export function EditorialTicker({
 
   const colorClasses =
     variant === "gold"
-      ? "bg-[#fbbf24] text-gray-900"
+      ? "bg-gold text-gray-900"
       : variant === "blue"
         ? "bg-edusport-blue text-white"
         : variant === "black"
@@ -48,7 +48,7 @@ export function EditorialTicker({
     variant === "gold"
       ? "text-gray-900"
       : variant === "blue" || variant === "black"
-        ? "text-[#fbbf24]"
+        ? "text-gold"
         : "text-edusport-blue";
 
   const prefix = variant === "gold" ? "◆ " : "★ ";
@@ -71,7 +71,7 @@ export function EditorialTicker({
         {[...items, ...items].map((item, i) => (
           <span
             key={i}
-            className="inline-block px-7 text-[13px] font-extrabold uppercase tracking-[0.3em]"
+            className="inline-block px-7 text-sm font-extrabold uppercase tracking-[0.3em]"
           >
             <span className={prefixClasses}>{prefix}</span>
             {item}

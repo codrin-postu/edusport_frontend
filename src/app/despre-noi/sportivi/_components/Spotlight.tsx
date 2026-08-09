@@ -45,10 +45,10 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
       <div className="relative grid grid-cols-1 items-center gap-12 md:grid-cols-[1.5fr_1fr]">
         {/* Left: editorial copy + stats */}
         <div>
-          <div className="mb-[18px] inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.32em] text-[#fbbf24]">
+          <div className="mb-[18px] inline-flex items-center gap-2 text-2xs font-extrabold uppercase tracking-[0.32em] text-gold">
             <span
               aria-hidden
-              className="text-[#fbbf24] motion-safe:animate-pulse"
+              className="text-gold motion-safe:animate-pulse"
             >
               ●
             </span>
@@ -61,7 +61,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
           </h2>
 
           {sportsperson.description && (
-            <p className="mb-[30px] max-w-[460px] text-[14px] font-light leading-[1.6] text-white/75">
+            <p className="mb-[30px] max-w-[460px] text-sm font-light leading-[1.6] text-white/75">
               {sportsperson.description}
             </p>
           )}
@@ -132,12 +132,12 @@ function StatRow({
       <span
         className={cn(
           "min-w-[100px] text-[44px] font-black leading-[0.9] tracking-[-0.03em]",
-          accent ? "text-[#fbbf24]" : "text-white",
+          accent ? "text-gold" : "text-white",
         )}
       >
         {value}
       </span>
-      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">
+      <div className="text-3xs font-bold uppercase tracking-[0.22em] text-white/60">
         {label}
       </div>
     </div>

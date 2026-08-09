@@ -124,7 +124,7 @@ const SportspersonView: React.FC<Props> = ({
           sticky-positioned, or add their own pt clearance — articles use
           pt-8). Without this the bar tucks behind the nav. */}
       <div className="border-b border-gray-100 px-6 pt-8 pb-4 md:px-10">
-        <nav className="mx-auto flex max-w-content items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+        <nav className="mx-auto flex max-w-content items-center gap-2 text-2xs font-semibold uppercase tracking-[0.16em] text-gray-400">
           <Link
             href="/despre-noi/sportivi"
             className="text-gray-500 transition-colors hover:text-gray-700"
@@ -159,7 +159,7 @@ const SportspersonView: React.FC<Props> = ({
                 EduSport" is implied by the section; "Membru din YYYY"
                 still appears as a badge on the photo. */}
             <div>
-              <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.32em] text-[#fbbf24]">
+              <div className="mb-4 text-2xs font-bold uppercase tracking-[0.32em] text-[#fbbf24]">
                 {category}
                 {hasItems(sportsperson.disciplines) && (
                   <>
@@ -172,7 +172,7 @@ const SportspersonView: React.FC<Props> = ({
                 <NameStack name={sportsperson.name} />
               </h1>
               {sportsperson.description && (
-                <p className="mt-7 max-w-[480px] text-[14px] font-light leading-[1.6] text-white/75">
+                <p className="mt-7 max-w-[480px] text-sm font-light leading-[1.6] text-white/75">
                   {sportsperson.description}
                 </p>
               )}
@@ -191,7 +191,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">
+                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -217,13 +217,13 @@ const SportspersonView: React.FC<Props> = ({
       {/* ─── DESPRE <NAME> ─── */}
       {(hasItems(sportsperson.favoriteMoves) ||
         hasItems(sportsperson.hobbies) ||
-        sportsperson.coach ||
+        hasItems(sportsperson.coaches) ||
         hasItems(sportsperson.choreographers) ||
         sportsperson.careerGoal) && (
         <section className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20">
           <SectionWatermark>DESPRE</SectionWatermark>
           <div className="relative mx-auto max-w-content">
-            <div className="mb-8 text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="mb-8 text-2xs font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
               Despre {sportsperson.name.split(" ")[0]}
             </div>
 
@@ -238,32 +238,37 @@ const SportspersonView: React.FC<Props> = ({
                   <BulletList items={sportsperson.hobbies} />
                 </DespreCell>
               )}
-              {(sportsperson.coach || hasItems(sportsperson.choreographers)) && (
+              {(hasItems(sportsperson.coaches) || hasItems(sportsperson.choreographers)) && (
                 <DespreCell label="Echipa" title="Cine o pregătește" icon={Users}>
                   <dl className="flex flex-wrap gap-x-6 gap-y-3">
-                    {sportsperson.coach && (
+                    {hasItems(sportsperson.coaches) && (
                       <div>
-                        <dt className="mb-1 text-[9px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
-                          Antrenor
+                        <dt className="mb-1 text-3xs font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
+                          {sportsperson.coaches.length === 1 ? "Antrenor" : "Antrenori"}
                         </dt>
-                        <dd className="text-[14px] font-semibold text-gray-900">
-                          {sportsperson.coach.name}
-                          {sportsperson.coach.role && (
-                            <span className="ml-1 text-[12px] font-light text-gray-500">
-                              · {sportsperson.coach.role}
+                        <dd className="text-sm font-semibold text-gray-900">
+                          {sportsperson.coaches.map((c, i) => (
+                            <span key={i}>
+                              {i > 0 && <span className="mx-1 text-gray-300">·</span>}
+                              {c.name}
+                              {c.role && (
+                                <span className="ml-1 text-xs font-light text-gray-500">
+                                  · {c.role}
+                                </span>
+                              )}
                             </span>
-                          )}
+                          ))}
                         </dd>
                       </div>
                     )}
                     {hasItems(sportsperson.choreographers) && (
                       <div>
-                        <dt className="mb-1 text-[9px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
+                        <dt className="mb-1 text-3xs font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
                           {sportsperson.choreographers.length === 1
                             ? "Coregraf"
                             : "Coregrafe"}
                         </dt>
-                        <dd className="text-[14px] font-semibold text-gray-900">
+                        <dd className="text-sm font-semibold text-gray-900">
                           {sportsperson.choreographers
                             .map((c) => c.name)
                             .join(", ")}
@@ -275,7 +280,7 @@ const SportspersonView: React.FC<Props> = ({
               )}
               {sportsperson.careerGoal && (
                 <DespreCell label="Aspirație" title="Obiectiv" icon={Target}>
-                  <p className="text-[15px] italic leading-relaxed text-gray-700">
+                  <p className="text-sm italic leading-relaxed text-gray-700">
                     {sportsperson.careerGoal}
                   </p>
                 </DespreCell>
@@ -290,7 +295,7 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20">
           <SectionWatermark>MUZICĂ</SectionWatermark>
           <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
               Programe muzicale
             </div>
             <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
@@ -305,11 +310,11 @@ const SportspersonView: React.FC<Props> = ({
       {notableResults.length > 0 && (
         <section
           className="relative overflow-hidden px-6 py-16 md:px-10 md:py-20"
-          style={{ backgroundColor: "#fffbeb" }}
+          style={{ backgroundColor: "var(--color-surface-soft)" }}
         >
           <SectionWatermark tone="amber">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
               Cele mai notabile rezultate
             </div>
             <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
@@ -326,21 +331,21 @@ const SportspersonView: React.FC<Props> = ({
                     {info.accent && <SlantRibbon color={info.accent} />}
                     <span
                       className={cn(
-                        "relative inline-flex w-fit items-center text-[10px] font-extrabold uppercase tracking-[0.18em]",
+                        "relative inline-flex w-fit items-center text-3xs font-extrabold uppercase tracking-[0.18em]",
                         info.textClass,
                       )}
                     >
                       {info.label}
                     </span>
-                    <h3 className="relative text-[14px] font-bold leading-tight text-gray-900">
+                    <h3 className="relative text-sm font-bold leading-tight text-gray-900">
                       {r.competition.name}
                     </h3>
-                    <div className="relative text-[10px] text-stone-600">
+                    <div className="relative text-3xs text-stone-600">
                       {formatDate(r.competition.date)}
                       {r.competition.location && <> · {r.competition.location}</>}
                     </div>
                     {r.score !== undefined && (
-                      <div className="relative mt-auto border-t border-amber-600/15 pt-2 text-[11px] font-bold tabular-nums text-gray-900">
+                      <div className="relative mt-auto border-t border-amber-600/15 pt-2 text-2xs font-bold tabular-nums text-gray-900">
                         {r.score.toFixed(2)}
                       </div>
                     )}
@@ -377,7 +382,7 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
               Istoric competițional
             </div>
             <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
@@ -398,14 +403,14 @@ const SportspersonView: React.FC<Props> = ({
                     <div className="relative min-w-0 pl-8">
                       {info?.accent && <SlantRibbon color={info.accent} />}
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-[15px] font-bold text-gray-900">{comp.name}</h4>
+                        <h4 className="text-sm font-bold text-gray-900">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="rounded-full bg-edusport-blue/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-edusport-blue">
+                          <span className="rounded-full bg-edusport-blue/5 px-2 py-0.5 text-3xs font-semibold uppercase tracking-wider text-edusport-blue">
                             Internațional
                           </span>
                         )}
                       </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] font-light tracking-[0.04em] text-gray-400">
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-gray-400">
                         <span>{formatDate(comp.date)}</span>
                         {comp.location && (
                           <>
@@ -429,14 +434,14 @@ const SportspersonView: React.FC<Props> = ({
                         sm+ via `display: contents`. */}
                     <div className="flex items-baseline gap-3 pl-8 sm:contents">
                       {row.score !== undefined && (
-                        <span className="text-[12px] font-semibold tabular-nums text-gray-500">
+                        <span className="text-xs font-semibold tabular-nums text-gray-500">
                           {row.score.toFixed(2)}
                         </span>
                       )}
                       {info && (
                         <span
                           className={cn(
-                            "text-[11px] font-extrabold uppercase tracking-[0.22em] sm:min-w-[72px] sm:text-right",
+                            "text-2xs font-extrabold uppercase tracking-[0.22em] sm:min-w-[72px] sm:text-right",
                             info.textClass,
                           )}
                         >
@@ -463,7 +468,7 @@ const SportspersonView: React.FC<Props> = ({
       <section className="bg-white px-6 py-12 md:px-10 md:py-14">
         <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
               Mai departe
             </div>
             <p className="mt-1.5 text-base font-medium text-gray-900 md:text-lg">
@@ -587,7 +592,7 @@ function HeroStat({
       >
         {value}
       </div>
-      <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">
+      <div className="mt-2 text-3xs font-bold uppercase tracking-[0.22em] text-white/60">
         {label}
       </div>
     </div>
@@ -690,11 +695,11 @@ function DespreCell({
     <div>
       <div className="mb-1 flex items-center gap-1.5">
         <Icon className="h-3 w-3 text-edusport-blue/60" />
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.32em] text-edusport-blue/60">
+        <span className="text-3xs font-extrabold uppercase tracking-[0.32em] text-edusport-blue/60">
           {label}
         </span>
       </div>
-      <h3 className="mb-3.5 text-[19px] font-extrabold tracking-[-0.01em] text-gray-900">
+      <h3 className="mb-3.5 text-lg font-extrabold tracking-[-0.01em] text-gray-900">
         {title}
       </h3>
       {children}
@@ -721,7 +726,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
       ))}
       {older.length > 0 && (
         <details className="group/seasons">
-          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-[11px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue transition-colors hover:text-edusport-blue/70 [&::-webkit-details-marker]:hidden">
+          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-2xs font-extrabold uppercase tracking-[0.22em] text-edusport-blue transition-colors hover:text-edusport-blue/70 [&::-webkit-details-marker]:hidden">
             <span className="group-open/seasons:hidden">
               Vezi sezoanele anterioare ({older.length})
             </span>
@@ -748,7 +753,7 @@ function SeasonRow({
 }) {
   return (
     <div>
-      <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em] text-gray-400">
+      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.24em] text-gray-400">
         Sezon {season}
       </div>
       <div className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
@@ -757,15 +762,15 @@ function SeasonRow({
             key={`${season}-${i}`}
             className="grid grid-cols-[120px_1fr] items-baseline gap-3 py-2"
           >
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#fbbf24]">
+            <div className="text-3xs font-extrabold uppercase tracking-[0.22em] text-[#fbbf24]">
               {p.type}
             </div>
             <div className="min-w-0">
-              <div className="text-[14px] font-bold leading-tight text-gray-900">
+              <div className="text-sm font-bold leading-tight text-gray-900">
                 {p.title}
               </div>
               {p.artist && (
-                <div className="text-[11px] text-gray-500">{p.artist}</div>
+                <div className="text-2xs text-gray-500">{p.artist}</div>
               )}
             </div>
           </div>
@@ -782,7 +787,7 @@ function BulletList({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <li
           key={i}
-          className="flex items-start gap-2 text-[14px] leading-relaxed text-gray-700"
+          className="flex items-start gap-2 text-sm leading-relaxed text-gray-700"
         >
           <span className="mt-[7px] inline-block h-[5px] w-[5px] shrink-0 rounded-full bg-edusport-blue" />
           {item}

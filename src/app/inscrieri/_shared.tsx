@@ -38,7 +38,7 @@ export const StepIndicator: React.FC<{ current: number }> = ({ current }) => (
           style={{ clipPath: SEGMENT_CLIP }}
           className={cn(
             "flex-1 min-w-[110px] flex items-center justify-center gap-2 px-6 py-3",
-            "text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap",
+            "text-2xs font-semibold uppercase tracking-wider whitespace-nowrap",
             "transition-all duration-300",
             filled
               ? "bg-edusport-blue text-white"

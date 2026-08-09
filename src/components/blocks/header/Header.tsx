@@ -29,7 +29,7 @@ const CascadingText: React.FC<{ text: string; className?: string }> = ({
           key={index}
           className="text-branding-font"
           animate={{
-            color: isHovered ? "var(--color-edusport-blue)" : "#111827",
+            color: isHovered ? "var(--color-edusport-blue)" : "var(--color-ink)",
           }}
           transition={{
             duration: 0.1,
@@ -44,12 +44,33 @@ const CascadingText: React.FC<{ text: string; className?: string }> = ({
 };
 
 const MenuButton = React.forwardRef<
-  HTMLDivElement,
+  HTMLElement,
   {
     isOpen: boolean;
     onToggle: () => void;
+    retro?: boolean;
   }
->(({ isOpen, onToggle }, ref) => {
+>(({ isOpen, onToggle, retro }, ref) => {
+  if (retro) {
+    // Layers button (same hover fan as the CTA), square, matched to the
+    // CTA height, with a hamburger face.
+    return (
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        onClick={onToggle}
+        aria-label="Meniu"
+        className="lcta flex-shrink-0"
+      >
+        <span aria-hidden className="lcta-layer lcta-l1" />
+        <span aria-hidden className="lcta-layer lcta-l2" />
+        <span className="lcta-face relative w-[46px] bg-black flex flex-col items-center justify-center gap-[5px]">
+          <span className="w-[20px] h-[2px] bg-white" />
+          <span className="w-[20px] h-[2px] bg-white" />
+          <span className="w-[20px] h-[2px] bg-white" />
+        </span>
+      </button>
+    );
+  }
   return (
     <button
       className="group flex items-center gap-2 text-gray-900 w-28 justify-end"
@@ -57,7 +78,7 @@ const MenuButton = React.forwardRef<
     >
       <span className="font-light text-lg">Meniu</span>
       <div
-        ref={ref}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={`
           relative flex items-center justify-center rounded-full bg-black
           w-10 h-10
@@ -90,13 +111,19 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ registrationOpen, contactInfo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const menuButtonRef = React.useRef<HTMLDivElement>(null);
+  const menuButtonRef = React.useRef<HTMLElement>(null);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 400);
   }, []);
 
   const pathname = usePathname();
+  // Retro nav treatment (layers CTA, square menu button, retro panel) is now the
+  // site-wide theme — always on. The transparent-over-hero state is separate
+  // (home hero only, driven by the lv2-nav-entrance/hero classes).
+  const retro = true;
+  const ctaHref = registrationOpen !== false ? "/inscrieri" : "/cursuri";
+  const ctaLabel = registrationOpen !== false ? "Inscrie-te la cursuri" : "Cursuri";
   const toggleMenu = useCallback(() => setIsMenuOpen((open) => !open), []);
   const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
@@ -153,20 +180,27 @@ const Header: React.FC<HeaderProps> = ({ registrationOpen, contactInfo }) => {
             {/* Right side */}
             <div className="flex items-center gap-4">
               {/* CTA: hidden on mobile, visible on tablet+  */}
-              <Link
-                href={registrationOpen !== false ? "/inscrieri" : "/cursuri"}
-                className="hidden md:block"
-              >
-                <SpotlightButton animationDuration={0.7}>
-                  {registrationOpen !== false ? "Inscrie-te la cursuri" : "Cursuri"}
+              {retro ? (
+                <SpotlightButton
+                  layers
+                  layersFace="black"
+                  href={ctaHref}
+                  className="hidden md:inline-flex text-xs"
+                >
+                  {ctaLabel}
                 </SpotlightButton>
-              </Link>
+              ) : (
+                <Link href={ctaHref} className="hidden md:block">
+                  <SpotlightButton animationDuration={0.7}>{ctaLabel}</SpotlightButton>
+                </Link>
+              )}
               {/* Meniu: hidden on desktop */}
               <div className="lg:hidden">
                 <MenuButton
                   ref={menuButtonRef}
                   isOpen={isMenuOpen}
                   onToggle={toggleMenu}
+                  retro={retro}
                 />
               </div>
             </div>
@@ -178,6 +212,7 @@ const Header: React.FC<HeaderProps> = ({ registrationOpen, contactInfo }) => {
         onClose={closeMenu}
         buttonRef={menuButtonRef}
         registrationOpen={registrationOpen}
+        retro={retro}
       />
     </>
   );

@@ -64,7 +64,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
     <div className="min-h-screen bg-white">
       <PageHeroSection
         title={[bannerTitle ?? "REALIZĂRI"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi", href: "/despre-noi" },
           { label: "Realizări" },
@@ -196,7 +196,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                                 <div className="flex items-center gap-2">
                                   <h4 className="text-sm font-semibold text-gray-900">{comp.name}</h4>
                                   {comp.level === "international" && (
-                                    <span className="text-[10px] font-semibold uppercase tracking-wider text-edusport-blue bg-edusport-blue/5 px-2 py-0.5 rounded-full">
+                                    <span className="text-3xs font-semibold uppercase tracking-wider text-edusport-blue bg-edusport-blue/5 px-2 py-0.5 rounded-full">
                                       Internațional
                                     </span>
                                   )}

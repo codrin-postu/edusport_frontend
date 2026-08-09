@@ -83,7 +83,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                 {description}
               </p>
 
-              <div className="flex flex-col gap-2 text-[11px] text-white/70 border-t border-white/10 pt-4 flex-1">
+              <div className="flex flex-col gap-2 text-2xs text-white/70 border-t border-white/10 pt-4 flex-1">
                 <p className="text-white font-medium text-xs">{subscriptionInfoTitle}</p>
                 <ul className="flex flex-col gap-1.5">
                   {subscriptionBullets.map((item, i) => (
@@ -141,7 +141,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                               {item.tooltip && <span className="inline-flex items-center ml-1 translate-y-[2px]"><ItemTooltip text={item.tooltip} /></span>}
                             </span>
                             {item.note && (
-                              <span className="text-[11px] text-gray-400 font-light">
+                              <span className="text-2xs text-gray-400 font-light">
                                 {item.note}
                               </span>
                             )}
@@ -189,7 +189,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                               {item.tooltip && <span className="inline-flex items-center ml-1 translate-y-[2px]"><ItemTooltip text={item.tooltip} /></span>}
                             </span>
                             {item.note && (
-                              <span className="text-[11px] text-gray-400 font-light">
+                              <span className="text-2xs text-gray-400 font-light">
                                 {item.note}
                               </span>
                             )}
@@ -212,7 +212,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           {footerNotes && footerNotes.length > 0 && (
             <div className="flex flex-col gap-6 text-xs text-gray-500 max-w-2xl">
               <div className="flex flex-col gap-1.5">
-                <p className="text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">
+                <p className="text-3xs font-semibold tracking-widest uppercase text-gray-500 mb-1">
                   Taxe &amp; Prețuri
                 </p>
                 <ul className="flex flex-col gap-1.5">

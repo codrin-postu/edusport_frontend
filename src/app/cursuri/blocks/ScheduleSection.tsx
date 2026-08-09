@@ -54,7 +54,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             style={{
               transform: "rotate(-2deg)",
               transformOrigin: "top center",
-              background: "#faf8f3",
+              background: "var(--color-surface-soft)",
               backgroundImage: `
                 repeating-linear-gradient(
                   transparent,
@@ -204,7 +204,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                   key={i}
                   className="flex gap-3 text-sm text-gray-600 leading-relaxed"
                 >
-                  <span className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <span className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-gold" />
                   {text}
                 </li>
               ))}

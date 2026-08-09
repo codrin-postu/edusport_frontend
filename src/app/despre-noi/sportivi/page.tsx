@@ -119,7 +119,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["SPORTIVI"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi", href: "/despre-noi" },
           { label: "Sportivi" },
@@ -186,7 +186,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               <h2 className="text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight text-gray-900">
                 {isSearching ? "Rezultate căutare" : "Toți sportivii"}
               </h2>
-              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-gray-400">
+              <div className="mt-3 text-2xs font-semibold uppercase tracking-[0.32em] text-gray-400">
                 {isSearching ? (
                   <>
                     {totalAthletes} {totalAthletes === 1 ? "rezultat" : "rezultate"} pentru
@@ -244,7 +244,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
           <section className="border-t border-gray-100 bg-white px-6 py-12 md:px-10 md:py-14">
             <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.32em] text-edusport-blue/60">
+                <div className="mb-1.5 text-2xs font-semibold uppercase tracking-[0.32em] text-edusport-blue/60">
                   Mai departe
                 </div>
                 <p className="text-base md:text-lg font-medium text-gray-900">

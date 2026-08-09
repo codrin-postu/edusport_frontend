@@ -25,7 +25,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["ECHIPA"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi", href: "/despre-noi" },
           { label: "Echipă" },

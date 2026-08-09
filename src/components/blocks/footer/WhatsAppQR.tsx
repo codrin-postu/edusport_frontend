@@ -17,8 +17,8 @@ export const WhatsAppQR: React.FC<WhatsAppQRProps> = ({ size, url = CHANNEL_URL 
         value={url}
         size={size}
         bgColor="#ffffff"
-        fgColor="#7C3AED"
-        level="M"
+        fgColor="var(--color-navy)"
+        level="L"
         marginSize={1}
       />
     </div>
