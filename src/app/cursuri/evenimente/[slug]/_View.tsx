@@ -8,6 +8,7 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { EventJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -59,7 +60,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app";
+  const siteUrl = SITE_URL;
 
   return (
     <div className={cn("min-h-screen", "bg-retro-cream")}>

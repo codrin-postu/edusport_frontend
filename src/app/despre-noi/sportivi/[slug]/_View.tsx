@@ -17,6 +17,8 @@ import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
 import SpotlightButton from "@/components/ui/spotlight-button";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 
 /**
  * Sportsperson profile — retro editorial layout.
@@ -125,6 +127,15 @@ const SportspersonView: React.FC<Props> = ({
 
   return (
     <div className="min-h-screen bg-retro-cream">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Sportivi", url: `${SITE_URL}/despre-noi/sportivi` },
+          {
+            name: sportsperson.name,
+            url: `${SITE_URL}/despre-noi/sportivi/${sportsperson.slug}`,
+          },
+        ]}
+      />
       {/* ─── BREADCRUMB ─── extra top padding to clear the fixed site
           header (other pages either use PageHeroSection which is
           sticky-positioned, or add their own pt clearance — articles use

@@ -7,6 +7,7 @@ import { FooterReveal, Header } from "../components/blocks";
 import NavigationProgress from "../components/NavigationProgress";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import { AnnouncementPopup } from "@/components/blocks/announcement-popup";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { OrganizationJsonLd } from "@/components/JsonLd";
@@ -53,35 +54,26 @@ const climateCrisis = localFont({
   display: "swap",
 });
 
-const SITE_NAME = "EduSport - Școala de Patinaj";
-const SITE_DESCRIPTION =
-  "Școala de patinaj EduSport din București oferă cursuri de patinaj artistic pentru copii și adulți, evenimente sportive și competiții la nivel național.";
-
 export const metadata: Metadata = {
   title: {
     default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  // `||` instead of `??` so an empty string (e.g. a build with a missing
-  // env arg) also falls back to the default, rather than crashing with
-  // `Invalid URL` and breaking page-data collection.
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://edusport.codrin.space",
-  ),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "ro_RO",
     siteName: SITE_NAME,
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "EduSport - Școala de Patinaj" }],
+    // OG/Twitter image is supplied by the app-root `opengraph-image.tsx`
+    // file convention (auto-injected on every route).
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -109,13 +101,23 @@ export default async function RootLayout({
   }
 
   const announcement = await fetchAnnouncement();
+  // Social profile URLs -> schema.org `sameAs` (helps entity/knowledge-graph).
+  const socialProfiles = [
+    contactInfo.facebookUrl1,
+    contactInfo.facebookUrl2,
+    contactInfo.instagramUrl,
+  ].filter(Boolean) as string[];
   return (
     <html
       lang="ro"
       className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable} ${anton.variable}`}
     >
       <body className="bg-edusport-blue">
-        <OrganizationJsonLd telephone={contactInfo.phone} email={contactInfo.email} />
+        <OrganizationJsonLd
+          telephone={contactInfo.phone}
+          email={contactInfo.email}
+          sameAs={socialProfiles}
+        />
         <NavigationProgress />
         <Header registrationOpen={registrationOpen} contactInfo={contactInfo} />
         <main

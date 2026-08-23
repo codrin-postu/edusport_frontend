@@ -15,6 +15,7 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 
 // ---------------------------------------------------------------------------
@@ -112,7 +113,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app";
+  const siteUrl = SITE_URL;
   const isEventLike =
     article.category === "evenimente" || article.category === "competitii";
 
