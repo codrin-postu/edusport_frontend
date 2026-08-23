@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import SpotlightButton from "@/components/ui/spotlight-button";
+import { track } from "@/lib/analytics";
 
 /**
  * Volunteer application form. Reuses the shared `/api/contact` endpoint with a
@@ -33,9 +34,17 @@ const VolunteerForm: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const startedRef = useRef(false);
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("voluntariat.start");
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -59,6 +68,7 @@ const VolunteerForm: React.FC = () => {
         setStatus("error");
         return;
       }
+      track("voluntariat.submit");
       setStatus("sent");
     } catch {
       setErrorMessage("Conexiune eșuată. Verifică internetul și încearcă din nou.");

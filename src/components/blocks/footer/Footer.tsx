@@ -322,7 +322,7 @@ const RegisterBand: React.FC = () => (
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-center w-full sm:w-auto lg:shrink-0">
-        <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-sm">
+        <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-sm" umamiEvent="footer.enroll">
           Înscrieri
         </SpotlightButton>
         <Link

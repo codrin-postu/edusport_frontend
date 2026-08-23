@@ -100,6 +100,8 @@ const RetroPanel: React.FC<{
           href={item.href}
           onClick={onClose}
           className="block px-2.5 py-2 text-[15px] font-medium text-navy border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-rust"
+          data-umami-event="nav"
+          data-umami-event-url={item.href}
         >
           {item.label}
         </Link>,
@@ -117,6 +119,8 @@ const RetroPanel: React.FC<{
             href={sub.href}
             onClick={onClose}
             className="block pl-[18px] pr-2.5 py-1.5 text-[13.5px] text-navy/80 border-l-[3px] border-transparent transition-colors hover:border-mustard hover:text-navy"
+            data-umami-event="nav"
+            data-umami-event-url={sub.href}
           >
             {sub.label}
           </Link>,

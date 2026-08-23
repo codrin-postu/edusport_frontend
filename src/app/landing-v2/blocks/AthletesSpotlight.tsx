@@ -75,6 +75,7 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
               layersFace="cream"
               href="/despre-noi/sportivi"
               className="text-xs"
+              umamiEvent="home.sportivi"
             >
               Vezi toți sportivii
             </SpotlightButton>

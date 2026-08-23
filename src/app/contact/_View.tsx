@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/select";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
+import { track } from "@/lib/analytics";
 
 // ---------------------------------------------------------------------------
 // Contact reasons
@@ -82,11 +83,19 @@ const ContactForm: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const startedRef = useRef(false);
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("contact.start");
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -110,6 +119,7 @@ const ContactForm: React.FC = () => {
         setStatus("error");
         return;
       }
+      track("contact.submit", { reason: form.reason || "altele" });
       setStatus("sent");
     } catch {
       setErrorMessage("Conexiune eșuată. Verifică internetul și încearcă din nou.");

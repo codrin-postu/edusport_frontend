@@ -73,11 +73,13 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms }) =>
               layersFace="black"
               href={ctaPrimaryUrl}
               className="text-sm"
+              umamiEvent="enroll.cta_primary"
             >
               {ctaPrimaryLabel}
             </SpotlightButton>
             <Link
               href={ctaSecondaryUrl}
+              data-umami-event="enroll.cta_secondary"
               className="inline-flex items-center justify-center border-[1.5px] border-navy bg-transparent text-navy px-8 py-3.5 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover:bg-black hover:text-white"
             >
               {ctaSecondaryLabel}
@@ -86,6 +88,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms }) =>
 
           <Link
             href={pricesLinkUrl}
+            data-umami-event="enroll.prices"
             className="link-underline-rust w-fit text-sm font-semibold text-navy"
           >
             {pricesLinkLabel}

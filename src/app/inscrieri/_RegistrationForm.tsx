@@ -12,12 +12,22 @@ import {
   type FormState,
   type SubmitStatus,
 } from "./_types";
+import { track } from "@/lib/analytics";
 
 const RegistrationForm: React.FC = () => {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const formRef = useRef<HTMLDivElement>(null);
+  const startedRef = useRef(false);
+
+  // Fire once, when the user first interacts — lets us measure start→submit
+  // drop-off (form abandonment) against `inscriere.submit_success`.
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("inscriere.start");
+  };
 
   useEffect(() => {
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -26,10 +36,12 @@ const RegistrationForm: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleValueChange = (name: keyof FormState) => (value: string) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -41,13 +53,17 @@ const RegistrationForm: React.FC = () => {
     setStatus("sending");
     try {
       await submitToGoogleForms(form, agreements);
+      track("inscriere.submit_success");
       setStatus("sent");
     } catch {
       setStatus("error");
     }
   };
 
-  const nextStep = () => setStep((s) => Math.min(s + 1, 2));
+  const nextStep = () => {
+    track("inscriere.step_next", { step: step + 1 });
+    setStep((s) => Math.min(s + 1, 2));
+  };
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
   if (status === "sent") {

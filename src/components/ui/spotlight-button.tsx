@@ -33,6 +33,8 @@ interface SpotlightButtonProps {
   type?: "button" | "submit";
   /** Disabled state (button mode only). */
   disabled?: boolean;
+  /** Umami event name — sets `data-umami-event` so clicks are auto-tracked. */
+  umamiEvent?: string;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -66,7 +68,8 @@ const LayersButton: React.FC<{
   external?: boolean;
   type?: "button" | "submit";
   disabled?: boolean;
-}> = ({ children, face, className, onClick, href, external, type = "button", disabled }) => {
+  umamiEvent?: string;
+}> = ({ children, face, className, onClick, href, external, type = "button", disabled, umamiEvent }) => {
   // Layer offset + easing live in `.lcta` CSS (globals.css) so the spring
   // overshoot + snap-pop compile reliably; only face colour/typography here.
   const inner = (
@@ -89,6 +92,7 @@ const LayersButton: React.FC<{
         href={href}
         onClick={onClick}
         className={wrapperClass}
+        data-umami-event={umamiEvent}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {inner}
@@ -97,7 +101,13 @@ const LayersButton: React.FC<{
   }
 
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={wrapperClass}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={wrapperClass}
+      data-umami-event={umamiEvent}
+    >
       {inner}
     </button>
   );
@@ -125,6 +135,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
   external,
   type = "button",
   disabled,
+  umamiEvent,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -138,6 +149,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
         external={external}
         type={type}
         disabled={disabled}
+        umamiEvent={umamiEvent}
       >
         {children}
       </LayersButton>
@@ -149,6 +161,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
+      data-umami-event={umamiEvent}
       className={`relative overflow-hidden px-6 py-3 rounded-full font-normal outline-none active:ring-2 active:ring-offset-2 active:ring-current ${variantStyles[variant]} ${className}`}
     >
       {/* Fill that grows from the left on hover. */}

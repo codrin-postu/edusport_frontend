@@ -98,6 +98,8 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             href={item.href || "#"}
             variant={LinkVariants.HEADER}
             className="text-sm font-normal text-gray-900 hover:text-gray-600 transition-colors"
+            data-umami-event="nav"
+            data-umami-event-url={item.href || "#"}
           >
             {item.label}
           </Link>
@@ -157,6 +159,8 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           variant={LinkVariants.HEADER}
                           className="group flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
                           onClick={close}
+                          data-umami-event="nav"
+                          data-umami-event-url={dropdownItem.href}
                         >
                           <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-edusport-blue transition-colors shrink-0" />
                           <div>

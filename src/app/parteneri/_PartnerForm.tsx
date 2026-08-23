@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import SpotlightButton from "@/components/ui/spotlight-button";
+import { track } from "@/lib/analytics";
 
 /**
  * Partner form — framed around sponsoring the club or organizing a special
@@ -43,9 +44,17 @@ const PartnerForm: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const startedRef = useRef(false);
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("parteneri.start");
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -68,6 +77,7 @@ const PartnerForm: React.FC = () => {
         setStatus("error");
         return;
       }
+      track("parteneri.submit", { interest: form.reason || "partenariat" });
       setStatus("sent");
     } catch {
       setErrorMessage("Conexiune eșuată. Verifică internetul și încearcă din nou.");

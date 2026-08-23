@@ -87,6 +87,7 @@ export function EventCard({ event }: { event: Event }) {
           layersFace="cream"
           href={`/cursuri/evenimente/${event.slug}`}
           className="self-start text-sm"
+          umamiEvent="home.event_details"
         >
           Vezi detalii
         </SpotlightButton>

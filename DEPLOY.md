@@ -137,6 +137,42 @@ See `ARCHITECTURE.md` for the cache strategy.
 - **Old revalidations not firing** — confirm the Strapi webhook secret
   matches `REVALIDATE_SECRET` exactly.
 
+## Analytics (Umami)
+
+Privacy-friendly, cookieless analytics (no consent banner needed). The loader is
+already wired in `src/app/layout.tsx` and only activates when the env var is set.
+
+**Enable:**
+1. Run a Umami instance (self-hosted; needs its own Postgres). Minimal compose service:
+   ```yaml
+   umami:
+     image: ghcr.io/umami-software/umami:postgresql-latest
+     environment:
+       DATABASE_URL: postgresql://umami:umami@umami-db:5432/umami
+       DATABASE_TYPE: postgresql
+       APP_SECRET: <random-string>
+     depends_on: [umami-db]
+     restart: unless-stopped
+   umami-db:
+     image: postgres:16-alpine
+     environment:
+       POSTGRES_DB: umami
+       POSTGRES_USER: umami
+       POSTGRES_PASSWORD: umami
+     volumes: [umami-db-data:/var/lib/postgresql/data]
+   ```
+   Expose it behind nginx (e.g. `analytics.scoaladepatinaj.com`), create a website in
+   the Umami dashboard, and copy its Website ID.
+2. Set on the frontend:
+   - `NEXT_PUBLIC_UMAMI_URL=https://analytics.scoaladepatinaj.com/script.js`
+   - `NEXT_PUBLIC_UMAMI_WEBSITE_ID=<website-id>`
+3. Redeploy. Pageviews (incl. SPA route changes) track automatically → covers pages
+   visited and user flows (Umami "Journeys").
+
+**Custom events** (via `src/lib/analytics.ts` `track()`): `inscriere.step_next`,
+`inscriere.submit_success` (enrollment funnel), `contact.submit`, `voluntariat.submit`,
+`parteneri.submit`. Add more with `track("section.action", { ...data })`.
+
 ## Reference
 
 | Variable                         | Required | Example                                |
