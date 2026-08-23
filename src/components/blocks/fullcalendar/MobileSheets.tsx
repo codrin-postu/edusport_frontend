@@ -10,7 +10,7 @@ function hasDetail(event: CursEventInfo): boolean {
   return !!(event.description) || event.type === "curs" || event.type === "next";
 }
 
-// ── Mobile detail sheet - shown when user taps an event in the list ────────────
+// ── Detail sheet (C2) — navy band pinned, image + body scroll ──────────────────
 
 export const MobileDetailSheet: React.FC<{
   event: CursEventInfo;
@@ -19,51 +19,59 @@ export const MobileDetailSheet: React.FC<{
 }> = ({ event, onBack, onClose }) => {
   const { image, body } = extractFirstImage(event.description);
   const hasContent = !!body && body.trim().length > 0;
+  const showRegulament = event.type === "curs" || event.type === "next";
   return createPortal(
-    <div className="fc-mobile-modal-backdrop" onPointerDown={onClose}>
+    <div className="fc-mobile-modal-backdrop" onClick={onClose}>
       <div
-        className="fc-mobile-modal"
-        onPointerDown={(e) => e.stopPropagation()}
+        className="fc-mobile-modal fc-mobile-modal--detail"
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="fc-mobile-modal-header">
-          <button className="fc-mobile-modal-back" onClick={onBack}>
-            ← Înapoi
-          </button>
-          <button className="fc-mobile-modal-close" onClick={onClose}>
-            ✕
-          </button>
+        <div className="fc-mobile-band">
+          <div className="fc-mobile-band-top">
+            <button className="fc-mobile-band-back" onClick={onBack}>
+              Înapoi
+            </button>
+            <button className="fc-mobile-band-close" onClick={onClose}>
+              ✕
+            </button>
+          </div>
+          <span className="fc-mobile-band-title">{event.title}</span>
+          {event.dateLabel && (
+            <span className="fc-mobile-band-meta">{event.dateLabel}</span>
+          )}
         </div>
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            className="fc-mobile-modal-image"
-            src={resolveAssetUrl(image.url)}
-            alt={image.alt}
-            loading="lazy"
-          />
-        )}
-        <span className="fc-curs-tooltip-title">{event.title}</span>
-        {hasContent && (
-          <span className="fc-curs-tooltip-hours">
-            {renderMarkdown(body)}
-          </span>
-        )}
-        {(event.type === "curs" || event.type === "next") && (
-          <a
-            href="/cursuri/regulament"
-            className="fc-curs-tooltip-link"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Vezi regulamentul →
-          </a>
-        )}
+        <div className="fc-mobile-scroll">
+          {image && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="fc-mobile-modal-image"
+              src={resolveAssetUrl(image.url)}
+              alt={image.alt}
+              loading="lazy"
+            />
+          )}
+          <div className="fc-mobile-detail-body">
+            {hasContent && (
+              <span className="fc-curs-tooltip-hours">{renderMarkdown(body)}</span>
+            )}
+            {showRegulament && (
+              <a
+                href="/cursuri/regulament"
+                className="fc-curs-tooltip-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Vezi regulamentul
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     </div>,
     document.body,
   );
 };
 
-// ── Mobile list sheet - shown when user taps a day ────────────────────────────
+// ── List sheet — shown when a day is tapped ────────────────────────────────────
 
 export const MobileListSheet: React.FC<{
   events: CursEventInfo[];
@@ -96,11 +104,12 @@ export const MobileListSheet: React.FC<{
   }
 
   return createPortal(
-    <div className="fc-mobile-modal-backdrop" onPointerDown={onClose}>
+    <div className="fc-mobile-modal-backdrop" onClick={onClose}>
       <div
         className="fc-mobile-modal"
-        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
+        <div className="fc-mobile-grip" />
         <div className="fc-mobile-modal-header">
           <span className="fc-mobile-modal-date">{dateLabel}</span>
           <button className="fc-mobile-modal-close" onClick={onClose}>

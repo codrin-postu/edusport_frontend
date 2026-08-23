@@ -10,6 +10,7 @@ export interface TooltipPos {
 
 export interface CursEventInfo {
   title: string;
+  dateLabel?: string;
   description?: string | null;
   type?: string;
   color?: string;
