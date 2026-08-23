@@ -3,7 +3,17 @@ import Link from "next/link";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import VolunteerForm from "./_VolunteerForm";
-import { HELP_WAYS, VOLUNTEER_PHOTOS } from "./_data";
+import type { VolunteerHelpWay } from "@/lib/strapi-volunteer";
+
+interface VolunteerViewProps {
+  heroTitle: string;
+  heroSubtitle: string;
+  introEyebrow: string;
+  introHeading: string;
+  introBody: string;
+  helpWays: VolunteerHelpWay[];
+  photos: { src: string; alt: string }[];
+}
 
 /**
  * /voluntariat — recruit volunteers for the club.
@@ -13,7 +23,15 @@ import { HELP_WAYS, VOLUNTEER_PHOTOS } from "./_data";
  * the ways to help, an application form (reuses /api/contact), and the slim
  * "Mai departe" outro.
  */
-const VolunteerView: React.FC = () => {
+const VolunteerView: React.FC<VolunteerViewProps> = ({
+  heroTitle,
+  heroSubtitle,
+  introEyebrow,
+  introHeading,
+  introBody,
+  helpWays,
+  photos,
+}) => {
   return (
     <div className="min-h-screen bg-retro-cream">
       <PageHeroSection
@@ -24,12 +42,9 @@ const VolunteerView: React.FC = () => {
         ]}
       >
         <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-retro-cream">
-          Voluntariat
+          {heroTitle}
         </h1>
-        <p className="max-w-md text-base text-retro-cream/70">
-          Clubul crește cu oameni care dăruiesc timp. Dă o mână de ajutor și fii
-          parte din comunitatea EduSport.
-        </p>
+        <p className="max-w-md text-base text-retro-cream/70">{heroSubtitle}</p>
       </PageHeroSection>
 
       {/* ─── DE CE ─── */}
@@ -37,15 +52,13 @@ const VolunteerView: React.FC = () => {
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3">
             <p className="text-eyebrow font-bold uppercase text-rust">
-              De ce voluntariat
+              {introEyebrow}
             </p>
             <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-navy">
-              Timpul tău face diferența
+              {introHeading}
             </h2>
             <p className="max-w-xl text-base leading-relaxed text-navy/65">
-              Experiență reală lângă antrenori și sportivi, prieteni noi și un
-              sport pe care îl duci mai departe în comunitate. Fără experiență
-              prealabilă — te învățăm tot ce trebuie.
+              {introBody}
             </p>
           </div>
         </div>
@@ -55,7 +68,7 @@ const VolunteerView: React.FC = () => {
       <section className="relative z-10 bg-retro-cream pb-4">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <GalleryCarousel
-            images={VOLUNTEER_PHOTOS}
+            images={photos}
             eyebrow="Din culise"
             title="Voluntarii în acțiune"
           />
@@ -80,11 +93,11 @@ const VolunteerView: React.FC = () => {
             </div>
             {/* Right — ways list */}
             <div className="bg-retro-cream px-6 md:px-10">
-              {HELP_WAYS.map((way, i) => (
+              {helpWays.map((way, i) => (
                 <div
                   key={way.title}
                   className={
-                    i < HELP_WAYS.length - 1
+                    i < helpWays.length - 1
                       ? "border-b border-navy/12 py-5"
                       : "py-5"
                   }

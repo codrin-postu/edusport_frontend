@@ -4,7 +4,7 @@ import Image from "next/image";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import SponsorMarquee from "./_SponsorMarquee";
 import PartnerForm from "./_PartnerForm";
-import { SPONSORS, COLLAB_EVENTS } from "./_data";
+import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
 
 /**
  * /parteneri — sponsors, past collaborations, and a "let's work together" form
@@ -16,7 +16,10 @@ import { SPONSORS, COLLAB_EVENTS } from "./_data";
  * and the slim "Mai departe" outro. All content sections are `relative z-10`
  * so the sticky hero doesn't bleed through on scroll.
  */
-const PartnerView: React.FC = () => {
+const PartnerView: React.FC<{ sponsors: Sponsor[]; events: CollabEvent[] }> = ({
+  sponsors,
+  events,
+}) => {
   return (
     <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["PARTENER"]}>
@@ -65,12 +68,12 @@ const PartnerView: React.FC = () => {
         </div>
         {/* Full-bleed strip (edge fades handle the sides) */}
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <SponsorMarquee sponsors={SPONSORS} />
+          <SponsorMarquee sponsors={sponsors} />
         </div>
       </section>
 
       {/* ─── EVENIMENTE & COLABORĂRI ─── */}
-      {COLLAB_EVENTS.length > 0 && (
+      {events.length > 0 && (
         <section className="relative z-10 border-t border-navy/10 bg-retro-cream py-16 md:py-24">
           <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="mb-8 flex flex-col gap-2">
@@ -85,7 +88,7 @@ const PartnerView: React.FC = () => {
               </p>
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
-              {COLLAB_EVENTS.map((ev) => (
+              {events.map((ev) => (
                 <article
                   key={ev.title}
                   className="overflow-hidden border-[1.5px] border-navy bg-retro-cream shadow-[6px_6px_0_rgb(14_26_60_/_0.16)]"

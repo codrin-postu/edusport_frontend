@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------
 
 import { fetchStrapi, fetchStrapiPaginated } from "./strapi";
-import type { StrapiMediaImage } from "./strapi-article";
+import type { StrapiMediaImage, BlockNode } from "./strapi-article";
 
 export interface StrapiSportsperson {
   id: number;
@@ -11,6 +11,9 @@ export interface StrapiSportsperson {
   name: string;
   slug: string;
   description?: string;
+  /** Long-form bio (Blocks rich-text) rendered in the "Despre mine" section.
+   *  Falls back to `description`, then a placeholder, when empty. */
+  story?: BlockNode[] | null;
   showPublicPage: boolean;
   /** ISO date string ("YYYY-MM-DD") of the athlete's career start. */
   activeSince?: string;

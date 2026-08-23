@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import PartnerView from "./_View";
+import { fetchSponsors, fetchCollaborationEvents } from "@/lib/strapi-partners";
+import { SPONSORS, COLLAB_EVENTS } from "./_data";
+
+// Content is CMS-managed; fall back to the static placeholders when Strapi is
+// unavailable or the collections are empty, so the page always renders.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Parteneri",
@@ -15,6 +21,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ParteneriPage() {
-  return <PartnerView />;
+export default async function ParteneriPage() {
+  const [sp, ev] = await Promise.allSettled([
+    fetchSponsors(),
+    fetchCollaborationEvents(),
+  ]);
+  const sponsors =
+    sp.status === "fulfilled" && sp.value.length > 0 ? sp.value : SPONSORS;
+  const events =
+    ev.status === "fulfilled" && ev.value.length > 0 ? ev.value : COLLAB_EVENTS;
+  return <PartnerView sponsors={sponsors} events={events} />;
 }

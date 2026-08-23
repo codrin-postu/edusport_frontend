@@ -19,6 +19,7 @@ import { Pagination } from "@/components/Pagination";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
+import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 
 /**
  * Sportsperson profile — retro editorial layout.
@@ -216,12 +217,18 @@ const SportspersonView: React.FC<Props> = ({
           <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
             Despre mine
           </div>
-          <p
-            className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
-            style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
-          >
-            {sportsperson.description || STORY_PLACEHOLDER}
-          </p>
+          {hasItems(sportsperson.story) ? (
+            <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-navy/85">
+              <StrapiBlocks blocks={sportsperson.story} />
+            </div>
+          ) : (
+            <p
+              className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
+              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+            >
+              {sportsperson.description || STORY_PLACEHOLDER}
+            </p>
+          )}
         </div>
       </section>
 

@@ -26,6 +26,17 @@ export const HELP_WAYS: HelpWay[] = [
   },
 ];
 
+/** Hero + intro copy fallback (used when the CMS volunteer-page is empty). */
+export const VOLUNTEER_COPY = {
+  heroTitle: "Voluntariat",
+  heroSubtitle:
+    "Clubul crește cu oameni care dăruiesc timp. Dă o mână de ajutor și fii parte din comunitatea EduSport.",
+  introEyebrow: "De ce voluntariat",
+  introHeading: "Timpul tău face diferența",
+  introBody:
+    "Experiență reală lângă antrenori și sportivi, prieteni noi și un sport pe care îl duci mai departe în comunitate. Fără experiență prealabilă — te învățăm tot ce trebuie.",
+};
+
 /** Placeholder gallery — swap for real volunteer photos (or a Strapi feed). */
 export const VOLUNTEER_PHOTOS: { src: string; alt: string }[] = [
   { src: "/images/edea_skate_stylized.png", alt: "Voluntari EduSport pe gheață" },
