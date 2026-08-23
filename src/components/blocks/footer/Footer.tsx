@@ -32,6 +32,8 @@ const footerLeftSections = [
       { label: "Cursuri de patinaj", href: "/cursuri", type: "link" as const },
       { label: "Program", href: "/cursuri/program", type: "link" as const },
       { label: "Regulament", href: "/cursuri/regulament", type: "link" as const },
+      { label: "Voluntariat", href: "/voluntariat", type: "link" as const },
+      { label: "Parteneri", href: "/parteneri", type: "link" as const },
     ],
   },
   {
