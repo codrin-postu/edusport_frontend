@@ -38,6 +38,25 @@ interface RawCollabEvent {
   image?: StrapiMedia | null;
 }
 
+export interface PartnersContent {
+  heroTitle?: string;
+  heroSubtitle?: string;
+  introEyebrow?: string;
+  introHeading?: string;
+  introBody?: string;
+  ctaEyebrow?: string;
+  ctaHeading?: string;
+  ctaBody?: string;
+}
+
+/** Partners page copy (single type). Returns null on failure (caller falls back). */
+export async function fetchPartnersPage(): Promise<PartnersContent | null> {
+  const data = await fetchStrapi<{ content?: PartnersContent | null } | null>(
+    "partners-page",
+  );
+  return data?.content && typeof data.content === "object" ? data.content : null;
+}
+
 /** Public sponsors, ordered. Returns [] on any Strapi failure (caller falls back). */
 export async function fetchSponsors(): Promise<Sponsor[]> {
   const data = await fetchStrapi<RawSponsor[]>(

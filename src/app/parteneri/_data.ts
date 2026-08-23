@@ -19,6 +19,21 @@ export interface CollabEvent {
   image?: string;
 }
 
+/** Page copy fallback (used when the CMS partners-page is empty). */
+export const PARTNERS_COPY = {
+  heroTitle: "Parteneri",
+  heroSubtitle:
+    "Împreună cu partenerii și sponsorii noștri creștem patinajul din România — de la primii pași pe gheață până la podium.",
+  introEyebrow: "De ce parteneriat",
+  introHeading: "Susține o comunitate în creștere",
+  introBody:
+    "Un parteneriat cu clubul înseamnă vizibilitate la evenimente și competiții, asociere cu performanța și sprijin real pentru sportivii tineri.",
+  ctaEyebrow: "Hai să colaborăm",
+  ctaHeading: "Sponsorizează sau organizează un eveniment",
+  ctaBody:
+    "Vrei să sponsorizezi clubul sau să organizăm împreună un eveniment special? Scrie-ne și construim colaborarea potrivită.",
+};
+
 /** Sponsor logos shown in the auto-scrolling strip. Placeholder names. */
 export const SPONSORS: Sponsor[] = [
   { name: "EDEA" },

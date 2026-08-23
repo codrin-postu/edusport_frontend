@@ -16,20 +16,29 @@ import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
  * and the slim "Mai departe" outro. All content sections are `relative z-10`
  * so the sticky hero doesn't bleed through on scroll.
  */
-const PartnerView: React.FC<{ sponsors: Sponsor[]; events: CollabEvent[] }> = ({
-  sponsors,
-  events,
-}) => {
+interface PartnersCopy {
+  heroTitle: string;
+  heroSubtitle: string;
+  introEyebrow: string;
+  introHeading: string;
+  introBody: string;
+  ctaEyebrow: string;
+  ctaHeading: string;
+  ctaBody: string;
+}
+
+const PartnerView: React.FC<{
+  sponsors: Sponsor[];
+  events: CollabEvent[];
+  copy: PartnersCopy;
+}> = ({ sponsors, events, copy }) => {
   return (
     <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["PARTENER"]}>
         <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-retro-cream">
-          Parteneri
+          {copy.heroTitle}
         </h1>
-        <p className="max-w-md text-base text-retro-cream/70">
-          Împreună cu partenerii și sponsorii noștri creștem patinajul din
-          România — de la primii pași pe gheață până la podium.
-        </p>
+        <p className="max-w-md text-base text-retro-cream/70">{copy.heroSubtitle}</p>
       </PageHeroSection>
 
       {/* ─── DE CE PARTENERIAT ─── */}
@@ -37,15 +46,13 @@ const PartnerView: React.FC<{ sponsors: Sponsor[]; events: CollabEvent[] }> = ({
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3">
             <p className="text-eyebrow font-bold uppercase text-rust">
-              De ce parteneriat
+              {copy.introEyebrow}
             </p>
             <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-navy">
-              Susține o comunitate în creștere
+              {copy.introHeading}
             </h2>
             <p className="max-w-xl text-base leading-relaxed text-navy/65">
-              Un parteneriat cu clubul înseamnă vizibilitate la evenimente și
-              competiții, asociere cu performanța și sprijin real pentru
-              sportivii tineri.
+              {copy.introBody}
             </p>
           </div>
         </div>
@@ -131,14 +138,13 @@ const PartnerView: React.FC<{ sponsors: Sponsor[]; events: CollabEvent[] }> = ({
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
             <div className="flex flex-col gap-3">
               <p className="text-eyebrow font-bold uppercase text-rust">
-                Hai să colaborăm
+                {copy.ctaEyebrow}
               </p>
               <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-navy">
-                Sponsorizează sau organizează un eveniment
+                {copy.ctaHeading}
               </h2>
               <p className="max-w-sm text-sm leading-relaxed text-navy/60">
-                Vrei să sponsorizezi clubul sau să organizăm împreună un
-                eveniment special? Scrie-ne și construim colaborarea potrivită.
+                {copy.ctaBody}
               </p>
             </div>
             <div className="relative bg-navy p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-8">
