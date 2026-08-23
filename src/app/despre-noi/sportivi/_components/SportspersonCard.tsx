@@ -177,7 +177,7 @@ export function SportspersonCard({
   const medalTotal = stats.goldCount + stats.silverCount + stats.bronzeCount;
   const medalColor =
     medalTotal === 0
-      ? "#ffffff"
+      ? "var(--color-cream)"
       : tier.color === "var(--color-medal-bronze)"
         ? "#fdba74"
         : tier.color;
@@ -225,20 +225,6 @@ export function SportspersonCard({
         }
         .sp-card.is-tilting {
           transition: transform 0.06s linear, box-shadow 0.4s ease;
-        }
-        .sp-card-foil {
-          background:
-            linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.32) 50%, transparent 60%),
-            linear-gradient(135deg, rgba(255, 184, 48, 0.18), transparent 40%, rgba(255,255,255,0.14) 70%, transparent);
-          background-size: 200% 100%, 100% 100%;
-          animation: sp-foil 4s linear infinite;
-        }
-        @keyframes sp-foil {
-          from { background-position: 200% 0, 0 0; }
-          to   { background-position: -200% 0, 0 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .sp-card-foil { animation: none; }
         }
       `}</style>
       <Link
@@ -300,14 +286,6 @@ export function SportspersonCard({
                 {initials}
               </span>
             </div>
-          )}
-
-          {/* Foil shimmer — spotlight only (too noisy on every grid card) */}
-          {isSpotlight && (
-            <div
-              aria-hidden
-              className="sp-card-foil pointer-events-none absolute inset-0 mix-blend-overlay"
-            />
           )}
 
           {/* Slanted-line ribbon — same SVG accent as the podium result
@@ -429,20 +407,22 @@ export function SportspersonCard({
 }
 
 /**
- * Vibrant gradient palette for photo-less cards. Picked deterministically
+ * Retro brand gradient palette for photo-less cards. Picked deterministically
  * from the athlete's slug so the same person always gets the same colours
- * across SSR and re-renders. Keeps the listing visually playful without
- * having to ask editors to upload a photo for every athlete.
+ * across SSR and re-renders. Each pair anchors on a dark/saturated brand tone
+ * (navy/blue/rust) so the white name text over the bottom overlay stays legible.
+ * Values mirror the globals.css @theme tokens (navy #0e1a3c, blue #2138b8,
+ * rust #be3330, gold #fbbf24).
  */
 const FALLBACK_GRADIENTS: Array<{ from: string; to: string }> = [
-  { from: "#f97316", to: "#db2777" }, // sunset (orange → pink)
-  { from: "#0ea5e9", to: "#1e3a8a" }, // ocean (sky → indigo)
-  { from: "#10b981", to: "#0f766e" }, // forest (emerald → teal)
-  { from: "#d946ef", to: "#6d28d9" }, // berry (fuchsia → violet)
-  { from: "#fbbf24", to: "#e11d48" }, // citrus (amber → rose)
-  { from: "#6366f1", to: "#7c3aed" }, // sky (indigo → purple)
-  { from: "#14b8a6", to: "#0e7490" }, // mint (teal → cyan)
-  { from: "#fb7185", to: "#ea580c" }, // coral (rose → orange)
+  { from: "#0e1a3c", to: "#2138b8" }, // navy → blue
+  { from: "#2138b8", to: "#0e1a3c" }, // blue → navy
+  { from: "#0e1a3c", to: "#be3330" }, // navy → rust
+  { from: "#be3330", to: "#0e1a3c" }, // rust → navy
+  { from: "#2138b8", to: "#be3330" }, // blue → rust
+  { from: "#be3330", to: "#fbbf24" }, // rust → gold
+  { from: "#0e1a3c", to: "#fbbf24" }, // navy → gold
+  { from: "#2138b8", to: "#fbbf24" }, // blue → gold
 ];
 
 function pickFallbackGradient(seed: string): { from: string; to: string } {
