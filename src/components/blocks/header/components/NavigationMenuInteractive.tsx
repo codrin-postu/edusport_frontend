@@ -41,8 +41,6 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  // The retro dropdown (square panel + promo tile) is now the site-wide theme.
-  const retro = true;
 
   const open = (index: number) => setActiveIndex(index);
 
@@ -128,8 +126,8 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                   transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   className="flex"
                 >
-                  {/* Promo tile (image + title + description) — retro/landing only. */}
-                  {retro && activeItem!.image && (
+                  {/* Promo tile (image + title + description). */}
+                  {activeItem!.image && (
                     <div
                       className="nav-promo"
                       style={{ backgroundImage: `url(${activeItem!.image})` }}

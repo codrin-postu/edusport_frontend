@@ -1,21 +1,30 @@
 import { cn } from "@/utils/cn";
 import React from "react";
 
-/** Base class string for form inputs on light (white) page backgrounds */
+/** Base class string for form inputs on light (cream) page backgrounds */
 export const inputBase =
-  "w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 outline-none focus:border-edusport-blue focus:bg-white transition-colors placeholder:text-gray-400";
+  "w-full px-4 py-3 text-sm bg-retro-cream border-[1.5px] border-navy text-navy outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-navy/40";
 
-/** Variant for inputs inside card/panel containers (already grey-tinted) */
+/** Variant for inputs inside a light card/panel container */
 export const inputBaseOnCard =
-  "w-full px-4 py-3 text-sm bg-white border border-gray-200 outline-none focus:border-edusport-blue focus:ring-1 focus:ring-edusport-blue/20 focus:-translate-y-px transition-all placeholder:text-gray-400";
+  "w-full px-4 py-3 text-sm bg-white border-[1.5px] border-navy text-navy outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-navy/40";
+
+/** Variant for inputs inside a dark (navy) panel — cream text, mustard focus */
+export const inputOnNavy =
+  "w-full px-4 py-3 text-sm bg-white/[0.06] border-[1.5px] border-retro-cream/35 text-retro-cream outline-none focus:border-mustard focus:ring-2 focus:ring-mustard/25 transition-[color,box-shadow,border-color] placeholder:text-retro-cream/40";
 
 export const FieldLabel: React.FC<{
   htmlFor: string;
   children: React.ReactNode;
-}> = ({ htmlFor, children }) => (
+  /** "dark" for use inside a navy panel (cream label) */
+  tone?: "light" | "dark";
+}> = ({ htmlFor, children, tone = "light" }) => (
   <label
     htmlFor={htmlFor}
-    className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
+    className={cn(
+      "block text-[11px] font-bold uppercase tracking-[0.08em] mb-1.5",
+      tone === "dark" ? "text-retro-cream/60" : "text-navy/55",
+    )}
   >
     {children}
   </label>

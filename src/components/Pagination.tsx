@@ -66,13 +66,13 @@ export function Pagination({
   };
 
   const arrowClass =
-    "flex h-9 w-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700";
+    "flex h-9 w-9 items-center justify-center border-[1.5px] border-navy text-navy transition-colors hover:bg-navy hover:text-retro-cream";
   const arrowDisabled = cn(arrowClass, "pointer-events-none opacity-30");
 
   return (
     <nav
       aria-label={ariaLabel ?? "Paginare"}
-      className="flex items-center justify-center gap-1 pt-12"
+      className="flex items-center justify-center gap-1.5 pt-12"
     >
       {currentPage > 1 ? (
         <Link
@@ -96,10 +96,10 @@ export function Pagination({
           aria-current={p === currentPage ? "page" : undefined}
           scroll={scrollToAnchor}
           className={cn(
-            "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium transition-colors",
+            "flex h-9 w-9 items-center justify-center border-[1.5px] text-sm font-bold transition-colors",
             p === currentPage
-              ? "bg-edusport-blue text-white"
-              : "text-gray-500 hover:bg-gray-100 hover:text-gray-700",
+              ? "border-navy bg-navy text-retro-cream"
+              : "border-transparent text-navy/60 hover:bg-navy/10 hover:text-navy",
           )}
         >
           {p}

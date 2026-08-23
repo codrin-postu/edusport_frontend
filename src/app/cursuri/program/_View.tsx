@@ -18,25 +18,25 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ data }) => {
   return (
     <div className={cn("min-h-screen", "bg-white")}>
       <PageHeroSection title={["PROGRAM"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Program" }]}>
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           {data.bannerTitle}
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-retro-cream/70 text-base">
           {data.bannerSubtitle}
         </p>
       </PageHeroSection>
 
       <div className="relative z-10 bg-white">
-        <ScheduleSection
-          scheduleGroups={data.scheduleGroups}
-          scheduleSubtitle={data.scheduleSubtitle}
-          disclaimers={data.disclaimers}
-        />
         <SeasonCalendarViewV2
           seasonCalendar={data.calendarEvents}
           seasonLabel={data.seasonLabel}
           seasonStart={data.seasonStart}
           seasonEnd={data.seasonEnd}
+        />
+        <ScheduleSection
+          scheduleGroups={data.scheduleGroups}
+          scheduleSubtitle={data.scheduleSubtitle}
+          disclaimers={data.disclaimers}
         />
       </div>
     </div>

@@ -1,6 +1,5 @@
 import Link from "@/components/ui/link";
 import SpotlightButton from "@/components/ui/spotlight-button";
-import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import React from "react";
@@ -30,64 +29,59 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
       title={["SCOALA", "DE", "PATINAJ"]}
       variant={isRegistrationOpen ? "blue" : "dark"}
     >
-      {/* Season + pill */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-xs font-semibold tracking-widest uppercase text-white/50">
+        <span className="text-eyebrow font-bold uppercase text-retro-cream">
           Sezonul {currentSeason}
         </span>
         {isRegistrationOpen ? (
-          <Pill variant="success" shape="slanted">Înscrieri deschise</Pill>
+          <Pill color="var(--color-mustard)" shape="slanted" className="text-navy">
+            Înscrieri deschise
+          </Pill>
         ) : (
           <Pill variant="error" shape="slanted">Înscrieri închise</Pill>
         )}
       </div>
 
-      {/* Heading */}
-      <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+      <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
         {title}
       </h1>
 
-      {/* Quick info row */}
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-white/70 text-sm font-light border-t border-white/10 pt-5">
+      <div className="flex flex-wrap gap-x-5 gap-y-2 text-retro-cream/70 text-sm">
         <span className="flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5 shrink-0" />
+          <Calendar className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
           {scheduleDays}
         </span>
         <span className="flex items-center gap-1.5">
-          <Clock className="w-3.5 h-3.5 shrink-0" />
+          <Clock className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
           {scheduleTimes}
         </span>
         <a
           href={locationUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 hover:text-white transition-colors"
+          className="flex items-center gap-1.5 hover:text-retro-cream transition-colors"
         >
-          <MapPin className="w-3.5 h-3.5 shrink-0" />
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
           {locationName}
         </a>
       </div>
 
-      {/* CTAs */}
       {isRegistrationOpen && (
         <div className="flex flex-col sm:flex-row gap-3 sm:items-start pt-1">
-          <Link href="/inscrieri" className="w-full sm:w-auto">
-            <SpotlightButton
-              variant="white"
-              hoverColor="oklch(0.25 0.12 264)"
-              hoverTextColor="white"
-              className="w-full sm:w-auto px-9 py-3.5 text-sm font-semibold rounded-full"
-            >
-              Înscrie-te acum
-            </SpotlightButton>
-          </Link>
-          <Button
-            variant="outline"
-            className="w-full sm:w-auto px-7 py-3.5 h-auto text-sm font-medium rounded-full !bg-transparent text-white border-white/40 hover:border-white hover:!bg-white/10 hover:!text-white"
-            asChild
+          <SpotlightButton
+            layers
+            layersFace="cream"
+            href="/inscrieri"
+            className="w-full sm:w-auto text-sm"
           >
-            <Link href="/cursuri/program">Vezi programul</Link>
-          </Button>
+            Înscrie-te acum
+          </SpotlightButton>
+          <Link
+            href="/cursuri/program"
+            className="inline-flex items-center justify-center w-full sm:w-auto border-[1.5px] border-retro-cream bg-transparent px-8 py-3.5 text-sm font-bold uppercase tracking-[0.03em] text-retro-cream transition-colors hover:bg-retro-cream hover:text-navy"
+          >
+            Vezi programul
+          </Link>
         </div>
       )}
     </PageHeroSection>

@@ -29,6 +29,10 @@ interface SpotlightButtonProps {
   /** Render as an anchor when provided. */
   href?: string;
   external?: boolean;
+  /** Button type (ignored when `href` is set). Lets `layers` act as a form submit. */
+  type?: "button" | "submit";
+  /** Disabled state (button mode only). */
+  disabled?: boolean;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -60,7 +64,9 @@ const LayersButton: React.FC<{
   onClick?: () => void;
   href?: string;
   external?: boolean;
-}> = ({ children, face, className, onClick, href, external }) => {
+  type?: "button" | "submit";
+  disabled?: boolean;
+}> = ({ children, face, className, onClick, href, external, type = "button", disabled }) => {
   // Layer offset + easing live in `.lcta` CSS (globals.css) so the spring
   // overshoot + snap-pop compile reliably; only face colour/typography here.
   const inner = (
@@ -75,7 +81,7 @@ const LayersButton: React.FC<{
     </>
   );
 
-  const wrapperClass = `lcta select-none ${className}`;
+  const wrapperClass = `lcta select-none ${disabled ? "opacity-60 pointer-events-none" : ""} ${className}`;
 
   if (href) {
     return (
@@ -91,7 +97,7 @@ const LayersButton: React.FC<{
   }
 
   return (
-    <button type="button" onClick={onClick} className={wrapperClass}>
+    <button type={type} onClick={onClick} disabled={disabled} className={wrapperClass}>
       {inner}
     </button>
   );
@@ -117,6 +123,8 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
   layersFace = "black",
   href,
   external,
+  type = "button",
+  disabled,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -128,6 +136,8 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
         onClick={onClick}
         href={href}
         external={external}
+        type={type}
+        disabled={disabled}
       >
         {children}
       </LayersButton>

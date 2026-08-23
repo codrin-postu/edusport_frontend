@@ -9,10 +9,11 @@ import {
 } from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { CalendarDays, ChevronRight, Clock, MapPin, Tag, Ticket } from "lucide-react";
 import { notFound } from "next/navigation";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
+import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
+import { WarmStripe } from "@/components/ui/warm-stripe";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 
@@ -58,7 +59,7 @@ const ArticleVideo: React.FC<{ video: StrapiVideoField }> = ({ video }) => {
   if (!video.url) return null;
   if (video.mode === "upload") {
     return (
-      <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+      <div className="relative w-full aspect-video bg-black overflow-hidden border-[1.5px] border-navy">
         <video
           src={strapiMediaUrl(video.url)}
           controls
@@ -75,14 +76,14 @@ const ArticleVideo: React.FC<{ video: StrapiVideoField }> = ({ video }) => {
         href={video.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-edusport-blue underline underline-offset-2"
+        className="link-underline-rust text-rust font-semibold"
       >
         {video.url}
       </a>
     );
   }
   return (
-    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+    <div className="relative w-full aspect-video bg-black overflow-hidden border-[1.5px] border-navy">
       <iframe
         src={embed.embedUrl}
         title="Video"
@@ -116,7 +117,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
     article.category === "evenimente" || article.category === "competitii";
 
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-retro-cream")}>
       <ArticleJsonLd
         title={article.title}
         description={article.description}
@@ -132,52 +133,47 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         ]}
       />
       {/* Top bar - breadcrumb */}
-      <div className="bg-white border-b border-gray-100 pt-8">
+      <div className="bg-retro-cream border-b-[1.5px] border-navy pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4 flex items-center justify-between">
-          <nav className="flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase text-gray-400">
-            <Link href="/noutati" className="hover:text-gray-600 transition-colors">Noutăți</Link>
+          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-navy/55">
+            <Link href="/noutati" className="text-navy/80 hover:text-rust transition-colors">Noutăți</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
-            <span className="text-gray-600 truncate max-w-[200px] sm:max-w-none">{article.title}</span>
+            <span className="text-navy truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
         </div>
       </div>
 
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-gray-100 overflow-hidden">
-        <Image
-          src={article.coverImage}
-          alt={article.title}
-          fill
-          priority
-          className="object-cover"
-        />
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-[1.5px] border-navy bg-navy/[0.04]">
+        <ArticleImage src={article.coverImage} alt={article.title} iconClassName="w-14 h-14" />
+        <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-10" />
       </div>
 
       {/* Article body */}
-      <article className="bg-white pt-12 pb-40 md:pt-16 md:pb-56">
+      <article className="bg-retro-cream pt-12 pb-40 md:pt-16 md:pb-56">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
             <div>
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-xs font-medium text-edusport-blue">
+              <div className="flex flex-wrap items-center gap-2 mb-4 text-[11.5px]">
+                <span className="font-bold uppercase tracking-[0.04em] text-rust">
                   {CATEGORY_LABELS[article.category]}
                 </span>
-                <span className="text-gray-300">·</span>
-                <span className="text-xs text-gray-400 font-light">
+                <span className="text-navy/30">·</span>
+                <span className="text-navy/45">
                   {formatDate(article.date)}
                 </span>
               </div>
 
-              <h1 className="text-2xl md:text-4xl font-semibold text-gray-900 leading-snug tracking-tight mb-4">
+              <h1 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] mb-4">
                 {article.title}
               </h1>
 
               {/* Mobile-only date - sidebar is hidden on mobile */}
               <div className="flex items-center gap-2 mb-8 lg:hidden">
-                <CalendarDays className="w-3.5 h-3.5 text-edusport-blue/60 shrink-0" />
-                <span className="text-sm text-gray-500 font-light">{formatDate(article.date)}</span>
+                <CalendarDays className="w-3.5 h-3.5 text-rust shrink-0" />
+                <span className="text-sm text-navy/50">{formatDate(article.date)}</span>
               </div>
 
               {/* Article-level video (separate field from body) — placed
@@ -192,7 +188,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
               {article.body && article.body.length > 0 ? (
                 <StrapiBlocks blocks={article.body} />
               ) : (
-                <p className="text-gray-400 italic text-sm">
+                <p className="text-navy/40 italic text-sm">
                   Conținutul acestui articol nu este disponibil momentan.
                 </p>
               )}
@@ -216,14 +212,14 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             </div>
 
             {/* Sidebar */}
-            <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-28">
-              <div className="border border-gray-100 p-6 flex flex-col gap-4">
-                <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
+            <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-24">
+              <div className="bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] p-6 flex flex-col gap-4">
+                <p className="text-eyebrow font-bold uppercase text-rust">
                   {SIDEBAR_HEADER[article.category] ?? "Detalii articol"}
                 </p>
-                <div className="flex flex-col gap-3 text-sm text-gray-600 font-light">
+                <div className="flex flex-col gap-3 text-sm text-navy/75">
                   <span className="flex items-start gap-3">
-                    <CalendarDays className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
+                    <CalendarDays className="w-4 h-4 text-rust shrink-0 mt-0.5" />
                     {formatDate(
                       isEventLike && article.eventDate
                         ? article.eventDate
@@ -232,7 +228,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                   </span>
                   {isEventLike && article.eventDate && (
                     <span className="flex items-start gap-3">
-                      <Clock className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
+                      <Clock className="w-4 h-4 text-rust shrink-0 mt-0.5" />
                       {new Date(article.eventDate).toLocaleTimeString("ro-RO", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -241,18 +237,18 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                   )}
                   {isEventLike && article.eventLocation && (
                     <span className="flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
+                      <MapPin className="w-4 h-4 text-rust shrink-0 mt-0.5" />
                       {article.eventLocation}
                     </span>
                   )}
                   {isEventLike && article.eventAdmissionInfo && (
                     <span className="flex items-start gap-3">
-                      <Ticket className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
+                      <Ticket className="w-4 h-4 text-rust shrink-0 mt-0.5" />
                       {article.eventAdmissionInfo}
                     </span>
                   )}
                   <span className="flex items-start gap-3">
-                    <Tag className="w-4 h-4 text-edusport-blue/60 shrink-0 mt-0.5" />
+                    <Tag className="w-4 h-4 text-rust shrink-0 mt-0.5" />
                     {CATEGORY_LABELS[article.category]}
                   </span>
                 </div>

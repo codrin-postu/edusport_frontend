@@ -1,14 +1,11 @@
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import SpotlightButton from "@/components/ui/spotlight-button";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, CalendarDays, Clock, MapPin } from "lucide-react";
+import { CalendarDays, Clock, MapPin } from "lucide-react";
+import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import type { Event } from "./_data";
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("ro-RO", {
@@ -18,73 +15,74 @@ function formatDate(iso: string) {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
 function CurrentEventSection({ event }: { event: Event }) {
   return (
-    <section className="bg-white py-16 md:py-20">
+    <section className="bg-retro-cream py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-10">
+        <p className="text-eyebrow font-bold uppercase text-rust mb-10">
           Următorul eveniment
         </p>
 
-        <Link
-          href={`/cursuri/evenimente/${event.slug}`}
-          className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center"
-        >
-          {/* Cover image */}
-          {event.coverImage && (
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100">
-              <Image
-                src={event.coverImage}
-                alt={event.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold backdrop-blur-sm">
-                În curând
-              </div>
-            </div>
-          )}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Cover (clickable) */}
+          <Link
+            href={`/cursuri/evenimente/${event.slug}`}
+            className="group relative block aspect-[16/9] overflow-hidden border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] bg-navy/[0.04]"
+          >
+            <ArticleImage
+              src={event.coverImage}
+              alt={event.title}
+              imgClassName="transition-transform duration-500 group-hover:scale-105"
+              iconClassName="w-12 h-12"
+            />
+            <span
+              className="absolute top-3 left-3 inline-flex items-center bg-mustard text-navy text-[10.5px] font-extrabold uppercase tracking-[0.03em] px-4 py-1.5"
+              style={{ clipPath: "polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)" }}
+            >
+              În curând
+            </span>
+          </Link>
 
-          {/* Content */}
+          {/* Content (not clickable — only image + button lead to the event) */}
           <div className="flex flex-col gap-5">
-            <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 leading-snug group-hover:text-edusport-blue transition-colors">
+            <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px]">
               {event.title}
             </h2>
 
-            <div className="flex flex-col gap-2 text-sm text-gray-500 font-light">
-              <span className="flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-edusport-blue/60 shrink-0" />
+            <div className="flex flex-col gap-2 text-sm text-navy/70">
+              <span className="flex items-center gap-2.5">
+                <CalendarDays className="w-4 h-4 text-rust shrink-0" />
                 {formatDate(event.date)}
               </span>
-              <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-edusport-blue/60 shrink-0" />
+              <span className="flex items-center gap-2.5">
+                <Clock className="w-4 h-4 text-rust shrink-0" />
                 {new Date(event.date).toLocaleTimeString("ro-RO", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </span>
               {event.location && (
-                <span className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-edusport-blue/60 shrink-0" />
+                <span className="flex items-center gap-2.5">
+                  <MapPin className="w-4 h-4 text-rust shrink-0" />
                   {event.location}
                 </span>
               )}
             </div>
 
-            <p className="text-gray-600 text-base font-light leading-relaxed border-t border-gray-100 pt-5">
+            <p className="text-navy/[0.65] text-base leading-relaxed border-t border-navy/10 pt-5">
               {event.excerpt}
             </p>
 
-            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue group-hover:gap-3 transition-all w-fit">
+            <SpotlightButton
+              layers
+              layersFace="black"
+              href={`/cursuri/evenimente/${event.slug}`}
+              className="w-fit text-xs"
+            >
               Citește mai mult
-              <ArrowRight className="w-4 h-4" />
-            </span>
+            </SpotlightButton>
           </div>
-        </Link>
+        </div>
       </div>
     </section>
   );
@@ -92,18 +90,18 @@ function CurrentEventSection({ event }: { event: Event }) {
 
 function NoEventSection() {
   return (
-    <section className="bg-white py-16 md:py-20">
+    <section className="bg-retro-cream py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-10">
+        <p className="text-eyebrow font-bold uppercase text-rust mb-10">
           Următorul eveniment
         </p>
-        <div className="flex flex-col gap-3 py-12 border-l-2 border-edusport-blue/10 pl-6">
-          <p className="text-2xl font-semibold text-gray-300">
+        <div className="flex flex-col gap-3 py-12 border-l-4 border-rust pl-6">
+          <p className="text-2xl font-semibold text-navy/30">
             Niciun eveniment planificat momentan
           </p>
-          <p className="text-sm text-gray-400 font-light max-w-md">
+          <p className="text-sm text-navy/50 max-w-md">
             Reveniți mai târziu pentru informații despre următoarele evenimente
-            și competiții organizate de Școala de Patinaj EduSport.
+            și competiții organizate de Clubul Sportiv EduSport.
           </p>
         </div>
       </div>
@@ -115,50 +113,37 @@ function PastEventsSection({ events }: { events: Event[] }) {
   if (events.length === 0) return null;
 
   return (
-    <section className="bg-gray-50 py-16 md:py-20">
+    <section className="bg-retro-cream py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-10">
+        <p className="text-eyebrow font-bold uppercase text-rust mb-10">
           Evenimente anterioare
         </p>
 
-        <div className="flex flex-col divide-y divide-gray-200">
+        <div className="flex flex-col">
           {events.map((event) => (
             <Link
               key={event.slug}
               href={`/cursuri/evenimente/${event.slug}`}
-              className="group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start hover:opacity-75 transition-opacity"
+              className="group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start border-t border-navy/10 first:border-t-0 outline-none"
             >
               {/* Thumbnail */}
-              {event.coverImage ? (
-                <div className="relative w-full sm:w-32 aspect-video sm:aspect-square rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                  <Image
-                    src={event.coverImage}
-                    alt={event.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="hidden sm:flex w-32 aspect-square rounded-xl bg-edusport-blue/5 items-center justify-center shrink-0">
-                  <CalendarDays className="w-8 h-8 text-edusport-blue/20" />
-                </div>
-              )}
+              <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-[1.5px] border-navy bg-navy/[0.03] shrink-0">
+                <ArticleImage src={event.coverImage} alt={event.title} />
+              </div>
 
               {/* Content */}
               <div className="flex flex-col gap-2">
-                <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                  <span className="text-xs text-gray-400 font-light">
-                    {formatDate(event.date)}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-edusport-blue transition-colors leading-snug">
+                <span className="text-[11.5px] text-navy/45">
+                  {formatDate(event.date)}
+                </span>
+                <h3 className="text-lg font-bold text-navy leading-snug">
                   {event.title}
                 </h3>
-                <p className="text-sm text-gray-500 font-light leading-relaxed line-clamp-2">
+                <p className="text-sm text-navy/[0.62] leading-relaxed line-clamp-2">
                   {event.excerpt}
                 </p>
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-edusport-blue mt-1">
-                  Detalii <ArrowRight className="w-3 h-3" />
+                <span className="relative inline-block w-fit mt-1 pb-0.5 text-[11.5px] font-bold uppercase tracking-[0.03em] text-rust after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
+                  Detalii
                 </span>
               </div>
             </Link>
@@ -166,22 +151,14 @@ function PastEventsSection({ events }: { events: Event[] }) {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <Link
-            href="/noutati"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-edusport-blue/20 text-sm font-medium text-edusport-blue hover:bg-edusport-blue hover:text-white transition-colors"
-          >
+          <SpotlightButton layers layersFace="black" href="/noutati" className="text-xs">
             Vezi toate evenimentele
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          </SpotlightButton>
         </div>
       </div>
     </section>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
 
 interface EventsPageProps {
   currentEvent: Event | null;
@@ -190,18 +167,18 @@ interface EventsPageProps {
 
 const EventsPage: React.FC<EventsPageProps> = ({ currentEvent, pastEvents }) => {
   return (
-    <div className={cn("min-h-screen", "bg-white", "flex", "flex-col")}>
+    <div className={cn("min-h-screen", "bg-retro-cream", "flex", "flex-col")}>
       <PageHeroSection title={["EVENIMENTE"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Evenimente" }]}>
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Evenimente
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-retro-cream/70 text-base">
           Spectacole, competiții și momente speciale organizate de Școala de
           Patinaj EduSport de-a lungul sezonului.
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-white flex-1">
+      <div className="relative z-10 bg-retro-cream flex-1">
         {currentEvent ? (
           <CurrentEventSection event={currentEvent} />
         ) : (

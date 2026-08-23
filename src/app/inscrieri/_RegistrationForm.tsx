@@ -34,10 +34,10 @@ const RegistrationForm: React.FC = () => {
   };
 
   const handleSubmit = async(
-    e: React.FormEvent,
+    e: React.FormEvent | undefined,
     agreements: { gdpr: boolean; regulament: boolean },
   ) => {
-    e.preventDefault();
+    e?.preventDefault();
     setStatus("sending");
     try {
       await submitToGoogleForms(form, agreements);
@@ -53,11 +53,11 @@ const RegistrationForm: React.FC = () => {
   if (status === "sent") {
     return (
       <div className="flex flex-col items-center justify-center py-20 px-8 text-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-edusport-blue flex items-center justify-center">
-          <CheckCircle className="w-7 h-7 text-white" />
+        <div className="w-16 h-16 rounded-full bg-navy flex items-center justify-center">
+          <CheckCircle className="w-7 h-7 text-mustard" />
         </div>
-        <h3 className="text-2xl font-semibold text-gray-900">Înscriere trimisă!</h3>
-        <p className="text-sm text-gray-500 max-w-sm leading-relaxed">
+        <h3 className="font-display text-2xl font-extrabold text-navy">Înscriere trimisă!</h3>
+        <p className="text-sm text-navy/60 max-w-sm leading-relaxed">
           Mulțumim pentru înscriere. Te vom contacta în cel mai scurt timp
           pentru confirmare și detalii suplimentare.
         </p>
@@ -67,7 +67,7 @@ const RegistrationForm: React.FC = () => {
             setStatus("idle");
             setStep(0);
           }}
-          className="mt-2 text-sm text-edusport-blue underline underline-offset-4 hover:opacity-70 transition-opacity"
+          className="mt-2 link-underline-rust text-sm font-semibold text-rust"
         >
           Trimite o altă înscriere
         </button>

@@ -41,7 +41,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({
       <StepIndicator current={1} />
 
       <div className="flex flex-col gap-3 mb-6">
-        <p className="text-xs font-semibold text-edusport-blue uppercase tracking-widest">
+        <p className="text-eyebrow font-bold uppercase text-rust">
           Experiență & așteptări
         </p>
       </div>
@@ -71,7 +71,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({
           <FieldLabel htmlFor="priorExperience">
             Pentru o încadrare cât mai corectă în grupe *
           </FieldLabel>
-          <p className="text-xs text-gray-500 font-light mb-2 -mt-1">
+          <p className="text-xs text-navy/55 mb-2 -mt-1">
             Dacă participați pentru prima oară la cursurile noastre, vă rugăm să
             ne spuneți dacă a mai patinat, cu ce instructor (dacă e cazul) și ce
             elemente știe să facă.
@@ -107,7 +107,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({
 
       {/* Additional */}
       <div className="flex flex-col gap-3 mt-10 mb-6">
-        <p className="text-xs font-semibold text-edusport-blue uppercase tracking-widest">
+        <p className="text-eyebrow font-bold uppercase text-rust">
           Informații suplimentare
         </p>
       </div>
@@ -147,7 +147,7 @@ const StepExperience: React.FC<StepExperienceProps> = ({
             placeholder="Selectează răspunsul..."
             required
           />
-          <p className="mt-1.5 text-xs text-gray-400 font-light">
+          <p className="mt-1.5 text-xs text-navy/45">
             Membrii A.C.S. EduSport beneficiază de tarifele pentru membri și
             posibilitatea participării la competiții.
           </p>
