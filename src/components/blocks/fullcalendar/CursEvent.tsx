@@ -57,7 +57,7 @@ const DesktopTooltip: React.FC<{
       clampPassesRef.current += 1;
       setPlacement({ top: nextTop, left: nextLeft, below: nextBelow });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [placement.top, placement.left, placement.below, pos.topBelow]);
 
   return createPortal(
