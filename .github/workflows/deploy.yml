@@ -3,6 +3,11 @@
 # Trigger:
 #   GitHub → Actions → Deploy frontend → Run workflow → pick a branch/tag.
 #
+# Two gated jobs:
+#   check   lint + typecheck + security (dependency audit, secret scan) on the runner
+#   deploy  (needs: check) SSH to the VM, split into pull/build/up/health steps so
+#           the Actions UI shows exactly which phase failed
+#
 # Required repository secrets (Settings → Secrets and variables → Actions):
 #   VM_HOST            - DNS name or IP of the production VM
 #   VM_USER            - SSH user on the VM (e.g. `codrin`)
@@ -23,12 +28,62 @@ concurrency:
   group: deploy-frontend-${{ inputs.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
-  deploy:
+  check:
+    name: Check (lint, types, security)
     runs-on: ubuntu-latest
     steps:
-      - name: SSH into VM and run deploy script
-        uses: appleboy/ssh-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck (informational)
+        # Next generates .next/types during build, so a standalone pre-build
+        # tsc can report false positives — keep it visible but non-blocking.
+        # The real type gate is `next build` in the deploy phase.
+        continue-on-error: true
+        run: npx tsc --noEmit
+      - name: Dependency audit (informational)
+        continue-on-error: true
+        run: npm audit --audit-level=high
+      - name: Secret scan (gitleaks)
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            | tar -xz gitleaks
+          ./gitleaks detect --no-git --source . --no-banner --redact --exit-code 1
+
+  deploy:
+    name: Deploy to VM
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull latest code
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        env:
+          DEPLOY_REF: ${{ inputs.ref }}
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          envs: DEPLOY_REF
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.VM_FRONTEND_PATH }}"
+            ./scripts/deploy.sh pull
+      - name: Build image
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
@@ -36,6 +91,24 @@ jobs:
           script: |
             set -euo pipefail
             cd "${{ secrets.VM_FRONTEND_PATH }}"
-            git fetch --prune
-            git reset --hard "origin/${{ inputs.ref }}"
-            ./scripts/deploy.sh
+            ./scripts/deploy.sh build
+      - name: Start service
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.VM_FRONTEND_PATH }}"
+            ./scripts/deploy.sh up
+      - name: Health check
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.VM_FRONTEND_PATH }}"
+            ./scripts/deploy.sh health

@@ -127,7 +127,7 @@ function renderTokens(tokens: Token[]): React.ReactNode[] {
       return <em key={i}>{t.children ? renderTokens(t.children) : t.content}</em>;
     }
     if (t.type === "image" && t.href) {
-      // eslint-disable-next-line @next/next/no-img-element
+
       return (
         <img
           key={i}
