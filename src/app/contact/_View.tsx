@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Mail, Phone, Send, ExternalLink } from "lucide-react";
+import { type LucideIcon, Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
@@ -30,7 +30,7 @@ const CONTACT_REASONS = [
 // ---------------------------------------------------------------------------
 
 const ContactInfoCard: React.FC<{
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   value: string;
   href: string;
@@ -312,7 +312,7 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
       value: "Scoala de Patinaj EduSport",
       href: contactInfo.facebookUrl1,
     },
-  ].filter(Boolean) as { icon: React.ElementType; label: string; value: string; href: string }[];
+  ].filter(Boolean) as { icon: LucideIcon; label: string; value: string; href: string }[];
 
   return (
     <div className="min-h-screen bg-retro-cream">
