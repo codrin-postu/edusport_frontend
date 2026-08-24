@@ -141,9 +141,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
   //   • lv2-nav-solid    → past 20vh: solid bar slides in, text reverts to dark
   useEffect(() => {
     const html = document.documentElement;
-    const darkHero = safeVariant === "G";
     html.classList.add("lv2-nav", "lv2-nav-entrance");
-    if (darkHero) html.classList.add("lv2-hero-dark");
 
     const onScroll = () => {
       html.classList.toggle("lv2-nav-solid", window.scrollY > window.innerHeight * 0.2);
