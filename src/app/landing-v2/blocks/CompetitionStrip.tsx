@@ -204,7 +204,7 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
             /* Near full-screen height. Width is capped to the height (square on
                desktop) AND to 86vw (so it turns portrait as the viewport
                narrows). One rule → square on wide, portrait on narrow. */
-            height: 82vh;
+            height: min(82vh, calc(100vh - ${HEADER_OFFSET_PX}px));
             width: min(82vh, 86vw);
             object-fit: cover;
             display: block;
@@ -275,7 +275,7 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
             display: flex; align-items: center; justify-content: center;
           }
           .csstrip-img {
-            height: 82vh; width: min(82vh, 86vw);
+            height: min(82vh, calc(100vh - ${HEADER_OFFSET_PX}px)); width: min(82vh, 86vw);
             object-fit: cover; display: block;
           }
           .csstrip-heading {

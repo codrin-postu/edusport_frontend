@@ -189,7 +189,7 @@ const RetroPanel: React.FC<{
               />
             </div>
 
-            <div className="relative z-[1] overflow-y-auto px-3.5 py-3">
+            <div className="relative z-[1] flex-1 min-h-0 overflow-y-auto px-3.5 py-3">
               {rows.map((r, i) => (
                 <div key={i}>{r}</div>
               ))}

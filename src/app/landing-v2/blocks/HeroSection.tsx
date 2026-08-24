@@ -165,7 +165,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
     // Inner wrapper uses overflow-x-clip (not overflow-hidden) so the
     // wordmark's 1% horizontal bleed clips on the x-axis only. `-mt-20` pulls
     // the hero up behind the fixed nav.
-    <section className="relative h-screen max-h-[1200px] -mt-20">
+    <section className="relative h-[max(100svh,600px)] max-h-[1200px] -mt-20">
       <style>{`
         /* Nav transparent over hero → solid on scroll. Targets the shared
            Header's DOM via structure (no Header.tsx edits). */

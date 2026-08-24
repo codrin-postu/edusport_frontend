@@ -111,7 +111,7 @@ export default async function RootLayout({
       lang="ro"
       className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable} ${anton.variable}`}
     >
-      <body className="bg-edusport-blue">
+      <body className="bg-edusport-blue overflow-x-clip">
         <OrganizationJsonLd
           telephone={contactInfo.phone}
           email={contactInfo.email}
@@ -120,7 +120,7 @@ export default async function RootLayout({
         <NavigationProgress />
         <Header registrationOpen={registrationOpen} contactInfo={contactInfo} />
         <main
-          className="relative z-10 pt-20 pb-24 md:pb-32 bg-white lg:overflow-clip"
+          className="relative z-10 pt-20 pb-24 md:pb-32 bg-retro-cream lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}
