@@ -312,12 +312,6 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
       value: "Scoala de Patinaj EduSport",
       href: contactInfo.facebookUrl1,
     },
-    contactInfo.facebookUrl2 && {
-      icon: ExternalLink,
-      label: "Facebook",
-      value: "Clubul Sportiv EduSport",
-      href: contactInfo.facebookUrl2,
-    },
   ].filter(Boolean) as { icon: React.ElementType; label: string; value: string; href: string }[];
 
   return (

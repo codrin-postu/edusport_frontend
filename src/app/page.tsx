@@ -133,6 +133,7 @@ function buildStripImages(athletes: StrapiSportsperson[]): StrapiMediaImage[] {
 export default async function Page() {
   const heroVariant: HeroVariant = "B"; // retro hero locked to the cream layout
   let registrationOpen = true;
+  let currentSeason: string | undefined;
   let cms: HomepageCms = {};
   let latestArticles: LatestArticleData[] | undefined;
 
@@ -144,7 +145,7 @@ export default async function Page() {
     spotlightAthleteResult,
     competitionsResult,
   ] = await Promise.allSettled([
-    fetchStrapi<{ registration?: { open?: boolean } }>("site-settings"),
+    fetchStrapi<{ registration?: { open?: boolean; currentSeason?: string } }>("site-settings"),
     fetchStrapi<HomepageCms>("homepage"),
     fetchArticlesPaginated({ page: 1, pageSize: 5 }),
     fetchPublicSportspeople(),
@@ -164,8 +165,11 @@ export default async function Page() {
     ),
   ]);
 
-  if (settingsResult.status === "fulfilled" && settingsResult.value?.registration?.open !== undefined) {
-    registrationOpen = settingsResult.value.registration.open;
+  if (settingsResult.status === "fulfilled" && settingsResult.value?.registration) {
+    if (settingsResult.value.registration.open !== undefined) {
+      registrationOpen = settingsResult.value.registration.open;
+    }
+    currentSeason = settingsResult.value.registration.currentSeason;
   }
   if (homepageResult.status === "fulfilled" && homepageResult.value) {
     cms = homepageResult.value;
@@ -264,7 +268,7 @@ export default async function Page() {
         heroNextEvent={heroNextEvent}
         articles={displayArticles}
         registrationSlot={<RegistrationSectionV2 cms={cms.registration} />}
-        registrationClosedSlot={<RegistrationClosedSection cms={cms.registrationClosed} />}
+        registrationClosedSlot={<RegistrationClosedSection cms={cms.registrationClosed} season={currentSeason} />}
       />
     </>
   );

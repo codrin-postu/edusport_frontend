@@ -104,7 +104,6 @@ export default async function RootLayout({
   // Social profile URLs -> schema.org `sameAs` (helps entity/knowledge-graph).
   const socialProfiles = [
     contactInfo.facebookUrl1,
-    contactInfo.facebookUrl2,
     contactInfo.instagramUrl,
   ].filter(Boolean) as string[];
   return (

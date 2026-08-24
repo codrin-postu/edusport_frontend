@@ -11,7 +11,6 @@ export interface SiteContactInfo {
   phone?: string;
   email?: string;
   facebookUrl1?: string;
-  facebookUrl2?: string;
   instagramUrl?: string;
   whatsappChannelUrl?: string;
   addressDisplay?: string;
@@ -73,9 +72,6 @@ function buildContactItems(info: SiteContactInfo): FooterItemData[] {
   }
   if (info.facebookUrl1) {
     items.push({ type: "social", label: "Facebook", href: info.facebookUrl1, icon: "facebook" });
-  }
-  if (info.facebookUrl2) {
-    items.push({ type: "social", label: "Facebook Juniors", href: info.facebookUrl2, icon: "facebook" });
   }
   if (info.instagramUrl) {
     items.push({ type: "social", label: "Instagram", href: info.instagramUrl, icon: "instagram" });
@@ -184,10 +180,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
   const emailDisplay = contactInfo?.email ?? "contact@edusport.ro";
   const socialIcons = [
     { label: "Facebook", href: contactInfo?.facebookUrl1 ?? "#", Icon: FacebookIcon },
-    { label: "Facebook Juniors", href: contactInfo?.facebookUrl2 ?? "#", Icon: FacebookIcon },
     { label: "Instagram", href: contactInfo?.instagramUrl ?? "#", Icon: InstagramIcon },
     { label: "WhatsApp", href: waUrl, Icon: WhatsAppGlyph },
-  ].filter((s, i) => (i === 1 ? !!contactInfo?.facebookUrl2 : true));
+  ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-footer-content lg:justify-between gap-8 md:gap-10 lg:gap-12 px-22 py-10 mx-auto">
