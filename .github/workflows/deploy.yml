@@ -3,10 +3,13 @@
 # Trigger:
 #   GitHub → Actions → Deploy frontend → Run workflow → pick a branch/tag.
 #
-# Two gated jobs:
-#   check   lint + typecheck + security (dependency audit, secret scan) on the runner
-#   deploy  (needs: check) SSH to the VM, split into pull/build/up/health steps so
-#           the Actions UI shows exactly which phase failed
+# Each check and each deploy phase is its own JOB, so the Actions graph shows a
+# separate node per step and you can see exactly where a run fails:
+#
+#   lint ┐
+#   typecheck ┤ (blocking)          audit (informational)
+#   secret-scan ┘
+#         └─> deploy-pull -> deploy-build -> deploy-up -> deploy-health
 #
 # Required repository secrets (Settings → Secrets and variables → Actions):
 #   VM_HOST            - DNS name or IP of the production VM
@@ -32,44 +35,70 @@ permissions:
   contents: read
 
 jobs:
-  check:
-    name: Check (lint, types, security)
+  # ---------- checks ----------
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Typecheck (informational)
-        # Next generates .next/types during build, so a standalone pre-build
-        # tsc can report false positives — keep it visible but non-blocking.
-        # The real type gate is `next build` in the deploy phase.
-        continue-on-error: true
-        run: npx tsc --noEmit
-      - name: Dependency audit (informational)
-        continue-on-error: true
-        run: npm audit --audit-level=high
-      - name: Secret scan (gitleaks)
+      - run: npm ci
+      - run: npm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+
+  audit:
+    name: Dependency audit (informational)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
+
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: gitleaks
         run: |
           curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
             | tar -xz gitleaks
           ./gitleaks detect --no-git --source . --no-banner --redact --exit-code 1
 
-  deploy:
-    name: Deploy to VM
-    needs: check
+  # ---------- deploy (gated on the blocking checks) ----------
+  deploy-pull:
+    name: Deploy · pull
+    needs: [lint, typecheck, secret-scan]
     runs-on: ubuntu-latest
     steps:
-      - name: Pull latest code
+      - name: Fetch + reset to the chosen ref on the VM
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         env:
           DEPLOY_REF: ${{ inputs.ref }}
@@ -81,9 +110,15 @@ jobs:
           script: |
             set -euo pipefail
             cd "${{ secrets.VM_FRONTEND_PATH }}"
-            ./scripts/deploy.sh pull
-      - name: Build image
-        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+            git fetch --prune
+            git reset --hard "origin/${DEPLOY_REF}"
+
+  deploy-build:
+    name: Deploy · build
+    needs: deploy-pull
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
@@ -92,8 +127,13 @@ jobs:
             set -euo pipefail
             cd "${{ secrets.VM_FRONTEND_PATH }}"
             ./scripts/deploy.sh build
-      - name: Start service
-        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+
+  deploy-up:
+    name: Deploy · up
+    needs: deploy-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
@@ -102,8 +142,13 @@ jobs:
             set -euo pipefail
             cd "${{ secrets.VM_FRONTEND_PATH }}"
             ./scripts/deploy.sh up
-      - name: Health check
-        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+
+  deploy-health:
+    name: Deploy · health
+    needs: deploy-up
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
