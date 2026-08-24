@@ -380,32 +380,32 @@ const SECTIONS = [
 
 const ProtectiaDatelor: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-retro-cream">
       <PageHeroSection
         title={["GDPR"]}
         breadcrumb={[{ label: "Protecția datelor" }]}
       >
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Protecția Datelor
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4 max-w-lg">
+        <p className="text-retro-cream/70 text-base max-w-lg">
           Politica de confidențialitate privind prelucrarea datelor cu caracter
           personal a Asociației Club Sportiv EduSport.
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-white py-16 md:py-24">
+      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
+            <p className="text-eyebrow font-bold uppercase text-rust">
               GDPR
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 max-w-xl">
+              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] max-w-xl">
                 Politica de Confidențialitate
               </h2>
-              <p className="text-sm text-gray-400 font-light md:text-right md:max-w-xs">
+              <p className="text-sm text-navy/50 md:text-right md:max-w-xs">
                 Conform Regulamentului UE 2016/679 (GDPR)
               </p>
             </div>
@@ -415,13 +415,13 @@ const ProtectiaDatelor: React.FC = () => {
           <div className="flex flex-col gap-12 max-w-3xl">
             {SECTIONS.map((section) => (
               <div key={section.number}>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  <span className="text-edusport-blue/40 mr-2">
+                <h3 className="text-lg font-bold text-navy mb-4">
+                  <span className="font-display text-rust mr-2">
                     {section.number}.
                   </span>
                   {section.title}
                 </h3>
-                <div className="text-sm text-gray-600 font-light leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:pl-1 [&_strong]:font-medium [&_strong]:text-gray-700">
+                <div className="text-sm text-navy/70 leading-relaxed [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-5 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-rust [&_strong]:font-bold [&_strong]:text-navy">
                   {section.content}
                 </div>
               </div>
@@ -429,24 +429,19 @@ const ProtectiaDatelor: React.FC = () => {
           </div>
 
           {/* Contact card */}
-          <div className="mt-16 pt-12 border-t border-gray-100">
-            <div
-              className="relative overflow-hidden rounded-3xl px-8 py-10 md:px-14 md:py-12"
-              style={{
-                background:
-                  "linear-gradient(145deg, oklch(0.25 0.12 264) 0%, oklch(0.421 0.2593 264.52) 60%, oklch(0.55 0.18 230) 100%)",
-              }}
-            >
+          <div className="mt-16 pt-12 border-t-[1.5px] border-navy/12">
+            <div className="relative overflow-hidden bg-navy border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] px-8 py-10 md:px-14 md:py-12">
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               {/* Decorative circles */}
-              <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-10 bg-white" />
-              <div className="pointer-events-none absolute -bottom-6 -left-6 w-32 h-32 rounded-full opacity-5 bg-white" />
+              <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-[0.06] bg-mustard" />
+              <div className="pointer-events-none absolute -bottom-6 -left-6 w-32 h-32 rounded-full opacity-[0.05] bg-retro-cream" />
 
               <div className="relative flex flex-col gap-6">
                 <div>
-                  <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-3">
+                  <p className="text-eyebrow font-bold uppercase text-mustard mb-3">
                     Responsabil protecția datelor
                   </p>
-                  <p className="text-white text-base font-light leading-relaxed max-w-xl">
+                  <p className="text-retro-cream text-base leading-relaxed max-w-xl">
                     Pentru orice întrebări legate de prelucrarea datelor cu
                     caracter personal, ne puteți contacta la:
                   </p>
@@ -455,34 +450,34 @@ const ProtectiaDatelor: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href="mailto:edusporttrophy@gmail.com"
-                    className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-sm text-retro-cream/80 hover:text-mustard transition-colors"
                   >
                     <Mail className="w-4 h-4" />
                     edusporttrophy@gmail.com
                   </a>
-                  <span className="hidden sm:block text-white/20">|</span>
-                  <span className="inline-flex items-center gap-2 text-sm text-white/80">
+                  <span className="hidden sm:block text-retro-cream/20">|</span>
+                  <span className="inline-flex items-center gap-2 text-sm text-retro-cream/80">
                     <MapPin className="w-4 h-4 shrink-0" />
                     str. Slt. Stănescu Gheorghe, nr. 1, bl. 213, sc. A, et. 10,
                     ap. 42, sect. 2, București
                   </span>
                 </div>
 
-                <div className="border-t border-white/10 pt-5">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-3">
+                <div className="border-t-[1.5px] border-retro-cream/15 pt-5">
+                  <p className="text-eyebrow font-bold uppercase text-mustard mb-3">
                     Autoritatea de supraveghere
                   </p>
-                  <p className="text-sm text-white/80 font-light leading-relaxed">
+                  <p className="text-sm text-retro-cream/80 leading-relaxed">
                     Autoritatea Națională de Supraveghere a Prelucrării Datelor
                     cu Caracter Personal
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <span className="inline-flex items-center gap-2 text-sm text-white/60">
+                    <span className="inline-flex items-center gap-2 text-sm text-retro-cream/60">
                       <MapPin className="w-4 h-4 shrink-0" />
                       B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București
                     </span>
-                    <span className="hidden sm:block text-white/20">|</span>
-                    <span className="inline-flex items-center gap-2 text-sm text-white/60">
+                    <span className="hidden sm:block text-retro-cream/20">|</span>
+                    <span className="inline-flex items-center gap-2 text-sm text-retro-cream/60">
                       <Phone className="w-4 h-4 shrink-0" />
                       +40.318.059.211
                     </span>
@@ -490,17 +485,17 @@ const ProtectiaDatelor: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <a
                       href="mailto:anspdcp@dataprotection.ro"
-                      className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-retro-cream/60 hover:text-mustard transition-colors"
                     >
                       <Mail className="w-4 h-4" />
                       anspdcp@dataprotection.ro
                     </a>
-                    <span className="hidden sm:block text-white/20">|</span>
+                    <span className="hidden sm:block text-retro-cream/20">|</span>
                     <a
                       href="https://www.dataprotection.ro"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-retro-cream/60 hover:text-mustard transition-colors"
                     >
                       <ExternalLink className="w-4 h-4" />
                       www.dataprotection.ro

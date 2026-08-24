@@ -7,8 +7,8 @@ import React from "react";
 const FullCalendarWrapper = dynamic(() => import("./FullCalendarWrapper"), {
   ssr: false,
   loading: () => (
-    <div className="h-96 flex items-center justify-center bg-gray-50 rounded-xl border border-gray-200">
-      <p className="text-sm text-gray-400">Se încarcă calendarul...</p>
+    <div className="h-96 flex items-center justify-center bg-navy/[0.04] border border-navy/15">
+      <p className="text-sm text-navy/50">Se încarcă calendarul...</p>
     </div>
   ),
 });
@@ -18,6 +18,8 @@ interface FullCalendarClientProps {
   initialDate?: string;
   validRangeStart?: string;
   validRangeEnd?: string;
+  viewModeControl?: React.ReactNode;
+  onDatesChange?: (ymd: string) => void;
 }
 
 const FullCalendarClient: React.FC<FullCalendarClientProps> = (props) => {

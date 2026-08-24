@@ -55,25 +55,25 @@ export default async function Page({
   const search = searchParam ?? "";
 
   return (
-    <div className="min-h-screen bg-gray-50 -mb-24 md:-mb-32 pb-24 md:pb-32">
+    <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["NOUTĂȚI"]}>
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Noutăți
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-retro-cream/70 text-base">
           Rămâneți la curent cu cele mai recente articole, evenimente și
           anunțuri din Școala de Patinaj EduSport.
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10 bg-retro-cream">
         {/* Featured article streams independently — its skeleton holds the
             whole section so the Toolbar below can render immediately. */}
         <Suspense fallback={<FeaturedSectionSkeleton />}>
           <FeaturedAsync />
         </Suspense>
 
-        <Section className="bg-gray-50 pt-12 pb-40 md:pt-16 md:pb-56">
+        <Section className="bg-retro-cream border-t-[1.5px] border-navy/15 pt-12 pb-24 md:pt-16 md:pb-32">
           {/* Toolbar is interactive immediately — no data dependency. */}
           <Toolbar currentCategory={category} currentSearch={search} />
 

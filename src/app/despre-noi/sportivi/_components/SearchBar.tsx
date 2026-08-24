@@ -72,20 +72,20 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
 
   return (
     <div className="relative mx-auto mt-8 w-full max-w-md">
-      <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy/40" />
       <input
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Caută sportiv după nume…"
-        className="w-full rounded-full border border-gray-200 bg-white py-3 pl-10 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-edusport-blue focus:outline-none focus:ring-2 focus:ring-edusport-blue/20"
+        className="w-full border-[1.5px] border-navy bg-retro-cream py-3 pl-10 pr-10 text-sm text-navy placeholder:text-navy/40 focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/25"
       />
       {value && (
         <button
           type="button"
           onClick={() => setValue("")}
           aria-label="Șterge căutarea"
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-navy/40 transition-colors hover:bg-navy/10 hover:text-rust"
         >
           <X className="h-3.5 w-3.5" />
         </button>

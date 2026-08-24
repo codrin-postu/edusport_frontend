@@ -165,7 +165,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
     <section className="py-16 bg-white">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center font-['League_Spartan']">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center font-display">
             Calendar Sezon 2025-2026
           </h2>
           <Table>

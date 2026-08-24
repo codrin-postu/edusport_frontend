@@ -1,33 +1,39 @@
 "use client";
 
 import PageHeroSection from "@/components/blocks/page-hero-section";
-import SectionHeader from "@/components/ui/section-header";
 import React from "react";
 import RegistrationForm from "./_RegistrationForm";
 
 const InscrieriView: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["ÎNSCRIERI"]} backgroundImage="/images/courses.png">
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Înscrieri
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4 max-w-md">
+        <p className="text-retro-cream/70 text-base max-w-md">
           Completează formularul de mai jos pentru a înscrie copilul tău la
           cursurile de patinaj artistic EduSport.
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-gray-50">
+      <section className="relative z-10 bg-retro-cream">
         <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
           <div className="max-w-xl mx-auto">
-            <SectionHeader
-              eyebrow="Formular de înscriere"
-              title="Înscrie-ți copilul"
-              description="Completează pașii de mai jos. Vom confirma înscrierea în cel mai scurt timp."
-            />
+            <div className="flex flex-col gap-3">
+              <p className="text-eyebrow font-bold uppercase text-rust">
+                Formular de înscriere
+              </p>
+              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+                Înscrie-ți copilul
+              </h2>
+              <p className="text-sm text-navy/60 leading-relaxed">
+                Completează pașii de mai jos. Vom confirma înscrierea în cel mai
+                scurt timp.
+              </p>
+            </div>
 
-            <div className="mt-10 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[480px]">
+            <div className="mt-10 bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] p-6 md:p-8 min-h-[480px]">
               <RegistrationForm />
             </div>
           </div>

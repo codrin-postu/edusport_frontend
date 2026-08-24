@@ -1,0 +1,18 @@
+# EduSport - Școala de Patinaj
+
+> Școală de patinaj artistic din București (Patinoar AFI Cotroceni) pentru copii și adulți. Oferim cursuri de grup și lecții private, organizăm evenimente și competiții, și prezentăm profilurile sportivilor clubului.
+
+## Pagini principale
+- [Acasă](https://scoaladepatinaj.com/): prezentarea clubului și a școlii de patinaj.
+- [Cursuri de patinaj](https://scoaladepatinaj.com/cursuri): cursuri pentru copii și adulți, tarife și înscriere.
+- [Program cursuri](https://scoaladepatinaj.com/cursuri/program): orarul săptămânal.
+- [Evenimente și competiții](https://scoaladepatinaj.com/cursuri/evenimente): spectacole, concursuri, evenimente.
+- [Regulament cursuri](https://scoaladepatinaj.com/cursuri/regulament): regulile școlii de patinaj.
+- [Înscriere](https://scoaladepatinaj.com/inscrieri): formular de înscriere la cursuri.
+- [Sportivi](https://scoaladepatinaj.com/despre-noi/sportivi): profilurile sportivilor și rezultatele lor.
+- [Despre noi](https://scoaladepatinaj.com/despre-noi): istoricul și echipa clubului.
+- [Realizări](https://scoaladepatinaj.com/despre-noi/realizari): premii și rezultate la competiții.
+- [Noutăți](https://scoaladepatinaj.com/noutati): articole și anunțuri.
+- [Parteneri](https://scoaladepatinaj.com/parteneri): sponsori și colaborări; sponsorizare și evenimente.
+- [Voluntariat](https://scoaladepatinaj.com/voluntariat): cum poți ajuta ca voluntar.
+- [Contact](https://scoaladepatinaj.com/contact): date de contact și formular.

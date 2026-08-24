@@ -31,7 +31,7 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
 
       {/* Child */}
       <div className="flex flex-col gap-3 mb-6">
-        <p className="text-xs font-semibold text-edusport-blue uppercase tracking-widest">
+        <p className="text-eyebrow font-bold uppercase text-rust">
           Date copil
         </p>
       </div>
@@ -89,7 +89,7 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
 
       {/* Parent */}
       <div className="flex flex-col gap-3 mt-10 mb-6">
-        <p className="text-xs font-semibold text-edusport-blue uppercase tracking-widest">
+        <p className="text-eyebrow font-bold uppercase text-rust">
           Date părinte / tutore
         </p>
       </div>

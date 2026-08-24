@@ -42,8 +42,8 @@ export const Select: React.FC<SelectProps> = ({
   const selected = items.find((o) => o.value === value);
   const triggerSizeClasses =
     size === "compact"
-      ? "bg-gray-50 px-3 py-2.5 text-sm"
-      : "bg-white px-4 py-3 text-sm";
+      ? "bg-retro-cream px-3 py-2.5 text-sm"
+      : "bg-retro-cream px-4 py-3 text-sm";
 
   return (
     <>
@@ -65,11 +65,11 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,
-              "border border-gray-200 outline-none transition-all",
-              "focus:border-edusport-blue focus:ring-1 focus:ring-edusport-blue/20",
-              "data-[state=open]:border-edusport-blue data-[state=open]:ring-1 data-[state=open]:ring-edusport-blue/20",
-              !selected && "text-gray-400",
-              selected && "text-gray-900",
+              "border-[1.5px] border-navy outline-none transition-all",
+              "focus:border-rust focus:ring-2 focus:ring-rust/25",
+              "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust/25",
+              !selected && "text-navy/40",
+              selected && "text-navy",
               disabled && "opacity-60 cursor-not-allowed",
               className,
             )}
@@ -79,8 +79,8 @@ export const Select: React.FC<SelectProps> = ({
             </span>
             <ChevronDown
               className={cn(
-                "w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200",
-                open && "rotate-180 text-edusport-blue",
+                "w-4 h-4 text-navy/50 shrink-0 transition-transform duration-200",
+                open && "rotate-180 text-rust",
               )}
             />
           </button>
@@ -92,7 +92,7 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "z-50 max-h-72 overflow-auto p-1",
               "min-w-[var(--radix-dropdown-menu-trigger-width)]",
-              "rounded-xl border border-gray-200 bg-white shadow-lg",
+              "border-[1.5px] border-navy bg-retro-cream shadow-[6px_6px_0_rgb(14_26_60_/_0.16)]",
               "data-[state=open]:animate-in data-[state=closed]:animate-out",
               "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
               "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -108,10 +108,10 @@ export const Select: React.FC<SelectProps> = ({
                   key={opt.value}
                   value={opt.value}
                   className={cn(
-                    "relative flex items-center justify-between gap-2 px-3 py-2 text-sm rounded-md",
-                    "cursor-pointer select-none outline-none transition-colors",
-                    "data-[highlighted]:bg-edusport-blue/5 data-[highlighted]:text-edusport-blue",
-                    "data-[state=checked]:text-edusport-blue data-[state=checked]:font-medium",
+                    "relative flex items-center justify-between gap-2 px-3 py-2 text-sm",
+                    "cursor-pointer select-none outline-none transition-colors text-navy/80",
+                    "data-[highlighted]:bg-navy/[0.06] data-[highlighted]:text-navy",
+                    "data-[state=checked]:text-rust data-[state=checked]:font-semibold",
                   )}
                 >
                   <span className="flex-1 truncate">{opt.label}</span>

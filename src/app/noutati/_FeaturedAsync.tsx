@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
+import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
+import { WarmStripe } from "@/components/ui/warm-stripe";
 import { fetchArticlesPaginated } from "@/lib/strapi-article";
 import { CATEGORY_LABELS } from "./_data";
 import { formatDate, mapStrapiArticle } from "./_helpers";
@@ -25,43 +25,44 @@ export default async function FeaturedAsync() {
         eyebrow="Cel mai recent articol"
         title="Noutăți"
         className="mb-10"
+        eyebrowClassName="text-eyebrow font-bold uppercase text-rust"
+        titleClassName="font-display text-display-sm font-extrabold text-navy tracking-[-0.4px]"
       />
 
       <a
         href={`/noutati/${featured.slug}`}
         className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center outline-none"
       >
-        <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden bg-gray-100">
-          <Image
+        <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-[1.5px] border-navy bg-navy/[0.04]">
+          <ArticleImage
             src={featured.coverImage}
             alt={featured.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            imgClassName="transition-transform duration-500 group-hover:scale-105"
           />
+          <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-10" />
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-medium text-edusport-blue">
+          <div className="flex flex-wrap items-center gap-2 text-[11.5px]">
+            <span className="font-bold uppercase tracking-[0.04em] text-rust">
               {CATEGORY_LABELS[featured.category]}
             </span>
-            <span className="text-gray-300">·</span>
-            <span className="text-xs text-gray-400 font-light">
+            <span className="text-navy/30">·</span>
+            <span className="text-navy/45">
               {formatDate(featured.date)}
             </span>
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 leading-snug group-hover:text-edusport-blue transition-colors">
+          <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] group-hover:text-rust transition-colors">
             {featured.title}
           </h2>
 
-          <p className="text-gray-500 text-base font-light leading-relaxed border-t border-gray-100 pt-4">
+          <p className="text-navy/[0.72] text-base leading-relaxed border-t-[1.5px] border-navy/12 pt-4">
             {featured.description}
           </p>
 
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue group-hover:gap-3 transition-all w-fit">
+          <span className="link-underline-rust text-rust font-semibold text-sm w-fit">
             Citește mai mult
-            <ArrowRight className="w-4 h-4" />
           </span>
         </div>
       </a>

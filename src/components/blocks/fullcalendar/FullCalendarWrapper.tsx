@@ -4,6 +4,8 @@ import React, { useState, useRef, useCallback, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import type { EventInput } from "@fullcalendar/core";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
@@ -15,6 +17,15 @@ interface FullCalendarWrapperProps {
   initialDate?: string;
   validRangeStart?: string;
   validRangeEnd?: string;
+  viewModeControl?: React.ReactNode;
+  onDatesChange?: (ymd: string) => void;
+}
+
+// Standardized event date label from the event start (backend-driven).
+// allDay events carry no time, so only the date shows — nothing fabricated.
+function formatEventDate(date: Date | null): string | undefined {
+  if (!date) return undefined;
+  return date.toLocaleDateString("ro-RO", { day: "numeric", month: "long" });
 }
 
 function clampToRange(validStart: string, validEnd: string): string {
@@ -30,6 +41,8 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
   initialDate,
   validRangeStart = "2025-10-01",
   validRangeEnd = "2026-06-01",
+  viewModeControl,
+  onDatesChange,
 }) => {
   const resolvedInitialDate = initialDate ?? clampToRange(validRangeStart, validRangeEnd);
   const calRef = useRef<FullCalendar>(null);
@@ -60,8 +73,14 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
       const cur = toYearMonth(currentStart);
       setCanPrev(cur > parseYearMonth(validRangeStart));
       setCanNext(cur < parseYearMonth(validRangeEnd) - 1);
+
+      // Report the visible month so the week view lands on the same period.
+      const y = currentStart.getFullYear();
+      const m = String(currentStart.getMonth() + 1).padStart(2, "0");
+      const d = String(currentStart.getDate()).padStart(2, "0");
+      onDatesChange?.(`${y}-${m}-${d}`);
     },
-    [validRangeStart, validRangeEnd],
+    [validRangeStart, validRangeEnd, onDatesChange],
   );
 
   // datesSet fires after every navigation and on mount -
@@ -82,6 +101,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
         onToday={handleToday}
         canPrev={canPrev}
         canNext={canNext}
+        viewModeControl={viewModeControl}
       />
       <FullCalendar
         ref={calRef}
@@ -93,6 +113,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
         headerToolbar={false}
         locale="ro"
         firstDay={1}
+        dayHeaderContent={(arg) => format(arg.date, "EEEEEE", { locale: ro })}
         height="auto"
         fixedWeekCount={false}
         showNonCurrentDates={false}
@@ -101,12 +122,13 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
         eventContent={(info) => {
           const type = info.event.extendedProps?.type as string | undefined;
           const description = info.event.extendedProps?.description as string | null | undefined;
+          const dateLabel = formatEventDate(info.event.start);
           if (type === "curs" || type === "next") {
-            return <CursEvent title={info.event.title} description={description ?? undefined} />;
+            return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
           }
           // Special events with a description get a hover tooltip (no regulament link)
           if (description && (type === "holiday" || type === "vacation" || type === "eveniment" || type === "concurs" || type === "anulat" || type === "curs-special")) {
-            return <SpecialEventWithTooltip title={info.event.title} description={description} />;
+            return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description} />;
           }
           return true;
         }}
@@ -134,6 +156,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
 
             const sheetEvents: CursEventInfo[] = dayEvents.map((event) => ({
               title: event.title,
+              dateLabel: formatEventDate(event.start),
               description: (event.extendedProps?.description as string | null) ?? undefined,
               type: (event.extendedProps?.type as string) ?? "curs",
             }));

@@ -65,10 +65,10 @@ const DateStack: React.FC<DateStackProps> = ({ date, className }) => {
       >
         {day}
       </span>
-      <span className="text-[10px] font-bold tracking-widest uppercase text-edusport-blue/70 mt-1">
+      <span className="text-3xs font-bold tracking-widest uppercase text-edusport-blue/70 mt-1">
         {mon}
       </span>
-      <span className="text-[10px] font-bold tracking-widest text-edusport-blue/40">
+      <span className="text-3xs font-bold tracking-widest text-edusport-blue/40">
         {year}
       </span>
     </div>
@@ -125,7 +125,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
           )}
           {/* Category badge */}
           {category && (
-            <span className="absolute top-3 left-3 bg-edusport-blue text-white text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded-full z-10">
+            <span className="absolute top-3 left-3 bg-edusport-blue text-white text-3xs font-bold tracking-widest uppercase px-2 py-1 rounded-full z-10">
               {CATEGORY_LABELS[category]}
             </span>
           )}
@@ -188,7 +188,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
         {/* Meta row */}
         <div className="flex items-center gap-1.5 flex-wrap">
           {category && (
-            <span className="text-[9px] font-bold tracking-[0.12em] uppercase text-edusport-blue">
+            <span className="text-3xs font-bold tracking-[0.12em] uppercase text-edusport-blue">
               {CATEGORY_LABELS[category]}
             </span>
           )}

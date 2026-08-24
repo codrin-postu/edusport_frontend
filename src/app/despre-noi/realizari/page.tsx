@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { parsePlacement } from "@/lib/strapi-sportsperson";
 import { resolveAssetUrl } from "@/utils/markdown";
 import AccomplishmentsPage from "./_View";
 import type { Season, GalleryImage } from "./_data";
@@ -28,25 +29,26 @@ interface RealizariPageCms {
   galleryImages?: { url: string; alternativeText?: string | null }[] | null;
 }
 
+interface StrapiParticipantJSON {
+  documentId?: string;
+  name?: string;
+  category?: string | null;
+  placement?: number | null;
+  score?: number | null;
+}
+
 interface StrapiCompetition {
   id: number;
   name: string;
-  date: string; // ISO date string from Strapi
+  date: string;
   location?: string | null;
   level?: "national" | "international" | null;
   season: string;
-  participants?: {
-    athleteName: string;
-    category?: string | null;
-    placement?: string | number | null;
-    score?: number | null;
-    /** Linked sportsperson — only populated for club athletes. Null/missing
-     *  means it's an external participant (other clubs) and we keep the
-     *  athleteName string as the display value. */
-    sportsperson?: {
-      slug: string;
-      showPublicPage: boolean;
-    } | null;
+  participantData?: StrapiParticipantJSON[] | null;
+  sportspeople?: {
+    documentId: string;
+    slug: string;
+    showPublicPage: boolean;
   }[] | null;
 }
 
@@ -64,30 +66,29 @@ function groupIntoSeasons(competitions: StrapiCompetition[]): Season[] {
   for (const comp of competitions) {
     const key = comp.season;
     if (!map.has(key)) {
-      map.set(key, {
-        id: key,
-        label: `Sezon ${key}`,
-        competitions: [],
-      });
+      map.set(key, { id: key, label: `Sezon ${key}`, competitions: [] });
     }
+    // Build a lookup of documentId → { slug, showPublicPage } from the relation
+    const spMap = new Map(
+      (comp.sportspeople ?? []).map((sp) => [sp.documentId, sp]),
+    );
     map.get(key)!.competitions.push({
       name: comp.name,
       date: formatDate(comp.date),
       location: comp.location ?? "",
       level: comp.level ?? "national",
-      results: (comp.participants ?? []).map((p) => ({
-        athlete: p.athleteName,
-        // Only expose the slug when the linked profile is public — keeps
-        // private/hidden sportspeople from leaking via the realizari page.
-        athleteSlug:
-          p.sportsperson?.showPublicPage ? p.sportsperson.slug : undefined,
-        category: p.category ?? "",
-        placement: Number(p.placement) || 99,
-        score: p.score ?? 0,
-      })),
+      results: (comp.participantData ?? []).map((p) => {
+        const sp = p.documentId ? spMap.get(p.documentId) : undefined;
+        return {
+          athlete: p.name ?? "",
+          athleteSlug: sp?.showPublicPage ? sp.slug : undefined,
+          category: p.category ?? "",
+          placement: parsePlacement(p.placement) ?? 99,
+          score: p.score ?? 0,
+        };
+      }),
     });
   }
-  // Sort seasons descending (newest first)
   return Array.from(map.values()).sort((a, b) => b.id.localeCompare(a.id));
 }
 
@@ -104,7 +105,18 @@ export default async function Page() {
     ),
     fetchStrapi<StrapiCompetition[]>(
       "competitions",
-      "populate[participants][populate][sportsperson][fields][0]=slug&populate[participants][populate][sportsperson][fields][1]=showPublicPage&sort=date:desc",
+      new URLSearchParams({
+        "sort[0]": "date:desc",
+        "fields[0]": "name",
+        "fields[1]": "date",
+        "fields[2]": "location",
+        "fields[3]": "level",
+        "fields[4]": "season",
+        "fields[5]": "participantData",
+        "populate[sportspeople][fields][0]": "documentId",
+        "populate[sportspeople][fields][1]": "slug",
+        "populate[sportspeople][fields][2]": "showPublicPage",
+      }).toString(),
     ).catch(() => [] as StrapiCompetition[]),
   ]);
 

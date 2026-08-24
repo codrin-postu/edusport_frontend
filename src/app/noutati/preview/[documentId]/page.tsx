@@ -20,6 +20,12 @@ import ArticleDetailPage from "../../[slug]/_View";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+// Draft-preview route: never index, even if draft mode were ever enabled for a
+// crawler. (Direct hits already 404 without the draft cookie.)
+export const metadata = {
+  robots: { index: false, follow: false },
+};
+
 interface Props {
   params: Promise<{ documentId: string }>;
   searchParams: Promise<{ status?: string }>;

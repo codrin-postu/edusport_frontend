@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 
 interface Trainer {
@@ -21,100 +20,140 @@ interface Props {
 
 const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, members }) => {
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-retro-cream")}>
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["ECHIPA"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi", href: "/despre-noi" },
           { label: "Echipă" },
         ]}
       >
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           {bannerTitle}
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-retro-cream/70 text-base">
           {bannerSubtitle}
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-white py-16 md:py-20">
+      <section className="relative z-10 bg-retro-cream py-16 md:py-20">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Introduction */}
           <div className="max-w-2xl mb-14">
-            <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-4">
+            <p className="text-eyebrow font-bold uppercase text-rust mb-4">
               Antrenori & Instructori
             </p>
-            <p className="text-gray-700 text-base font-light leading-relaxed">
+            <p className="text-navy/[0.72] text-base leading-relaxed">
               {introText}
             </p>
           </div>
 
           {members.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="text-lg font-semibold text-gray-300">Echipa nu este disponibilă momentan</p>
-              <p className="text-sm text-gray-400 mt-2 font-light">Reveniți în curând.</p>
+              <p className="font-display text-display-sm font-extrabold text-navy/25">Echipa nu este disponibilă momentan</p>
+              <p className="text-sm text-navy/50 mt-2">Reveniți în curând.</p>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {members.map((trainer) => (
-                <div key={trainer.name} className="flex flex-col gap-4 bg-gray-50 rounded-2xl p-5">
-                  {/* Avatar row */}
-                  <div className="flex items-center gap-3">
-                    {trainer.image ? (
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-200 shrink-0">
-                        <Image
-                          src={trainer.image}
-                          alt={trainer.name}
-                          fill
-                          className="object-cover object-top"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-edusport-blue/10 flex items-center justify-center shrink-0">
-                        <span className="text-sm font-semibold text-edusport-blue/40 select-none">
-                          {trainer.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </span>
-                      </div>
-                    )}
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-900 leading-tight">
+              {members.map((trainer, i) => {
+                // First member (lowest `order`) is the lead trainer — the only
+                // card with the navy header band; assistants get a cream header.
+                const featured = i === 0;
+                const initials = trainer.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("");
+                return (
+                  <div
+                    key={trainer.name}
+                    className="flex flex-col bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+                  >
+                    {/* Header band — avatar + name centered/stacked */}
+                    <div
+                      className={cn(
+                        "relative flex flex-col items-center text-center px-4 pt-4 pb-3",
+                        featured
+                          ? "bg-navy"
+                          : "bg-retro-cream border-b-[1.5px] border-navy/15",
+                      )}
+                    >
+                      {featured && (
+                        <span className="absolute inset-x-0 bottom-0 h-1 bg-rust" aria-hidden />
+                      )}
+                      {trainer.image ? (
+                        <div
+                          className={cn(
+                            "relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 mb-2",
+                            featured ? "border-mustard" : "border-navy",
+                          )}
+                        >
+                          <Image
+                            src={trainer.image}
+                            alt={trainer.name}
+                            fill
+                            className="object-cover object-top"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className={cn(
+                            "w-14 h-14 rounded-full flex items-center justify-center shrink-0 border-2 mb-2",
+                            featured
+                              ? "border-mustard bg-navy/60 text-mustard"
+                              : "border-navy bg-navy text-retro-cream",
+                          )}
+                        >
+                          <span className="font-display text-base font-extrabold select-none">
+                            {initials}
+                          </span>
+                        </div>
+                      )}
+                      <h2
+                        className={cn(
+                          "font-display text-[15px] font-extrabold leading-tight",
+                          featured ? "text-retro-cream" : "text-navy",
+                        )}
+                      >
                         {trainer.name}
                       </h2>
-                      <p className="text-xs text-edusport-blue font-medium mt-0.5">
+                      <p
+                        className={cn(
+                          "text-[11px] font-bold uppercase tracking-[0.06em] mt-0.5",
+                          featured ? "text-mustard" : "text-rust",
+                        )}
+                      >
                         {trainer.role}
                       </p>
                     </div>
-                  </div>
 
-                  {/* Divider */}
-                  <div className="border-t border-gray-200" />
-
-                  {/* Bio */}
-                  <p className="text-xs text-gray-500 font-light leading-relaxed">
-                    {trainer.bio}
-                  </p>
-
-                  {/* Groups */}
-                  {trainer.teaches.length > 0 && (
-                    <div className="flex flex-col gap-1">
-                      <p className="text-xs text-gray-400 font-light uppercase tracking-wider">Predă la</p>
-                      <ul className="flex flex-col gap-0.5">
-                        {trainer.teaches.map((group) => (
-                          <li key={group} className="flex items-center gap-2 text-xs text-gray-500 font-light">
-                            <ChevronRight className="w-3 h-3 text-edusport-blue/40 shrink-0" />
-                            {group}
-                          </li>
-                        ))}
-                      </ul>
+                    {/* Body */}
+                    <div className="px-4 pt-3 pb-4 flex flex-col gap-3">
+                      <p className="text-xs text-navy/60 leading-relaxed">
+                        {trainer.bio}
+                      </p>
+                      {trainer.teaches.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-navy/45 mb-1">
+                            Predă la
+                          </p>
+                          <ul className="flex flex-col gap-0.5">
+                            {trainer.teaches.map((group) => (
+                              <li
+                                key={group}
+                                className="relative pl-4 text-xs text-navy/65 leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-rust"
+                              >
+                                {group}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

@@ -34,9 +34,13 @@ function SlidingPillToggle<T extends string>({
     const buttons = container.querySelectorAll<HTMLButtonElement>("button");
     const activeBtn = buttons[activeIndex];
     if (!activeBtn) return;
+    // Use fractional rects (not offsetWidth/offsetLeft) so the indicator covers
+    // the button exactly — integer truncation left a ~1px cream sliver.
+    const cRect = container.getBoundingClientRect();
+    const bRect = activeBtn.getBoundingClientRect();
     setIndicatorStyle({
-      width: activeBtn.offsetWidth,
-      transform: `translateX(${activeBtn.offsetLeft}px)`,
+      width: bRect.width,
+      transform: `translateX(${bRect.left - cRect.left}px)`,
     });
     setReady(true);
   }, [value, options]);
@@ -47,15 +51,15 @@ function SlidingPillToggle<T extends string>({
     <div
       aria-disabled={disabled || undefined}
       className={cn(
-        "relative inline-flex rounded-full border border-gray-200 bg-white p-1 shadow-sm",
+        "relative inline-flex border-[1.5px] border-navy bg-retro-cream",
         disabled && "pointer-events-none opacity-60",
         className,
       )}
     >
-      {/* Sliding indicator */}
+      {/* Sliding indicator — snappy tight ease */}
       <span
         aria-hidden
-        className="pointer-events-none absolute top-1 bottom-1 left-1 rounded-full bg-edusport-blue transition-all duration-200 ease-in-out"
+        className="pointer-events-none absolute top-0 bottom-0 left-0 bg-navy transition-all duration-200 ease-[cubic-bezier(0.85,0,0.15,1)]"
         style={indicatorStyle}
       />
 
@@ -66,12 +70,12 @@ function SlidingPillToggle<T extends string>({
             key={option.value}
             onClick={() => handleChange(option.value)}
             className={cn(
-              "relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full select-none",
+              "relative z-10 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.04em] transition-colors duration-200 select-none",
               !ready
-                ? "text-gray-500"
+                ? "text-navy"
                 : value === option.value
-                  ? "text-white"
-                  : "text-gray-500 hover:text-gray-700",
+                  ? "text-retro-cream"
+                  : "text-navy/70 hover:text-navy",
             )}
           >
             {option.label}

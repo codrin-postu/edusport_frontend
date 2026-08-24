@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import {
@@ -8,16 +8,42 @@ import {
   fetchCompetitionsForAthletes,
   fetchPublicSportspeoplePage,
   fetchSpotlightSportsperson,
-  flattenDistinctCompetitions,
   type SportspersonCompetition,
   type SportspersonStats,
   type StrapiSportsperson,
 } from "@/lib/strapi-sportsperson";
-import { EditorialTicker } from "./_components/EditorialTicker";
 import { Pagination } from "@/components/Pagination";
 import { SearchBar } from "./_components/SearchBar";
-import { SportspersonCard } from "./_components/SportspersonCard";
 import { Spotlight } from "./_components/Spotlight";
+
+/** One numeric stat in a roster row. */
+function RosterStat({
+  value,
+  label,
+  accent = false,
+  className,
+}: {
+  value: string;
+  label: string;
+  accent?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn("flex flex-col items-end shrink-0", className)}>
+      <span
+        className={cn(
+          "font-display text-[17px] font-extrabold leading-none tabular-nums",
+          accent ? "text-rust" : "text-navy",
+        )}
+      >
+        {value}
+      </span>
+      <span className="mt-0.5 text-[8px] font-bold uppercase tracking-[0.12em] text-navy/50">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 // Reads `searchParams.page` + `searchParams.search`, so the page must be
 // rendered dynamically per request — can't be statically pre-rendered.
@@ -106,29 +132,21 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
     );
   }
 
-  const distinctCompetitions = flattenDistinctCompetitions(competitionsByAthlete);
-
-  // Ticker rows — most recent distinct competition names. EditorialTicker
-  // hides itself when items=[].
-  const competitionNamesTicker = Array.from(
-    new Set(distinctCompetitions.map((c) => c.name)),
-  ).slice(0, 8);
-
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-retro-cream")}>
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["SPORTIVI"]}
-        variant="purple"
+        variant="blue"
         breadcrumb={[
           { label: "Despre noi", href: "/despre-noi" },
           { label: "Sportivi" },
         ]}
       >
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Sportivii noștri
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-retro-cream/70 text-base">
           Sportivii de performanță ai clubului — profil, istoric de competiții
           și medalii câștigate la concursuri naționale și internaționale.
         </p>
@@ -136,28 +154,18 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
 
       {/* Empty state — render only the hero + a friendly note */}
       {totalAthletes === 0 ? (
-        <section className="relative z-10 bg-white py-20">
+        <section className="relative z-10 bg-retro-cream py-20">
           <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 text-center">
-            <p className="text-lg font-semibold text-gray-300">
+            <p className="font-display text-display-sm font-extrabold text-navy/25">
               Niciun profil disponibil momentan
             </p>
-            <p className="mt-2 text-sm font-light text-gray-400">
+            <p className="mt-2 text-sm text-navy/50">
               Reveniți în curând.
             </p>
           </div>
         </section>
       ) : (
         <div className="relative z-10">
-          {/* BLACK TICKER — distinct competition names, sits between the
-              hero and the spotlight as a hard horizontal break. */}
-          {competitionNamesTicker.length > 0 && (
-            <EditorialTicker
-              items={competitionNamesTicker}
-              variant="black"
-              durationSec={42}
-            />
-          )}
-
           {/* SPOTLIGHT — pinned on every page so the featured athlete
               stays visible while the grid below paginates. Hidden when
               the user has typed a search query (it'd just compete with
@@ -180,13 +188,13 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               skipping the hero. */}
           <section
             id="sportivi-grid"
-            className="scroll-mt-24 bg-white px-6 py-16 md:px-10 md:py-20"
+            className="scroll-mt-24 bg-retro-cream px-4 py-16 md:px-8 lg:px-12 md:py-20"
           >
             <div className="mx-auto max-w-content text-center">
-              <h2 className="text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight text-gray-900">
+              <h2 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-navy">
                 {isSearching ? "Rezultate căutare" : "Toți sportivii"}
               </h2>
-              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-gray-400">
+              <div className="mt-3 text-2xs font-bold uppercase tracking-[0.32em] text-rust">
                 {isSearching ? (
                   <>
                     {totalAthletes} {totalAthletes === 1 ? "rezultat" : "rezultate"} pentru
@@ -207,24 +215,74 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
 
             {gridData.length === 0 ? (
               <div className="mx-auto mt-10 max-w-md py-12 text-center">
-                <p className="text-base font-semibold text-gray-500">
+                <p className="text-base font-semibold text-navy/50">
                   Niciun sportiv găsit.
                 </p>
                 {isSearching && (
-                  <p className="mt-2 text-sm font-light text-gray-400">
+                  <p className="mt-2 text-sm text-navy/40">
                     Încearcă alt nume sau șterge filtrul.
                   </p>
                 )}
               </div>
             ) : (
-              <div className="mx-auto mt-10 grid max-w-content grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-                {gridData.map((sp) => (
-                  <SportspersonCard
-                    key={sp.documentId}
-                    sportsperson={sp}
-                    stats={statsByAthlete.get(sp.documentId)!}
-                  />
-                ))}
+              <div className="mx-auto mt-10 max-w-3xl border-y-[1.5px] border-navy text-left">
+                {gridData.map((sp, i) => {
+                  const st = statsByAthlete.get(sp.documentId)!;
+                  const medalTotal =
+                    st.goldCount + st.silverCount + st.bronzeCount;
+                  const rank = (currentPage - 1) * PAGE_SIZE + i + 1;
+                  return (
+                    <Link
+                      key={sp.documentId}
+                      href={`/despre-noi/sportivi/${sp.slug}`}
+                      className="group relative flex items-center gap-4 sm:gap-6 px-3 sm:px-4 py-4 border-b border-navy/12 last:border-b-0 transition-colors hover:bg-navy/[0.035]"
+                    >
+                      <span
+                        aria-hidden
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-rust opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                      <span
+                        aria-hidden
+                        className="font-display font-black text-[26px] sm:text-[30px] leading-none w-9 sm:w-11 text-center shrink-0 tabular-nums text-navy/[0.16] group-hover:text-rust transition-colors"
+                      >
+                        {String(rank).padStart(2, "0")}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-base font-bold tracking-[-0.2px] text-navy group-hover:text-rust transition-colors truncate">
+                          {sp.name}
+                        </div>
+                        {sp.activeSince && (
+                          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-navy/45">
+                            Membru din {sp.activeSince.slice(0, 4)}
+                          </div>
+                        )}
+                      </div>
+                      <div className="ml-auto flex items-center gap-4 sm:gap-6">
+                        <RosterStat
+                          value={String(st.totalCompetitions).padStart(2, "0")}
+                          label="Comp."
+                          accent
+                          className="w-12"
+                        />
+                        <RosterStat
+                          value={String(medalTotal).padStart(2, "0")}
+                          label="Medalii"
+                          className="w-12"
+                        />
+                        <RosterStat
+                          value={
+                            st.bestScore !== null
+                              ? st.bestScore.toFixed(2)
+                              : "—"
+                          }
+                          label="Best"
+                          className="hidden sm:flex w-14"
+                        />
+                        <ChevronRight className="w-4 h-4 shrink-0 text-navy/40 group-hover:text-rust transition-colors" />
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -241,22 +299,21 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               AboutSection / evenimente cards: small eyebrow + short
               statement on one side, a text link with an arrow on the
               other. Reads like a footnote, not a parallel headline. */}
-          <section className="border-t border-gray-100 bg-white px-6 py-12 md:px-10 md:py-14">
+          <section className="border-t-[1.5px] border-navy/12 bg-retro-cream px-4 py-12 md:px-8 lg:px-12 md:py-14">
             <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.32em] text-edusport-blue/60">
+                <div className="mb-1.5 text-eyebrow font-bold uppercase text-rust">
                   Mai departe
                 </div>
-                <p className="text-base md:text-lg font-medium text-gray-900">
+                <p className="text-base md:text-lg font-semibold text-navy">
                   Vezi toate competițiile clubului și rezultatele complete.
                 </p>
               </div>
               <Link
                 href="/despre-noi/realizari"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue transition-all hover:gap-3 hover:text-edusport-blue/70"
+                className="link-underline-rust text-sm font-semibold text-rust"
               >
                 Toate competițiile
-                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </section>

@@ -1,3 +1,5 @@
+import { SITE_URL, SITE_NAME } from "@/lib/site";
+
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
@@ -15,19 +17,25 @@ interface OrganizationJsonLdProps {
 }
 
 export function OrganizationJsonLd({ telephone, email, sameAs, image }: OrganizationJsonLdProps = {}) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app";
+  // Logo defaults to the app-root OG image so search/AI engines always have a
+  // brand image, even before a dedicated logo asset exists.
+  const logo = image ?? `${SITE_URL}/opengraph-image`;
   return (
     <JsonLd
       data={{
         "@context": "https://schema.org",
         "@type": "SportsClub",
-        name: "EduSport - Școala de Patinaj",
+        name: SITE_NAME,
         description:
           "Școală de patinaj artistic din București pentru copii și adulți.",
-        url: siteUrl,
+        url: SITE_URL,
         sport: "Patinaj artistic",
+        priceRange: "$$",
+        logo,
         address: {
           "@type": "PostalAddress",
+          // TODO: add streetAddress + postalCode + geo + openingHours when
+          // the club provides them (bigger local-SEO win).
           addressLocality: "București",
           addressCountry: "RO",
         },

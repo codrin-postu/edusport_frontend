@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { fetchArticles } from "@/lib/strapi-article";
+import { fetchPublicSportspeoplePage } from "@/lib/strapi-sportsperson";
+import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://edusport.vercel.app";
+  const siteUrl = SITE_URL;
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -16,6 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/despre-noi/echipa`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
     { url: `${siteUrl}/despre-noi`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${siteUrl}/despre-noi/realizari`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${siteUrl}/despre-noi/sportivi`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.6 },
+    { url: `${siteUrl}/voluntariat`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
+    { url: `${siteUrl}/parteneri`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/protectia-datelor`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
@@ -36,5 +41,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If Strapi is unavailable, return only static routes
   }
 
-  return [...staticRoutes, ...articleRoutes];
+  // Dynamic sportsperson profile pages (public only)
+  let sportivaRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const { data } = await fetchPublicSportspeoplePage({ page: 1, pageSize: 100 });
+    sportivaRoutes = data.map((sp) => ({
+      url: `${siteUrl}/despre-noi/sportivi/${sp.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }));
+  } catch {
+    // Strapi unavailable — skip profile routes
+  }
+
+  return [...staticRoutes, ...articleRoutes, ...sportivaRoutes];
 }

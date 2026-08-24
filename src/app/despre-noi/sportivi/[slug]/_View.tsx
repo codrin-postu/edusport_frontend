@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Activity, ArrowRight, ChevronRight, Heart, MapPin, Target, Users } from "lucide-react";
+import { ChevronRight, MapPin } from "lucide-react";
 import { cn } from "@/utils/cn";
 import {
   computeStats,
@@ -16,20 +16,22 @@ import { strapiMediaUrl } from "@/lib/strapi-article";
 import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
+import SpotlightButton from "@/components/ui/spotlight-button";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
+import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 
 /**
- * Sportsperson profile — editorial layout.
+ * Sportsperson profile — retro editorial layout.
  *
- * Hero is the showpiece: brand-blue band, huge stacked filled+stroked
- * name (Inter 900, ~110px on desktop), photo as inset, meta strip across
- * the top, big "01" rank watermark, and a 4-stat row at the bottom. The
- * rest of the page (Momente de top, Despre, Gallery, Istoric, Outro) is
- * on white so the editorial weight lives only at the top — same pattern
- * we use on the sportivi index.
- *
- * The slanted-ribbon SVG accent (also used on /despre-noi/realizari and
- * the sportivi cards) carries the medal-tier signal across both Momente
- * and Istoric, keeping visual continuity with the rest of the site.
+ * Hero is the showpiece: navy band, huge stacked filled+stroked name
+ * (League Spartan display, ~110px on desktop), photo as inset with the
+ * brand gold→rust→blue gradient, "01" watermark, and a 3-stat row. Right
+ * after it comes "Despre mine" — the athlete's narrative bio (Lora serif
+ * lead). The rest (attribute grid, Programe, Performanțe, Galerie,
+ * Istoric, Outro) sits on cream so the editorial weight lives up top —
+ * same rhythm as the sportivi index, in the shared retro system
+ * (cream / navy / rust / gold, League Spartan display + Lora serif).
  */
 
 interface Props {
@@ -41,6 +43,12 @@ interface Props {
 }
 
 const ISTORIC_PER_PAGE = 5;
+
+/** Shown in "Despre mine" until an editor fills the athlete's bio in
+ *  Strapi. Keeps the section present in the layout (and visible in the
+ *  CMS-driven design) rather than collapsing to nothing. */
+const STORY_PLACEHOLDER =
+  "Biografia sportivului va fi completată în curând. Aici va apărea povestea din spatele rezultatelor — parcursul pe gheață, momentele care au contat și ce îl motivează.";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("ro-RO", {
@@ -91,6 +99,7 @@ const SportspersonView: React.FC<Props> = ({
   const notableResults = pickNotableResults(competitions, 2);
   const tier = topTier(stats);
   const category = mostRecentCategory(competitions);
+  const firstName = sportsperson.name.split(" ")[0];
 
   // Flatten competition history → one row per participation. An athlete
   // can appear multiple times in the same competition (e.g. solo + duet)
@@ -118,68 +127,55 @@ const SportspersonView: React.FC<Props> = ({
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-retro-cream">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Sportivi", url: `${SITE_URL}/despre-noi/sportivi` },
+          {
+            name: sportsperson.name,
+            url: `${SITE_URL}/despre-noi/sportivi/${sportsperson.slug}`,
+          },
+        ]}
+      />
       {/* ─── BREADCRUMB ─── extra top padding to clear the fixed site
           header (other pages either use PageHeroSection which is
           sticky-positioned, or add their own pt clearance — articles use
           pt-8). Without this the bar tucks behind the nav. */}
-      <div className="border-b border-gray-100 px-6 pt-8 pb-4 md:px-10">
-        <nav className="mx-auto flex max-w-content items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
-          <Link
-            href="/despre-noi/sportivi"
-            className="text-gray-500 transition-colors hover:text-gray-700"
-          >
-            Sportivi
-          </Link>
-          <ChevronRight className="h-3 w-3 text-gray-300" />
-          <span className="text-gray-700">{sportsperson.name}</span>
-        </nav>
+      <div className="bg-navy pt-8">
+        <div className="mx-auto w-full max-w-content px-4 py-4 md:px-8 lg:px-12">
+          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-retro-cream/55">
+            <Link
+              href="/despre-noi/sportivi"
+              className="text-retro-cream/80 transition-colors hover:text-gold"
+            >
+              Sportivi
+            </Link>
+            <ChevronRight className="h-3 w-3 shrink-0" />
+            <span className="truncate text-retro-cream sm:max-w-none max-w-[200px]">
+              {sportsperson.name}
+            </span>
+          </nav>
+        </div>
       </div>
 
-      {/* ─── EDITORIAL HERO BAND ─── */}
-      <section className="relative overflow-hidden bg-edusport-blue px-6 py-16 text-white md:px-10 md:py-20">
-        {/* Outlined "01" watermark — uses the athlete's `order` if set */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute right-6 top-3 select-none text-[140px] leading-[0.82] md:text-[220px]"
-          style={{
-            color: "transparent",
-            WebkitTextStroke: "1.5px rgba(255,255,255,0.12)",
-            fontFamily: "var(--font-climate-crisis), sans-serif",
-            fontVariationSettings: "\"YEAR\" 1979",
-          }}
-        >
-          {pad(1)}
-        </div>
-
-        <div className="relative mx-auto max-w-content">
-          <div className="grid items-end gap-10 md:grid-cols-[1.4fr_1fr]">
-            {/* Left: name + description. Category sits as a small eyebrow
-                above the name — replaced the old top meta strip. "Sportiv
-                EduSport" is implied by the section; "Membru din YYYY"
-                still appears as a badge on the photo. */}
+      {/* ─── EDITORIAL HERO BAND (navy) ─── */}
+      <section className="relative overflow-hidden bg-navy pt-4 pb-12 text-retro-cream md:pb-14">
+        <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="grid items-end gap-8 md:grid-cols-[1.4fr_1fr]">
+            {/* Left: category eyebrow + huge stacked name. The narrative
+                bio now lives in its own "Despre mine" section below. */}
             <div>
-              <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.32em] text-[#fbbf24]">
+              <div className="mb-4 text-2xs font-bold uppercase tracking-[0.32em] text-gold">
                 {category}
-                {hasItems(sportsperson.disciplines) && (
-                  <>
-                    <span className="mx-3 text-white/30">|</span>
-                    {sportsperson.disciplines.map((d) => d.name).join(" · ")}
-                  </>
-                )}
               </div>
-              <h1 className="font-black leading-[0.85] tracking-[-0.055em] text-[64px] md:text-[110px]">
+              <h1 className="font-display font-black leading-[0.85] tracking-[-0.055em] text-[56px] md:text-[88px]">
                 <NameStack name={sportsperson.name} />
               </h1>
-              {sportsperson.description && (
-                <p className="mt-7 max-w-[480px] text-[14px] font-light leading-[1.6] text-white/75">
-                  {sportsperson.description}
-                </p>
-              )}
             </div>
 
-            {/* Right: photo inset (with optional "Membru din" badge) */}
-            <div className="relative h-[300px] overflow-hidden rounded-sm bg-gradient-to-br from-[#ffd97a] via-[#ff5050] to-edusport-blue shadow-[0_16px_40px_rgba(0,0,0,0.4)] md:h-[360px]">
+            {/* Right: photo inset with the brand gold→rust→blue gradient
+                (visible as frame / behind photo-less athletes). */}
+            <div className="relative h-[240px] overflow-hidden rounded-sm bg-gradient-to-br from-gold via-rust to-edusport-blue shadow-[0_16px_40px_rgba(0,0,0,0.4)] md:h-[300px]">
               {sportsperson.photo?.url && (
                 <Image
                   src={strapiMediaUrl(sportsperson.photo.url)}
@@ -191,7 +187,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">
+                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -199,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
           </div>
 
           {/* Stats row */}
-          <div className="mt-10 grid grid-cols-1 gap-6 border-t border-white/15 pt-6 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-6 border-t border-retro-cream/15 pt-6 sm:grid-cols-3">
             <HeroStat value={pad(stats.totalCompetitions)} label="Competiții" accent />
             {tier ? (
               <HeroStat value={`${tier.count}×`} label={tier.label} />
@@ -214,68 +210,80 @@ const SportspersonView: React.FC<Props> = ({
         </div>
       </section>
 
-      {/* ─── DESPRE <NAME> ─── */}
+      {/* ─── DESPRE MINE (narrative bio) ─── */}
+      <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
+        <SectionWatermark>DESPRE</SectionWatermark>
+        <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            Despre mine
+          </div>
+          {hasItems(sportsperson.story) ? (
+            <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-navy/85">
+              <StrapiBlocks blocks={sportsperson.story} />
+            </div>
+          ) : (
+            <p
+              className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
+              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+            >
+              {sportsperson.description || STORY_PLACEHOLDER}
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* ─── ATRIBUTE (Despre — moves / hobbies / team / goal) ─── */}
       {(hasItems(sportsperson.favoriteMoves) ||
         hasItems(sportsperson.hobbies) ||
-        sportsperson.coach ||
+        hasItems(sportsperson.coaches) ||
         hasItems(sportsperson.choreographers) ||
         sportsperson.careerGoal) && (
-        <section className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20">
-          <SectionWatermark>DESPRE</SectionWatermark>
-          <div className="relative mx-auto max-w-content">
-            <div className="mb-8 text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
-              Despre {sportsperson.name.split(" ")[0]}
-            </div>
-
+        <section className="relative overflow-hidden bg-retro-cream pb-16 md:pb-20">
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <DespreGrid>
               {hasItems(sportsperson.favoriteMoves) && (
-                <DespreCell label="Stil" title="Mișcări preferate" icon={Activity}>
+                <DespreCell title="Mișcări preferate">
                   <BulletList items={sportsperson.favoriteMoves} />
                 </DespreCell>
               )}
               {hasItems(sportsperson.hobbies) && (
-                <DespreCell label="Personal" title="Pasiuni & hobby-uri" icon={Heart}>
+                <DespreCell title="Pasiuni & hobby-uri">
                   <BulletList items={sportsperson.hobbies} />
                 </DespreCell>
               )}
-              {(sportsperson.coach || hasItems(sportsperson.choreographers)) && (
-                <DespreCell label="Echipa" title="Cine o pregătește" icon={Users}>
-                  <dl className="flex flex-wrap gap-x-6 gap-y-3">
-                    {sportsperson.coach && (
-                      <div>
-                        <dt className="mb-1 text-[9px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
-                          Antrenor
-                        </dt>
-                        <dd className="text-[14px] font-semibold text-gray-900">
-                          {sportsperson.coach.name}
-                          {sportsperson.coach.role && (
-                            <span className="ml-1 text-[12px] font-light text-gray-500">
-                              · {sportsperson.coach.role}
+              {(hasItems(sportsperson.coaches) || hasItems(sportsperson.choreographers)) && (
+                <DespreCell title="Antrenori">
+                  {hasItems(sportsperson.coaches) && (
+                    <div className="text-sm font-semibold text-navy">
+                      {sportsperson.coaches.map((c, i) => (
+                        <span key={i}>
+                          {i > 0 && <span className="mx-1 text-navy/30">·</span>}
+                          {c.name}
+                          {c.role && (
+                            <span className="ml-1 text-xs font-light text-navy/60">
+                              · {c.role}
                             </span>
                           )}
-                        </dd>
-                      </div>
-                    )}
-                    {hasItems(sportsperson.choreographers) && (
-                      <div>
-                        <dt className="mb-1 text-[9px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue/60">
-                          {sportsperson.choreographers.length === 1
-                            ? "Coregraf"
-                            : "Coregrafe"}
-                        </dt>
-                        <dd className="text-[14px] font-semibold text-gray-900">
-                          {sportsperson.choreographers
-                            .map((c) => c.name)
-                            .join(", ")}
-                        </dd>
-                      </div>
-                    )}
-                  </dl>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {hasItems(sportsperson.choreographers) && (
+                    <div className="mt-2 text-sm font-semibold text-navy">
+                      <span className="mr-2 text-3xs font-extrabold uppercase tracking-[0.22em] text-navy/50">
+                        Coregrafe
+                      </span>
+                      {sportsperson.choreographers.map((c) => c.name).join(", ")}
+                    </div>
+                  )}
                 </DespreCell>
               )}
               {sportsperson.careerGoal && (
-                <DespreCell label="Aspirație" title="Obiectiv" icon={Target}>
-                  <p className="text-[15px] italic leading-relaxed text-gray-700">
+                <DespreCell title="Obiectiv">
+                  <p
+                    className="text-base italic leading-relaxed text-navy/80"
+                    style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+                  >
                     {sportsperson.careerGoal}
                   </p>
                 </DespreCell>
@@ -287,13 +295,13 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PROGRAME MUZICALE ─── */}
       {hasItems(sportsperson.seasons) && (
-        <section className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20">
+        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
           <SectionWatermark>MUZICĂ</SectionWatermark>
-          <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
               Programe muzicale
             </div>
-            <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
               Muzica pe gheață
             </h2>
             <ProgramSeasons seasons={sortSeasonsDesc(sportsperson.seasons)} />
@@ -301,50 +309,62 @@ const SportspersonView: React.FC<Props> = ({
         </section>
       )}
 
-      {/* ─── PERFORMANȚE DE VÂRF (cream/amber band) ─── */}
+      {/* ─── PERFORMANȚE DE VÂRF (oversized placement numerals) ─── */}
       {notableResults.length > 0 && (
-        <section
-          className="relative overflow-hidden px-6 py-16 md:px-10 md:py-20"
-          style={{ backgroundColor: "#fffbeb" }}
-        >
-          <SectionWatermark tone="amber">PERFORMANȚE</SectionWatermark>
-          <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+        <section className="relative overflow-hidden bg-navy py-16 text-retro-cream md:py-20">
+          <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-gold">
               Cele mai notabile rezultate
             </div>
-            <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-retro-cream md:text-4xl">
               Performanțe de vârf
             </h2>
-            <div className="mt-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+            <div className="mt-8 flex flex-col">
               {notableResults.map((r, idx) => {
                 const info = getPlacementInfo(r.placement);
+                const stroke = info.accent ?? "var(--color-retro-cream)";
                 return (
-                  <article
+                  <div
                     key={`${r.competition.documentId}-${idx}`}
-                    className="relative flex flex-col gap-2 overflow-hidden p-[18px] pl-7"
-                  >
-                    {info.accent && <SlantRibbon color={info.accent} />}
-                    <span
-                      className={cn(
-                        "relative inline-flex w-fit items-center text-[10px] font-extrabold uppercase tracking-[0.18em]",
-                        info.textClass,
-                      )}
-                    >
-                      {info.label}
-                    </span>
-                    <h3 className="relative text-[14px] font-bold leading-tight text-gray-900">
-                      {r.competition.name}
-                    </h3>
-                    <div className="relative text-[10px] text-stone-600">
-                      {formatDate(r.competition.date)}
-                      {r.competition.location && <> · {r.competition.location}</>}
-                    </div>
-                    {r.score !== undefined && (
-                      <div className="relative mt-auto border-t border-amber-600/15 pt-2 text-[11px] font-bold tabular-nums text-gray-900">
-                        {r.score.toFixed(2)}
-                      </div>
+                    className={cn(
+                      "grid grid-cols-[64px_1fr] items-center gap-5 py-5 sm:grid-cols-[86px_1fr] sm:gap-7",
+                      idx < notableResults.length - 1 && "border-b border-retro-cream/15",
                     )}
-                  </article>
+                  >
+                    <div
+                      aria-hidden
+                      className="font-display select-none text-[56px] font-black leading-[0.8] sm:text-[76px]"
+                      style={{ color: "transparent", WebkitTextStroke: `2px ${stroke}` }}
+                    >
+                      {r.placement ?? "—"}
+                    </div>
+                    <div className="min-w-0">
+                      <span
+                        className={cn(
+                          "text-3xs font-extrabold uppercase tracking-[0.18em]",
+                          info.textClass,
+                        )}
+                      >
+                        {info.label}
+                      </span>
+                      <h3 className="mt-1 text-lg font-bold leading-tight text-retro-cream">
+                        {r.competition.name}
+                      </h3>
+                      <div className="mt-1 text-2xs text-retro-cream/60">
+                        {formatDate(r.competition.date)}
+                        {r.competition.location && <> · {r.competition.location}</>}
+                        {r.score !== undefined && (
+                          <>
+                            {" · "}
+                            <span className="font-bold text-gold">
+                              {r.score.toFixed(2)}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -354,9 +374,9 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── GALLERY ─── */}
       {hasItems(sportsperson.gallery) && (
-        <section className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20">
+        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
           <SectionWatermark>GALERIE</SectionWatermark>
-          <div className="relative mx-auto max-w-content">
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <GalleryCarousel
               images={sportsperson.gallery.map((img) => ({
                 src: strapiMediaUrl(img.url),
@@ -373,14 +393,14 @@ const SportspersonView: React.FC<Props> = ({
       {historyRows.length > 0 && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-white px-6 py-16 md:px-10 md:py-20 scroll-mt-24"
+          className="relative overflow-hidden bg-retro-cream py-16 md:py-20 scroll-mt-24"
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
-          <div className="relative mx-auto max-w-content">
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
               Istoric competițional
             </div>
-            <h2 className="mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-gray-900 md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
               Toate competițiile
             </h2>
             <div className="mt-8 flex flex-col">
@@ -392,20 +412,19 @@ const SportspersonView: React.FC<Props> = ({
                     key={key}
                     className={cn(
                       "relative flex flex-col gap-2 py-[18px] sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-x-6",
-                      idx < visibleHistoryRows.length - 1 && "border-b border-gray-100",
+                      idx < visibleHistoryRows.length - 1 && "border-b border-navy/10",
                     )}
                   >
-                    <div className="relative min-w-0 pl-8">
-                      {info?.accent && <SlantRibbon color={info.accent} />}
+                    <div className="relative min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-[15px] font-bold text-gray-900">{comp.name}</h4>
+                        <h4 className="text-sm font-bold text-navy">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="rounded-full bg-edusport-blue/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-edusport-blue">
+                          <span className="rounded-full bg-edusport-blue/10 px-2 py-0.5 text-3xs font-semibold uppercase tracking-wider text-edusport-blue">
                             Internațional
                           </span>
                         )}
                       </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] font-light tracking-[0.04em] text-gray-400">
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-navy/50">
                         <span>{formatDate(comp.date)}</span>
                         {comp.location && (
                           <>
@@ -427,16 +446,16 @@ const SportspersonView: React.FC<Props> = ({
                     {/* Score + placement: side-by-side on mobile (flex row,
                         left of the article), promoted to grid columns on
                         sm+ via `display: contents`. */}
-                    <div className="flex items-baseline gap-3 pl-8 sm:contents">
+                    <div className="flex items-baseline gap-3 sm:contents">
                       {row.score !== undefined && (
-                        <span className="text-[12px] font-semibold tabular-nums text-gray-500">
+                        <span className="text-xs font-semibold tabular-nums text-navy/60">
                           {row.score.toFixed(2)}
                         </span>
                       )}
                       {info && (
                         <span
                           className={cn(
-                            "text-[11px] font-extrabold uppercase tracking-[0.22em] sm:min-w-[72px] sm:text-right",
+                            "text-2xs font-extrabold uppercase tracking-[0.22em] sm:min-w-[72px] sm:text-right",
                             info.textClass,
                           )}
                         >
@@ -460,23 +479,24 @@ const SportspersonView: React.FC<Props> = ({
       )}
 
       {/* ─── OUTRO ─── */}
-      <section className="bg-white px-6 py-12 md:px-10 md:py-14">
-        <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="border-t border-navy/10 bg-retro-cream py-12 md:py-14">
+        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-5 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.32em] text-edusport-blue/60">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
               Mai departe
             </div>
-            <p className="mt-1.5 text-base font-medium text-gray-900 md:text-lg">
+            <p className="mt-1.5 text-base font-medium text-navy md:text-lg">
               Vezi toți sportivii clubului EduSport.
             </p>
           </div>
-          <Link
+          <SpotlightButton
+            layers
+            layersFace="black"
             href="/despre-noi/sportivi"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue transition-all hover:gap-3 hover:text-edusport-blue/70"
+            className="text-xs"
           >
-            Sportivi
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+            Toți sportivii
+          </SpotlightButton>
         </div>
       </section>
     </div>
@@ -493,39 +513,30 @@ function hasItems<T>(list: T[] | null | undefined): list is T[] {
 }
 
 /**
- * Decorative top-right section watermark — Climate Crisis at very low
- * opacity. Echoes the hero "01" treatment and the PageHeroSection used
- * elsewhere on the site. Each editorial section gets one so the profile
- * reads as a magazine spread rather than a stack of CMS panels.
+ * Decorative top-right section watermark — League Spartan display at very
+ * low opacity. Echoes the hero "01" treatment. Each editorial section
+ * gets one so the profile reads as a magazine spread rather than a stack
+ * of CMS panels.
  */
 function SectionWatermark({
   children,
-  tone = "blue",
+  tone = "navy",
 }: {
   children: React.ReactNode;
-  tone?: "blue" | "amber";
+  tone?: "navy" | "gold";
 }) {
-  const colour = tone === "amber" ? "rgba(217,119,6,0.08)" : "rgba(33,56,184,0.05)";
+  const colour = tone === "gold" ? "rgba(251,191,36,0.12)" : "rgba(14,26,60,0.05)";
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute -right-2 top-10 hidden select-none uppercase leading-none md:inline md:top-12 md:text-[88px]"
-      style={{
-        color: colour,
-        fontFamily: "var(--font-climate-crisis), sans-serif",
-        fontVariationSettings: "\"YEAR\" 1979",
-      }}
+      className="font-display pointer-events-none absolute -right-2 top-10 hidden select-none font-black uppercase leading-none md:inline md:top-12 md:text-[88px]"
+      style={{ color: colour }}
     >
       {children}
     </span>
   );
 }
 
-/**
- * Group program entries by season descending (newest first), preserving
- * the editor's intra-season order so Short comes before Free if that's
- * how it was entered.
- */
 /** Newest-season-first sort, non-destructive. The CMS may save seasons
  *  in any order; we always render most-recent first to match competition
  *  history sort direction. */
@@ -536,10 +547,10 @@ function sortSeasonsDesc(
 }
 
 /**
- * Two-line filled+stroked name treatment. First word is filled white,
- * everything after is stroked (outlined). The Spotlight component on
- * the index page uses the identical structure — keeping it in sync here
- * preserves the editorial signature across both surfaces.
+ * Two-line filled+stroked name treatment. First word is filled cream,
+ * everything after is stroked (outlined cream). The Spotlight component
+ * on the index page uses the identical structure — keeping it in sync
+ * here preserves the editorial signature across both surfaces.
  */
 function NameStack({ name }: { name: string }) {
   const parts = name.trim().split(/\s+/);
@@ -547,13 +558,13 @@ function NameStack({ name }: { name: string }) {
   const rest = parts.slice(1).join(" ").toUpperCase();
   return (
     <>
-      <span className="block text-white">{first}</span>
+      <span className="block text-retro-cream">{first}</span>
       {rest && (
         <span
           className="block"
           style={{
             color: "transparent",
-            WebkitTextStroke: "1.5px #fff",
+            WebkitTextStroke: "1.5px var(--color-retro-cream)",
           }}
         >
           {rest}
@@ -577,17 +588,13 @@ function HeroStat({
     <div>
       <div
         className={cn(
-          "text-[40px] leading-none tracking-[-0.02em] md:text-[44px]",
-          accent ? "text-[#fbbf24]" : "text-white",
+          "font-display text-[40px] font-black leading-none tracking-[-0.02em] md:text-[44px]",
+          accent ? "text-gold" : "text-retro-cream",
         )}
-        style={{
-          fontFamily: "var(--font-climate-crisis), sans-serif",
-          fontVariationSettings: "\"YEAR\" 1979",
-        }}
       >
         {value}
       </div>
-      <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">
+      <div className="mt-2 text-3xs font-bold uppercase tracking-[0.22em] text-retro-cream/60">
         {label}
       </div>
     </div>
@@ -595,108 +602,32 @@ function HeroStat({
 }
 
 /**
- * Slanted-line ribbon — pixel-identical to the accent used on
- * /despre-noi/realizari result rows (same paths, opacities, position).
- * Keeping all three rows (notable tiles, history rows, realizari rows)
- * using the exact same geometry is what makes them feel like "the same
- * accent" across surfaces — any deviation makes them visibly misalign.
- *
- * Positioned at `-left-4 w-20` so the ribbon extends a touch past the
- * card's left edge (clipped by `overflow-hidden`), exactly like
- * realizari. The stripes are translucent enough (opacities 0.22 / 0.28
- * / 0.32) that any content sitting on top still reads clearly without
- * needing extra padding to clear them.
- */
-function SlantRibbon({ color }: { color: string }) {
-  return (
-    <svg
-      aria-hidden
-      className="pointer-events-none absolute inset-y-0 -left-4 h-full w-20"
-      viewBox="0 0 80 100"
-      preserveAspectRatio="none"
-      fill="none"
-      style={{ color }}
-    >
-      <path d="M 46 -10 L 22 110" stroke="currentColor" strokeWidth="11" opacity="0.22" />
-      <path d="M 63 -10 L 39 110" stroke="currentColor" strokeWidth="11" opacity="0.28" />
-      <path d="M 75.5 -10 L 51.5 110" stroke="currentColor" strokeWidth="2" opacity="0.32" />
-    </svg>
-  );
-}
-
-/**
- * 2×2 borderless grid for the Despre cells. Numbers each child cell
- * sequentially (01, 02, …) regardless of how many empty cells were
- * skipped by the parent — the numbers are decorative, not semantic.
- * A single faint horizontal divider sits between the two rows for
- * rhythm, but no per-cell outlines (matches the v5 mockup).
+ * Borderless 2-column grid for the Despre cells. Each cell is a single
+ * rust micro-label + its content — no numbers, no icons, no double
+ * labelling (the descriptive title carries the meaning on its own).
  */
 function DespreGrid({ children }: { children: React.ReactNode }) {
-  const cells = React.Children.toArray(children);
   return (
-    <div className="grid gap-y-12 gap-x-14 md:grid-cols-2">
-      {cells.map((cell, idx) => (
-        <DespreCellWithNum key={idx} num={String(idx + 1).padStart(2, "0")}>
-          {cell}
-        </DespreCellWithNum>
-      ))}
-    </div>
-  );
-}
-
-function DespreCellWithNum({
-  num,
-  children,
-}: {
-  num: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="grid min-w-0 grid-cols-[60px_1fr] items-start gap-7">
-      <div
-        aria-hidden
-        className="select-none text-[34px] leading-none"
-        style={{
-          color: "transparent",
-          WebkitTextStroke: "1.5px #fbbf24",
-          fontFamily: "var(--font-climate-crisis), sans-serif",
-          fontVariationSettings: "\"YEAR\" 1979",
-        }}
-      >
-        {num}
-      </div>
-      <div className="min-w-0">{children}</div>
-    </div>
+    <div className="grid gap-y-10 gap-x-14 md:grid-cols-2">{children}</div>
   );
 }
 
 /**
- * Single Despre cell body: icon + eyebrow row, title, slot for the
- * cell's content (bullets / dl / quote). The numbered gold figure is
- * provided by the enclosing DespreCellWithNum.
+ * Single Despre cell: a rust uppercase micro-label (the descriptive
+ * title) above its content (bullets / names / quote).
  */
 function DespreCell({
-  label,
   title,
-  icon: Icon,
   children,
 }: {
-  label: string;
   title: string;
-  icon: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <div className="mb-1 flex items-center gap-1.5">
-        <Icon className="h-3 w-3 text-edusport-blue/60" />
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.32em] text-edusport-blue/60">
-          {label}
-        </span>
-      </div>
-      <h3 className="mb-3.5 text-[19px] font-extrabold tracking-[-0.01em] text-gray-900">
+    <div className="min-w-0">
+      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.28em] text-rust">
         {title}
-      </h3>
+      </div>
       {children}
     </div>
   );
@@ -721,7 +652,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
       ))}
       {older.length > 0 && (
         <details className="group/seasons">
-          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-[11px] font-extrabold uppercase tracking-[0.22em] text-edusport-blue transition-colors hover:text-edusport-blue/70 [&::-webkit-details-marker]:hidden">
+          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-2xs font-extrabold uppercase tracking-[0.22em] text-rust transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
             <span className="group-open/seasons:hidden">
               Vezi sezoanele anterioare ({older.length})
             </span>
@@ -748,7 +679,7 @@ function SeasonRow({
 }) {
   return (
     <div>
-      <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em] text-gray-400">
+      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.24em] text-navy/40">
         Sezon {season}
       </div>
       <div className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
@@ -757,15 +688,15 @@ function SeasonRow({
             key={`${season}-${i}`}
             className="grid grid-cols-[120px_1fr] items-baseline gap-3 py-2"
           >
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#fbbf24]">
+            <div className="text-3xs font-extrabold uppercase tracking-[0.22em] text-gold">
               {p.type}
             </div>
             <div className="min-w-0">
-              <div className="text-[14px] font-bold leading-tight text-gray-900">
+              <div className="text-sm font-bold leading-tight text-navy">
                 {p.title}
               </div>
               {p.artist && (
-                <div className="text-[11px] text-gray-500">{p.artist}</div>
+                <div className="text-2xs text-navy/50">{p.artist}</div>
               )}
             </div>
           </div>
@@ -775,16 +706,16 @@ function SeasonRow({
   );
 }
 
-/** Compact bullet list — small dots, denser than the old BulletColumn. */
+/** Compact chevron bullet list — retro convention (rust chevrons). */
 function BulletList({ items }: { items: string[] }) {
   return (
     <ul className="flex flex-col gap-1.5">
       {items.map((item, i) => (
         <li
           key={i}
-          className="flex items-start gap-2 text-[14px] leading-relaxed text-gray-700"
+          className="flex items-start gap-2 text-sm leading-relaxed text-navy/80"
         >
-          <span className="mt-[7px] inline-block h-[5px] w-[5px] shrink-0 rounded-full bg-edusport-blue" />
+          <ChevronRight className="mt-[3px] h-3.5 w-3.5 shrink-0 text-rust" />
           {item}
         </li>
       ))}

@@ -49,6 +49,11 @@ export const navItems: NavItem[] = [
         href: "/despre-noi/realizari",
         description: "Performantele si premiile noastre",
       },
+      {
+        label: "Voluntariat",
+        href: "/voluntariat",
+        description: "Implica-te in comunitatea clubului",
+      },
     ],
   },
   {
@@ -84,6 +89,7 @@ export const navItems: NavItem[] = [
     ],
   },
   { label: "Noutati", href: "/noutati" },
+  { label: "Parteneri", href: "/parteneri" },
   { label: "Contact", href: "/contact" },
 ];
 

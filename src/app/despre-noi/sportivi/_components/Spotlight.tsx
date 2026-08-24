@@ -29,14 +29,14 @@ interface Props {
 
 export function Spotlight({ sportsperson, stats, rank }: Props) {
   return (
-    <section className="relative overflow-hidden bg-edusport-blue px-6 py-16 md:px-10 md:py-20 text-white">
+    <section className="relative overflow-hidden bg-retro-cream border-b-[1.5px] border-navy/12 px-6 py-16 md:px-10 md:py-20 text-navy">
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-6 top-3 select-none text-[140px] md:text-[220px] font-black leading-[0.82] tracking-[-0.05em]"
+        className="font-display pointer-events-none absolute right-6 top-3 select-none text-[140px] md:text-[220px] font-black leading-[0.82] tracking-[-0.05em]"
         style={{
           color: "transparent",
-          WebkitTextStroke: "1.5px rgba(255,255,255,0.12)",
+          WebkitTextStroke: "1.5px rgba(14,26,60,0.10)",
         }}
       >
         {String(rank).padStart(2, "0")}
@@ -45,23 +45,13 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
       <div className="relative grid grid-cols-1 items-center gap-12 md:grid-cols-[1.5fr_1fr]">
         {/* Left: editorial copy + stats */}
         <div>
-          <div className="mb-[18px] inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.32em] text-[#fbbf24]">
-            <span
-              aria-hidden
-              className="text-[#fbbf24] motion-safe:animate-pulse"
-            >
-              ●
-            </span>
-            În atenție
-          </div>
-
           {/* Stacked filled + stroke name — the editorial signature treatment */}
-          <h2 className="mb-6 font-black leading-[0.9] tracking-[-0.045em] text-[56px] md:text-[88px]">
+          <h2 className="font-display mb-6 font-black leading-[0.9] tracking-[-0.045em] text-[56px] md:text-[88px]">
             <NameStack name={sportsperson.name} />
           </h2>
 
           {sportsperson.description && (
-            <p className="mb-[30px] max-w-[460px] text-[14px] font-light leading-[1.6] text-white/75">
+            <p className="mb-[30px] max-w-[460px] text-sm leading-[1.6] text-navy/60">
               {sportsperson.description}
             </p>
           )}
@@ -86,6 +76,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
             stats={stats}
             size="spotlight"
             restingRotation={-2}
+            retro
           />
         </div>
       </div>
@@ -101,13 +92,13 @@ function NameStack({ name }: { name: string }) {
   const rest = parts.slice(1).join(" ").toUpperCase();
   return (
     <>
-      <span className="block text-white">{first}</span>
+      <span className="block text-navy">{first}</span>
       {rest && (
         <span
           className="block"
           style={{
             color: "transparent",
-            WebkitTextStroke: "1.5px #fff",
+            WebkitTextStroke: "1.5px var(--color-navy)",
           }}
         >
           {rest}
@@ -128,16 +119,16 @@ function StatRow({
   accent?: boolean;
 }) {
   return (
-    <div className="flex items-baseline gap-[14px] border-t border-white/15 pt-[14px] first:border-t-0 first:pt-0">
+    <div className="flex items-baseline gap-[14px] border-t border-navy/15 pt-[14px] first:border-t-0 first:pt-0">
       <span
         className={cn(
-          "min-w-[100px] text-[44px] font-black leading-[0.9] tracking-[-0.03em]",
-          accent ? "text-[#fbbf24]" : "text-white",
+          "font-display min-w-[100px] text-[44px] font-black leading-[0.9] tracking-[-0.03em]",
+          accent ? "text-rust" : "text-navy",
         )}
       >
         {value}
       </span>
-      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">
+      <div className="text-3xs font-bold uppercase tracking-[0.22em] text-navy/50">
         {label}
       </div>
     </div>

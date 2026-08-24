@@ -104,13 +104,13 @@ export function GalleryCarousel({
       {hasHeader && (
         <div className="flex flex-col gap-3 mb-8">
           {eyebrow && (
-            <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
+            <p className="text-eyebrow font-bold uppercase text-rust">
               {eyebrow}
             </p>
           )}
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             {title && (
-              <h2 className="text-3xl md:text-4xl font-semibold text-gray-900">
+              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
                 {title}
               </h2>
             )}
@@ -120,7 +120,7 @@ export function GalleryCarousel({
                   onClick={prevDesktop}
                   disabled={desktopStart === 0}
                   aria-label="Imaginile anterioare"
-                  className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -128,7 +128,7 @@ export function GalleryCarousel({
                   onClick={nextDesktop}
                   disabled={desktopStart === maxStart}
                   aria-label="Imaginile următoare"
-                  className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -146,7 +146,7 @@ export function GalleryCarousel({
             onClick={prevDesktop}
             disabled={desktopStart === 0}
             aria-label="Imaginile anterioare"
-            className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -154,7 +154,7 @@ export function GalleryCarousel({
             onClick={nextDesktop}
             disabled={desktopStart === maxStart}
             aria-label="Imaginile următoare"
-            className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -174,7 +174,7 @@ export function GalleryCarousel({
               type="button"
               onClick={() => setLightboxIndex(i)}
               aria-label={`Deschide imaginea: ${img.alt}`}
-              className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue"
+              className="group relative aspect-[4/3] overflow-hidden border-[1.5px] border-navy bg-navy/[0.04] shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
               style={{ width: "calc((100% - 1.5rem) / 3)" }}
             >
               <Image
@@ -203,12 +203,12 @@ export function GalleryCarousel({
                   aria-label={`Mergi la grupul ${i + 1}`}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    i === desktopStart ? "bg-edusport-blue w-6" : "bg-gray-200 hover:bg-gray-300",
+                    i === desktopStart ? "bg-navy w-6" : "bg-navy/20 hover:bg-navy/40",
                   )}
                 />
               ))
             ) : (
-              <span className="text-xs text-gray-400 font-light tabular-nums">
+              <span className="text-xs text-navy/45 tabular-nums">
                 {desktopStart + 1} – {Math.min(desktopStart + DESKTOP_PER_PAGE, total)} din {total}
               </span>
             )}
@@ -219,7 +219,7 @@ export function GalleryCarousel({
       {/* Mobile: single image carousel */}
       <div className="md:hidden">
         <div
-          className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 select-none cursor-zoom-in"
+          className="relative w-full aspect-[4/3] overflow-hidden border-[1.5px] border-navy bg-navy/[0.04] select-none cursor-zoom-in"
           onClick={() => setLightboxIndex(current)}
           role="button"
           tabIndex={0}
@@ -268,7 +268,7 @@ export function GalleryCarousel({
           <button
             onClick={prev}
             aria-label="Imaginea anterioară"
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400"
+            className="w-8 h-8 flex items-center justify-center text-navy hover:text-rust transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -281,20 +281,20 @@ export function GalleryCarousel({
                   aria-label={`Mergi la imaginea ${i + 1}`}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    i === current ? "bg-edusport-blue w-6" : "bg-gray-200 hover:bg-gray-300",
+                    i === current ? "bg-navy w-6" : "bg-navy/20 hover:bg-navy/40",
                   )}
                 />
               ))}
             </div>
           ) : (
-            <span className="text-xs text-gray-500 font-light tabular-nums">
+            <span className="text-xs text-navy/50 tabular-nums">
               {current + 1} / {total}
             </span>
           )}
           <button
             onClick={next}
             aria-label="Imaginea următoare"
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400"
+            className="w-8 h-8 flex items-center justify-center text-navy hover:text-rust transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

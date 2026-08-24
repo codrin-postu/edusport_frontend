@@ -1,185 +1,190 @@
-/* ── Custom header ────────────────────────────────────────────────────────────── */
+/* Retro FullCalendar overrides — scoped to .fc + custom header/tooltip/sheet classes.
+   Colour = course type (navy for Școala today); anulat keeps the colour + strike;
+   liber = silver; events (eveniment/concurs) = orange. Next course is not marked. */
+
+/* ── Custom header (month title + Azi badge + prev/next), all 34px tall ────────── */
 .fc-custom-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  margin-bottom: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 12px;
+  flex-wrap: wrap;
+  padding: 14px 14px 0;
+  margin-bottom: 14px;
 }
 
 .fc-custom-header-title {
-  font-family: var(--font-league-spartan), sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: oklch(0.18 0.12 264);
+  font-family: var(--font-league-spartan), "League Spartan", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--color-navy);
   line-height: 1;
+  text-transform: capitalize;
 }
 
 .fc-custom-header-nav {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-items: stretch;
+  gap: 10px;
+  height: 34px;
+}
+.fc-custom-header-navbtns {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+/* Mobile: dropdown and the Azi/nav group spread to opposite ends */
+@media (max-width: 520px) {
+  .fc-custom-header-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 .fc-custom-nav-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: none;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--color-navy);
   background: transparent;
-  color: oklch(0.55 0 0);
-  font-size: 1.2rem;
+  color: var(--color-navy);
+  font-size: 1.05rem;
   line-height: 1;
   cursor: pointer;
-  transition: color 0.15s, background-color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
   padding: 0;
 }
 
 .fc-custom-nav-btn:hover:not(:disabled) {
-  background-color: oklch(0.95 0 0);
-  color: oklch(0.3 0 0);
+  background-color: var(--color-navy);
+  color: var(--color-retro-cream);
 }
 
 .fc-custom-nav-btn:disabled {
-  opacity: 0.25;
+  opacity: 0.3;
   pointer-events: none;
 }
 
 .fc-custom-today-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  height: 34px;
+  padding: 0 10px 0 5px;
+  border: 1.5px solid var(--color-navy);
   background: none;
-  border: none;
-  padding: 0;
+  color: var(--color-navy);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  margin-right: 12px;
+  margin-right: 4px;
 }
 
 .fc-custom-today-btn:disabled {
   cursor: default;
-  opacity: 0.45;
+  opacity: 0.4;
 }
 
 .fc-custom-today-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 6px;
-  border-radius: 6px;
-  border: 1.5px solid oklch(0.65 0.12 264);
-  color: oklch(0.45 0.1 264);
-  font-size: 0.8rem;
-  font-weight: 600;
+  width: 22px;
+  height: 22px;
+  background: var(--color-navy);
+  color: var(--color-retro-cream);
+  font-size: 0.7rem;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .fc-custom-today-label {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: oklch(0.55 0.1 264);
+  line-height: 1;
 }
 
-/* FullCalendar CSS overrides - scoped to .fc to avoid global bleed */
-
+/* ── FullCalendar grid ─────────────────────────────────────────────────────────── */
 .fc {
-  --fc-border-color: oklch(0.922 0 0);
-  --fc-button-bg-color: transparent;
-  --fc-button-border-color: oklch(0.922 0 0);
-  --fc-button-text-color: oklch(0.421 0.2593 264.52);
-  --fc-button-hover-bg-color: oklch(0.421 0.2593 264.52 / 0.08);
-  --fc-button-hover-border-color: oklch(0.421 0.2593 264.52);
-  --fc-button-active-bg-color: oklch(0.421 0.2593 264.52);
-  --fc-button-active-border-color: oklch(0.421 0.2593 264.52);
-  --fc-button-active-text-color: white;
-  --fc-today-bg-color: oklch(0.421 0.2593 264.52 / 0.06);
+  --fc-border-color: rgb(14 26 60 / 0.1);
+  --fc-today-bg-color: transparent;
   --fc-neutral-bg-color: transparent;
-  --fc-page-bg-color: white;
-  font-family: "Inter", "Roboto", sans-serif;
+  --fc-page-bg-color: var(--color-retro-cream);
+  font-family: "Inter", system-ui, sans-serif;
   font-size: 0.875rem;
 }
 
-/* Month/year title */
-.fc .fc-toolbar-title {
-  font-family: var(--font-league-spartan), sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: oklch(0.18 0.12 264);
+/* Grid fills the card fully (no stray inset / partial-width table) */
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section > * {
+  width: 100%;
 }
-
-/* Toolbar buttons */
-.fc .fc-button {
-  padding: 0.35rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: background-color 0.15s, border-color 0.15s;
-  box-shadow: none !important;
-}
-
-.fc .fc-button:focus {
-  outline: none;
-  box-shadow: none !important;
-}
-
-/* Hide prev/next buttons when disabled (at season boundaries) */
-.fc .fc-button:disabled {
-  visibility: hidden;
-  pointer-events: none;
-}
+.fc .fc-scrollgrid { border-collapse: collapse; }
+.fc .fc-view-harness { margin: 0; }
 
 /* Day-of-week header row */
+.fc .fc-col-header-cell {
+  border-color: var(--color-navy);
+  border-width: 0 0 1.5px 0;
+}
 .fc .fc-col-header-cell-cushion {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.66rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: oklch(0.556 0 0);
+  color: rgb(14 26 60 / 0.5);
   text-decoration: none;
-  padding: 6px 0;
+  padding: 8px 0;
 }
 
 /* Day number */
 .fc .fc-daygrid-day-number {
-  font-size: 0.78rem;
-  color: oklch(0.45 0 0);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: rgb(14 26 60 / 0.55);
   text-decoration: none;
-  padding: 4px 6px;
+  padding: 5px 7px;
 }
 
-/* Today - no background on the cell, outlined circle on the day number only */
+/* Out-of-month days (shouldn't render, but fade if they do) */
+.fc .fc-day-other .fc-daygrid-day-number {
+  color: rgb(14 26 60 / 0.2);
+}
+
+/* Today — navy filled circle behind the number */
 .fc .fc-day-today {
   background-color: transparent !important;
 }
-
 .fc .fc-day-today .fc-daygrid-day-number {
   font-weight: 700;
-  color: oklch(0.45 0.1 264);
-  display: inline-block;
-  border: 1.5px solid oklch(0.65 0.12 264);
-  border-radius: 6px;
-  padding: 1px 5px;
-  line-height: 1.4;
-  margin: 3px;
+  color: var(--color-retro-cream);
+  background: var(--color-navy);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 4px;
+  line-height: 1;
 }
 
-/* Remove default event border/box-shadow so our classes fully control appearance */
+/* Event block — square, colour classes control fill */
 .fc .fc-daygrid-event {
-  border-radius: 3px;
-  padding: 1px 5px;
+  border-radius: 2px;
+  padding: 1px 6px;
+  margin-top: 2px;
   font-size: 0.68rem;
-  font-weight: 500;
+  font-weight: 600;
   border: none;
   box-shadow: none;
 }
-
-
 .fc .fc-daygrid-event .fc-event-title {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -188,84 +193,57 @@
 
 /* "+N more" overflow link */
 .fc .fc-daygrid-more-link {
-  font-size: 0.67rem;
-  color: oklch(0.5 0 0);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--color-rust);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-/* --- Event type colours --- */
+/* --- Event type colours (course = colour; state = strike/opacity) --- */
 
-/* Curs - teal background block, one per day */
-.fc-event-curs {
-  background-color: oklch(0.78 0.12 184) !important;
-  border-color: oklch(0.62 0.16 184) !important;
-  color: oklch(0.22 0.12 184) !important;
+/* Curs / next / curs-special — course colour (navy today). Next not distinguished. */
+.fc-event-curs,
+.fc-event-next-weekend,
+.fc-event-curs-special {
+  background-color: var(--color-navy) !important;
+  border-color: var(--color-navy) !important;
+  color: var(--color-retro-cream) !important;
   box-shadow: none !important;
 }
-
-/* Next upcoming weekend - slightly more vivid teal */
-.fc-event-next-weekend {
-  background-color: oklch(0.72 0.15 184) !important;
-  border-color: oklch(0.55 0.19 184) !important;
-  color: oklch(0.18 0.12 184) !important;
-  box-shadow: none !important;
-}
-
 .fc-event-curs .fc-daygrid-event-dot,
-.fc-event-next-weekend .fc-daygrid-event-dot {
+.fc-event-next-weekend .fc-daygrid-event-dot,
+.fc-event-curs-special .fc-daygrid-event-dot {
   display: none !important;
 }
 
-/* Liber (off weekend) - muted gray */
-.fc-event-liber {
-  background-color: oklch(0.78 0 0) !important;
-  border-color: oklch(0.65 0 0) !important;
-  color: oklch(0.32 0 0) !important;
-}
-
-/* National holidays - amber */
-.fc-event-holiday {
-  background-color: oklch(0.78 0.16 85) !important;
-  border-color: oklch(0.62 0.19 85) !important;
-  color: oklch(0.24 0.10 85) !important;
-}
-
-/* School vacations - same amber as holidays */
-.fc-event-vacation {
-  background-color: oklch(0.78 0.16 85) !important;
-  border-color: oklch(0.62 0.19 85) !important;
-  color: oklch(0.24 0.10 85) !important;
-}
-
-/* Eveniment - orange */
-.fc-event-eveniment {
-  background-color: oklch(0.78 0.17 55) !important;
-  border-color: oklch(0.62 0.21 55) !important;
-  color: oklch(0.24 0.12 55) !important;
-}
-
-/* Concurs - rose/red */
-.fc-event-concurs {
-  background-color: oklch(0.78 0.14 15) !important;
-  border-color: oklch(0.62 0.20 15) !important;
-  color: oklch(0.25 0.14 15) !important;
-}
-
-/* Curs special - indigo/purple, distinct from regular weekend cursuri */
-.fc-event-curs-special {
-  background-color: oklch(0.78 0.12 280) !important;
-  border-color: oklch(0.60 0.16 280) !important;
-  color: oklch(0.25 0.10 280) !important;
-}
-
-/* Curs anulat - red, struck-through */
+/* Anulat — keep the course colour, fade it and strike it through */
 .fc-event-anulat {
-  background-color: oklch(0.65 0.22 25) !important;
-  border-color: oklch(0.55 0.24 25) !important;
-  color: oklch(0.98 0.02 25) !important;
+  background-color: var(--color-navy) !important;
+  border-color: var(--color-navy) !important;
+  color: var(--color-retro-cream) !important;
+  opacity: 0.45;
   text-decoration: line-through;
 }
 
-/* Cursuri event - inline layout */
+/* Liber / holiday / vacation — reserved silver (free weekends/days) */
+.fc-event-liber,
+.fc-event-holiday,
+.fc-event-vacation {
+  background-color: var(--color-silver) !important;
+  border-color: var(--color-silver) !important;
+  color: var(--color-navy) !important;
+}
+
+/* Eveniment / concurs — orange (events) */
+.fc-event-eveniment,
+.fc-event-concurs {
+  background-color: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: #ffffff !important;
+}
+
+/* Cursuri event — inline layout (no leading dot) */
 .fc-curs-event {
   position: relative;
   display: flex;
@@ -273,275 +251,281 @@
   width: 100%;
   overflow: visible;
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 600;
 }
-
+.fc-curs-dot { display: none !important; }
 .fc-curs-desktop-title {
   font-size: 0.68rem;
-  font-weight: 400;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-
-/* Tooltip - white card, portalled to body, appears above the event */
+/* ── Desktop hover tooltip — retro card, course-colour top bar ─────────────────── */
 .fc-curs-tooltip {
   position: fixed;
   transform: translateY(-100%);
   z-index: 9999;
-  background: #ffffff;
-  border: 1px solid oklch(0.91 0 0);
-  border-radius: 10px;
-  box-shadow: 0 6px 20px oklch(0 0 0 / 0.1), 0 1px 4px oklch(0 0 0 / 0.06);
-  padding: 10px 13px;
+  background: var(--color-retro-cream);
+  border: 1.5px solid var(--color-navy);
+  box-shadow: 6px 6px 0 rgb(14 26 60 / 0.18);
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 160px;
-  max-width: min(320px, calc(100vw - 32px));
+  min-width: 190px;
+  max-width: min(280px, calc(100vw - 32px));
   pointer-events: auto;
+  overflow: hidden;
   animation: fc-tooltip-in 0.12s ease both;
 }
 
-/* Image variant - side-by-side layout: image on the left, body on the right.
- * Wider tooltip so both columns have room to breathe. */
-.fc-curs-tooltip--with-image {
-  flex-direction: row;
-  gap: 14px;
-  align-items: stretch;
-  width: 420px;
-  max-width: calc(100vw - 32px);
+/* Course-colour top bar (navy default; orange for events) */
+.fc-curs-tooltip-bar {
+  height: 5px;
+  background: var(--color-navy);
+  flex-shrink: 0;
 }
-
-.fc-curs-tooltip--with-image .fc-curs-tooltip-body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1 1 auto;
-  min-width: 0;
+.fc-curs-tooltip--event .fc-curs-tooltip-bar {
+  background: var(--color-orange);
 }
 
 .fc-curs-tooltip-image {
-  flex: 0 0 auto;
-  width: 180px;
-  height: 135px;
+  width: 100%;
+  height: 118px;
   object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid oklch(0.91 0 0);
+  border: 0;
+  border-bottom: 1.5px solid var(--color-navy);
+  display: block;
 }
 
-/* Same variant on the body wrapper when there's no image - keep the column
- * stack the rest of the tooltip relies on. */
 .fc-curs-tooltip-body {
+  padding: 13px 15px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 @keyframes fc-tooltip-in {
   from { opacity: 0; transform: translateY(calc(-100% - 4px)); }
   to   { opacity: 1; transform: translateY(-100%); }
 }
-
-/* When the tooltip would overflow the top edge of the viewport we flip it to
- * sit below the anchor instead, so no `translateY` clamping is needed. */
 .fc-curs-tooltip--below {
   transform: none;
   animation: fc-tooltip-in-below 0.12s ease both;
 }
-
 @keyframes fc-tooltip-in-below {
   from { opacity: 0; transform: translateY(-4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .fc-curs-tooltip-title {
-  font-size: 0.72rem;
+  font-family: var(--font-league-spartan), "League Spartan", sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  line-height: 1.05;
+}
+
+/* Standardized date · time line (built from event start/end) */
+.fc-curs-tooltip-meta {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: oklch(0.25 0.06 264);
+  color: var(--color-navy);
   letter-spacing: 0.01em;
 }
 
+/* Optional free-text description */
 .fc-curs-tooltip-hours {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 0.72rem;
+  display: block;
+  font-size: 0.78rem;
   font-weight: 400;
-  color: oklch(0.45 0.05 184);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.4;
+  color: rgb(14 26 60 / 0.65);
+  line-height: 1.5;
+  margin-top: 2px;
 }
-
 .fc-curs-tooltip-hours :is(p, h2, h3, h4, ul, ol) {
   margin: 0;
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
 }
-
-.fc-curs-tooltip-hours :is(h2, h3, h4) {
-  font-weight: 600;
-  color: oklch(0.25 0.06 264);
-}
-
-.fc-curs-tooltip-hours :is(ul, ol) {
-  padding-left: 1.1em;
-}
-
-.fc-curs-tooltip-hours strong {
-  font-weight: 600;
-  color: oklch(0.25 0.06 264);
-}
-
-.fc-curs-tooltip-hours img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin: 4px 0;
-}
-
-.fc-curs-tooltip-hours a {
-  color: oklch(0.421 0.2593 264.52);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  pointer-events: auto;
-}
-
-.fc-curs-tooltip-hours a:hover {
-  text-decoration: none;
-}
+.fc-curs-tooltip-hours :is(h2, h3, h4) { font-weight: 700; color: var(--color-navy); }
+.fc-curs-tooltip-hours :is(ul, ol) { padding-left: 1.1em; }
+.fc-curs-tooltip-hours strong { font-weight: 700; color: var(--color-navy); }
+.fc-curs-tooltip-hours img { max-width: 100%; height: auto; margin: 4px 0; }
+.fc-curs-tooltip-hours a { color: var(--color-rust); text-decoration: underline; text-underline-offset: 2px; pointer-events: auto; }
+.fc-curs-tooltip-hours a:hover { text-decoration: none; }
 
 .fc-curs-tooltip-link {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: oklch(0.421 0.2593 264.52);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-rust);
   text-decoration: none;
-  margin-top: 2px;
-  border-top: 1px solid oklch(0.93 0 0);
-  padding-top: 6px;
+  margin-top: 6px;
+}
+.fc-curs-tooltip-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── timeGrid (weekly) view ────────────────────────────────────────────────────── */
+.fc .fc-timegrid-slot {
+  height: 44px;
+  border-color: rgb(14 26 60 / 0.07);
+}
+/* hide the minor (half-hour) intermediate line — whole-hour slots only */
+.fc .fc-timegrid-slot-minor {
+  border-top-style: none;
+}
+.fc .fc-timegrid-slot-label,
+.fc .fc-timegrid-axis {
+  border-color: rgb(14 26 60 / 0.1);
+}
+.fc .fc-timegrid-slot-label-cushion {
+  font-size: 0.66rem;
+  color: rgb(14 26 60 / 0.5);
+  font-variant-numeric: tabular-nums;
+  padding: 2px 6px;
+}
+/* "toată ziua" axis label */
+.fc .fc-timegrid-axis-cushion {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgb(14 26 60 / 0.5);
+}
+/* divider between the all-day row and the time grid → navy rule */
+.fc .fc-timegrid-divider {
+  border: 0;
+  border-top: 1.5px solid var(--color-navy);
+  padding: 0;
+  background: transparent;
+}
+.fc .fc-timegrid-col.fc-day-today {
+  background-color: transparent !important;
+}
+/* now indicator → rust */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: var(--color-rust);
+}
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: var(--color-rust);
+  color: var(--color-rust);
+}
+/* timed event blocks — square; cream outline separates overlapping same-colour blocks
+   (outline isn't killed by the colour classes' `box-shadow: none !important`) */
+.fc .fc-timegrid-event {
+  border: none;
+  border-radius: 2px;
+  outline: 1.5px solid var(--color-retro-cream);
+  outline-offset: -1.5px;
+}
+.fc .fc-timegrid-event .fc-event-main {
+  padding: 2px 5px;
 }
 
-.fc-curs-tooltip-link:hover {
-  text-decoration: underline;
+/* Navy rule under the whole day-name header row (incl. the axis corner above
+   "toată ziua"), so the line spans full width */
+.fc .fc-col-header th {
+  border-bottom: 1.5px solid var(--color-navy) !important;
 }
 
-/* ── Mobile only ─────────────────────────────────────────────────────────────── */
+/* Mobile: horizontal scroll so ~2–3 days show (FC free lacks sticky ScrollGrid) */
 @media (max-width: 767px) {
-  .fc-curs-event {
-    cursor: pointer;
+  .wg-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
+  .wg-scroll .fc {
+    min-width: 760px;
+  }
+}
 
-  /* Block events pass clicks through to the day cell so the mobile modal can pick them up. */
+/* ── Mobile ───────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .fc-curs-event { cursor: pointer; }
+  /* Block events pass clicks through to the day cell so the mobile sheet picks them up. */
   .fc .fc-event-liber,
   .fc .fc-event-holiday,
   .fc .fc-event-vacation,
   .fc .fc-event-eveniment,
   .fc .fc-event-concurs,
+  .fc .fc-event-anulat,
   .fc .fc-event-liber *,
   .fc .fc-event-holiday *,
   .fc .fc-event-vacation *,
   .fc .fc-event-eveniment *,
   .fc .fc-event-concurs *,
+  .fc .fc-event-anulat *,
   .fc-daygrid-event-harness:has(.fc-event-liber),
   .fc-daygrid-event-harness:has(.fc-event-holiday),
   .fc-daygrid-event-harness:has(.fc-event-vacation),
   .fc-daygrid-event-harness:has(.fc-event-eveniment),
-  .fc-daygrid-event-harness:has(.fc-event-concurs) {
+  .fc-daygrid-event-harness:has(.fc-event-concurs),
+  .fc-daygrid-event-harness:has(.fc-event-anulat) {
     pointer-events: none;
   }
-
 }
 
-/* ── Mobile modal ────────────────────────────────────────────────────────────── */
+/* ── Mobile bottom sheet ──────────────────────────────────────────────────────── */
 .fc-mobile-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: oklch(0 0 0 / 0.3);
+  background: rgb(14 26 60 / 0.4);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   animation: fc-backdrop-in 0.15s ease both;
 }
+@keyframes fc-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 
-@keyframes fc-backdrop-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
+/* List sheet — cream, navy top, grip. Detail sheet adds .fc-mobile-modal--detail. */
 .fc-mobile-modal {
-  background: #ffffff;
-  border-radius: 16px 16px 0 0;
-  padding: 20px 20px 32px;
+  background: var(--color-retro-cream);
+  border-top: 3px solid var(--color-navy);
   width: 100%;
   max-width: 480px;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
-  gap: 8px;
   animation: fc-modal-in 0.18s ease both;
 }
-
 @keyframes fc-modal-in {
   from { transform: translateY(20px); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
 
-.fc-mobile-modal-image {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 4px;
-}
-
-.fc-mobile-modal .fc-curs-tooltip-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.fc-mobile-modal .fc-curs-tooltip-hours {
-  font-size: 0.88rem;
-  line-height: 1.45;
-}
-
-.fc-mobile-modal .fc-curs-tooltip-link {
-  font-size: 0.82rem;
-  padding-top: 10px;
-  margin-top: 4px;
+.fc-mobile-grip {
+  width: 40px;
+  height: 4px;
+  background: rgb(14 26 60 / 0.25);
+  border-radius: 2px;
+  margin: 9px auto 0;
+  flex-shrink: 0;
 }
 
 .fc-mobile-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  padding: 12px 18px 8px;
+  flex-shrink: 0;
 }
-
 .fc-mobile-modal-date {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: oklch(0.45 0 0);
+  font-family: var(--font-league-spartan), "League Spartan", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-navy);
   text-transform: capitalize;
 }
-
-.fc-mobile-modal-back {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: oklch(0.421 0.2593 264.52);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
 .fc-mobile-modal-close {
   font-size: 1rem;
-  color: oklch(0.6 0 0);
+  color: var(--color-navy);
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 2px;
   cursor: pointer;
   line-height: 1;
 }
@@ -549,10 +533,9 @@
 .fc-mobile-modal-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 4px;
+  padding: 0 12px 18px;
+  overflow-y: auto;
 }
-
 .fc-mobile-modal-item {
   display: flex;
   align-items: center;
@@ -560,55 +543,101 @@
   width: 100%;
   background: none;
   border: none;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: oklch(0.25 0.06 264);
+  border-top: 1px solid rgb(14 26 60 / 0.1);
+  padding: 13px 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-navy);
   cursor: pointer;
   text-align: left;
 }
-
-.fc-mobile-modal-item:active {
-  background: oklch(0.96 0 0);
-}
-
+.fc-mobile-modal-item:first-child { border-top: none; }
+.fc-mobile-modal-item:active { background: rgb(14 26 60 / 0.04); }
 .fc-mobile-modal-chevron {
   margin-left: auto;
-  font-size: 1rem;
-  color: oklch(0.65 0 0);
+  font-weight: 800;
+  color: rgb(14 26 60 / 0.4);
 }
 
-/* ── Mobile modal event-type dot colours ────────────────────────────────────── */
+/* List status square (colour = course/state) */
 .fc-mobile-modal-dot {
   flex-shrink: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: oklch(0.55 0.15 184); /* default: curs teal */
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-navy);
 }
-
 .fc-mobile-modal-dot--curs,
-.fc-mobile-modal-dot--next {
-  background-color: oklch(0.55 0.15 184);
+.fc-mobile-modal-dot--next,
+.fc-mobile-modal-dot--curs-special { background-color: var(--color-navy); }
+.fc-mobile-modal-dot--anulat { background-color: var(--color-navy); opacity: 0.45; }
+.fc-mobile-modal-dot--liber,
+.fc-mobile-modal-dot--holiday,
+.fc-mobile-modal-dot--vacation { background-color: var(--color-silver); }
+.fc-mobile-modal-dot--eveniment,
+.fc-mobile-modal-dot--concurs { background-color: var(--color-orange); }
+
+/* Detail sheet (C2): navy band pinned + image + scrollable body */
+.fc-mobile-band {
+  background: var(--color-navy);
+  color: var(--color-retro-cream);
+  padding: 12px 18px 16px;
+  flex-shrink: 0;
+}
+.fc-mobile-band-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.fc-mobile-band-top button {
+  border: 0;
+  background: none;
+  color: var(--color-retro-cream);
+  cursor: pointer;
+  font-family: inherit;
+}
+.fc-mobile-band-back {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.fc-mobile-band-close { font-size: 1rem; line-height: 1; }
+.fc-mobile-band-title {
+  font-family: var(--font-league-spartan), "League Spartan", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.05;
+  display: block;
+}
+.fc-mobile-band-meta {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(251 248 241 / 0.82);
+  margin-top: 7px;
 }
 
-.fc-mobile-modal-dot--liber {
-  background-color: oklch(0.65 0 0);
+.fc-mobile-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
-
-.fc-mobile-modal-dot--holiday {
-  background-color: oklch(0.72 0.17 85);
+.fc-mobile-modal-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
 }
-
-.fc-mobile-modal-dot--vacation {
-  background-color: oklch(0.70 0.13 280);
+.fc-mobile-detail-body { padding: 15px 18px 22px; }
+.fc-mobile-detail-body .fc-curs-tooltip-hours {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgb(14 26 60 / 0.72);
+  margin-top: 0;
 }
-
-.fc-mobile-modal-dot--eveniment {
-  background-color: oklch(0.72 0.18 55);
-}
-
-.fc-mobile-modal-dot--concurs {
-  background-color: oklch(0.72 0.18 15);
+.fc-mobile-detail-body .fc-curs-tooltip-link {
+  display: inline-block;
+  font-size: 0.78rem;
+  margin-top: 12px;
 }

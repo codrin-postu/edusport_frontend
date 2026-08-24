@@ -3,9 +3,11 @@
 @import "tw-animate-css";
 
 html {
-  font-family: var(--font-inter), var(--font-roboto), sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   scrollbar-gutter: stable;
   scrollbar-color: var(--color-edusport-blue) transparent;
+  /* Kill the browser's rubber-band / overscroll bounce at the page edges. */
+  overscroll-behavior: none;
 }
 
 /* Typography Rules */
@@ -17,7 +19,7 @@ p,
 span,
 div,
 body {
-  font-family: var(--font-inter), var(--font-roboto), sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 .font-handwriting {
@@ -37,11 +39,84 @@ h1.text-branding-font {
 }
 
 @theme {
-  --color-edusport-blue: #2138b8;
+  /* ── Color system — single source of truth ──────────────────────────
+     Every UI color lives here. Components reference these tokens (Tailwind
+     classes like `bg-navy` / `text-gold`, or `var(--color-…)` in styles)
+     instead of hardcoding hexes. Functional colors (status, medals) keep
+     their values but are named so they live in one place too.
+     Carve-outs (own self-contained palettes): fullcalendar-overrides.css,
+     and the canvas animations RinkTransition.tsx / SkateLoader.tsx. */
+
+  /* Brand */
+  --color-edusport-blue: #2138b8; /* primary: links, buttons, header overlays */
+  --color-cream: #f2ebdd;         /* light brand surface */
+  --color-navy: #0e1a3c;          /* dark surfaces + darkest ink text (one token) */
+  --color-gold: #fbbf24;          /* highlight / achievement accent */
+
+  /* Light tints (consolidated near-creams + faint brand wash) */
+  --color-surface-soft: #faf8f3;  /* off-white panels (was #fffbeb/#faf8f3) */
+  --color-blue-tint: #eef2fb;     /* faint brand-blue wash (was #eef2fb/#ddeeff) */
+
+  /* Status — semantic, values preserved */
+  --color-warning: #f59e0b;       /* alerts, announcement type */
+  --color-success: #10b981;
+  --color-danger: #e11d48;
+
+  /* Medal tiers — functional encoding */
+  --color-medal-gold: #fbbf24;   /* amber-400 */
+  --color-medal-silver: #9ca3af; /* gray-400 */
+  --color-medal-bronze: #ea580c; /* orange-600 */
+
+  /* Overlays / scrims */
+  --color-scrim: rgba(0, 0, 0, 0.35);
+  --color-scrim-light: rgba(255, 255, 255, 0.12);
+
   --color-light: oklch(0.9827 0.0026 286.35);
+
+  /* Retro palette — the site-wide 70s theme. Blue softened to a pastel
+     scheme colour (never the saturated #2138b8 as a section fill). */
+  --color-retro-cream: #fbf8f1;
+  --color-mustard: #efb22b;       /* warm gold — layers CTA + accents */
+  --color-orange: #ea7233;
+  --color-rust: #be3330;          /* brick red — eyebrows, hover underlines */
+  --color-burgundy: #6e4256;
+  --color-brown: #8a4b2f;
+  --color-pastel: #8ca3db;        /* softened brand blue — scheme surfaces */
+  --color-silver: #aeb6c4;        /* retro medal — Argint */
+  --color-bronze: #c77b41;        /* retro medal — Bronz */
+  --color-ink: #111827;           /* neutral near-black text (nav / strip labels) */
+
+  /* ── Type scale — single source of truth ────────────────────────────
+     Tailwind ships xs(12px)→9xl. We add the two missing small steps
+     below xs, plus semantic tokens for special cases. Use the named
+     utilities (text-2xs, text-label, …) instead of arbitrary text-[..px].
+     Large display/watermark sizes stay bespoke (clamp/one-off per art). */
+  --text-3xs: 0.625rem;   /* 10px — smallest caps labels */
+  --text-2xs: 0.6875rem;  /* 11px — micro labels */
+
+  /* Semantic — carry intent + treatment, not just size */
+  --text-label: 0.6875rem;              /* uppercase eyebrows/labels */
+  --text-label--line-height: 1.1;
+  --text-label--letter-spacing: 0.08em;
+  --text-logo: var(--font-size-branding-xl); /* brand wordmark clamp */
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.1;
+  --text-eyebrow--letter-spacing: 0.2em;
+
+  /* Retro display headings (League Spartan). Fluid, one scale for all sections. */
+  --text-display-sm: clamp(26px, 3.4vw, 40px);
+  --text-display-md: clamp(30px, 4.2vw, 48px);
+  --text-display-lg: clamp(48px, 6vw, 80px);
+  --text-display-xl: clamp(64px, 8vw, 108px);
+
   --max-content-width: 1280px;
   --max-footer-width: 1480px;
   --font-size-branding-xl: clamp(2rem, 12.8vw, 12rem);
+
+  --font-display: var(--font-league-spartan), "League Spartan", sans-serif;
+
+  --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.12);
 }
 
 @theme inline {
@@ -190,7 +265,7 @@ h1.text-branding-font {
   .link-underline-animate {
     @apply relative;
     @apply after:absolute after:left-0 after:bottom-0;
-    @apply after:w-full after:h-[1px] after:bg-white;
+    @apply after:w-full after:h-[1px] after:bg-current;
     @apply after:scale-x-0 after:origin-right;
     @apply after:transition-transform after:duration-300;
     @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
@@ -203,6 +278,28 @@ h1.text-branding-font {
     @apply after:scale-x-0 after:origin-right;
     @apply after:transition-transform after:duration-300;
     @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
+  }
+
+  /* Retro building blocks — shared across the site theme. */
+  .link-underline-rust {
+    @apply relative pb-[3px];
+    @apply after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust;
+    @apply after:transition-[width] after:duration-200;
+    @apply hover:after:w-full;
+  }
+  .retro-eyebrow {
+    @apply text-eyebrow font-bold uppercase text-navy;
+  }
+  .marker-tag {
+    @apply inline-flex items-center justify-center px-2 py-1;
+    @apply border-[1.5px] border-navy;
+    @apply text-2xs font-extrabold uppercase tracking-[0.04em];
+  }
+  .btn-retro-ghost {
+    @apply inline-flex items-center justify-center px-8 py-3.5;
+    @apply border-[1.5px] border-navy text-navy;
+    @apply text-sm font-bold uppercase tracking-[0.03em];
+    @apply transition-colors hover:bg-black hover:text-white;
   }
 }
 
@@ -232,3 +329,172 @@ h1.text-branding-font {
     animation: inscrieri-line-fill 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
+
+/* Retro footer — navy fill, breathing room before the pinned EDUSPORT
+   wordmark, mustard link-hover. Restyles the global Footer via the lv2-nav
+   flag on <html> without editing the component. */
+html.lv2-nav footer {
+  background-color: var(--color-navy) !important;
+  padding-bottom: clamp(190px, 17vw, 280px) !important;
+}
+
+/* The global <main> adds pb-24/md:pb-32 breathing room that would show as a
+   band above the footer register band — zero it. */
+html.lv2-nav main {
+  padding-bottom: 0 !important;
+}
+
+/* Nav: force the CTA layers face and the burger layers face to the same height
+   with centered contents, so they line up exactly in the items-center row. */
+html.lv2-nav header .lcta-face {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+html.lv2-nav footer a,
+html.lv2-nav footer a span {
+  color: var(--color-retro-cream) !important;
+}
+/* text links: hover to white (the mustard underline comes from the link's own
+   ::after). Social icon links (they carry an aria-label): hover to mustard. */
+html.lv2-nav footer a:hover,
+html.lv2-nav footer a:hover span {
+  color: #ffffff !important;
+}
+html.lv2-nav footer a[aria-label]:hover {
+  color: var(--color-mustard) !important;
+}
+/* Footer column typography: League Spartan headings at 17px, links at 14px
+   (Text headings render as span.text-lg). */
+html.lv2-nav footer span.text-lg {
+  font-family: "League Spartan", sans-serif;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+}
+html.lv2-nav footer a {
+  font-size: 0.875rem !important;
+}
+
+/* Layers CTA (retro primary button). Real CSS so the spring-overshoot +
+   snap-pop compile reliably. Two offset layers fan to the bottom-right on
+   hover; the face snaps onto the stack on click. */
+.lcta { position: relative; isolation: isolate; border-radius: 0; padding: 0; border: 0; background: transparent; }
+/* Put the default display in the `components` layer so Tailwind's `utilities`
+   layer (hidden, md:inline-block) overrides it — an UNLAYERED rule would beat
+   layered utilities regardless of specificity, making `hidden` a no-op. */
+@layer components {
+  /* inline-FLEX (not inline-block) so the wrapper hugs the face with no inline
+     baseline gap — otherwise the wrapper is a few px taller than the face and
+     the inset:0 layers peek out below it at rest. */
+  .lcta { display: inline-flex; }
+  /* Face always fills the wrapper so it matches the layers no matter how the
+     wrapper got its width (auto → shrink-to-content, w-full, or flex-stretch).
+     In @layer components so a fixed width utility (the burger's w-[46px]) wins. */
+  .lcta-face { width: 100%; }
+}
+.lcta-layer {
+  position: absolute; inset: 0; border: 1.5px solid var(--color-navy);
+  pointer-events: none;
+  /* return (hover-out): plain ease, no bounce */
+  transition: transform .26s ease;
+}
+/* hover-in: spring overshoot (bounce) */
+.lcta:hover .lcta-layer { transition: transform .34s cubic-bezier(.34, 1.56, .64, 1); }
+.lcta-l1 { z-index: 2; background: var(--color-mustard); }
+.lcta-l2 { z-index: 1; background: var(--color-rust); }
+.lcta:hover .lcta-l1 { transform: translate(4px, 4px); }
+.lcta:hover .lcta-l2 { transform: translate(8px, 8px); }
+.lcta-face {
+  position: relative; z-index: 3;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--color-navy);
+  transition: transform .04s steps(1);
+}
+.lcta:active .lcta-face { transform: translate(4px, 4px); }
+@media (prefers-reduced-motion: reduce) {
+  .lcta-layer, .lcta-face { transition: none; }
+}
+
+/* Retro NAV. Restyles the global Header via lv2-nav on <html>: cream bar,
+   uppercase Inter links with a brick underline, and a square dropdown panel
+   with a warm top stripe + brick left-bar hover (no chevrons/arrows). */
+html.lv2-nav .gap-x-5.h-12 > button,
+html.lv2-nav .gap-x-5.h-12 > a {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--color-navy);
+  position: relative;
+}
+html.lv2-nav .gap-x-5.h-12 > button:hover,
+html.lv2-nav .gap-x-5.h-12 > a:hover { color: var(--color-rust); }
+html.lv2-nav .gap-x-5.h-12 > button::after,
+html.lv2-nav .gap-x-5.h-12 > a::after {
+  content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
+  background: var(--color-rust); transition: width .22s;
+}
+html.lv2-nav .gap-x-5.h-12 > button:hover::after,
+html.lv2-nav .gap-x-5.h-12 > a:hover::after { width: 100%; }
+
+/* Brand block — small "Clubul Sportiv" caps over a larger EDUSPORT (match mockup) */
+html.lv2-nav header a[href="/"] { line-height: 1; gap: 1px; }
+html.lv2-nav header a[href="/"] > span:nth-child(1) {
+  font-size: 8.5px !important; letter-spacing: .18em; opacity: .7; font-weight: 400;
+}
+html.lv2-nav header a[href="/"] > span:nth-child(2) { font-size: 22px !important; }
+
+/* Dropdown panel → square, cream, hard offset shadow, warm top stripe, sits
+   close under the bar (matches the brainstorm preview). */
+html.lv2-nav .nav-dropdown-panel {
+  border-radius: 0 !important;
+  border: 1.5px solid var(--color-navy) !important;
+  background: var(--color-retro-cream) !important;
+  box-shadow: 8px 8px 0 rgba(14, 26, 60, 0.12) !important;
+  padding-top: 6px;      /* room for the top stripe (stripe pushes content down) */
+  margin-top: -14px;     /* pull up under the bar (kills the pt-6 gap) */
+  position: relative;
+}
+html.lv2-nav .nav-dropdown-panel::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; z-index: 5;
+  background: linear-gradient(to right,
+    var(--color-rust) 0 25%, var(--color-orange) 25% 50%,
+    var(--color-mustard) 50% 75%, var(--color-burgundy) 75% 100%);
+}
+/* Drop the small "DESPRE NOI / CURSURI" eyebrow label (promo tile already
+   carries the title). Landing-only — other pages keep it as a column label. */
+html.lv2-nav .nav-dropdown-panel p { display: none !important; }
+/* Sublink rows: drop the chevron; subtle white fill + brick left-bar on hover */
+html.lv2-nav .nav-dropdown-panel a { border-radius: 0 !important; border-left: 3px solid transparent; }
+html.lv2-nav .nav-dropdown-panel a svg { display: none !important; }
+html.lv2-nav .nav-dropdown-panel a:hover { background: #ffffff !important; border-left-color: var(--color-rust); }
+/* title tints to brick on hover; description stays muted navy (below the title) */
+html.lv2-nav .nav-dropdown-panel a > div > span:first-child { color: var(--color-navy); }
+html.lv2-nav .nav-dropdown-panel a > div > span + span { color: rgba(14, 26, 60, 0.55) !important; font-weight: 400; }
+html.lv2-nav .nav-dropdown-panel a:hover > div > span:first-child { color: var(--color-rust) !important; }
+
+/* Dropdown promo tile (image + gradient + title/description) */
+html.lv2-nav .nav-promo {
+  position: relative; width: 190px; flex-shrink: 0; overflow: hidden;
+  background-size: cover; background-position: center;
+  border-right: 1.5px solid var(--color-navy);
+}
+html.lv2-nav .nav-promo .nav-promo-ov {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(14, 26, 60, .25), rgba(14, 26, 60, .9));
+}
+html.lv2-nav .nav-promo .nav-promo-c {
+  position: relative; z-index: 2; height: 100%;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px; color: var(--color-retro-cream);
+}
+html.lv2-nav .nav-promo .nav-promo-t { font-weight: 600; font-size: 16px; line-height: 1.15; }
+html.lv2-nav .nav-promo .nav-promo-d { font-size: 11px; opacity: .85; margin-top: 4px; line-height: 1.4; }
+
+/* Mobile menu panel → square + cream + brick hover (light pass) */
+html.lv2-nav .z-\[999\] { border-radius: 0 !important; }
+/* Row links tint rust on hover — but NOT the layers CTA button (.lcta), whose
+   face text must stay white. */
+html.lv2-nav .z-\[999\] a:not(.lcta):hover span { color: var(--color-rust) !important; }

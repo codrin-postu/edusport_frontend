@@ -1,7 +1,6 @@
 import Link from "@/components/ui/link";
 import Section from "@/components/ui/section";
-import SectionHeader from "@/components/ui/section-header";
-import { ArrowUpRight, MapPin, Users, Award } from "lucide-react";
+import { MapPin, Users, Award } from "lucide-react";
 import YoutubeEmbed from "@/components/blocks/youtube-embed/YoutubeEmbed";
 import React from "react";
 
@@ -27,54 +26,57 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   videoLabel,
 }) => {
   const paragraphs = (content ?? "").split("\n\n").filter(Boolean);
+  const bullets = [
+    { Icon: MapPin, text: locationBullet },
+    { Icon: Users, text: levelsBullet },
+    { Icon: Award, text: coachesBullet },
+  ];
 
   return (
-    <Section className="py-20 bg-white">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Text content */}
-          <div className="flex flex-col gap-8">
-            <SectionHeader eyebrow={eyebrow} title={heading} />
-
-            <div className="flex flex-col gap-4 text-gray-500 text-base leading-relaxed font-light">
-              {paragraphs.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-
-            {/* Key info */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <div className="w-8 h-8 rounded-full bg-edusport-blue/8 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-edusport-blue" />
-                </div>
-                {locationBullet}
-              </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <div className="w-8 h-8 rounded-full bg-edusport-blue/8 flex items-center justify-center shrink-0">
-                  <Users className="w-4 h-4 text-edusport-blue" />
-                </div>
-                {levelsBullet}
-              </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <div className="w-8 h-8 rounded-full bg-edusport-blue/8 flex items-center justify-center shrink-0">
-                  <Award className="w-4 h-4 text-edusport-blue" />
-                </div>
-                {coachesBullet}
-              </div>
-            </div>
-
-            <Link
-              href="/cursuri/program"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-edusport-blue hover:text-edusport-blue/70 transition-colors w-fit"
-            >
-              Vezi programul complet
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
+    <Section className="py-20 bg-retro-cream">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-2">
+            <span className="text-eyebrow font-bold uppercase text-rust">
+              {eyebrow}
+            </span>
+            <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+              {heading}
+            </h2>
           </div>
 
-          {/* Video */}
-          <YoutubeEmbed url={videoUrl} title={videoLabel} label={videoLabel} />
+          <div className="flex flex-col gap-4 text-navy/65 text-base leading-relaxed">
+            {paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {bullets.map(({ Icon, text }, i) => (
+              <div key={i} className="flex items-center gap-3 text-sm text-navy">
+                <Icon className="w-5 h-5 shrink-0 text-rust" strokeWidth={1.8} />
+                {text}
+              </div>
+            ))}
+          </div>
+
+          <Link
+            href="/cursuri/program"
+            className="w-fit link-underline-rust text-sm font-bold uppercase tracking-[0.03em] text-navy"
+          >
+            Vezi programul complet
+          </Link>
         </div>
+
+        <div className="border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)] overflow-hidden">
+          <YoutubeEmbed
+            url={videoUrl}
+            title={videoLabel}
+            label={videoLabel}
+            className="rounded-none shadow-none"
+          />
+        </div>
+      </div>
     </Section>
   );
 };

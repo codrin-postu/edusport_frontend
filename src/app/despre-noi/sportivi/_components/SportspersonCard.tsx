@@ -41,6 +41,24 @@ interface Props {
   restingRotation?: number;
   /** Optional vertical offset in px (also resting only). */
   restingOffsetY?: number;
+  /**
+   * Retro pilot skin (landing-v2 only). Keeps the exact card layout + the
+   * cursor-tracking 3D tilt, but:
+   *  - square corners + an 8px navy edge (frames the photo),
+   *  - a hard offset shadow at rest that blooms into a soft "lift" shadow on
+   *    hover — carried on the STATIC outer wrapper so it never tilts with the
+   *    card (a shadow shouldn't rotate),
+   *  - a gentler tilt (6° / 1.03) so a corner never lifts past its shadow,
+   *  - no photo overlays: the left tier ribbon + top-left medal block are
+   *    dropped, and medal count moves into the bottom stat bar as "Medalii".
+   */
+  retro?: boolean;
+  /**
+   * Move the medal count out of the top-left corner (and drop the left ribbon)
+   * into the bottom stat bar as a "Medalii" stat — independent of the retro
+   * skin, so the legacy card can use the new medal placement too.
+   */
+  medalsInStats?: boolean;
 }
 
 /** Derive tier (gold/silver/bronze/neutral) + display label from bestPlacement. */
@@ -52,7 +70,7 @@ function tierFor(stats: SportspersonStats): {
 } {
   if (stats.goldCount > 0) {
     return {
-      color: "#fbbf24",
+      color: "var(--color-medal-gold)",
       label: "Aur",
       badgeText: "AUR",
       badgeCount: stats.goldCount,
@@ -60,7 +78,7 @@ function tierFor(stats: SportspersonStats): {
   }
   if (stats.silverCount > 0) {
     return {
-      color: "#cbd5e1",
+      color: "var(--color-medal-silver)",
       label: "Argint",
       badgeText: "ARG",
       badgeCount: stats.silverCount,
@@ -68,7 +86,7 @@ function tierFor(stats: SportspersonStats): {
   }
   if (stats.bronzeCount > 0) {
     return {
-      color: "#ea580c",
+      color: "var(--color-medal-bronze)",
       label: "Bronz",
       badgeText: "BRZ",
       badgeCount: stats.bronzeCount,
@@ -88,7 +106,12 @@ export function SportspersonCard({
   size = "default",
   restingRotation = 0,
   restingOffsetY = 0,
+  retro = false,
+  medalsInStats = false,
 }: Props) {
+  // Medals shown in the bottom bar (instead of the top corner) whenever the
+  // retro skin is on OR the caller opts in explicitly.
+  const bottomMedals = retro || medalsInStats;
   const cardRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
@@ -100,26 +123,38 @@ export function SportspersonCard({
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    // Tracks whether the pointer is currently over the card. A trailing rAF
+    // scheduled by the last mousemove can run *after* mouseleave; without this
+    // guard it would re-apply a tilt and leave the card stuck.
+    let over = false;
+
     const onMove = (e: MouseEvent) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = (e.clientY - rect.top) / rect.height;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(() => {
+        if (!over) return; // pointer already left — don't tilt
         // Tilt math: corner nearest cursor pops toward viewer.
         // CSS rotateX(+) leans the bottom forward; rotateY(+) leans the left
         // forward. So mouse-top → rx negative, mouse-right → ry negative.
-        const rx = reduced ? 0 : (y - 0.5) * 2 * MAX_TILT_DEG;
-        const ry = reduced ? 0 : -(x - 0.5) * 2 * MAX_TILT_DEG;
+        const maxTilt = retro ? 5 : MAX_TILT_DEG;
+        const rx = reduced ? 0 : (y - 0.5) * 2 * maxTilt;
+        const ry = reduced ? 0 : -(x - 0.5) * 2 * maxTilt;
         card.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
         card.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
       });
     };
     const onEnter = () => {
+      over = true;
       card.classList.add("is-tilting");
-      card.style.setProperty("--scale", String(HOVER_SCALE));
+      card.style.setProperty("--scale", String(retro ? 1.03 : HOVER_SCALE));
     };
     const onLeave = () => {
+      // Cancel any queued tilt frame so a late rAF can't re-apply a tilt after
+      // the pointer has left — the card always returns flat.
+      over = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       card.classList.remove("is-tilting");
       card.style.setProperty("--rx", "0deg");
       card.style.setProperty("--ry", "0deg");
@@ -134,9 +169,18 @@ export function SportspersonCard({
       card.removeEventListener("mousemove", onMove);
       card.removeEventListener("mouseleave", onLeave);
     };
-  }, []);
+  }, [retro]);
 
   const tier = tierFor(stats);
+  // Retro "Medalii" stat: total podium medals, tinted by tier (bronze swapped
+  // to a lighter orange for legibility on the dark name-block gradient).
+  const medalTotal = stats.goldCount + stats.silverCount + stats.bronzeCount;
+  const medalColor =
+    medalTotal === 0
+      ? "var(--color-cream)"
+      : tier.color === "var(--color-medal-bronze)"
+        ? "#fdba74"
+        : tier.color;
   const isSpotlight = size === "spotlight";
   const initials = sportsperson.name
     .split(" ")
@@ -146,10 +190,10 @@ export function SportspersonCard({
 
   return (
     <div
-      className="block"
+      className={cn("block", retro && "sp-wrap-retro")}
       style={
         {
-          perspective: "1100px",
+          perspective: retro ? "1500px" : "1100px",
           transformStyle: "preserve-3d",
           transform: `rotate(${restingRotation}deg) translateY(${restingOffsetY}px)`,
           transition: "transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)",
@@ -157,6 +201,18 @@ export function SportspersonCard({
       }
     >
       <style>{`
+        /* Retro drop shadow lives on the static wrapper so it stays flat
+           while the inner card tilts. Hard offset at rest → soft lift on
+           hover (card picks up toward the viewer). */
+        /* Soft blurred shadow, ON THE CARD (not the wrapper) so it tilts with
+           the card and hugs it — same as the live /sportivi card — instead of
+           sitting flat behind and reading as a detached shape. Grows on hover. */
+        .sp-card-retro {
+          box-shadow: 4px 8px 16px rgba(14,26,60,0.25);
+        }
+        .sp-card-retro.is-tilting {
+          box-shadow: 8px 20px 26px rgba(14,26,60,0.38);
+        }
         .sp-card {
           --rx: 0deg;
           --ry: 0deg;
@@ -170,42 +226,42 @@ export function SportspersonCard({
         .sp-card.is-tilting {
           transition: transform 0.06s linear, box-shadow 0.4s ease;
         }
-        .sp-card-foil {
-          background:
-            linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.32) 50%, transparent 60%),
-            linear-gradient(135deg, rgba(255, 184, 48, 0.18), transparent 40%, rgba(255,255,255,0.14) 70%, transparent);
-          background-size: 200% 100%, 100% 100%;
-          animation: sp-foil 4s linear infinite;
-        }
-        @keyframes sp-foil {
-          from { background-position: 200% 0, 0 0; }
-          to   { background-position: -200% 0, 0 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .sp-card-foil { animation: none; }
-        }
       `}</style>
       <Link
         href={`/despre-noi/sportivi/${sportsperson.slug}`}
         aria-label={`Vezi profilul ${sportsperson.name}`}
-        className="group block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue focus-visible:ring-offset-2"
+        className={cn(
+          "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue focus-visible:ring-offset-2",
+          retro ? "rounded-[12px]" : "rounded-xl",
+        )}
         style={{ transformStyle: "preserve-3d" }}
       >
         <div
           ref={cardRef}
           className={cn(
-            "sp-card relative overflow-hidden rounded-xl bg-[#15217a]",
+            "sp-card relative bg-navy",
+            retro
+              ? "sp-card-retro rounded-[12px] overflow-hidden"
+              : "rounded-xl overflow-hidden",
             isSpotlight ? "h-[360px] w-[260px]" : "h-[360px] w-full",
           )}
           style={{
-            // Thin neutral hairline. The tier signal now comes from the
-            // slanted ribbon down the left edge — the same SVG accent that
-            // marks podium results on /despre-noi/realizari. Removing the
-            // coloured ring stops the two tier indicators from competing.
-            boxShadow:
-              "0 16px 36px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.12)",
+            // Non-retro: soft drop shadow + white hairline. Retro: the navy
+            // "border" is an 8px padding FRAME with a rounded OUTER corner
+            // (rounded-[12px]); the inner layer below is square-clipped, so
+            // only the outside is rounded, the inside stays square.
+            boxShadow: retro
+              ? undefined
+              : "0 16px 36px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.12)",
           }}
         >
+          {/* Inner content layer — clips the photo to the card's rounding. */}
+          <div
+            className={cn(
+              "relative h-full w-full overflow-hidden",
+              retro ? "rounded-[12px]" : "rounded-xl",
+            )}
+          >
           {/* Photo or initials fallback */}
           {sportsperson.photo?.url ? (
             <Image
@@ -232,14 +288,6 @@ export function SportspersonCard({
             </div>
           )}
 
-          {/* Foil shimmer — spotlight only (too noisy on every grid card) */}
-          {isSpotlight && (
-            <div
-              aria-hidden
-              className="sp-card-foil pointer-events-none absolute inset-0 mix-blend-overlay"
-            />
-          )}
-
           {/* Slanted-line ribbon — same SVG accent as the podium result
               rows on /despre-noi/realizari (matching opacities 0.22 / 0.28
               / 0.32). Coloured via `currentColor` from the tier hex on the
@@ -264,7 +312,7 @@ export function SportspersonCard({
           {/* Top-row: medal count over the ribbon. Parallax forward via
               translateZ(20) so it lifts during the tilt. (Rank chip was
               removed — the position number didn't carry useful meaning.) */}
-          {tier.badgeText && (
+          {!bottomMedals && tier.badgeText && (
             <div
               aria-hidden
               className="absolute left-[14px] top-[14px] z-20 font-black leading-none"
@@ -273,15 +321,18 @@ export function SportspersonCard({
                 textShadow: "0 1px 4px rgba(0,0,0,0.55)",
               }}
             >
-              <span className="block text-[24px] tracking-[-0.02em] text-white">
+              <span className="block text-2xl tracking-[-0.02em] text-white">
                 {tier.badgeCount}×
               </span>
               <span
-                className="mt-[3px] block text-[9px] uppercase tracking-[0.24em]"
-                /* Bronze hex (#ea580c) reads brown against the dark photo
-                   — swap to a lighter orange for legibility. */
+                className="mt-[3px] block text-3xs uppercase tracking-[0.24em]"
+                /* Bronze (--color-medal-bronze) reads brown against the dark
+                   photo — swap to a lighter orange for legibility. */
                 style={{
-                  color: tier.color === "#ea580c" ? "#fdba74" : tier.color,
+                  color:
+                    tier.color === "var(--color-medal-bronze)"
+                      ? "#fdba74"
+                      : tier.color,
                 }}
               >
                 {tier.label}
@@ -301,39 +352,53 @@ export function SportspersonCard({
             <h4
               className={cn(
                 "mb-[5px] font-bold leading-tight tracking-[-0.01em] text-white",
-                isSpotlight ? "text-[22px]" : "text-[18px]",
+                isSpotlight ? "text-xl" : "text-lg",
               )}
             >
               {sportsperson.name}
             </h4>
             {sportsperson.activeSince && (
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
+              <div className="mb-2 text-3xs font-semibold uppercase tracking-[0.16em] text-white/55">
                 Membru din {sportsperson.activeSince.slice(0, 4)}
               </div>
             )}
             <div className="flex gap-[10px] border-t border-white/20 pt-[6px]">
               <div>
                 <div
-                  className="text-[17px] font-extrabold leading-none tracking-[-0.01em]"
+                  className="text-lg font-extrabold leading-none tracking-[-0.01em]"
                   style={{ color: tier.color }}
                 >
                   {String(stats.totalCompetitions).padStart(2, "0")}
                 </div>
-                <div className="mt-[3px] text-[8px] font-semibold uppercase tracking-[0.18em] text-white/65">
+                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
                   Comp.
                 </div>
               </div>
+              {bottomMedals && (
+                <div>
+                  <div
+                    className="text-lg font-extrabold leading-none tracking-[-0.01em]"
+                    style={{ color: medalColor }}
+                  >
+                    {String(medalTotal).padStart(2, "0")}
+                  </div>
+                  <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                    Medalii
+                  </div>
+                </div>
+              )}
               <div>
-                <div className="text-[17px] font-extrabold leading-none tracking-[-0.01em] text-white">
+                <div className="text-lg font-extrabold leading-none tracking-[-0.01em] text-white">
                   {stats.bestScore !== null
                     ? stats.bestScore.toFixed(2)
                     : "—"}
                 </div>
-                <div className="mt-[3px] text-[8px] font-semibold uppercase tracking-[0.18em] text-white/65">
+                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
                   Best
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </Link>
@@ -342,20 +407,22 @@ export function SportspersonCard({
 }
 
 /**
- * Vibrant gradient palette for photo-less cards. Picked deterministically
+ * Retro brand gradient palette for photo-less cards. Picked deterministically
  * from the athlete's slug so the same person always gets the same colours
- * across SSR and re-renders. Keeps the listing visually playful without
- * having to ask editors to upload a photo for every athlete.
+ * across SSR and re-renders. Each pair anchors on a dark/saturated brand tone
+ * (navy/blue/rust) so the white name text over the bottom overlay stays legible.
+ * Values mirror the globals.css @theme tokens (navy #0e1a3c, blue #2138b8,
+ * rust #be3330, gold #fbbf24).
  */
 const FALLBACK_GRADIENTS: Array<{ from: string; to: string }> = [
-  { from: "#f97316", to: "#db2777" }, // sunset (orange → pink)
-  { from: "#0ea5e9", to: "#1e3a8a" }, // ocean (sky → indigo)
-  { from: "#10b981", to: "#0f766e" }, // forest (emerald → teal)
-  { from: "#d946ef", to: "#6d28d9" }, // berry (fuchsia → violet)
-  { from: "#fbbf24", to: "#e11d48" }, // citrus (amber → rose)
-  { from: "#6366f1", to: "#7c3aed" }, // sky (indigo → purple)
-  { from: "#14b8a6", to: "#0e7490" }, // mint (teal → cyan)
-  { from: "#fb7185", to: "#ea580c" }, // coral (rose → orange)
+  { from: "#0e1a3c", to: "#2138b8" }, // navy → blue
+  { from: "#2138b8", to: "#0e1a3c" }, // blue → navy
+  { from: "#0e1a3c", to: "#be3330" }, // navy → rust
+  { from: "#be3330", to: "#0e1a3c" }, // rust → navy
+  { from: "#2138b8", to: "#be3330" }, // blue → rust
+  { from: "#be3330", to: "#fbbf24" }, // rust → gold
+  { from: "#0e1a3c", to: "#fbbf24" }, // navy → gold
+  { from: "#2138b8", to: "#fbbf24" }, // blue → gold
 ];
 
 function pickFallbackGradient(seed: string): { from: string; to: string } {

@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { FieldLabel, inputBase } from "@/components/ui/form-field";
+import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
-import SectionHeader from "@/components/ui/section-header";
+import SpotlightButton from "@/components/ui/spotlight-button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
+import { track } from "@/lib/analytics";
 
 // ---------------------------------------------------------------------------
 // Contact reasons
@@ -39,16 +40,16 @@ const ContactInfoCard: React.FC<{
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-start gap-4 p-5 bg-white border border-gray-100 hover:border-edusport-blue/30 hover:shadow-sm transition-all duration-200"
+      className="group flex items-center gap-4 p-4 bg-retro-cream border-[1.5px] border-navy shadow-[4px_4px_0_rgb(14_26_60_/_0.14)] hover:shadow-[6px_6px_0_rgb(14_26_60_/_0.2)] transition-all duration-200"
     >
-      <div className="mt-0.5 flex-shrink-0 w-9 h-9 rounded-full bg-edusport-blue/8 flex items-center justify-center group-hover:bg-edusport-blue/15 transition-colors">
-        <Icon className="w-4 h-4 text-edusport-blue" />
+      <div className="flex-shrink-0 w-9 h-9 border-[1.5px] border-navy bg-navy text-retro-cream flex items-center justify-center">
+        <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-0.5">
+        <p className="text-[10px] font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
           {label}
         </p>
-        <p className="text-sm font-medium text-gray-800 group-hover:text-edusport-blue transition-colors break-all">
+        <p className="text-sm font-semibold text-navy group-hover:text-rust transition-colors break-all">
           {value}
         </p>
       </div>
@@ -82,11 +83,19 @@ const ContactForm: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const startedRef = useRef(false);
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("contact.start");
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
+    markStarted();
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -110,6 +119,7 @@ const ContactForm: React.FC = () => {
         setStatus("error");
         return;
       }
+      track("contact.submit", { reason: form.reason || "altele" });
       setStatus("sent");
     } catch {
       setErrorMessage("Conexiune eșuată. Verifică internetul și încearcă din nou.");
@@ -127,18 +137,18 @@ const ContactForm: React.FC = () => {
   if (status === "sent") {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-8 text-center gap-4">
-        <div className="w-14 h-14 rounded-full bg-edusport-blue flex items-center justify-center">
-          <Send className="w-6 h-6 text-white" />
+        <div className="w-14 h-14 rounded-full bg-mustard flex items-center justify-center">
+          <Send className="w-6 h-6 text-navy" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900">
+        <h3 className="font-display text-2xl font-extrabold text-retro-cream">
           Mesaj trimis!
         </h3>
-        <p className="text-sm text-gray-500 max-w-xs">
+        <p className="text-sm text-retro-cream/60 max-w-xs">
           Îți mulțumim pentru mesaj. Te vom contacta în cel mai scurt timp.
         </p>
         <button
           onClick={resetForm}
-          className="mt-2 text-sm text-edusport-blue underline underline-offset-4 hover:opacity-70 transition-opacity"
+          className="mt-2 text-sm font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity"
         >
           Trimite un alt mesaj
         </button>
@@ -168,7 +178,7 @@ const ContactForm: React.FC = () => {
       />
       {/* Name */}
       <div>
-        <FieldLabel htmlFor="name">Nume complet *</FieldLabel>
+        <FieldLabel htmlFor="name" tone="dark">Nume complet *</FieldLabel>
         <input
           id="name"
           name="name"
@@ -177,14 +187,14 @@ const ContactForm: React.FC = () => {
           placeholder="Numele tău"
           value={form.name}
           onChange={handleChange}
-          className={inputBase}
+          className={inputOnNavy}
         />
       </div>
 
       {/* Email + Phone row */}
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <FieldLabel htmlFor="email">E-mail *</FieldLabel>
+          <FieldLabel htmlFor="email" tone="dark">E-mail *</FieldLabel>
           <input
             id="email"
             name="email"
@@ -193,11 +203,11 @@ const ContactForm: React.FC = () => {
             placeholder="email@exemplu.com"
             value={form.email}
             onChange={handleChange}
-            className={inputBase}
+            className={inputOnNavy}
           />
         </div>
         <div>
-          <FieldLabel htmlFor="phone">Telefon</FieldLabel>
+          <FieldLabel htmlFor="phone" tone="dark">Telefon</FieldLabel>
           <input
             id="phone"
             name="phone"
@@ -205,14 +215,14 @@ const ContactForm: React.FC = () => {
             placeholder="+40 7xx xxx xxx"
             value={form.phone}
             onChange={handleChange}
-            className={inputBase}
+            className={inputOnNavy}
           />
         </div>
       </div>
 
       {/* Reason */}
       <div>
-        <FieldLabel htmlFor="reason">Motivul contactării *</FieldLabel>
+        <FieldLabel htmlFor="reason" tone="dark">Motivul contactării *</FieldLabel>
         <Select
           id="reason"
           name="reason"
@@ -223,12 +233,13 @@ const ContactForm: React.FC = () => {
           options={CONTACT_REASONS}
           placeholder="Selectează motivul contactării..."
           required
+          className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
         />
       </div>
 
       {/* Message */}
       <div>
-        <FieldLabel htmlFor="message">Mesaj *</FieldLabel>
+        <FieldLabel htmlFor="message" tone="dark">Mesaj *</FieldLabel>
         <textarea
           id="message"
           name="message"
@@ -237,7 +248,7 @@ const ContactForm: React.FC = () => {
           placeholder="Scrie mesajul tău aici..."
           value={form.message}
           onChange={handleChange}
-          className={cn(inputBase, "resize-none")}
+          className={cn(inputOnNavy, "resize-none")}
         />
       </div>
 
@@ -251,29 +262,26 @@ const ContactForm: React.FC = () => {
         </div>
       )}
 
-      {/* Submit */}
-      <button
+      {/* Submit — retro layers CTA (cream face on the navy panel) */}
+      <SpotlightButton
+        layers
+        layersFace="cream"
         type="submit"
         disabled={status === "sending"}
-        className={cn(
-          "flex items-center justify-center gap-2 px-8 py-3.5",
-          "bg-edusport-blue text-white text-sm font-semibold",
-          "hover:bg-edusport-blue/90 transition-colors",
-          "disabled:opacity-60 disabled:cursor-not-allowed",
-        )}
+        className="w-full sm:w-fit"
       >
         {status === "sending" ? (
-          <>
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <span className="flex items-center gap-2">
+            <span className="w-4 h-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin" />
             Se trimite...
-          </>
+          </span>
         ) : (
-          <>
+          <span className="flex items-center gap-2">
             <Send className="w-4 h-4" />
             Trimite mesajul
-          </>
+          </span>
         )}
-      </button>
+      </SpotlightButton>
     </form>
   );
 };
@@ -304,36 +312,37 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
       value: "Scoala de Patinaj EduSport",
       href: contactInfo.facebookUrl1,
     },
-    contactInfo.facebookUrl2 && {
-      icon: ExternalLink,
-      label: "Facebook",
-      value: "Clubul Sportiv EduSport",
-      href: contactInfo.facebookUrl2,
-    },
   ].filter(Boolean) as { icon: React.ElementType; label: string; value: string; href: string }[];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["CONTACT"]} backgroundImage="/images/courses.png">
-        <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
           Contact
         </h1>
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4 max-w-md">
+        <p className="text-retro-cream/70 text-base max-w-md">
           Suntem aici să răspundem întrebărilor tale. Contactează-ne prin
           formularul de mai jos sau direct.
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-white">
+      <section className="relative z-10 bg-retro-cream">
         <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
-              <SectionHeader
-                eyebrow="Datele noastre"
-                title="Ia legătura cu noi"
-                description="Fie că vrei să te înscrii la cursuri, ai o întrebare sau dorești o colaborare, suntem bucuroși să te ajutăm."
-              />
+              <div className="flex flex-col gap-3">
+                <p className="text-eyebrow font-bold uppercase text-rust">
+                  Datele noastre
+                </p>
+                <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+                  Ia legătura cu noi
+                </h2>
+                <p className="text-sm text-navy/60 leading-relaxed max-w-sm">
+                  Fie că vrei să te înscrii la cursuri, ai o întrebare sau
+                  dorești o colaborare, suntem bucuroși să te ajutăm.
+                </p>
+              </div>
 
               <div className="flex flex-col gap-3">
                 {contactItems.map((item) => (
@@ -348,12 +357,13 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
               </div>
             </div>
 
-            {/* Right - form */}
-            <div className="bg-gray-50 p-6 md:p-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-1">
+            {/* Right - form (navy panel) */}
+            <div className="relative bg-navy p-6 md:p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]">
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
+              <h2 className="font-display text-2xl font-extrabold text-retro-cream mb-1">
                 Trimite-ne un mesaj
               </h2>
-              <p className="text-sm text-gray-400 mb-7">
+              <p className="text-sm text-retro-cream/50 mb-7">
                 Răspundem de obicei în 24–48 de ore.
               </p>
               <ContactForm />

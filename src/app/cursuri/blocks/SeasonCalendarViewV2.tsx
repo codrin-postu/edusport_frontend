@@ -7,6 +7,8 @@ import type { CalendarEvent } from "@/app/cursuri/program/_types";
 import { buildCalendarEvents } from "@/utils/fullcalendar-helpers";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
+import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
+import ViewModeDropdown, { type CalendarMode } from "@/components/blocks/fullcalendar/ViewModeDropdown";
 import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
@@ -17,7 +19,7 @@ import { ro } from "date-fns/locale";
 // Stable reference - avoids re-creating the array on every render of the toggle
 const CALENDAR_VIEW_OPTIONS = [
   { value: "calendar" as const, label: "Calendar complet" },
-  { value: "weekends" as const, label: "Weekenduri sezon" },
+  { value: "weekends" as const, label: "Weekenduri Școala Patinaj" },
 ];
 
 interface SeasonCalendarViewV2Props {
@@ -107,36 +109,34 @@ const WeekendRow: React.FC<{
   const hasDescription =
     isCancelled && !!description && description.trim().length > 0;
 
+  // Colour square = course colour (navy) / silver for liber / faded navy for cancelled.
+  const squareColor =
+    card.type === "liber" ? "bg-silver" : isCancelled ? "bg-navy/45" : "bg-navy";
+  const stateColor = isNext
+    ? "text-navy font-bold"
+    : isCancelled
+      ? "text-rust font-medium"
+      : card.type === "curs"
+        ? "text-navy/70"
+        : "text-navy/45";
+
   const row = (
     <div
       className={cn(
-        "flex items-center justify-between px-4 py-2.5 text-sm transition-colors",
-        isPast ? "opacity-40" : "",
-        isNext && "bg-green-50",
-        isCancelled && "bg-red-50",
-        hasDescription && "cursor-help hover:bg-gray-50",
+        "flex items-center px-4 py-2.5 text-sm border-t border-navy/[0.08] first:border-t-0 transition-colors",
+        isPast && "opacity-40",
+        isNext && "bg-mustard/[0.16]",
+        hasDescription && "cursor-help",
       )}
     >
-      {/* Status dot */}
-      <span
-        className={cn(
-          "w-2 h-2 rounded-full flex-shrink-0 mr-3",
-          isNext
-            ? "bg-green-500"
-            : isCancelled
-              ? "bg-red-500"
-              : card.type === "curs"
-                ? "bg-teal-400"
-                : "bg-gray-200",
-        )}
-      />
+      {/* Status square */}
+      <span className={cn("w-2.5 h-2.5 flex-shrink-0 mr-3", squareColor)} />
 
       {/* Date */}
       <span
         className={cn(
-          "flex-1 tabular-nums whitespace-nowrap",
-          isPast ? "text-gray-600" : "text-gray-700",
-          isCancelled && "line-through text-gray-500",
+          "flex-1 tabular-nums whitespace-nowrap text-navy",
+          isCancelled && "line-through text-navy/50",
         )}
       >
         {startLabel}
@@ -144,20 +144,7 @@ const WeekendRow: React.FC<{
       </span>
 
       {/* Status label */}
-      <span
-        className={cn(
-          "text-xs",
-          isNext
-            ? "text-green-600 font-medium"
-            : isCancelled
-              ? "text-red-600 font-medium"
-              : card.type === "curs"
-                ? "text-teal-600 font-medium"
-                : "text-gray-400",
-        )}
-      >
-        {stateLabel}
-      </span>
+      <span className={cn("text-xs", stateColor)}>{stateLabel}</span>
     </div>
   );
 
@@ -172,12 +159,12 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="z-50 max-w-[320px] bg-white text-gray-700 border border-gray-200 shadow-lg rounded-lg px-3 py-2.5 text-[0.72rem] leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="z-50 max-w-[320px] bg-retro-cream text-navy/75 border-[1.5px] border-navy shadow-[6px_6px_0_rgb(14_26_60_/_0.18)] px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
         >
-          <p className="text-[0.68rem] font-semibold uppercase tracking-wider text-edusport-blue/70">
+          <p className="text-3xs font-bold uppercase tracking-wider text-rust">
             {stateLabel}
           </p>
-          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-gray-900">
+          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-navy">
             {renderMarkdown(description)}
           </div>
         </TooltipPrimitive.Content>
@@ -198,23 +185,23 @@ const MonthColumn: React.FC<{
       {/* Month label - acts as table header */}
       <div
         className={cn(
-          "px-4 py-2 border-b border-gray-200 flex items-center justify-between",
+          "px-4 py-2.5 border-b-[1.5px] border-navy flex items-center justify-between",
           allPast && "sm:cursor-default cursor-pointer select-none",
         )}
         onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
       >
-        <span className="text-xs font-semibold uppercase tracking-widest text-gray-400 capitalize">
+        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-navy capitalize">
           {group.label}
         </span>
         {allPast && (
-          <span className="sm:hidden text-gray-300 text-xs">
+          <span className="sm:hidden text-navy/40 text-xs">
             {collapsed ? "▸" : "▾"}
           </span>
         )}
       </div>
 
       {/* Weekend rows */}
-      <div className={cn("divide-y divide-gray-100", collapsed && "hidden sm:block")}>
+      <div className={cn(collapsed && "hidden sm:block")}>
         {group.cards.map((card, i) => (
           <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
         ))}
@@ -237,6 +224,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
     "calendar",
   );
+  const [calendarMode, setCalendarMode] = useState<CalendarMode>("month");
 
   // Defer FullCalendar bundle until the container scrolls near the viewport.
   // Saves ~50–80 KB of initial JS on /cursuri/program.
@@ -288,18 +276,8 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
     return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
   }, [fcValidStart, fcValidEnd]);
 
-  // eslint-disable-next-line no-console
-  console.log("[SeasonCalendarViewV2] season props:", {
-    seasonStart,
-    seasonEnd,
-    fcValidStart,
-    fcValidEnd,
-    calendarInitialDate,
-    today: new Date().toISOString(),
-    seasonCalendarLength: seasonCalendar?.length ?? 0,
-    firstEventDates: seasonCalendar?.slice(0, 3).map((e) => ({ start: e.startDate, end: e.endDate, type: e.type })),
-    lastEventDates: seasonCalendar?.slice(-3).map((e) => ({ start: e.startDate, end: e.endDate, type: e.type })),
-  });
+  // Shared focus date so switching Lunar <-> Săptămânal keeps roughly the same period.
+  const [focusDate, setFocusDate] = useState<string>(calendarInitialDate);
 
   const calendarEvents = useMemo(
     () =>
@@ -331,38 +309,25 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   );
 
   return (
-    <section className={cn("py-12 md:py-16", "bg-gray-50")}>
-      <div
-        className={cn(
-          "w-full",
-          "max-w-content",
-          "mx-auto",
-          "px-4",
-          "md:px-8",
-          "lg:px-12",
-        )}
-      >
-        {/* Section heading */}
-        <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60 mb-1">
-          Calendar Sezon
-        </p>
-        <h2
-          className={cn(
-            "text-3xl md:text-4xl",
-            "font-semibold",
-            "text-gray-900",
-            "mb-3",
-            "leading-snug",
-          )}
-        >
-          {seasonLabel}
-        </h2>
-        <p className="text-gray-500 text-sm mb-8">
-          Datele în care se desfășoară cursurile și weekend-urile libere.
-        </p>
+    <section className="py-16 md:py-24 bg-retro-cream">
+      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+        {/* Header — eyebrow + title left, description right */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
+          <div>
+            <span className="text-eyebrow font-bold uppercase text-rust">
+              Calendar sezon
+            </span>
+            <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] mt-1.5">
+              Sezonul {seasonLabel}
+            </h2>
+          </div>
+          <p className="text-navy/60 text-sm sm:text-right sm:max-w-xs">
+            Datele în care se desfășoară cursurile și weekend-urile libere.
+          </p>
+        </div>
 
-        {/* Toggle */}
-        <div className="flex justify-center mb-8">
+        {/* View toggle */}
+        <div className="mt-6 mb-8">
           <SlidingPillToggle
             options={CALENDAR_VIEW_OPTIONS}
             value={activeView}
@@ -371,32 +336,60 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           />
         </div>
 
-        {/* Calendar view */}
+        {/* Calendar view — Lunar (month grid) / Săptămânal (rolling timeline) */}
         {activeView === "calendar" && (
-          <div
-            ref={calendarContainerRef}
-            className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 md:p-6"
-          >
-            {shouldMountCalendar ? (
-              <FullCalendarClient
-                events={calendarEvents}
-                initialDate={calendarInitialDate}
-                validRangeStart={fcValidStart}
-                validRangeEnd={fcValidEnd}
-              />
-            ) : (
-              <div
-                className="flex items-center justify-center bg-gray-50 rounded-xl border border-gray-200"
-                style={{ minHeight: 600 }}
-                aria-hidden="true"
-              />
-            )}
-          </div>
+          <>
+            {/* Shared card chrome (border + offset shadow) for both modes */}
+            <div
+              ref={calendarContainerRef}
+              className="bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+            >
+              {calendarMode === "month" ? (
+                shouldMountCalendar ? (
+                  <FullCalendarClient
+                    events={calendarEvents}
+                    initialDate={focusDate}
+                    validRangeStart={fcValidStart}
+                    validRangeEnd={fcValidEnd}
+                    onDatesChange={setFocusDate}
+                    viewModeControl={
+                      <ViewModeDropdown value={calendarMode} onChange={setCalendarMode} />
+                    }
+                  />
+                ) : (
+                  <div
+                    className="flex items-center justify-center bg-navy/[0.04]"
+                    style={{ minHeight: 600 }}
+                    aria-hidden="true"
+                  />
+                )
+              ) : (
+                <WeekGridClient
+                  events={calendarEvents}
+                  initialDate={focusDate}
+                  validRangeStart={fcValidStart}
+                  validRangeEnd={fcValidEnd}
+                  onDatesChange={setFocusDate}
+                  viewModeControl={
+                    <ViewModeDropdown value={calendarMode} onChange={setCalendarMode} />
+                  }
+                />
+              )}
+            </div>
+
+            {/* Legend */}
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-navy/60">
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-navy" />Curs</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-silver" />Liber</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-navy opacity-45" />Anulat</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-orange" />Eveniment</span>
+            </div>
+          </>
         )}
 
-        {/* Weekend view - borderless table layout */}
+        {/* Weekend view - month columns */}
         {activeView === "weekends" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-gray-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-navy/15 border-[1.5px] border-navy">
             {groupedWeekends.map((group) => (
               <MonthColumn
                 key={group.label}

@@ -11,21 +11,20 @@ const VIEWPORT_MARGIN = 8;
 
 const DesktopTooltip: React.FC<{
   title: string;
+  dateLabel?: string;
   description?: string;
   showRegulamentLink?: boolean;
+  isEvent?: boolean;
   pos: TooltipPos;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-}> = ({ title, description, showRegulamentLink = true, pos, onMouseEnter, onMouseLeave }) => {
+}> = ({ title, dateLabel, description, showRegulamentLink = true, isEvent = false, pos, onMouseEnter, onMouseLeave }) => {
   const { image, body } = extractFirstImage(description);
   const hasContent = !!body && body.trim().length > 0;
   const ref = useRef<HTMLSpanElement | null>(null);
-  // Initial placement = anchor-aligned `topAbove` / `left`. After mount we measure
-  // the rendered tooltip and clamp into the viewport.
   const [placement, setPlacement] = useState<{ top: number; left: number; below: boolean }>(
     { top: pos.topAbove, left: pos.left, below: false },
   );
-
   const clampPassesRef = useRef(0);
 
   useLayoutEffect(() => {
@@ -34,8 +33,6 @@ const DesktopTooltip: React.FC<{
   }, [pos.topAbove, pos.left]);
 
   useLayoutEffect(() => {
-    // Cap at 2 passes to avoid oscillation when the tooltip is wider than
-    // the usable viewport (both edges overflow → would loop forever).
     if (clampPassesRef.current >= 2) return;
     const el = ref.current;
     if (!el) return;
@@ -66,11 +63,12 @@ const DesktopTooltip: React.FC<{
   return createPortal(
     <span
       ref={ref}
-      className={`fc-curs-tooltip${image ? " fc-curs-tooltip--with-image" : ""}${placement.below ? " fc-curs-tooltip--below" : ""}`}
+      className={`fc-curs-tooltip${isEvent ? " fc-curs-tooltip--event" : ""}${placement.below ? " fc-curs-tooltip--below" : ""}`}
       style={{ top: placement.top, left: placement.left }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
+      <span aria-hidden className="fc-curs-tooltip-bar" />
       {image && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -82,6 +80,7 @@ const DesktopTooltip: React.FC<{
       )}
       <span className="fc-curs-tooltip-body">
         <span className="fc-curs-tooltip-title">{title}</span>
+        {dateLabel && <span className="fc-curs-tooltip-meta">{dateLabel}</span>}
         {hasContent && (
           <span className="fc-curs-tooltip-hours">{renderMarkdown(body)}</span>
         )}
@@ -91,7 +90,7 @@ const DesktopTooltip: React.FC<{
             className="fc-curs-tooltip-link"
             onClick={(e) => e.stopPropagation()}
           >
-            Vezi regulamentul →
+            Vezi regulamentul
           </a>
         )}
       </span>
@@ -104,7 +103,7 @@ const DesktopTooltip: React.FC<{
 
 function useTooltip() {
   const [pos, setPos] = useState<TooltipPos | null>(null);
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const anchorRef = useRef<HTMLElement | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const show = useCallback(() => {
@@ -131,24 +130,24 @@ function useTooltip() {
   return { pos, anchorRef, show, hide, keepOpen };
 }
 
-// ── CursEvent - dot + text + hover tooltip (curs/next weekends) ───────────────
+// ── CursEvent - text + hover tooltip (curs/next weekends) ─────────────────────
 
-const CursEvent: React.FC<{ title: string; description?: string }> = ({ title, description }) => {
+const CursEvent: React.FC<{ title: string; dateLabel?: string; description?: string }> = ({ title, dateLabel, description }) => {
   const { pos, anchorRef, show, hide, keepOpen } = useTooltip();
 
   return (
     <span
-      ref={anchorRef}
+      ref={anchorRef as React.RefObject<HTMLSpanElement>}
       className="fc-curs-event"
       onMouseEnter={show}
       onMouseLeave={hide}
     >
-      <span className="fc-curs-dot" />
       <span className="fc-curs-desktop-title">{title}</span>
 
       {pos !== null && typeof document !== "undefined" && (
         <DesktopTooltip
           title={title}
+          dateLabel={dateLabel}
           description={description}
           showRegulamentLink={true}
           pos={pos}
@@ -160,14 +159,14 @@ const CursEvent: React.FC<{ title: string; description?: string }> = ({ title, d
   );
 };
 
-// ── SpecialEventWithTooltip - block event label + hover tooltip (no regulament) ─
+// ── SpecialEventWithTooltip - block label + hover tooltip (no regulament) ──────
 
-export const SpecialEventWithTooltip: React.FC<{ title: string; description: string }> = ({ title, description }) => {
+export const SpecialEventWithTooltip: React.FC<{ title: string; dateLabel?: string; description: string }> = ({ title, dateLabel, description }) => {
   const { pos, anchorRef, show, hide, keepOpen } = useTooltip();
 
   return (
     <span
-      ref={anchorRef}
+      ref={anchorRef as React.RefObject<HTMLSpanElement>}
       className="fc-event-title"
       style={{ display: "block", width: "100%", cursor: "default" }}
       onMouseEnter={show}
@@ -177,14 +176,66 @@ export const SpecialEventWithTooltip: React.FC<{ title: string; description: str
       {pos !== null && typeof document !== "undefined" && (
         <DesktopTooltip
           title={title}
+          dateLabel={dateLabel}
           description={description}
           showRegulamentLink={false}
+          isEvent
           pos={pos}
           onMouseEnter={keepOpen}
           onMouseLeave={hide}
         />
       )}
     </span>
+  );
+};
+
+// ── Reusable hover-tooltip wrapper (used by the weekly timeline) ───────────────
+
+export const HoverTooltip: React.FC<{
+  title: string;
+  dateLabel?: string;
+  description?: string;
+  showRegulamentLink?: boolean;
+  isEvent?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+  children: React.ReactNode;
+}> = ({
+  title,
+  dateLabel,
+  description,
+  showRegulamentLink = false,
+  isEvent = false,
+  className,
+  style,
+  onClick,
+  children,
+}) => {
+  const { pos, anchorRef, show, hide, keepOpen } = useTooltip();
+  return (
+    <div
+      ref={anchorRef as React.RefObject<HTMLDivElement>}
+      className={className}
+      style={style}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onClick={onClick}
+    >
+      {children}
+      {pos !== null && typeof document !== "undefined" && (
+        <DesktopTooltip
+          title={title}
+          dateLabel={dateLabel}
+          description={description}
+          showRegulamentLink={showRegulamentLink}
+          isEvent={isEvent}
+          pos={pos}
+          onMouseEnter={keepOpen}
+          onMouseLeave={hide}
+        />
+      )}
+    </div>
   );
 };
 
