@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -64,4 +65,20 @@ const nextConfig: NextConfig = {
   compress: true,
 };
 
-export default withBundleAnalyzer(nextConfig);
+// Wrap with Sentry last so its build-time instrumentation (onRequestError
+// wiring, tunnelling, optional source-map upload) sees the final config.
+// Source-map upload only runs when SENTRY_AUTH_TOKEN is present, so this stays
+// inert for local/self-hosted GlitchTip builds where the token is unset.
+export default withSentryConfig(withBundleAnalyzer(nextConfig), {
+  // Sentry SaaS org/project — only used for source-map upload; harmless when
+  // unset (e.g. self-hosted GlitchTip, which does not require them).
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  // Upload a wider set of client source maps for readable stack traces.
+  widenClientFileUpload: true,
+
+  // Only print plugin output in CI.
+  silent: !process.env.CI,
+});
