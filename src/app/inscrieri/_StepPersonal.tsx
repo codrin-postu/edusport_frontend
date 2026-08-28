@@ -23,7 +23,8 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
     form.childBirthDate.trim() !== "" &&
     form.shirtSize.trim() !== "" &&
     form.parentName.trim() !== "" &&
-    form.phone.trim() !== "";
+    form.phone.trim() !== "" &&
+    form.email.trim() !== "";
 
   return (
     <div>
@@ -127,7 +128,48 @@ const StepPersonal: React.FC<StepPersonalProps> = ({ form, onChange, onNext }) =
             className={inputBase}
           />
         </motion.div>
+
+        <motion.div variants={fieldItem}>
+          <FieldLabel htmlFor="email">Email *</FieldLabel>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            placeholder="adresa@exemplu.ro"
+            value={form.email}
+            onChange={onChange}
+            className={inputBase}
+          />
+        </motion.div>
       </motion.div>
+
+      {/* Honeypot - hidden from users, catches bots. Must stay empty. */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0 0 0 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={onChange}
+        />
+      </div>
 
       <StepNavigation
         onBack={() => {}}

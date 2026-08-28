@@ -8,7 +8,7 @@ import StepExperience from "./_StepExperience";
 import StepPersonal from "./_StepPersonal";
 import {
   INITIAL_FORM,
-  submitToGoogleForms,
+  submitRegistration,
   type FormState,
   type SubmitStatus,
 } from "./_types";
@@ -52,7 +52,7 @@ const RegistrationForm: React.FC = () => {
     e?.preventDefault();
     setStatus("sending");
     try {
-      await submitToGoogleForms(form, agreements);
+      await submitRegistration(form, agreements);
       track("inscriere.submit_success");
       setStatus("sent");
     } catch {
