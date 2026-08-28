@@ -161,7 +161,7 @@ const CursEvent: React.FC<{ title: string; dateLabel?: string; description?: str
 
 // ── SpecialEventWithTooltip - block label + hover tooltip (no regulament) ──────
 
-export const SpecialEventWithTooltip: React.FC<{ title: string; dateLabel?: string; description: string }> = ({ title, dateLabel, description }) => {
+export const SpecialEventWithTooltip: React.FC<{ title: string; dateLabel?: string; description?: string }> = ({ title, dateLabel, description }) => {
   const { pos, anchorRef, show, hide, keepOpen } = useTooltip();
 
   return (

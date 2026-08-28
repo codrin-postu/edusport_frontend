@@ -45,7 +45,7 @@ export function buildCalendarEvents(
     const classNames = isNext ? ["fc-event-next-weekend"] : ["fc-event-curs"];
     const type = isNext ? "next" : "curs";
     const sharedProps = {
-      title: "Curs",
+      title: "Școala de patinaj",
       allDay: true,
       display: "block",
       classNames,
@@ -169,15 +169,22 @@ export function occurrencesToEvents(occurrences: CalendarOccurrence[]): EventInp
     const end = timed && o.endTime ? `${o.date}T${o.endTime}:00` : undefined;
     const timeLabel = timed ? `${o.startTime}${o.endTime ? `–${o.endTime}` : ""}` : "";
 
-    let description: string | null = null;
+    let description: string | null = o.description ?? null;
     if (o.status === "cancelled") {
       description = o.cancelReason === "blackout" ? "Anulat (pauză)" : "Anulat";
     } else if (o.status === "override") {
       description = `Reprogramat${timeLabel ? ` · ${timeLabel}` : ""}`;
     }
 
+    // Only prefix the label when it adds information (skip "Grupa A · Grupa A"
+    // and "Școala · Școala de patinaj").
+    const title =
+      o.label && !o.title.toLowerCase().includes(o.label.toLowerCase())
+        ? `${o.label} · ${o.title}`
+        : o.title;
+
     return {
-      title: o.label ? `${o.label} · ${o.title}` : o.title,
+      title,
       start,
       end,
       allDay: !timed,

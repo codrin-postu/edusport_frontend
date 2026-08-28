@@ -392,7 +392,12 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                 )
               ) : (
                 <WeekGridClient
-                  events={[...calendarEvents, ...hourlyEvents]}
+                  // Week grid uses ONLY the per-week hourly occurrences. They already
+                  // cover every event in the week (Școala as timed sessions, plus
+                  // non-Școala events); merging the all-day weekend tiles from
+                  // calendarEvents here would double the Școala weekend as both an
+                  // all-day "Curs" and its timed blocks.
+                  events={hourlyEvents}
                   initialDate={focusDate}
                   validRangeStart={fcValidStart}
                   validRangeEnd={fcValidEnd}

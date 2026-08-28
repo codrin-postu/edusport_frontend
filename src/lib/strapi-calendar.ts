@@ -23,6 +23,15 @@ export interface CalendarOccurrence {
   endTime: string | null; // HH:mm
   status: OccurrenceStatus;
   cancelReason: "exception" | "blackout" | null;
+  /** Școala de patinaj only — per-date state driving the weekend model. */
+  state?: "curs" | "liber" | "anulat" | null;
+  /** Per-occurrence note (e.g. reason a weekend is Liber/Anulat). */
+  note?: string | null;
+  /** Event description (markdown) shown in calendar tooltips / detail. */
+  description?: string | null;
+  imageUrl?: string | null;
+  linkUrl?: string | null;
+  linkLabel?: string | null;
 }
 
 export interface CalendarBlackout {
@@ -60,4 +69,62 @@ export async function fetchCalendarOccurrences(
   } catch {
     return { occurrences: [], blackouts: [] };
   }
+}
+
+// The occurrences endpoint caps each request at 92 days, but a full season is
+// ~7 months. Add days to a "YYYY-MM-DD" date (local, no timezone drift).
+function addDaysYMD(ymd: string, n: number): string {
+  const [y, m, d] = ymd.split("-").map(Number);
+  const dt = new Date(y, m - 1, d + n);
+  const yy = dt.getFullYear();
+  const mm = String(dt.getMonth() + 1).padStart(2, "0");
+  const dd = String(dt.getDate()).padStart(2, "0");
+  return `${yy}-${mm}-${dd}`;
+}
+
+/**
+ * Fetch a whole season by splitting it into ≤90-day windows (the endpoint's
+ * per-request cap) and merging the results. Occurrences are de-duplicated by
+ * (eventId, date) in case adjacent windows overlap on a boundary day.
+ */
+export async function fetchSeasonOccurrences(
+  from: string,
+  to: string,
+  revalidate = 300,
+): Promise<CalendarWindow> {
+  const windows: Array<[string, string]> = [];
+  let cursor = from;
+  while (cursor <= to) {
+    const end = addDaysYMD(cursor, 89);
+    windows.push([cursor, end < to ? end : to]);
+    cursor = addDaysYMD(end, 1);
+  }
+
+  const results = await Promise.all(
+    windows.map(([a, b]) => fetchCalendarOccurrences(a, b, revalidate)),
+  );
+
+  const seen = new Set<string>();
+  const occurrences: CalendarOccurrence[] = [];
+  for (const r of results) {
+    for (const o of r.occurrences) {
+      const key = `${o.eventId}:${o.date}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      occurrences.push(o);
+    }
+  }
+
+  const blackoutSeen = new Set<string>();
+  const blackouts: CalendarBlackout[] = [];
+  for (const r of results) {
+    for (const b of r.blackouts) {
+      const key = `${b.label}:${b.startDate}:${b.endDate}`;
+      if (blackoutSeen.has(key)) continue;
+      blackoutSeen.add(key);
+      blackouts.push(b);
+    }
+  }
+
+  return { occurrences, blackouts };
 }
