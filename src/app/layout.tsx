@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, League_Spartan, Caveat, Lora, Anton } from "next/font/google";
+import { Inter, League_Spartan, Caveat, Lora } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { FooterReveal, Header } from "../components/blocks";
@@ -31,13 +31,6 @@ const lora = Lora({
   weight: ["400", "500"],
   style: ["normal", "italic"],
   variable: "--font-lora",
-  display: "swap",
-});
-
-const anton = Anton({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400"],
-  variable: "--font-anton",
   display: "swap",
 });
 
@@ -109,7 +102,7 @@ export default async function RootLayout({
   return (
     <html
       lang="ro"
-      className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable} ${anton.variable}`}
+      className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable}`}
     >
       <body className="bg-edusport-blue overflow-x-clip">
         <OrganizationJsonLd

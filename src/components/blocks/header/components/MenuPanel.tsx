@@ -6,17 +6,17 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import React, { useEffect, useCallback } from "react";
 import { navItems } from "../navItems";
-
-const INSTAGRAM_URL = "https://instagram.com/edusport";
+import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 
 interface MenuPanelProps {
   isOpen: boolean;
   onClose: () => void;
   buttonRef: React.RefObject<HTMLElement | null>;
   registrationOpen?: boolean;
+  contactInfo?: SiteContactInfo;
 }
 
-const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, registrationOpen }) => {
+const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, registrationOpen, contactInfo }) => {
   const handleEscapeKey = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -47,6 +47,7 @@ const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, regis
       ctaHref={ctaHref}
       ctaLabel={ctaLabel}
       buttonRef={buttonRef}
+      instagramUrl={contactInfo?.instagramUrl}
     />
   );
 };
@@ -64,7 +65,8 @@ const RetroPanel: React.FC<{
   ctaHref: string;
   ctaLabel: string;
   buttonRef: React.RefObject<HTMLElement | null>;
-}> = ({ isOpen, onClose, ctaHref, ctaLabel, buttonRef }) => {
+  instagramUrl?: string;
+}> = ({ isOpen, onClose, ctaHref, ctaLabel, buttonRef, instagramUrl }) => {
   // Anchor the panel right under the real header (its height shifts when the
   // top contact strip collapses on scroll), so it sits flush like the preview.
   const [top, setTop] = React.useState(80);
@@ -128,21 +130,24 @@ const RetroPanel: React.FC<{
       );
     }
   });
-  rows.push(
-    <a
-      key="ig"
-      href={INSTAGRAM_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-3 mx-1 mt-1 p-2 transition-opacity hover:opacity-70"
-    >
-      <span className="w-[34px] h-[34px] rounded-[9px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
-      <span>
-        <span className="block text-[13px] font-semibold text-navy">Instagram</span>
-        <span className="block text-[11px] text-navy/50">@edusport</span>
-      </span>
-    </a>,
-  );
+  if (instagramUrl) {
+    const igHandle = `@${instagramUrl.replace(/\/+$/, "").split("/").pop()}`;
+    rows.push(
+      <a
+        key="ig"
+        href={instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 mx-1 mt-1 p-2 transition-opacity hover:opacity-70"
+      >
+        <span className="w-[34px] h-[34px] rounded-[9px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
+        <span>
+          <span className="block text-[13px] font-semibold text-navy">Instagram</span>
+          <span className="block text-2xs text-navy/50">{igHandle}</span>
+        </span>
+      </a>,
+    );
+  }
 
   return (
     <AnimatePresence>

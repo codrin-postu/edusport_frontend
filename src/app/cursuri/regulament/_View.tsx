@@ -60,7 +60,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
             <span className="text-eyebrow font-bold uppercase text-rust">Regulament</span>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] max-w-lg">
-                Regulament Scoala de Patinaj EduSport
+                Regulament Școala de Patinaj EduSport
               </h2>
               <p className="text-sm text-navy/50 md:text-right md:max-w-xs">
                 Vă rugăm să citiți cu atenție înainte de prima ședință.

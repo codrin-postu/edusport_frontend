@@ -34,7 +34,7 @@ export const VOLUNTEER_COPY = {
   introEyebrow: "De ce voluntariat",
   introHeading: "Timpul tău face diferența",
   introBody:
-    "Experiență reală lângă antrenori și sportivi, prieteni noi și un sport pe care îl duci mai departe în comunitate. Fără experiență prealabilă — te învățăm tot ce trebuie.",
+    "Experiență reală lângă antrenori și sportivi, prieteni noi și un sport pe care îl duci mai departe în comunitate. Fără experiență prealabilă, te învățăm tot ce trebuie.",
 };
 
 /** Placeholder gallery — swap for real volunteer photos (or a Strapi feed). */

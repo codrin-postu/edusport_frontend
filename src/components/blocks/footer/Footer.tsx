@@ -173,16 +173,14 @@ const WhatsAppGlyph = () => (
 
 const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }> = ({ contactInfo, retro }) => {
   const contactItems = buildContactItems(contactInfo ?? {});
-  const waUrl = contactInfo?.whatsappChannelUrl ?? "https://whatsapp.com/channel/0029Vaqul3WC6ZvanAX0DY06";
-  // Landing footer: phone/email placeholders until the BE provides them, plus
-  // social shown as compact icons instead of text links.
-  const phoneDisplay = contactInfo?.phone ?? "+40 7XX XXX XXX";
-  const emailDisplay = contactInfo?.email ?? "contact@edusport.ro";
+  const waUrl = contactInfo?.whatsappChannelUrl;
+  // Landing footer: social shown as compact icons instead of text links. Each
+  // icon renders only when the BE provides its URL (mirrors HeaderTop).
   const socialIcons = [
-    { label: "Facebook", href: contactInfo?.facebookUrl1 ?? "#", Icon: FacebookIcon },
-    { label: "Instagram", href: contactInfo?.instagramUrl ?? "#", Icon: InstagramIcon },
-    { label: "WhatsApp", href: waUrl, Icon: WhatsAppGlyph },
-  ];
+    contactInfo?.facebookUrl1 && { label: "Facebook", href: contactInfo.facebookUrl1, Icon: FacebookIcon },
+    contactInfo?.instagramUrl && { label: "Instagram", href: contactInfo.instagramUrl, Icon: InstagramIcon },
+    waUrl && { label: "WhatsApp", href: waUrl, Icon: WhatsAppGlyph },
+  ].filter(Boolean) as { label: string; href: string; Icon: React.FC }[];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-footer-content lg:justify-between gap-8 md:gap-10 lg:gap-12 px-22 py-10 mx-auto">
@@ -208,23 +206,25 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
         {retro ? (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-3">
-              <FooterItem type="phone" label={phoneDisplay} retro />
-              <FooterItem type="email" label={emailDisplay} retro />
+              {contactInfo?.phone && <FooterItem type="phone" label={contactInfo.phone} retro />}
+              {contactInfo?.email && <FooterItem type="email" label={contactInfo.email} retro />}
             </div>
-            <div className="flex items-center gap-4 mt-1">
-              {socialIcons.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white transition-colors"
-                >
-                  <s.Icon />
-                </a>
-              ))}
-            </div>
+            {socialIcons.length > 0 && (
+              <div className="flex items-center gap-4 mt-1">
+                {socialIcons.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    aria-label={s.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white transition-colors"
+                  >
+                    <s.Icon />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -235,7 +235,8 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
         )}
       </div>
 
-      {/* WhatsApp - 4th column */}
+      {/* WhatsApp - 4th column (only when the BE provides a channel URL) */}
+      {waUrl && (
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">
@@ -292,6 +293,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

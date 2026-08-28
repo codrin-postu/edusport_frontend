@@ -252,7 +252,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                           {sp.name}
                         </div>
                         {sp.activeSince && (
-                          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-navy/45">
+                          <div className="mt-0.5 text-3xs font-semibold uppercase tracking-[0.1em] text-navy/45">
                             Membru din {sp.activeSince.slice(0, 4)}
                           </div>
                         )}

@@ -25,7 +25,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <Section className={cn("py-20 md:py-28 bg-retro-cream", "overflow-hidden")}>
         <div className="max-w-4xl mx-auto mb-10 md:mb-12">
           <span className="text-eyebrow font-bold uppercase text-rust">
-            Program Scoala de Patinaj
+            Program Școala de Patinaj
           </span>
         </div>
         {/* Notebook page */}

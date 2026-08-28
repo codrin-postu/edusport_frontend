@@ -1,44 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { fetchArticleBySlug, fetchArticles, strapiMediaUrl } from "@/lib/strapi-article";
-import type { BlockNode, CategoryKey } from "@/lib/strapi-article";
 import EventDetailPage from "./_View";
-
-// Demo fallback so the page is viewable until Strapi is populated.
-const DEMO_EVENT = {
-  slug: "demo",
-  title: "Spectacol de Crăciun 2025",
-  category: "evenimente" as CategoryKey,
-  date: "2025-12-15T10:00:00",
-  eventDate: "2025-12-21T11:00:00",
-  location: "Patinoarul Cotroceni On Ice, AFI Palace Cotroceni",
-  coverImage: "/images/courses.png",
-  excerpt: "Spectacolul anual de Crăciun al Școlii de Patinaj EduSport.",
-  admissionInfo: "Intrare liberă",
-  tags: ["Spectacol", "Crăciun"],
-  body: [
-    { type: "paragraph", children: [
-      { type: "text", text: "Vă invităm cu drag la cel mai așteptat eveniment al sezonului. Cursanții din " },
-      { type: "text", text: "toate grupele", bold: true },
-      { type: "text", text: " vor urca pe gheață pentru o demonstrație specială de patinaj artistic." },
-    ] },
-    { type: "heading", level: 2, children: [{ type: "text", text: "Program" }] },
-    { type: "paragraph", children: [{ type: "text", text: "Spectacolul începe la ora 11:00 și durează aproximativ 90 de minute, cu o pauză scurtă la mijloc." }] },
-    { type: "list", format: "unordered", children: [
-      { type: "list-item", children: [{ type: "text", text: "Deschiderea oficială și cuvântul antrenorilor" }] },
-      { type: "list-item", children: [{ type: "text", text: "Demonstrații pe grupe de nivel" }] },
-      { type: "list-item", children: [{ type: "text", text: "Numărul special al grupei de performanță" }] },
-    ] },
-    { type: "quote", children: [{ type: "text", text: "Intrarea este gratuită pentru familiile cursanților. Locurile în tribune sunt limitate." }] },
-    { type: "paragraph", children: [
-      { type: "text", text: "Mai multe detalii găsiți în " },
-      { type: "link", url: "/cursuri/regulament", children: [{ type: "text", text: "regulamentul evenimentelor" }] },
-      { type: "text", text: "." },
-    ] },
-    { type: "heading", level: 3, children: [{ type: "text", text: "Cum ajungi" }] },
-    { type: "paragraph", children: [{ type: "text", text: "Patinoarul se află la etajul 2 al AFI Palace Cotroceni, cu acces facil cu metroul și autobuzul." }] },
-    { type: "image", image: { url: "/uploads/demo.png", alternativeText: "Spectacol pe gheață", caption: "Ediția de anul trecut a spectacolului." } },
-  ] as unknown as BlockNode[],
-};
 
 export const revalidate = 300;
 export const dynamicParams = true;
@@ -107,8 +70,8 @@ export default async function Page({ params }: Props) {
     strapiArticle = null;
   }
 
-  // Demo fallback until Strapi has events.
-  if (!strapiArticle) return <EventDetailPage event={{ ...DEMO_EVENT, slug }} />;
+  // No article for this slug — render the standard 404.
+  if (!strapiArticle) notFound();
 
   const event = {
     slug: strapiArticle.slug,

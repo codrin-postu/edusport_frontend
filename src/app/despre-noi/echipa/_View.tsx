@@ -120,7 +120,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       </h2>
                       <p
                         className={cn(
-                          "text-[11px] font-bold uppercase tracking-[0.06em] mt-0.5",
+                          "text-2xs font-bold uppercase tracking-[0.06em] mt-0.5",
                           featured ? "text-mustard" : "text-rust",
                         )}
                       >
@@ -135,7 +135,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       </p>
                       {trainer.teaches.length > 0 && (
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-navy/45 mb-1">
+                          <p className="text-3xs font-bold uppercase tracking-[0.1em] text-navy/45 mb-1">
                             Predă la
                           </p>
                           <ul className="flex flex-col gap-0.5">

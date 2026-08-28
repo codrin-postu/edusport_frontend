@@ -46,7 +46,7 @@ const ContactInfoCard: React.FC<{
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
+        <p className="text-3xs font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
           {label}
         </p>
         <p className="text-sm font-semibold text-navy group-hover:text-rust transition-colors break-all">
@@ -256,7 +256,7 @@ const ContactForm: React.FC = () => {
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="px-4 py-3 border border-red-200 bg-red-50 text-sm text-red-700"
+          className="px-4 py-3 border border-danger/30 bg-danger/10 text-sm text-danger"
         >
           {errorMessage}
         </div>
@@ -364,7 +364,7 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
                 Trimite-ne un mesaj
               </h2>
               <p className="text-sm text-retro-cream/50 mb-7">
-                Răspundem de obicei în 24–48 de ore.
+                Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <ContactForm />
             </div>

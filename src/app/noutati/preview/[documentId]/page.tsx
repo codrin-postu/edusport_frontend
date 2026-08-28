@@ -83,7 +83,7 @@ export default async function PreviewPage({ params, searchParams }: Props) {
           right: 0,
           zIndex: 9999,
           background:
-            status === "draft" ? "#d9822f" : "#328048", // amber for draft, green for published preview
+            status === "draft" ? "var(--color-warning)" : "var(--color-success)", // warning for draft, success for published preview
           color: "#fff",
           textAlign: "center",
           padding: "6px 12px",
@@ -93,7 +93,7 @@ export default async function PreviewPage({ params, searchParams }: Props) {
           letterSpacing: "0.02em",
         }}
       >
-        Previzualizare {status === "draft" ? "DRAFT" : "PUBLICAT"} — modificările nu sunt vizibile pe site
+        Previzualizare {status === "draft" ? "DRAFT" : "PUBLICAT"}, modificările nu sunt vizibile pe site
       </div>
       {/* Push the article down by the banner height so the header still
           sits in its normal position below it. */}

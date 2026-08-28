@@ -26,7 +26,7 @@ export const navItems: NavItem[] = [
     promo: {
       title: "Despre Noi",
       description: "Află povestea clubului, cunoaște echipa și descoperă realizările noastre.",
-      gradient: "from-purple-600 to-purple-500",
+      gradient: "from-edusport-blue to-blue-500",
     },
     dropdown: [
       {

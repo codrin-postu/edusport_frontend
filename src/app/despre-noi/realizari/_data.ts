@@ -60,9 +60,9 @@ const PODIUM_LABEL: Record<number, string> = {
 };
 
 const PODIUM_TEXT: Record<number, string> = {
-  1: "text-yellow-600",
-  2: "text-gray-600",
-  3: "text-orange-800",
+  1: "text-medal-gold",
+  2: "text-medal-silver",
+  3: "text-medal-bronze",
 };
 
 export function getPlacementInfo(placement: Placement): PlacementInfo {
