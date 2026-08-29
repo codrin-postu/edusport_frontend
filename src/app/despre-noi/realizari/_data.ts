@@ -11,8 +11,10 @@ export interface Result {
    *  profile. The name renders as a link to /despre-noi/sportivi/<slug>. */
   athleteSlug?: string;
   category: string;
-  placement: Placement;
-  score: number;
+  /** Null when the source has no placement for this entry (renders as "—"). */
+  placement: Placement | null;
+  /** Null when the source has no total score (renders as "—"). */
+  score: number | null;
 }
 
 export interface Competition {

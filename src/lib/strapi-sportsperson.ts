@@ -38,6 +38,10 @@ export interface StrapiSportsperson {
    *  and its inner programs. */
   seasons?: SportspersonSeason[] | null;
   photo?: StrapiMediaImage;
+  /** Slug linking this athlete to skate-results (skate-api.codrin.space) for
+   *  their scraped competition history. Set via the CMS "Rezultate" linker;
+   *  a scalar, so it returns on the default detail fetch. */
+  skateResultsSlug?: string | null;
 }
 
 export interface StrapiDiscipline {

@@ -152,7 +152,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                   ...comp,
                   results: [...comp.results]
                     .filter((r) => activeCategory === null || r.category === activeCategory)
-                    .sort((a, b) => a.placement - b.placement),
+                    .sort((a, b) => (a.placement ?? 999) - (b.placement ?? 999)),
                 }))
                 .filter((comp) => comp.results.length > 0);
               const resultCount = filteredComps.reduce((s, c) => s + c.results.length, 0);
@@ -217,7 +217,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                             {isCompOpen && (
                               <div className="mt-2 mb-2 border-t-[1.5px] border-b-[1.5px] border-navy divide-y divide-navy/12">
                                 {comp.results.map((result, idx) => {
-                                  const info = getPlacementInfo(result.placement);
+                                  const info = getPlacementInfo(result.placement ?? 99);
                                   const medalColor = info.accent
                                     ? info.textClass
                                     : "text-navy/30";
@@ -233,7 +233,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                                         )}
                                         aria-hidden
                                       >
-                                        {result.placement}
+                                        {result.placement ?? "—"}
                                       </span>
                                       {result.athleteSlug ? (
                                         <Link
@@ -251,7 +251,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
                                         {result.category}
                                       </span>
                                       <span className="ml-auto text-xs text-navy/45 tabular-nums shrink-0 w-16 text-right">
-                                        {result.score.toFixed(2)} pts
+                                        {result.score != null ? `${result.score.toFixed(2)} pts` : "—"}
                                       </span>
                                       <span
                                         className={cn(
