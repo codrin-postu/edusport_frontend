@@ -8,14 +8,28 @@ import React from "react";
 import { inputBase, StepIndicator, StepNavigation } from "./_shared";
 import type { FormState } from "./_types";
 import { LEVEL_OPTIONS, CLUB_OPTIONS } from "./_types";
+import CustomQuestions from "@/components/ui/custom-questions";
 import {
+  customFormatError,
   fieldHelp,
   fieldLabel,
+  getCustomQuestionsForStep,
+  isCustomFilled,
   isHidden,
   isRequired,
   selectOptions,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
   type FormConfig,
 } from "@/lib/strapi-forms";
+
+const EXPERIENCE_ANCHORS = [
+  "level",
+  "priorExperience",
+  "expectations",
+  "howHeard",
+  "clubInterest",
+];
 
 interface StepExperienceProps {
   form: FormState;
@@ -24,6 +38,8 @@ interface StepExperienceProps {
   onNext: () => void;
   onBack: () => void;
   config?: FormConfig | null;
+  extra: Record<string, CustomAnswer>;
+  onCustomChange: (key: string, value: CustomAnswer) => void;
 }
 
 const fieldItem = {
@@ -68,11 +84,46 @@ const StepExperience: React.FC<StepExperienceProps> = ({
   onNext,
   onBack,
   config = null,
+  extra,
+  onCustomChange,
 }) => {
   const shown = (key: keyof typeof FALLBACK) => !isHidden(config, key);
   const req = (key: keyof typeof FALLBACK) =>
     isRequired(config, key, FALLBACK[key].required);
   const asterisk = (key: keyof typeof FALLBACK) => (req(key) ? " *" : "");
+
+  const customs = getCustomQuestionsForStep(
+    config,
+    EXPERIENCE_ANCHORS,
+    INSCRIERE_BUILTIN_KEYS,
+  );
+  const [customErrors, setCustomErrors] = React.useState<
+    Record<string, string | undefined>
+  >({});
+
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
+
+  // Validate custom formats on advance; block if any is malformed.
+  const handleNext = () => {
+    const next: Record<string, string | undefined> = {};
+    let ok = true;
+    customs.forEach((q) => {
+      const err = customFormatError(q, extra[q.key]);
+      if (err) {
+        next[q.key] = err;
+        ok = false;
+      }
+    });
+    setCustomErrors(next);
+    if (ok) onNext();
+  };
 
   const levelHelp = fieldHelp(config, "level");
   const priorHelp = fieldHelp(config, "priorExperience", FALLBACK.priorExperience.help);
@@ -85,7 +136,8 @@ const StepExperience: React.FC<StepExperienceProps> = ({
     (!shown("priorExperience") || !req("priorExperience") || form.priorExperience.trim() !== "") &&
     (!shown("expectations") || !req("expectations") || form.expectations.trim() !== "") &&
     (!shown("howHeard") || !req("howHeard") || form.howHeard.trim() !== "") &&
-    (!shown("clubInterest") || !req("clubInterest") || form.clubInterest !== "");
+    (!shown("clubInterest") || !req("clubInterest") || form.clubInterest !== "") &&
+    customs.every((q) => !q.required || isCustomFilled(q, extra[q.key]));
 
   return (
     <div>
@@ -226,7 +278,18 @@ const StepExperience: React.FC<StepExperienceProps> = ({
         )}
       </motion.div>
 
-      <StepNavigation onBack={onBack} onNext={onNext} canProceed={canProceed} />
+      {/* Custom (admin-added) questions for this step, in config order. */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={onCustomChange}
+        onBlur={handleCustomBlur}
+        variant="card"
+        className={customs.length ? "mt-10" : undefined}
+      />
+
+      <StepNavigation onBack={onBack} onNext={handleNext} canProceed={canProceed} />
     </div>
   );
 };

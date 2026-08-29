@@ -5,21 +5,38 @@ import { motion } from "motion/react";
 import React, { useState } from "react";
 import { inputBase, StepIndicator, StepNavigation } from "./_shared";
 import type { FormState } from "./_types";
+import CustomQuestions from "@/components/ui/custom-questions";
 import {
+  customFormatError,
   fieldHelp,
   fieldLabel,
   fieldType,
+  getCustomQuestionsForStep,
+  isCustomFilled,
   isHidden,
   isRequired,
   validateValueByType,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
   type FormConfig,
 } from "@/lib/strapi-forms";
+
+const PERSONAL_ANCHORS = [
+  "childName",
+  "childBirthDate",
+  "shirtSize",
+  "parentName",
+  "phone",
+  "email",
+];
 
 interface StepPersonalProps {
   form: FormState;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onNext: () => void;
   config?: FormConfig | null;
+  extra: Record<string, CustomAnswer>;
+  onCustomChange: (key: string, value: CustomAnswer) => void;
 }
 
 const fieldItem = {
@@ -45,18 +62,38 @@ const StepPersonal: React.FC<StepPersonalProps> = ({
   onChange,
   onNext,
   config = null,
+  extra,
+  onCustomChange,
 }) => {
   const req = (key: FieldKey) => isRequired(config, key, FALLBACK[key].required);
   const shown = (key: FieldKey) => !isHidden(config, key);
   const typeOf = (key: FieldKey) => fieldType(config, key, FALLBACK[key].type);
 
+  const customs = getCustomQuestionsForStep(
+    config,
+    PERSONAL_ANCHORS,
+    INSCRIERE_BUILTIN_KEYS,
+  );
+
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
+  const [customErrors, setCustomErrors] = useState<
+    Record<string, string | undefined>
+  >({});
 
   const validate = (key: FieldKey) =>
     validateValueByType(typeOf(key), form[key]);
 
   const handleBlur = (key: FieldKey) => () =>
     setErrors((prev) => ({ ...prev, [key]: validate(key) }));
+
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
 
   // Validate all visible fields on advance; block if any is malformed.
   const handleNext = () => {
@@ -71,12 +108,25 @@ const StepPersonal: React.FC<StepPersonalProps> = ({
       }
     });
     setErrors(next);
+
+    const nextCustom: Record<string, string | undefined> = {};
+    customs.forEach((q) => {
+      const err = customFormatError(q, extra[q.key]);
+      if (err) {
+        nextCustom[q.key] = err;
+        ok = false;
+      }
+    });
+    setCustomErrors(nextCustom);
+
     if (ok) onNext();
   };
 
-  const canProceed = (["childName", "childBirthDate", "shirtSize", "parentName", "phone", "email"] as FieldKey[])
-    .filter((key) => shown(key) && req(key))
-    .every((key) => form[key].trim() !== "");
+  const canProceed =
+    (["childName", "childBirthDate", "shirtSize", "parentName", "phone", "email"] as FieldKey[])
+      .filter((key) => shown(key) && req(key))
+      .every((key) => form[key].trim() !== "") &&
+    customs.every((q) => !q.required || isCustomFilled(q, extra[q.key]));
 
   // Render helper (a plain function returning JSX, NOT a nested component, so
   // inputs keep their identity across keystrokes and never lose focus).
@@ -156,6 +206,17 @@ const StepPersonal: React.FC<StepPersonalProps> = ({
         {renderField("phone")}
         {renderField("email")}
       </motion.div>
+
+      {/* Custom (admin-added) questions for this step, in config order. */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={onCustomChange}
+        onBlur={handleCustomBlur}
+        variant="card"
+        className={customs.length ? "mt-10" : undefined}
+      />
 
       {/* Honeypot - hidden from users, catches bots. Must stay empty. */}
       <div

@@ -9,14 +9,22 @@ import SpotlightButton from "@/components/ui/spotlight-button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { track } from "@/lib/analytics";
+import CustomQuestions from "@/components/ui/custom-questions";
 import {
+  buildCustomPayload,
+  customFormatError,
   fieldHelp,
   fieldLabel,
   fieldType,
+  getCustomQuestions,
+  isCustomFilled,
   isHidden,
   isRequired,
   selectOptions,
   validateValueByType,
+  CONTACT_BUILTIN_KEYS,
+  VALIDATION_MESSAGES,
+  type CustomAnswer,
   type FormConfig,
   type FormQuestionType,
 } from "@/lib/strapi-forms";
@@ -113,6 +121,45 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     phone?: string;
   }>({});
 
+  // Custom (admin-added) questions and their collected answers / errors.
+  const customs = getCustomQuestions(config, CONTACT_BUILTIN_KEYS);
+  const [extra, setExtra] = useState<Record<string, CustomAnswer>>({});
+  const [customErrors, setCustomErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+  const handleCustomChange = (key: string, value: CustomAnswer) => {
+    markStarted();
+    setExtra((prev) => ({ ...prev, [key]: value }));
+  };
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
+  // Validate every custom (format first, then required); returns true when all
+  // pass and updates the inline error map.
+  const validateCustoms = (): boolean => {
+    const next: Record<string, string | undefined> = {};
+    let ok = true;
+    for (const q of customs) {
+      const val = extra[q.key];
+      const fmt = customFormatError(q, val);
+      if (fmt) {
+        next[q.key] = fmt;
+        ok = false;
+      } else if (q.required && !isCustomFilled(q, val)) {
+        next[q.key] = VALIDATION_MESSAGES.required;
+        ok = false;
+      }
+    }
+    setCustomErrors(next);
+    return ok;
+  };
+
   // Type-driven field validation (email/phone). Empty values pass here; the
   // native `required` attribute + effective config gate emptiness.
   const validateField = (key: "email" | "phone") =>
@@ -146,16 +193,23 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     const emailErr = validateField("email");
     const phoneErr = validateField("phone");
     setFieldErrors({ email: emailErr, phone: phoneErr });
-    if (emailErr || phoneErr) return;
+    const customsOk = validateCustoms();
+    if (emailErr || phoneErr || !customsOk) return;
 
     setStatus("sending");
     setErrorMessage("");
+
+    const extraPayload = buildCustomPayload(customs, extra);
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, _botField: botField }),
+        body: JSON.stringify({
+          ...form,
+          _botField: botField,
+          ...(Object.keys(extraPayload).length ? { extra: extraPayload } : {}),
+        }),
       });
       const json = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -179,6 +233,8 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     setBotField("");
     setErrorMessage("");
     setFieldErrors({});
+    setExtra({});
+    setCustomErrors({});
     setStatus("idle");
   };
 
@@ -334,6 +390,16 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
           />
         </div>
       )}
+
+      {/* Custom (admin-added) questions — appended in config order */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={handleCustomChange}
+        onBlur={handleCustomBlur}
+        variant="navy"
+      />
 
       {/* Error */}
       {status === "error" && errorMessage && (

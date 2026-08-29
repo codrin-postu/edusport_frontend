@@ -13,13 +13,20 @@ import {
   type SubmitStatus,
 } from "./_types";
 import { track } from "@/lib/analytics";
-import type { FormConfig } from "@/lib/strapi-forms";
+import {
+  buildCustomPayload,
+  getCustomQuestions,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
+  type FormConfig,
+} from "@/lib/strapi-forms";
 
 const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   config = null,
 }) => {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
+  const [extra, setExtra] = useState<Record<string, CustomAnswer>>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -48,6 +55,11 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCustomChange = (key: string, value: CustomAnswer) => {
+    markStarted();
+    setExtra((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async(
     e: React.FormEvent | undefined,
     agreements: { gdpr: boolean; regulament: boolean },
@@ -55,7 +67,11 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     e?.preventDefault();
     setStatus("sending");
     try {
-      await submitRegistration(form, agreements);
+      const extraPayload = buildCustomPayload(
+        getCustomQuestions(config, INSCRIERE_BUILTIN_KEYS),
+        extra,
+      );
+      await submitRegistration(form, agreements, extraPayload);
       track("inscriere.submit_success");
       setStatus("sent");
     } catch {
@@ -83,6 +99,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         <button
           onClick={() => {
             setForm(INITIAL_FORM);
+            setExtra({});
             setStatus("idle");
             setStep(0);
           }}
@@ -101,6 +118,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         onChange={handleChange}
         onNext={nextStep}
         config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
       />
     ) : step === 1 ? (
       <StepExperience
@@ -110,6 +129,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         onNext={nextStep}
         onBack={prevStep}
         config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
       />
     ) : (
       <StepConfirm
@@ -117,6 +138,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         onSubmit={handleSubmit}
         status={status}
         config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
       />
     );
 

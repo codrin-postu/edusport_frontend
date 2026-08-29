@@ -26,6 +26,7 @@ export type FormQuestionType =
   | "longtext"
   | "select"
   | "checkbox"
+  | "date"
   | "info";
 
 export interface FormOption {
@@ -195,6 +196,7 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const VALIDATION_MESSAGES = {
   email: "Adresa de email nu este validă.",
   phone: "Numărul de telefon nu este valid.",
+  required: "Acest câmp este obligatoriu.",
 } as const;
 
 /** Valid email per the shared rule. */
@@ -222,4 +224,147 @@ export function validateValueByType(
   if (type === "email" && !isValidEmail(value)) return VALIDATION_MESSAGES.email;
   if (type === "tel" && !isValidPhone(value)) return VALIDATION_MESSAGES.phone;
   return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Custom (admin-added) questions. Any question whose `key` is not part of a
+// form's known built-in set is "custom": it is rendered generically from its
+// `type` and its answer is submitted under the `extra` object, keyed by the
+// custom key (e.g. `extra: { "c_ab12": "Praf, polen" }`). Everything degrades
+// to zero customs when the config is absent, so the built-in forms are
+// unchanged in fallback mode.
+// ---------------------------------------------------------------------------
+
+/** Built-in keys for the Contact form (everything else in config is custom). */
+export const CONTACT_BUILTIN_KEYS = new Set<string>([
+  "name",
+  "email",
+  "phone",
+  "reason",
+  "message",
+]);
+
+/** Built-in keys for the Înscriere form (everything else in config is custom). */
+export const INSCRIERE_BUILTIN_KEYS = new Set<string>([
+  "email",
+  "phone",
+  "childName",
+  "childBirthDate",
+  "parentName",
+  "howHeard",
+  "level",
+  "priorExperience",
+  "expectations",
+  "shirtSize",
+  "clubInterest",
+  "website",
+  "regulationsAgreement",
+  "privacyConsent",
+]);
+
+/** A custom answer is a string (text/select/date/...) or a boolean (checkbox). */
+export type CustomAnswer = string | boolean;
+
+function isRenderableCustom(
+  q: FormQuestion | undefined,
+  builtins: Set<string>,
+  notice: FormQuestion | undefined,
+): q is FormQuestion {
+  return (
+    !!q &&
+    typeof q.key === "string" &&
+    !builtins.has(q.key) &&
+    q.hidden !== true &&
+    q !== notice
+  );
+}
+
+/**
+ * Every custom question across all steps, in config order. Excludes hidden
+ * questions and the single `info` block already consumed as the confirm notice
+ * (see `getInfoQuestion`) so it is never rendered twice.
+ */
+export function getCustomQuestions(
+  config: FormConfig | null | undefined,
+  builtins: Set<string>,
+): FormQuestion[] {
+  if (!config?.steps) return [];
+  const notice = getInfoQuestion(config);
+  const out: FormQuestion[] = [];
+  for (const step of config.steps) {
+    for (const q of step.questions ?? []) {
+      if (isRenderableCustom(q, builtins, notice)) out.push(q);
+    }
+  }
+  return out;
+}
+
+/**
+ * Custom questions belonging to the config step that contains any of `anchors`
+ * (a set of built-in keys unique to that step), in config order. Used to place
+ * customs inside the right multi-step page of the Înscriere form.
+ */
+export function getCustomQuestionsForStep(
+  config: FormConfig | null | undefined,
+  anchors: string[],
+  builtins: Set<string>,
+): FormQuestion[] {
+  if (!config?.steps) return [];
+  const notice = getInfoQuestion(config);
+  const step = config.steps.find((s) =>
+    s.questions?.some((q) => q && anchors.includes(q.key)),
+  );
+  if (!step) return [];
+  return (step.questions ?? []).filter((q) =>
+    isRenderableCustom(q, builtins, notice),
+  );
+}
+
+/** Enabled options of a custom `select`, mapped to the Select component shape. */
+export function optionItems(question: FormQuestion): SelectItemOption[] {
+  const opts = question.options;
+  if (!Array.isArray(opts)) return [];
+  return opts
+    .filter((o) => o && o.enabled !== false && typeof o.value === "string")
+    .map((o) => ({ value: o.value, label: o.label ?? o.value }));
+}
+
+/** Whether a required custom question has been answered. */
+export function isCustomFilled(
+  question: FormQuestion,
+  value: CustomAnswer | undefined,
+): boolean {
+  if (question.type === "checkbox") return value === true;
+  return typeof value === "string" && value.trim() !== "";
+}
+
+/** Format error (email / tel) for a custom answer, or `undefined` when valid. */
+export function customFormatError(
+  question: FormQuestion,
+  value: CustomAnswer | undefined,
+): string | undefined {
+  if (typeof value !== "string") return undefined;
+  return validateValueByType(question.type, value);
+}
+
+/**
+ * Build the `extra` payload from the collected custom answers. Empty strings
+ * are dropped; booleans (checkboxes) are always kept. `info` items carry no
+ * answer. Returns `{}` when there is nothing to submit so callers can omit it.
+ */
+export function buildCustomPayload(
+  questions: FormQuestion[],
+  values: Record<string, CustomAnswer>,
+): Record<string, CustomAnswer> {
+  const extra: Record<string, CustomAnswer> = {};
+  for (const q of questions) {
+    if (q.type === "info") continue;
+    const v = values[q.key];
+    if (typeof v === "boolean") {
+      extra[q.key] = v;
+    } else if (typeof v === "string" && v.trim() !== "") {
+      extra[q.key] = v;
+    }
+  }
+  return extra;
 }

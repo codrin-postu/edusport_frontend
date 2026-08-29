@@ -64,6 +64,16 @@ export async function POST(req: NextRequest) {
 
   const userAgent = req.headers.get("user-agent")?.slice(0, 255) ?? "";
 
+  // Custom (admin-added) answers, forwarded verbatim under `extra`. Kept only
+  // when it is a non-empty plain object so built-in behaviour is unchanged.
+  const extra =
+    body.extra &&
+    typeof body.extra === "object" &&
+    !Array.isArray(body.extra) &&
+    Object.keys(body.extra as object).length > 0
+      ? (body.extra as Record<string, unknown>)
+      : undefined;
+
   const res = await fetch(`${STRAPI_URL}/api/contact-submissions`, {
     method: "POST",
     headers: {
@@ -79,6 +89,7 @@ export async function POST(req: NextRequest) {
         message,
         submitterIp: ip,
         userAgent,
+        ...(extra ? { extra } : {}),
       },
     }),
     cache: "no-store",

@@ -3,6 +3,8 @@
 // backend endpoint /api/forms/inscriere.
 // ---------------------------------------------------------------------------
 
+import type { CustomAnswer } from "@/lib/strapi-forms";
+
 export interface FormState {
   email: string;
   phone: string;
@@ -70,6 +72,7 @@ const STRAPI_URL =
 export async function submitRegistration(
   form: FormState,
   agreements: { gdpr: boolean; regulament: boolean },
+  extra?: Record<string, CustomAnswer>,
 ): Promise<void> {
   const payload = {
     email: form.email,
@@ -86,6 +89,8 @@ export async function submitRegistration(
     regulationsAgreement: agreements.regulament,
     privacyConsent: agreements.gdpr,
     website: form.website,
+    // Custom (admin-added) answers keyed by their custom key; omitted when none.
+    ...(extra && Object.keys(extra).length ? { extra } : {}),
   };
 
   const res = await fetch(`${STRAPI_URL}/api/forms/inscriere`, {

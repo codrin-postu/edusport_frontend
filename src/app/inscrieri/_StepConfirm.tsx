@@ -7,12 +7,20 @@ import React, { useState } from "react";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { StepIndicator } from "./_shared";
 import type { SubmitStatus } from "./_types";
+import CustomQuestions from "@/components/ui/custom-questions";
 import {
+  customFormatError,
   fieldLabel,
+  getCustomQuestionsForStep,
   getInfoQuestion,
+  isCustomFilled,
   isRequired,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
   type FormConfig,
 } from "@/lib/strapi-forms";
+
+const CONFIRM_ANCHORS = ["regulationsAgreement", "privacyConsent"];
 
 interface StepConfirmProps {
   onBack: () => void;
@@ -22,6 +30,8 @@ interface StepConfirmProps {
   ) => void;
   status: SubmitStatus;
   config?: FormConfig | null;
+  extra: Record<string, CustomAnswer>;
+  onCustomChange: (key: string, value: CustomAnswer) => void;
 }
 
 const FALLBACK = {
@@ -41,16 +51,53 @@ const StepConfirm: React.FC<StepConfirmProps> = ({
   onSubmit,
   status,
   config = null,
+  extra,
+  onCustomChange,
 }) => {
   const [regulamentAccepted, setRegulamentAccepted] = useState(false);
   const [gdprAccepted, setGdprAccepted] = useState(false);
+
+  const customs = getCustomQuestionsForStep(
+    config,
+    CONFIRM_ANCHORS,
+    INSCRIERE_BUILTIN_KEYS,
+  );
+  const [customErrors, setCustomErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
 
   const regulamentRequired = isRequired(config, "regulationsAgreement", true);
   const gdprRequired = isRequired(config, "privacyConsent", true);
 
   const canSubmit =
     (!regulamentRequired || regulamentAccepted) &&
-    (!gdprRequired || gdprAccepted);
+    (!gdprRequired || gdprAccepted) &&
+    customs.every((q) => !q.required || isCustomFilled(q, extra[q.key]));
+
+  // Validate custom formats before submitting; block if any is malformed.
+  const handleSubmitClick = () => {
+    const next: Record<string, string | undefined> = {};
+    let ok = true;
+    customs.forEach((q) => {
+      const err = customFormatError(q, extra[q.key]);
+      if (err) {
+        next[q.key] = err;
+        ok = false;
+      }
+    });
+    setCustomErrors(next);
+    if (!ok) return;
+    onSubmit(undefined, { gdpr: gdprAccepted, regulament: regulamentAccepted });
+  };
 
   const info = getInfoQuestion(config);
   const noticeText =
@@ -206,6 +253,17 @@ const StepConfirm: React.FC<StepConfirmProps> = ({
 
       </motion.div>
 
+      {/* Custom (admin-added) questions for this step, in config order. */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={onCustomChange}
+        onBlur={handleCustomBlur}
+        variant="card"
+        className={customs.length ? "mt-6" : undefined}
+      />
+
       {/* Error */}
       {status === "error" && (
         <p className="text-sm text-rust font-semibold mt-4">
@@ -226,12 +284,7 @@ const StepConfirm: React.FC<StepConfirmProps> = ({
           layers
           layersFace="black"
           type="button"
-          onClick={() =>
-            onSubmit(undefined, {
-              gdpr: gdprAccepted,
-              regulament: regulamentAccepted,
-            })
-          }
+          onClick={handleSubmitClick}
           disabled={!canSubmit || status === "sending"}
         >
           {status === "sending" ? (
