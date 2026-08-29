@@ -55,6 +55,27 @@ function lastDayOfMonth(yyyymm: string): string {
   return `${yyyymm}-${String(day).padStart(2, "0")}`;
 }
 
+// Shift a "YYYY-MM" month by `delta` months (negative = earlier).
+function shiftMonth(yyyymm: string, delta: number): string {
+  const [y, m] = yyyymm.split("-").map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+// Widen the season window so the calendar shows shoulder months (empty is fine):
+// 2 months before the season starts, 3 months after it ends.
+const PAD_BEFORE = 2;
+const PAD_AFTER = 3;
+function padSeasonBounds(
+  bounds: { seasonStart: string; seasonEnd: string } | null,
+): { seasonStart: string; seasonEnd: string } | null {
+  if (!bounds) return null;
+  return {
+    seasonStart: shiftMonth(bounds.seasonStart, -PAD_BEFORE),
+    seasonEnd: shiftMonth(bounds.seasonEnd, PAD_AFTER),
+  };
+}
+
 function deriveSeasonBounds(events: CalendarEvent[]): { seasonStart: string; seasonEnd: string } | null {
   if (!events.length) return null;
   const dates = events.flatMap((e) => [e.startDate, e.endDate]);
@@ -104,16 +125,21 @@ export default async function Page() {
   const legacyEvents = cms?.calendarEvents?.length
     ? cms.calendarEvents
     : PROGRAM_PAGE_DATA.calendarEvents;
-  const bounds =
+  const rawBounds =
     seasonBoundsFromSiteSettings(reg?.seasonStartDate, reg?.seasonEndDate)
     ?? deriveSeasonBounds(legacyEvents);
+
+  // Pad the window (2 months before start, 3 after end) so the calendar and its
+  // navigation range include the shoulder months, even when they are empty.
+  const bounds = padSeasonBounds(rawBounds);
 
   // The calendar-event collection (via /api/calendar/occurrences) is the source
   // of truth for the calendar. The Școala de patinaj recurring event drives the
   // weekend model (per-date curs/liber/anulat). Fall back to the legacy weekend
-  // model only if the endpoint returns nothing.
-  const rangeFrom = reg?.seasonStartDate ?? (bounds ? `${bounds.seasonStart}-01` : null);
-  const rangeTo = reg?.seasonEndDate ?? (bounds ? lastDayOfMonth(bounds.seasonEnd) : null);
+  // model only if the endpoint returns nothing. Fetch the padded window so the
+  // shoulder months are covered too.
+  const rangeFrom = bounds ? `${bounds.seasonStart}-01` : null;
+  const rangeTo = bounds ? lastDayOfMonth(bounds.seasonEnd) : null;
   let calendarEvents = legacyEvents;
   if (rangeFrom && rangeTo) {
     const { occurrences } = await fetchSeasonOccurrences(rangeFrom, rangeTo);
