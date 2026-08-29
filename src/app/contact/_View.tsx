@@ -9,6 +9,17 @@ import SpotlightButton from "@/components/ui/spotlight-button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { track } from "@/lib/analytics";
+import {
+  fieldHelp,
+  fieldLabel,
+  fieldType,
+  isHidden,
+  isRequired,
+  selectOptions,
+  validateValueByType,
+  type FormConfig,
+  type FormQuestionType,
+} from "@/lib/strapi-forms";
 
 // ---------------------------------------------------------------------------
 // Contact reasons
@@ -24,6 +35,19 @@ const CONTACT_REASONS = [
   { value: "feedback", label: "Feedback" },
   { value: "altele", label: "Altele" },
 ];
+
+// Hardcoded fallbacks (labels without asterisk — appended from effective
+// `required`; phone stays optional as today).
+const FIELD_FALLBACK: Record<
+  string,
+  { label: string; placeholder: string; required: boolean; type: FormQuestionType }
+> = {
+  name: { label: "Nume complet", placeholder: "Numele tău", required: true, type: "text" },
+  email: { label: "E-mail", placeholder: "email@exemplu.com", required: true, type: "email" },
+  phone: { label: "Telefon", placeholder: "+40 7xx xxx xxx", required: false, type: "tel" },
+  reason: { label: "Motivul contactării", placeholder: "", required: true, type: "select" },
+  message: { label: "Mesaj", placeholder: "Scrie mesajul tău aici...", required: true, type: "longtext" },
+};
 
 // ---------------------------------------------------------------------------
 // Contact info card
@@ -71,7 +95,9 @@ type FormState = {
 
 type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
-const ContactForm: React.FC = () => {
+const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
+  config = null,
+}) => {
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -82,6 +108,20 @@ const ContactForm: React.FC = () => {
   const [botField, setBotField] = useState("");
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    email?: string;
+    phone?: string;
+  }>({});
+
+  // Type-driven field validation (email/phone). Empty values pass here; the
+  // native `required` attribute + effective config gate emptiness.
+  const validateField = (key: "email" | "phone") =>
+    validateValueByType(
+      fieldType(config, key, FIELD_FALLBACK[key].type),
+      form[key],
+    );
+  const handleFieldBlur = (key: "email" | "phone") => () =>
+    setFieldErrors((prev) => ({ ...prev, [key]: validateField(key) }));
 
   const startedRef = useRef(false);
   const markStarted = () => {
@@ -101,6 +141,13 @@ const ContactForm: React.FC = () => {
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    // Block submit on malformed email / phone, showing inline field errors.
+    const emailErr = validateField("email");
+    const phoneErr = validateField("phone");
+    setFieldErrors({ email: emailErr, phone: phoneErr });
+    if (emailErr || phoneErr) return;
+
     setStatus("sending");
     setErrorMessage("");
 
@@ -131,8 +178,17 @@ const ContactForm: React.FC = () => {
     setForm({ name: "", email: "", phone: "", reason: "", message: "" });
     setBotField("");
     setErrorMessage("");
+    setFieldErrors({});
     setStatus("idle");
   };
+
+  const shown = (key: keyof typeof FIELD_FALLBACK) => !isHidden(config, key);
+  const req = (key: keyof typeof FIELD_FALLBACK) =>
+    isRequired(config, key, FIELD_FALLBACK[key].required);
+  const label = (key: keyof typeof FIELD_FALLBACK) =>
+    `${fieldLabel(config, key, FIELD_FALLBACK[key].label)}${req(key) ? " *" : ""}`;
+  const placeholder = (key: keyof typeof FIELD_FALLBACK) =>
+    fieldHelp(config, key, FIELD_FALLBACK[key].placeholder);
 
   if (status === "sent") {
     return (
@@ -177,80 +233,107 @@ const ContactForm: React.FC = () => {
         }}
       />
       {/* Name */}
-      <div>
-        <FieldLabel htmlFor="name" tone="dark">Nume complet *</FieldLabel>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          placeholder="Numele tău"
-          value={form.name}
-          onChange={handleChange}
-          className={inputOnNavy}
-        />
-      </div>
+      {shown("name") && (
+        <div>
+          <FieldLabel htmlFor="name" tone="dark">{label("name")}</FieldLabel>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required={req("name")}
+            placeholder={placeholder("name")}
+            value={form.name}
+            onChange={handleChange}
+            className={inputOnNavy}
+          />
+        </div>
+      )}
 
       {/* Email + Phone row */}
       <div className="grid sm:grid-cols-2 gap-5">
-        <div>
-          <FieldLabel htmlFor="email" tone="dark">E-mail *</FieldLabel>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="email@exemplu.com"
-            value={form.email}
-            onChange={handleChange}
-            className={inputOnNavy}
-          />
-        </div>
-        <div>
-          <FieldLabel htmlFor="phone" tone="dark">Telefon</FieldLabel>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            placeholder="+40 7xx xxx xxx"
-            value={form.phone}
-            onChange={handleChange}
-            className={inputOnNavy}
-          />
-        </div>
+        {shown("email") && (
+          <div>
+            <FieldLabel htmlFor="email" tone="dark">{label("email")}</FieldLabel>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputMode="email"
+              required={req("email")}
+              placeholder={placeholder("email")}
+              value={form.email}
+              onChange={handleChange}
+              onBlur={handleFieldBlur("email")}
+              aria-invalid={fieldErrors.email ? true : undefined}
+              className={inputOnNavy}
+            />
+            {fieldErrors.email && (
+              <p className="text-xs font-semibold text-danger mt-1.5">
+                {fieldErrors.email}
+              </p>
+            )}
+          </div>
+        )}
+        {shown("phone") && (
+          <div>
+            <FieldLabel htmlFor="phone" tone="dark">{label("phone")}</FieldLabel>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              required={req("phone")}
+              placeholder={placeholder("phone")}
+              value={form.phone}
+              onChange={handleChange}
+              onBlur={handleFieldBlur("phone")}
+              aria-invalid={fieldErrors.phone ? true : undefined}
+              className={inputOnNavy}
+            />
+            {fieldErrors.phone && (
+              <p className="text-xs font-semibold text-danger mt-1.5">
+                {fieldErrors.phone}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Reason */}
-      <div>
-        <FieldLabel htmlFor="reason" tone="dark">Motivul contactării *</FieldLabel>
-        <Select
-          id="reason"
-          name="reason"
-          value={form.reason}
-          onValueChange={(value) =>
-            setForm((prev) => ({ ...prev, reason: value }))
-          }
-          options={CONTACT_REASONS}
-          placeholder="Selectează motivul contactării..."
-          required
-          className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
-        />
-      </div>
+      {shown("reason") && (
+        <div>
+          <FieldLabel htmlFor="reason" tone="dark">{label("reason")}</FieldLabel>
+          <Select
+            id="reason"
+            name="reason"
+            value={form.reason}
+            onValueChange={(value) =>
+              setForm((prev) => ({ ...prev, reason: value }))
+            }
+            options={selectOptions(config, "reason", CONTACT_REASONS)}
+            placeholder="Selectează motivul contactării..."
+            required={req("reason")}
+            className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
+          />
+        </div>
+      )}
 
       {/* Message */}
-      <div>
-        <FieldLabel htmlFor="message" tone="dark">Mesaj *</FieldLabel>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={5}
-          placeholder="Scrie mesajul tău aici..."
-          value={form.message}
-          onChange={handleChange}
-          className={cn(inputOnNavy, "resize-none")}
-        />
-      </div>
+      {shown("message") && (
+        <div>
+          <FieldLabel htmlFor="message" tone="dark">{label("message")}</FieldLabel>
+          <textarea
+            id="message"
+            name="message"
+            required={req("message")}
+            rows={5}
+            placeholder={placeholder("message")}
+            value={form.message}
+            onChange={handleChange}
+            className={cn(inputOnNavy, "resize-none")}
+          />
+        </div>
+      )}
 
       {/* Error */}
       {status === "error" && errorMessage && (
@@ -290,9 +373,10 @@ const ContactForm: React.FC = () => {
 // Page
 // ---------------------------------------------------------------------------
 
-const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
-  contactInfo = {},
-}) => {
+const ContactPage: React.FC<{
+  contactInfo?: SiteContactInfo;
+  formConfig?: FormConfig | null;
+}> = ({ contactInfo = {}, formConfig = null }) => {
   const contactItems = [
     contactInfo.phone && {
       icon: Phone,
@@ -366,7 +450,7 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
               <p className="text-sm text-retro-cream/50 mb-7">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
-              <ContactForm />
+              <ContactForm config={formConfig} />
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ContactPage from "./_View";
 import { fetchStrapi } from "@/lib/strapi";
+import { fetchFormConfig } from "@/lib/strapi-forms";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 
 export const metadata: Metadata = {
@@ -30,5 +31,6 @@ export default async function Page() {
   } catch (err) {
     console.error("[contact/page] Failed to fetch site-settings:", err);
   }
-  return <ContactPage contactInfo={contactInfo} />;
+  const formConfig = await fetchFormConfig("contact");
+  return <ContactPage contactInfo={contactInfo} formConfig={formConfig} />;
 }

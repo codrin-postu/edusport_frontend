@@ -13,8 +13,11 @@ import {
   type SubmitStatus,
 } from "./_types";
 import { track } from "@/lib/analytics";
+import type { FormConfig } from "@/lib/strapi-forms";
 
-const RegistrationForm: React.FC = () => {
+const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
+  config = null,
+}) => {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [status, setStatus] = useState<SubmitStatus>("idle");
@@ -93,7 +96,12 @@ const RegistrationForm: React.FC = () => {
 
   const stepContent =
     step === 0 ? (
-      <StepPersonal form={form} onChange={handleChange} onNext={nextStep} />
+      <StepPersonal
+        form={form}
+        onChange={handleChange}
+        onNext={nextStep}
+        config={config}
+      />
     ) : step === 1 ? (
       <StepExperience
         form={form}
@@ -101,9 +109,15 @@ const RegistrationForm: React.FC = () => {
         onValueChange={handleValueChange}
         onNext={nextStep}
         onBack={prevStep}
+        config={config}
       />
     ) : (
-      <StepConfirm onBack={prevStep} onSubmit={handleSubmit} status={status} />
+      <StepConfirm
+        onBack={prevStep}
+        onSubmit={handleSubmit}
+        status={status}
+        config={config}
+      />
     );
 
   return (

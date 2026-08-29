@@ -3,8 +3,11 @@
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import React from "react";
 import RegistrationForm from "./_RegistrationForm";
+import type { FormConfig } from "@/lib/strapi-forms";
 
-const InscrieriView: React.FC = () => {
+const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
+  formConfig = null,
+}) => {
   return (
     <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["ÎNSCRIERI"]} backgroundImage="/images/courses.png">
@@ -34,7 +37,7 @@ const InscrieriView: React.FC = () => {
             </div>
 
             <div className="mt-10 bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] p-6 md:p-8 min-h-[480px]">
-              <RegistrationForm />
+              <RegistrationForm config={formConfig} />
             </div>
           </div>
         </div>

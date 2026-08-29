@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InscrieriView from "./_View";
+import { fetchFormConfig } from "@/lib/strapi-forms";
 
 export const metadata: Metadata = {
   title: "Înscrieri",
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-export default function Page() {
-  return <InscrieriView />;
+export default async function Page() {
+  const formConfig = await fetchFormConfig("inscriere");
+  return <InscrieriView formConfig={formConfig} />;
 }
