@@ -82,7 +82,7 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
   const perMember = await Promise.all(
     (members ?? [])
       .filter((m) => m.skateResultsSlug)
-      .map(async (m) => ({ m, results: await getSkaterResults(m.skateResultsSlug) })),
+      .map(async(m) => ({ m, results: await getSkaterResults(m.skateResultsSlug) })),
   );
 
   const seasons = new Map<string, Map<string, Season["competitions"][number]>>();
