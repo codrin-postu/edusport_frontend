@@ -9,7 +9,7 @@ import { ro } from "date-fns/locale";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
-import { MobileListSheet } from "./MobileSheets";
+import { MobileListSheet, MobileDetailSheet } from "./MobileSheets";
 import type { CursEventInfo } from "./types";
 
 interface FullCalendarWrapperProps {
@@ -50,6 +50,7 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
     events: CursEventInfo[];
     dateLabel: string;
   } | null>(null);
+  const [mobileEvent, setMobileEvent] = useState<CursEventInfo | null>(null);
   const [headerTitle, setHeaderTitle] = useState("");
   const [isCurrentMonth, setIsCurrentMonth] = useState(true);
   const [canPrev, setCanPrev] = useState(true);
@@ -126,11 +127,20 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
           if (type === "curs" || type === "next") {
             return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
           }
-          // Special events with a description get a hover tooltip (no regulament link)
-          if (description && (type === "holiday" || type === "vacation" || type === "eveniment" || type === "concurs" || type === "anulat" || type === "curs-special")) {
-            return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description} />;
-          }
-          return true;
+          // Every other event gets a hover tooltip too (title + date at minimum,
+          // description when present), so nothing is silently un-hoverable.
+          return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
+        }}
+        eventClick={(arg) => {
+          // Touch has no hover: tapping an event opens its detail sheet.
+          if (!window.matchMedia("(max-width: 767px)").matches) return;
+          arg.jsEvent?.stopPropagation();
+          setMobileEvent({
+            title: arg.event.title,
+            dateLabel: formatEventDate(arg.event.start),
+            description: (arg.event.extendedProps?.description as string | null) ?? undefined,
+            type: (arg.event.extendedProps?.type as string) ?? "curs",
+          });
         }}
         dayCellDidMount={(info) => {
           const handler = () => {
@@ -175,6 +185,14 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
           events={mobileSheet.events}
           dateLabel={mobileSheet.dateLabel}
           onClose={() => setMobileSheet(null)}
+        />
+      )}
+
+      {mobileEvent && (
+        <MobileDetailSheet
+          event={mobileEvent}
+          onBack={() => setMobileEvent(null)}
+          onClose={() => setMobileEvent(null)}
         />
       )}
     </>

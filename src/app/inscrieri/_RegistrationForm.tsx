@@ -8,15 +8,25 @@ import StepExperience from "./_StepExperience";
 import StepPersonal from "./_StepPersonal";
 import {
   INITIAL_FORM,
-  submitToGoogleForms,
+  submitRegistration,
   type FormState,
   type SubmitStatus,
 } from "./_types";
 import { track } from "@/lib/analytics";
+import {
+  buildCustomPayload,
+  getCustomQuestions,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
+  type FormConfig,
+} from "@/lib/strapi-forms";
 
-const RegistrationForm: React.FC = () => {
+const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
+  config = null,
+}) => {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
+  const [extra, setExtra] = useState<Record<string, CustomAnswer>>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -45,6 +55,11 @@ const RegistrationForm: React.FC = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCustomChange = (key: string, value: CustomAnswer) => {
+    markStarted();
+    setExtra((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async(
     e: React.FormEvent | undefined,
     agreements: { gdpr: boolean; regulament: boolean },
@@ -52,7 +67,11 @@ const RegistrationForm: React.FC = () => {
     e?.preventDefault();
     setStatus("sending");
     try {
-      await submitToGoogleForms(form, agreements);
+      const extraPayload = buildCustomPayload(
+        getCustomQuestions(config, INSCRIERE_BUILTIN_KEYS),
+        extra,
+      );
+      await submitRegistration(form, agreements, extraPayload);
       track("inscriere.submit_success");
       setStatus("sent");
     } catch {
@@ -80,6 +99,7 @@ const RegistrationForm: React.FC = () => {
         <button
           onClick={() => {
             setForm(INITIAL_FORM);
+            setExtra({});
             setStatus("idle");
             setStep(0);
           }}
@@ -93,7 +113,14 @@ const RegistrationForm: React.FC = () => {
 
   const stepContent =
     step === 0 ? (
-      <StepPersonal form={form} onChange={handleChange} onNext={nextStep} />
+      <StepPersonal
+        form={form}
+        onChange={handleChange}
+        onNext={nextStep}
+        config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
+      />
     ) : step === 1 ? (
       <StepExperience
         form={form}
@@ -101,9 +128,19 @@ const RegistrationForm: React.FC = () => {
         onValueChange={handleValueChange}
         onNext={nextStep}
         onBack={prevStep}
+        config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
       />
     ) : (
-      <StepConfirm onBack={prevStep} onSubmit={handleSubmit} status={status} />
+      <StepConfirm
+        onBack={prevStep}
+        onSubmit={handleSubmit}
+        status={status}
+        config={config}
+        extra={extra}
+        onCustomChange={handleCustomChange}
+      />
     );
 
   return (

@@ -23,7 +23,7 @@ export interface CollabEvent {
 export const PARTNERS_COPY = {
   heroTitle: "Parteneri",
   heroSubtitle:
-    "Împreună cu partenerii și sponsorii noștri creștem patinajul din România — de la primii pași pe gheață până la podium.",
+    "Împreună cu partenerii și sponsorii noștri creștem patinajul din România, de la primii pași pe gheață până la podium.",
   introEyebrow: "De ce parteneriat",
   introHeading: "Susține o comunitate în creștere",
   introBody:

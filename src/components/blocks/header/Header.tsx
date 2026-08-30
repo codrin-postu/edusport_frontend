@@ -153,6 +153,7 @@ const Header: React.FC<HeaderProps> = ({ registrationOpen, contactInfo }) => {
         onClose={closeMenu}
         buttonRef={menuButtonRef}
         registrationOpen={registrationOpen}
+        contactInfo={contactInfo}
       />
     </>
   );

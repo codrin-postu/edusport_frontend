@@ -13,6 +13,8 @@ import {
   type StrapiSportsperson,
 } from "@/lib/strapi-sportsperson";
 import { strapiMediaUrl } from "@/lib/strapi-article";
+import type { SkateResult } from "@/lib/skate-results";
+import SkateResults from "./_SkateResults";
 import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
@@ -40,6 +42,9 @@ interface Props {
   /** Current page of the Istoric competițional list. URL-driven via
    *  `?compPage=N` so the existing `<Pagination>` component can be reused. */
   compPage: number;
+  /** Auto-scraped results from skate-results when the athlete is linked
+   *  (`skateResultsSlug`). When present, they replace the manual Istoric. */
+  skateResults?: SkateResult[];
 }
 
 const ISTORIC_PER_PAGE = 5;
@@ -94,7 +99,12 @@ const SportspersonView: React.FC<Props> = ({
   sportsperson,
   competitions,
   compPage,
+  skateResults,
 }) => {
+  // When the athlete is linked to skate-results and we got rows back, the rich
+  // auto-scraped results replace the manually-entered Istoric list.
+  const hasScrapedResults =
+    !!sportsperson.skateResultsSlug && (skateResults?.length ?? 0) > 0;
   const stats = computeStats(competitions, sportsperson.activeSince);
   const notableResults = pickNotableResults(competitions, 2);
   const tier = topTier(stats);
@@ -389,8 +399,27 @@ const SportspersonView: React.FC<Props> = ({
         </section>
       )}
 
-      {/* ─── ISTORIC COMPETIȚIONAL ─── */}
-      {historyRows.length > 0 && (
+      {/* ─── REZULTATE (auto, din skate-results) ─── */}
+      {hasScrapedResults && (
+        <section
+          id="istoric"
+          className="relative overflow-hidden bg-retro-cream py-16 md:py-20 scroll-mt-24"
+        >
+          <SectionWatermark>REZULTATE</SectionWatermark>
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+              Rezultate competiții
+            </div>
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
+              Toate competițiile
+            </h2>
+            <SkateResults results={skateResults ?? []} />
+          </div>
+        </section>
+      )}
+
+      {/* ─── ISTORIC COMPETIȚIONAL (manual, doar dacă nu e conectat) ─── */}
+      {!hasScrapedResults && historyRows.length > 0 && (
         <section
           id="istoric"
           className="relative overflow-hidden bg-retro-cream py-16 md:py-20 scroll-mt-24"

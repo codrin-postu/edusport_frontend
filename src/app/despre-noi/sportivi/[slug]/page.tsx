@@ -4,6 +4,7 @@ import {
   fetchSportspersonBySlug,
   fetchCompetitionsByAthlete,
 } from "@/lib/strapi-sportsperson";
+import { getSkaterResults } from "@/lib/skate-results";
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import SportspersonView from "./_View";
 
@@ -73,11 +74,18 @@ export default async function Page({ params, searchParams }: Props) {
     // Stats default to "no competitions" rather than 500.
   }
 
+  // When the athlete is linked to skate-results, pull their scraped history.
+  // getSkaterResults already degrades to [] on any failure.
+  const skateResults = sp.skateResultsSlug
+    ? await getSkaterResults(sp.skateResultsSlug)
+    : [];
+
   return (
     <SportspersonView
       sportsperson={sp}
       competitions={competitions}
       compPage={compPageNum}
+      skateResults={skateResults}
     />
   );
 }

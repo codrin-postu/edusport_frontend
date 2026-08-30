@@ -9,6 +9,8 @@ import { ro } from "date-fns/locale";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
+import { MobileDetailSheet } from "./MobileSheets";
+import type { CursEventInfo } from "./types";
 
 // Standardized "date · start – end" label from the event (times only if not all-day).
 function eventDateLabel(e: { start: Date | null; end: Date | null; allDay: boolean }): string | undefined {
@@ -44,6 +46,7 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
   const [isCurrentWeek, setIsCurrentWeek] = useState(true);
   const [canPrev, setCanPrev] = useState(true);
   const [canNext, setCanNext] = useState(true);
+  const [mobileEvent, setMobileEvent] = useState<CursEventInfo | null>(null);
   const todayNum = new Date().getDate();
 
   const syncHeader = useCallback(
@@ -109,13 +112,29 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
             if (type === "curs" || type === "next") {
               return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
             }
-            if (description) {
-              return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description} />;
-            }
-            return true;
+            return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
+          }}
+          eventClick={(arg) => {
+            // Touch has no hover: tapping an event opens its detail sheet.
+            if (!window.matchMedia("(max-width: 767px)").matches) return;
+            arg.jsEvent?.stopPropagation();
+            setMobileEvent({
+              title: arg.event.title,
+              dateLabel: eventDateLabel({ start: arg.event.start, end: arg.event.end, allDay: arg.event.allDay }),
+              description: (arg.event.extendedProps?.description as string | null) ?? undefined,
+              type: (arg.event.extendedProps?.type as string) ?? "curs",
+            });
           }}
         />
       </div>
+
+      {mobileEvent && (
+        <MobileDetailSheet
+          event={mobileEvent}
+          onBack={() => setMobileEvent(null)}
+          onClose={() => setMobileEvent(null)}
+        />
+      )}
     </>
   );
 };

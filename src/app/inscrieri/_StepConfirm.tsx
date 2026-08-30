@@ -7,6 +7,20 @@ import React, { useState } from "react";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { StepIndicator } from "./_shared";
 import type { SubmitStatus } from "./_types";
+import CustomQuestions from "@/components/ui/custom-questions";
+import {
+  customFormatError,
+  fieldLabel,
+  getCustomQuestionsForStep,
+  getInfoQuestion,
+  isCustomFilled,
+  isRequired,
+  INSCRIERE_BUILTIN_KEYS,
+  type CustomAnswer,
+  type FormConfig,
+} from "@/lib/strapi-forms";
+
+const CONFIRM_ANCHORS = ["regulationsAgreement", "privacyConsent"];
 
 interface StepConfirmProps {
   onBack: () => void;
@@ -15,18 +29,79 @@ interface StepConfirmProps {
     agreements: { gdpr: boolean; regulament: boolean },
   ) => void;
   status: SubmitStatus;
+  config?: FormConfig | null;
+  extra: Record<string, CustomAnswer>;
+  onCustomChange: (key: string, value: CustomAnswer) => void;
 }
+
+const FALLBACK = {
+  notice:
+    "Înainte de trimitere, vă rugăm să citiți și să acceptați regulamentul și politica de confidențialitate.",
+  regulationsAgreement: "Am citit și sunt de acord cu regulamentul",
+  privacyConsent: "Am citit și sunt de acord",
+};
 
 const cardItem = {
   hidden: { opacity: 0, y: 8 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
-const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) => {
+const StepConfirm: React.FC<StepConfirmProps> = ({
+  onBack,
+  onSubmit,
+  status,
+  config = null,
+  extra,
+  onCustomChange,
+}) => {
   const [regulamentAccepted, setRegulamentAccepted] = useState(false);
   const [gdprAccepted, setGdprAccepted] = useState(false);
 
-  const canSubmit = regulamentAccepted && gdprAccepted;
+  const customs = getCustomQuestionsForStep(
+    config,
+    CONFIRM_ANCHORS,
+    INSCRIERE_BUILTIN_KEYS,
+  );
+  const [customErrors, setCustomErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
+
+  const regulamentRequired = isRequired(config, "regulationsAgreement", true);
+  const gdprRequired = isRequired(config, "privacyConsent", true);
+
+  const canSubmit =
+    (!regulamentRequired || regulamentAccepted) &&
+    (!gdprRequired || gdprAccepted) &&
+    customs.every((q) => !q.required || isCustomFilled(q, extra[q.key]));
+
+  // Validate custom formats before submitting; block if any is malformed.
+  const handleSubmitClick = () => {
+    const next: Record<string, string | undefined> = {};
+    let ok = true;
+    customs.forEach((q) => {
+      const err = customFormatError(q, extra[q.key]);
+      if (err) {
+        next[q.key] = err;
+        ok = false;
+      }
+    });
+    setCustomErrors(next);
+    if (!ok) return;
+    onSubmit(undefined, { gdpr: gdprAccepted, regulament: regulamentAccepted });
+  };
+
+  const info = getInfoQuestion(config);
+  const noticeText =
+    info?.label && info.label.trim() !== "" ? info.label : FALLBACK.notice;
 
   return (
     <div>
@@ -35,8 +110,20 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
       <div className="flex flex-col gap-3 mb-8">
         <h3 className="font-display text-2xl font-extrabold text-navy">Confirmare & acorduri</h3>
         <p className="text-sm text-navy/60 leading-relaxed">
-          Înainte de trimitere, vă rugăm să citiți și să acceptați
-          regulamentul și politica de confidențialitate.
+          {noticeText}
+          {info?.linkUrl && (
+            <>
+              {" "}
+              <a
+                href={info.linkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline-rust font-semibold text-rust"
+              >
+                {info.linkLabel ?? "Detalii"}
+              </a>
+            </>
+          )}
         </p>
       </div>
 
@@ -85,7 +172,11 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
                 className="w-4 h-4 accent-rust cursor-pointer"
               />
               <span className="text-xs font-semibold text-navy">
-                Am citit și sunt de acord cu regulamentul
+                {fieldLabel(
+                  config,
+                  "regulationsAgreement",
+                  FALLBACK.regulationsAgreement,
+                )}
               </span>
             </label>
           </div>
@@ -131,7 +222,7 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
                 className="w-4 h-4 accent-rust cursor-pointer"
               />
               <span className="text-xs font-semibold text-navy">
-                Am citit și sunt de acord
+                {fieldLabel(config, "privacyConsent", FALLBACK.privacyConsent)}
               </span>
             </label>
           </div>
@@ -162,6 +253,17 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
 
       </motion.div>
 
+      {/* Custom (admin-added) questions for this step, in config order. */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={onCustomChange}
+        onBlur={handleCustomBlur}
+        variant="card"
+        className={customs.length ? "mt-6" : undefined}
+      />
+
       {/* Error */}
       {status === "error" && (
         <p className="text-sm text-rust font-semibold mt-4">
@@ -182,12 +284,7 @@ const StepConfirm: React.FC<StepConfirmProps> = ({ onBack, onSubmit, status }) =
           layers
           layersFace="black"
           type="button"
-          onClick={() =>
-            onSubmit(undefined, {
-              gdpr: gdprAccepted,
-              regulament: regulamentAccepted,
-            })
-          }
+          onClick={handleSubmitClick}
           disabled={!canSubmit || status === "sending"}
         >
           {status === "sending" ? (

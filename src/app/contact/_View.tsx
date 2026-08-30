@@ -9,6 +9,25 @@ import SpotlightButton from "@/components/ui/spotlight-button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { track } from "@/lib/analytics";
+import CustomQuestions from "@/components/ui/custom-questions";
+import {
+  buildCustomPayload,
+  customFormatError,
+  fieldHelp,
+  fieldLabel,
+  fieldType,
+  getCustomQuestions,
+  isCustomFilled,
+  isHidden,
+  isRequired,
+  selectOptions,
+  validateValueByType,
+  CONTACT_BUILTIN_KEYS,
+  VALIDATION_MESSAGES,
+  type CustomAnswer,
+  type FormConfig,
+  type FormQuestionType,
+} from "@/lib/strapi-forms";
 
 // ---------------------------------------------------------------------------
 // Contact reasons
@@ -24,6 +43,19 @@ const CONTACT_REASONS = [
   { value: "feedback", label: "Feedback" },
   { value: "altele", label: "Altele" },
 ];
+
+// Hardcoded fallbacks (labels without asterisk — appended from effective
+// `required`; phone stays optional as today).
+const FIELD_FALLBACK: Record<
+  string,
+  { label: string; placeholder: string; required: boolean; type: FormQuestionType }
+> = {
+  name: { label: "Nume complet", placeholder: "Numele tău", required: true, type: "text" },
+  email: { label: "E-mail", placeholder: "email@exemplu.com", required: true, type: "email" },
+  phone: { label: "Telefon", placeholder: "+40 7xx xxx xxx", required: false, type: "tel" },
+  reason: { label: "Motivul contactării", placeholder: "", required: true, type: "select" },
+  message: { label: "Mesaj", placeholder: "Scrie mesajul tău aici...", required: true, type: "longtext" },
+};
 
 // ---------------------------------------------------------------------------
 // Contact info card
@@ -46,7 +78,7 @@ const ContactInfoCard: React.FC<{
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
+        <p className="text-3xs font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
           {label}
         </p>
         <p className="text-sm font-semibold text-navy group-hover:text-rust transition-colors break-all">
@@ -71,7 +103,9 @@ type FormState = {
 
 type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
-const ContactForm: React.FC = () => {
+const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
+  config = null,
+}) => {
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -82,6 +116,59 @@ const ContactForm: React.FC = () => {
   const [botField, setBotField] = useState("");
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    email?: string;
+    phone?: string;
+  }>({});
+
+  // Custom (admin-added) questions and their collected answers / errors.
+  const customs = getCustomQuestions(config, CONTACT_BUILTIN_KEYS);
+  const [extra, setExtra] = useState<Record<string, CustomAnswer>>({});
+  const [customErrors, setCustomErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+  const handleCustomChange = (key: string, value: CustomAnswer) => {
+    markStarted();
+    setExtra((prev) => ({ ...prev, [key]: value }));
+  };
+  const handleCustomBlur = (key: string) => {
+    const q = customs.find((c) => c.key === key);
+    if (!q) return;
+    setCustomErrors((prev) => ({
+      ...prev,
+      [key]: customFormatError(q, extra[key]),
+    }));
+  };
+  // Validate every custom (format first, then required); returns true when all
+  // pass and updates the inline error map.
+  const validateCustoms = (): boolean => {
+    const next: Record<string, string | undefined> = {};
+    let ok = true;
+    for (const q of customs) {
+      const val = extra[q.key];
+      const fmt = customFormatError(q, val);
+      if (fmt) {
+        next[q.key] = fmt;
+        ok = false;
+      } else if (q.required && !isCustomFilled(q, val)) {
+        next[q.key] = VALIDATION_MESSAGES.required;
+        ok = false;
+      }
+    }
+    setCustomErrors(next);
+    return ok;
+  };
+
+  // Type-driven field validation (email/phone). Empty values pass here; the
+  // native `required` attribute + effective config gate emptiness.
+  const validateField = (key: "email" | "phone") =>
+    validateValueByType(
+      fieldType(config, key, FIELD_FALLBACK[key].type),
+      form[key],
+    );
+  const handleFieldBlur = (key: "email" | "phone") => () =>
+    setFieldErrors((prev) => ({ ...prev, [key]: validateField(key) }));
 
   const startedRef = useRef(false);
   const markStarted = () => {
@@ -101,14 +188,28 @@ const ContactForm: React.FC = () => {
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    // Block submit on malformed email / phone, showing inline field errors.
+    const emailErr = validateField("email");
+    const phoneErr = validateField("phone");
+    setFieldErrors({ email: emailErr, phone: phoneErr });
+    const customsOk = validateCustoms();
+    if (emailErr || phoneErr || !customsOk) return;
+
     setStatus("sending");
     setErrorMessage("");
+
+    const extraPayload = buildCustomPayload(customs, extra);
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, _botField: botField }),
+        body: JSON.stringify({
+          ...form,
+          _botField: botField,
+          ...(Object.keys(extraPayload).length ? { extra: extraPayload } : {}),
+        }),
       });
       const json = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -131,8 +232,19 @@ const ContactForm: React.FC = () => {
     setForm({ name: "", email: "", phone: "", reason: "", message: "" });
     setBotField("");
     setErrorMessage("");
+    setFieldErrors({});
+    setExtra({});
+    setCustomErrors({});
     setStatus("idle");
   };
+
+  const shown = (key: keyof typeof FIELD_FALLBACK) => !isHidden(config, key);
+  const req = (key: keyof typeof FIELD_FALLBACK) =>
+    isRequired(config, key, FIELD_FALLBACK[key].required);
+  const label = (key: keyof typeof FIELD_FALLBACK) =>
+    `${fieldLabel(config, key, FIELD_FALLBACK[key].label)}${req(key) ? " *" : ""}`;
+  const placeholder = (key: keyof typeof FIELD_FALLBACK) =>
+    fieldHelp(config, key, FIELD_FALLBACK[key].placeholder);
 
   if (status === "sent") {
     return (
@@ -177,86 +289,123 @@ const ContactForm: React.FC = () => {
         }}
       />
       {/* Name */}
-      <div>
-        <FieldLabel htmlFor="name" tone="dark">Nume complet *</FieldLabel>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          placeholder="Numele tău"
-          value={form.name}
-          onChange={handleChange}
-          className={inputOnNavy}
-        />
-      </div>
+      {shown("name") && (
+        <div>
+          <FieldLabel htmlFor="name" tone="dark">{label("name")}</FieldLabel>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required={req("name")}
+            placeholder={placeholder("name")}
+            value={form.name}
+            onChange={handleChange}
+            className={inputOnNavy}
+          />
+        </div>
+      )}
 
       {/* Email + Phone row */}
       <div className="grid sm:grid-cols-2 gap-5">
-        <div>
-          <FieldLabel htmlFor="email" tone="dark">E-mail *</FieldLabel>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="email@exemplu.com"
-            value={form.email}
-            onChange={handleChange}
-            className={inputOnNavy}
-          />
-        </div>
-        <div>
-          <FieldLabel htmlFor="phone" tone="dark">Telefon</FieldLabel>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            placeholder="+40 7xx xxx xxx"
-            value={form.phone}
-            onChange={handleChange}
-            className={inputOnNavy}
-          />
-        </div>
+        {shown("email") && (
+          <div>
+            <FieldLabel htmlFor="email" tone="dark">{label("email")}</FieldLabel>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputMode="email"
+              required={req("email")}
+              placeholder={placeholder("email")}
+              value={form.email}
+              onChange={handleChange}
+              onBlur={handleFieldBlur("email")}
+              aria-invalid={fieldErrors.email ? true : undefined}
+              className={inputOnNavy}
+            />
+            {fieldErrors.email && (
+              <p className="text-xs font-semibold text-danger mt-1.5">
+                {fieldErrors.email}
+              </p>
+            )}
+          </div>
+        )}
+        {shown("phone") && (
+          <div>
+            <FieldLabel htmlFor="phone" tone="dark">{label("phone")}</FieldLabel>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              required={req("phone")}
+              placeholder={placeholder("phone")}
+              value={form.phone}
+              onChange={handleChange}
+              onBlur={handleFieldBlur("phone")}
+              aria-invalid={fieldErrors.phone ? true : undefined}
+              className={inputOnNavy}
+            />
+            {fieldErrors.phone && (
+              <p className="text-xs font-semibold text-danger mt-1.5">
+                {fieldErrors.phone}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Reason */}
-      <div>
-        <FieldLabel htmlFor="reason" tone="dark">Motivul contactării *</FieldLabel>
-        <Select
-          id="reason"
-          name="reason"
-          value={form.reason}
-          onValueChange={(value) =>
-            setForm((prev) => ({ ...prev, reason: value }))
-          }
-          options={CONTACT_REASONS}
-          placeholder="Selectează motivul contactării..."
-          required
-          className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
-        />
-      </div>
+      {shown("reason") && (
+        <div>
+          <FieldLabel htmlFor="reason" tone="dark">{label("reason")}</FieldLabel>
+          <Select
+            id="reason"
+            name="reason"
+            value={form.reason}
+            onValueChange={(value) =>
+              setForm((prev) => ({ ...prev, reason: value }))
+            }
+            options={selectOptions(config, "reason", CONTACT_REASONS)}
+            placeholder="Selectează motivul contactării..."
+            required={req("reason")}
+            className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
+          />
+        </div>
+      )}
 
       {/* Message */}
-      <div>
-        <FieldLabel htmlFor="message" tone="dark">Mesaj *</FieldLabel>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={5}
-          placeholder="Scrie mesajul tău aici..."
-          value={form.message}
-          onChange={handleChange}
-          className={cn(inputOnNavy, "resize-none")}
-        />
-      </div>
+      {shown("message") && (
+        <div>
+          <FieldLabel htmlFor="message" tone="dark">{label("message")}</FieldLabel>
+          <textarea
+            id="message"
+            name="message"
+            required={req("message")}
+            rows={5}
+            placeholder={placeholder("message")}
+            value={form.message}
+            onChange={handleChange}
+            className={cn(inputOnNavy, "resize-none")}
+          />
+        </div>
+      )}
+
+      {/* Custom (admin-added) questions — appended in config order */}
+      <CustomQuestions
+        questions={customs}
+        values={extra}
+        errors={customErrors}
+        onChange={handleCustomChange}
+        onBlur={handleCustomBlur}
+        variant="navy"
+      />
 
       {/* Error */}
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="px-4 py-3 border border-red-200 bg-red-50 text-sm text-red-700"
+          className="px-4 py-3 border border-danger/30 bg-danger/10 text-sm text-danger"
         >
           {errorMessage}
         </div>
@@ -290,9 +439,10 @@ const ContactForm: React.FC = () => {
 // Page
 // ---------------------------------------------------------------------------
 
-const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
-  contactInfo = {},
-}) => {
+const ContactPage: React.FC<{
+  contactInfo?: SiteContactInfo;
+  formConfig?: FormConfig | null;
+}> = ({ contactInfo = {}, formConfig = null }) => {
   const contactItems = [
     contactInfo.phone && {
       icon: Phone,
@@ -364,9 +514,9 @@ const ContactPage: React.FC<{ contactInfo?: SiteContactInfo }> = ({
                 Trimite-ne un mesaj
               </h2>
               <p className="text-sm text-retro-cream/50 mb-7">
-                Răspundem de obicei în 24–48 de ore.
+                Răspundem de obicei în 24 până la 48 de ore.
               </p>
-              <ContactForm />
+              <ContactForm config={formConfig} />
             </div>
           </div>
         </div>

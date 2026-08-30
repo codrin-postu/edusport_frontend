@@ -26,7 +26,7 @@ export const CURSURI_PAGE_DATA: CoursePageContent = {
     levelsBullet:
       "Grupe pentru toate nivelurile: primii pași, începători, intermediari, avansați",
     coachesBullet:
-      "Antrenori - foști sportivi de performanță si şi atleţi pasionaţi de patinaj",
+      "Antrenori - foști sportivi de performanță și atleţi pasionaţi de patinaj",
     videoUrl: "https://www.youtube.com/watch?v=G-0eleYxj2w",
     videoLabel: "Cum arată cursurile noastre",
   },

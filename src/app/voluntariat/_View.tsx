@@ -139,7 +139,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
                 Devino voluntar
               </h3>
               <p className="mb-7 text-sm text-retro-cream/50">
-                Răspundem de obicei în 24–48 de ore.
+                Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <VolunteerForm />
             </div>

@@ -4,7 +4,9 @@ import { cn } from "@/utils/cn";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
 import type { CalendarEvent } from "@/app/cursuri/program/_types";
-import { buildCalendarEvents } from "@/utils/fullcalendar-helpers";
+import { buildCalendarEvents, occurrencesToEvents } from "@/utils/fullcalendar-helpers";
+import { fetchCalendarOccurrences } from "@/lib/strapi-calendar";
+import type { EventInput } from "@fullcalendar/core";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
@@ -279,6 +281,31 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   // Shared focus date so switching Lunar <-> Săptămânal keeps roughly the same period.
   const [focusDate, setFocusDate] = useState<string>(calendarInitialDate);
 
+  // Timed hourly sessions for the WEEK grid only (month + weekend views keep the
+  // existing weekend model). Fetched per visible week from the backend expansion
+  // endpoint — a full season exceeds its 92-day cap, so we request just the
+  // focused week and refetch as you navigate.
+  const [hourlyEvents, setHourlyEvents] = useState<EventInput[]>([]);
+  useEffect(() => {
+    if (calendarMode !== "week") return;
+    const d = new Date(focusDate);
+    if (Number.isNaN(d.getTime())) return;
+    const dow = (d.getDay() + 6) % 7; // Monday = 0
+    const monday = new Date(d);
+    monday.setDate(d.getDate() - dow);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    const ymd = (x: Date) =>
+      `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+    let cancelled = false;
+    fetchCalendarOccurrences(ymd(monday), ymd(sunday)).then((res) => {
+      if (!cancelled) setHourlyEvents(occurrencesToEvents(res.occurrences));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [calendarMode, focusDate]);
+
   const calendarEvents = useMemo(
     () =>
       buildCalendarEvents(
@@ -365,7 +392,12 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                 )
               ) : (
                 <WeekGridClient
-                  events={calendarEvents}
+                  // Week grid uses ONLY the per-week hourly occurrences. They already
+                  // cover every event in the week (Școala as timed sessions, plus
+                  // non-Școala events); merging the all-day weekend tiles from
+                  // calendarEvents here would double the Școala weekend as both an
+                  // all-day "Curs" and its timed blocks.
+                  events={hourlyEvents}
                   initialDate={focusDate}
                   validRangeStart={fcValidStart}
                   validRangeEnd={fcValidEnd}

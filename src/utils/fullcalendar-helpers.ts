@@ -1,6 +1,7 @@
 import type { EventInput } from "@fullcalendar/core";
 import { WeekendDate } from "@/utils/date";
 import type { CalendarEvent } from "@/app/cursuri/program/_types";
+import type { CalendarOccurrence } from "@/lib/strapi-calendar";
 
 // Format a local Date to "YYYY-MM-DD" WITHOUT converting to UTC.
 // toISOString() shifts the date back by the local UTC offset (e.g. UTC+2 → -1 day),
@@ -44,7 +45,7 @@ export function buildCalendarEvents(
     const classNames = isNext ? ["fc-event-next-weekend"] : ["fc-event-curs"];
     const type = isNext ? "next" : "curs";
     const sharedProps = {
-      title: "Curs",
+      title: "Școala de patinaj",
       allDay: true,
       display: "block",
       classNames,
@@ -134,4 +135,68 @@ export function buildCalendarEvents(
   });
 
   return events;
+}
+
+// Map an expanded backend occurrence to the same FullCalendar `fc-event-*`
+// class the CSS already styles, so timed sessions look consistent with the
+// existing all-day tiles.
+function occurrenceClass(occ: CalendarOccurrence): string {
+  if (occ.status === "cancelled") return "fc-event-anulat";
+  switch (occ.type) {
+    case "scoala":
+      return "fc-event-curs-special";
+    case "eveniment":
+      return "fc-event-eveniment";
+    case "concurs":
+      return "fc-event-concurs";
+    case "liber":
+      return "fc-event-liber";
+    case "curs":
+    default:
+      return "fc-event-curs";
+  }
+}
+
+/**
+ * Turn expanded backend occurrences into TIMED FullCalendar events for the
+ * weekly time-grid. Occurrences with a startTime become timed blocks; ones
+ * without fall back to all-day. Styling reuses the existing fc-event-* classes.
+ */
+export function occurrencesToEvents(occurrences: CalendarOccurrence[]): EventInput[] {
+  return occurrences.map((o) => {
+    const timed = !!o.startTime;
+    const start = timed ? `${o.date}T${o.startTime}:00` : o.date;
+    const end = timed && o.endTime ? `${o.date}T${o.endTime}:00` : undefined;
+    const timeLabel = timed ? `${o.startTime}${o.endTime ? `–${o.endTime}` : ""}` : "";
+
+    let description: string | null = o.description ?? null;
+    if (o.status === "cancelled") {
+      description = o.cancelReason === "blackout" ? "Anulat (pauză)" : "Anulat";
+    } else if (o.status === "override") {
+      description = `Reprogramat${timeLabel ? ` · ${timeLabel}` : ""}`;
+    }
+
+    // Only prefix the label when it adds information (skip "Grupa A · Grupa A"
+    // and "Școala · Școala de patinaj").
+    const title =
+      o.label && !o.title.toLowerCase().includes(o.label.toLowerCase())
+        ? `${o.label} · ${o.title}`
+        : o.title;
+
+    return {
+      title,
+      start,
+      end,
+      allDay: !timed,
+      display: "block",
+      classNames: [occurrenceClass(o)],
+      extendedProps: {
+        type: o.status === "cancelled" ? "anulat" : o.type,
+        status: o.status,
+        label: o.label,
+        description,
+        cancelReason: o.cancelReason,
+      },
+    } as EventInput;
+  });
 }

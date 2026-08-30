@@ -179,7 +179,7 @@ export function SportspersonCard({
     medalTotal === 0
       ? "var(--color-cream)"
       : tier.color === "var(--color-medal-bronze)"
-        ? "#fdba74"
+        ? "var(--color-orange)"
         : tier.color;
   const isSpotlight = size === "spotlight";
   const initials = sportsperson.name
@@ -331,7 +331,7 @@ export function SportspersonCard({
                 style={{
                   color:
                     tier.color === "var(--color-medal-bronze)"
-                      ? "#fdba74"
+                      ? "var(--color-orange)"
                       : tier.color,
                 }}
               >

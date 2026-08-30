@@ -198,7 +198,7 @@ const PartnerForm: React.FC = () => {
           name="message"
           required
           rows={5}
-          placeholder="Spune-ne ce ai în minte — sponsorizare, un eveniment sau altă idee de colaborare..."
+          placeholder="Spune-ne ce ai în minte, sponsorizare, un eveniment sau altă idee de colaborare..."
           value={form.message}
           onChange={handleChange}
           className={cn(inputOnNavy, "resize-none")}
@@ -208,7 +208,7 @@ const PartnerForm: React.FC = () => {
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
         >
           {errorMessage}
         </div>

@@ -9,7 +9,7 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 const SECTIONS = [
   {
     number: "1",
-    title: "Politica de confidențialitate privind prelucrarea datelor cu caracter personal - 2024",
+    title: "Politica de confidențialitate privind prelucrarea datelor cu caracter personal - 2026",
     content: (
       <p>
         ACS EduSport colectează și prelucrează mai multe categorii de date cu
