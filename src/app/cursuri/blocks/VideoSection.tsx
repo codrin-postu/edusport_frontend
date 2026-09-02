@@ -21,7 +21,10 @@ const VideoSection: React.FC = () => {
 
           <div className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-xl">
             <iframe
-              src="https://www.youtube.com/embed/G-0eleYxj2w"
+              // youtube-nocookie, not youtube.com: the plain domain sets four
+              // tracking cookies (VISITOR_INFO1_LIVE, YSC and friends) on load,
+              // which would contradict the cookie policy and require consent.
+              src="https://www.youtube-nocookie.com/embed/G-0eleYxj2w"
               title="Cursuri de patinaj EduSport"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

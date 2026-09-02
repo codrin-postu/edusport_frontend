@@ -38,7 +38,6 @@ const footerLeftSections = [
   {
     title: "Informații legale",
     items: [
-      // TODO: create /politica-cookies page
       { label: "Politica de Cookies", href: "/cookies", type: "link" as const },
       {
         label: "Politica de confidentialitate",
