@@ -15,6 +15,8 @@
 //         linkUrl?, linkLabel? } ] } ] }
 // ---------------------------------------------------------------------------
 
+import { STRAPI_BASE } from "./strapi-base";
+
 import type { SelectItemOption } from "@/components/ui/select";
 
 export type FormType = "inscriere" | "contact";
@@ -59,8 +61,7 @@ export interface FormConfig {
   steps: FormStepConfig[];
 }
 
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+const STRAPI_URL = STRAPI_BASE;
 
 /**
  * Fetch the CMS config for a form. Returns `null` on any failure (network

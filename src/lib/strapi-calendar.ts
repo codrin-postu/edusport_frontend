@@ -6,7 +6,9 @@
  * components and the client (plain fetch).
  */
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+import { STRAPI_BASE } from "./strapi-base";
+
+const STRAPI_URL = STRAPI_BASE;
 
 export type OccurrenceStatus = "scheduled" | "cancelled" | "override";
 

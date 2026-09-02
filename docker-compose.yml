@@ -1,3 +1,13 @@
+# Development only. Production uses docker-compose.production.yml.
+#
+# Joins the shared external `edusport_net`, mirroring production, so this
+# container can reach the Strapi container in the sibling backend repo by name.
+# Create the network once before the first `up`:
+#
+#   docker network create edusport_net
+#
+# Start the backend first: `cd ../edusport_backend && docker compose up -d`.
+
 services:
   frontend:
     container_name: edusport-frontend
@@ -7,10 +17,22 @@ services:
     working_dir: /app
     ports:
       - "3000:3000"
+    # The API token, revalidate secret and Umami ids come from .env.local, the
+    # same file `npm run dev` on the host reads. Compose only auto-loads `.env`,
+    # so it has to be named explicitly or the container gets an empty token and
+    # every Strapi call returns 403.
+    env_file:
+      - path: .env.local
+        required: false
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+      # Server rendering runs inside this container, where `localhost` is the
+      # container itself, so it needs Strapi's service name. Not prefixed with
+      # NEXT_PUBLIC_, so it never reaches the browser bundle; client code falls
+      # back to NEXT_PUBLIC_STRAPI_URL from .env.local automatically.
+      - STRAPI_INTERNAL_URL=${STRAPI_INTERNAL_URL:-http://strapi_app:1337}
     volumes:
       # Mount only the code, not node_modules or .next
       - .:/app
@@ -18,7 +40,16 @@ services:
       - node_modules:/app/node_modules
       # Persist .next build cache (optional, speeds up rebuilds)
       - next_cache:/app/.next
+    networks:
+      # `default` keeps this service talking to its own database; the shared
+      # net is only for reaching the sibling EduSport services.
+      - default
+      - edusport_net
     command: npm run dev
+
+networks:
+  edusport_net:
+    external: true
 
 volumes:
   node_modules:

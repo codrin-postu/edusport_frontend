@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit } from "@/lib/rate-limit";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+import { STRAPI_BASE } from "@/lib/strapi-base";
+
+const STRAPI_URL = STRAPI_BASE;
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
 const REASONS = new Set([

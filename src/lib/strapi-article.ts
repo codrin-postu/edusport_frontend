@@ -283,6 +283,8 @@ export function resolveVideoEmbed(url: string): { provider: "youtube" | "vimeo";
 export function strapiMediaUrl(url: string): string {
   if (!url) return "";
   if (url.startsWith("http")) return url;
+  // Public url on purpose: the result becomes an <img src> the browser loads,
+  // so an internal container address would not resolve.
   const base = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
   return `${base}${url}`;
 }

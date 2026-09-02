@@ -9,6 +9,9 @@ import React from "react";
 
 const SAFE_URL = /^(https?:\/\/|\/|mailto:)/i;
 
+// Deliberately the PUBLIC url, not STRAPI_BASE: this builds <img src> values
+// that the browser has to fetch, so an internal container address would break
+// every image when rendered on the server.
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 
 // Strapi stores uploaded files as `/uploads/...`. Prepend the backend host so

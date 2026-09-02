@@ -1,6 +1,8 @@
 import { cache } from "react";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+import { STRAPI_BASE } from "./strapi-base";
+
+const STRAPI_URL = STRAPI_BASE;
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
 const strapiRequest = cache(async(path: string, params?: string, revalidate: number | false = 1800) => {
