@@ -64,20 +64,21 @@ const HomePage: React.FC<HomePageProps> = ({
     <div>
       <HeroSection
         variant={heroVariant}
-        motto={cms.hero?.motto}
         ctaLabel={cms.hero?.ctaLabel}
         ctaUrl={cms.hero?.ctaUrl}
         nextEvent={heroNextEvent}
       />
       {/* Registration (season-open) flows directly into About Us — no SquareTransition wipe. */}
       {registrationOpen ? registrationSlot : registrationClosedSlot}
-      <AboutUsSection
-        panels={cms.about?.panels ?? null}
-        notebook={cms.about?.notebook ?? null}
-      />
+      <AboutUsSection panels={cms.about?.panels ?? null} />
       <CompetitionStrip images={stripImages} />
-      <StatsStrip />
-      <AthletesSpotlight athletes={featuredAthletes} stats={featuredStats} totalCount={athletesTotal} />
+      <StatsStrip items={cms.sections?.stats ?? null} />
+      <AthletesSpotlight
+        athletes={featuredAthletes}
+        stats={featuredStats}
+        totalCount={athletesTotal}
+        copy={cms.sections?.athletes ?? null}
+      />
       {/* Merged Actualitate hub: next event + news + recent podiums. */}
       <EventsNewsSection event={currentEvent} medals={recentMedals} articles={articles} />
       {/* The closing register CTA now lives in the global footer (register band). */}

@@ -17,9 +17,28 @@ import { SportspersonCard } from "../../despre-noi/sportivi/_components/Sportspe
 interface AthletesSpotlightProps {
   athletes: StrapiSportsperson[];
   stats: Record<string, SportspersonStats>;
-  /** Total roster size, used for the big "N+" number. */
+  /** Real number of public athletes, from meta.pagination.total. */
   totalCount?: number;
+  /** Editable copy from homepage.sections.athletes. */
+  copy?: {
+    heading?: string | null;
+    intro?: string | null;
+    countLabel?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  } | null;
 }
+
+// Used when the CMS has nothing yet. Deliberately free of a hardcoded count:
+// the number beside this text is the live one, so a literal here would contradict it.
+const FALLBACK = {
+  heading: "Sportivii noștri",
+  intro:
+    "Sportivi care se antrenează săptămânal la EduSport, de la primii pași pe gheață până la podiumuri naționale.",
+  countLabel: "sportivi legitimați",
+  ctaLabel: "Vezi toți sportivii",
+  ctaUrl: "/despre-noi/sportivi",
+};
 
 const EMPTY_STATS: SportspersonStats = {
   totalCompetitions: 0,
@@ -31,7 +50,7 @@ const EMPTY_STATS: SportspersonStats = {
   bestScore: null,
 };
 
-export default function AthletesSpotlight({ athletes, stats, totalCount }: AthletesSpotlightProps) {
+export default function AthletesSpotlight({ athletes, stats, totalCount, copy }: AthletesSpotlightProps) {
   if (!athletes.length) {
     return (
       <section className="bg-retro-cream py-20 md:py-28">
@@ -43,7 +62,15 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
   }
   // Two featured cards for the C layout; the big number + CTA carry the rest.
   const featured = athletes.slice(0, 2);
-  const bigNumber = totalCount && totalCount > 3 ? `${totalCount}+` : "50+";
+  // The real total, uncapped. No literal fallback: showing an invented number
+  // next to editable copy is how the two came to contradict each other before.
+  const bigNumber = typeof totalCount === "number" && totalCount > 0 ? String(totalCount) : null;
+
+  const heading = copy?.heading?.trim() || FALLBACK.heading;
+  const intro = copy?.intro?.trim() || FALLBACK.intro;
+  const countLabel = copy?.countLabel?.trim() || FALLBACK.countLabel;
+  const ctaLabel = copy?.ctaLabel?.trim() || FALLBACK.ctaLabel;
+  const ctaUrl = copy?.ctaUrl?.trim() || FALLBACK.ctaUrl;
 
   return (
     <section className="bg-retro-cream py-20 md:py-28">
@@ -54,30 +81,31 @@ export default function AthletesSpotlight({ athletes, stats, totalCount }: Athle
             <h2
               className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px]"
             >
-              Sportivii noștri
+              {heading}
             </h2>
             <p className="text-navy/60 text-sm md:text-base leading-relaxed mt-4 max-w-[46ch]">
-              Peste 50 de sportivi se antrenează săptămânal la EduSport, de la
-              primii pași pe gheață până la podiumuri naționale, în 6 grupe de vârstă.
+              {intro}
             </p>
 
-            <div className="mt-8 mb-8">
-              <span className="block font-display text-display-xl font-black text-navy leading-[0.9]">
-                {bigNumber}
-              </span>
-              <span className="block text-sm font-bold uppercase tracking-[0.08em] text-rust mt-2">
-                sportivi legitimați
-              </span>
-            </div>
+            {bigNumber && (
+              <div className="mt-8 mb-8">
+                <span className="block font-display text-display-xl font-black text-navy leading-[0.9]">
+                  {bigNumber}
+                </span>
+                <span className="block text-sm font-bold uppercase tracking-[0.08em] text-rust mt-2">
+                  {countLabel}
+                </span>
+              </div>
+            )}
 
             <SpotlightButton
               layers
               layersFace="cream"
-              href="/despre-noi/sportivi"
+              href={ctaUrl}
               className="text-xs"
               umamiEvent="home.sportivi"
             >
-              Vezi toți sportivii
+              {ctaLabel}
             </SpotlightButton>
           </div>
 

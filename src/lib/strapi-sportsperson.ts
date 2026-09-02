@@ -131,6 +131,31 @@ const DETAIL_POPULATE_PARAMS = {
  * `fetchSpotlightSportsperson` + `fetchPublicSportspeoplePage` instead,
  * which paginate server-side.
  */
+/**
+ * How many athletes are public, from Strapi's own pagination meta.
+ *
+ * Counting the array from `fetchPublicSportspeople` silently caps at its
+ * `pageSize` of 100, so the homepage would under-report once the roster grows
+ * past that. Asks for one row and reads `meta.pagination.total` instead.
+ */
+export async function fetchPublicSportspeopleTotal(): Promise<number | null> {
+  const params = new URLSearchParams({
+    "filters[showPublicPage][$eq]": "true",
+    "pagination[pageSize]": "1",
+    "fields[0]": "documentId",
+  });
+  try {
+    const { meta } = await fetchStrapiPaginated<StrapiSportsperson[]>(
+      "sportspeople",
+      params.toString(),
+      300,
+    );
+    return meta?.pagination?.total ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchPublicSportspeople(): Promise<StrapiSportsperson[]> {
   const params = new URLSearchParams({
     "filters[showPublicPage][$eq]": "true",

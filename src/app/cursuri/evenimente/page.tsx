@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import EventsPage from "./_View";
-import { fetchArticles, strapiMediaUrl } from "@/lib/strapi-article";
+import { fetchArticles, strapiMediaUrl, fetchNextEvent } from "@/lib/strapi-article";
 import type { Event } from "./_data";
 
 export const metadata: Metadata = {
@@ -42,9 +42,12 @@ export default async function Page() {
       admissionInfo: a.eventAdmissionInfo,
     }));
 
-    const upcoming = mapped
-      .filter((e) => new Date(e.date).getTime() >= now)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    // The "next event" rule lives in fetchNextEvent so the homepage hero and
+    // this page can never disagree about which event is current.
+    const next = await fetchNextEvent();
+    const currentEvent = next
+      ? (mapped.find((e) => e.slug === next.slug) ?? null)
+      : null;
 
     const past = mapped
       .filter((e) => new Date(e.date).getTime() < now)
@@ -52,7 +55,7 @@ export default async function Page() {
 
     return (
       <EventsPage
-        currentEvent={upcoming[0] ?? null}
+        currentEvent={currentEvent}
         pastEvents={past.slice(0, 5)}
       />
     );

@@ -16,9 +16,7 @@ interface RegistrationClosedSectionProps {
 }
 
 const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ cms, season }) => {
-  const seasonLabel = season
-    ? `Sezonul ${season}`
-    : cms?.seasonLabel ?? "Sezonul 2025–2026";
+  const seasonLabel = season ? `Sezonul ${season}` : "Sezonul curent";
   const heading = cms?.heading ?? "Ne vedem în următorul sezon!";
   const body = cms?.body ?? "Înscrierile pentru sezonul curent sunt închise. Urmărește-ne pentru vești despre sezonul următor - anunțurile despre deschiderea înscrierilor apar primele pe canalul nostru de WhatsApp și pe rețelele sociale.";
   const whatsappLabel = cms?.whatsappLabel ?? "Alătură-te pe WhatsApp";

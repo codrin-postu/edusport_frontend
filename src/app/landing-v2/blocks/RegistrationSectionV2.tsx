@@ -13,10 +13,13 @@ import type { HomepageRegistration } from "../_types";
 
 interface RegistrationSectionV2Props {
   cms?: HomepageRegistration | null;
+  /** Canonical season from site-settings.registration.currentSeason. */
+  season?: string;
 }
 
-const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms }) => {
-  const seasonLabel = cms?.seasonLabel ?? "Sezonul 2025–2026";
+const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, season }) => {
+  // Same source as the closed variant, so the two branches cannot disagree.
+  const seasonLabel = season ? `Sezonul ${season}` : "Sezonul curent";
   const heading = cms?.heading ?? "Sezonul a început!";
   const body = cms?.body ?? "Visezi să aluneci grațios pe gheață? La Școala de Patinaj EduSport te așteptăm într-un mediu prietenos și plin de energie, indiferent dacă ești la primii pași sau vrei să îți perfecționezi tehnica.";
   const bodySecondary = cms?.bodySecondary ?? "Cursurile sunt deschise pentru toate nivelurile - începători, intermediari și avansați - cu antrenori foști sportivi de performanță. Ne vedem sâmbăta și duminica, 4 octombrie 2025, la patinoarul Cotroceni On Ice din AFI Cotroceni.";

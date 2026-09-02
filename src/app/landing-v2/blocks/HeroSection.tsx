@@ -83,7 +83,6 @@ export interface HeroNextEvent {
 
 interface HeroSectionProps {
   variant: Variant;
-  motto?: string | null;
   ctaLabel?: string | null;
   ctaUrl?: string | null;
   nextEvent?: HeroNextEvent | null;

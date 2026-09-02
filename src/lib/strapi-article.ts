@@ -155,6 +155,48 @@ export async function fetchArticles(category?: CategoryKey): Promise<StrapiArtic
   return data ?? [];
 }
 
+/**
+ * The next upcoming event, or null when nothing is scheduled.
+ *
+ * Events are articles: `category` is "evenimente" (or "competitii", which the
+ * events page has always counted as events too) plus the `eventDate`,
+ * `eventLocation` and `eventAdmissionInfo` fields. `eventDate` wins over `date`
+ * because `date` is the publish date of the write-up, not when it happens.
+ *
+ * Shared by the homepage hero and /cursuri/evenimente so the two can never
+ * disagree about which event is next.
+ */
+export interface NextEvent {
+  slug: string;
+  title: string;
+  date: string;
+  location?: string;
+  admissionInfo?: string;
+  coverImageUrl?: string;
+}
+
+export async function fetchNextEvent(): Promise<NextEvent | null> {
+  const [evenimente, competitii] = await Promise.all([
+    fetchArticles("evenimente"),
+    fetchArticles("competitii"),
+  ]);
+
+  const now = Date.now();
+  const upcoming = [...evenimente, ...competitii]
+    .map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      date: a.eventDate ?? a.date,
+      location: a.eventLocation ?? undefined,
+      admissionInfo: a.eventAdmissionInfo ?? undefined,
+      coverImageUrl: a.coverImage ? strapiMediaUrl(a.coverImage.url) : undefined,
+    }))
+    .filter((e) => e.date && new Date(e.date).getTime() >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  return upcoming[0] ?? null;
+}
+
 /** Fetch a paginated, optionally filtered page of articles */
 export async function fetchArticlesPaginated(opts: {
   page?: number;

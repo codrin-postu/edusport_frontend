@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
-import { fetchArticlesPaginated, strapiMediaUrl } from "@/lib/strapi-article";
+import { fetchArticlesPaginated, strapiMediaUrl, fetchNextEvent } from "@/lib/strapi-article";
 import type { StrapiMediaImage } from "@/lib/strapi-article";
 import {
   fetchPublicSportspeople,
@@ -11,13 +11,13 @@ import {
   parsePlacement,
   type StrapiSportsperson,
   type SportspersonStats,
+  fetchPublicSportspeopleTotal,
 } from "@/lib/strapi-sportsperson";
 import HomePage from "./landing-v2/_View";
 import { type LatestArticleData } from "./homepage/blocks/LatestArticleSection";
 import RegistrationSectionV2 from "./landing-v2/blocks/RegistrationSectionV2";
 import RegistrationClosedSection from "./homepage/blocks/RegistrationClosedSection";
 import { type HeroVariant } from "./landing-v2/blocks/HeroVariant";
-import { CURRENT_EVENT } from "./cursuri/evenimente/_data";
 import type { RecentMedal } from "./landing-v2/blocks/EventResultsSection";
 import type { HomepageCms } from "./landing-v2/_types";
 
@@ -39,7 +39,9 @@ export const metadata: Metadata = {
 export const revalidate = 3600; // 1 hour — editor changes are pushed via /api/revalidate webhook
 
 const STRIP_IMAGE_CAP = 16;
-const FEATURED_ATHLETE_CAP = 3;
+// Matches `athletes.slice(0, 2)` in AthletesSpotlight. Fetching a third meant
+// an extra batched competitions query for an athlete that never rendered.
+const FEATURED_ATHLETE_CAP = 2;
 const RECENT_MEDALS_CAP = 4;
 
 // Hardcoded placeholder set used when Strapi athletes have no gallery photos
@@ -114,14 +116,17 @@ function buildRecentMedals(competitions: MedalSourceCompetition[]): RecentMedal[
   return flat.slice(0, RECENT_MEDALS_CAP);
 }
 
+// Built from athlete photos only. The list query does not populate `gallery`
+// (see LIST_POPULATE_PARAMS in strapi-sportsperson.ts), so a gallery branch
+// here silently produced nothing; populating it for every athlete just to fill
+// a 3-image strip is not worth the payload.
 function buildStripImages(athletes: StrapiSportsperson[]): StrapiMediaImage[] {
-  const galleryImages = athletes.flatMap((a) => a.gallery ?? []);
   const photoImages = athletes
     .map((a) => a.photo)
     .filter((p): p is StrapiMediaImage => !!p?.url);
   const seen = new Set<string>();
   const merged: StrapiMediaImage[] = [];
-  for (const img of [...galleryImages, ...photoImages]) {
+  for (const img of photoImages) {
     if (seen.has(img.url)) continue;
     seen.add(img.url);
     merged.push(img);
@@ -144,6 +149,8 @@ export default async function Page() {
     sportspeopleResult,
     spotlightAthleteResult,
     competitionsResult,
+    nextEventResult,
+    athletesTotalResult,
   ] = await Promise.allSettled([
     fetchStrapi<{ registration?: { open?: boolean; currentSeason?: string } }>("site-settings"),
     fetchStrapi<HomepageCms>("homepage"),
@@ -163,7 +170,13 @@ export default async function Page() {
         "populate[sportspeople][fields][2]": "showPublicPage",
       }).toString(),
     ),
+    fetchNextEvent(),
+    fetchPublicSportspeopleTotal(),
   ]);
+
+  const nextEvent = nextEventResult.status === "fulfilled" ? nextEventResult.value : null;
+  const athletesTotal =
+    athletesTotalResult.status === "fulfilled" ? athletesTotalResult.value : null;
 
   if (settingsResult.status === "fulfilled" && settingsResult.value?.registration) {
     if (settingsResult.value.registration.open !== undefined) {
@@ -230,12 +243,26 @@ export default async function Page() {
     competitionsResult.status === "fulfilled" ? competitionsResult.value : [];
   const recentMedals = buildRecentMedals(competitions);
 
-  const heroNextEvent = CURRENT_EVENT
+  const heroNextEvent = nextEvent
     ? {
-        title: CURRENT_EVENT.title,
-        dateLabel: new Date(CURRENT_EVENT.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long" }),
-        location: CURRENT_EVENT.location,
-        href: `/cursuri/evenimente/${CURRENT_EVENT.slug}`,
+        title: nextEvent.title,
+        dateLabel: new Date(nextEvent.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long" }),
+        location: nextEvent.location,
+        href: `/cursuri/evenimente/${nextEvent.slug}`,
+      }
+    : null;
+
+  // The event card in Evenimente si noutati, same source as the hero pill.
+  const currentEventCard = nextEvent
+    ? {
+        slug: nextEvent.slug,
+        title: nextEvent.title,
+        date: nextEvent.date,
+        location: nextEvent.location,
+        coverImage: nextEvent.coverImageUrl ?? "/images/courses_generated.png",
+        excerpt: "",
+        body: "",
+        admissionInfo: nextEvent.admissionInfo,
       }
     : null;
 
@@ -261,13 +288,13 @@ export default async function Page() {
         heroVariant={heroVariant}
         featuredAthletes={displayAthletes}
         featuredStats={displayStats}
-        athletesTotal={athletes.length}
+        athletesTotal={athletesTotal ?? undefined}
         stripImages={stripImages}
-        currentEvent={CURRENT_EVENT}
+        currentEvent={currentEventCard}
         recentMedals={recentMedals}
         heroNextEvent={heroNextEvent}
         articles={displayArticles}
-        registrationSlot={<RegistrationSectionV2 cms={cms.registration} />}
+        registrationSlot={<RegistrationSectionV2 cms={cms.registration} season={currentSeason} />}
         registrationClosedSlot={<RegistrationClosedSection cms={cms.registrationClosed} season={currentSeason} />}
       />
     </>

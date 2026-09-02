@@ -3,8 +3,8 @@ export type {
   HomepageRegistration,
   HomepageRegistrationClosed,
   HomepageAboutPanel,
-  HomepageNotebookLine,
-  HomepageNotebookLineStyle,
   HomepageAbout,
+  HomepageSections,
+  HomepageStatItem,
   HomepageCms,
 } from "../homepage/_types";

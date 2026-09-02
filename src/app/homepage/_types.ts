@@ -1,11 +1,9 @@
 export interface HomepageHero {
-  motto?: string | null;
   ctaLabel?: string | null;
   ctaUrl?: string | null;
 }
 
 export interface HomepageRegistration {
-  seasonLabel?: string | null;
   heading?: string | null;
   body?: string | null;
   bodySecondary?: string | null;
@@ -21,7 +19,6 @@ export interface HomepageRegistration {
 }
 
 export interface HomepageRegistrationClosed {
-  seasonLabel?: string | null;
   heading?: string | null;
   body?: string | null;
   whatsappLabel?: string | null;
@@ -38,19 +35,25 @@ export interface HomepageAboutPanel {
   ctaUrl?: string | null;
 }
 
-export type HomepageNotebookLineStyle = "normal" | "strikethrough" | "scratched";
-
-export interface HomepageNotebookLine {
-  text?: string | null;
-  style?: HomepageNotebookLineStyle | null;
-  indent?: boolean | null;
-  dim?: boolean | null;
-  replacement?: string | null;
-}
-
 export interface HomepageAbout {
   panels?: HomepageAboutPanel[] | null;
-  notebook?: HomepageNotebookLine[] | null;
+}
+
+export interface HomepageStatItem {
+  value?: string | null;
+  label?: string | null;
+}
+
+/** Copy that used to be hardcoded in the landing components. */
+export interface HomepageSections {
+  athletes?: {
+    heading?: string | null;
+    intro?: string | null;
+    countLabel?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  } | null;
+  stats?: HomepageStatItem[] | null;
 }
 
 export interface HomepageCms {
@@ -58,4 +61,5 @@ export interface HomepageCms {
   registration?: HomepageRegistration | null;
   registrationClosed?: HomepageRegistrationClosed | null;
   about?: HomepageAbout | null;
+  sections?: HomepageSections | null;
 }

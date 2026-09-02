@@ -109,7 +109,6 @@ const RIBBON_SW_MOBILE = 17;
 
 interface AboutUsSectionProps {
   panels?: HomepageAboutPanel[] | null;
-  notebook?: unknown;
 }
 
 const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) => {
@@ -134,33 +133,9 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
 
       <div className="max-w-content mx-auto relative z-[1]">
         {/* ── Section 1 — content + brush-masked skater ── */}
-        <div className="relative min-h-[360px] flex flex-col md:flex-row items-center gap-10 md:gap-14 py-10 px-6 md:px-16">
-          <div className="max-w-[490px]">
+        <div className="relative flex flex-col md:flex-row items-center gap-10 md:gap-14 py-10 px-6 md:px-16">
+          <div className="max-w-[620px]">
             <Content panel={PANELS[0]!} />
-          </div>
-          <div className="shrink-0 w-full md:w-[340px]">
-            <svg viewBox="0 0 340 380" className="block w-full">
-              <defs>
-                <filter id="about-grunge" x="-25%" y="-25%" width="150%" height="150%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.045" numOctaves={4} seed={9} result="t" />
-                  <feDisplacementMap in="SourceGraphic" in2="t" scale={42} xChannelSelector="R" yChannelSelector="G" />
-                </filter>
-                <mask id="about-bm">
-                  <g filter="url(#about-grunge)">
-                    <rect x="36" y="70" width="278" height="248" rx="24" fill="#fff" />
-                  </g>
-                </mask>
-              </defs>
-              <image
-                href="/images/courses_generated.png"
-                x="-30"
-                y="0"
-                width="420"
-                height="380"
-                preserveAspectRatio="xMidYMid slice"
-                mask="url(#about-bm)"
-              />
-            </svg>
           </div>
         </div>
 

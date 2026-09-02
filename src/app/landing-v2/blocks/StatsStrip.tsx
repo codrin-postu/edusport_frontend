@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "motion/react";
+import type { HomepageStatItem } from "@/app/homepage/_types";
 
 // Mirrors the 4 evergreen numbers surfaced on /despre-noi.
 // Split into value + suffix so the number can count up on scroll.
@@ -45,9 +46,36 @@ function CountUp({ target, suffix, run }: { target: number; suffix: string; run:
   );
 }
 
-export default function StatsStrip() {
+/**
+ * Split a CMS value like "10+" into the number the counter animates to and the
+ * suffix printed after it. Anything non-numeric falls back to no count-up.
+ */
+function splitValue(raw: string): { value: number; suffix: string } {
+  const m = raw.trim().match(/^(\d+)(.*)$/);
+  if (!m) return { value: 0, suffix: raw.trim() };
+  return { value: Number(m[1]), suffix: m[2] ?? "" };
+}
+
+export default function StatsStrip({ items }: { items?: HomepageStatItem[] | null }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-12% 0px" });
+
+  // Colours are design, not content, so they stay positional: a CMS row takes
+  // the palette of the slot it lands in and only overrides value and label.
+  const stats = useMemo(() => {
+    if (!items?.length) return STATS.map((s) => ({ ...s }));
+    return items.slice(0, STATS.length).map((it, i) => {
+      const base = STATS[i] ?? STATS[STATS.length - 1]!;
+      const parsed = it.value ? splitValue(it.value) : { value: base.value, suffix: base.suffix };
+      return {
+        value: parsed.value,
+        suffix: parsed.suffix,
+        label: it.label?.trim() || base.label,
+        bg: base.bg,
+        text: base.text,
+      };
+    });
+  }, [items]);
 
   return (
     <section className="bg-navy">
@@ -55,7 +83,7 @@ export default function StatsStrip() {
         ref={ref}
         className="grid grid-cols-2 md:grid-cols-4 gap-[3px]"
       >
-        {STATS.map((s) => (
+        {stats.map((s) => (
           <div
             key={s.label}
             className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center py-16 md:py-20 px-4`}
