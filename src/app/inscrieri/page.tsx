@@ -17,7 +17,10 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 3600;
+// The form shape is CMS-driven, so edits in the admin must show up quickly.
+// At 3600 a reordered or renamed question stayed invisible for up to an hour,
+// which read as the editor being broken.
+export const revalidate = 60;
 
 export default async function Page() {
   const formConfig = await fetchFormConfig("inscriere");

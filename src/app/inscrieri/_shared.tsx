@@ -21,14 +21,19 @@ export const STEPS = [
 // a mustard fill that grows each step.
 // ---------------------------------------------------------------------------
 
-export const StepIndicator: React.FC<{ current: number }> = ({ current }) => {
-  const total = STEPS.length;
+export const StepIndicator: React.FC<{
+  current: number;
+  /** Step titles from the CMS config. Falls back to the built-in three. */
+  labels?: string[];
+}> = ({ current, labels }) => {
+  const titles = labels?.length ? labels : STEPS.map((s) => s.label);
+  const total = titles.length;
   const pct = Math.round(((current + 1) / total) * 100);
   return (
     <div className="flex flex-col gap-2 mb-10">
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-[15px] font-bold text-navy tracking-[-0.2px]">
-          {STEPS[current].label}
+          {titles[current] ?? ""}
         </span>
         <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-rust whitespace-nowrap">
           Pasul {current + 1} din {total}

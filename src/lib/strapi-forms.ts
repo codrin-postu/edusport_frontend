@@ -45,7 +45,14 @@ export interface FormQuestion {
   required?: boolean;
   hidden?: boolean;
   options?: FormOption[];
-  // Only meaningful for `info` blocks (e.g. the confirm-step notice + link).
+  /**
+   * Card fields. A `checkbox` or `info` question renders as a bordered card
+   * with an icon, heading, description and link once `title` or `icon` is set;
+   * with neither it falls back to a plain checkbox / paragraph. Supplied by the
+   * CMS, which is why the consent cards survive without hardcoding them here.
+   */
+  title?: string;
+  icon?: string;
   linkUrl?: string;
   linkLabel?: string;
 }

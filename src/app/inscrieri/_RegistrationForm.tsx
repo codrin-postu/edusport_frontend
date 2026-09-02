@@ -3,30 +3,34 @@
 import { CheckCircle } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import StepConfirm from "./_StepConfirm";
-import StepExperience from "./_StepExperience";
-import StepPersonal from "./_StepPersonal";
-import {
-  INITIAL_FORM,
-  submitRegistration,
-  type FormState,
-  type SubmitStatus,
-} from "./_types";
+import ConfigStep, { stepComplete } from "./_ConfigStep";
+import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types";
 import { track } from "@/lib/analytics";
-import {
-  buildCustomPayload,
-  getCustomQuestions,
-  INSCRIERE_BUILTIN_KEYS,
-  type CustomAnswer,
-  type FormConfig,
-} from "@/lib/strapi-forms";
+import SpotlightButton from "@/components/ui/spotlight-button";
+import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
+
+/**
+ * Registration form, driven entirely by the CMS config.
+ *
+ * The steps, their titles, which questions each contains, their order and their
+ * types all come from `/api/forms/inscriere/config`. Previously this rendered
+ * three hardcoded step components whose field lists were written out by hand,
+ * so custom steps, reordering and admin-added questions had no effect on the
+ * site. Answers are held in one flat map keyed by question key; the split
+ * between built-in columns and the `extra` object happens only at submit time.
+ */
 
 const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   config = null,
 }) => {
+  // The CMS is the source of truth. The bundled fallback exists only so a
+  // transient CMS outage does not take registrations offline entirely.
+  const activeConfig = config?.steps?.length ? config : FALLBACK_CONFIG;
+  const steps = activeConfig.steps ?? [];
+
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState<FormState>(INITIAL_FORM);
-  const [extra, setExtra] = useState<Record<string, CustomAnswer>>({});
+  const [answers, setAnswers] = useState<Record<string, CustomAnswer>>({});
+  const [website, setWebsite] = useState(""); // honeypot, must stay empty
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
@@ -43,35 +47,15 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
+  const handleAnswerChange = (key: string, value: CustomAnswer) => {
     markStarted();
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleValueChange = (name: keyof FormState) => (value: string) => {
-    markStarted();
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCustomChange = (key: string, value: CustomAnswer) => {
-    markStarted();
-    setExtra((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmit = async(
-    e: React.FormEvent | undefined,
-    agreements: { gdpr: boolean; regulament: boolean },
-  ) => {
-    e?.preventDefault();
+  const handleSubmit = async() => {
     setStatus("sending");
     try {
-      const extraPayload = buildCustomPayload(
-        getCustomQuestions(config, INSCRIERE_BUILTIN_KEYS),
-        extra,
-      );
-      await submitRegistration(form, agreements, extraPayload);
+      await submitRegistration(activeConfig, answers, website);
       track("inscriere.submit_success");
       setStatus("sent");
     } catch {
@@ -81,7 +65,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
   const nextStep = () => {
     track("inscriere.step_next", { step: step + 1 });
-    setStep((s) => Math.min(s + 1, 2));
+    setStep((s) => Math.min(s + 1, steps.length - 1));
   };
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
@@ -98,8 +82,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         </p>
         <button
           onClick={() => {
-            setForm(INITIAL_FORM);
-            setExtra({});
+            setAnswers({});
+            setWebsite("");
             setStatus("idle");
             setStep(0);
           }}
@@ -111,37 +95,20 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     );
   }
 
-  const stepContent =
-    step === 0 ? (
-      <StepPersonal
-        form={form}
-        onChange={handleChange}
-        onNext={nextStep}
-        config={config}
-        extra={extra}
-        onCustomChange={handleCustomChange}
-      />
-    ) : step === 1 ? (
-      <StepExperience
-        form={form}
-        onChange={handleChange}
-        onValueChange={handleValueChange}
-        onNext={nextStep}
-        onBack={prevStep}
-        config={config}
-        extra={extra}
-        onCustomChange={handleCustomChange}
-      />
-    ) : (
-      <StepConfirm
-        onBack={prevStep}
-        onSubmit={handleSubmit}
-        status={status}
-        config={config}
-        extra={extra}
-        onCustomChange={handleCustomChange}
-      />
+  if (!steps.length) {
+    return (
+      <div className="py-16 px-8 text-center">
+        <p className="text-sm text-navy/60">
+          Formularul de înscriere nu este disponibil momentan. Te rugăm să încerci din nou
+          mai târziu sau să ne contactezi direct.
+        </p>
+      </div>
     );
+  }
+
+  const current = steps[Math.min(step, steps.length - 1)]!;
+  const isLast = step === steps.length - 1;
+  const labels = steps.map((s) => s.title || "");
 
   return (
     <div ref={formRef}>
@@ -151,7 +118,73 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        {stepContent}
+        <ConfigStep
+          step={current}
+          stepLabels={labels}
+          index={step}
+          answers={answers}
+          onAnswerChange={handleAnswerChange}
+          onNext={nextStep}
+          onBack={prevStep}
+          footer={
+            isLast ? (
+              <div className="mt-8 pt-6 border-t-[1.5px] border-navy/12">
+                {status === "error" && (
+                  <p className="text-xs text-rust font-semibold mb-4">
+                    Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou.
+                  </p>
+                )}
+                <div className="flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    className="text-sm font-semibold text-navy/50 hover:text-rust transition-colors"
+                  >
+                    Înapoi
+                  </button>
+                  <SpotlightButton
+                    layers
+                    layersFace="black"
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={status === "sending" || !stepComplete(current, answers)}
+                  >
+                    {status === "sending" ? "Se trimite..." : "Trimite înscrierea"}
+                  </SpotlightButton>
+                </div>
+              </div>
+            ) : undefined
+          }
+        >
+          {step === 0 && (
+            // Honeypot — hidden from users, catches bots. Must stay empty.
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                width: 1,
+                height: 1,
+                padding: 0,
+                margin: -1,
+                overflow: "hidden",
+                clip: "rect(0 0 0 0)",
+                whiteSpace: "nowrap",
+                border: 0,
+              }}
+            >
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </div>
+          )}
+        </ConfigStep>
       </motion.div>
     </div>
   );
