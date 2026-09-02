@@ -1,6 +1,8 @@
 "use client";
 
 import { cn } from "@/utils/cn";
+import ConsentGate from "@/components/blocks/cookie-consent/ConsentGate";
+import { COOKIE_CATEGORIES } from "@/components/blocks/cookie-consent/config";
 import { ArrowUpRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef, memo } from "react";
@@ -103,7 +105,8 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
       onMouseLeave={() => setHovered(false)}
       onClick={togglePlay}
     >
-      {/* iframe - sized to cover the container regardless of aspect ratio */}
+      {/* Nothing reaches Google until the functional category is accepted. */}
+      <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
       <iframe
         ref={iframeRef}
         src={embedUrl}
@@ -127,6 +130,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
           height: "calc(100% + 120px)",
         }}
       />
+      </ConsentGate>
 
       {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
       <AnimatePresence>

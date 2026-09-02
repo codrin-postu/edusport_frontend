@@ -1,0 +1,177 @@
+/*
+ * Retro theme for vanilla-cookieconsent.
+ *
+ * The library is themed through custom properties on #cc-main, so this
+ * overrides those rather than fighting its selectors. Values mirror the site
+ * conventions: cream surface, navy ink, 1.5px navy borders, hard offset
+ * shadows instead of soft ones, square corners, rust for accents and mustard
+ * for the "on" state.
+ */
+
+#cc-main {
+  --cc-font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --cc-bg: #fbf8f1;                        /* retro-cream */
+  --cc-primary-color: #0e1a3c;             /* navy, body ink */
+  --cc-secondary-color: rgb(14 26 60 / 0.7);
+
+  /* Square, bordered, hard-shadowed. No pills anywhere. */
+  --cc-modal-border-radius: 0px;
+  --cc-btn-border-radius: 0px;
+  --cc-pm-toggle-border-radius: 0px;
+
+  /* Accept: navy block, cream ink. */
+
+  /* Refuse: same size and weight as accept, outlined rather than filled, so
+     it reads as an equal choice. Required by Legea 506/2004 art. 4 alin. (5). */
+  --cc-btn-secondary-bg: transparent;
+  --cc-btn-secondary-color: #0e1a3c;
+  --cc-btn-secondary-border-color: #0e1a3c;
+  --cc-btn-secondary-hover-bg: #0e1a3c;
+  --cc-btn-secondary-hover-color: #fbf8f1;
+  --cc-btn-secondary-hover-border-color: #0e1a3c;
+
+  --cc-separator-border-color: rgb(14 26 60 / 0.12);
+  --cc-link-color: #be3330;                /* rust */
+
+  --cc-cookie-category-block-bg: rgb(14 26 60 / 0.04);
+  --cc-cookie-category-block-border: rgb(14 26 60 / 0.12);
+  --cc-cookie-category-block-hover-bg: rgb(14 26 60 / 0.07);
+  --cc-cookie-category-block-hover-border: rgb(14 26 60 / 0.2);
+  --cc-cookie-category-expanded-block-bg: transparent;
+  --cc-section-category-border: rgb(14 26 60 / 0.12);
+
+  --cc-toggle-on-bg: #be3330;              /* rust */
+  --cc-toggle-off-bg: rgb(14 26 60 / 0.25);
+  --cc-toggle-on-knob-bg: #fbf8f1;
+  --cc-toggle-off-knob-bg: #fbf8f1;
+  --cc-toggle-enabled-icon-color: #fbf8f1;
+  --cc-toggle-disabled-icon-color: #fbf8f1;
+
+  --cc-overlay-bg: rgb(14 26 60 / 0.5);
+  --cc-footer-bg: rgb(14 26 60 / 0.04);
+  --cc-footer-color: rgb(14 26 60 / 0.7);
+  --cc-footer-border-color: rgb(14 26 60 / 0.12);
+}
+
+/* Hard border and offset shadow, matching the cards elsewhere on the site. */
+#cc-main .cm,
+#cc-main .pm {
+  border: 1.5px solid #0e1a3c;
+  box-shadow: 8px 8px 0 rgb(14 26 60 / 0.16);
+}
+
+/* Display face and tighter tracking for headings, as elsewhere. */
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: var(--font-display), var(--font-inter), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: #0e1a3c;
+}
+#cc-main .cm__title {
+  font-size: 1.4rem;
+}
+#cc-main .pm__title {
+  font-size: 1.6rem;
+}
+
+/* 2. The default 40px close button is oversized next to that title. */
+#cc-main .pm__close-btn {
+  width: 28px;
+  height: 28px;
+  border-width: 1.5px;
+}
+#cc-main .pm__close-btn svg {
+  stroke-width: 2;
+  transform: scale(0.7);
+}
+
+/* Buttons: squared, bold, uppercase, no pill shapes. */
+/*
+ * Two button levels.
+ *
+ * Primary, "Accept tot" only (data-role="all"): the layers CTA from
+ * globals.css:396-414 (`.lcta`, SpotlightButton in `layers` mode). Its two
+ * stacked layers are drawn with offset hard box-shadows, because a
+ * pseudo-element at negative z-index still paints above its parent's own
+ * background and would cover the face.
+ *
+ * Secondary, everything else (necessary / show / save): `.btn-retro-ghost`
+ * from globals.css:298-302, copied verbatim.
+ *
+ * data-role values confirmed against the library: all, change, necessary,
+ * save, show, section__toggle. The toggle is excluded so category switches are
+ * not restyled as buttons.
+ */
+#cc-main .cm__btn,
+#cc-main .pm__btn:not([data-role="section__toggle"]) {
+  border: 1.5px solid #0e1a3c;
+  border-radius: 0;
+  padding: 0.85rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---- secondary (.btn-retro-ghost) ---- */
+#cc-main .cm__btn:not([data-role="all"]),
+#cc-main .pm__btn:not([data-role="all"]):not([data-role="section__toggle"]) {
+  background: transparent;
+  color: #0e1a3c;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#cc-main .cm__btn:not([data-role="all"]):hover,
+#cc-main .pm__btn:not([data-role="all"]):not([data-role="section__toggle"]):hover {
+  background: #000;
+  color: #fff;
+}
+
+/* ---- primary (layers CTA), Accept tot only ---- */
+#cc-main .cm__btn[data-role="all"],
+#cc-main .pm__btn[data-role="all"] {
+  background: #000;          /* layersFace "black" on a light surface */
+  color: #fff;
+  box-shadow:
+    0 0 0 0 #efb22b,
+    0 0 0 0 #0e1a3c,
+    0 0 0 0 #be3330,
+    0 0 0 0 #0e1a3c;
+  transition:
+    box-shadow 0.26s ease,
+    transform 0.04s steps(1);
+}
+
+#cc-main .cm__btn[data-role="all"]:hover,
+#cc-main .pm__btn[data-role="all"]:hover {
+  box-shadow:
+    4px 4px 0 0 #efb22b,
+    4px 4px 0 1.5px #0e1a3c,
+    8px 8px 0 0 #be3330,
+    8px 8px 0 1.5px #0e1a3c;
+  transition:
+    box-shadow 0.34s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.04s steps(1);
+}
+
+#cc-main .cm__btn[data-role="all"]:active,
+#cc-main .pm__btn[data-role="all"]:active {
+  transform: translate(4px, 4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cc-main .cm__btn,
+  #cc-main .pm__btn {
+    transition: none;
+  }
+}
+
+/* Category rows keep the square edges too. */
+#cc-main .pm__section--toggle .pm__section-title,
+#cc-main .pm__section {
+  border-radius: 0;
+}

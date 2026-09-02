@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
 import { Inter, League_Spartan, Caveat, Lora } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -120,6 +121,10 @@ export default async function RootLayout({
         </main>
         <FooterReveal contactInfo={contactInfo} registrationOpen={registrationOpen} />
         {announcement && <AnnouncementPopup announcement={announcement} />}
+        {/* Not gated behind consent: Umami is self-hosted, writes nothing to the
+            device (its only storage touch is reading an opt-out flag) and does no
+            profiling, so it falls under the audience-measurement exemption rather
+            than art. 4(5) of Legea 506/2004. Disclosed in the privacy policy. */}
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
             src={process.env.NEXT_PUBLIC_UMAMI_URL ?? "https://analytics.umami.is/script.js"}
@@ -127,6 +132,7 @@ export default async function RootLayout({
             strategy="afterInteractive"
           />
         )}
+        <CookieConsent />
       </body>
     </html>
   );

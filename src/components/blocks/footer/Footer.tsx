@@ -1,4 +1,5 @@
 import { Link } from "@/components";
+import CookiePreferencesLink from "@/components/blocks/cookie-consent/CookiePreferencesLink";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { Text } from "@/components/ui/text";
 import { WarmStripe } from "@/components/ui/warm-stripe";
@@ -191,6 +192,9 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
           <div className="flex flex-col gap-3">
             {section.items.map((item, itemIndex) =>
               <FooterItem key={itemIndex} {...item} retro={retro} />,
+            )}
+            {section.title === "Informații legale" && (
+              <CookiePreferencesLink />
             )}
           </div>
         </div>

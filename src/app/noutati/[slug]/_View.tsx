@@ -1,3 +1,5 @@
+import ConsentGate from "@/components/blocks/cookie-consent/ConsentGate";
+import { COOKIE_CATEGORIES } from "@/components/blocks/cookie-consent/config";
 import { cn } from "@/utils/cn";
 import { CATEGORY_LABELS, type CategoryKey } from "../_data";
 import {
@@ -85,15 +87,17 @@ const ArticleVideo: React.FC<{ video: StrapiVideoField }> = ({ video }) => {
   }
   return (
     <div className="relative w-full aspect-video bg-black overflow-hidden border-[1.5px] border-navy">
-      <iframe
-        src={embed.embedUrl}
-        title="Video"
-        className="absolute inset-0 w-full h-full"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="strict-origin-when-cross-origin"
-      />
+      <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
+        <iframe
+          src={embed.embedUrl}
+          title="Video"
+          className="absolute inset-0 w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </ConsentGate>
     </div>
   );
 };

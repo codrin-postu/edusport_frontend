@@ -1,3 +1,5 @@
+import ConsentGate from "@/components/blocks/cookie-consent/ConsentGate";
+import { COOKIE_CATEGORIES } from "@/components/blocks/cookie-consent/config";
 import { cn } from "@/utils/cn";
 import React from "react";
 
@@ -19,7 +21,8 @@ const VideoSection: React.FC = () => {
             </p>
           </div>
 
-          <div className="w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-xl">
+            <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
             <iframe
               // youtube-nocookie, not youtube.com: the plain domain sets four
               // tracking cookies (VISITOR_INFO1_LIVE, YSC and friends) on load,
@@ -31,6 +34,7 @@ const VideoSection: React.FC = () => {
               loading="lazy"
               className="w-full h-full"
             />
+            </ConsentGate>
           </div>
         </div>
       </div>
