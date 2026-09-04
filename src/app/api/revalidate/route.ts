@@ -14,6 +14,11 @@ import { type NextRequest, NextResponse } from "next/server";
  * revalidation scope. With no params the homepage + key dynamic routes are
  * revalidated so the next visit fetches fresh data.
  */
+/**
+ * Every statically-rendered public route. Kept in step with src/app: a page
+ * missing here silently serves stale content until its own TTL expires, which
+ * is how the athletes list used to go an hour out of date after publishing.
+ */
 const DEFAULT_PATHS = [
   "/",
   "/contact",
@@ -25,7 +30,22 @@ const DEFAULT_PATHS = [
   "/despre-noi",
   "/despre-noi/echipa",
   "/despre-noi/realizari",
+  "/despre-noi/sportivi",
   "/noutati",
+  "/parteneri",
+  "/voluntariat",
+  "/protectia-datelor",
+];
+
+/**
+ * Dynamic route groups. `revalidatePath("/noutati")` does not touch
+ * `/noutati/some-article`; purging every generated page under a segment needs
+ * the route pattern plus the "page" type.
+ */
+const DEFAULT_DYNAMIC_ROUTES = [
+  "/noutati/[slug]",
+  "/cursuri/evenimente/[slug]",
+  "/despre-noi/sportivi/[slug]",
 ];
 
 export async function POST(req: NextRequest) {
@@ -58,7 +78,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, revalidated: { path } });
     }
     for (const p of DEFAULT_PATHS) revalidatePath(p);
-    return NextResponse.json({ ok: true, revalidated: DEFAULT_PATHS });
+    for (const r of DEFAULT_DYNAMIC_ROUTES) revalidatePath(r, "page");
+    return NextResponse.json({
+      ok: true,
+      revalidated: [...DEFAULT_PATHS, ...DEFAULT_DYNAMIC_ROUTES],
+    });
   } catch (err) {
     return NextResponse.json(
       { ok: false, error: err instanceof Error ? err.message : "unknown" },
