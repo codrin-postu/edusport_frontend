@@ -11,6 +11,13 @@ export interface PromoCard {
 }
 
 export interface NavItem {
+  /**
+   * Stable identifier, slug of the label. The menu STRUCTURE lives here in
+   * code; the CMS can only override the promo card's description and image,
+   * and it matches its entries to these keys. Renaming a key detaches its
+   * override, which then falls back to the values below.
+   */
+  key: string;
   label: string;
   href?: string;
   image?: string;
@@ -19,8 +26,9 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { label: "Acasa", href: "/" },
+  { key: "acasa", label: "Acasa", href: "/" },
   {
+    key: "despre-noi",
     label: "Despre Noi",
     image: "/images/menu/about_image.png",
     promo: {
@@ -57,6 +65,7 @@ export const navItems: NavItem[] = [
     ],
   },
   {
+    key: "cursuri",
     label: "Cursuri",
     image: "/images/courses_generated.png",
     promo: {
@@ -88,9 +97,9 @@ export const navItems: NavItem[] = [
       },
     ],
   },
-  { label: "Noutati", href: "/noutati" },
-  { label: "Parteneri", href: "/parteneri" },
-  { label: "Contact", href: "/contact" },
+  { key: "noutati", label: "Noutati", href: "/noutati" },
+  { key: "parteneri", label: "Parteneri", href: "/parteneri" },
+  { key: "contact", label: "Contact", href: "/contact" },
 ];
 
 // Desktop nav excludes "Acasa" (no need for a home link in the top bar)

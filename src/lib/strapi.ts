@@ -5,13 +5,18 @@ import { STRAPI_BASE } from "./strapi-base";
 const STRAPI_URL = STRAPI_BASE;
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
-const strapiRequest = cache(async(path: string, params?: string, revalidate: number | false = 1800) => {
+const strapiRequest = cache(async(path: string, params?: string, revalidate: number | false = 1800, tags?: string[]) => {
   const url = `${STRAPI_URL}/api/${path}${params ? `?${params}` : ""}`;
   const res = await fetch(url, {
     headers: STRAPI_TOKEN
       ? { Authorization: `Bearer ${STRAPI_TOKEN}` }
       : {},
-    next: revalidate === false ? { revalidate: 0 } : { revalidate },
+    // `tags` is optional and additive: callers that pass one can be purged on
+    // demand through /api/revalidate?tag=..., the rest keep expiring on time.
+    next:
+      revalidate === false
+        ? { revalidate: 0, tags }
+        : { revalidate, tags },
   });
 
   if (!res.ok) {
@@ -25,8 +30,9 @@ export const fetchStrapi = cache(async <T>(
   path: string,
   params?: string,
   revalidate: number | false = 1800,
+  tags?: string[],
 ): Promise<T> => {
-  const json = await strapiRequest(path, params, revalidate);
+  const json = await strapiRequest(path, params, revalidate, tags);
   return json.data as T;
 });
 

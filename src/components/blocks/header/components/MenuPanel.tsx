@@ -5,18 +5,25 @@ import { WarmStripe } from "@/components/ui/warm-stripe";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import React, { useEffect, useCallback } from "react";
-import { navItems } from "../navItems";
+import { navItems as staticNavItems, type NavItem } from "../navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 
 interface MenuPanelProps {
   isOpen: boolean;
   onClose: () => void;
   buttonRef: React.RefObject<HTMLElement | null>;
+  /**
+   * The menu, already merged with any CMS promo overrides. Defaults to the
+   * static definition so the panel still renders without the prop. The mobile
+   * panel shows no promo card, so an override changes nothing here, but both
+   * surfaces read the same list.
+   */
+  navItems?: NavItem[];
   registrationOpen?: boolean;
   contactInfo?: SiteContactInfo;
 }
 
-const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, registrationOpen, contactInfo }) => {
+const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, navItems = staticNavItems, registrationOpen, contactInfo }) => {
   const handleEscapeKey = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -47,6 +54,7 @@ const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, regis
       ctaHref={ctaHref}
       ctaLabel={ctaLabel}
       buttonRef={buttonRef}
+      navItems={navItems}
       instagramUrl={contactInfo?.instagramUrl}
     />
   );
@@ -55,8 +63,8 @@ const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, regis
 export default MenuPanel;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Retro (landing-v2) panel — unfold from top, cream + square, warm top stripe,
-// background tube-lines, brick/gold left-bar hover. Matches nav-responsive-v4.
+// Retro (landing-v2) panel: unfold from top, cream + square, warm top stripe,
+// brick/gold left-bar hover. Matches nav-responsive-v4.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RetroPanel: React.FC<{
@@ -65,8 +73,9 @@ const RetroPanel: React.FC<{
   ctaHref: string;
   ctaLabel: string;
   buttonRef: React.RefObject<HTMLElement | null>;
+  navItems: NavItem[];
   instagramUrl?: string;
-}> = ({ isOpen, onClose, ctaHref, ctaLabel, buttonRef, instagramUrl }) => {
+}> = ({ isOpen, onClose, ctaHref, ctaLabel, buttonRef, navItems, instagramUrl }) => {
   // Anchor the panel right under the real header (its height shifts when the
   // top contact strip collapses on scroll), so it sits flush like the preview.
   const [top, setTop] = React.useState(80);
@@ -173,26 +182,6 @@ const RetroPanel: React.FC<{
           >
             {/* warm top stripe */}
             <WarmStripe className="relative z-[1] h-1" />
-
-            {/* background tube-lines — CSS bordered L-shapes so thickness
-                (border-width) and corner (border-radius) are FIXED pixels,
-                independent of panel width. Concentric (shared corner centre →
-                constant gap); horizontals start at the left edge, verticals sit
-                near the right. */}
-            <div className="absolute inset-0 z-0 opacity-20 overflow-hidden pointer-events-none" aria-hidden>
-              <span
-                className="absolute block left-0 bottom-0"
-                style={{ top: 96, right: 40, borderTop: "24px solid var(--color-rust)", borderRight: "24px solid var(--color-rust)", borderTopRightRadius: 96 }}
-              />
-              <span
-                className="absolute block left-0 bottom-0"
-                style={{ top: 126, right: 70, borderTop: "24px solid var(--color-orange)", borderRight: "24px solid var(--color-orange)", borderTopRightRadius: 66 }}
-              />
-              <span
-                className="absolute block left-0 bottom-0"
-                style={{ top: 156, right: 100, borderTop: "24px solid var(--color-mustard)", borderRight: "24px solid var(--color-mustard)", borderTopRightRadius: 36 }}
-              />
-            </div>
 
             <div className="relative z-[1] flex-1 min-h-0 overflow-y-auto px-3.5 py-3">
               {rows.map((r, i) => (

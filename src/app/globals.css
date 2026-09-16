@@ -498,3 +498,27 @@ html.lv2-nav .z-\[999\] { border-radius: 0 !important; }
 /* Row links tint rust on hover — but NOT the layers CTA button (.lcta), whose
    face text must stay white. */
 html.lv2-nav .z-\[999\] a:not(.lcta):hover span { color: var(--color-rust) !important; }
+
+/* Black contact strip: hidden by default, shown only when we KNOW we are at
+   the top of the page.
+
+   Inverted on purpose. The server cannot know where a visitor is scrolled, so
+   whichever state it sends will sometimes be wrong. Defaulting to hidden makes
+   the wrong case invisible (a strip that never appears) instead of ugly (a
+   strip that appears and snaps away). The inline script in layout.tsx adds
+   .nav-strip-open before the first paint when the stored position is at the
+   top, or when nothing is stored at all, which is a first visit.
+
+   Height is driven by CSS rather than by motion, so the state is correct in the
+   very first painted frame instead of after hydration. .nav-anim is added one
+   frame later: without it the opening transition would run on every page load. */
+[data-contact-strip] {
+  height: 0;
+  overflow: hidden;
+}
+html.nav-strip-open [data-contact-strip] {
+  height: 2rem;
+}
+html.nav-anim [data-contact-strip] {
+  transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
