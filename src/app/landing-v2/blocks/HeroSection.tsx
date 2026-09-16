@@ -168,56 +168,56 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
       <style>{`
         /* Nav transparent over hero → solid on scroll. Targets the shared
            Header's DOM via structure (no Header.tsx edits). */
-        html.lv2-nav div:has(> header.bg-white) { background-color: transparent !important; }
+        html.lv2-nav div:has(> header[data-site-header]) { background-color: transparent !important; }
 
         /* Main bar transparent; a white ::before grows DOWN from the top on
            scroll (stays inside the bar → never covers the black contact strip,
            never needs overflow:hidden → never clips the nav dropdown). */
-        html.lv2-nav header.bg-white {
+        html.lv2-nav header[data-site-header] {
           background-color: transparent !important;
           position: relative !important;
           box-shadow: none !important;
           border-radius: 0 !important;   /* retro: square corners, not the rounded top */
           transition: box-shadow .2s ease;
         }
-        html.lv2-nav header.bg-white > div { position: relative; z-index: 1; }
-        html.lv2-nav header.bg-white::before {
+        html.lv2-nav header[data-site-header] > div { position: relative; z-index: 1; }
+        html.lv2-nav header[data-site-header]::before {
           content: ""; position: absolute; left: 0; right: 0; top: 0; height: 0;
           /* Retro: the bar that slides in on scroll is cream, not white. */
           background: var(--color-retro-cream); z-index: 0; border-radius: inherit;
           transition: height .55s cubic-bezier(.45,0,.15,1), background-color .35s ease;
         }
-        html.lv2-nav.lv2-nav-solid header.bg-white::before { height: 100%; }
-        html.lv2-nav.lv2-nav-solid header.bg-white {
+        html.lv2-nav.lv2-nav-solid header[data-site-header]::before { height: 100%; }
+        html.lv2-nav.lv2-nav-solid header[data-site-header] {
           box-shadow: 0 6px 24px rgba(0,0,0,.12);
           transition: box-shadow .35s ease .5s;   /* shadow waits for the white */
         }
 
         /* Dark hero (video phase or G): the top contact strip (phone/location)
            sits transparent over the hero — whiten it so it's readable on dark. */
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) div:has(> header.bg-white) > div:first-child,
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) div:has(> header.bg-white) > div:first-child * {
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) div:has(> header[data-site-header]) > div:first-child,
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) div:has(> header[data-site-header]) > div:first-child * {
           color: #ffffff !important;
         }
 
         /* Dark hero variant (G): brand + nav links go white while transparent.
            CTA group (right) keeps its own pill. Light variants keep dark text. */
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > a,
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > a *,
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2),
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2) * {
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > a,
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > a *,
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2),
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2) * {
           color: #ffffff !important;
         }
         /* …except the dropdown panel, which always has a white background —
            keep its text dark (more specific selector wins over the rule above). */
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2) .nav-dropdown-panel,
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2) .nav-dropdown-panel * {
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2) .nav-dropdown-panel,
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2) .nav-dropdown-panel * {
           color: var(--color-ink) !important;
         }
         /* …but the promo tile sits on a dark image overlay — keep it cream
            always (higher specificity than the dark-panel rule above). */
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2) .nav-dropdown-panel .nav-promo,
-        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header.bg-white > div > div:nth-child(2) .nav-dropdown-panel .nav-promo * {
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2) .nav-dropdown-panel .nav-promo,
+        html.lv2-nav.lv2-hero-dark:not(.lv2-nav-solid) header[data-site-header] > div > div:nth-child(2) .nav-dropdown-panel .nav-promo * {
           color: var(--color-retro-cream) !important;
         }
 
@@ -225,12 +225,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
            black strip slides down, then brand → nav → CTA slide + fade in. */
         @keyframes lv2SlideDown { from { transform: translateY(-110%); } to { transform: translateY(0); } }
         @keyframes lv2SlideFade { from { transform: translateY(-150%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        html.lv2-nav-entrance div:has(> header.bg-white) > div:first-child {
+        html.lv2-nav-entrance div:has(> header[data-site-header]) > div:first-child {
           animation: lv2SlideDown .45s cubic-bezier(.2,.75,.25,1) both;
         }
-        html.lv2-nav-entrance header.bg-white > div > *:nth-child(1) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .55s; }
-        html.lv2-nav-entrance header.bg-white > div > *:nth-child(2) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .68s; }
-        html.lv2-nav-entrance header.bg-white > div > *:nth-child(3) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .81s; }
+        html.lv2-nav-entrance header[data-site-header] > div > *:nth-child(1) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .55s; }
+        html.lv2-nav-entrance header[data-site-header] > div > *:nth-child(2) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .68s; }
+        html.lv2-nav-entrance header[data-site-header] > div > *:nth-child(3) { animation: lv2SlideFade .5s cubic-bezier(.2,.75,.25,1) both .81s; }
 
         /* Hero motto + CTA rise gently in after the wordmark (the wordmark
            itself is NOT animated here so the WebGL morph is left undisturbed). */

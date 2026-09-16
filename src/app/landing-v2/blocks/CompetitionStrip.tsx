@@ -84,28 +84,28 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
       <style>{`
         /* Nav inversion while the strip is in view. Toggled by the
            IntersectionObserver above (adds .lv2-nav-dark on html).
-           Targets the global Header's white nav bar (header.bg-white) and
+           Targets the global Header's white nav bar (header[data-site-header]) and
            its text. Smooth-transitions in both directions. */
-        header.bg-white {
+        header[data-site-header] {
           transition: background-color 0.35s ease, color 0.35s ease !important;
         }
-        html.lv2-nav-dark header.bg-white {
+        html.lv2-nav-dark header[data-site-header] {
           background-color: ${STRIP_BG} !important;
         }
-        html.lv2-nav-dark header.bg-white * {
+        html.lv2-nav-dark header[data-site-header] * {
           color: white !important;
         }
         /* …except the dropdown panel — it always has a white background, so its
            text must stay dark (more specific selector wins over the rule above). */
-        html.lv2-nav-dark header.bg-white .nav-dropdown-panel,
-        html.lv2-nav-dark header.bg-white .nav-dropdown-panel * {
+        html.lv2-nav-dark header[data-site-header] .nav-dropdown-panel,
+        html.lv2-nav-dark header[data-site-header] .nav-dropdown-panel * {
           color: var(--color-ink) !important;
         }
         /* The home hero adds a white ::before to the nav bar for its
            scroll-to-solid effect, which would otherwise cover the colour above.
            Paint that layer the strip colour (and force it full-height) so the
            nav actually matches the picture section's background. */
-        html.lv2-nav-dark header.bg-white::before {
+        html.lv2-nav-dark header[data-site-header]::before {
           height: 100% !important;
           background: ${STRIP_BG} !important;
         }

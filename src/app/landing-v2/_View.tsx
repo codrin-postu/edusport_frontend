@@ -10,7 +10,6 @@ import type {
 } from "@/lib/strapi-sportsperson";
 import type { StrapiMediaImage } from "@/lib/strapi-article";
 import type { Event } from "../cursuri/evenimente/_data";
-import type { RecentMedal } from "./blocks/EventResultsSection";
 import type { LatestArticleData } from "../homepage/blocks/LatestArticleSection";
 
 import AthletesSpotlight from "./blocks/AthletesSpotlight";
@@ -38,7 +37,6 @@ interface HomePageProps {
   athletesTotal?: number;
   stripImages: StrapiMediaImage[];
   currentEvent: Event | null;
-  recentMedals: RecentMedal[];
   heroNextEvent?: HeroNextEvent | null;
   articles: LatestArticleData[];
   registrationSlot?: React.ReactNode;
@@ -54,7 +52,6 @@ const HomePage: React.FC<HomePageProps> = ({
   athletesTotal,
   stripImages,
   currentEvent,
-  recentMedals,
   heroNextEvent,
   articles,
   registrationSlot,
@@ -80,7 +77,7 @@ const HomePage: React.FC<HomePageProps> = ({
         copy={cms.sections?.athletes ?? null}
       />
       {/* Merged Actualitate hub: next event + news + recent podiums. */}
-      <EventsNewsSection event={currentEvent} medals={recentMedals} articles={articles} />
+      <EventsNewsSection event={currentEvent} articles={articles} />
       {/* The closing register CTA now lives in the global footer (register band). */}
     </div>
   );

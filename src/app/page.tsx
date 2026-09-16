@@ -8,7 +8,6 @@ import {
   fetchPublicSportspeoplePage,
   fetchCompetitionsForAthletes,
   computeStats,
-  parsePlacement,
   type StrapiSportsperson,
   type SportspersonStats,
   fetchPublicSportspeopleTotal,
@@ -18,7 +17,6 @@ import { type LatestArticleData } from "./homepage/blocks/LatestArticleSection";
 import RegistrationSectionV2 from "./landing-v2/blocks/RegistrationSectionV2";
 import RegistrationClosedSection from "./homepage/blocks/RegistrationClosedSection";
 import { type HeroVariant } from "./landing-v2/blocks/HeroVariant";
-import type { RecentMedal } from "./landing-v2/blocks/EventResultsSection";
 import type { HomepageCms } from "./landing-v2/_types";
 
 export const metadata: Metadata = {
@@ -42,7 +40,6 @@ const STRIP_IMAGE_CAP = 16;
 // Matches `athletes.slice(0, 2)` in AthletesSpotlight. Fetching a third meant
 // an extra batched competitions query for an athlete that never rendered.
 const FEATURED_ATHLETE_CAP = 2;
-const RECENT_MEDALS_CAP = 4;
 
 // Hardcoded placeholder set used when Strapi athletes have no gallery photos
 // and no main portraits yet. Skating-themed Unsplash URLs, served directly.
@@ -77,45 +74,6 @@ const PLACEHOLDER_ARTICLES: LatestArticleData[] = [
   { title: "Doi antrenori noi se alătură echipei EduSport", excerpt: "Experiență și pasiune pentru patinaj artistic.", date: "30 ianuarie 2025", image: "/images/courses_generated.png", slug: "#" },
 ];
 
-// Trimmed Strapi competition shape — only the fields we need for the recent-medals list.
-interface MedalSourceCompetition {
-  name: string;
-  date: string;
-  participantData?: Array<{
-    documentId?: string;
-    name?: string;
-    category?: string | null;
-    placement?: number | null;
-  }> | null;
-  sportspeople?: Array<{
-    documentId: string;
-    slug: string;
-    showPublicPage: boolean;
-  }> | null;
-}
-
-function buildRecentMedals(competitions: MedalSourceCompetition[]): RecentMedal[] {
-  const flat: RecentMedal[] = [];
-  for (const comp of competitions) {
-    const spMap = new Map((comp.sportspeople ?? []).map((sp) => [sp.documentId, sp]));
-    for (const p of comp.participantData ?? []) {
-      const placement = parsePlacement(p.placement);
-      if (placement !== 1 && placement !== 2 && placement !== 3) continue;
-      const sp = p.documentId ? spMap.get(p.documentId) : undefined;
-      flat.push({
-        athlete: p.name ?? "",
-        athleteSlug: sp?.showPublicPage ? sp.slug : undefined,
-        competitionName: comp.name,
-        competitionDate: comp.date,
-        category: p.category ?? "",
-        placement,
-      });
-    }
-  }
-  flat.sort((a, b) => b.competitionDate.localeCompare(a.competitionDate));
-  return flat.slice(0, RECENT_MEDALS_CAP);
-}
-
 // Built from athlete photos only. The list query does not populate `gallery`
 // (see LIST_POPULATE_PARAMS in strapi-sportsperson.ts), so a gallery branch
 // here silently produced nothing; populating it for every athlete just to fill
@@ -148,7 +106,6 @@ export default async function Page() {
     articlesPromiseResult,
     sportspeopleResult,
     spotlightAthleteResult,
-    competitionsResult,
     nextEventResult,
     athletesTotalResult,
   ] = await Promise.allSettled([
@@ -157,19 +114,6 @@ export default async function Page() {
     fetchArticlesPaginated({ page: 1, pageSize: 5 }),
     fetchPublicSportspeople(),
     fetchSpotlightSportsperson(),
-    fetchStrapi<MedalSourceCompetition[]>(
-      "competitions",
-      new URLSearchParams({
-        "sort[0]": "date:desc",
-        "pagination[pageSize]": "20",
-        "fields[0]": "name",
-        "fields[1]": "date",
-        "fields[2]": "participantData",
-        "populate[sportspeople][fields][0]": "documentId",
-        "populate[sportspeople][fields][1]": "slug",
-        "populate[sportspeople][fields][2]": "showPublicPage",
-      }).toString(),
-    ),
     fetchNextEvent(),
     fetchPublicSportspeopleTotal(),
   ]);
@@ -194,6 +138,10 @@ export default async function Page() {
       date: new Date(a.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" }),
       image: a.coverImage ? strapiMediaUrl(a.coverImage.url) : "/images/courses_generated.png",
       slug: a.slug,
+      // Carried through so the Actualitate section can label each article.
+      // This was missing, so `category` was always undefined and the label
+      // silently never rendered no matter what the component did with it.
+      category: a.category,
     }));
   }
 
@@ -238,10 +186,6 @@ export default async function Page() {
   const liveStripImages = buildStripImages(athletes);
   const stripImages: StrapiMediaImage[] =
     liveStripImages.length > 0 ? liveStripImages : PLACEHOLDER_STRIP_IMAGES;
-
-  const competitions: MedalSourceCompetition[] =
-    competitionsResult.status === "fulfilled" ? competitionsResult.value : [];
-  const recentMedals = buildRecentMedals(competitions);
 
   const heroNextEvent = nextEvent
     ? {
@@ -291,7 +235,6 @@ export default async function Page() {
         athletesTotal={athletesTotal ?? undefined}
         stripImages={stripImages}
         currentEvent={currentEventCard}
-        recentMedals={recentMedals}
         heroNextEvent={heroNextEvent}
         articles={displayArticles}
         registrationSlot={<RegistrationSectionV2 cms={cms.registration} season={currentSeason} />}
