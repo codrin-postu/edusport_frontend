@@ -19,7 +19,7 @@ import { STRAPI_BASE } from "./strapi-base";
 
 import type { SelectItemOption } from "@/components/ui/select";
 
-export type FormType = "inscriere" | "contact";
+export type FormType = "inscriere" | "contact" | "voluntariat" | "parteneri";
 
 export type FormQuestionType =
   | "text"
@@ -27,6 +27,7 @@ export type FormQuestionType =
   | "tel"
   | "longtext"
   | "select"
+  | "multiselect"
   | "checkbox"
   | "date"
   | "info";
@@ -270,8 +271,67 @@ export const INSCRIERE_BUILTIN_KEYS = new Set<string>([
   "privacyConsent",
 ]);
 
-/** A custom answer is a string (text/select/date/...) or a boolean (checkbox). */
-export type CustomAnswer = string | boolean;
+/** Built-in string keys for the Voluntariat form (map to real submission columns). */
+export const VOLUNTARIAT_BUILTIN_STRING_KEYS = [
+  "fullName",
+  "birthDate",
+  "email",
+  "phone",
+  "city",
+  "occupation",
+  "parentName",
+  "parentPhone",
+  "availability",
+  "frequency",
+  "skatingExperience",
+  "childrenExperience",
+  "motivation",
+  "howHeard",
+] as const;
+
+/** Built-in boolean (checkbox) keys for the Voluntariat form. */
+export const VOLUNTARIAT_BUILTIN_BOOL_KEYS = [
+  "parentalConsent",
+  "privacyConsent",
+] as const;
+
+/**
+ * Built-in multiselect keys for the Voluntariat form (submitted as string
+ * arrays to matching json columns).
+ */
+export const VOLUNTARIAT_BUILTIN_MULTI_KEYS = ["helpAreas"] as const;
+
+/** Built-in keys for the Voluntariat form (everything else in config is custom). */
+export const VOLUNTARIAT_BUILTIN_KEYS = new Set<string>([
+  ...VOLUNTARIAT_BUILTIN_STRING_KEYS,
+  ...VOLUNTARIAT_BUILTIN_BOOL_KEYS,
+  ...VOLUNTARIAT_BUILTIN_MULTI_KEYS,
+]);
+
+/** Built-in string keys for the Parteneri form (map to real submission columns). */
+export const PARTENERI_BUILTIN_STRING_KEYS = [
+  "companyName",
+  "contactName",
+  "email",
+  "phone",
+  "collaborationType",
+  "message",
+] as const;
+
+/** Built-in boolean (checkbox) keys for the Parteneri form. */
+export const PARTENERI_BUILTIN_BOOL_KEYS = ["privacyConsent"] as const;
+
+/** Built-in keys for the Parteneri form (everything else in config is custom). */
+export const PARTENERI_BUILTIN_KEYS = new Set<string>([
+  ...PARTENERI_BUILTIN_STRING_KEYS,
+  ...PARTENERI_BUILTIN_BOOL_KEYS,
+]);
+
+/**
+ * A collected answer is a string (text/select/date/...), a boolean (checkbox)
+ * or a string array (multiselect — the selected option values).
+ */
+export type CustomAnswer = string | boolean | string[];
 
 function isRenderableCustom(
   q: FormQuestion | undefined,
@@ -343,6 +403,8 @@ export function isCustomFilled(
   value: CustomAnswer | undefined,
 ): boolean {
   if (question.type === "checkbox") return value === true;
+  if (question.type === "multiselect")
+    return Array.isArray(value) && value.length > 0;
   return typeof value === "string" && value.trim() !== "";
 }
 
@@ -357,8 +419,9 @@ export function customFormatError(
 
 /**
  * Build the `extra` payload from the collected custom answers. Empty strings
- * are dropped; booleans (checkboxes) are always kept. `info` items carry no
- * answer. Returns `{}` when there is nothing to submit so callers can omit it.
+ * and empty arrays are dropped; booleans (checkboxes) are always kept. `info`
+ * items carry no answer. Returns `{}` when there is nothing to submit so
+ * callers can omit it.
  */
 export function buildCustomPayload(
   questions: FormQuestion[],
@@ -371,6 +434,8 @@ export function buildCustomPayload(
     if (typeof v === "boolean") {
       extra[q.key] = v;
     } else if (typeof v === "string" && v.trim() !== "") {
+      extra[q.key] = v;
+    } else if (Array.isArray(v) && v.length > 0) {
       extra[q.key] = v;
     }
   }

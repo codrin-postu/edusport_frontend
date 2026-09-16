@@ -12,4 +12,4 @@ export { ArticleCard };
 // Calendar and FullCalendarClient intentionally NOT re-exported here.
 // Import them directly to avoid pulling heavy dependencies into the shared bundle.
 export { PageHeroSection } from "./page-hero-section";
-export { AnnouncementPopup } from "./announcement-popup";
+export { Announcement } from "./announcement-popup";

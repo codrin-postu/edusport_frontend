@@ -20,6 +20,12 @@ function toExclusiveEnd(date: Date): string {
   return toLocalDateStr(d);
 }
 
+// Shift a "YYYY-MM-DD" string by n days without touching UTC.
+function addDaysToYMD(ymd: string, n: number): string {
+  const [y, m, d] = ymd.split("-").map(Number);
+  return toLocalDateStr(new Date(y, m - 1, d + n));
+}
+
 // Special events come in as ISO strings already - just add 1 day for FC exclusivity.
 function isoToExclusiveEnd(isoDate: string): string {
   const d = new Date(isoDate + "T00:00:00");
@@ -166,7 +172,12 @@ export function occurrencesToEvents(occurrences: CalendarOccurrence[]): EventInp
   return occurrences.map((o) => {
     const timed = !!o.startTime;
     const start = timed ? `${o.date}T${o.startTime}:00` : o.date;
-    const end = timed && o.endTime ? `${o.date}T${o.endTime}:00` : undefined;
+    // Overnight occurrences end on the NEXT calendar day. The backend resolves
+    // that day into `endDate`; `endsNextDay` is the fallback for payloads that
+    // carry only the flag. Without this the end would sit before the start and
+    // FullCalendar would render a negative-duration block.
+    const endDay = o.endDate ?? (o.endsNextDay ? addDaysToYMD(o.date, 1) : o.date);
+    const end = timed && o.endTime ? `${endDay}T${o.endTime}:00` : undefined;
     const timeLabel = timed ? `${o.startTime}${o.endTime ? `–${o.endTime}` : ""}` : "";
 
     let description: string | null = o.description ?? null;

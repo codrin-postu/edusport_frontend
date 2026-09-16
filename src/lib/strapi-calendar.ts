@@ -20,9 +20,13 @@ export interface CalendarOccurrence {
   label: string | null;
   color: string | null;
   order: number;
-  date: string; // YYYY-MM-DD
+  date: string; // YYYY-MM-DD — the day the occurrence STARTS
   startTime: string | null; // HH:mm
   endTime: string | null; // HH:mm
+  /** True when `endTime` belongs to the day after `date` (crosses midnight). */
+  endsNextDay?: boolean;
+  /** Resolved calendar day of `endTime`; equals `date` unless `endsNextDay`. */
+  endDate?: string | null;
   status: OccurrenceStatus;
   cancelReason: "exception" | "blackout" | null;
   /** Școala de patinaj only — per-date state driving the weekend model. */

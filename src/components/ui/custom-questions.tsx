@@ -57,6 +57,14 @@ const VARIANT = {
     checkboxLabel: "text-xs font-semibold text-navy",
     checkboxAccent: "accent-rust",
     select: undefined as string | undefined,
+    card: "border-navy bg-retro-cream",
+    cardChecked: "border-rust bg-rust/[0.04]",
+    cardHover: "hover:shadow-[4px_4px_0_rgb(14_26_60_/_0.16)] transition-shadow",
+    cardIcon: "border-navy bg-navy text-retro-cream",
+    cardTitle: "text-navy",
+    cardDesc: "text-navy/60",
+    cardLink: "link-underline-rust inline-flex items-center gap-1.5 text-xs font-semibold text-rust",
+    cardExternal: "text-navy/40 group-hover:text-rust",
   },
   navy: {
     input: inputOnNavy,
@@ -69,6 +77,15 @@ const VARIANT = {
     checkboxAccent: "accent-mustard",
     select:
       "bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25",
+    card: "border-retro-cream/35 bg-white/[0.04]",
+    cardChecked: "border-mustard bg-mustard/[0.06]",
+    cardHover: "hover:border-mustard transition-colors",
+    cardIcon: "border-mustard bg-mustard text-navy",
+    cardTitle: "text-retro-cream",
+    cardDesc: "text-retro-cream/60",
+    cardLink:
+      "inline-flex items-center gap-1.5 text-xs font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
+    cardExternal: "text-retro-cream/40 group-hover:text-mustard",
   },
 } as const;
 
@@ -117,17 +134,28 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
 
         // Link card: an `info` question carrying a title/icon. The whole card
         // is the link, and it holds no answer.
-        if (q.type === "info" && isCard(q) && variant === "card") {
+        if (q.type === "info" && isCard(q)) {
           const body = (
             <>
               {Icon && (
-                <span className="w-10 h-10 border-[1.5px] border-navy bg-navy text-retro-cream flex items-center justify-center shrink-0">
+                <span
+                  className={cn(
+                    "w-10 h-10 border-[1.5px] flex items-center justify-center shrink-0",
+                    v.cardIcon,
+                  )}
+                >
                   <Icon className="w-5 h-5" />
                 </span>
               )}
               <span className="flex-1 min-w-0">
-                <span className="block text-sm font-bold text-navy mb-0.5">{q.title}</span>
-                {q.label && <span className="block text-xs text-navy/60">{q.label}</span>}
+                <span className={cn("block text-sm font-bold mb-0.5", v.cardTitle)}>
+                  {q.title}
+                </span>
+                {q.label && (
+                  <span className={cn("block text-xs leading-relaxed", v.cardDesc)}>
+                    {q.label}
+                  </span>
+                )}
               </span>
             </>
           );
@@ -137,15 +165,21 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               href={q.linkUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 border-[1.5px] border-navy bg-retro-cream p-5 md:p-6 hover:shadow-[4px_4px_0_rgb(14_26_60_/_0.16)] transition-shadow group"
+              className={cn(
+                "flex items-center gap-3 border-[1.5px] p-5 md:p-6 group",
+                v.card,
+                v.cardHover,
+              )}
             >
               {body}
-              <ExternalLink className="w-4 h-4 text-navy/40 group-hover:text-rust shrink-0 transition-colors" />
+              <ExternalLink
+                className={cn("w-4 h-4 shrink-0 transition-colors", v.cardExternal)}
+              />
             </a>
           ) : (
             <div
               key={key}
-              className="flex items-center gap-3 border-[1.5px] border-navy bg-retro-cream p-5 md:p-6"
+              className={cn("flex items-center gap-3 border-[1.5px] p-5 md:p-6", v.card)}
             >
               {body}
             </div>
@@ -154,35 +188,44 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
 
         // Consent card: a checkbox with a title, description and a link out to
         // the document being agreed to. Tints once ticked.
-        if (q.type === "checkbox" && isCard(q) && variant === "card") {
+        if (q.type === "checkbox" && isCard(q)) {
           const checked = raw === true;
           return (
             <div
               key={key}
               className={cn(
                 "border-[1.5px] p-5 md:p-6 transition-colors",
-                checked ? "border-rust bg-rust/[0.04]" : "border-navy bg-retro-cream",
+                checked ? v.cardChecked : v.card,
               )}
             >
               <div className="flex items-start gap-4">
                 {Icon && (
-                  <div className="w-10 h-10 border-[1.5px] border-navy bg-navy text-retro-cream flex items-center justify-center shrink-0">
+                  <div
+                    className={cn(
+                      "w-10 h-10 border-[1.5px] flex items-center justify-center shrink-0",
+                      v.cardIcon,
+                    )}
+                  >
                     <Icon className="w-5 h-5" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   {q.title && (
-                    <h4 className="text-sm font-bold text-navy mb-1">{q.title}</h4>
+                    <h4 className={cn("text-sm font-bold mb-1", v.cardTitle)}>
+                      {q.title}
+                    </h4>
                   )}
                   {help && (
-                    <p className="text-xs text-navy/60 leading-relaxed mb-4">{help}</p>
+                    <p className={cn("text-xs leading-relaxed mb-4", v.cardDesc)}>
+                      {help}
+                    </p>
                   )}
                   {q.linkUrl && (
                     <a
                       href={q.linkUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="link-underline-rust inline-flex items-center gap-1.5 text-xs font-semibold text-rust"
+                      className={v.cardLink}
                     >
                       {q.linkLabel || "Detalii"}
                       <ExternalLink className="w-3 h-3" />
@@ -194,9 +237,9 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                       checked={checked}
                       required={required}
                       onChange={(e) => onChange(key, e.target.checked)}
-                      className="w-4 h-4 accent-rust cursor-pointer"
+                      className={cn("w-4 h-4 cursor-pointer", v.checkboxAccent)}
                     />
-                    <span className="text-xs font-semibold text-navy">{labelText}</span>
+                    <span className={v.checkboxLabel}>{labelText}</span>
                   </label>
                 </div>
               </div>
@@ -240,6 +283,44 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 <span className={v.checkboxLabel}>{labelText}</span>
               </label>
               {help && <p className={cn(v.help, "mt-1.5 mb-0")}>{help}</p>}
+            </div>
+          );
+        }
+
+        // Multiselect: a labeled vertical group of checkboxes, one per enabled
+        // option. The answer is the string[] of selected option values.
+        if (q.type === "multiselect") {
+          const selected = Array.isArray(raw) ? raw : [];
+          const toggle = (val: string) =>
+            onChange(
+              key,
+              selected.includes(val)
+                ? selected.filter((x) => x !== val)
+                : [...selected, val],
+            );
+          return (
+            <div key={key}>
+              <FieldLabel htmlFor={key} tone={v.labelTone}>
+                {labelText}
+              </FieldLabel>
+              {help && <p className={v.help}>{help}</p>}
+              <div id={key} className="flex flex-col gap-2.5">
+                {optionItems(q).map((o) => (
+                  <label
+                    key={o.value}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(o.value)}
+                      onChange={() => toggle(o.value)}
+                      className={cn("w-4 h-4 cursor-pointer", v.checkboxAccent)}
+                    />
+                    <span className={v.checkboxLabel}>{o.label}</span>
+                  </label>
+                ))}
+              </div>
+              {error && <p className={v.error}>{error}</p>}
             </div>
           );
         }
