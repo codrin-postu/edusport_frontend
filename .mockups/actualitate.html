@@ -1,0 +1,328 @@
+<title>Secțiunea Actualitate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  /* page chrome */
+  --page:#e8e6e0;--panel:#fff;--ink:#16171c;--ink-soft:#4b4d57;--muted:#84868f;--line:#d9d7d1;
+  /* real site tokens, from globals.css */
+  --navy:#0e1a3c;--cream:#f2ebdd;--retro-cream:#fbf8f1;--rust:#be3330;--mustard:#efb22b;--orange:#ea7233;--burgundy:#6e4256;
+  --shadow:0 10px 34px rgba(14,26,60,.12);
+  --disp:"League Spartan",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121319;--panel:#1b1d24;--ink:#eceef4;--ink-soft:#b6b9c4;--muted:#7d808c;--line:#2c2f39;--shadow:0 10px 34px rgba(0,0,0,.55)}}
+:root[data-theme="dark"]{--page:#121319;--panel:#1b1d24;--ink:#eceef4;--ink-soft:#b6b9c4;--muted:#7d808c;--line:#2c2f39;--shadow:0 10px 34px rgba(0,0,0,.55)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px 110px}
+
+.mast{padding:54px 0 28px;border-bottom:1px solid var(--line)}
+.kick{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin:0 0 12px}
+.mast h1{font-family:var(--disp);font-size:clamp(30px,4.2vw,46px);line-height:1;margin:0 0 14px;font-weight:900;letter-spacing:-.02em;max-width:20ch;text-wrap:balance}
+.mast p{margin:0 0 9px;max-width:76ch;color:var(--ink-soft);font-size:15px}
+.mast p b{color:var(--ink)}
+
+.sec{padding:46px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.sec-no{font-family:var(--disp);font-size:13px;font-weight:800;color:var(--rust);border:1.5px solid var(--rust);border-radius:0;padding:2px 9px;flex-shrink:0;letter-spacing:.06em}
+.sec h2{font-family:var(--disp);font-size:25px;font-weight:800;letter-spacing:-.015em;margin:0}
+.tagline{color:var(--muted);font-size:14px;font-weight:600}
+.lead{color:var(--ink-soft);font-size:14.5px;margin:12px 0 0;max-width:82ch}
+.lead b{color:var(--ink)}
+.cap{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:26px 0 9px}
+.note{font-size:13.5px;color:var(--ink-soft);background:var(--panel);border-left:3px solid var(--rust);padding:13px 15px;margin-top:20px;max-width:82ch}
+.note b{color:var(--ink)}
+.verdict{background:var(--navy);color:#f6f1e6;padding:15px 17px;margin-top:20px;font-size:13.5px;max-width:82ch}
+.verdict b{color:var(--mustard)}
+
+/* the browser frame that holds a real-site rendering */
+.shot{border:1px solid var(--line);box-shadow:var(--shadow);background:var(--panel);overflow:hidden;margin-top:14px}
+.shot-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:#cfcdc7;flex:none}
+.shot-bar .w{margin-left:auto;font-weight:600;letter-spacing:0;text-transform:none}
+.stage{background:var(--retro-cream);padding:34px 30px;overflow-x:auto}
+
+/* ---- real site type inside the stage ---- */
+.site{font-family:var(--body);color:var(--navy);min-width:840px}
+.eyebrow{font-family:var(--disp);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);margin:0 0 6px}
+.h2{font-family:var(--disp);font-size:34px;font-weight:900;line-height:1.05;letter-spacing:-.3px;margin:0 0 26px;color:var(--navy)}
+.colhead{font-family:var(--disp);font-size:10.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(14,26,60,.45);margin:0 0 13px}
+.img{background:linear-gradient(135deg,#c9c3b4,#ded7c7);border:1.5px solid var(--navy);position:relative;display:flex;align-items:center;justify-content:center;color:rgba(14,26,60,.4);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.tag{display:inline-block;font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;background:var(--navy);color:var(--cream)}
+.tag.rust{background:var(--rust)}
+.tag.mustard{background:var(--mustard);color:var(--navy)}
+.atitle{font-family:var(--disp);font-weight:800;color:var(--navy);line-height:1.15;letter-spacing:-.2px;margin:9px 0 6px}
+.meta{font-size:11.5px;color:rgba(14,26,60,.5);font-weight:600}
+.dek{font-size:13px;color:rgba(14,26,60,.72);margin:6px 0 0;line-height:1.5}
+.more{font-family:var(--disp);font-size:12.5px;font-weight:800;color:var(--navy);border-bottom:2px solid var(--rust);padding-bottom:1px;display:inline-block}
+.rule{height:1px;background:rgba(14,26,60,.14);margin:0}
+
+/* layouts under test */
+.two{display:grid;grid-template-columns:1.15fr .95fr;gap:52px;align-items:start}
+.two.even{grid-template-columns:1fr 1fr}
+.stack>*+*{margin-top:17px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.row2{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+.listitem{display:grid;grid-template-columns:76px 1fr;gap:15px;padding:13px 0;border-top:1px solid rgba(14,26,60,.14)}
+.listitem:first-of-type{border-top:none;padding-top:0}
+.evcard{border:1.5px solid var(--navy);background:var(--cream);padding:18px 19px;box-shadow:7px 7px 0 rgba(14,26,60,.14)}
+.evdate{display:flex;align-items:baseline;gap:9px;font-family:var(--disp);font-weight:900;color:var(--navy)}
+.evdate .d{font-size:38px;line-height:.9}
+.evdate .m{font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.badbox{border:1.5px dashed var(--rust);padding:11px 13px;font-size:12.5px;color:var(--rust);font-weight:600;margin-top:13px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+@media(max-width:1000px){.duo{grid-template-columns:1fr}}
+.qa{background:var(--panel);border:1px solid var(--line);padding:15px 17px;font-size:13.5px;color:var(--ink-soft)}
+.qa b{color:var(--ink);display:block;margin-bottom:5px;font-family:var(--disp);letter-spacing:-.1px}
+</style>
+
+<div class="wrap">
+
+<div class="mast">
+  <p class="kick">Pagina principală</p>
+  <h1>Secțiunea Actualitate pe desktop</h1>
+  <p>Astăzi secțiunea are două coloane: evenimentul următor la stânga, articolele la dreapta. Când nu există un eveniment viitor, coloana din stânga dispare și articolul rămas se întinde pe toată lățimea, cu o imagine 16:9 uriașă. Asta se vede acum pe site.</p>
+  <p><b>Două lucruri de știut înainte de a alege.</b> Evenimentele nu sunt un tip separat de conținut: sunt tot articole, din categoriile <b>evenimente</b> și <b>competiții</b>, cu o dată viitoare. Și în acest moment există doar <b>două articole</b> în total, deci orice variantă trebuie să arate bine și cu foarte puțin conținut.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">00</span><h2>Cum arată acum</h2><span class="tagline">fără eveniment viitor</span></div>
+  <p class="lead">Un singur articol, pe toată lățimea. Imaginea are aceeași proporție ca pe telefon, dar de trei ori dimensiunea.</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Starea actuală<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="img" style="height:300px">imagine articol, 16:9 pe toată lățimea</div>
+      <div class="atitle" style="font-size:25px">Sezonul 2025 - 2026 a început</div>
+      <p class="meta">12 septembrie 2026</p>
+      <div class="badbox">Restul secțiunii rămâne gol. Lista de medalii apărea aici dedesubt și se elimină.</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">01</span><h2>Varianta A, articol principal plus listă</h2><span class="tagline">tratament editorial</span></div>
+  <p class="lead">Cel mai recent articol primește imagine și spațiu, restul devin o listă compactă alături. Secțiunea păstrează două coloane indiferent dacă există sau nu un eveniment, deci pagina nu își schimbă forma.</p>
+
+  <p class="cap">Fără eveniment viitor</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta A<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="two">
+        <div>
+          <div class="img" style="height:230px">imagine articol principal</div>
+          <span class="tag rust" style="margin-top:13px">Noutăți</span>
+          <div class="atitle" style="font-size:23px">Sezonul 2025 - 2026 a început</div>
+          <p class="meta">12 septembrie 2026</p>
+          <p class="dek">Primele antrenamente pe gheață au început la patinoarul din Reșița, cu grupele de începători și avansați.</p>
+          <p style="margin:14px 0 0"><span class="more">Citește articolul</span></p>
+        </div>
+        <div>
+          <p class="colhead">Mai recente</p>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div>
+              <div class="atitle" style="font-size:15px;margin-top:0">EduSport Trophy 2018</div>
+              <p class="meta">Competiții, 4 septembrie</p>
+            </div>
+          </div>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div>
+              <div class="atitle" style="font-size:15px;margin-top:0">Înscrierile pentru grupa de începători sunt deschise</div>
+              <p class="meta">Noutăți, 28 august</p>
+            </div>
+          </div>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div>
+              <div class="atitle" style="font-size:15px;margin-top:0">Rezultate la Cupa Transilvaniei</div>
+              <p class="meta">Competiții, 19 august</p>
+            </div>
+          </div>
+          <p style="margin:17px 0 0"><span class="more">Toate noutățile</span></p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <p class="cap">Cu eveniment viitor</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta A<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="two">
+        <div>
+          <p class="colhead">Eveniment următor</p>
+          <div class="evcard">
+            <div class="evdate"><span class="d">18</span><span class="m">Octombrie</span></div>
+            <div class="atitle" style="font-size:20px">Cupa EduSport, ediția de toamnă</div>
+            <p class="meta">Patinoarul Olimpia, Reșița</p>
+            <p class="dek">Intrarea este liberă pentru părinți și public.</p>
+            <p style="margin:14px 0 0"><span class="more">Detalii eveniment</span></p>
+          </div>
+        </div>
+        <div>
+          <p class="colhead">Noutăți</p>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div><div class="atitle" style="font-size:15px;margin-top:0">Sezonul 2025 - 2026 a început</div><p class="meta">Noutăți, 12 septembrie</p></div>
+          </div>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div><div class="atitle" style="font-size:15px;margin-top:0">EduSport Trophy 2018</div><p class="meta">Competiții, 4 septembrie</p></div>
+          </div>
+          <div class="listitem">
+            <div class="img" style="height:56px">foto</div>
+            <div><div class="atitle" style="font-size:15px;margin-top:0">Înscrierile pentru grupa de începători sunt deschise</div><p class="meta">Noutăți, 28 august</p></div>
+          </div>
+          <p style="margin:17px 0 0"><span class="more">Toate noutățile</span></p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+  <p class="note"><b>De reținut.</b> Cu un singur articol în baza de date, coloana din dreapta rămâne goală și rămâne doar articolul principal, tot pe jumătate de lățime. Nu se strică, dar nici nu umple pagina.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">02</span><h2>Varianta B, trei carduri egale</h2><span class="tagline">rând de noutăți</span></div>
+  <p class="lead">Fără articol principal. Trei articole de aceeași mărime, evenimentul apare ca o bandă deasupra atunci când există. Umple lățimea și tratează toate articolele la fel.</p>
+
+  <p class="cap">Fără eveniment viitor</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta B<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="row3">
+        <div>
+          <div class="img" style="height:150px">foto</div>
+          <span class="tag rust" style="margin-top:11px">Noutăți</span>
+          <div class="atitle" style="font-size:17px">Sezonul 2025 - 2026 a început</div>
+          <p class="meta">12 septembrie 2026</p>
+        </div>
+        <div>
+          <div class="img" style="height:150px">foto</div>
+          <span class="tag" style="margin-top:11px">Competiții</span>
+          <div class="atitle" style="font-size:17px">EduSport Trophy 2018</div>
+          <p class="meta">4 septembrie 2026</p>
+        </div>
+        <div>
+          <div class="img" style="height:150px">foto</div>
+          <span class="tag rust" style="margin-top:11px">Noutăți</span>
+          <div class="atitle" style="font-size:17px">Înscrierile pentru grupa de începători sunt deschise</div>
+          <p class="meta">28 august 2026</p>
+        </div>
+      </div>
+      <p style="margin:20px 0 0"><span class="more">Toate noutățile</span></p>
+    </div></div>
+  </div>
+
+  <p class="cap">Cu eveniment viitor, bandă deasupra</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta B<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="evcard" style="display:flex;align-items:center;gap:26px;margin-bottom:30px">
+        <div class="evdate" style="flex:none"><span class="d">18</span><span class="m">Oct</span></div>
+        <div style="flex:1">
+          <p class="colhead" style="margin-bottom:4px">Eveniment următor</p>
+          <div class="atitle" style="font-size:19px;margin-top:0">Cupa EduSport, ediția de toamnă</div>
+          <p class="meta">Patinoarul Olimpia, Reșița. Intrare liberă.</p>
+        </div>
+        <span class="more" style="flex:none">Detalii</span>
+      </div>
+      <div class="row3">
+        <div><div class="img" style="height:150px">foto</div><span class="tag rust" style="margin-top:11px">Noutăți</span><div class="atitle" style="font-size:17px">Sezonul 2025 - 2026 a început</div><p class="meta">12 septembrie 2026</p></div>
+        <div><div class="img" style="height:150px">foto</div><span class="tag" style="margin-top:11px">Competiții</span><div class="atitle" style="font-size:17px">EduSport Trophy 2018</div><p class="meta">4 septembrie 2026</p></div>
+        <div><div class="img" style="height:150px">foto</div><span class="tag rust" style="margin-top:11px">Noutăți</span><div class="atitle" style="font-size:17px">Înscrierile pentru grupa de începători</div><p class="meta">28 august 2026</p></div>
+      </div>
+    </div></div>
+  </div>
+  <p class="note"><b>De reținut.</b> Cu două articole rămâne un gol vizibil în rândul de trei. Se poate trece automat la două coloane când există doar două articole.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">03</span><h2>Varianta C, se adaptează la conținut</h2><span class="tagline">recomandarea mea</span></div>
+  <p class="lead">Aceeași secțiune, dar numărul de coloane urmează numărul de articole. Cu un articol, unul mare pe jumătate de lățime, cu evenimentul sau cu un apel la înscriere alături. Cu trei sau mai multe, rând de carduri. Nu există stare în care pagina arată goală.</p>
+
+  <p class="cap">Un singur articol, fără eveniment, exact cazul de acum</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta C<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="two even">
+        <div>
+          <div class="img" style="height:200px">imagine articol</div>
+          <span class="tag rust" style="margin-top:12px">Noutăți</span>
+          <div class="atitle" style="font-size:21px">Sezonul 2025 - 2026 a început</div>
+          <p class="meta">12 septembrie 2026</p>
+          <p class="dek">Primele antrenamente pe gheață au început la patinoarul din Reșița.</p>
+          <p style="margin:13px 0 0"><span class="more">Citește articolul</span></p>
+        </div>
+        <div class="evcard" style="background:var(--navy);border-color:var(--navy);color:var(--cream)">
+          <p class="colhead" style="color:rgba(242,235,221,.55)">Următorul eveniment</p>
+          <div class="atitle" style="color:var(--cream);font-size:20px;margin-top:2px">Nu avem un eveniment programat</div>
+          <p class="dek" style="color:rgba(242,235,221,.75)">Înscrierile pentru sezonul 2025 - 2026 sunt deschise. Locurile la grupele de începători sunt limitate.</p>
+          <p style="margin:15px 0 0"><span class="more" style="color:var(--mustard);border-color:var(--mustard)">Înscrie copilul</span></p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <p class="cap">Trei sau mai multe articole, cu eveniment</p>
+  <div class="shot">
+    <div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta C<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Actualitate</p>
+      <h2 class="h2">Evenimente și noutăți</h2>
+      <div class="two">
+        <div>
+          <p class="colhead">Eveniment următor</p>
+          <div class="evcard">
+            <div class="evdate"><span class="d">18</span><span class="m">Octombrie</span></div>
+            <div class="atitle" style="font-size:20px">Cupa EduSport, ediția de toamnă</div>
+            <p class="meta">Patinoarul Olimpia, Reșița</p>
+            <p style="margin:13px 0 0"><span class="more">Detalii eveniment</span></p>
+          </div>
+        </div>
+        <div>
+          <p class="colhead">Noutăți</p>
+          <div class="row2">
+            <div><div class="img" style="height:104px">foto</div><div class="atitle" style="font-size:15px">Sezonul 2025 - 2026 a început</div><p class="meta">12 septembrie</p></div>
+            <div><div class="img" style="height:104px">foto</div><div class="atitle" style="font-size:15px">EduSport Trophy 2018</div><p class="meta">4 septembrie</p></div>
+          </div>
+          <div class="listitem" style="margin-top:17px">
+            <div class="img" style="height:50px">foto</div>
+            <div><div class="atitle" style="font-size:14.5px;margin-top:0">Înscrierile pentru grupa de începători sunt deschise</div><p class="meta">28 august</p></div>
+          </div>
+          <p style="margin:15px 0 0"><span class="more">Toate noutățile</span></p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="verdict"><b>De ce o recomand.</b> Singura variantă care tratează starea reală de acum, un articol și niciun eveniment, ca pe un aspect intenționat, nu ca pe un rest. Spațiul gol devine locul unde ceri înscrierea, adică exact ce vrea pagina principală să obțină.</div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">04</span><h2>De răspuns</h2></div>
+  <div class="duo">
+    <div class="qa"><b>1. Care variantă</b>A, B sau C. Toate elimină lista de medalii din această secțiune.</div>
+    <div class="qa"><b>2. Cardul din dreapta la varianta C</b>Când nu există eveniment, propun un apel la înscriere. Alternativ: program de antrenamente, sau pur și simplu nimic.</div>
+    <div class="qa"><b>3. Categoria pe card</b>Am pus eticheta Noutăți sau Competiții pe fiecare articol. E utilă sau încarcă inutil?</div>
+    <div class="qa"><b>4. Câte articole</b>Acum se cer cinci și se afișează unul. Trei pe desktop pare potrivit. De acord?</div>
+  </div>
+</section>
+
+</div>

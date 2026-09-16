@@ -1,4 +1,8 @@
-# EduSport — Fixes & Features Plan
+# EduSport - Fixes & Features Plan
+
+> Superseded for overall status by `STATUS.md` (current state, what is left) and
+> `CHANGELOG.md` (what shipped). This file is kept as the original fix list.
+> Reviewed 2026-08-30.
 
 Status legend: [ ] todo · [~] in progress · [x] done · [?] needs approval/brainstorm
 
@@ -18,13 +22,13 @@ Status legend: [ ] todo · [~] in progress · [x] done · [?] needs approval/bra
 ## Group 4 — Calendar page polish
 - [?] Empty area under the calendar (before "Scoala de patinaj" block) — add something (needs a small design/brainstorm)
 
-## Group 5 — BIG: Calendar backend redesign (BRAINSTORM REQUIRED)
-- [?] Hourly schedule per event: **start + end hours**
-- [?] **Recurring** events (with hours)
-- [?] **Cancel a specific occurrence** of a recurrence
-- [?] **Exceptions** to a recurrence
-- [?] Special case handling for **"Scoala de patinaj"**
-- [?] Frontend weekly view consumes the new hourly + recurrence model
+## Group 5 — BIG: Calendar backend redesign — SHIPPED 2026-08-24 (on staging)
+- [x] Hourly schedule per event: **start + end hours**
+- [x] **Recurring** events (with hours)
+- [x] **Cancel a specific occurrence** of a recurrence
+- [x] **Exceptions** to a recurrence
+- [x] Special case handling for **"Scoala de patinaj"**
+- [x] Frontend weekly view consumes the new hourly + recurrence model
 
 ## Sequencing
 1. Group 1 (responsive bugs) — concrete fixes, do first.

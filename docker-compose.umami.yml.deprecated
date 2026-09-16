@@ -1,0 +1,37 @@
+# DEPRECATED 2026-09-02. Umami now lives in the sibling `umami-analytics`
+# repo, which is the same instance pattern production runs. Running both
+# meant two local Umami databases with different website IDs.
+#
+#   cd ../umami-analytics && docker compose up -d
+#
+# Kept briefly for reference; delete once the sibling stack is confirmed.
+
+# Local-only Umami analytics for development. Not for production.
+# Start:  docker compose -f docker-compose.umami.yml up -d
+# Stop:   docker compose -f docker-compose.umami.yml down
+# Dashboard: http://localhost:3001  (default login: admin / umami)
+services:
+  umami-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@umami-db:5432/umami
+      DATABASE_TYPE: postgresql
+      APP_SECRET: edusport-local-umami-dev-secret
+    depends_on:
+      - umami-db
+    restart: unless-stopped
+
+volumes:
+  umami-db-data:

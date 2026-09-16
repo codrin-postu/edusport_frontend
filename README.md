@@ -1,5 +1,7 @@
 # EduSport Frontend
 
+> Status and remaining work: [`STATUS.md`](STATUS.md). Shipping history: [`CHANGELOG.md`](CHANGELOG.md). Ecosystem map: [`../ECOSYSTEM.md`](../ECOSYSTEM.md).
+
 Next.js 15 application served from a self-hosted VM. It renders the public
 website for Scoala de Patinaj and pulls content from a Strapi 5 CMS reachable
 at `NEXT_PUBLIC_STRAPI_URL`.
