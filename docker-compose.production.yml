@@ -21,6 +21,27 @@ services:
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: ${NEXT_PUBLIC_UMAMI_WEBSITE_ID:-}
         NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
     restart: unless-stopped
+    # --- Hardening, added 2026-09-16 after the Next.js RCE compromise ---------
+    # On 15 Sep an unauthenticated request exploited CVE GHSA-9qr9-h5gf-34mp in
+    # Next.js 15.5.0 and ran code inside this container. It then wrote a miner to
+    # /tmp and executed it, burning both CPU cores for ~43 hours.
+    #
+    # Patching Next.js closes that specific hole. These settings remove the
+    # *capability* the attacker relied on, so the next framework bug does not
+    # become a running process:
+    #   read_only      the image filesystem cannot be written at all
+    #   tmpfs noexec   /tmp is writable (Next needs it) but nothing there can run
+    #   no-new-privileges  blocks setuid escalation paths
+    #   cap_drop ALL   the app needs no Linux capabilities to serve HTTP
+    # .next/cache must stay writable: Next writes the ISR fetch cache at runtime.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+      - /app/.next/cache:rw,noexec,nosuid,nodev,size=256m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     env_file:
       - .env.production
     expose:
