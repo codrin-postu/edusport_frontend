@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
-import VolunteerForm from "./_VolunteerForm";
+import SpotlightButton from "@/components/ui/spotlight-button";
 import type { VolunteerHelpWay } from "@/lib/strapi-volunteer";
 
 interface VolunteerViewProps {
@@ -20,8 +20,8 @@ interface VolunteerViewProps {
  *
  * Retro layout on the shared system: PageHeroSection navy band (no image),
  * a "De ce" intro, a volunteer photo gallery, a split navy/list panel for
- * the ways to help, an application form (reuses /api/contact), and the slim
- * "Mai departe" outro.
+ * the ways to help, a CTA panel leading to the application form page at
+ * /voluntariat/inscriere, and the slim "Mai departe" outro.
  */
 const VolunteerView: React.FC<VolunteerViewProps> = ({
   heroTitle,
@@ -115,33 +115,33 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
         </div>
       </section>
 
-      {/* ─── CUM APLICI (form) ─── */}
+      {/* ─── CUM APLICI (CTA) ─── */}
       <section className="relative z-10 bg-retro-cream py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-            {/* Left — intro */}
-            <div className="flex flex-col gap-3">
-              <p className="text-eyebrow font-bold uppercase text-rust">
-                Cum aplici
-              </p>
-              <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-navy">
-                Completează formularul
-              </h2>
-              <p className="max-w-sm text-sm leading-relaxed text-navy/60">
-                Lasă-ne datele tale și un scurt mesaj. Discutăm împreună și
-                găsim rolul care ți se potrivește cel mai bine.
-              </p>
-            </div>
-            {/* Right — navy form panel */}
-            <div className="relative bg-navy p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-8">
-              <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
-              <h3 className="mb-1 font-display text-2xl font-extrabold text-retro-cream">
-                Devino voluntar
-              </h3>
-              <p className="mb-7 text-sm text-retro-cream/50">
-                Răspundem de obicei în 24 până la 48 de ore.
-              </p>
-              <VolunteerForm />
+          <div className="relative bg-navy p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-12">
+            <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
+            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
+              <div className="flex flex-col gap-3">
+                <p className="text-eyebrow font-bold uppercase text-mustard">
+                  Cum aplici
+                </p>
+                <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-retro-cream">
+                  Gata să te implici?
+                </h2>
+                <p className="max-w-md text-sm leading-relaxed text-retro-cream/60">
+                  Completează formularul de înscriere în câțiva pași simpli.
+                  Răspundem de obicei în 24 până la 48 de ore.
+                </p>
+              </div>
+              <SpotlightButton
+                layers
+                layersFace="cream"
+                href="/voluntariat/inscriere"
+                umamiEvent="voluntariat.cta_inscriere"
+                className="shrink-0"
+              >
+                Înscrie-te ca voluntar
+              </SpotlightButton>
             </div>
           </div>
         </div>

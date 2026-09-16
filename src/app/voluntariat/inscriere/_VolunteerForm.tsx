@@ -2,26 +2,40 @@
 
 import { Send } from "lucide-react";
 import { motion } from "motion/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ConfigStep, { stepComplete } from "@/components/forms/config-step";
-import { FALLBACK_CONFIG, submitPartner, type SubmitStatus } from "./_form-config";
+import {
+  ageFromBirthDate,
+  FALLBACK_CONFIG,
+  MIN_VOLUNTEER_AGE,
+  MINOR_ONLY_KEYS,
+  submitVolunteer,
+  type SubmitStatus,
+} from "./_form-config";
 import { track } from "@/lib/analytics";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import {
   type CustomAnswer,
   type FormConfig,
+  type FormQuestion,
   type FormStepConfig,
 } from "@/lib/strapi-forms";
 
 /**
- * Partner inquiry form, driven entirely by the CMS config.
+ * Volunteer application form, driven entirely by the CMS config.
  *
  * The steps, their titles, which questions each contains, their order and their
- * types all come from `/api/forms/parteneri/config`, mirroring the volunteer
+ * types all come from `/api/forms/voluntariat/config`, mirroring the Înscriere
  * form. Answers are held in one flat map keyed by question key; the split
  * between built-in columns and the `extra` object happens only at submit time
- * (see `submitPartner`). Renders on the navy panel, so everything uses the
- * "navy" variant of the shared step components.
+ * (see `submitVolunteer`). Lives on /voluntariat/inscriere, a cream form page
+ * mirroring /inscrieri, so everything uses the "card" variant of the shared
+ * step components.
+ *
+ * Minor-volunteer rules (frontend mirror of the backend registry):
+ * - adults (18+) never see the parent fields;
+ * - 15-17 must fill parent name/phone and tick the parental consent;
+ * - under 15 cannot continue past the birth-date step.
  */
 
 /**
@@ -30,19 +44,21 @@ import {
  * an entry (any admin-added one) simply renders without a placeholder.
  */
 const PLACEHOLDERS: Record<string, string> = {
-  companyName: "Numele companiei sau organizației",
-  contactName: "Numele tău complet",
-  email: "email@exemplu.com",
+  fullName: "Numele tău complet",
+  email: "adresa@exemplu.ro",
   phone: "+40 7xx xxx xxx",
-  message:
-    "Spune-ne ce ai în minte, sponsorizare, un eveniment sau altă idee de colaborare...",
+  city: "ex: București",
+  parentName: "Numele complet al părintelui sau tutorelui",
+  parentPhone: "+40 7xx xxx xxx",
+  childrenExperience: "Ai mai lucrat cu copii? Povestește-ne pe scurt...",
+  motivation: "Spune-ne de ce vrei să te implici și ce te motivează...",
 };
 
-const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
+const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
   config = null,
 }) => {
   // The CMS is the source of truth. The bundled fallback exists only so a
-  // transient CMS outage does not take partner inquiries offline entirely.
+  // transient CMS outage does not take volunteer applications offline entirely.
   const activeConfig = config?.steps?.length ? config : FALLBACK_CONFIG;
 
   const [step, setStep] = useState(0);
@@ -52,14 +68,37 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
 
-  const steps: FormStepConfig[] = activeConfig.steps ?? [];
+  // Age drives the minor logic. `null` means unknown (empty/invalid date).
+  const birthDate = typeof answers.birthDate === "string" ? answers.birthDate : "";
+  const age = ageFromBirthDate(birthDate);
+  const isMinor = age !== null && age >= MIN_VOLUNTEER_AGE && age < 18;
+  const underage = age !== null && age < MIN_VOLUNTEER_AGE;
+
+  // Parent fields only exist for volunteers under 18; adults (and unknown age)
+  // never see them.
+  const filterQuestion = useCallback(
+    (q: FormQuestion) => !MINOR_ONLY_KEYS.has(q.key) || (age !== null && age < 18),
+    [age],
+  );
+
+  // For 15-17 the parent fields are not just visible but mandatory: mark them
+  // required so `stepComplete` enforces them like any other required question.
+  const steps = useMemo<FormStepConfig[]>(() => {
+    const base = activeConfig.steps ?? [];
+    return base.map((s) => ({
+      ...s,
+      questions: (s.questions ?? []).map((q) =>
+        isMinor && MINOR_ONLY_KEYS.has(q.key) ? { ...q, required: true } : q,
+      ),
+    }));
+  }, [activeConfig, isMinor]);
 
   // Fire once, when the user first interacts — lets us measure start→submit
-  // drop-off (form abandonment) against `parteneri.submit`.
+  // drop-off (form abandonment) against `voluntariat.submit`.
   const markStarted = () => {
     if (startedRef.current) return;
     startedRef.current = true;
-    track("parteneri.start");
+    track("voluntariat.start");
   };
 
   useEffect(() => {
@@ -74,13 +113,8 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   const handleSubmit = async() => {
     setStatus("sending");
     try {
-      await submitPartner(activeConfig, answers, website);
-      track("parteneri.submit", {
-        interest:
-          typeof answers.collaborationType === "string"
-            ? answers.collaborationType
-            : "",
-      });
+      await submitVolunteer(activeConfig, answers, website);
+      track("voluntariat.submit");
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -88,22 +122,22 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   };
 
   const nextStep = () => {
-    track("parteneri.step_next", { step: step + 1 });
+    track("voluntariat.step_next", { step: step + 1 });
     setStep((s) => Math.min(s + 1, steps.length - 1));
   };
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
   if (status === "sent") {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 px-8 py-16 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-mustard">
-          <Send className="h-6 w-6 text-navy" />
+      <div className="flex flex-col items-center justify-center gap-4 px-8 py-20 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-navy">
+          <Send className="h-6 w-6 text-mustard" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-retro-cream">
-          Mesaj trimis!
+        <h3 className="font-display text-2xl font-extrabold text-navy">
+          Cerere trimisă!
         </h3>
-        <p className="max-w-xs text-sm text-retro-cream/60">
-          Îți mulțumim! Revenim în cel mai scurt timp să discutăm colaborarea.
+        <p className="max-w-sm text-sm leading-relaxed text-navy/60">
+          Îți mulțumim! Te vom contacta în cel mai scurt timp pentru pașii următori.
         </p>
         <button
           onClick={() => {
@@ -112,9 +146,9 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="mt-2 text-sm font-semibold text-mustard underline underline-offset-4 transition-opacity hover:opacity-70"
+          className="mt-2 link-underline-rust text-sm font-semibold text-rust"
         >
-          Trimite un alt mesaj
+          Trimite o altă cerere
         </button>
       </div>
     );
@@ -123,9 +157,9 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   if (!steps.length) {
     return (
       <div className="py-16 px-8 text-center">
-        <p className="text-sm text-retro-cream/60">
-          Formularul de colaborare nu este disponibil momentan. Te rugăm să
-          încerci din nou mai târziu sau să ne contactezi direct.
+        <p className="text-sm text-navy/60">
+          Formularul de voluntariat nu este disponibil momentan. Te rugăm să încerci
+          din nou mai târziu sau să ne contactezi direct.
         </p>
       </div>
     );
@@ -134,6 +168,11 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   const current = steps[Math.min(step, steps.length - 1)]!;
   const isLast = step === steps.length - 1;
   const labels = steps.map((s) => s.title || "");
+
+  // Under 15: block progression on the step holding the birth date — the Next
+  // button is replaced by the age notice.
+  const blocksUnderage =
+    underage && (current.questions ?? []).some((q) => q.key === "birthDate");
 
   return (
     <div ref={formRef}>
@@ -151,36 +190,45 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
           onAnswerChange={handleAnswerChange}
           onNext={nextStep}
           onBack={prevStep}
-          variant="navy"
+          variant="card"
+          filterQuestion={filterQuestion}
           placeholders={PLACEHOLDERS}
           footer={
             isLast ? (
-              <div className="mt-8 pt-6 border-t-[1.5px] border-retro-cream/15">
+              <div className="mt-8 pt-6 border-t-[1.5px] border-navy/12">
                 {status === "error" && (
-                  <p className="text-xs text-danger font-semibold mb-4">
-                    Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.
+                  <p className="text-xs text-rust font-semibold mb-4">
+                    Cererea nu a putut fi trimisă. Te rugăm să încerci din nou.
                   </p>
                 )}
                 <div className="flex items-center justify-between">
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-sm font-semibold text-retro-cream/50 hover:text-mustard transition-colors"
+                    className="text-sm font-semibold text-navy/50 hover:text-rust transition-colors"
                   >
                     Înapoi
                   </button>
                   <SpotlightButton
                     layers
-                    layersFace="cream"
+                    layersFace="black"
                     type="button"
                     onClick={handleSubmit}
                     disabled={
-                      status === "sending" || !stepComplete(current, answers)
+                      status === "sending" ||
+                      underage ||
+                      !stepComplete(current, answers, filterQuestion)
                     }
                   >
-                    {status === "sending" ? "Se trimite..." : "Trimite mesajul"}
+                    {status === "sending" ? "Se trimite..." : "Trimite cererea"}
                   </SpotlightButton>
                 </div>
+              </div>
+            ) : blocksUnderage ? (
+              <div className="mt-8 pt-6 border-t-[1.5px] border-navy/12">
+                <p className="text-sm font-semibold text-rust">
+                  Vârsta minimă pentru voluntariat este {MIN_VOLUNTEER_AGE} ani.
+                </p>
               </div>
             ) : undefined
           }
@@ -219,4 +267,4 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   );
 };
 
-export default PartnerForm;
+export default VolunteerForm;

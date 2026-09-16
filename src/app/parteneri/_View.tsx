@@ -5,6 +5,7 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 import SponsorMarquee from "./_SponsorMarquee";
 import PartnerForm from "./_PartnerForm";
 import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
+import type { FormConfig } from "@/lib/strapi-forms";
 
 /**
  * /parteneri — sponsors, past collaborations, and a "let's work together" form
@@ -12,8 +13,8 @@ import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
  *
  * Retro layout on the shared system: PageHeroSection navy band (no image),
  * a "De ce" intro, an auto-scrolling sponsor logo strip, a grid of past
- * events done with partners, the sponsor/event form (reuses /api/contact),
- * and the slim "Mai departe" outro. All content sections are `relative z-10`
+ * events done with partners, the sponsor/event form (config-driven, submits
+ * to /api/forms/parteneri), and the slim "Mai departe" outro. All content sections are `relative z-10`
  * so the sticky hero doesn't bleed through on scroll.
  */
 interface PartnersCopy {
@@ -31,7 +32,8 @@ const PartnerView: React.FC<{
   sponsors: Sponsor[];
   events: CollabEvent[];
   copy: PartnersCopy;
-}> = ({ sponsors, events, copy }) => {
+  formConfig: FormConfig | null;
+}> = ({ sponsors, events, copy, formConfig }) => {
   return (
     <div className="min-h-screen bg-retro-cream">
       <PageHeroSection title={["PARTENER"]}>
@@ -155,7 +157,7 @@ const PartnerView: React.FC<{
               <p className="mb-7 text-sm text-retro-cream/50">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
-              <PartnerForm />
+              <PartnerForm config={formConfig} />
             </div>
           </div>
         </div>

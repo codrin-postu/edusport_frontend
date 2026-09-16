@@ -13,6 +13,10 @@ import { type NextRequest, NextResponse } from "next/server";
  * Optionally pass `?path=/some/path` or `?tag=<tag>` on the URL to limit the
  * revalidation scope. With no params the homepage + key dynamic routes are
  * revalidated so the next visit fetches fresh data.
+ *
+ * Known tags:
+ *   navigation  the menu's CMS promo overrides, cached for a day because the
+ *               menu renders on every page (see src/lib/strapi-navigation.ts).
  */
 /**
  * Every statically-rendered public route. Kept in step with src/app: a page

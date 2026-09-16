@@ -5,6 +5,7 @@ import {
   fetchCollaborationEvents,
   fetchPartnersPage,
 } from "@/lib/strapi-partners";
+import { fetchFormConfig } from "@/lib/strapi-forms";
 import { SPONSORS, COLLAB_EVENTS, PARTNERS_COPY } from "./_data";
 
 // Content is CMS-managed; fall back to the static placeholders when Strapi is
@@ -26,16 +27,20 @@ export const metadata: Metadata = {
 };
 
 export default async function ParteneriPage() {
-  const [sp, ev, pc] = await Promise.allSettled([
+  const [sp, ev, pc, fc] = await Promise.allSettled([
     fetchSponsors(),
     fetchCollaborationEvents(),
     fetchPartnersPage(),
+    // Form config is CMS-driven too; `fetchFormConfig` already returns null on
+    // any failure so the form falls back to its bundled steps.
+    fetchFormConfig("parteneri"),
   ]);
   const sponsors =
     sp.status === "fulfilled" && sp.value.length > 0 ? sp.value : SPONSORS;
   const events =
     ev.status === "fulfilled" && ev.value.length > 0 ? ev.value : COLLAB_EVENTS;
   const c = pc.status === "fulfilled" && pc.value ? pc.value : {};
+  const formConfig = fc.status === "fulfilled" ? fc.value : null;
   // CMS value per field, else the static fallback copy.
   const copy = {
     heroTitle: c.heroTitle || PARTNERS_COPY.heroTitle,
@@ -47,5 +52,12 @@ export default async function ParteneriPage() {
     ctaHeading: c.ctaHeading || PARTNERS_COPY.ctaHeading,
     ctaBody: c.ctaBody || PARTNERS_COPY.ctaBody,
   };
-  return <PartnerView sponsors={sponsors} events={events} copy={copy} />;
+  return (
+    <PartnerView
+      sponsors={sponsors}
+      events={events}
+      copy={copy}
+      formConfig={formConfig}
+    />
+  );
 }
