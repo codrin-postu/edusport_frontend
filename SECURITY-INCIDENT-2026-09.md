@@ -1,19 +1,31 @@
 # Security incident, September 2026
 
 Unauthenticated remote code execution in the production frontend, used to run a
-cryptominer for roughly 43 hours. Contained and remediated on 16 to 17 September
-2026. This document exists so the next person, or the next Claude session, does
-not have to re-derive any of it.
+cryptominer for **at least 7 days**, with automatic re-infection each time it was
+killed. Contained and remediated on 16 to 17 September 2026. This document exists
+so the next person, or the next Claude session, does not have to re-derive any of
+it.
 
 All times UTC.
 
 ## What happened
 
+The first version of this document dated the intrusion to 15 September, because
+that was the earliest payload in the container logs. That was WRONG: those logs
+only held the last 400 lines of a container that had been recreated. The CPU
+record tells the real story and should have been checked first.
+
 | When | What |
 |---|---|
-| 15 Sep 17:58 | First exploit payload in the frontend container logs |
+| 9 Sep or earlier | CPU already at 90 percent plus. This is the oldest data sysstat retains (HISTORY=7), so the true start is unknown and may be earlier |
+| 12 Sep | 12,903 requests from 176.119.150.252, all 404. An unrelated IoT botnet scanner, not this attacker |
+| 13 Sep 16:10 | CPU pegged at 98.3 percent, before the reboot |
+| 13 Sep 18:48 | Host reboot. CPU drops to 3.3 percent |
+| 13 Sep 20:20 | Back to 98.7 percent within the hour: re-exploited automatically |
+| 15 Sep 17:58 | Earliest payload preserved in the container logs, NOT the start of the intrusion |
 | 15 Sep 19:09 | Miner starts, roughly 192 percent CPU across both cores |
 | 16 Sep 02:41 | Outbound contact to 216.218.185.162, later reported by Spamhaus |
+| 16 Sep 05:04, 08:08, 11:42 | `/tmp/safenet-client` relaunched three times, two left defunct |
 | 16 Sep 11:42 | Miner re-dropped after the first one was killed |
 | 16 Sep 12:51 | Evidence captured, miner talking to pool 202.189.8.79:17235 |
 | 16 Sep 19:22 | Frontend container stopped, compromise ends |
@@ -37,7 +49,9 @@ fell back to `wget`. The miner landed at `/tmp/XXBNPamc`, sha256
 ## What was exposed
 
 Everything in the frontend container's environment must be assumed leaked:
-`STRAPI_API_TOKEN` and `REVALIDATE_SECRET`.
+`STRAPI_API_TOKEN` and `REVALIDATE_SECRET`. Assume leaked **from 9 September at
+the latest**, not from 15 September, so roughly a week of exposure rather than
+the 43 hours first recorded here.
 
 The important and non-obvious part: **the token was of type read-only, and that
 was not a mitigation.** Strapi's default auth on a generated `find`/`findOne`
@@ -111,6 +125,13 @@ logged as `egress-drop:`. Reading the repos will never reveal this.
 `iptables-persistent` was deliberately removed because its full dump restores
 stale Docker rules at boot. Note the limit: a payload fetched over 443 still
 passes. It removes the odd-port channel miners rely on, nothing more.
+
+**Check the CPU record before trusting container logs for a timeline.**
+`sar -u -f /var/log/sysstat/saNN` holds 7 days of per-interval CPU. A miner shows
+as a flat 98 percent user, unmistakable against this app's normal few percent.
+Container logs are truncated and reset when a container is recreated, so they
+establish only a lower bound on when something started. Getting this backwards
+understated this incident by five days.
 
 **SSH config drop-ins take the FIRST value, not the last.** The hardening file
 had to be named `00-hardening.conf`, because cloud-init's
