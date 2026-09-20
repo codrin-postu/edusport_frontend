@@ -1,23 +1,42 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { resolveAssetUrl } from "@/utils/markdown";
-import { getSkaterResults } from "@/lib/skate-results";
+import { getSkaterResults, seasonKey, levelOf } from "@/lib/skate-results";
 import AccomplishmentsPage from "./_View";
-import type { Season, GalleryImage } from "./_data";
+import { buildSeasonIndex, type Season, type GalleryImage } from "./_data";
 
-export const metadata: Metadata = {
-  title: "Realizări",
-  description:
-    "Realizările și rezultatele sportivilor EduSport la competițiile de patinaj artistic. Palmares, medalii și performanțe notabile.",
-  alternates: { canonical: "/despre-noi/realizari" },
-  openGraph: {
-    title: "Realizări | EduSport",
-    description: "Realizările sportivilor EduSport la competiții de patinaj.",
-    type: "website",
-    locale: "ro_RO",
-    images: [{ url: "/images/courses_generated.png", width: 1200, height: 630, alt: "EduSport - Școala de Patinaj" }],
-  },
-};
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+function readSeasonParam(params: Awaited<SearchParams>): string | null {
+  const raw = params.sezon;
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  return value && /^\d{4}-\d{4}$/.test(value) ? value : null;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const season = readSeasonParam(await searchParams);
+  const canonical = season
+    ? `/despre-noi/realizari?sezon=${season}`
+    : "/despre-noi/realizari";
+  const title = season ? `Realizări, sezonul ${season.replace("-", " - ")}` : "Realizări";
+  return {
+    title,
+    description:
+      "Realizările și rezultatele sportivilor EduSport la competițiile de patinaj artistic. Palmares, medalii și performanțe notabile.",
+    alternates: { canonical },
+    openGraph: {
+      title: `${title} | EduSport`,
+      description: "Realizările sportivilor EduSport la competiții de patinaj.",
+      type: "website",
+      locale: "ro_RO",
+      images: [{ url: "/images/courses_generated.png", width: 1200, height: 630, alt: "EduSport - Școala de Patinaj" }],
+    },
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Strapi types
@@ -43,22 +62,6 @@ interface LinkedMember {
   slug: string;
   skateResultsSlug: string;
   showPublicPage: boolean;
-}
-
-/** Figure-skating season (Sep–Aug) key from a date/name, e.g. "2025/2026". */
-function seasonKey(dateISO: string | null | undefined, name: string): string {
-  const y = dateISO?.slice(0, 4) || name.match(/20\d{2}/)?.[0];
-  if (!y) return "—";
-  const year = Number(y);
-  const month = dateISO ? Number(dateISO.slice(5, 7)) : 1;
-  const start = month >= 9 ? year : year - 1;
-  return `${start}/${start + 1}`;
-}
-
-function levelOf(name: string): "national" | "international" {
-  return /\bISU\b|international|challenger|grand prix|championship/i.test(name)
-    ? "international"
-    : "national";
 }
 
 /**
@@ -89,6 +92,8 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
   for (const { m, results } of perMember) {
     for (const r of results) {
       const sKey = seasonKey(r.event_date, r.event_name ?? "");
+      // No parsable year means no addressable season, so the entry is skipped.
+      if (!sKey) continue;
       const cKey = r.event_slug || String(r.event_id ?? "") || (r.event_name ?? "");
       if (!seasons.has(sKey)) seasons.set(sKey, new Map());
       const comps = seasons.get(sKey)!;
@@ -112,7 +117,11 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
   }
 
   return [...seasons.entries()]
-    .map(([id, comps]) => ({ id, label: `Sezon ${id}`, competitions: [...comps.values()] }))
+    .map(([id, comps]) => ({
+      id,
+      label: id.replace("-", " - "),
+      competitions: [...comps.values()],
+    }))
     .sort((a, b) => b.id.localeCompare(a.id));
 }
 
@@ -122,12 +131,13 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
 
 export const revalidate = 3600;
 
-export default async function Page() {
-  const [cms, seasons] = await Promise.all([
+export default async function Page({ searchParams }: { searchParams: SearchParams }) {
+  const [cms, seasons, params] = await Promise.all([
     fetchStrapi<RealizariPageCms>("realizari-page", "populate=galleryImages").catch(
       () => ({} as RealizariPageCms),
     ),
     buildSeasonsFromSkate(),
+    searchParams,
   ]);
 
   const galleryImages: GalleryImage[] = (cms.galleryImages ?? []).map((img) => ({
@@ -135,13 +145,25 @@ export default async function Page() {
     alt: img.alternativeText ?? "",
   }));
 
+  // Only seasons that actually carry results are addressable.
+  const withResults = seasons.filter((s) =>
+    s.competitions.some((c) => c.results.length > 0),
+  );
+  const seasonIndex = buildSeasonIndex(withResults);
+
+  // The requested season, or the most recent one that has results.
+  const requested = readSeasonParam(params);
+  const selectedSeason =
+    withResults.find((s) => s.id === requested) ?? withResults[0] ?? null;
+
   return (
     <AccomplishmentsPage
       bannerTitle={cms.banner?.bannerTitle ?? undefined}
       bannerSubtitle={cms.banner?.bannerSubtitle ?? undefined}
       notableAchievements={cms.notableAchievements ?? []}
       galleryImages={galleryImages}
-      seasons={seasons}
+      seasonIndex={seasonIndex}
+      season={selectedSeason}
     />
   );
 }

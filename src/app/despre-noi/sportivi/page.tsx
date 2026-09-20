@@ -5,7 +5,7 @@ import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import {
   computeStats,
-  fetchCompetitionsForAthletes,
+  fetchCompetitionsForSportspeople,
   fetchPublicSportspeoplePage,
   fetchSpotlightSportsperson,
   type SportspersonCompetition,
@@ -89,33 +89,31 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
     const gridPage = await fetchPublicSportspeoplePage({
       page: requestedPage,
       pageSize: PAGE_SIZE,
-      // Keep the spotlight athlete out of the grid so they don't appear
-      // twice on page 1.
-      excludeDocumentId: spotlight?.documentId,
       search,
     });
     gridData = gridPage.data;
     totalPages = Math.max(1, gridPage.pageCount);
-    // Total athletes on the index = grid total + 1 spotlight (if shown).
-    totalAthletes = gridPage.total + (spotlight ? 1 : 0);
+    // The spotlight athlete is also listed in the grid, so the grid total is
+    // already the full count. Excluding them made the band feel like a
+    // different section of the site rather than a highlight of this one, and
+    // left a gap in the alphabetical run.
+    totalAthletes = gridPage.total;
   } catch {
     // Strapi unavailable — fall through to empty state.
   }
 
   const currentPage = Math.min(requestedPage, totalPages);
 
-  // Competitions only for the athletes we're actually rendering. ~9 ids
-  // max (spotlight + 8 grid) vs. previously fetching for the whole cohort.
-  // Spotlight is rendered on every page (pinned), so it's always in the
-  // visible set.
-  const visibleDocIds = [
-    ...(spotlight ? [spotlight.documentId] : []),
-    ...gridData.map((s) => s.documentId),
-  ];
+  // Competitions only for the athletes we're actually rendering. The spotlight
+  // athlete now also appears in the grid, so de-duplicate by documentId to
+  // avoid looking their results up twice.
+  const visibleAthletes = [...(spotlight ? [spotlight] : []), ...gridData].filter(
+    (a, i, all) => all.findIndex((b) => b.documentId === a.documentId) === i,
+  );
   let competitionsByAthlete = new Map<string, SportspersonCompetition[]>();
   try {
-    if (visibleDocIds.length > 0) {
-      competitionsByAthlete = await fetchCompetitionsForAthletes(visibleDocIds);
+    if (visibleAthletes.length > 0) {
+      competitionsByAthlete = await fetchCompetitionsForSportspeople(visibleAthletes);
     }
   } catch {
     // Competition data unavailable — cards just show "—" stats.

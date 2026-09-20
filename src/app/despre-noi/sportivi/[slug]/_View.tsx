@@ -49,13 +49,11 @@ interface Props {
 
 const ISTORIC_PER_PAGE = 5;
 
-/** Shown in "Despre mine" until an editor fills the athlete's bio in
- *  Strapi. Keeps the section present in the layout (and visible in the
- *  CMS-driven design) rather than collapsing to nothing. */
-const STORY_PLACEHOLDER =
-  "Biografia sportivului va fi completată în curând. Aici va apărea povestea din spatele rezultatelor — parcursul pe gheață, momentele care au contat și ce îl motivează.";
-
+/** Competitions sourced from skate-results can arrive without a date, in
+ *  which case `date` is an empty string. Render nothing rather than the
+ *  literal "Invalid Date". */
 function formatDate(iso: string): string {
+  if (!iso || Number.isNaN(new Date(iso).getTime())) return "";
   return new Date(iso).toLocaleDateString("ro-RO", {
     day: "numeric",
     month: "long",
@@ -220,27 +218,34 @@ const SportspersonView: React.FC<Props> = ({
         </div>
       </section>
 
-      {/* ─── DESPRE MINE (narrative bio) ─── */}
-      <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
-        <SectionWatermark>DESPRE</SectionWatermark>
-        <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
-            Despre mine
-          </div>
-          {hasItems(sportsperson.story) ? (
-            <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-navy/85">
-              <StrapiBlocks blocks={sportsperson.story} />
+      {/* ─── DESPRE MINE (narrative bio) ───
+          Only rendered when there is something to say. It used to fall back to
+          a "biography coming soon" placeholder, which promised content nobody
+          had committed to writing and made every unfinished profile look the
+          same. An absent section reads as complete; a placeholder reads as
+          neglected. */}
+      {(hasItems(sportsperson.story) || sportsperson.description) && (
+        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
+          <SectionWatermark>DESPRE</SectionWatermark>
+          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+              Despre mine
             </div>
-          ) : (
-            <p
-              className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
-              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
-            >
-              {sportsperson.description || STORY_PLACEHOLDER}
-            </p>
-          )}
-        </div>
-      </section>
+            {hasItems(sportsperson.story) ? (
+              <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-navy/85">
+                <StrapiBlocks blocks={sportsperson.story} />
+              </div>
+            ) : (
+              <p
+                className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
+                style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+              >
+                {sportsperson.description}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* ─── ATRIBUTE (Despre — moves / hobbies / team / goal) ─── */}
       {(hasItems(sportsperson.favoriteMoves) ||

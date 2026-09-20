@@ -49,13 +49,21 @@ export interface SkateSkater {
   best_total?: number | null;
 }
 
+/**
+ * How long a skate-results response stays in Next's Data Cache.
+ *
+ * Competition history only changes when an admin runs an import, so an hour
+ * of staleness is harmless. It matters because the sportivi listing resolves
+ * one athlete per card: uncached, that was one request per athlete on every
+ * render. Same window as the Realizari page's own `revalidate`.
+ */
+const SKATE_REVALIDATE_SECONDS = 3600;
+
 async function getJSON<T>(path: string, fallback: T): Promise<T> {
   try {
-    // Always fresh: the sportsperson page is force-dynamic and results change
-    // whenever an admin imports, so a cached response would show stale history.
     const res = await fetch(`${SKATE_API}${path}`, {
       headers: { accept: "application/json" },
-      cache: "no-store",
+      next: { revalidate: SKATE_REVALIDATE_SECONDS },
     });
     if (!res.ok) return fallback;
     return (await res.json()) as T;
@@ -76,4 +84,31 @@ export function getSkaterResults(slug: string): Promise<SkateResult[]> {
     `/skaters/${encodeURIComponent(slug)}/results`,
     [],
   );
+}
+
+// ---------------------------------------------------------------------------
+// Derivations shared by every consumer of skate-results
+//
+// The API returns no season and no national/international flag, so both are
+// derived from the event date and name. Kept here so the Realizari page and
+// the sportsperson pages classify an event identically.
+// ---------------------------------------------------------------------------
+
+/** Figure-skating season (Sep to Aug) key from a date/name, e.g. "2025-2026". */
+export function seasonKey(
+  dateISO: string | null | undefined,
+  name: string,
+): string | null {
+  const y = dateISO?.slice(0, 4) || name.match(/20\d{2}/)?.[0];
+  if (!y) return null;
+  const year = Number(y);
+  const month = dateISO ? Number(dateISO.slice(5, 7)) : 1;
+  const start = month >= 9 ? year : year - 1;
+  return `${start}-${start + 1}`;
+}
+
+export function levelOf(name: string): "national" | "international" {
+  return /\bISU\b|international|challenger|grand prix|championship/i.test(name)
+    ? "international"
+    : "national";
 }

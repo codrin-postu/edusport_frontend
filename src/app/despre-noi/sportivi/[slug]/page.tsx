@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   fetchSportspersonBySlug,
-  fetchCompetitionsByAthlete,
+  fetchCompetitionsForSportsperson,
+  type SportspersonCompetition,
 } from "@/lib/strapi-sportsperson";
 import { getSkaterResults } from "@/lib/skate-results";
 import { strapiMediaUrl } from "@/lib/strapi-article";
@@ -67,9 +68,12 @@ export default async function Page({ params, searchParams }: Props) {
   // an access-control flag, not just a listing filter.
   if (!sp || !sp.showPublicPage) notFound();
 
-  let competitions = [] as Awaited<ReturnType<typeof fetchCompetitionsByAthlete>>;
+  // Competitions come from skate-results when the athlete is linked, and from
+  // the Strapi collection otherwise. Same helper as the listing and homepage,
+  // so the stat rows on all three agree.
+  let competitions: SportspersonCompetition[] = [];
   try {
-    competitions = await fetchCompetitionsByAthlete(sp.documentId);
+    competitions = await fetchCompetitionsForSportsperson(sp);
   } catch {
     // Stats default to "no competitions" rather than 500.
   }

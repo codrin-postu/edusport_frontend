@@ -4,6 +4,12 @@
 
 import { fetchStrapi, fetchStrapiPaginated } from "./strapi";
 import type { StrapiMediaImage, BlockNode } from "./strapi-article";
+import {
+  getSkaterResults,
+  levelOf,
+  seasonKey,
+  type SkateResult,
+} from "./skate-results";
 
 export interface StrapiSportsperson {
   id: number;
@@ -190,20 +196,18 @@ export async function fetchSpotlightSportsperson(): Promise<StrapiSportsperson |
     "pagination[pageSize]": "200",
     "fields[0]": "documentId",
     "fields[1]": "name",
+    // Needed so the eligibility check below reads each athlete's real
+    // competition source rather than only the Strapi collection.
+    "fields[2]": "skateResultsSlug",
   });
-  const allPublic = await fetchStrapi<Array<{ documentId: string; name: string }>>(
-    "sportspeople",
-    poolParams.toString(),
-    300,
-  );
+  const allPublic = await fetchStrapi<
+    Array<{ documentId: string; name: string; skateResultsSlug?: string | null }>
+  >("sportspeople", poolParams.toString(), 300);
   if (!allPublic || allPublic.length === 0) return null;
 
   // 2. Restrict pool to athletes with ≥1 competition (so the spotlight
-  //    stat row is never just dashes). Uses the batched competitions
-  //    helper — one round-trip regardless of cohort size.
-  const competitionsByAthlete = await fetchCompetitionsForAthletes(
-    allPublic.map((a) => a.documentId),
-  );
+  //    stat row is never just dashes), reading each athlete's own source.
+  const competitionsByAthlete = await fetchCompetitionsForSportspeople(allPublic);
   const eligible = allPublic.filter(
     (a) => (competitionsByAthlete.get(a.documentId)?.length ?? 0) > 0,
   );
@@ -425,6 +429,144 @@ export async function fetchCompetitionsForAthletes(
           })),
       });
     }
+  }
+  return result;
+}
+
+// ---------------------------------------------------------------------------
+// Competition source selection
+//
+// An athlete's competitions come from exactly ONE of two sources:
+//
+//   1. skate-results, when the athlete carries a `skateResultsSlug`. This is
+//      the scraped, authoritative history and the same source the Realizari
+//      page reads.
+//   2. the Strapi `competitions` collection otherwise, for athletes nobody has
+//      linked to a skate-results profile yet.
+//
+// The two are deliberately NOT merged: an event entered by hand in Strapi and
+// scraped from skate-results would then be counted twice.
+// ---------------------------------------------------------------------------
+
+/** The athlete fields the source selection needs. Both the listing and the
+ *  detail fetch already return these, so any StrapiSportsperson satisfies it. */
+export type CompetitionSourceRef = Pick<
+  StrapiSportsperson,
+  "documentId" | "skateResultsSlug"
+>;
+
+/**
+ * Reshape raw skate-results rows into `SportspersonCompetition[]`.
+ *
+ * skate-results returns one row per (event, category), so an athlete who
+ * skated two categories at one meet yields two rows for one competition.
+ * Rows are grouped by event, and each row becomes one entry in that
+ * competition's `participantsForThisAthlete`. Without the grouping the
+ * competition count would be inflated by every extra category.
+ *
+ * Rows whose `event_date` is null are kept rather than dropped, since they are
+ * still a competition the athlete attended and should show in the total. Their
+ * `date` stays an empty string (no date is invented) which means they simply
+ * don't contribute to the min/max year span in `computeStats`. `season` can
+ * still be recovered from a year inside the event name.
+ */
+export function competitionsFromSkateResults(
+  results: SkateResult[],
+): SportspersonCompetition[] {
+  const byEvent = new Map<string, SportspersonCompetition>();
+
+  for (const r of results) {
+    const name = r.event_name?.trim() || "Competiție";
+    // `event_slug` is the API's stable per-event key; `event_id` covers the
+    // rows that predate slugs, and the name is a last resort.
+    const eventKey =
+      r.event_slug?.trim() ||
+      (r.event_id !== null && r.event_id !== undefined ? `id-${r.event_id}` : "") ||
+      name;
+
+    let comp = byEvent.get(eventKey);
+    if (!comp) {
+      comp = {
+        documentId: `skate-${eventKey}`,
+        name,
+        date: r.event_date ?? "",
+        location: r.event_location ?? undefined,
+        level: levelOf(name),
+        season: seasonKey(r.event_date, name) ?? undefined,
+        participantsForThisAthlete: [],
+      };
+      byEvent.set(eventKey, comp);
+    } else if (!comp.date && r.event_date) {
+      // A later row for the same event may carry the date the first one lacked.
+      comp.date = r.event_date;
+      comp.season = seasonKey(r.event_date, comp.name) ?? comp.season;
+    }
+
+    comp.participantsForThisAthlete.push({
+      category: r.category?.trim() || undefined,
+      placement: typeof r.placement === "number" ? r.placement : undefined,
+      score: typeof r.total_score === "number" ? r.total_score : undefined,
+    });
+  }
+
+  // Newest first, matching the `sort=date:desc` of the Strapi path. Undated
+  // competitions sort last.
+  return [...byEvent.values()].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * One athlete's competitions, from whichever source applies to them.
+ * This is what every page should call instead of reaching for a specific
+ * source, so the profile, the listing and the homepage never disagree.
+ */
+export async function fetchCompetitionsForSportsperson(
+  sportsperson: CompetitionSourceRef,
+): Promise<SportspersonCompetition[]> {
+  if (sportsperson.skateResultsSlug) {
+    return competitionsFromSkateResults(
+      await getSkaterResults(sportsperson.skateResultsSlug),
+    );
+  }
+  return fetchCompetitionsByAthlete(sportsperson.documentId);
+}
+
+/**
+ * Batched variant for listing pages. Linked athletes resolve in parallel
+ * against skate-results, the rest in a single Strapi query, so the cost is
+ * one request per linked athlete plus one, not one per athlete plus one.
+ * Returns a Map keyed by sportsperson.documentId with an entry for every
+ * input (empty array when a source returns nothing).
+ */
+export async function fetchCompetitionsForSportspeople(
+  sportspeople: CompetitionSourceRef[],
+): Promise<Map<string, SportspersonCompetition[]>> {
+  const result = new Map<string, SportspersonCompetition[]>();
+  for (const sp of sportspeople) result.set(sp.documentId, []);
+  if (sportspeople.length === 0) return result;
+
+  const linked = sportspeople.filter((sp) => sp.skateResultsSlug);
+  const unlinked = sportspeople.filter((sp) => !sp.skateResultsSlug);
+
+  const [scraped, fromStrapi] = await Promise.all([
+    Promise.all(
+      linked.map(
+        async(sp) =>
+          [
+            sp.documentId,
+            competitionsFromSkateResults(
+              await getSkaterResults(sp.skateResultsSlug!),
+            ),
+          ] as const,
+      ),
+    ),
+    fetchCompetitionsForAthletes(unlinked.map((sp) => sp.documentId)),
+  ]);
+
+  for (const [documentId, competitions] of scraped) {
+    result.set(documentId, competitions);
+  }
+  for (const [documentId, competitions] of fromStrapi) {
+    result.set(documentId, competitions);
   }
   return result;
 }
