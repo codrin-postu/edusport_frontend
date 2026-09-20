@@ -6,7 +6,7 @@ import {
   fetchPublicSportspeople,
   fetchSpotlightSportsperson,
   fetchPublicSportspeoplePage,
-  fetchCompetitionsForAthletes,
+  fetchCompetitionsForSportspeople,
   computeStats,
   type StrapiSportsperson,
   type SportspersonStats,
@@ -18,6 +18,7 @@ import RegistrationSectionV2 from "./landing-v2/blocks/RegistrationSectionV2";
 import RegistrationClosedSection from "./homepage/blocks/RegistrationClosedSection";
 import { type HeroVariant } from "./landing-v2/blocks/HeroVariant";
 import type { HomepageCms } from "./landing-v2/_types";
+import { resolveClubFigures, type ClubFiguresCms } from "./homepage/_types";
 
 export const metadata: Metadata = {
   title: { absolute: "EduSport - Școala de Patinaj" },
@@ -36,20 +37,22 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600; // 1 hour — editor changes are pushed via /api/revalidate webhook
 
-const STRIP_IMAGE_CAP = 16;
+interface SiteSettingsCms {
+  registration?: { open?: boolean; currentSeason?: string } | null;
+  contact?: { addressDisplay?: string | null; whatsappChannelUrl?: string | null } | null;
+}
+
+/** First value that is a non-blank string, else undefined. */
+function firstFilled(...values: (string | null | undefined)[]): string | undefined {
+  for (const v of values) {
+    if (typeof v === "string" && v.trim() !== "") return v;
+  }
+  return undefined;
+}
+
 // Matches `athletes.slice(0, 2)` in AthletesSpotlight. Fetching a third meant
 // an extra batched competitions query for an athlete that never rendered.
 const FEATURED_ATHLETE_CAP = 2;
-
-// Hardcoded placeholder set used when Strapi athletes have no gallery photos
-// and no main portraits yet. Skating-themed Unsplash URLs, served directly.
-const PLACEHOLDER_STRIP_IMAGES: StrapiMediaImage[] = [
-  { url: "https://images.unsplash.com/photo-1551966775-a4ddc8df052b?auto=format&fit=crop&w=1200&q=70", alternativeText: "Patinaj artistic" },
-  { url: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=1200&q=70", alternativeText: "Sportiv pe gheață" },
-  { url: "https://images.unsplash.com/photo-1606925797300-0b35e9d1794e?auto=format&fit=crop&w=1200&q=70", alternativeText: "Concurs de patinaj" },
-  { url: "https://images.unsplash.com/photo-1611735341450-74d61e660ad2?auto=format&fit=crop&w=1200&q=70", alternativeText: "Patinator în mișcare" },
-  { url: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=1200&q=70", alternativeText: "Patinaj artistic" },
-];
 
 // Fallback demo content so the athletes + news sections still render when Strapi
 // returns nothing (local dev / empty CMS). Real data overrides these.
@@ -74,25 +77,6 @@ const PLACEHOLDER_ARTICLES: LatestArticleData[] = [
   { title: "Doi antrenori noi se alătură echipei EduSport", excerpt: "Experiență și pasiune pentru patinaj artistic.", date: "30 ianuarie 2025", image: "/images/courses_generated.png", slug: "#" },
 ];
 
-// Built from athlete photos only. The list query does not populate `gallery`
-// (see LIST_POPULATE_PARAMS in strapi-sportsperson.ts), so a gallery branch
-// here silently produced nothing; populating it for every athlete just to fill
-// a 3-image strip is not worth the payload.
-function buildStripImages(athletes: StrapiSportsperson[]): StrapiMediaImage[] {
-  const photoImages = athletes
-    .map((a) => a.photo)
-    .filter((p): p is StrapiMediaImage => !!p?.url);
-  const seen = new Set<string>();
-  const merged: StrapiMediaImage[] = [];
-  for (const img of photoImages) {
-    if (seen.has(img.url)) continue;
-    seen.add(img.url);
-    merged.push(img);
-    if (merged.length >= STRIP_IMAGE_CAP) break;
-  }
-  return merged;
-}
-
 export default async function Page() {
   const heroVariant: HeroVariant = "B"; // retro hero locked to the cream layout
   let registrationOpen = true;
@@ -108,14 +92,16 @@ export default async function Page() {
     spotlightAthleteResult,
     nextEventResult,
     athletesTotalResult,
+    clubFiguresResult,
   ] = await Promise.allSettled([
-    fetchStrapi<{ registration?: { open?: boolean; currentSeason?: string } }>("site-settings"),
-    fetchStrapi<HomepageCms>("homepage"),
+    fetchStrapi<SiteSettingsCms>("site-settings"),
+    fetchStrapi<HomepageCms>("homepage", "populate=competitionGallery"),
     fetchArticlesPaginated({ page: 1, pageSize: 5 }),
     fetchPublicSportspeople(),
     fetchSpotlightSportsperson(),
     fetchNextEvent(),
     fetchPublicSportspeopleTotal(),
+    fetchStrapi<ClubFiguresCms>("club-figures"),
   ]);
 
   const nextEvent = nextEventResult.status === "fulfilled" ? nextEventResult.value : null;
@@ -128,9 +114,31 @@ export default async function Page() {
     }
     currentSeason = settingsResult.value.registration.currentSeason;
   }
+  const contact = settingsResult.status === "fulfilled" ? settingsResult.value?.contact : undefined;
   if (homepageResult.status === "fulfilled" && homepageResult.value) {
     cms = homepageResult.value;
   }
+
+  // The location and the WhatsApp channel are written once, in Setari site. The
+  // homepage keeps its own field only when an editor deliberately overrode it,
+  // so an empty field here means "use the setting", not "show nothing". That is
+  // what left the WhatsApp button without an address.
+  const registrationCms: HomepageCms["registration"] = {
+    ...(cms.registration ?? {}),
+    locationName: firstFilled(cms.registration?.locationName, contact?.addressDisplay),
+  };
+  const registrationClosedCms: HomepageCms["registrationClosed"] = {
+    ...(cms.registrationClosed ?? {}),
+    whatsappUrl: firstFilled(cms.registrationClosed?.whatsappUrl, contact?.whatsappChannelUrl),
+  };
+
+  // Club numbers come from the shared "Cifre club" list. The inline
+  // sections.stats list stays as the fallback for anything not migrated.
+  const clubFigures = clubFiguresResult.status === "fulfilled" ? clubFiguresResult.value : null;
+  const resolvedStats =
+    resolveClubFigures(cms.sections?.statIds, clubFigures?.figures) ?? cms.sections?.stats ?? null;
+  const sectionsCms: HomepageCms["sections"] = { ...(cms.sections ?? {}), stats: resolvedStats };
+  cms = { ...cms, sections: sectionsCms };
   if (articlesPromiseResult.status === "fulfilled" && articlesPromiseResult.value.articles.length > 0) {
     latestArticles = articlesPromiseResult.value.articles.map((a) => ({
       title: a.title,
@@ -172,7 +180,7 @@ export default async function Page() {
   const featuredStats: Record<string, SportspersonStats> = {};
   if (featuredAthletes.length > 0) {
     try {
-      const compsByAthlete = await fetchCompetitionsForAthletes(featuredAthletes.map((a) => a.documentId));
+      const compsByAthlete = await fetchCompetitionsForSportspeople(featuredAthletes);
       for (const a of featuredAthletes) {
         featuredStats[a.documentId] = computeStats(compsByAthlete.get(a.documentId) ?? [], a.activeSince);
       }
@@ -183,9 +191,12 @@ export default async function Page() {
     }
   }
 
-  const liveStripImages = buildStripImages(athletes);
-  const stripImages: StrapiMediaImage[] =
-    liveStripImages.length > 0 ? liveStripImages : PLACEHOLDER_STRIP_IMAGES;
+  // Chosen in the admin, and nothing else. An empty list hides the section
+  // rather than filling it with athlete portraits or stock photos, which is
+  // what it used to do and why nobody could control what appeared there.
+  const stripImages: StrapiMediaImage[] = (cms.competitionGallery ?? []).filter(
+    (img): img is StrapiMediaImage => !!img?.url,
+  );
 
   const heroNextEvent = nextEvent
     ? {
@@ -237,8 +248,8 @@ export default async function Page() {
         currentEvent={currentEventCard}
         heroNextEvent={heroNextEvent}
         articles={displayArticles}
-        registrationSlot={<RegistrationSectionV2 cms={cms.registration} season={currentSeason} />}
-        registrationClosedSlot={<RegistrationClosedSection cms={cms.registrationClosed} season={currentSeason} />}
+        registrationSlot={<RegistrationSectionV2 cms={registrationCms} season={currentSeason} />}
+        registrationClosedSlot={<RegistrationClosedSection cms={registrationClosedCms} season={currentSeason} />}
       />
     </>
   );

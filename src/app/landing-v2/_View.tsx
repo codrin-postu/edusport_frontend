@@ -68,7 +68,10 @@ const HomePage: React.FC<HomePageProps> = ({
       {/* Registration (season-open) flows directly into About Us — no SquareTransition wipe. */}
       {registrationOpen ? registrationSlot : registrationClosedSlot}
       <AboutUsSection panels={cms.about?.panels ?? null} />
-      <CompetitionStrip images={stripImages} />
+      {/* No images chosen means no section, by design. */}
+      {stripImages.length > 0 && (
+        <CompetitionStrip images={stripImages} heading={cms.sections?.gallery?.heading} />
+      )}
       <StatsStrip items={cms.sections?.stats ?? null} />
       <AthletesSpotlight
         athletes={featuredAthletes}

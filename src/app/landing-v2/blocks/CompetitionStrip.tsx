@@ -42,9 +42,11 @@ const HEADER_OFFSET_PX = 80;
 
 interface CompetitionStripProps {
   images: StrapiMediaImage[];
+  /** Section copy, set in the admin. Falls back to the original sentence. */
+  heading?: string | null;
 }
 
-export default function CompetitionStrip({ images }: CompetitionStripProps) {
+export default function CompetitionStrip({ images, heading }: CompetitionStripProps) {
   // Refs on both desktop + mobile sections so we cover whichever is rendered
   // at the current breakpoint. The observer flips a class on <html> while
   // either section is in view; CSS in the <style> block below inverts the
@@ -208,6 +210,9 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
             width: min(82vh, 86vw);
             object-fit: cover;
             display: block;
+            /* Placeholder while the file loads. The box is already sized, so
+               this reads as an empty frame rather than a collapsed gap. */
+            background: rgba(255, 255, 255, 0.08);
           }
 
           .csstrip-heading {
@@ -277,6 +282,7 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
           .csstrip-img {
             height: min(82vh, calc(100vh - ${HEADER_OFFSET_PX}px)); width: min(82vh, 86vw);
             object-fit: cover; display: block;
+            background: rgba(255, 255, 255, 0.08);
           }
           .csstrip-heading {
             font-family: var(--font-lora), Georgia, serif;
@@ -308,7 +314,9 @@ export default function CompetitionStrip({ images }: CompetitionStripProps) {
           <div className="csstrip-track">
             <div className="csstrip-lead">
               <h2 className="csstrip-heading">
-                Pe gheață, în formă maximă. Momente din competițiile sportivilor noștri.
+                {heading?.trim()
+                  ? heading
+                  : "Pe gheață, în formă maximă. Momente din competițiile sportivilor noștri."}
               </h2>
             </div>
             {shown.map((img, i) => (
