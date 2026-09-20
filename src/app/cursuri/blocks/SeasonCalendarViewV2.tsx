@@ -47,6 +47,40 @@ interface MonthGroup {
   cards: WeekendCardData[];
 }
 
+/**
+ * First day of the month a date falls in, as "YYYY-MM-01" (local components, so
+ * no timezone drift).
+ */
+function monthStart(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
+}
+
+/**
+ * Month range actually covered by the Școala de patinaj weekends, as
+ * [inclusive start, exclusive end) "YYYY-MM-01" strings.
+ *
+ * The curs / liber / anulat weekends are produced only from the `scoala`
+ * occurrences (see occurrencesToCalendarEvents), so their earliest and latest
+ * dates are the real school season. Returns null when there are no school
+ * weekends at all, leaving the caller to fall back to the padded site-settings
+ * window.
+ */
+function deriveWeekendMonthRange(
+  ...weekendGroups: WeekendDate[][]
+): { start: string; end: string } | null {
+  let min: Date | null = null;
+  let max: Date | null = null;
+  for (const group of weekendGroups) {
+    for (const w of group) {
+      if (!min || w.startDate < min) min = w.startDate;
+      if (!max || w.startDate > max) max = w.startDate;
+    }
+  }
+  if (!min || !max) return null;
+  const endExclusive = new Date(max.getFullYear(), max.getMonth() + 1, 1);
+  return { start: monthStart(min), end: monthStart(endExclusive) };
+}
+
 function buildGroupedWeekends(
   activeWeekends: WeekendDate[],
   offWeekends: WeekendDate[],
@@ -226,6 +260,21 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
     "calendar",
   );
+
+  // /cursuri/program#weekends opens the weekend list directly, so the view can
+  // be linked to from anywhere. Read after mount rather than in the initial
+  // state: the server has no hash, and seeding it here would make the first
+  // client render disagree with the server's HTML.
+  useEffect(() => {
+    const fromHash = () => {
+      const h = window.location.hash.replace("#", "").toLowerCase();
+      if (h === "weekends" || h === "weekenduri") setActiveView("weekends");
+      else if (h === "calendar") setActiveView("calendar");
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
   const [calendarMode, setCalendarMode] = useState<CalendarMode>("month");
 
   // Defer FullCalendar bundle until the container scrolls near the viewport.
@@ -330,13 +379,23 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
     };
   }, [allActiveWeekends, allOffWeekends, allCancelledWeekends, fcValidStart, fcValidEnd]);
 
-  const groupedWeekends = useMemo(
-    () => buildGroupedWeekends(filteredActive, filteredOff, filteredCancelled, fcValidStart, fcValidEnd),
+  // The weekend view spans exactly the Școala de patinaj season, derived from the
+  // weekends themselves, so the padded shoulder months (which the calendar view
+  // and the occurrence fetch still need) do not show up here as empty columns.
+  const weekendRange = useMemo(
+    () =>
+      deriveWeekendMonthRange(filteredActive, filteredOff, filteredCancelled)
+      ?? { start: fcValidStart, end: fcValidEnd },
     [filteredActive, filteredOff, filteredCancelled, fcValidStart, fcValidEnd],
   );
 
+  const groupedWeekends = useMemo(
+    () => buildGroupedWeekends(filteredActive, filteredOff, filteredCancelled, weekendRange.start, weekendRange.end),
+    [filteredActive, filteredOff, filteredCancelled, weekendRange],
+  );
+
   return (
-    <section className="py-16 md:py-24 bg-retro-cream">
+    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-retro-cream">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         {/* Header — eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
@@ -358,7 +417,12 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           <SlidingPillToggle
             options={CALENDAR_VIEW_OPTIONS}
             value={activeView}
-            onChange={setActiveView}
+            onChange={(v) => {
+              setActiveView(v);
+              // replaceState, not a hash assignment: setting location.hash
+              // would jump the page to the anchor.
+              window.history.replaceState(null, "", v === "weekends" ? "#weekends" : " ");
+            }}
             disabled={!shouldMountCalendar && activeView === "calendar"}
           />
         </div>

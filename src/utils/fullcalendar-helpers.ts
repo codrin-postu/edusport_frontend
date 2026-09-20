@@ -114,6 +114,18 @@ export function buildCalendarEvents(
         classNames = ["fc-event-concurs"];
         defaultTitle = "Concurs";
         break;
+      case "cantonament":
+        classNames = ["fc-event-cantonament"];
+        defaultTitle = "Cantonament";
+        break;
+      case "spectacol":
+        classNames = ["fc-event-spectacol"];
+        defaultTitle = "Spectacol";
+        break;
+      case "pauza":
+        classNames = ["fc-event-pauza"];
+        defaultTitle = "Pauză";
+        break;
       case "curs-special":
         classNames = ["fc-event-curs-special"];
         defaultTitle = "Curs special";
@@ -149,17 +161,30 @@ export function buildCalendarEvents(
 function occurrenceClass(occ: CalendarOccurrence): string {
   if (occ.status === "cancelled") return "fc-event-anulat";
   switch (occ.type) {
+    // `scoala` is the Școala de patinaj series (navy), `curs` is a standalone
+    // course such as Antrenament (blue). They must NOT share a class: the month
+    // view already draws the school as `fc-event-curs` and the standalone course
+    // as `fc-event-curs-special`, and the two now have different colours.
     case "scoala":
+      return "fc-event-curs";
+    case "curs":
       return "fc-event-curs-special";
     case "eveniment":
       return "fc-event-eveniment";
     case "concurs":
       return "fc-event-concurs";
+    case "cantonament":
+      return "fc-event-cantonament";
+    case "spectacol":
+      return "fc-event-spectacol";
+    case "vacanta":
+      return "fc-event-vacation";
+    case "sarbatoare":
+      return "fc-event-holiday";
     case "liber":
-      return "fc-event-liber";
-    case "curs":
+      return "fc-event-pauza";
     default:
-      return "fc-event-curs";
+      return "fc-event-eveniment";
   }
 }
 

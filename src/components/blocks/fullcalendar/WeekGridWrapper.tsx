@@ -4,8 +4,6 @@ import React, { useRef, useState, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import type { EventInput } from "@fullcalendar/core";
-import { format } from "date-fns";
-import { ro } from "date-fns/locale";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
@@ -109,7 +107,10 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
               end: info.event.end,
               allDay: info.event.allDay,
             });
-            if (type === "curs" || type === "next") {
+            // The week grid is fed raw occurrence types (see occurrencesToEvents):
+            // the skating school is "scoala", while "curs" is an extra course such
+            // as Antrenament. Only the school links to its regulament.
+            if (type === "scoala") {
               return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
             }
             return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;

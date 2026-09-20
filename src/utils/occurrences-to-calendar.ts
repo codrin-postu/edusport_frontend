@@ -8,9 +8,14 @@ import type { CalendarOccurrence } from "@/lib/strapi-calendar";
  * The "Școala de patinaj" recurring event is the source of the weekend model:
  * each weekend occurrence carries a `state` (curs / liber / anulat) set in the
  * admin calendar, so its Saturday+Sunday occurrences become the Curs / Liber /
- * Curs anulat weekend cards. Every other event type becomes a special tile,
- * with consecutive dates of the same event merged into a single span (so a
- * multi-day vacation is one tile, not one per day).
+ * Curs anulat weekend cards. Every other event type becomes a special tile.
+ *
+ * Consecutive dates of the same event merge into a single span only when the
+ * occurrences are ALL-DAY (no startTime): a vacation or a camp really is one
+ * continuous block, so it should read as one tile. Timed occurrences are
+ * separate sessions that happen to fall on neighbouring days (e.g. an
+ * Antrenament on Monday and Tuesday), so each keeps its own tile instead of
+ * being drawn as one two-day bar.
  */
 
 // "YYYY-MM-DD" -> local Date (no timezone drift).
@@ -50,10 +55,12 @@ function specialType(t: string): CalendarEventType {
     case "curs":
       return "curs-special";
     case "liber":
-      return "vacation";
-    case "eveniment":
+      return "pauza";
     case "cantonament":
+      return "cantonament";
     case "spectacol":
+      return "spectacol";
+    case "eveniment":
     default:
       return "eveniment";
   }
@@ -113,7 +120,9 @@ export function occurrencesToCalendarEvents(
   }
 
   // ── Other events ─────────────────────────────────────────────────────────
-  // Merge consecutive same-event dates into a single span.
+  // Merge consecutive same-event dates into a single span, but only for all-day
+  // occurrences. A timed occurrence is one session, never part of a multi-day bar.
+  const isTimed = (o: CalendarOccurrence) => !!o.startTime;
   const byEvent = new Map<number, CalendarOccurrence[]>();
   for (const o of others) {
     const arr = byEvent.get(o.eventId) ?? [];
@@ -148,11 +157,13 @@ export function occurrencesToCalendarEvents(
         run.push(o);
         continue;
       }
-      const prev = parseYMD(run[run.length - 1].date);
-      const next = parseYMD(o.date);
+      const previous = run[run.length - 1];
+      const prev = parseYMD(previous.date);
       const consecutive =
+        !isTimed(previous) &&
+        !isTimed(o) &&
         ymd(new Date(prev.getFullYear(), prev.getMonth(), prev.getDate() + 1)) ===
-        o.date;
+          o.date;
       if (consecutive) run.push(o);
       else {
         flush();

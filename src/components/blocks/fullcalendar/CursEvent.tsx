@@ -138,7 +138,7 @@ const CursEvent: React.FC<{ title: string; dateLabel?: string; description?: str
   return (
     <span
       ref={anchorRef as React.RefObject<HTMLSpanElement>}
-      className="fc-curs-event"
+      className="fc-curs-event fc-hover-anchor"
       onMouseEnter={show}
       onMouseLeave={hide}
     >
@@ -167,8 +167,10 @@ export const SpecialEventWithTooltip: React.FC<{ title: string; dateLabel?: stri
   return (
     <span
       ref={anchorRef as React.RefObject<HTMLSpanElement>}
-      className="fc-event-title"
-      style={{ display: "block", width: "100%", cursor: "default" }}
+      // fc-hover-anchor fills the card, not just the text. The hover target used
+      // to be the title's own box, so the empty area below it in a week-view
+      // block did not open the tooltip.
+      className="fc-event-title fc-hover-anchor"
       onMouseEnter={show}
       onMouseLeave={hide}
     >
@@ -216,7 +218,9 @@ export const HoverTooltip: React.FC<{
   return (
     <div
       ref={anchorRef as React.RefObject<HTMLDivElement>}
-      className={className}
+      // Same rule as the two event variants: the hover target is the whole card,
+      // not just its text. The caller's own class still controls layout.
+      className={className ? `fc-hover-anchor ${className}` : "fc-hover-anchor"}
       style={style}
       onMouseEnter={show}
       onMouseLeave={hide}

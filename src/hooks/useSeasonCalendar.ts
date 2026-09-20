@@ -44,6 +44,9 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
         e.type === "vacation" ||
         e.type === "eveniment" ||
         e.type === "concurs" ||
+        e.type === "cantonament" ||
+        e.type === "spectacol" ||
+        e.type === "pauza" ||
         e.type === "curs-special",
     ),
     [events],

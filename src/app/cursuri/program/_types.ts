@@ -6,6 +6,9 @@ export type CalendarEventType =
   | "vacation"
   | "eveniment"
   | "concurs"
+  | "cantonament"
+  | "spectacol"
+  | "pauza"
   | "curs-special";
 
 export interface CalendarEvent {

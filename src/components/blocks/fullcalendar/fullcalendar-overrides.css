@@ -1,6 +1,35 @@
 /* Retro FullCalendar overrides — scoped to .fc + custom header/tooltip/sheet classes.
-   Colour = course type (navy for Școala today); anulat keeps the colour + strike;
-   liber = silver; events (eveniment/concurs) = orange. Next course is not marked. */
+   Event colour = the admin panel's category colour (see the --fc-cat-* tokens below),
+   so the public calendar and the backend calendar editor read as the same legend.
+   State still rides on top: anulat keeps its own red plus the strike-through. */
+
+/* ── Event category palette — mirrors ProgramOverviewEditor.tsx in the backend ──
+   Each token carries its own foreground: several of these are much lighter than
+   navy, so cream text on them would be unreadable. */
+.fc,
+.fc-mobile-modal,
+.fc-curs-tooltip {
+  --fc-cat-curs: #2138b8;        /* Antrenament (standalone course) */
+  --fc-cat-curs-fg: var(--color-retro-cream);
+  --fc-cat-scoala: #0e1a3c;      /* Școala de patinaj */
+  --fc-cat-scoala-fg: var(--color-retro-cream);
+  --fc-cat-concurs: #7a1fa2;     /* Competiție */
+  --fc-cat-concurs-fg: var(--color-retro-cream);
+  --fc-cat-cantonament: #1f7a4d; /* Cantonament */
+  --fc-cat-cantonament-fg: var(--color-retro-cream);
+  --fc-cat-spectacol: #00838f;   /* Spectacol */
+  --fc-cat-spectacol-fg: #ffffff;
+  --fc-cat-eveniment: #e08a00;   /* Eveniment */
+  --fc-cat-eveniment-fg: #0e1a3c;
+  --fc-cat-vacanta: #0891b2;     /* Vacanță */
+  --fc-cat-vacanta-fg: #0e1a3c;
+  --fc-cat-sarbatoare: #c026d3;  /* Sărbătoare */
+  --fc-cat-sarbatoare-fg: #ffffff;
+  --fc-cat-liber: #8a8a8a;       /* Pauză / zi liberă */
+  --fc-cat-liber-fg: #0e1a3c;
+  --fc-cat-anulat: #be3330;      /* per-date state: anulat */
+  --fc-cat-anulat-fg: var(--color-retro-cream);
+}
 
 /* ── Custom header (month title + Azi badge + prev/next), all 34px tall ────────── */
 .fc-custom-header {
@@ -175,10 +204,12 @@
   line-height: 1;
 }
 
-/* Event block — square, colour classes control fill */
+/* Event block — square, colour classes control fill.
+   The padding lives on .fc-hover-anchor instead of here, so the hover target
+   covers the padded area too (see the fc-hover-anchor block below). */
 .fc .fc-daygrid-event {
   border-radius: 2px;
-  padding: 1px 6px;
+  padding: 0;
   margin-top: 2px;
   font-size: 0.68rem;
   font-weight: 600;
@@ -202,45 +233,95 @@
 
 /* --- Event type colours (course = colour; state = strike/opacity) --- */
 
-/* Curs / next / curs-special — course colour (navy today). Next not distinguished. */
+/* Școala de patinaj (+ the "next" weekend, not distinguished) — navy */
 .fc-event-curs,
-.fc-event-next-weekend,
-.fc-event-curs-special {
-  background-color: var(--color-navy) !important;
-  border-color: var(--color-navy) !important;
-  color: var(--color-retro-cream) !important;
+.fc-event-next-weekend {
+  background-color: var(--fc-cat-scoala) !important;
+  border-color: var(--fc-cat-scoala) !important;
+  color: var(--fc-cat-scoala-fg) !important;
   box-shadow: none !important;
 }
-.fc-event-curs .fc-daygrid-event-dot,
-.fc-event-next-weekend .fc-daygrid-event-dot,
-.fc-event-curs-special .fc-daygrid-event-dot {
-  display: none !important;
+
+/* Antrenament / standalone course — blue */
+.fc-event-curs-special {
+  background-color: var(--fc-cat-curs) !important;
+  border-color: var(--fc-cat-curs) !important;
+  color: var(--fc-cat-curs-fg) !important;
+  box-shadow: none !important;
 }
 
-/* Anulat — keep the course colour, fade it and strike it through */
+/* Anulat — its own red, plus the strike-through */
 .fc-event-anulat {
-  background-color: var(--color-navy) !important;
-  border-color: var(--color-navy) !important;
-  color: var(--color-retro-cream) !important;
-  opacity: 0.45;
+  background-color: var(--fc-cat-anulat) !important;
+  border-color: var(--fc-cat-anulat) !important;
+  color: var(--fc-cat-anulat-fg) !important;
   text-decoration: line-through;
 }
 
-/* Liber / holiday / vacation — reserved silver (free weekends/days) */
+/* Liber / pauză — grey */
 .fc-event-liber,
-.fc-event-holiday,
-.fc-event-vacation {
-  background-color: var(--color-silver) !important;
-  border-color: var(--color-silver) !important;
-  color: var(--color-navy) !important;
+.fc-event-pauza {
+  background-color: var(--fc-cat-liber) !important;
+  border-color: var(--fc-cat-liber) !important;
+  color: var(--fc-cat-liber-fg) !important;
 }
 
-/* Eveniment / concurs — orange (events) */
-.fc-event-eveniment,
+/* Sărbătoare — magenta */
+.fc-event-holiday {
+  background-color: var(--fc-cat-sarbatoare) !important;
+  border-color: var(--fc-cat-sarbatoare) !important;
+  color: var(--fc-cat-sarbatoare-fg) !important;
+}
+
+/* Vacanță — cyan */
+.fc-event-vacation {
+  background-color: var(--fc-cat-vacanta) !important;
+  border-color: var(--fc-cat-vacanta) !important;
+  color: var(--fc-cat-vacanta-fg) !important;
+}
+
+/* Eveniment — amber (dark text: the background is far lighter than navy) */
+.fc-event-eveniment {
+  background-color: var(--fc-cat-eveniment) !important;
+  border-color: var(--fc-cat-eveniment) !important;
+  color: var(--fc-cat-eveniment-fg) !important;
+}
+
+/* Competiție — purple */
 .fc-event-concurs {
-  background-color: var(--color-orange) !important;
-  border-color: var(--color-orange) !important;
-  color: #ffffff !important;
+  background-color: var(--fc-cat-concurs) !important;
+  border-color: var(--fc-cat-concurs) !important;
+  color: var(--fc-cat-concurs-fg) !important;
+}
+
+/* Cantonament — green */
+.fc-event-cantonament {
+  background-color: var(--fc-cat-cantonament) !important;
+  border-color: var(--fc-cat-cantonament) !important;
+  color: var(--fc-cat-cantonament-fg) !important;
+}
+
+/* Spectacol — teal */
+.fc-event-spectacol {
+  background-color: var(--fc-cat-spectacol) !important;
+  border-color: var(--fc-cat-spectacol) !important;
+  color: var(--fc-cat-spectacol-fg) !important;
+}
+
+/* No leading dot on any coloured block event */
+.fc-event-curs .fc-daygrid-event-dot,
+.fc-event-next-weekend .fc-daygrid-event-dot,
+.fc-event-curs-special .fc-daygrid-event-dot,
+.fc-event-anulat .fc-daygrid-event-dot,
+.fc-event-liber .fc-daygrid-event-dot,
+.fc-event-pauza .fc-daygrid-event-dot,
+.fc-event-holiday .fc-daygrid-event-dot,
+.fc-event-vacation .fc-daygrid-event-dot,
+.fc-event-eveniment .fc-daygrid-event-dot,
+.fc-event-concurs .fc-daygrid-event-dot,
+.fc-event-cantonament .fc-daygrid-event-dot,
+.fc-event-spectacol .fc-daygrid-event-dot {
+  display: none !important;
 }
 
 /* Cursuri event — inline layout (no leading dot) */
@@ -421,8 +502,9 @@
   outline: 1.5px solid var(--color-retro-cream);
   outline-offset: -1.5px;
 }
+/* Padding moved onto .fc-hover-anchor so the hover target covers it. */
 .fc .fc-timegrid-event .fc-event-main {
-  padding: 2px 5px;
+  padding: 0;
 }
 
 /* Navy rule under the whole day-name header row (incl. the axis corner above
@@ -447,22 +529,31 @@
   .fc-curs-event { cursor: pointer; }
   /* Block events pass clicks through to the day cell so the mobile sheet picks them up. */
   .fc .fc-event-liber,
+  .fc .fc-event-pauza,
   .fc .fc-event-holiday,
   .fc .fc-event-vacation,
   .fc .fc-event-eveniment,
   .fc .fc-event-concurs,
+  .fc .fc-event-cantonament,
+  .fc .fc-event-spectacol,
   .fc .fc-event-anulat,
   .fc .fc-event-liber *,
+  .fc .fc-event-pauza *,
   .fc .fc-event-holiday *,
   .fc .fc-event-vacation *,
   .fc .fc-event-eveniment *,
   .fc .fc-event-concurs *,
+  .fc .fc-event-cantonament *,
+  .fc .fc-event-spectacol *,
   .fc .fc-event-anulat *,
   .fc-daygrid-event-harness:has(.fc-event-liber),
+  .fc-daygrid-event-harness:has(.fc-event-pauza),
   .fc-daygrid-event-harness:has(.fc-event-holiday),
   .fc-daygrid-event-harness:has(.fc-event-vacation),
   .fc-daygrid-event-harness:has(.fc-event-eveniment),
   .fc-daygrid-event-harness:has(.fc-event-concurs),
+  .fc-daygrid-event-harness:has(.fc-event-cantonament),
+  .fc-daygrid-event-harness:has(.fc-event-spectacol),
   .fc-daygrid-event-harness:has(.fc-event-anulat) {
     pointer-events: none;
   }
@@ -566,15 +657,24 @@
   height: 10px;
   background-color: var(--color-navy);
 }
+/* The month view passes CalendarEventType here ("curs", "curs-special", …); the
+   week view passes the raw backend category ("scoala", "vacanta", …). Both are
+   listed so a dot never falls back to the default navy by accident. */
 .fc-mobile-modal-dot--curs,
 .fc-mobile-modal-dot--next,
-.fc-mobile-modal-dot--curs-special { background-color: var(--color-navy); }
-.fc-mobile-modal-dot--anulat { background-color: var(--color-navy); opacity: 0.45; }
+.fc-mobile-modal-dot--scoala { background-color: var(--fc-cat-scoala); }
+.fc-mobile-modal-dot--curs-special { background-color: var(--fc-cat-curs); }
+.fc-mobile-modal-dot--anulat { background-color: var(--fc-cat-anulat); }
 .fc-mobile-modal-dot--liber,
+.fc-mobile-modal-dot--pauza { background-color: var(--fc-cat-liber); }
 .fc-mobile-modal-dot--holiday,
-.fc-mobile-modal-dot--vacation { background-color: var(--color-silver); }
-.fc-mobile-modal-dot--eveniment,
-.fc-mobile-modal-dot--concurs { background-color: var(--color-orange); }
+.fc-mobile-modal-dot--sarbatoare { background-color: var(--fc-cat-sarbatoare); }
+.fc-mobile-modal-dot--vacation,
+.fc-mobile-modal-dot--vacanta { background-color: var(--fc-cat-vacanta); }
+.fc-mobile-modal-dot--eveniment { background-color: var(--fc-cat-eveniment); }
+.fc-mobile-modal-dot--concurs { background-color: var(--fc-cat-concurs); }
+.fc-mobile-modal-dot--cantonament { background-color: var(--fc-cat-cantonament); }
+.fc-mobile-modal-dot--spectacol { background-color: var(--fc-cat-spectacol); }
 
 /* Detail sheet (C2): navy band pinned + image + scrollable body */
 .fc-mobile-band {
@@ -640,4 +740,35 @@
   display: inline-block;
   font-size: 0.78rem;
   margin-top: 12px;
+}
+
+/* ── Hover target = the whole event card ──────────────────────────────────────
+   Every tooltip variant (CursEvent, SpecialEventWithTooltip, HoverTooltip) marks
+   its anchor with .fc-hover-anchor. The anchor is a child of FullCalendar's own
+   wrappers, so height:100% only resolves once those wrappers stretch too —
+   otherwise the hover area collapses back to the height of the title text and
+   the empty part of a card stays dead. The event's padding also moves onto the
+   anchor (see the .fc-daygrid-event / .fc-timegrid-event rules above) so the
+   padded strip is hoverable as well. */
+.fc .fc-timegrid-event .fc-event-main,
+.fc .fc-timegrid-event .fc-event-main-frame,
+.fc .fc-daygrid-event .fc-event-main,
+.fc .fc-daygrid-event .fc-event-main-frame {
+  height: 100%;
+}
+.fc-hover-anchor {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+/* .fc-curs-event sets its own display:flex; the title variant needs a block. */
+.fc .fc-event-title.fc-hover-anchor {
+  display: block;
+}
+.fc .fc-daygrid-event .fc-hover-anchor {
+  padding: 1px 6px;
+}
+.fc .fc-timegrid-event .fc-hover-anchor {
+  padding: 2px 5px;
 }
