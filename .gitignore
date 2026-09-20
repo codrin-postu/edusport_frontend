@@ -48,3 +48,6 @@ next-env.d.ts
 .superpowers/
 .dual-graph/
 docker-compose.umami.yml
+
+# local agent tooling
+.codex/
