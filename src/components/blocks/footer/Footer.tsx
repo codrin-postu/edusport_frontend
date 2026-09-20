@@ -3,6 +3,7 @@ import CookiePreferencesLink from "@/components/blocks/cookie-consent/CookiePref
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { Text } from "@/components/ui/text";
 import { WarmStripe } from "@/components/ui/warm-stripe";
+import { mapsHref } from "@/lib/mapsLink";
 import { cn } from "@/utils/cn";
 import { BRAND_NAME, LinkVariants } from "@/utils/constants";
 import React from "react";
@@ -15,6 +16,8 @@ export interface SiteContactInfo {
   instagramUrl?: string;
   whatsappChannelUrl?: string;
   addressDisplay?: string;
+  /** Optional exact map link. Falls back to a search built from addressDisplay. */
+  addressMapsUrl?: string;
 }
 
 type FooterItemData =
@@ -63,6 +66,18 @@ const footerLeftSections = [
 function buildContactItems(info: SiteContactInfo): FooterItemData[] {
   const items: FooterItemData[] = [];
 
+  // The address leads the contact list because it is what people come to the
+  // footer for. It links to the map rather than being text they have to retype:
+  // an exact link if one is set in the admin, otherwise a search built from the
+  // address itself, so it works without anyone configuring anything.
+  const maps = mapsHref(info.addressDisplay, info.addressMapsUrl);
+  if (info.addressDisplay) {
+    items.push(
+      maps
+        ? { type: "link", label: info.addressDisplay, href: maps, external: true }
+        : { type: "text", label: info.addressDisplay },
+    );
+  }
   if (info.phone) {
     items.push({ type: "phone", label: info.phone });
   }
@@ -208,6 +223,20 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
         {retro ? (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-3">
+              {/* Address first: it is what people open the footer for, and it
+                  links to the map instead of being text to retype. */}
+              {contactInfo?.addressDisplay &&
+                (mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl) ? (
+                  <FooterItem
+                    type="link"
+                    label={contactInfo.addressDisplay}
+                    href={mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl)!}
+                    external
+                    retro
+                  />
+                ) : (
+                  <FooterItem type="text" label={contactInfo.addressDisplay} retro />
+                ))}
               {contactInfo?.phone && <FooterItem type="phone" label={contactInfo.phone} retro />}
               {contactInfo?.email && <FooterItem type="email" label={contactInfo.email} retro />}
             </div>

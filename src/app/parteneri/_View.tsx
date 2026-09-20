@@ -60,7 +60,10 @@ const PartnerView: React.FC<{
         </div>
       </section>
 
-      {/* ─── SPONSORII NOȘTRI (marquee) ─── */}
+      {/* ─── SPONSORII NOȘTRI (marquee) ───
+          Hidden entirely when there are no sponsors: a heading saying "cei care
+          susțin clubul" above an empty strip reads worse than no section. */}
+      {sponsors.length > 0 && (
       <section className="relative z-10 bg-retro-cream pb-16 md:pb-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="mb-8 flex flex-col gap-2">
@@ -80,6 +83,7 @@ const PartnerView: React.FC<{
           <SponsorMarquee sponsors={sponsors} />
         </div>
       </section>
+      )}
 
       {/* ─── EVENIMENTE & COLABORĂRI ─── */}
       {events.length > 0 && (

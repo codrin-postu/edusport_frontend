@@ -6,7 +6,7 @@ import {
   fetchPartnersPage,
 } from "@/lib/strapi-partners";
 import { fetchFormConfig } from "@/lib/strapi-forms";
-import { SPONSORS, COLLAB_EVENTS, PARTNERS_COPY } from "./_data";
+import { PARTNERS_COPY } from "./_data";
 
 // Content is CMS-managed; fall back to the static placeholders when Strapi is
 // unavailable or the collections are empty, so the page always renders.
@@ -35,10 +35,12 @@ export default async function ParteneriPage() {
     // any failure so the form falls back to its bundled steps.
     fetchFormConfig("parteneri"),
   ]);
-  const sponsors =
-    sp.status === "fulfilled" && sp.value.length > 0 ? sp.value : SPONSORS;
-  const events =
-    ev.status === "fulfilled" && ev.value.length > 0 ? ev.value : COLLAB_EVENTS;
+  // No placeholder fallback for either list. Showing invented sponsors or
+  // collaborations when the CMS has none puts claims on a public page that are
+  // not true, which is worse than an absent section. An empty list hides its
+  // section instead.
+  const sponsors = sp.status === "fulfilled" ? sp.value : [];
+  const events = ev.status === "fulfilled" ? ev.value : [];
   const c = pc.status === "fulfilled" && pc.value ? pc.value : {};
   const formConfig = fc.status === "fulfilled" ? fc.value : null;
   // CMS value per field, else the static fallback copy.

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import type {
@@ -17,7 +18,17 @@ import type {
 // ── Inline text (bold, italic, underline, code…) ──────────────────────────────
 
 function RenderText({ node }: { node: TextNode }) {
-  let el: React.ReactNode = node.text;
+  // Strapi stores a soft line break (Shift+Enter in the editor, or a <br> from
+  // an import) as a "\n" inside the text node. HTML collapses it to a space, so
+  // split it into <br /> the way Strapi's own blocks renderer does.
+  let el: React.ReactNode = node.text.includes("\n")
+    ? node.text.split("\n").map((line, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && <br />}
+          {line}
+        </React.Fragment>
+      ))
+    : node.text;
   if (node.code) el = <code className="text-sm bg-navy/[0.08] px-1.5 py-0.5 font-mono text-rust">{el}</code>;
   if (node.bold) el = <strong className="font-bold text-navy">{el}</strong>;
   if (node.italic) el = <em>{el}</em>;
@@ -124,6 +135,44 @@ function RenderBlock({ node }: { node: BlockNode }) {
       const img = node as ImageNode;
       const src = strapiMediaUrl(img.image.url);
       const caption = img.image.caption || img.image.alternativeText;
+      const { width, height } = img.image;
+
+      // Body images render at their own proportions.
+      //
+      // They used to be forced into an aspect-video box with object-cover,
+      // which is right for article cards (uniform thumbnails) and wrong here:
+      // it cropped tall images to a 16:9 slice and blew small ones up to the
+      // full column width. A portrait poster lost its top and bottom, and a
+      // square QR code became a giant blurry crop.
+      //
+      // The natural width is also an upper bound, so a small image sits at its
+      // real size instead of being upscaled. Only when Strapi gives us no
+      // dimensions do we fall back to the fixed box.
+      if (width && height) {
+        return (
+          <figure className="my-8">
+            <div
+              className="relative mx-auto overflow-hidden border-[1.5px] border-navy bg-navy/[0.03]"
+              style={{ maxWidth: width }}
+            >
+              <Image
+                src={src}
+                alt={img.image.alternativeText ?? ""}
+                width={width}
+                height={height}
+                className="h-auto w-full"
+                sizes="(min-width: 1024px) 768px, 100vw"
+              />
+            </div>
+            {caption && (
+              <figcaption className="mt-2 text-center text-xs text-navy/45">
+                {caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      }
+
       return (
         <figure className="my-8">
           <div className="relative w-full aspect-video overflow-hidden border-[1.5px] border-navy bg-navy/[0.03]">

@@ -1,0 +1,377 @@
+<title>Rezultate pe sezoane</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --page:#e9e7e1;--panel:#fff;--ink:#16171c;--ink-soft:#4b4d57;--muted:#84868f;--line:#d9d7d1;
+  --navy:#0e1a3c;--cream:#f2ebdd;--retro:#fbf8f1;--rust:#be3330;--mustard:#efb22b;--orange:#ea7233;--burgundy:#6e4256;
+  --shadow:0 10px 34px rgba(14,26,60,.12);
+  --disp:"League Spartan",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121319;--panel:#1b1d24;--ink:#eceef4;--ink-soft:#b6b9c4;--muted:#7d808c;--line:#2c2f39;--shadow:0 10px 34px rgba(0,0,0,.55)}}
+:root[data-theme="dark"]{--page:#121319;--panel:#1b1d24;--ink:#eceef4;--ink-soft:#b6b9c4;--muted:#7d808c;--line:#2c2f39;--shadow:0 10px 34px rgba(0,0,0,.55)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px 110px}
+.mast{padding:54px 0 28px;border-bottom:1px solid var(--line)}
+.kick{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin:0 0 12px}
+.mast h1{font-family:var(--disp);font-size:clamp(30px,4.2vw,46px);line-height:1;margin:0 0 14px;font-weight:900;letter-spacing:-.02em;max-width:20ch;text-wrap:balance}
+.mast p{margin:0 0 9px;max-width:78ch;color:var(--ink-soft);font-size:15px}
+.mast p b{color:var(--ink)}
+.sec{padding:46px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.sec-no{font-family:var(--disp);font-size:13px;font-weight:800;color:var(--rust);border:1.5px solid var(--rust);padding:2px 9px;letter-spacing:.06em}
+.sec h2{font-family:var(--disp);font-size:25px;font-weight:800;letter-spacing:-.015em;margin:0}
+.tagline{color:var(--muted);font-size:14px;font-weight:600}
+.lead{color:var(--ink-soft);font-size:14.5px;margin:12px 0 0;max-width:84ch}
+.lead b{color:var(--ink)}
+.cap{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:24px 0 9px}
+.note{font-size:13.5px;color:var(--ink-soft);background:var(--panel);border-left:3px solid var(--rust);padding:13px 15px;margin-top:18px;max-width:84ch}
+.note b{color:var(--ink)}
+.verdict{background:var(--navy);color:#f6f1e6;padding:15px 17px;margin-top:20px;font-size:13.5px;max-width:84ch}
+.verdict b{color:var(--mustard)}
+.shot{border:1px solid var(--line);box-shadow:var(--shadow);background:var(--panel);overflow:hidden;margin-top:16px}
+.shot-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:#cfcdc7}
+.shot-bar .w{margin-left:auto;font-weight:600;letter-spacing:0;text-transform:none}
+.stage{background:var(--retro);padding:30px 28px;overflow-x:auto}
+.site{color:var(--navy);min-width:820px}
+.eyebrow{font-family:var(--disp);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin:0 0 6px}
+.h2{font-family:var(--disp);font-size:31px;font-weight:900;line-height:1.05;letter-spacing:-.3px;margin:0 0 20px;color:var(--navy)}
+
+/* season picker variants */
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.chip{font-family:var(--disp);font-size:12.5px;font-weight:800;letter-spacing:.03em;padding:7px 12px;border:1.5px solid var(--navy);background:transparent;color:var(--navy);white-space:nowrap}
+.chip.on{background:var(--navy);color:var(--cream)}
+.chip .n{opacity:.55;font-weight:600;margin-left:6px;font-size:11px}
+.chip.on .n{opacity:.7}
+.rail{width:190px;flex:none;border-right:1.5px solid rgba(14,26,60,.15);padding-right:0}
+.rail-item{display:flex;align-items:baseline;gap:8px;padding:9px 13px 9px 12px;font-family:var(--disp);font-weight:800;font-size:13.5px;color:var(--navy);border-left:3px solid transparent;cursor:pointer}
+.rail-item .n{margin-left:auto;font-size:11px;font-weight:600;color:rgba(14,26,60,.45);font-family:var(--body)}
+.rail-item.on{border-left-color:var(--rust);background:rgba(14,26,60,.05)}
+.rail-item.dim{color:rgba(14,26,60,.55)}
+.sel{display:inline-flex;align-items:center;justify-content:space-between;gap:26px;border:1.5px solid var(--navy);padding:9px 13px;font-family:var(--disp);font-weight:800;font-size:14px;color:var(--navy);background:#fff;min-width:230px}
+
+/* season content */
+.cols{display:flex;gap:26px;align-items:flex-start}
+.body{flex:1;min-width:0}
+.sumbar{display:flex;gap:26px;align-items:center;border:1.5px solid var(--navy);background:var(--cream);padding:13px 16px;margin-bottom:20px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:1px}
+.stat .v{font-family:var(--disp);font-size:23px;font-weight:900;line-height:1;color:var(--navy)}
+.stat .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(14,26,60,.5);font-weight:700}
+.medals{display:flex;gap:7px;margin-left:auto}
+.m{font-family:var(--disp);font-weight:900;font-size:13px;padding:5px 10px;border:1.5px solid var(--navy)}
+.m.g{background:var(--mustard);color:var(--navy)}
+.m.s{background:#d6d3cb;color:var(--navy)}
+.m.b{background:var(--orange);color:#fff}
+.comp{border:1.5px solid var(--navy);margin-bottom:13px;background:#fff}
+.comp-h{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1.5px solid var(--navy);background:var(--cream);flex-wrap:wrap}
+.comp-h .nm{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--navy)}
+.comp-h .meta{font-size:11.5px;color:rgba(14,26,60,.55)}
+.lvl{font-family:var(--disp);font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border:1.5px solid var(--navy);color:var(--navy)}
+.lvl.intl{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:rgba(14,26,60,.45);font-weight:800;padding:8px 14px;border-bottom:1px solid rgba(14,26,60,.12)}
+td{padding:9px 14px;border-bottom:1px solid rgba(14,26,60,.07);color:var(--navy)}
+tr:last-child td{border-bottom:none}
+td.pl{font-family:var(--disp);font-weight:900;width:74px}
+td.pl.g{color:#a07400}td.pl.s{color:#6d6a63}td.pl.b{color:#a34a17}
+td.sc{text-align:right;font-variant-numeric:tabular-nums;color:rgba(14,26,60,.6);width:80px}
+.ath{font-weight:600}
+.ath a{color:var(--navy);border-bottom:1.5px solid var(--rust);text-decoration:none}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+@media(max-width:1000px){.duo{grid-template-columns:1fr}}
+.qa{background:var(--panel);border:1px solid var(--line);padding:15px 17px;font-size:13.5px;color:var(--ink-soft)}
+.qa b{color:var(--ink);display:block;margin-bottom:5px;font-family:var(--disp)}
+
+.grp-h{font-family:var(--disp);font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,26,60,.4);padding:12px 12px 5px;position:sticky;top:0;background:var(--retro)}
+.rail.scroll{max-height:430px;overflow-y:auto}
+.hist{display:flex;align-items:flex-end;gap:3px;height:132px;padding:0 0 9px;border-bottom:1.5px solid var(--navy);margin-bottom:5px}
+.bar{flex:1;min-width:6px;background:rgba(14,26,60,.22)}
+.bar.on{background:var(--rust)}
+.hist-x{display:flex;justify-content:space-between;font-size:10.5px;color:rgba(14,26,60,.45);font-family:var(--body);margin-bottom:18px}
+.navrow{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.navbtn{font-family:var(--disp);font-weight:800;font-size:13px;border:1.5px solid var(--navy);padding:7px 11px;color:var(--navy)}
+
+.dec{display:flex;align-items:center;gap:8px;padding:10px 11px;font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);border-top:1px solid rgba(14,26,60,.12);cursor:pointer}
+.dec:first-child{border-top:none}
+.dec .car{font-size:10px;color:rgba(14,26,60,.45);width:9px}
+.dec .cnt{margin-left:auto;font-family:var(--body);font-size:10.5px;font-weight:600;text-transform:none;letter-spacing:0;color:rgba(14,26,60,.45)}
+.dec.open{background:rgba(14,26,60,.05)}
+.skel{height:11px;background:rgba(14,26,60,.1);margin:8px 0}
+.phone{width:330px;border:1.5px solid var(--navy);background:var(--retro);padding:16px 14px;margin:0 auto}
+</style>
+
+<div class="wrap">
+
+<div class="mast">
+  <p class="kick">Despre noi, Realizări</p>
+  <h1>Rezultate pe sezoane</h1>
+  <p>Acum fiecare sezon este un rând care se desface. Cu douăsprezece sezoane, pagina devine un teanc de rânduri identice: nu se vede unde sunt rezultatele bune, nu se compară nimic, iar ca să ajungi la un sezon vechi derulezi prin toate celelalte.</p>
+  <p><b>Propunerea:</b> un singur sezon pe ecran, ales dintr-o listă vizibilă, cu un rezumat scurt deasupra. Mai jos sunt trei feluri de a alege sezonul, cu aceleași date în toate.</p>
+</div>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">00</span><h2>Cum arată acum</h2><span class="tagline">douăsprezece rânduri identice</span></div>
+  <p class="lead">Fiecare sezon arată la fel, indiferent dacă are trei rezultate sau treizeci. Singura informație este numărul din dreapta.</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Starea actuală<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Rezultate</p>
+      <h2 class="h2">Competiții pe sezoane</h2>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em">2025 - 2026 <span style="margin-left:auto;opacity:.6;font-weight:600">12 rezultate</span></div>
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em">2024 - 2025 <span style="margin-left:auto;opacity:.6;font-weight:600">18 rezultate</span></div>
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em">2023 - 2024 <span style="margin-left:auto;opacity:.6;font-weight:600">21 rezultate</span></div>
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em">2022 - 2023 <span style="margin-left:auto;opacity:.6;font-weight:600">9 rezultate</span></div>
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em;opacity:.75">2021 - 2022 <span style="margin-left:auto;opacity:.6;font-weight:600">14 rezultate</span></div>
+        <div style="background:var(--navy);color:var(--cream);padding:11px 14px;border-left:6px solid var(--rust);display:flex;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.08em;opacity:.5">2020 - 2021 <span style="margin-left:auto;opacity:.6;font-weight:600">6 rezultate</span></div>
+        <div style="text-align:center;font-size:12px;color:rgba(14,26,60,.45);padding:6px">încă șase sezoane mai jos</div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">01</span><h2>Varianta A, listă de sezoane lateral</h2><span class="tagline">recomandarea mea</span></div>
+  <p class="lead">Toate sezoanele rămân vizibile într-o coloană îngustă, cu numărul de rezultate lângă fiecare. În dreapta se vede un singur sezon, complet. Sari din 2025 în 2014 dintr-un clic, fără să derulezi.</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta A<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Rezultate</p>
+      <h2 class="h2">Competiții pe sezoane</h2>
+      <div class="cols">
+        <div class="rail">
+          <div class="rail-item on">2025 - 2026 <span class="n">12</span></div>
+          <div class="rail-item">2024 - 2025 <span class="n">18</span></div>
+          <div class="rail-item">2023 - 2024 <span class="n">21</span></div>
+          <div class="rail-item">2022 - 2023 <span class="n">9</span></div>
+          <div class="rail-item">2021 - 2022 <span class="n">14</span></div>
+          <div class="rail-item dim">2020 - 2021 <span class="n">6</span></div>
+          <div class="rail-item dim">2019 - 2020 <span class="n">11</span></div>
+          <div class="rail-item dim">2018 - 2019 <span class="n">16</span></div>
+          <div class="rail-item dim">2017 - 2018 <span class="n">13</span></div>
+          <div class="rail-item dim">2016 - 2017 <span class="n">8</span></div>
+          <div class="rail-item dim">2015 - 2016 <span class="n">10</span></div>
+          <div class="rail-item dim">2014 - 2015 <span class="n">5</span></div>
+        </div>
+        <div class="body">
+          <div class="sumbar">
+            <div class="stat"><span class="v">12</span><span class="k">rezultate</span></div>
+            <div class="stat"><span class="v">4</span><span class="k">competiții</span></div>
+            <div class="stat"><span class="v">7</span><span class="k">sportivi</span></div>
+            <div class="medals"><span class="m g">3 aur</span><span class="m s">2 argint</span><span class="m b">4 bronz</span></div>
+          </div>
+
+          <div class="comp">
+            <div class="comp-h">
+              <span class="nm">Campionatul Național</span>
+              <span class="lvl">Național</span>
+              <span class="meta">14 martie 2026, București</span>
+            </div>
+            <table>
+              <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+              <tbody>
+                <tr><td class="pl g">Aur</td><td class="ath"><a href="#">Adelina Dragomir</a></td><td>Juniori I</td><td class="sc">48.12</td></tr>
+                <tr><td class="pl s">Argint</td><td class="ath"><a href="#">Alexandra Stănescu</a></td><td>Juniori II</td><td class="sc">41.77</td></tr>
+                <tr><td class="pl b">Bronz</td><td class="ath">Maria Ionescu</td><td>Novice</td><td class="sc">36.40</td></tr>
+                <tr><td class="pl">Locul 6</td><td class="ath">Andrei Pavel</td><td>Novice</td><td class="sc">29.85</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="comp">
+            <div class="comp-h">
+              <span class="nm">Santa Claus Cup</span>
+              <span class="lvl intl">Internațional</span>
+              <span class="meta">6 decembrie 2025, Budapesta</span>
+            </div>
+            <table>
+              <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+              <tbody>
+                <tr><td class="pl b">Bronz</td><td class="ath"><a href="#">Adelina Dragomir</a></td><td>Juniori I</td><td class="sc">44.03</td></tr>
+                <tr><td class="pl">Locul 9</td><td class="ath">Maria Ionescu</td><td>Novice</td><td class="sc">31.12</td></tr>
+                <tr><td class="pl">Locul 12</td><td class="ath">Ioana Barbu</td><td>Debutanți</td><td class="sc">-</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="comp">
+            <div class="comp-h">
+              <span class="nm">Cupa României</span>
+              <span class="lvl">Național</span>
+              <span class="meta">18 octombrie 2025, Cluj-Napoca</span>
+            </div>
+            <table>
+              <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+              <tbody>
+                <tr><td class="pl g">Aur</td><td class="ath">Maria Ionescu</td><td>Novice</td><td class="sc">38.90</td></tr>
+                <tr><td class="pl b">Bronz</td><td class="ath">Andrei Pavel</td><td>Novice</td><td class="sc">33.21</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+  <div class="verdict"><b>De ce o recomand.</b> Este singura variantă care arată în același timp unde ești și ce altceva există. Lista laterală face vizibil că sunt douăsprezece sezoane și care dintre ele au fost bogate, fără să le desfaci pe rând.</div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">02</span><h2>Varianta B, sezoanele pe un rând</h2><span class="tagline">mai puțin spațiu ocupat</span></div>
+  <p class="lead">Aceleași sezoane, dar ca butoane pe orizontală. Conținutul primește toată lățimea, iar sezoanele vechi ajung pe al doilea rând.</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta B<span class="w">1440px</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Rezultate</p>
+      <h2 class="h2">Competiții pe sezoane</h2>
+      <div class="chips">
+        <span class="chip on">2025 - 2026<span class="n">12</span></span>
+        <span class="chip">2024 - 2025<span class="n">18</span></span>
+        <span class="chip">2023 - 2024<span class="n">21</span></span>
+        <span class="chip">2022 - 2023<span class="n">9</span></span>
+        <span class="chip">2021 - 2022<span class="n">14</span></span>
+        <span class="chip">2020 - 2021<span class="n">6</span></span>
+        <span class="chip">2019 - 2020<span class="n">11</span></span>
+        <span class="chip">2018 - 2019<span class="n">16</span></span>
+        <span class="chip">2017 - 2018<span class="n">13</span></span>
+        <span class="chip">2016 - 2017<span class="n">8</span></span>
+        <span class="chip">2015 - 2016<span class="n">10</span></span>
+        <span class="chip">2014 - 2015<span class="n">5</span></span>
+      </div>
+      <div class="sumbar">
+        <div class="stat"><span class="v">12</span><span class="k">rezultate</span></div>
+        <div class="stat"><span class="v">4</span><span class="k">competiții</span></div>
+        <div class="stat"><span class="v">7</span><span class="k">sportivi</span></div>
+        <div class="medals"><span class="m g">3 aur</span><span class="m s">2 argint</span><span class="m b">4 bronz</span></div>
+      </div>
+      <div class="comp">
+        <div class="comp-h"><span class="nm">Campionatul Național</span><span class="lvl">Național</span><span class="meta">14 martie 2026, București</span></div>
+        <table>
+          <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+          <tbody>
+            <tr><td class="pl g">Aur</td><td class="ath"><a href="#">Adelina Dragomir</a></td><td>Juniori I</td><td class="sc">48.12</td></tr>
+            <tr><td class="pl s">Argint</td><td class="ath"><a href="#">Alexandra Stănescu</a></td><td>Juniori II</td><td class="sc">41.77</td></tr>
+            <tr><td class="pl b">Bronz</td><td class="ath">Maria Ionescu</td><td>Novice</td><td class="sc">36.40</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12.5px;color:rgba(14,26,60,.5)">încă trei competiții în acest sezon</p>
+    </div></div>
+  </div>
+  <p class="note"><b>Compromisul.</b> Douăsprezece butoane pe un rând ocupă două rânduri și împing conținutul în jos. Peste cincisprezece sezoane, varianta aceasta începe să semene cu problema pe care o rezolvăm.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">03</span><h2>Pe telefon</h2><span class="tagline">aceeași structură, alt selector</span></div>
+  <p class="lead">Pe ecran mic nici lista laterală, nici rândul de butoane nu încap. Sezonul se alege dintr-o listă derulantă, iar rezultatele devin fișe în loc de tabel, ca să nu existe derulare pe orizontală.</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Telefon<span class="w">390px</span></div>
+    <div class="stage" style="padding:22px 14px"><div class="site" style="min-width:0">
+      <div class="phone">
+        <p class="eyebrow">Rezultate</p>
+        <h2 class="h2" style="font-size:23px;margin-bottom:14px">Competiții pe sezoane</h2>
+        <div class="sel" style="width:100%;margin-bottom:14px">2025 - 2026, 12 rezultate <span style="font-size:10px">v</span></div>
+        <div class="sumbar" style="gap:14px;padding:11px 12px">
+          <div class="stat"><span class="v" style="font-size:19px">12</span><span class="k">rezultate</span></div>
+          <div class="stat"><span class="v" style="font-size:19px">4</span><span class="k">competiții</span></div>
+          <div class="medals" style="gap:5px"><span class="m g" style="font-size:11px;padding:3px 7px">3</span><span class="m s" style="font-size:11px;padding:3px 7px">2</span><span class="m b" style="font-size:11px;padding:3px 7px">4</span></div>
+        </div>
+        <div class="comp">
+          <div class="comp-h" style="padding:9px 11px;gap:7px">
+            <span class="nm" style="font-size:13.5px">Campionatul Național</span>
+            <span class="lvl">Național</span>
+            <span class="meta" style="width:100%">14 martie 2026, București</span>
+          </div>
+          <div style="padding:10px 11px;border-bottom:1px solid rgba(14,26,60,.07)">
+            <div style="display:flex;align-items:baseline;gap:8px"><span class="pl g" style="font-family:var(--disp);font-weight:900;font-size:13px;color:#a07400">Aur</span><span class="ath" style="font-size:13.5px">Adelina Dragomir</span></div>
+            <div style="font-size:11.5px;color:rgba(14,26,60,.55);margin-top:2px">Juniori I, 48.12 puncte</div>
+          </div>
+          <div style="padding:10px 11px">
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--disp);font-weight:900;font-size:13px;color:#6d6a63">Argint</span><span class="ath" style="font-size:13.5px">Alexandra Stănescu</span></div>
+            <div style="font-size:11.5px;color:rgba(14,26,60,.55);margin-top:2px">Juniori II, 41.77 puncte</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">05</span><h2>La patruzeci de sezoane</h2><span class="tagline">amândouă variantele de mai sus cedează</span></div>
+  <p class="lead">Obiecție corectă. O listă laterală cu patruzeci de rânduri e mai lungă decât ecranul, iar patruzeci de butoane ocupă patru rânduri. Mai jos, aceleași date la patruzeci de sezoane, cu două soluții care nu depind de numărul lor.</p>
+
+  <p class="cap">A2, decenii pliate, doar sezonul cerut se încarcă</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta A2<span class="w">40 de sezoane</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Rezultate</p>
+      <h2 class="h2">Competiții pe sezoane</h2>
+      <div class="cols">
+        <div class="rail"><div class="dec open"><span class="car">v</span><span class="lab">2040 - 2049</span><span class="cnt">10 sezoane, 134 rezultate</span></div><div class="rail-item on">2049 - 2050 <span class="n">11</span></div><div class="rail-item dim">2048 - 2049 <span class="n">16</span></div><div class="rail-item dim">2047 - 2048 <span class="n">11</span></div><div class="rail-item dim">2046 - 2047 <span class="n">11</span></div><div class="rail-item dim">2045 - 2046 <span class="n">7</span></div><div class="rail-item dim">2044 - 2045 <span class="n">11</span></div><div class="rail-item dim">2043 - 2044 <span class="n">19</span></div><div class="rail-item dim">2042 - 2043 <span class="n">15</span></div><div class="rail-item dim">2041 - 2042 <span class="n">19</span></div><div class="rail-item dim">2040 - 2041 <span class="n">14</span></div><div class="dec"><span class="car">></span><span class="lab">2030 - 2039</span><span class="cnt">10 sezoane, 102 rezultate</span></div><div class="dec"><span class="car">></span><span class="lab">2020 - 2029</span><span class="cnt">10 sezoane, 148 rezultate</span></div><div class="dec"><span class="car">></span><span class="lab">2010 - 2019</span><span class="cnt">10 sezoane, 115 rezultate</span></div></div>
+        <div class="body">
+          <div class="sumbar">
+            <div class="stat"><span class="v">12</span><span class="k">rezultate</span></div>
+            <div class="stat"><span class="v">4</span><span class="k">competiții</span></div>
+            <div class="stat"><span class="v">7</span><span class="k">sportivi</span></div>
+            <div class="medals"><span class="m g">3 aur</span><span class="m s">2 argint</span><span class="m b">4 bronz</span></div>
+          </div>
+          <div class="comp">
+            <div class="comp-h"><span class="nm">Campionatul Național</span><span class="lvl">Național</span><span class="meta">14 martie 2050, București</span></div>
+            <table>
+              <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+              <tbody>
+                <tr><td class="pl g">Aur</td><td class="ath"><a href="#">Adelina Dragomir</a></td><td>Juniori I</td><td class="sc">48.12</td></tr>
+                <tr><td class="pl s">Argint</td><td class="ath">Maria Ionescu</td><td>Novice</td><td class="sc">41.77</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+  <p class="note"><b>Deceniul curent deschis, restul pliate.</b> Patru rânduri în loc de patruzeci, fiecare cu numărul de sezoane și de rezultate din el, deci istoria rămâne lizibilă fără să fie desfășurată. Nu mai e nevoie de derulare în interiorul listei.</p>
+  <p class="note"><b>Ce se transmite.</b> Pagina trimite acum doar indexul de sezoane (eticheta și numărul de rezultate, câteva sute de octeți) plus sezonul cerut. Restul se aduc doar dacă sunt cerute. Fiecare sezon are adresa lui, de forma <span style="font-family:var(--mono,monospace);font-size:12px">/despre-noi/realizari?sezon=2024-2025</span>, deci poate fi trimis prin mesaj și poate fi indexat de Google, ceea ce cu un acordeon nu se putea.</p>
+
+  <p class="cap">D, banda de sezoane</p>
+  <div class="shot"><div class="shot-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>Varianta D<span class="w">40 de sezoane</span></div>
+    <div class="stage"><div class="site">
+      <p class="eyebrow">Rezultate</p>
+      <h2 class="h2">Competiții pe sezoane</h2>
+      <div class="hist"><span class="bar on" style="height:39px" title="2049 - 2050: 11 rezultate"></span><span class="bar" style="height:54px" title="2048 - 2049: 16 rezultate"></span><span class="bar" style="height:39px" title="2047 - 2048: 11 rezultate"></span><span class="bar" style="height:39px" title="2046 - 2047: 11 rezultate"></span><span class="bar" style="height:27px" title="2045 - 2046: 7 rezultate"></span><span class="bar" style="height:39px" title="2044 - 2045: 11 rezultate"></span><span class="bar" style="height:63px" title="2043 - 2044: 19 rezultate"></span><span class="bar" style="height:51px" title="2042 - 2043: 15 rezultate"></span><span class="bar" style="height:63px" title="2041 - 2042: 19 rezultate"></span><span class="bar" style="height:48px" title="2040 - 2041: 14 rezultate"></span><span class="bar" style="height:51px" title="2039 - 2040: 15 rezultate"></span><span class="bar" style="height:48px" title="2038 - 2039: 14 rezultate"></span><span class="bar" style="height:15px" title="2037 - 2038: 3 rezultate"></span><span class="bar" style="height:60px" title="2036 - 2037: 18 rezultate"></span><span class="bar" style="height:54px" title="2035 - 2036: 16 rezultate"></span><span class="bar" style="height:51px" title="2034 - 2035: 15 rezultate"></span><span class="bar" style="height:12px" title="2033 - 2034: 2 rezultate"></span><span class="bar" style="height:12px" title="2032 - 2033: 2 rezultate"></span><span class="bar" style="height:27px" title="2031 - 2032: 7 rezultate"></span><span class="bar" style="height:36px" title="2030 - 2031: 10 rezultate"></span><span class="bar" style="height:48px" title="2029 - 2030: 14 rezultate"></span><span class="bar" style="height:42px" title="2028 - 2029: 12 rezultate"></span><span class="bar" style="height:54px" title="2027 - 2028: 16 rezultate"></span><span class="bar" style="height:33px" title="2026 - 2027: 9 rezultate"></span><span class="bar" style="height:48px" title="2025 - 2026: 14 rezultate"></span><span class="bar" style="height:51px" title="2024 - 2025: 15 rezultate"></span><span class="bar" style="height:33px" title="2023 - 2024: 9 rezultate"></span><span class="bar" style="height:75px" title="2022 - 2023: 23 rezultate"></span><span class="bar" style="height:54px" title="2021 - 2022: 16 rezultate"></span><span class="bar" style="height:66px" title="2020 - 2021: 20 rezultate"></span><span class="bar" style="height:33px" title="2019 - 2020: 9 rezultate"></span><span class="bar" style="height:30px" title="2018 - 2019: 8 rezultate"></span><span class="bar" style="height:36px" title="2017 - 2018: 10 rezultate"></span><span class="bar" style="height:42px" title="2016 - 2017: 12 rezultate"></span><span class="bar" style="height:54px" title="2015 - 2016: 16 rezultate"></span><span class="bar" style="height:48px" title="2014 - 2015: 14 rezultate"></span><span class="bar" style="height:36px" title="2013 - 2014: 10 rezultate"></span><span class="bar" style="height:27px" title="2012 - 2013: 7 rezultate"></span><span class="bar" style="height:33px" title="2011 - 2012: 9 rezultate"></span><span class="bar" style="height:66px" title="2010 - 2011: 20 rezultate"></span></div>
+      <div class="hist-x"><span>2010</span><span>2020</span><span>2030</span><span>2040</span><span>2050</span></div>
+      <div class="navrow">
+        <span class="navbtn">Sezonul anterior</span>
+        <span class="sel">2049 - 2050, 12 rezultate <span style="font-size:10px">v</span></span>
+        <span class="navbtn">Sezonul următor</span>
+      </div>
+      <div class="sumbar">
+        <div class="stat"><span class="v">12</span><span class="k">rezultate</span></div>
+        <div class="stat"><span class="v">4</span><span class="k">competiții</span></div>
+        <div class="stat"><span class="v">7</span><span class="k">sportivi</span></div>
+        <div class="medals"><span class="m g">3 aur</span><span class="m s">2 argint</span><span class="m b">4 bronz</span></div>
+      </div>
+      <div class="comp">
+        <div class="comp-h"><span class="nm">Campionatul Național</span><span class="lvl">Național</span><span class="meta">14 martie 2050, București</span></div>
+        <table>
+          <thead><tr><th>Loc</th><th>Sportiv</th><th>Categorie</th><th style="text-align:right">Punctaj</th></tr></thead>
+          <tbody>
+            <tr><td class="pl g">Aur</td><td class="ath"><a href="#">Adelina Dragomir</a></td><td>Juniori I</td><td class="sc">48.12</td></tr>
+            <tr><td class="pl b">Bronz</td><td class="ath">Andrei Pavel</td><td>Novice</td><td class="sc">33.21</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div></div>
+  </div>
+  <div class="verdict"><b>De ce mi se pare cea mai bună la scară mare.</b> O bară pe sezon, înălțimea egală cu numărul de rezultate. Patruzeci de bare intră pe un rând fără să se înghesuie, iar istoria clubului devine vizibilă dintr-o privire: anii buni, pauzele, creșterea. Selectorul și săgețile rămân pentru alegerea exactă, deci nu depinzi de nimerit o bară subțire.</div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-no">06</span><h2>De răspuns</h2></div>
+  <div class="duo">
+    <div class="qa"><b>1. Care variantă</b>A2 cu lista grupată și derulare proprie, sau D cu banda de sezoane. Amândouă funcționează la orice număr de sezoane; A și B de mai sus rămân doar ca referință.</div>
+    <div class="qa"><b>2. Rezumatul de sus</b>Am pus rezultate, competiții, sportivi și medaliile pe sezon. Este util, sau preferi doar medaliile?</div>
+    <div class="qa"><b>3. Filtrul pe categorie</b>Acum filtrează toate sezoanele deodată. Îl păstrăm, dar aplicat doar sezonului afișat, sau îl scoatem?</div>
+    <div class="qa"><b>4. Ce sezon se deschide primul</b>Cel mai recent cu rezultate. De acord, sau preferi ultimul sezon încheiat?</div>
+  </div>
+</section>
+
+</div>
