@@ -8,6 +8,12 @@ html {
   scrollbar-color: var(--color-edusport-blue) transparent;
   /* Kill the browser's rubber-band / overscroll bounce at the page edges. */
   overscroll-behavior: none;
+  /* The canvas colour, which is what the browser paints outside the body box:
+     the safe-area insets beside the notch in landscape, and any overscroll.
+     Without this the canvas inherits body's blue and those edges read blue on
+     a cream page, which is what iPhone landscape showed. Body keeps its blue
+     for the footer reveal; only the area outside it changes. */
+  background-color: var(--color-retro-cream);
 }
 
 /* Typography Rules */
