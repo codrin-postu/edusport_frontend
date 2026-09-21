@@ -146,9 +146,9 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
   return (
     <div ref={formRef}>
-      {/* Every link out, typed or not: the confusion the client described
-          happens on the way in as much as half way through. */}
-      <LeaveNotice />
+      {/* Scoped to the form: a link in the header or footer is someone
+          navigating on purpose, and is left alone. */}
+      <LeaveNotice scope={formRef} />
 
       {restored && (
         <div className="mb-6 border-[1.5px] border-navy bg-white px-4 py-3">

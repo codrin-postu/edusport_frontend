@@ -7,19 +7,21 @@ import { useRouter } from "next/navigation";
 /**
  * Tells the visitor the page is about to change before it does.
  *
- * The client's report was that customers click a link from the form, most often
- * the schedule, and think the registration is gone. The links that do it are
- * the site header and footer, present on every page, so they cannot be reworked
- * for this one form. Intercepting the click is what is left.
+ * Scoped to links inside the form itself. The site header and footer are
+ * deliberately left alone: someone reaching for the menu means to go
+ * somewhere, while someone following a link placed in the middle of a question
+ * is answering it, and does not expect to be moved.
  *
- * Every link out is covered, deliberately: another page, another site, and a
- * new tab. A new tab does not take the form away, but the client asked for the
- * warning there too, and someone who does not notice a tab opened behind the
- * current one is just as lost. One sentence covers all of them, rather than
- * naming the destination, which read oddly on a long link label.
+ * Every kind of link out is covered: another page, another site, and a new tab
+ * via target, a modifier or a middle click. One sentence covers them all,
+ * rather than naming the destination, which read badly on a long label.
  *
- * It does not wait for the form to have content. The confusion the client
- * described happens on the way in as much as half way through.
+ * It does not wait for the form to have content, since the confusion happens
+ * on the way in as much as half way through.
+ *
+ * NOTE: the form's questions come from the CMS and carry no links today, so
+ * this is inert until one is added. It is wired to the form container, so a
+ * link added in the CMS is covered with no code change.
  */
 
 interface Pending {
@@ -28,7 +30,7 @@ interface Pending {
   newTab: boolean;
 }
 
-const LeaveNotice: React.FC = () => {
+const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({ scope }) => {
   const router = useRouter();
   const [pending, setPending] = useState<Pending | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -44,6 +46,9 @@ const LeaveNotice: React.FC = () => {
 
       const anchor = (event.target as HTMLElement | null)?.closest?.("a");
       if (!anchor) return;
+      // Only links that live inside the form. A click in the header or footer
+      // is someone navigating on purpose.
+      if (!scope.current?.contains(anchor)) return;
 
       const href = anchor.getAttribute("href");
       if (!href || href.startsWith("#")) return;
@@ -84,7 +89,7 @@ const LeaveNotice: React.FC = () => {
       document.removeEventListener("click", handle, true);
       document.removeEventListener("auxclick", handle, true);
     };
-  }, []);
+  }, [scope]);
 
   const close = useCallback(() => setPending(null), []);
 
