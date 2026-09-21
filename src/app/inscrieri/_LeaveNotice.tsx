@@ -4,64 +4,86 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 /**
- * Tells the user the page is about to change, and that the form survives it.
+ * Tells the visitor the page is about to change before it does.
  *
  * The client's report was that customers click a link from the form, most often
- * the schedule, and think the form is gone. The links that do this are the site
- * header and footer, which are on every page, so they cannot be reworked for
- * this one form. Intercepting the click is what is left.
+ * the schedule, and think the registration is gone. The links that do it are
+ * the site header and footer, present on every page, so they cannot be reworked
+ * for this one form. Intercepting the click is what is left.
  *
- * The message is reassurance, not a barrier: the draft is already saved by the
- * time this appears, so nothing is at stake. It exists to say the page moves
- * and the answers stay.
+ * Every link out is covered, deliberately: another page, another site, and a
+ * new tab. A new tab does not take the form away, but the client asked for the
+ * warning there too, and someone who does not notice a tab opened behind the
+ * current one is just as lost. The wording changes to match, since saying a
+ * page "se deschide în altă pagină" would be wrong when this one stays.
  *
- * Only in-app navigations are intercepted. A new tab, a download, an external
- * host or a modified click (cmd, ctrl, shift, middle button) all pass through
- * untouched, because none of them replace what the user is looking at.
+ * It does not wait for the form to have content. The confusion the client
+ * described happens on the way in as much as half way through.
  */
 
-const LeaveNotice: React.FC<{ armed: boolean }> = ({ armed }) => {
+interface Pending {
+  href: string;
+  label: string | null;
+  /** The click asked for a new tab: target=_blank, a modifier, or middle click. */
+  newTab: boolean;
+}
+
+const LeaveNotice: React.FC = () => {
   const router = useRouter();
-  const [pending, setPending] = useState<{ href: string; label: string | null } | null>(null);
+  const [pending, setPending] = useState<Pending | null>(null);
   const stayRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!armed) return;
-
-    const onClick = (event: MouseEvent) => {
+    const handle = (event: MouseEvent) => {
       if (event.defaultPrevented) return;
-      // Let the browser do its own thing for new tabs and middle clicks.
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-        return;
-      }
+      // Right click opens a context menu, it navigates nothing.
+      if (event.button !== 0 && event.button !== 1) return;
+
       const anchor = (event.target as HTMLElement | null)?.closest?.("a");
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");
       if (!href || href.startsWith("#")) return;
-      if (anchor.hasAttribute("download") || anchor.getAttribute("target") === "_blank") return;
+      // A download leaves the page exactly where it is.
+      if (anchor.hasAttribute("download")) return;
 
-      const url = new URL(href, window.location.href);
-      if (url.origin !== window.location.origin) return;
-      // Staying on this page is not leaving it.
-      if (url.pathname === window.location.pathname) return;
+      let url: URL;
+      try {
+        url = new URL(href, window.location.href);
+      } catch {
+        return;
+      }
+      if (!/^https?:$/.test(url.protocol)) return; // mailto:, tel:, ...
+
+      const sameHost = url.origin === window.location.origin;
+      const samePage = sameHost && url.pathname === window.location.pathname;
+      if (samePage) return;
+
+      const newTab =
+        event.button === 1 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        anchor.getAttribute("target") === "_blank";
 
       event.preventDefault();
-      // Name the destination from the link the user actually clicked. The
-      // wording was approved for the schedule, but this fires for every
-      // internal link, and "Programul se deschide" on a privacy policy link
-      // would simply be wrong.
       const text = (anchor.textContent || "").replace(/\s+/g, " ").trim();
       setPending({
-        href: url.pathname + url.search + url.hash,
+        href: sameHost ? url.pathname + url.search + url.hash : url.href,
         label: text && text.length <= 40 ? text : null,
+        newTab,
       });
     };
 
-    // Capture phase, so the notice runs before Next's own link handling.
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [armed]);
+    // Capture phase, so this runs before Next's own link handling. `auxclick`
+    // is what a middle click fires; `click` never sees button 1.
+    document.addEventListener("click", handle, true);
+    document.addEventListener("auxclick", handle, true);
+    return () => {
+      document.removeEventListener("click", handle, true);
+      document.removeEventListener("auxclick", handle, true);
+    };
+  }, []);
 
   const close = useCallback(() => setPending(null), []);
 
@@ -77,6 +99,29 @@ const LeaveNotice: React.FC<{ armed: boolean }> = ({ armed }) => {
 
   if (!pending) return null;
 
+  const where = pending.newTab ? "într-o filă nouă" : "în altă pagină";
+  const title = pending.label
+    ? `${pending.label} se deschide ${where}`
+    : pending.newTab
+      ? "Se deschide o filă nouă"
+      : "Pagina se schimbă";
+
+  const go = () => {
+    const { href, newTab } = pending;
+    setPending(null);
+    if (newTab) {
+      // Still inside the click on Continuă, so this counts as a user gesture
+      // and is not treated as a pop-up.
+      window.open(href, "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (href.startsWith("http")) {
+      window.location.href = href;
+      return;
+    }
+    router.push(href);
+  };
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
@@ -90,9 +135,7 @@ const LeaveNotice: React.FC<{ armed: boolean }> = ({ armed }) => {
           id="leave-notice-title"
           className="font-display text-lg font-extrabold leading-snug text-navy"
         >
-          {pending.label
-            ? `${pending.label} se deschide în altă pagină`
-            : "Pagina se schimbă"}
+          {title}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-navy/70">
           Formularul rămâne salvat.
@@ -108,11 +151,7 @@ const LeaveNotice: React.FC<{ armed: boolean }> = ({ armed }) => {
           </button>
           <button
             type="button"
-            onClick={() => {
-              const to = pending.href;
-              setPending(null);
-              router.push(to);
-            }}
+            onClick={go}
             className="border-[1.5px] border-navy bg-navy px-4 py-2 text-sm font-bold text-retro-cream transition-colors hover:bg-navy/90"
           >
             Continuă

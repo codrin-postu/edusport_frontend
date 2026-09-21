@@ -9,7 +9,7 @@ import { track } from "@/lib/analytics";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
-import { clearDraft, hasContent, loadDraft, saveDraft } from "./_draft";
+import { clearDraft, loadDraft, saveDraft } from "./_draft";
 
 /**
  * Registration form, driven entirely by the CMS config.
@@ -146,9 +146,9 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
   return (
     <div ref={formRef}>
-      {/* Armed only while there is something to lose, so a visitor who has
-          typed nothing is never interrupted. */}
-      <LeaveNotice armed={hasContent(answers)} />
+      {/* Every link out, typed or not: the confusion the client described
+          happens on the way in as much as half way through. */}
+      <LeaveNotice />
 
       {restored && (
         <div className="mb-6 border-[1.5px] border-navy bg-white px-4 py-3">
