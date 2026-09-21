@@ -117,8 +117,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
 
   // Hero intro: the video (navy) plays ONCE for ~18s, then fades to the cream
   // hero and STAYS there — no loop (only a page reload replays it).
-  // Reduced-motion skips the video entirely. `videoOn` drives the bg fade, the
-  // wordmark ink, the nav-dark flag and every text/CTA colour swap.
+  // `videoOn` drives the bg fade, the wordmark ink, the nav-dark flag and every
+  // text/CTA colour swap.
+  //
+  // It plays for everyone, reduced-motion included, by the owner's decision:
+  // this is the club's showreel and the point of the page. The morph in the
+  // wordmark still honours the preference.
   //
   // The countdown starts when the video actually starts playing, not when the
   // page mounts. Measured on a throttled phone (1.6 Mbps): the file is 12.5 MB,
@@ -126,20 +130,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
   // old timer spent its whole window on a hero that was still downloading, and
   // the visitor saw the navy overlay with no video behind it.
   const videoRef = useRef<HTMLVideoElement>(null);
-  // Rendered from the start, so the browser begins fetching with the HTML
-  // rather than waiting for hydration. Gating it on a client effect removed it
-  // from the server output, and on a throttled phone it then never appeared at
-  // all, because the bundle had not arrived yet.
-  const [allowVideo, setAllowVideo] = useState(true);
   const [videoOn, setVideoOn] = useState(false);
   const fadeRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    // Drop it for anyone who asked for less motion. The fetch may already be
-    // under way by now, which is the price of keeping it in the server output,
-    // but it is never shown and never plays.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setAllowVideo(false);
-  }, []);
 
   useEffect(() => () => {
     if (fadeRef.current) window.clearTimeout(fadeRef.current);
@@ -177,7 +169,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
       v.removeEventListener("canplay", nudge);
       v.removeEventListener("loadeddata", nudge);
     };
-  }, [allowVideo]);
+  }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("lv2-hero-dark", videoOn);
     return () => document.documentElement.classList.remove("lv2-hero-dark");
@@ -294,7 +286,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
         {/* Background layer (cream) */}
         <Background variant={safeVariant} />
         {/* Background video + navy duotone — fades in during the video phase. */}
-        {allowVideo && (
+        {(
           <video
             ref={videoRef}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700 ${videoOn ? "opacity-100" : "opacity-0"}`}
