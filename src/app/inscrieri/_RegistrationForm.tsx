@@ -8,6 +8,8 @@ import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types
 import { track } from "@/lib/analytics";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
+import LeaveNotice from "./_LeaveNotice";
+import { clearDraft, hasContent, loadDraft, saveDraft } from "./_draft";
 
 /**
  * Registration form, driven entirely by the CMS config.
@@ -34,6 +36,13 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
+  // Set when answers came back from a previous visit, so the notice above the
+  // form is shown only to someone who actually left and returned.
+  const [restored, setRestored] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+  // Nothing is written until the draft has been read, otherwise the empty
+  // initial state would overwrite the saved answers on first render.
+  const readyRef = useRef(false);
 
   // Fire once, when the user first interacts — lets us measure start→submit
   // drop-off (form abandonment) against `inscriere.submit_success`.
@@ -44,6 +53,26 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   };
 
   useEffect(() => {
+    const draft = loadDraft();
+    if (draft) {
+      setAnswers(draft.answers);
+      setStep(draft.step);
+      setRestored(true);
+      // They have already started; do not count the return as a new start.
+      startedRef.current = true;
+    }
+    readyRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!readyRef.current) return;
+    saveDraft(step, answers);
+  }, [step, answers]);
+
+  useEffect(() => {
+    // Skip the scroll on the very first render, which would otherwise yank a
+    // returning user down the page before they have read anything.
+    if (!readyRef.current) return;
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
@@ -57,6 +86,9 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     try {
       await submitRegistration(activeConfig, answers, website);
       track("inscriere.submit_success");
+      // The answers are with us now; leaving them on the device would show a
+      // stranger's registration to the next person on a shared phone.
+      clearDraft();
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -82,6 +114,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         </p>
         <button
           onClick={() => {
+            clearDraft();
+            setRestored(false);
             setAnswers({});
             setWebsite("");
             setStatus("idle");
@@ -112,6 +146,68 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
   return (
     <div ref={formRef}>
+      {/* Armed only while there is something to lose, so a visitor who has
+          typed nothing is never interrupted. */}
+      <LeaveNotice armed={hasContent(answers)} />
+
+      {restored && (
+        <div className="mb-6 border-[1.5px] border-navy bg-white px-4 py-3">
+          <p className="text-sm font-semibold text-navy">Formular salvat.</p>
+          <button
+            type="button"
+            onClick={() => setConfirmReset(true)}
+            className="link-underline-rust mt-1 text-xs font-bold text-rust"
+          >
+            Începe de la capăt
+          </button>
+        </div>
+      )}
+
+      {confirmReset && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reset-title"
+        >
+          <div
+            className="absolute inset-0 bg-navy/50"
+            onClick={() => setConfirmReset(false)}
+            aria-hidden
+          />
+          <div className="relative w-full max-w-sm border-[1.5px] border-navy bg-retro-cream p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.28)]">
+            <h2 id="reset-title" className="font-display text-lg font-extrabold leading-snug text-navy">
+              Ștergi răspunsurile salvate?
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-navy/70">
+              Toate datele introduse vor fi pierdute.
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setConfirmReset(false)}
+                className="border-[1.5px] border-navy px-4 py-2 text-sm font-bold text-navy transition-colors hover:bg-navy/5"
+              >
+                Renunță
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  clearDraft();
+                  setAnswers({});
+                  setStep(0);
+                  setRestored(false);
+                  setConfirmReset(false);
+                }}
+                className="border-[1.5px] border-rust bg-rust px-4 py-2 text-sm font-bold text-white transition-colors hover:brightness-110"
+              >
+                Șterge
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <motion.div
         key={step}
         initial={{ opacity: 0, y: 16 }}
