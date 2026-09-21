@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 
 /**
@@ -14,8 +15,8 @@ import { useRouter } from "next/navigation";
  * Every link out is covered, deliberately: another page, another site, and a
  * new tab. A new tab does not take the form away, but the client asked for the
  * warning there too, and someone who does not notice a tab opened behind the
- * current one is just as lost. The wording changes to match, since saying a
- * page "se deschide în altă pagină" would be wrong when this one stays.
+ * current one is just as lost. One sentence covers all of them, rather than
+ * naming the destination, which read oddly on a long link label.
  *
  * It does not wait for the form to have content. The confusion the client
  * described happens on the way in as much as half way through.
@@ -23,7 +24,6 @@ import { useRouter } from "next/navigation";
 
 interface Pending {
   href: string;
-  label: string | null;
   /** The click asked for a new tab: target=_blank, a modifier, or middle click. */
   newTab: boolean;
 }
@@ -31,7 +31,10 @@ interface Pending {
 const LeaveNotice: React.FC = () => {
   const router = useRouter();
   const [pending, setPending] = useState<Pending | null>(null);
+  const [mounted, setMounted] = useState(false);
   const stayRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handle = (event: MouseEvent) => {
@@ -67,10 +70,8 @@ const LeaveNotice: React.FC = () => {
         anchor.getAttribute("target") === "_blank";
 
       event.preventDefault();
-      const text = (anchor.textContent || "").replace(/\s+/g, " ").trim();
       setPending({
         href: sameHost ? url.pathname + url.search + url.hash : url.href,
-        label: text && text.length <= 40 ? text : null,
         newTab,
       });
     };
@@ -89,22 +90,36 @@ const LeaveNotice: React.FC = () => {
 
   useEffect(() => {
     if (!pending) return;
-    stayRef.current?.focus();
+    // preventScroll, or the browser scrolls the page to bring the button into
+    // view as it takes focus. The dialog is fixed and already on screen, so
+    // the only visible effect was the page lurching down behind it.
+    stayRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+
+    // Freeze the page behind the dialog. Without this the form scrolls under
+    // it, which reads as the page having moved already.
+    //
+    // Both elements, not just body: this page scrolls on the root element, so
+    // hiding body's overflow alone left the wheel working (measured: 300 to
+    // 1321 with the dialog open). The scrollbar gutter is reserved globally in
+    // globals.css, so hiding the overflow does not shift the layout sideways.
+    const root = document.documentElement;
+    const previousRoot = root.style.overflow;
+    const previousBody = document.body.style.overflow;
+    root.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      root.style.overflow = previousRoot;
+      document.body.style.overflow = previousBody;
+    };
   }, [pending, close]);
 
   if (!pending) return null;
-
-  const where = pending.newTab ? "într-o filă nouă" : "în altă pagină";
-  const title = pending.label
-    ? `${pending.label} se deschide ${where}`
-    : pending.newTab
-      ? "Se deschide o filă nouă"
-      : "Pagina se schimbă";
 
   const go = () => {
     const { href, newTab } = pending;
@@ -122,9 +137,13 @@ const LeaveNotice: React.FC = () => {
     router.push(href);
   };
 
-  return (
+  if (!mounted) return null;
+
+  // Rendered on <body>: main is `relative z-10`, which is a stacking context,
+  // so a dialog inside it can never paint over the header at z-[100].
+  return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="leave-notice-title"
@@ -135,7 +154,7 @@ const LeaveNotice: React.FC = () => {
           id="leave-notice-title"
           className="font-display text-lg font-extrabold leading-snug text-navy"
         >
-          {title}
+          Linkul se deschide într-o pagină nouă.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-navy/70">
           Formularul rămâne salvat.
@@ -158,7 +177,8 @@ const LeaveNotice: React.FC = () => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
