@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import NextLink from "next/link";
 import SpotlightButton from "@/components/ui/spotlight-button";
@@ -115,17 +115,69 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
     setShowMorph(forced || (fine && !reduced && webgl));
   }, []);
 
-  // Hero intro: the video (navy) plays ONCE for ~20s, then fades to the cream
+  // Hero intro: the video (navy) plays ONCE for ~18s, then fades to the cream
   // hero and STAYS there — no loop (only a page reload replays it).
   // Reduced-motion skips the video entirely. `videoOn` drives the bg fade, the
   // wordmark ink, the nav-dark flag and every text/CTA colour swap.
+  //
+  // The countdown starts when the video actually starts playing, not when the
+  // page mounts. Measured on a throttled phone (1.6 Mbps): the file is 12.5 MB,
+  // so at 20 seconds it had buffered 4.6s and had never left currentTime 0. The
+  // old timer spent its whole window on a hero that was still downloading, and
+  // the visitor saw the navy overlay with no video behind it.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  // Rendered from the start, so the browser begins fetching with the HTML
+  // rather than waiting for hydration. Gating it on a client effect removed it
+  // from the server output, and on a throttled phone it then never appeared at
+  // all, because the bundle had not arrived yet.
+  const [allowVideo, setAllowVideo] = useState(true);
   const [videoOn, setVideoOn] = useState(false);
+  const fadeRef = useRef<number | null>(null);
+
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setVideoOn(true);
-    const id = window.setTimeout(() => setVideoOn(false), 18000);
-    return () => window.clearTimeout(id);
+    // Drop it for anyone who asked for less motion. The fetch may already be
+    // under way by now, which is the price of keeping it in the server output,
+    // but it is never shown and never plays.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setAllowVideo(false);
   }, []);
+
+  useEffect(() => () => {
+    if (fadeRef.current) window.clearTimeout(fadeRef.current);
+  }, []);
+
+  // Wired natively rather than through React props. The element is server
+  // rendered, so on a fast connection it is already playing before hydration
+  // and the `playing` event has come and gone by the time React could attach a
+  // handler, which left the video loaded but never revealed. Hence both: a
+  // listener for later starts, and a check for one that already happened.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    const reveal = () => {
+      setVideoOn(true);
+      if (fadeRef.current) window.clearTimeout(fadeRef.current);
+      fadeRef.current = window.setTimeout(() => setVideoOn(false), 18000);
+    };
+    // Autoplay is refused while nothing is buffered and nothing retries it on
+    // its own, which is why the hero stayed dark on a slow connection.
+    const nudge = () => {
+      if (v.paused) void v.play().catch(() => {});
+    };
+
+    v.addEventListener("playing", reveal);
+    v.addEventListener("canplay", nudge);
+    v.addEventListener("loadeddata", nudge);
+
+    if (!v.paused && v.readyState >= 2) reveal();
+    else nudge();
+
+    return () => {
+      v.removeEventListener("playing", reveal);
+      v.removeEventListener("canplay", nudge);
+      v.removeEventListener("loadeddata", nudge);
+    };
+  }, [allowVideo]);
   useEffect(() => {
     document.documentElement.classList.toggle("lv2-hero-dark", videoOn);
     return () => document.documentElement.classList.remove("lv2-hero-dark");
@@ -242,14 +294,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
         {/* Background layer (cream) */}
         <Background variant={safeVariant} />
         {/* Background video + navy duotone — fades in during the video phase. */}
-        <video
-          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700 ${videoOn ? "opacity-100" : "opacity-0"}`}
-          src="/hero-0803.mp4"
-          autoPlay
-          muted
-          playsInline
-          aria-hidden
-        />
+        {allowVideo && (
+          <video
+            ref={videoRef}
+            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700 ${videoOn ? "opacity-100" : "opacity-0"}`}
+            src="/hero-0803.mp4"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden
+          />
+        )}
         <div
           className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 ${videoOn ? "opacity-100" : "opacity-0"}`}
           style={{ background: "linear-gradient(rgba(14,26,60,.55), rgba(14,26,60,.72))" }}
