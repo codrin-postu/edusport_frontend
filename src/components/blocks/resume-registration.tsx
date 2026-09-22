@@ -61,8 +61,11 @@ const ResumeRegistration: React.FC = () => {
       {/* One row on desktop. On a phone the label is too long to sit beside the
           text, and a full width target is easier to hit with a thumb. */}
       <div className="flex items-start gap-3 md:items-center">
+        {/* Names the form, because the volunteer form saves too and
+            "formularul" no longer says which. States the status rather than
+            the saving: "salvat" can be read as "sent". */}
         <p className="flex-1 text-sm font-semibold leading-snug md:flex-none">
-          Formularul este salvat
+          Înscriere nefinalizată
         </p>
         <Link
           href={FORM_PATH}
