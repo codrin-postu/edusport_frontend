@@ -770,5 +770,13 @@
   padding: 1px 6px;
 }
 .fc .fc-timegrid-event .fc-hover-anchor {
-  padding: 2px 5px;
+  /* Slightly more above than below: the text sits at the top of the block, and
+     2px read as touching the edge. */
+  padding: 4px 5px 2px;
+}
+/* In the week view a block spans its whole duration, so centring the label put
+   a two-hour course's title in the middle of a tall empty rectangle. The month
+   view keeps centring, where blocks are a single line tall. */
+.fc .fc-timegrid-event .fc-curs-event {
+  align-items: flex-start;
 }

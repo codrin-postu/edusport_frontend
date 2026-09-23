@@ -159,7 +159,13 @@ export function buildCalendarEvents(
 // class the CSS already styles, so timed sessions look consistent with the
 // existing all-day tiles.
 function occurrenceClass(occ: CalendarOccurrence): string {
-  if (occ.status === "cancelled") return "fc-event-anulat";
+  // A blackout is a planned break, which the month view already draws as the
+  // grey "Liber". Sending it down the cancelled branch painted it red with a
+  // strike-through and labelled it "Anulat", so the same day read as cancelled
+  // in the week view and as free in the month view.
+  if (occ.status === "cancelled") {
+    return occ.cancelReason === "blackout" ? "fc-event-liber" : "fc-event-anulat";
+  }
   switch (occ.type) {
     // `scoala` is the Școala de patinaj series (navy), `curs` is a standalone
     // course such as Antrenament (blue). They must NOT share a class: the month
@@ -207,7 +213,7 @@ export function occurrencesToEvents(occurrences: CalendarOccurrence[]): EventInp
 
     let description: string | null = o.description ?? null;
     if (o.status === "cancelled") {
-      description = o.cancelReason === "blackout" ? "Anulat (pauză)" : "Anulat";
+      description = o.cancelReason === "blackout" ? "Liber" : "Anulat";
     } else if (o.status === "override") {
       description = `Reprogramat${timeLabel ? ` · ${timeLabel}` : ""}`;
     }
@@ -227,7 +233,12 @@ export function occurrencesToEvents(occurrences: CalendarOccurrence[]): EventInp
       display: "block",
       classNames: [occurrenceClass(o)],
       extendedProps: {
-        type: o.status === "cancelled" ? "anulat" : o.type,
+        type:
+          o.status === "cancelled"
+            ? o.cancelReason === "blackout"
+              ? "liber"
+              : "anulat"
+            : o.type,
         status: o.status,
         label: o.label,
         description,
