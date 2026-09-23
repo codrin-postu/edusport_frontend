@@ -13,6 +13,7 @@ import {
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputBaseOnCard, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
+import { DatePickerField } from "@/components/ui/date-picker-field";
 import {
   optionItems,
   type CustomAnswer,
@@ -368,15 +369,32 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
           );
         }
 
-        // text / email / tel / date.
+        if (q.type === "date") {
+          return (
+            <div key={key}>
+              {/* The picker renders its own label: a segmented input has no
+                  single element for htmlFor to point at. */}
+              <DatePickerField
+                id={key}
+                name={key}
+                label={labelText}
+                value={strValue}
+                onChange={(val) => onChange(key, val)}
+                onBlur={onBlur ? () => onBlur(key) : undefined}
+                required={required}
+                invalid={Boolean(error)}
+                variant={variant}
+                help={help}
+                helpClassName={v.help}
+              />
+              {error && <p className={v.error}>{error}</p>}
+            </div>
+          );
+        }
+
+        // text / email / tel.
         const inputType =
-          q.type === "email"
-            ? "email"
-            : q.type === "tel"
-              ? "tel"
-              : q.type === "date"
-                ? "date"
-                : "text";
+          q.type === "email" ? "email" : q.type === "tel" ? "tel" : "text";
         const inputMode =
           q.type === "tel" ? "tel" : q.type === "email" ? "email" : undefined;
 
