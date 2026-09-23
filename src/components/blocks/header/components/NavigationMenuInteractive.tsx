@@ -98,6 +98,11 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             href={item.href || "#"}
             variant={LinkVariants.HEADER}
             className="text-sm font-normal text-gray-900 hover:text-gray-600 transition-colors"
+            // An item without a dropdown still has to close an open one.
+            // onMouseLeave on the row only fires when the pointer leaves the
+            // whole nav, so moving from a dropdown item onto a plain link left
+            // the panel hanging open over the page.
+            onMouseEnter={close}
             data-umami-event="nav"
             data-umami-event-url={item.href || "#"}
           >
