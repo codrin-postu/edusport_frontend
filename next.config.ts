@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
   // Required by Dockerfile.production.
   output: "standalone",
 
+  // Visual tests build into their own folder (NEXT_DIST_DIR=.next-visual) so they never touch a running dev server.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
+
   // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],

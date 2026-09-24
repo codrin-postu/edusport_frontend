@@ -22,7 +22,7 @@ export default defineConfig({
     { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    command: `NEXT_DIST_DIR=.next-visual npm run build && NEXT_DIST_DIR=.next-visual npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: true,
     timeout: 300_000,
