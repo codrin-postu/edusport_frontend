@@ -12,7 +12,7 @@
     "test:fonts": "playwright test tests/visual/fonts.spec.ts --project=chromium",
     "test:a11y": "playwright test tests/a11y --project=chromium --workers=1",
     "check:tokens": "node scripts/tokens/check.mjs",
-    "test:scripts": "node --test scripts/"
+    "test:scripts": "node --test 'scripts/**/*.test.mjs'"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",
