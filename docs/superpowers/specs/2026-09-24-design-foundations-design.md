@@ -189,8 +189,8 @@ The weight list below limits which weights the design uses, not the download.
 
 | Family | Weights | Use |
 |---|---|---|
-| Inter | 400, 500, 600, 700 | Body and UI. 300 goes to 400, 800 to 700 |
-| League Spartan | 700, 800, 900 | Headings. 900 kept for the athlete name and existing black display numbers |
+| Inter | 400, 600 | 400 for reading text and captions; 600 for links, emphasis and all caps (labels, buttons, table headers, nav). 300 and 500 go to 400; 700, 800 and 900 go to 600 |
+| League Spartan | 800, 900 | 800 for every heading role; 900 for the athlete name and existing black display numbers. The 4 current 700 uses (landing event and article titles `EventsNewsSection.tsx:98,125`, `SeasonTableView.tsx:168`, footer column headings `globals.css:374-380`) become `text-title` at 800 |
 | Climate Crisis | variable | Logo and the landing hero wordmark only |
 
 Removed:
@@ -221,9 +221,9 @@ line-height and letter-spacing together.
 | `text-title` | 20 to 24 | Spartan 800 | 1.2 | -0.01em |
 | `text-body` | 16 | Inter 400 | 1.6 | 0 |
 | `text-body-sm` | 14 | Inter 400 | 1.55 | 0 |
-| `text-caption` | 12 | Inter 500 | 1.4 | 0 |
-| `text-label` | 12 | Inter 700 caps | 1.1 | +0.14em |
-| `text-button` | 13 | Inter 700 caps | 1 | +0.06em |
+| `text-caption` | 12 | Inter 400 | 1.4 | 0 |
+| `text-label` | 12 | Inter 600 caps | 1.1 | +0.14em |
+| `text-button` | 13 | Inter 600 caps | 1 | +0.06em |
 
 - Minimum size is 12px. 8, 9.5, 10, 10.5 and 11px are removed.
 - `text-label` covers both eyebrows and labels.
@@ -246,7 +246,7 @@ intros need it.
 
 All links except the footer:
 
-- At rest: `text-primary` with a permanent 2px `text-accent` underline, drawn as
+- At rest: `text-primary` in Inter 600 with a permanent 2px `text-accent` underline, drawn as
   a background gradient on the text (`box-decoration-break: clone`). This gives
   the same gap for inline and standalone links and one underline per wrapped
   line. Gap 4px so the ș and ț commas clear the line.
