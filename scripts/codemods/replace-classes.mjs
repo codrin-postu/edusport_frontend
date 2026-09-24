@@ -10,7 +10,8 @@ export function applyMap(source, map) {
   for (const rule of map.rules) {
     output = output.replace(rule.match, (...args) => {
       const whole = args[0];
-      const groups = args.slice(1, -2);
+      const end = typeof args[args.length - 1] === "object" ? -3 : -2;
+      const groups = args.slice(1, end);
       if (typeof rule.replace === "function") {
         const res = rule.replace(groups, whole);
         if (res === null) {

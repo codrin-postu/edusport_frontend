@@ -25,3 +25,19 @@ test("does not touch similar longer tokens", () => {
   const r = applyMap("<p className=\"text-navy/500\">", map);
   assert.equal(r.changes, 0);
 });
+
+test("handles named capture groups in regex", () => {
+  let receivedGroups;
+  const namedGroupMap = {
+    rules: [
+      { match: /(?<sep>^|[\s"'`:])text-navy\/(?<num>50|60)(?=[\s"'`]|$)/g, replace: (groups) => {
+        receivedGroups = groups;
+        return `${groups[0]}text-secondary`;
+      } },
+    ],
+  };
+  const r = applyMap("<p className=\"hover:text-navy/50\">", namedGroupMap);
+  assert.equal(r.output, "<p className=\"hover:text-secondary\">");
+  assert.equal(r.changes, 1);
+  assert.equal(receivedGroups.length, 2);
+});
