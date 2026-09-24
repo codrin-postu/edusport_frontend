@@ -198,13 +198,13 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn([
-        "data-[active=true]:hover:bg-accent",
-        "data-[active=true]:bg-accent/50",
-        "data-[active=true]:text-accent-foreground",
-        "hover:bg-accent",
-        "hover:text-accent-foreground",
+        "data-[active=true]:hover:bg-ui-accent",
+        "data-[active=true]:bg-ui-accent/50",
+        "data-[active=true]:text-ui-accent-foreground",
+        "hover:bg-ui-accent",
+        "hover:text-ui-accent-foreground",
         "focus-visible:ring-ring/50",
-        "[&_svg:not([class*='text-'])]:text-muted-foreground",
+        "[&_svg:not([class*='text-'])]:text-ui-muted-foreground",
         "flex",
         "flex-col",
         "gap-1",
