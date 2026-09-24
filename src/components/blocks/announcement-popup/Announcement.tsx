@@ -14,9 +14,13 @@ interface AnnouncementProps {
  * already decided *which* announcement to show; this only decides *how*.
  */
 export function Announcement({ announcement }: AnnouncementProps) {
-  return announcement.format === "modal" ? (
-    <AnnouncementModal announcement={announcement} />
-  ) : (
-    <AnnouncementCard announcement={announcement} />
+  return (
+    <div data-visual="announcement">
+      {announcement.format === "modal" ? (
+        <AnnouncementModal announcement={announcement} />
+      ) : (
+        <AnnouncementCard announcement={announcement} />
+      )}
+    </div>
   );
 }

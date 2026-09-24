@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:visual": "playwright test tests/visual",
+    "test:visual:update": "playwright test tests/visual/pages.spec.ts --update-snapshots",
+    "test:fonts": "playwright test tests/visual/fonts.spec.ts --project=chromium",
+    "test:a11y": "playwright test tests/a11y --project=chromium --workers=1",
+    "check:tokens": "node scripts/tokens/check.mjs",
+    "test:scripts": "node --test scripts/"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",
@@ -38,8 +44,10 @@
     "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/eslintrc": "^3",
     "@next/bundle-analyzer": "^16.1.6",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -51,3 +51,9 @@ docker-compose.umami.yml
 
 # local agent tooling
 .codex/
+
+# visual test output (local only)
+/tests/visual/__snapshots__/
+/tests/visual/.baseline-sp0/
+/test-results/
+/playwright-report/
