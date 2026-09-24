@@ -184,14 +184,24 @@ anchor and form scrolls land below the header.
 **Families: 3, down from 5.** Inter and League Spartan are variable fonts, so
 all their weights come from one file each (split into Latin and Latin Extended,
 which Romanian ș and ț need). Measured on the live homepage: 11 font files,
-556 KB today; about 5 files after (Inter 2, League Spartan 2, Climate Crisis 1).
+556 KB today; about 5 files after (Inter 2, League Spartan 2, Climate Crisis 1, now 24 KB instead of 85 KB).
 The weight list below limits which weights the design uses, not the download.
 
 | Family | Weights | Use |
 |---|---|---|
 | Inter | 400, 600 | 400 for reading text and captions; 600 for links, emphasis and all caps (labels, buttons, table headers, nav). 300 and 500 go to 400; 700, 800 and 900 go to 600 |
 | League Spartan | 800, 900 | 800 for every heading role; 900 for the athlete name and existing black display numbers. The 4 current 700 uses (landing event and article titles `EventsNewsSection.tsx:98,125`, `SeasonTableView.tsx:168`, footer column headings `globals.css:374-380`) become `text-title` at 800 |
-| Climate Crisis | variable | Logo and the landing hero wordmark only |
+| Climate Crisis | static, frozen at YEAR 1979 | Logo, header, footer wordmark, subpage hero titles and the landing hero wordmark |
+
+**Climate Crisis frozen at 1979.** The site only uses YEAR 1979
+(`globals.css:40`). The variable .ttf (164 KB, 85 KB gzipped as served) is
+replaced by a static instance at 1979 in woff2 (24 KB, built with
+`fontTools.varLib.instancer`). Verified on the font data: all 457 characters
+have identical outlines and advance widths, and kern, mark and mkmk features
+are kept. The `font-variation-settings: "YEAR" 1979` line stays (harmless on a
+static font), so the frozen hero's canvas code reads the same value as today.
+A further Latin-only subset (13 KB) was rejected: it drops mark positioning and
+risks fallback glyphs in CMS titles.
 
 Removed:
 - **Lora.** The landing CompetitionStrip heading becomes Inter 400 at the same
