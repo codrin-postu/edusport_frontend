@@ -16,17 +16,17 @@ interface ProgramPageProps {
 
 const ProgramPage: React.FC<ProgramPageProps> = ({ data }) => {
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-surface-raised")}>
       <PageHeroSection title={["PROGRAM"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Program" }]}>
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           {data.bannerTitle}
         </h1>
-        <p className="text-retro-cream/70 text-base">
+        <p className="text-secondary-on-dark text-base">
           {data.bannerSubtitle}
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10 bg-surface-raised">
         <SeasonCalendarViewV2
           seasonCalendar={data.calendarEvents}
           seasonLabel={data.seasonLabel}

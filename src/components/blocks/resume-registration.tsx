@@ -54,7 +54,7 @@ const ResumeRegistration: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[90] bg-navy px-4 py-3 text-retro-cream shadow-[0_-4px_16px_rgb(14_26_60_/_0.25)] md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-5 md:shadow-[6px_6px_0_rgb(14_26_60_/_0.3)]"
+      className="fixed inset-x-0 bottom-0 z-[90] bg-surface-dark px-4 py-3 text-primary-on-dark shadow-[0_-4px_16px_rgb(14_26_60_/_0.25)] md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-5 md:shadow-[6px_6px_0_rgb(14_26_60_/_0.3)]"
       role="region"
       aria-label="Înscriere în curs"
     >
@@ -69,7 +69,7 @@ const ResumeRegistration: React.FC = () => {
         </p>
         <Link
           href={FORM_PATH}
-          className="hidden bg-retro-cream px-4 py-2 text-sm font-bold text-navy transition-colors hover:bg-white md:inline-block"
+          className="hidden bg-surface px-4 py-2 text-sm font-bold text-primary transition-colors hover:bg-surface-raised md:inline-block"
         >
           Continuă înscrierea
         </Link>
@@ -77,14 +77,14 @@ const ResumeRegistration: React.FC = () => {
           type="button"
           onClick={dismiss}
           aria-label="Închide"
-          className="-mt-1 px-1 text-lg leading-none text-retro-cream/60 transition-colors hover:text-retro-cream md:mt-0"
+          className="-mt-1 px-1 text-lg leading-none text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
         >
           ✕
         </button>
       </div>
       <Link
         href={FORM_PATH}
-        className="mt-3 block bg-retro-cream py-2.5 text-center text-sm font-bold text-navy transition-colors hover:bg-white md:hidden"
+        className="mt-3 block bg-surface py-2.5 text-center text-sm font-bold text-primary transition-colors hover:bg-surface-raised md:hidden"
       >
         Continuă înscrierea
       </Link>

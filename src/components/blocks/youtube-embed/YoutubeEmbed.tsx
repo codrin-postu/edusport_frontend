@@ -168,11 +168,11 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/15 border border-white/30 backdrop-blur-sm">
+            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
               {playing ? (
-                <Pause className="w-6 h-6 text-white fill-white" />
+                <Pause className="w-6 h-6 text-primary-on-dark fill-white" />
               ) : (
-                <Play className="w-6 h-6 text-white fill-white translate-x-0.5" />
+                <Play className="w-6 h-6 text-primary-on-dark fill-white translate-x-0.5" />
               )}
             </div>
           </motion.div>
@@ -185,7 +185,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         onClick={(e) => e.stopPropagation()}
       >
         {label ? (
-          <span className="text-white text-sm font-medium drop-shadow pointer-events-none">
+          <span className="text-primary-on-dark text-sm font-medium drop-shadow pointer-events-none">
             {label}
           </span>
         ) : (
@@ -194,7 +194,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         <div className="flex items-center gap-3">
           <button
             onClick={toggleMute}
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 border border-white/25 backdrop-blur-sm text-white hover:bg-white/25 transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
             aria-label={muted ? "Activează sunetul" : "Dezactivează sunetul"}
           >
             {muted ? (
@@ -207,7 +207,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-white/70 text-xs hover:text-white transition-colors"
+            className="inline-flex items-center gap-1 text-secondary-on-dark text-xs hover:text-primary-on-dark transition-colors"
           >
             YouTube
             <ArrowUpRight className="w-3 h-3" />

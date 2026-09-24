@@ -97,12 +97,12 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center gap-4 px-8 py-16 text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-mustard">
-          <Send className="h-6 w-6 text-navy" />
+          <Send className="h-6 w-6 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-retro-cream">
+        <h3 className="font-display text-2xl font-extrabold text-primary-on-dark">
           Mesaj trimis!
         </h3>
-        <p className="max-w-xs text-sm text-retro-cream/60">
+        <p className="max-w-xs text-sm text-secondary-on-dark">
           Îți mulțumim! Revenim în cel mai scurt timp să discutăm colaborarea.
         </p>
         <button
@@ -123,7 +123,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   if (!steps.length) {
     return (
       <div className="py-16 px-8 text-center">
-        <p className="text-sm text-retro-cream/60">
+        <p className="text-sm text-secondary-on-dark">
           Formularul de colaborare nu este disponibil momentan. Te rugăm să
           încerci din nou mai târziu sau să ne contactezi direct.
         </p>
@@ -155,7 +155,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
           placeholders={PLACEHOLDERS}
           footer={
             isLast ? (
-              <div className="mt-8 pt-6 border-t-[1.5px] border-retro-cream/15">
+              <div className="mt-8 pt-6 border-t-[1.5px] border-line-subtle-on-dark">
                 {status === "error" && (
                   <p className="text-xs text-danger font-semibold mb-4">
                     Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.
@@ -165,7 +165,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-sm font-semibold text-retro-cream/50 hover:text-mustard transition-colors"
+                    className="text-sm font-semibold text-secondary-on-dark hover:text-mustard transition-colors"
                   >
                     Înapoi
                   </button>

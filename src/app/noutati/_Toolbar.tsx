@@ -60,7 +60,7 @@ export default function Toolbar({
                 }),
               )
             }
-            className="link-underline-rust text-eyebrow font-bold uppercase text-navy/55 hover:text-rust transition-colors"
+            className="link-underline-rust text-eyebrow font-bold uppercase text-secondary hover:text-accent transition-colors"
           >
             Resetează
           </button>
@@ -89,14 +89,14 @@ function SearchBar({
 
   return (
     <form onSubmit={handleSubmit} className="relative w-full max-w-md flex">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy/40 pointer-events-none" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary pointer-events-none" />
       <input
         ref={inputRef}
         type="text"
         name="search"
         placeholder="Caută articole..."
         defaultValue={value}
-        className="w-full pl-10 pr-4 py-2.5 text-sm text-navy bg-retro-cream border-[1.5px] border-navy outline-none placeholder:text-navy/40 focus:ring-2 focus:ring-rust/30 focus:border-rust transition-colors"
+        className="w-full pl-10 pr-4 py-2.5 text-sm text-primary bg-surface border-[1.5px] border-line outline-none placeholder:text-secondary focus:ring-2 focus:ring-rust/30 focus:border-rust transition-colors"
       />
     </form>
   );

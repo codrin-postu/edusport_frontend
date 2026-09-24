@@ -13,7 +13,7 @@ interface SectionProps {
  * Provides the full-width <section> + centered max-width container.
  *
  * Usage:
- *   <Section className="py-20 bg-gray-50">
+ *   <Section className="py-20 bg-surface-subtle">
  *     …content…
  *   </Section>
  *

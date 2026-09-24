@@ -80,7 +80,7 @@ function isMonthFullyPast(monthData: MonthData): boolean {
 
 const tooltipClass = cn(
   "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1",
-  "bg-gray-900 text-white text-xs rounded whitespace-nowrap",
+  "bg-gray-900 text-primary-on-dark text-xs rounded whitespace-nowrap",
   "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10",
 );
 
@@ -162,18 +162,18 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
   );
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-surface-raised">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center font-display">
+          <h2 className="text-3xl font-bold text-primary mb-8 text-center font-display">
             Calendar Sezon 2025-2026
           </h2>
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-100 hover:bg-gray-100">
-                <TableHead className="text-gray-700 font-semibold">Luna</TableHead>
-                <TableHead className="text-gray-700 font-semibold">Program Cursuri</TableHead>
-                <TableHead className="text-gray-700 font-semibold">Weekenduri Libere</TableHead>
+              <TableRow className="bg-surface-subtle hover:bg-surface-subtle">
+                <TableHead className="text-secondary font-semibold">Luna</TableHead>
+                <TableHead className="text-secondary font-semibold">Program Cursuri</TableHead>
+                <TableHead className="text-secondary font-semibold">Weekenduri Libere</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -187,7 +187,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                   <TableRow
                     key={rowIndex}
                     className={cn(
-                      rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white",
+                      rowIndex % 2 === 0 ? "bg-surface-subtle" : "bg-surface-raised",
                       "hover:bg-edusport-blue/5 transition-colors",
                     )}
                   >
@@ -205,7 +205,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                       <div className="flex items-center gap-1">
                         <span>{monthData.month}</span>
                         {isPast && (
-                          <span className="md:hidden text-gray-400 text-xs leading-none">
+                          <span className="md:hidden text-muted text-xs leading-none">
                             {isCollapsed ? "▸" : "▾"}
                           </span>
                         )}
@@ -233,7 +233,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-400 text-xs">Niciun weekend liber</span>
+                          <span className="text-muted text-xs">Niciun weekend liber</span>
                         )}
                       </div>
                     </TableCell>

@@ -30,11 +30,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
       variant={isRegistrationOpen ? "blue" : "dark"}
     >
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-eyebrow font-bold uppercase text-retro-cream">
+        <span className="text-eyebrow font-bold uppercase text-primary-on-dark">
           Sezonul {currentSeason}
         </span>
         {isRegistrationOpen ? (
-          <Pill color="var(--color-mustard)" shape="slanted" className="text-navy">
+          <Pill color="var(--color-mustard)" shape="slanted" className="text-primary">
             Înscrieri deschise
           </Pill>
         ) : (
@@ -42,26 +42,26 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
         )}
       </div>
 
-      <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+      <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
         {title}
       </h1>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-retro-cream/70 text-sm">
+      <div className="flex flex-wrap gap-x-5 gap-y-2 text-secondary-on-dark text-sm">
         <span className="flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
+          <Calendar className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
           {scheduleDays}
         </span>
         <span className="flex items-center gap-1.5">
-          <Clock className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
+          <Clock className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
           {scheduleTimes}
         </span>
         <a
           href={locationUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 hover:text-retro-cream transition-colors"
+          className="flex items-center gap-1.5 hover:text-primary-on-dark transition-colors"
         >
-          <MapPin className="w-3.5 h-3.5 shrink-0 text-retro-cream" />
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
           {locationName}
         </a>
       </div>
@@ -78,7 +78,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           </SpotlightButton>
           <Link
             href="/cursuri/program"
-            className="inline-flex items-center justify-center w-full sm:w-auto border-[1.5px] border-retro-cream bg-transparent px-8 py-3.5 text-sm font-bold uppercase tracking-[0.03em] text-retro-cream transition-colors hover:bg-retro-cream hover:text-navy"
+            className="inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-[1.5px] border-line-on-dark bg-transparent text-sm font-bold uppercase tracking-[0.03em] text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Vezi programul
           </Link>

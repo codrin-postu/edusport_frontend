@@ -58,9 +58,9 @@ const MenuButton = React.forwardRef<
       <span aria-hidden className="lcta-layer lcta-l1" />
       <span aria-hidden className="lcta-layer lcta-l2" />
       <span className="lcta-face relative w-[46px] bg-black flex flex-col items-center justify-center gap-[5px]">
-        <span className="w-[20px] h-[2px] bg-white" />
-        <span className="w-[20px] h-[2px] bg-white" />
-        <span className="w-[20px] h-[2px] bg-white" />
+        <span className="w-[20px] h-[2px] bg-surface-raised" />
+        <span className="w-[20px] h-[2px] bg-surface-raised" />
+        <span className="w-[20px] h-[2px] bg-surface-raised" />
       </span>
     </button>
   );
@@ -157,11 +157,11 @@ const Header: React.FC<HeaderProps> = ({
 
             Cream (--color-retro-cream, #fbf8f1) matches the page body; white
             read as a separate band floating above the content. */}
-        <header data-site-header className="w-full bg-retro-cream h-20">
+        <header data-site-header className="w-full bg-surface h-20">
           <div className="h-full w-full max-w-content mx-auto px-4 flex justify-between items-center">
             {/* Left side - Brand */}
             <Link href="/" className="flex flex-col">
-              <span className="text-sm text-gray-900 tracking-wider">
+              <span className="text-sm text-primary tracking-wider">
                 CLUBUL SPORTIV
               </span>
               <CascadingText

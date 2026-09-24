@@ -33,7 +33,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
   photos,
 }) => {
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <PageHeroSection
         title={["VOLUNTAR"]}
         breadcrumb={[
@@ -41,23 +41,23 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
           { label: "Voluntariat" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-retro-cream">
+        <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-primary-on-dark">
           {heroTitle}
         </h1>
-        <p className="max-w-md text-base text-retro-cream/70">{heroSubtitle}</p>
+        <p className="max-w-md text-base text-secondary-on-dark">{heroSubtitle}</p>
       </PageHeroSection>
 
       {/* ─── DE CE ─── */}
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3">
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               {introEyebrow}
             </p>
-            <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-navy">
+            <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
               {introHeading}
             </h2>
-            <p className="max-w-xl text-base leading-relaxed text-navy/65">
+            <p className="max-w-xl text-base leading-relaxed text-secondary">
               {introBody}
             </p>
           </div>
@@ -65,7 +65,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── FOTO ─── */}
-      <section className="relative z-10 bg-retro-cream pb-4">
+      <section className="relative z-10 bg-surface pb-4">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <GalleryCarousel
             images={photos}
@@ -76,36 +76,36 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM POȚI AJUTA (split panel) ─── */}
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <div className="grid border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:grid-cols-[1fr_1.3fr]">
+          <div className="grid border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
-            <div className="bg-navy p-8 text-retro-cream md:p-10">
+            <div className="bg-surface-dark p-8 text-primary-on-dark md:p-10">
               <p className="text-eyebrow font-bold uppercase text-mustard">
                 Implică-te
               </p>
-              <h2 className="mt-2 font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-retro-cream">
+              <h2 className="mt-2 font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary-on-dark">
                 Cum poți ajuta
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-retro-cream/60">
+              <p className="mt-3 text-sm leading-relaxed text-secondary-on-dark">
                 Fiecare rol contează, la orice nivel de implicare.
               </p>
             </div>
             {/* Right — ways list */}
-            <div className="bg-retro-cream px-6 md:px-10">
+            <div className="bg-surface px-6 md:px-10">
               {helpWays.map((way, i) => (
                 <div
                   key={way.title}
                   className={
                     i < helpWays.length - 1
-                      ? "border-b border-navy/12 py-5"
+                      ? "border-b border-line-subtle py-5"
                       : "py-5"
                   }
                 >
-                  <h3 className="text-base font-extrabold text-navy">
+                  <h3 className="text-base font-extrabold text-primary">
                     {way.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-navy/60">
+                  <p className="mt-1 text-sm leading-relaxed text-secondary">
                     {way.desc}
                   </p>
                 </div>
@@ -116,19 +116,19 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM APLICI (CTA) ─── */}
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <div className="relative bg-navy p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-12">
+          <div className="relative bg-surface-dark p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
               <div className="flex flex-col gap-3">
                 <p className="text-eyebrow font-bold uppercase text-mustard">
                   Cum aplici
                 </p>
-                <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-retro-cream">
+                <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary-on-dark">
                   Gata să te implici?
                 </h2>
-                <p className="max-w-md text-sm leading-relaxed text-retro-cream/60">
+                <p className="max-w-md text-sm leading-relaxed text-secondary-on-dark">
                   Completează formularul de înscriere în câțiva pași simpli.
                   Răspundem de obicei în 24 până la 48 de ore.
                 </p>
@@ -148,19 +148,19 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-[1.5px] border-navy/12 bg-retro-cream py-12 md:py-14">
+      <section className="relative z-10 border-t-[1.5px] border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="mb-1.5 text-eyebrow font-bold uppercase text-rust">
+            <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">
               Mai departe
             </div>
-            <p className="text-base font-semibold text-navy md:text-lg">
+            <p className="text-base font-semibold text-primary md:text-lg">
               Descoperă echipa și sportivii clubului EduSport.
             </p>
           </div>
           <Link
             href="/despre-noi"
-            className="link-underline-rust text-sm font-semibold text-rust"
+            className="link-underline-rust text-sm font-semibold text-accent"
           >
             Despre noi
           </Link>

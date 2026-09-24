@@ -66,7 +66,7 @@ export function Pagination({
   };
 
   const arrowClass =
-    "flex h-9 w-9 items-center justify-center border-[1.5px] border-navy text-navy transition-colors hover:bg-navy hover:text-retro-cream";
+    "flex h-9 w-9 items-center justify-center border-[1.5px] border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark";
   const arrowDisabled = cn(arrowClass, "pointer-events-none opacity-30");
 
   return (
@@ -98,8 +98,8 @@ export function Pagination({
           className={cn(
             "flex h-9 w-9 items-center justify-center border-[1.5px] text-sm font-bold transition-colors",
             p === currentPage
-              ? "border-navy bg-navy text-retro-cream"
-              : "border-transparent text-navy/60 hover:bg-navy/10 hover:text-navy",
+              ? "border-line bg-surface-dark text-primary-on-dark"
+              : "border-transparent text-secondary hover-layer hover:text-primary",
           )}
         >
           {p}

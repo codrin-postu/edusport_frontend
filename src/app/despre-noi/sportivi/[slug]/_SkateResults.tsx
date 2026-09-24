@@ -35,9 +35,9 @@ function fmt(v: number | null | undefined): string {
 
 function placementClass(p: number | null): string {
   if (p === 1) return "text-[#b7860b]";
-  if (p === 2) return "text-navy/50";
+  if (p === 2) return "text-secondary";
   if (p === 3) return "text-[#a5622f]";
-  return "text-navy/40";
+  return "text-secondary";
 }
 
 function ro_date(v: string | null): string {
@@ -57,7 +57,7 @@ function Segment({ seg }: { seg: SkateSegment }) {
   );
   return (
     <div className="min-w-0">
-      <div className="text-2xs font-bold uppercase tracking-[0.16em] text-rust">
+      <div className="text-2xs font-bold uppercase tracking-[0.16em] text-accent">
         {seg.is_short ? "Program scurt" : "Program liber"}
       </div>
       <dl className="mt-2 space-y-1">
@@ -96,12 +96,12 @@ function Row({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4 text-xs">
-      <dt className={cn(muted ? "text-navy/45" : "text-navy/70")} title={title}>
+      <dt className={cn(muted ? "text-muted" : "text-secondary")} title={title}>
         {k}
       </dt>
       <dd
         className={cn(
-          "tabular-nums text-navy",
+          "tabular-nums text-primary",
           strong ? "font-bold" : "font-medium",
         )}
       >
@@ -138,7 +138,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           <div
             key={key}
             className={cn(
-              idx < rows.length - 1 && "border-b border-navy/10",
+              idx < rows.length - 1 && "border-b border-line-subtle",
             )}
           >
             <div
@@ -149,8 +149,8 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               onClick={hasDetail ? () => setOpen(isOpen ? null : key) : undefined}
             >
               <div className="relative min-w-0">
-                <h4 className="text-sm font-bold text-navy">{r.event_name}</h4>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-navy/50">
+                <h4 className="text-sm font-bold text-primary">{r.event_name}</h4>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-secondary">
                   {r.event_date && <span>{ro_date(r.event_date)}</span>}
                   {r.event_location && (
                     <>
@@ -168,18 +168,18 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               </div>
               <div className="flex items-baseline gap-4 sm:contents">
                 <span
-                  className="text-xs font-medium tabular-nums text-navy/60 sm:min-w-[3.25rem] sm:text-right"
+                  className="text-xs font-medium tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
                   title="Program scurt"
                 >
                   {r.short_score != null ? fmt(r.short_score) : ""}
                 </span>
                 <span
-                  className="text-xs font-medium tabular-nums text-navy/60 sm:min-w-[3.25rem] sm:text-right"
+                  className="text-xs font-medium tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
                   title="Program liber"
                 >
                   {r.free_score != null ? fmt(r.free_score) : ""}
                 </span>
-                <span className="text-xs font-semibold tabular-nums text-navy sm:min-w-[3.5rem] sm:text-right">
+                <span className="text-xs font-semibold tabular-nums text-primary sm:min-w-[3.5rem] sm:text-right">
                   {fmt(r.total_score)}
                 </span>
                 <span className="flex items-center gap-2 sm:min-w-[3.5rem] sm:justify-end">
@@ -195,7 +195,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                     </span>
                   )}
                   {hasDetail && (
-                    <span className="text-navy/30">{isOpen ? "▾" : "▸"}</span>
+                    <span className="text-muted">{isOpen ? "▾" : "▸"}</span>
                   )}
                 </span>
               </div>
@@ -225,7 +225,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.max(0, p - 1));
             }}
             disabled={safePage === 0}
-            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-navy text-navy transition-colors hover:bg-navy hover:text-retro-cream disabled:pointer-events-none disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -242,8 +242,8 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               className={cn(
                 "flex h-9 w-9 items-center justify-center border-[1.5px] text-sm font-bold transition-colors",
                 p === safePage
-                  ? "border-navy bg-navy text-retro-cream"
-                  : "border-transparent text-navy/60 hover:bg-navy/10 hover:text-navy",
+                  ? "border-line bg-surface-dark text-primary-on-dark"
+                  : "border-transparent text-secondary hover-layer hover:text-primary",
               )}
             >
               {p + 1}
@@ -258,7 +258,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.min(totalPages - 1, p + 1));
             }}
             disabled={safePage >= totalPages - 1}
-            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-navy text-navy transition-colors hover:bg-navy hover:text-retro-cream disabled:pointer-events-none disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

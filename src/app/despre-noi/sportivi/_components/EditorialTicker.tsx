@@ -37,16 +37,16 @@ export function EditorialTicker({
 
   const colorClasses =
     variant === "gold"
-      ? "bg-gold text-gray-900"
+      ? "bg-gold text-primary"
       : variant === "blue"
-        ? "bg-edusport-blue text-white"
+        ? "bg-edusport-blue text-primary-on-dark"
         : variant === "black"
-          ? "bg-black text-white"
-          : "bg-white text-gray-900";
+          ? "bg-black text-primary-on-dark"
+          : "bg-surface-raised text-primary";
 
   const prefixClasses =
     variant === "gold"
-      ? "text-gray-900"
+      ? "text-primary"
       : variant === "blue" || variant === "black"
         ? "text-gold"
         : "text-edusport-blue";

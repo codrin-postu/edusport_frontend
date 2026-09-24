@@ -3,15 +3,15 @@ import React from "react";
 
 /** Base class string for form inputs on light (cream) page backgrounds */
 export const inputBase =
-  "w-full px-4 py-3 text-sm bg-retro-cream border-[1.5px] border-navy text-navy outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-navy/40";
+  "w-full px-4 py-3 text-sm bg-surface border-[1.5px] border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
 
 /** Variant for inputs inside a light card/panel container */
 export const inputBaseOnCard =
-  "w-full px-4 py-3 text-sm bg-white border-[1.5px] border-navy text-navy outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-navy/40";
+  "w-full px-4 py-3 text-sm bg-surface-raised border-[1.5px] border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
 
 /** Variant for inputs inside a dark (navy) panel — cream text, mustard focus */
 export const inputOnNavy =
-  "w-full px-4 py-3 text-sm bg-white/[0.06] border-[1.5px] border-retro-cream/35 text-retro-cream outline-none focus:border-mustard focus:ring-2 focus:ring-mustard/25 transition-[color,box-shadow,border-color] placeholder:text-retro-cream/40";
+  "w-full px-4 py-3 text-sm bg-surface-subtle-on-dark border-[1.5px] border-line-on-dark text-primary-on-dark outline-none focus:border-mustard focus:ring-2 focus:ring-mustard/25 transition-[color,box-shadow,border-color] placeholder:text-muted-on-dark";
 
 export const FieldLabel: React.FC<{
   htmlFor: string;
@@ -23,7 +23,7 @@ export const FieldLabel: React.FC<{
     htmlFor={htmlFor}
     className={cn(
       "block text-[11px] font-bold uppercase tracking-[0.08em] mb-1.5",
-      tone === "dark" ? "text-retro-cream/60" : "text-navy/55",
+      tone === "dark" ? "text-secondary-on-dark" : "text-secondary",
     )}
   >
     {children}

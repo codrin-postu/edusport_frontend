@@ -110,7 +110,7 @@ const RetroPanel: React.FC<{
           key={item.label}
           href={item.href}
           onClick={onClose}
-          className="block px-2.5 py-2 text-[15px] font-medium text-navy border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-rust"
+          className="block px-2.5 py-2 text-[15px] font-medium text-primary border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-accent"
           data-umami-event="nav"
           data-umami-event-url={item.href}
         >
@@ -119,7 +119,7 @@ const RetroPanel: React.FC<{
       );
     } else {
       rows.push(
-        <div key={item.label} className="px-2.5 pt-2.5 pb-1 text-[10.5px] font-bold tracking-[0.1em] uppercase text-rust">
+        <div key={item.label} className="px-2.5 pt-2.5 pb-1 text-[10.5px] font-bold tracking-[0.1em] uppercase text-accent">
           {item.label}
         </div>,
       );
@@ -129,7 +129,7 @@ const RetroPanel: React.FC<{
             key={sub.href}
             href={sub.href}
             onClick={onClose}
-            className="block pl-[18px] pr-2.5 py-1.5 text-[13.5px] text-navy/80 border-l-[3px] border-transparent transition-colors hover:border-mustard hover:text-navy"
+            className="block pl-[18px] pr-2.5 py-1.5 text-[13.5px] text-primary border-l-[3px] border-transparent transition-colors hover:border-mustard hover:text-primary"
             data-umami-event="nav"
             data-umami-event-url={sub.href}
           >
@@ -151,8 +151,8 @@ const RetroPanel: React.FC<{
       >
         <span className="w-[34px] h-[34px] rounded-[9px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
         <span>
-          <span className="block text-[13px] font-semibold text-navy">Instagram</span>
-          <span className="block text-2xs text-navy/50">{igHandle}</span>
+          <span className="block text-[13px] font-semibold text-primary">Instagram</span>
+          <span className="block text-2xs text-secondary">{igHandle}</span>
         </span>
       </a>,
     );
@@ -170,10 +170,10 @@ const RetroPanel: React.FC<{
             onClick={onClose}
           />
           <motion.div
-            className="fixed z-[999] overflow-hidden bg-retro-cream flex flex-col
+            className="fixed z-[999] overflow-hidden bg-surface flex flex-col
               inset-x-0 bottom-0
               md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
-              md:border-[1.5px] md:border-navy md:shadow-[8px_8px_0_rgba(14,26,60,0.16)]"
+              md:border-[1.5px] md:border-line md:shadow-[8px_8px_0_rgba(14,26,60,0.16)]"
             style={{ top }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

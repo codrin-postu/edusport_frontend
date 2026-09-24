@@ -13,11 +13,11 @@ interface LinkProps extends React.ComponentPropsWithoutRef<typeof NextLink> {
 }
 
 const variantClasses: Record<LinkVariants, string> = {
-  header: "text-navy hover:text-edusport-blue",
-  footer: "text-white hover:text-gray-300",
+  header: "text-primary hover:text-edusport-blue",
+  footer: "text-primary-on-dark hover:text-secondary-on-dark",
   footerAnimated:
-    "text-white/[0.72] hover:text-white relative inline-flex items-center gap-1 group transition-colors",
-  default: "text-edusport-blue hover:text-navy",
+    "text-secondary-on-dark hover:text-primary-on-dark relative inline-flex items-center gap-1 group transition-colors",
+  default: "text-edusport-blue hover:text-primary",
 };
 
 const linkTypeIcons: Record<LinkType, React.FC<{ className?: string }> | null> = {

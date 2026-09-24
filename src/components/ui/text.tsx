@@ -9,10 +9,10 @@ interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  body: "text-base text-gray-800",
-  heading: "text-2xl font-bold text-gray-900",
-  caption: "text-xs text-gray-500",
-  branding: "text-base text-branding-font text-white",
+  body: "text-base text-primary",
+  heading: "text-2xl font-bold text-primary",
+  caption: "text-xs text-secondary",
+  branding: "text-base text-branding-font text-primary-on-dark",
 };
 
 export const Text: React.FC<TextProps> = ({

@@ -23,9 +23,9 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 }) => {
   return (
     <>
-    <Section className={cn("pt-10 md:pt-14 pb-20 md:pb-28 bg-retro-cream", "overflow-hidden")}>
+    <Section className={cn("pt-10 md:pt-14 pb-20 md:pb-28 bg-surface", "overflow-hidden")}>
         <div className="max-w-4xl mx-auto mb-10 md:mb-12">
-          <span className="text-eyebrow font-bold uppercase text-rust">
+          <span className="text-eyebrow font-bold uppercase text-accent">
             Program Școala de Patinaj
           </span>
         </div>
@@ -61,7 +61,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className="w-5 h-5 rounded-full border-2 border-navy/40 bg-retro-cream shrink-0"
+                  className="w-5 h-5 rounded-full border-2 border-line-subtle bg-surface shrink-0"
                   style={{ boxShadow: "inset 0 1px 3px rgba(14,26,60,0.15)" }}
                 />
               ))}
@@ -71,7 +71,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             <div className="pl-[88px] pr-6 pb-8" style={{ paddingTop: "16px" }}>
               {/* Section label */}
               <p
-                className="text-xs font-bold tracking-widest uppercase text-rust"
+                className="text-xs font-bold tracking-widest uppercase text-accent"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 Orarul Cursurilor
@@ -79,19 +79,19 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
               {/* Subtitle */}
               <p
-                className="text-navy font-semibold text-xl"
+                className="text-primary font-semibold text-xl"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 {scheduleSubtitle || "Sâmbătă & Duminică · 50 min / ședință"}
               </p>
 
               {/* Two-column layout on wide screens */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-dashed sm:divide-navy/20">
+              <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-dashed sm:divide-line-subtle">
                 {scheduleGroups.map((group, groupIndex) => (
                   <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
                     {/* Time slot line */}
                     <p
-                      className="text-navy font-bold text-lg"
+                      className="text-primary font-bold text-lg"
                       style={{ lineHeight: "32px", margin: 0 }}
                     >
                       {group.timeSlot}
@@ -101,7 +101,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                     {group.courses.map((course, courseIndex) => (
                       <p
                         key={courseIndex}
-                        className="text-navy/70 text-sm"
+                        className="text-secondary text-sm"
                         style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
                       >
                         - {course}
@@ -183,12 +183,12 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     </Section>
 
       {/* Disclaimers — full-width navy band */}
-      <section className="bg-navy">
+      <section className="bg-surface-dark">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-10">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-start gap-3 mb-4">
               <Info className="w-4 h-4 text-mustard shrink-0 mt-0.5" />
-              <p className="text-xs font-bold uppercase tracking-widest text-retro-cream">
+              <p className="text-xs font-bold uppercase tracking-widest text-primary-on-dark">
                 Informații importante
               </p>
             </div>
@@ -196,7 +196,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               {(disclaimers ?? []).map((text, i) => (
                 <li
                   key={i}
-                  className="flex gap-2.5 text-sm text-retro-cream/80 leading-relaxed"
+                  className="flex gap-2.5 text-sm text-primary-on-dark leading-relaxed"
                 >
                   <span className="shrink-0 font-extrabold text-mustard">›</span>
                   {text}

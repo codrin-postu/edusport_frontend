@@ -151,14 +151,14 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
       </div>
 
       {/* Track: fixed gutter + horizontally scrollable day columns */}
-      <div className="grid grid-cols-[48px_1fr] border-t border-navy/10">
+      <div className="grid grid-cols-[48px_1fr] border-t border-line-subtle">
         {/* Gutter */}
         <div>
-          <div className="h-11 border-b-[1.5px] border-navy" />
-          <div className="relative border-r border-navy/12">
+          <div className="h-11 border-b-[1.5px] border-line" />
+          <div className="relative border-r border-line-subtle">
             {HOURS.map((h) => (
               <div key={h} className="relative" style={{ height: HOUR_H }}>
-                <span className="absolute top-1 right-1.5 text-[10px] text-navy/50 tabular-nums">
+                <span className="absolute top-1 right-1.5 text-[10px] text-secondary tabular-nums">
                   {h}:00
                 </span>
               </div>
@@ -179,15 +179,15 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                   style={{ scrollSnapAlign: "start" }}
                 >
                   {/* Day head */}
-                  <div className="h-11 border-b-[1.5px] border-navy flex flex-col items-center justify-center gap-0.5">
-                    <span className="text-[0.66rem] font-bold uppercase tracking-[0.06em] text-navy/50">
+                  <div className="h-11 border-b-[1.5px] border-line flex flex-col items-center justify-center gap-0.5">
+                    <span className="text-[0.66rem] font-bold uppercase tracking-[0.06em] text-secondary">
                       {format(day, "EEEE", { locale: ro })}
                     </span>
                     <span
                       className={cn(
-                        "font-display text-[15px] font-extrabold text-navy leading-none",
+                        "font-display text-[15px] font-extrabold text-primary leading-none",
                         isToday &&
-                          "bg-navy text-retro-cream w-[22px] h-[22px] rounded-full inline-flex items-center justify-center",
+                          "bg-surface-dark text-primary-on-dark w-[22px] h-[22px] rounded-full inline-flex items-center justify-center",
                       )}
                     >
                       {format(day, "d")}
@@ -195,9 +195,9 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                   </div>
 
                   {/* Time grid */}
-                  <div className="relative border-r border-navy/12">
+                  <div className="relative border-r border-line-subtle">
                     {HOURS.map((h) => (
-                      <div key={h} className="border-t border-navy/[0.07] first:border-t-0" style={{ height: HOUR_H }} />
+                      <div key={h} className="border-t border-line-subtle first:border-t-0" style={{ height: HOUR_H }} />
                     ))}
                     {isToday &&
                       (() => {
@@ -235,7 +235,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
       </div>
 
       {/* Demo note (mock data until the backend sends session times) */}
-      <div className="px-3.5 py-2 border-t border-navy/12 text-[10.5px] text-navy/45">
+      <div className="px-3.5 py-2 border-t border-line-subtle text-[10.5px] text-secondary">
         Orar demonstrativ — orele reale vor fi preluate din sistem.
       </div>
     </div>

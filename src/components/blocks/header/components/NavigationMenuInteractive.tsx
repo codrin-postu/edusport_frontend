@@ -80,7 +80,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
           return (
             <button
               key={item.label}
-              className="flex items-center gap-1 text-sm font-normal text-gray-900 hover:text-gray-600 transition-colors outline-none"
+              className="flex items-center gap-1 text-sm font-normal text-primary hover:text-secondary transition-colors outline-none"
               onMouseEnter={() => open(index)}
               onClick={() => (itemIsOpen ? close() : open(index))}
             >
@@ -97,7 +97,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             key={item.label}
             href={item.href || "#"}
             variant={LinkVariants.HEADER}
-            className="text-sm font-normal text-gray-900 hover:text-gray-600 transition-colors"
+            className="text-sm font-normal text-primary hover:text-secondary transition-colors"
             // An item without a dropdown still has to close an open one.
             // onMouseLeave on the row only fires when the pointer leaves the
             // whole nav, so moving from a dropdown item onto a plain link left
@@ -122,7 +122,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
             className="absolute top-full left-0 pt-6 z-50"
           >
-            <div className="nav-dropdown-panel rounded-2xl bg-white border border-gray-200 shadow-xl overflow-hidden">
+            <div className="nav-dropdown-panel rounded-2xl bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={activeItem!.label}
@@ -153,7 +153,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
 
                   {/* Links */}
                   <div className="flex flex-col py-3 px-2 min-w-[360px]">
-                    <p className="px-3 pb-2 text-3xs font-semibold tracking-widest uppercase text-gray-400">
+                    <p className="px-3 pb-2 text-3xs font-semibold tracking-widest uppercase text-muted">
                       {activeItem!.label}
                     </p>
                     <div className="flex flex-col gap-0.5">
@@ -162,18 +162,18 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           key={dropdownItem.href}
                           href={dropdownItem.href}
                           variant={LinkVariants.HEADER}
-                          className="group flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
+                          className="group flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
                           onClick={close}
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}
                         >
-                          <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-edusport-blue transition-colors shrink-0" />
+                          <ChevronRight className="w-3.5 h-3.5 text-line-subtle group-hover:text-edusport-blue transition-colors shrink-0" />
                           <div>
-                            <span className="text-sm font-semibold text-gray-900 group-hover:text-edusport-blue transition-colors">
+                            <span className="text-sm font-semibold text-primary group-hover:text-edusport-blue transition-colors">
                               {dropdownItem.label}
                             </span>
                             {dropdownItem.description && (
-                              <span className="block text-xs text-gray-500 font-light mt-0.5">
+                              <span className="block text-xs text-secondary font-light mt-0.5">
                                 {dropdownItem.description}
                               </span>
                             )}

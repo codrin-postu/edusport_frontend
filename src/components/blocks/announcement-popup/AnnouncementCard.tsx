@@ -28,7 +28,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         <motion.aside
           role="status"
           aria-live="polite"
-          className="fixed z-[900] left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)] px-[17px] pt-4 pb-[15px]"
+          className="fixed z-[900] left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] px-[17px] pt-4 pb-[15px]"
           initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
@@ -36,7 +36,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         >
           <div className="flex items-start justify-between gap-2.5">
             {announcement.eyebrow ? (
-              <p className="text-3xs font-extrabold uppercase tracking-[0.14em] text-rust">
+              <p className="text-3xs font-extrabold uppercase tracking-[0.14em] text-accent">
                 {announcement.eyebrow}
               </p>
             ) : (
@@ -46,13 +46,13 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
               type="button"
               onClick={dismiss}
               aria-label="Închide anunțul"
-              className="-mt-0.5 -mr-1 shrink-0 p-1 text-gray-500 hover:text-navy transition-colors"
+              className="-mt-0.5 -mr-1 shrink-0 p-1 text-secondary hover:text-primary transition-colors"
             >
               <X className="w-[15px] h-[15px]" aria-hidden="true" />
             </button>
           </div>
 
-          <h2 className="font-display font-extrabold text-[19px] leading-[1.1] text-navy mt-[7px] mb-1.5">
+          <h2 className="font-display font-extrabold text-[19px] leading-[1.1] text-primary mt-[7px] mb-1.5">
             {announcement.title}
           </h2>
 
@@ -64,7 +64,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             <Link
               href={announcement.ctaUrl}
               onClick={onCtaClick}
-              className="inline-block mt-[13px] px-[15px] py-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-navy bg-mustard border-[1.5px] border-navy shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+              className="inline-block mt-[13px] px-[15px] py-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-[1.5px] border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
             >
               {announcement.ctaLabel}
             </Link>

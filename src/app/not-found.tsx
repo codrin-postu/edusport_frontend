@@ -14,7 +14,7 @@ const quickLinks = [
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-retro-cream text-navy flex items-center justify-center px-4 py-24">
+    <div className="relative min-h-screen overflow-hidden bg-surface text-primary flex items-center justify-center px-4 py-24">
       <div className="relative z-10 max-w-xl w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ export default function NotFound() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <motion.h1
-            className="font-display text-9xl md:text-[11rem] font-black text-navy leading-none tracking-tight"
+            className="font-display text-9xl md:text-[11rem] font-black text-primary leading-none tracking-tight"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -40,7 +40,7 @@ export default function NotFound() {
           </motion.h2>
 
           <motion.p
-            className="text-navy/60 mt-3 text-base max-w-md mx-auto"
+            className="text-secondary mt-3 text-base max-w-md mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -65,7 +65,7 @@ export default function NotFound() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="link-underline-rust font-semibold text-rust"
+                  className="link-underline-rust font-semibold text-accent"
                 >
                   {l.label}
                 </Link>

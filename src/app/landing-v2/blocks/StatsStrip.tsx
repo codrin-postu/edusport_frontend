@@ -7,10 +7,10 @@ import type { HomepageStatItem } from "@/app/homepage/_types";
 // Mirrors the 4 evergreen numbers surfaced on /despre-noi.
 // Split into value + suffix so the number can count up on scroll.
 const STATS = [
-  { value: 10, suffix: "+", label: "Competiții pe an", bg: "bg-rust", text: "text-retro-cream" },
-  { value: 150, suffix: "", label: "Copii pe sezon", bg: "bg-orange", text: "text-navy" },
-  { value: 500, suffix: "+", label: "Sportivi formați", bg: "bg-mustard", text: "text-navy" },
-  { value: 13, suffix: "+", label: "Ani de activitate", bg: "bg-pastel", text: "text-navy" },
+  { value: 10, suffix: "+", label: "Competiții pe an", bg: "bg-rust", text: "text-primary-on-dark" },
+  { value: 150, suffix: "", label: "Copii pe sezon", bg: "bg-orange", text: "text-primary" },
+  { value: 500, suffix: "+", label: "Sportivi formați", bg: "bg-mustard", text: "text-primary" },
+  { value: 13, suffix: "+", label: "Ani de activitate", bg: "bg-pastel", text: "text-primary" },
 ] as const;
 
 const COUNT_MS = 1200;
@@ -78,7 +78,7 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
   }, [items]);
 
   return (
-    <section className="bg-navy">
+    <section className="bg-surface-dark">
       <div
         ref={ref}
         className="grid grid-cols-2 md:grid-cols-4 gap-[3px]"

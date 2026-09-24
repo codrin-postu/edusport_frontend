@@ -19,7 +19,7 @@ interface PageHeroSectionProps {
 const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, breadcrumb }) => {
   return (
     <section className="sticky top-20 z-0">
-      <div className="relative w-full overflow-hidden bg-navy text-retro-cream" style={{ minHeight: "330px" }}>
+      <div className="relative w-full overflow-hidden bg-surface-dark text-primary-on-dark" style={{ minHeight: "330px" }}>
         <WarmStripe className="absolute inset-x-0 top-0 z-20 h-1.5" />
 
         {title && (
@@ -30,7 +30,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
             {title.map((word) => (
               <span
                 key={word}
-                className="text-branding-font text-retro-cream leading-none"
+                className="text-branding-font text-primary-on-dark leading-none"
                 style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)" }}
               >
                 {word}
@@ -41,16 +41,16 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
 
         <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 flex items-start">
           <div className="flex flex-col gap-6 max-w-xl">
-            <div className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-retro-cream/55">
+            <div className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary-on-dark">
               {breadcrumb ? breadcrumb.map((item, i) => (
                 <React.Fragment key={item.label}>
                   {i > 0 && <ChevronRight className="w-3 h-3 shrink-0" />}
                   {item.href ? (
-                    <a href={item.href} className="transition-colors hover:text-rust">
+                    <a href={item.href} className="transition-colors hover:text-accent">
                       {item.label}
                     </a>
                   ) : (
-                    <span className="text-retro-cream/80">{item.label}</span>
+                    <span className="text-primary-on-dark">{item.label}</span>
                   )}
                 </React.Fragment>
               )) : <span>&nbsp;</span>}

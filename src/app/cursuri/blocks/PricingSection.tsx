@@ -18,7 +18,7 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
     <Tooltip open={open} onOpenChange={setOpen}>
       <TooltipTrigger asChild>
         <Info
-          className="w-3.5 h-3.5 text-navy/60 hover:text-navy cursor-pointer shrink-0 transition-colors"
+          className="w-3.5 h-3.5 text-secondary hover:text-primary cursor-pointer shrink-0 transition-colors"
           onClick={() => setOpen((v) => !v)}
         />
       </TooltipTrigger>
@@ -30,7 +30,7 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
 };
 
 const CARD =
-  "relative flex flex-col overflow-hidden min-h-[520px] bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)]";
+  "relative flex flex-col overflow-hidden min-h-[520px] bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)]";
 
 const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
   tier,
@@ -51,11 +51,11 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
           key={i}
           className={cn(
             "flex items-start justify-between gap-4 py-4",
-            i < tier.priceItems.length - 1 && "border-b border-navy/12",
+            i < tier.priceItems.length - 1 && "border-b border-line-subtle",
           )}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm text-navy/75">
+            <span className="text-sm text-secondary">
               {item.label}
               {item.tooltip && (
                 <span className="inline-flex items-center ml-1 translate-y-[2px]">
@@ -64,19 +64,19 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
               )}
             </span>
             {item.note && (
-              <span className="text-xs text-navy/45">{item.note}</span>
+              <span className="text-xs text-secondary">{item.note}</span>
             )}
           </div>
-          <span className="font-display font-extrabold text-lg text-navy whitespace-nowrap shrink-0">
+          <span className="font-display font-extrabold text-lg text-primary whitespace-nowrap shrink-0">
             {item.price}
           </span>
         </div>
       ))}
     </div>
     {tier.bottomItem && (
-      <div className="mt-auto px-8 py-4 flex items-baseline justify-between gap-4 border-t-[1.5px] border-dashed border-navy/25">
-        <span className="text-xs text-navy/55">{tier.bottomItem.label}</span>
-        <span className="text-sm font-bold text-navy/70 whitespace-nowrap">
+      <div className="mt-auto px-8 py-4 flex items-baseline justify-between gap-4 border-t-[1.5px] border-dashed border-line-subtle">
+        <span className="text-xs text-secondary">{tier.bottomItem.label}</span>
+        <span className="text-sm font-bold text-secondary whitespace-nowrap">
           {tier.bottomItem.price}
         </span>
       </div>
@@ -106,32 +106,32 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   const [members, nonMembers] = pricingData ?? [null, null];
 
   return (
-    <Section id="preturi" className="py-20 bg-retro-cream">
+    <Section id="preturi" className="py-20 bg-surface">
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-2">
-          <span className="text-eyebrow font-bold uppercase text-rust">
+          <span className="text-eyebrow font-bold uppercase text-accent">
             Tarife
           </span>
-          <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+          <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
             Prețuri cursuri grup
           </h2>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-5 items-stretch">
           {/* Promo card — plain navy */}
-          <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-navy text-retro-cream shadow-[8px_8px_0_rgba(14,26,60,0.16)]">
-            <span className="text-eyebrow font-bold uppercase text-retro-cream/60">
+          <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-[8px_8px_0_rgba(14,26,60,0.16)]">
+            <span className="text-eyebrow font-bold uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
-            <h3 className="text-2xl font-bold text-retro-cream leading-snug tracking-[-0.2px]">
+            <h3 className="text-2xl font-bold text-primary-on-dark leading-snug tracking-[-0.2px]">
               {title}
             </h3>
-            <p className="text-retro-cream/75 text-sm leading-relaxed">
+            <p className="text-secondary-on-dark text-sm leading-relaxed">
               {description}
             </p>
 
-            <div className="flex flex-col gap-2 text-sm text-retro-cream/75 border-t border-retro-cream/[0.18] pt-4 flex-1">
-              <p className="text-retro-cream font-bold text-xs">
+            <div className="flex flex-col gap-2 text-sm text-secondary-on-dark border-t border-line-subtle-on-dark pt-4 flex-1">
+              <p className="text-primary-on-dark font-bold text-xs">
                 {subscriptionInfoTitle}
               </p>
               <ul className="flex flex-col gap-2">
@@ -157,18 +157,18 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           {/* Price cards — 2-col at md, dissolve into parent 3-col at lg */}
           <div className="grid md:grid-cols-2 lg:contents gap-5 items-stretch">
             {pricingData === null || !members || !nonMembers ? (
-              <div className="md:col-span-2 lg:col-span-2 bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)] flex items-center justify-center min-h-[520px] px-8">
-                <p className="text-sm text-navy/50 text-center">
+              <div className="md:col-span-2 lg:col-span-2 bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] flex items-center justify-center min-h-[520px] px-8">
+                <p className="text-sm text-secondary text-center">
                   Prețurile nu sunt disponibile momentan. Reveniți în curând sau
                   contactați-ne direct.
                 </p>
               </div>
             ) : (
               <>
-                <PriceCard tier={members} headerClass="bg-burgundy text-white" />
+                <PriceCard tier={members} headerClass="bg-burgundy text-primary-on-dark" />
                 <PriceCard
                   tier={nonMembers}
-                  headerClass="bg-navy text-retro-cream"
+                  headerClass="bg-surface-dark text-primary-on-dark"
                 />
               </>
             )}
@@ -176,8 +176,8 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="flex flex-col gap-1.5 text-xs text-navy/55 max-w-2xl">
-            <p className="text-eyebrow font-bold uppercase text-navy/55 mb-1">
+          <div className="flex flex-col gap-1.5 text-xs text-secondary max-w-2xl">
+            <p className="text-eyebrow font-bold uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>
             <ul className="flex flex-col gap-1.5">

@@ -101,7 +101,7 @@ const HistoryPage: React.FC<Props> = ({
     : DEFAULT_INTRO;
 
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["DESPRE", "NOI"]}
@@ -110,26 +110,26 @@ const HistoryPage: React.FC<Props> = ({
           { label: "Despre noi" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           {bannerTitle ?? "Despre Noi"}
         </h1>
-        <p className="text-retro-cream/70 text-base">
+        <p className="text-secondary-on-dark text-base">
           {bannerSubtitle ?? "Educație prin sport, pentru o viață sănătoasă și activă. Educație pentru sport, în vederea obținerii înaltei performanțe."}
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               Despre Club
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] max-w-lg">
+              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-lg">
                 {sectionHeading ?? "Peste un deceniu de pasiune și performanță"}
               </h2>
-              <p className="text-sm text-navy/50 md:text-right md:max-w-xs">
+              <p className="text-sm text-secondary md:text-right md:max-w-xs">
                 {sectionSubheading ?? "De la primii pași pe gheață la podiumuri internaționale."}
               </p>
             </div>
@@ -138,7 +138,7 @@ const HistoryPage: React.FC<Props> = ({
           {/* Intro text */}
           <div className="max-w-3xl mb-20 flex flex-col gap-4">
             {introParagraphs.map((para, i) => (
-              <p key={i} className="text-base text-navy/[0.72] leading-relaxed">
+              <p key={i} className="text-base text-secondary leading-relaxed">
                 {para}
               </p>
             ))}
@@ -149,40 +149,40 @@ const HistoryPage: React.FC<Props> = ({
             {resolvedStats.map((stat, i) => (
               <div
                 key={i}
-                className="relative flex items-center gap-3 bg-retro-cream border-[1.5px] border-navy shadow-[6px_6px_0_rgb(14_26_60_/_0.16)] pl-[18px] pr-4 py-4"
+                className="relative flex items-center gap-3 bg-surface border-[1.5px] border-line shadow-[6px_6px_0_rgb(14_26_60_/_0.16)] pl-[18px] pr-4 py-4"
               >
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
-                <span className="font-display text-3xl font-extrabold text-navy leading-none">{stat.value}</span>
-                <span className="text-xs text-navy/55 leading-tight">{stat.label}</span>
+                <span className="font-display text-3xl font-extrabold text-primary leading-none">{stat.value}</span>
+                <span className="text-xs text-secondary leading-tight">{stat.label}</span>
               </div>
             ))}
           </div>
 
           {/* Timeline — node dots + year in the left gutter on a navy rail */}
           <div className="flex flex-col gap-3 mb-12">
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               Parcurs
             </p>
-            <h2 className="font-display text-display-sm font-extrabold text-navy tracking-[-0.4px]">
+            <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
               Momentele cheie
             </h2>
           </div>
 
-          <div className="flex flex-col border-l-[1.5px] border-navy ml-20">
+          <div className="flex flex-col border-l-[1.5px] border-line ml-20">
             {resolvedMilestones.map((milestone, i) => (
               <div key={i} className="relative pb-8 pl-7">
                 <span
-                  className="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-rust border-2 border-retro-cream"
+                  className="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-rust border-2 border-line-on-dark"
                   aria-hidden
                 />
                 <span
-                  className="absolute -left-[76px] top-0.5 w-[60px] text-right font-display text-base font-extrabold text-navy tabular-nums leading-none select-none"
+                  className="absolute -left-[76px] top-0.5 w-[60px] text-right font-display text-base font-extrabold text-primary tabular-nums leading-none select-none"
                   aria-hidden
                 >
                   {milestone.year}
                 </span>
-                <h3 className="text-sm font-bold text-navy mb-0.5">{milestone.title}</h3>
-                <p className="text-sm text-navy/60 leading-relaxed">{milestone.description}</p>
+                <h3 className="text-sm font-bold text-primary mb-0.5">{milestone.title}</h3>
+                <p className="text-sm text-secondary leading-relaxed">{milestone.description}</p>
               </div>
             ))}
           </div>
@@ -190,10 +190,10 @@ const HistoryPage: React.FC<Props> = ({
           {/* Events organized */}
           <div className="mt-20">
             <div className="flex flex-col gap-3 mb-8">
-              <p className="text-eyebrow font-bold uppercase text-rust">
+              <p className="text-eyebrow font-bold uppercase text-accent">
                 Evenimente
               </p>
-              <h2 className="font-display text-display-sm font-extrabold text-navy tracking-[-0.4px]">
+              <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
                 Organizate de ACS EduSport
               </h2>
             </div>
@@ -201,7 +201,7 @@ const HistoryPage: React.FC<Props> = ({
               {resolvedEventsOrganized.map((event, i) => (
                 <li
                   key={i}
-                  className="relative pl-5 text-sm text-navy/70 leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-rust"
+                  className="relative pl-5 text-sm text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>
@@ -212,7 +212,7 @@ const HistoryPage: React.FC<Props> = ({
           {/* Events participated */}
           <div className="mt-16">
             <div className="flex flex-col gap-3 mb-8">
-              <h2 className="font-display text-display-sm font-extrabold text-navy tracking-[-0.4px]">
+              <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
                 Participări ale sportivilor EduSport
               </h2>
             </div>
@@ -220,7 +220,7 @@ const HistoryPage: React.FC<Props> = ({
               {resolvedEventsParticipated.map((event, i) => (
                 <li
                   key={i}
-                  className="relative pl-5 text-sm text-navy/70 leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-rust"
+                  className="relative pl-5 text-sm text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>

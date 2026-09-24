@@ -5,7 +5,7 @@
 html {
   font-family: var(--font-inter), system-ui, sans-serif;
   scrollbar-gutter: stable;
-  scrollbar-color: var(--color-edusport-blue) transparent;
+  scrollbar-color: var(--color-line) transparent;
   /* Kill the browser's rubber-band / overscroll bounce at the page edges. */
   overscroll-behavior: none;
   /* The canvas colour, which is what the browser paints outside the body box:
@@ -27,6 +27,15 @@ body {
    .font-display reaches its spans. */
 [data-hero-frozen] :is(h4, h5, h6, p, span, div) {
   font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* The frozen hero's primary layers CTA reuses the sitewide `.lcta-face`,
+   which is now a fixed 48px (h-12 px-6). Restore its old px-8 py-3.5 sizing
+   here only, so the hero stays pixel-frozen while every other layers CTA
+   on the site is 48px tall. */
+[data-hero-frozen] .lcta-face {
+  height: auto;
+  padding: 0.875rem 2rem;
 }
 
 .text-branding-font,
@@ -118,6 +127,28 @@ h1.text-branding-font {
   --font-size-branding-xl: clamp(2rem, 12.8vw, 12rem);
 
   --font-display: var(--font-league-spartan), "League Spartan", sans-serif;
+
+  /* Roles (SP1). Pages use these, never raw palette + opacity. */
+  --color-primary: #0e1a3c;
+  --color-secondary: #495269;
+  --color-muted: #5f657a;
+  --color-accent: #be3330;
+  --color-primary-on-dark: #fbf8f1;
+  --color-secondary-on-dark: #c0c0c4;
+  --color-muted-on-dark: #979ba5;
+  --color-accent-on-dark: #efb22b;
+
+  --color-surface: #fbf8f1;
+  --color-surface-raised: #ffffff;
+  --color-surface-subtle: #ece8e0;
+  --color-surface-dark: #0e1a3c;
+  --color-surface-subtle-on-dark: #26304e;
+  --color-overlay: rgb(14 26 60 / 0.55);
+
+  --color-line: #0e1a3c;
+  --color-line-subtle: #dfdddb;
+  --color-line-on-dark: #fbf8f1;
+  --color-line-subtle-on-dark: #3d4660;
 
   --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.12);
 }
@@ -299,10 +330,10 @@ h1.text-branding-font {
     @apply text-2xs font-extrabold uppercase tracking-[0.04em];
   }
   .btn-retro-ghost {
-    @apply inline-flex items-center justify-center px-8 py-3.5;
-    @apply border-[1.5px] border-navy text-navy;
+    @apply h-12 px-6 inline-flex items-center justify-center;
+    @apply border-[1.5px] border-line text-primary;
     @apply text-sm font-bold uppercase tracking-[0.03em];
-    @apply transition-colors hover:bg-black hover:text-white;
+    @apply transition-colors hover-layer;
   }
 }
 
@@ -330,6 +361,18 @@ h1.text-branding-font {
   }
   .animate-line-fill {
     animation: inscrieri-line-fill 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+/* Hover is a translucent layer drawn over whatever the element already is. */
+@utility hover-layer {
+  &:hover {
+    box-shadow: inset 0 0 0 100vmax rgb(14 26 60 / 0.05);
+  }
+}
+@utility hover-layer-on-dark {
+  &:hover {
+    box-shadow: inset 0 0 0 100vmax rgb(251 248 241 / 0.1);
   }
 }
 
@@ -415,6 +458,9 @@ html.lv2-nav footer a {
   transition: transform .04s steps(1);
 }
 .lcta:active .lcta-face { transform: translate(4px, 4px); }
+/* Disabled: flat solid face (colour comes from group-disabled: Tailwind
+   classes on the face span), no border, no layered stack. */
+.lcta:disabled .lcta-face { border-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   .lcta-layer, .lcta-face { transition: none; }
 }

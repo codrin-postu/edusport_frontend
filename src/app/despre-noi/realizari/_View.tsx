@@ -30,7 +30,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
   season,
 }) => {
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <PageHeroSection
         title={[bannerTitle ?? "REALIZĂRI"]}
         variant="blue"
@@ -39,26 +39,26 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
           { label: "Realizări" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           Realizări
         </h1>
-        <p className="text-retro-cream/70 text-base">
+        <p className="text-secondary-on-dark text-base">
           {bannerSubtitle ?? "Rezultatele sportivilor EduSport la competiții naționale și internaționale de patinaj artistic."}
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               Palmares
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] max-w-lg">
+              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-lg">
                 Realizări notabile
               </h2>
-              <p className="text-sm text-navy/50 md:text-right md:max-w-xs">
+              <p className="text-sm text-secondary md:text-right md:max-w-xs">
                 Momente de referință din activitatea competițională a clubului.
               </p>
             </div>
@@ -70,7 +70,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
               {notableAchievements.map((achievement, i) => (
                 <li
                   key={i}
-                  className="relative pl-5 text-sm text-navy/[0.72] leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-rust"
+                  className="relative pl-5 text-sm text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {achievement}
                 </li>
@@ -87,10 +87,10 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
 
           {/* Results, one season at a time */}
           <div className="flex flex-col gap-3 mb-8">
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               Rezultate
             </p>
-            <h2 className="font-display text-display-sm font-extrabold text-navy tracking-[-0.4px]">
+            <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
               Competiții pe sezoane
             </h2>
           </div>

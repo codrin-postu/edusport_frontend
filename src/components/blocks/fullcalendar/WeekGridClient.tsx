@@ -7,8 +7,8 @@ import React from "react";
 const WeekGridWrapper = dynamic(() => import("./WeekGridWrapper"), {
   ssr: false,
   loading: () => (
-    <div className="h-96 flex items-center justify-center bg-navy/[0.04]">
-      <p className="text-sm text-navy/50">Se încarcă orarul...</p>
+    <div className="h-96 flex items-center justify-center bg-surface-subtle">
+      <p className="text-sm text-secondary">Se încarcă orarul...</p>
     </div>
   ),
 });

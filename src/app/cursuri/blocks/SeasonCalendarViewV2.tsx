@@ -147,19 +147,19 @@ const WeekendRow: React.FC<{
 
   // Colour square = course colour (navy) / silver for liber / faded navy for cancelled.
   const squareColor =
-    card.type === "liber" ? "bg-silver" : isCancelled ? "bg-navy/45" : "bg-navy";
+    card.type === "liber" ? "bg-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
   const stateColor = isNext
-    ? "text-navy font-bold"
+    ? "text-primary font-bold"
     : isCancelled
-      ? "text-rust font-medium"
+      ? "text-accent font-medium"
       : card.type === "curs"
-        ? "text-navy/70"
-        : "text-navy/45";
+        ? "text-secondary"
+        : "text-secondary";
 
   const row = (
     <div
       className={cn(
-        "flex items-center px-4 py-2.5 text-sm border-t border-navy/[0.08] first:border-t-0 transition-colors",
+        "flex items-center px-4 py-2.5 text-sm border-t border-line-subtle first:border-t-0 transition-colors",
         isPast && "opacity-40",
         isNext && "bg-mustard/[0.16]",
         hasDescription && "cursor-help",
@@ -171,8 +171,8 @@ const WeekendRow: React.FC<{
       {/* Date */}
       <span
         className={cn(
-          "flex-1 tabular-nums whitespace-nowrap text-navy",
-          isCancelled && "line-through text-navy/50",
+          "flex-1 tabular-nums whitespace-nowrap text-primary",
+          isCancelled && "line-through text-secondary",
         )}
       >
         {startLabel}
@@ -195,12 +195,12 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="z-50 max-w-[320px] bg-retro-cream text-navy/75 border-[1.5px] border-navy shadow-[6px_6px_0_rgb(14_26_60_/_0.18)] px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="z-50 max-w-[320px] bg-surface text-secondary border-[1.5px] border-line shadow-[6px_6px_0_rgb(14_26_60_/_0.18)] px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
         >
-          <p className="text-3xs font-bold uppercase tracking-wider text-rust">
+          <p className="text-3xs font-bold uppercase tracking-wider text-accent">
             {stateLabel}
           </p>
-          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-navy">
+          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-primary">
             {renderMarkdown(description)}
           </div>
         </TooltipPrimitive.Content>
@@ -221,16 +221,16 @@ const MonthColumn: React.FC<{
       {/* Month label - acts as table header */}
       <div
         className={cn(
-          "px-4 py-2.5 border-b-[1.5px] border-navy flex items-center justify-between",
+          "px-4 py-2.5 border-b-[1.5px] border-line flex items-center justify-between",
           allPast && "sm:cursor-default cursor-pointer select-none",
         )}
         onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
       >
-        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-navy capitalize">
+        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-primary capitalize">
           {group.label}
         </span>
         {allPast && (
-          <span className="sm:hidden text-navy/40 text-xs">
+          <span className="sm:hidden text-secondary text-xs">
             {collapsed ? "▸" : "▾"}
           </span>
         )}
@@ -395,19 +395,19 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   );
 
   return (
-    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-retro-cream">
+    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-surface">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         {/* Header — eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
           <div>
-            <span className="text-eyebrow font-bold uppercase text-rust">
+            <span className="text-eyebrow font-bold uppercase text-accent">
               Calendar sezon
             </span>
-            <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] mt-1.5">
+            <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] mt-1.5">
               Sezonul {seasonLabel}
             </h2>
           </div>
-          <p className="text-navy/60 text-sm sm:text-right sm:max-w-xs">
+          <p className="text-secondary text-sm sm:text-right sm:max-w-xs">
             Datele în care se desfășoară cursurile și weekend-urile libere.
           </p>
         </div>
@@ -433,7 +433,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             {/* Shared card chrome (border + offset shadow) for both modes */}
             <div
               ref={calendarContainerRef}
-              className="bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+              className="bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
             >
               {calendarMode === "month" ? (
                 shouldMountCalendar ? (
@@ -449,7 +449,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                   />
                 ) : (
                   <div
-                    className="flex items-center justify-center bg-navy/[0.04]"
+                    className="flex items-center justify-center bg-surface-subtle"
                     style={{ minHeight: 600 }}
                     aria-hidden="true"
                   />
@@ -474,10 +474,10 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             </div>
 
             {/* Legend */}
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-navy/60">
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-navy" />Curs</span>
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-secondary">
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-silver" />Liber</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-navy opacity-45" />Anulat</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark opacity-45" />Anulat</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-orange" />Eveniment</span>
             </div>
           </>
@@ -485,7 +485,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
         {/* Weekend view - month columns */}
         {activeView === "weekends" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-navy/15 border-[1.5px] border-navy">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle border-[1.5px] border-line">
             {groupedWeekends.map((group) => (
               <MonthColumn
                 key={group.label}

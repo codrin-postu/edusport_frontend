@@ -104,13 +104,13 @@ export function GalleryCarousel({
       {hasHeader && (
         <div className="flex flex-col gap-3 mb-8">
           {eyebrow && (
-            <p className="text-eyebrow font-bold uppercase text-rust">
+            <p className="text-eyebrow font-bold uppercase text-accent">
               {eyebrow}
             </p>
           )}
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             {title && (
-              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
                 {title}
               </h2>
             )}
@@ -120,7 +120,7 @@ export function GalleryCarousel({
                   onClick={prevDesktop}
                   disabled={desktopStart === 0}
                   aria-label="Imaginile anterioare"
-                  className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
+                  className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -128,7 +128,7 @@ export function GalleryCarousel({
                   onClick={nextDesktop}
                   disabled={desktopStart === maxStart}
                   aria-label="Imaginile următoare"
-                  className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
+                  className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -146,7 +146,7 @@ export function GalleryCarousel({
             onClick={prevDesktop}
             disabled={desktopStart === 0}
             aria-label="Imaginile anterioare"
-            className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
+            className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -154,7 +154,7 @@ export function GalleryCarousel({
             onClick={nextDesktop}
             disabled={desktopStart === maxStart}
             aria-label="Imaginile următoare"
-            className="w-10 h-10 border-[1.5px] border-navy flex items-center justify-center text-navy hover:bg-navy hover:text-retro-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-navy"
+            className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -174,7 +174,7 @@ export function GalleryCarousel({
               type="button"
               onClick={() => setLightboxIndex(i)}
               aria-label={`Deschide imaginea: ${img.alt}`}
-              className="group relative aspect-[4/3] overflow-hidden border-[1.5px] border-navy bg-navy/[0.04] shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
+              className="group relative aspect-[4/3] overflow-hidden border-[1.5px] border-line bg-surface-subtle shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
               style={{ width: "calc((100% - 1.5rem) / 3)" }}
             >
               <Image
@@ -186,7 +186,7 @@ export function GalleryCarousel({
               />
               {img.alt && (
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-3 pt-8">
-                  <p className="text-xs text-white/90 font-light text-left">{img.alt}</p>
+                  <p className="text-xs text-primary-on-dark font-light text-left">{img.alt}</p>
                 </div>
               )}
             </button>
@@ -203,12 +203,12 @@ export function GalleryCarousel({
                   aria-label={`Mergi la grupul ${i + 1}`}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    i === desktopStart ? "bg-navy w-6" : "bg-navy/20 hover:bg-navy/40",
+                    i === desktopStart ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                   )}
                 />
               ))
             ) : (
-              <span className="text-xs text-navy/45 tabular-nums">
+              <span className="text-xs text-secondary tabular-nums">
                 {desktopStart + 1} – {Math.min(desktopStart + DESKTOP_PER_PAGE, total)} din {total}
               </span>
             )}
@@ -219,7 +219,7 @@ export function GalleryCarousel({
       {/* Mobile: single image carousel */}
       <div className="md:hidden">
         <div
-          className="relative w-full aspect-[4/3] overflow-hidden border-[1.5px] border-navy bg-navy/[0.04] select-none cursor-zoom-in"
+          className="relative w-full aspect-[4/3] overflow-hidden border-[1.5px] border-line bg-surface-subtle select-none cursor-zoom-in"
           onClick={() => setLightboxIndex(current)}
           role="button"
           tabIndex={0}
@@ -259,7 +259,7 @@ export function GalleryCarousel({
 
           {images[current].alt && (
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-5 pb-4 pt-10 pointer-events-none">
-              <p className="text-sm text-white/90 font-light">{images[current].alt}</p>
+              <p className="text-sm text-primary-on-dark font-light">{images[current].alt}</p>
             </div>
           )}
         </div>
@@ -268,7 +268,7 @@ export function GalleryCarousel({
           <button
             onClick={prev}
             aria-label="Imaginea anterioară"
-            className="w-8 h-8 flex items-center justify-center text-navy hover:text-rust transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-primary hover:text-accent transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -281,20 +281,20 @@ export function GalleryCarousel({
                   aria-label={`Mergi la imaginea ${i + 1}`}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    i === current ? "bg-navy w-6" : "bg-navy/20 hover:bg-navy/40",
+                    i === current ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                   )}
                 />
               ))}
             </div>
           ) : (
-            <span className="text-xs text-navy/50 tabular-nums">
+            <span className="text-xs text-secondary tabular-nums">
               {current + 1} / {total}
             </span>
           )}
           <button
             onClick={next}
             aria-label="Imaginea următoare"
-            className="w-8 h-8 flex items-center justify-center text-navy hover:text-rust transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-primary hover:text-accent transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -356,7 +356,7 @@ function Lightbox({
             type="button"
             onClick={onClose}
             aria-label="Închide"
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark flex items-center justify-center transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -368,7 +368,7 @@ function Lightbox({
               onChange((index - 1 + images.length) % images.length);
             }}
             aria-label="Imaginea anterioară"
-            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white items-center justify-center transition-colors"
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -380,7 +380,7 @@ function Lightbox({
               onChange((index + 1) % images.length);
             }}
             aria-label="Imaginea următoare"
-            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white items-center justify-center transition-colors"
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -422,7 +422,7 @@ function Lightbox({
               draggable={false}
             />
             {images[index].alt && (
-              <p className="text-center text-white/85 text-sm mt-3 max-w-full pointer-events-none">
+              <p className="text-center text-primary-on-dark text-sm mt-3 max-w-full pointer-events-none">
                 {images[index].alt}
               </p>
             )}
@@ -434,7 +434,7 @@ function Lightbox({
             className="flex sm:hidden items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="text-white/70 text-xs tabular-nums">
+            <span className="text-secondary-on-dark text-xs tabular-nums">
               {index + 1} / {images.length}
             </span>
           </div>

@@ -20,7 +20,7 @@ interface Props {
 
 const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, members }) => {
   return (
-    <div className={cn("min-h-screen", "bg-retro-cream")}>
+    <div className={cn("min-h-screen", "bg-surface")}>
       <PageHeroSection
         backgroundImage="/images/hero-background.png"
         title={["ECHIPA"]}
@@ -30,30 +30,30 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
           { label: "Echipă" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           {bannerTitle}
         </h1>
-        <p className="text-retro-cream/70 text-base">
+        <p className="text-secondary-on-dark text-base">
           {bannerSubtitle}
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-retro-cream py-16 md:py-20">
+      <section className="relative z-10 bg-surface py-16 md:py-20">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Introduction */}
           <div className="max-w-2xl mb-14">
-            <p className="text-eyebrow font-bold uppercase text-rust mb-4">
+            <p className="text-eyebrow font-bold uppercase text-accent mb-4">
               Antrenori & Instructori
             </p>
-            <p className="text-navy/[0.72] text-base leading-relaxed">
+            <p className="text-secondary text-base leading-relaxed">
               {introText}
             </p>
           </div>
 
           {members.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="font-display text-display-sm font-extrabold text-navy/25">Echipa nu este disponibilă momentan</p>
-              <p className="text-sm text-navy/50 mt-2">Reveniți în curând.</p>
+              <p className="font-display text-display-sm font-extrabold text-secondary">Echipa nu este disponibilă momentan</p>
+              <p className="text-sm text-secondary mt-2">Reveniți în curând.</p>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -68,15 +68,15 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                 return (
                   <div
                     key={trainer.name}
-                    className="flex flex-col bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+                    className="flex flex-col bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
                   >
                     {/* Header band — avatar + name centered/stacked */}
                     <div
                       className={cn(
                         "relative flex flex-col items-center text-center px-4 pt-4 pb-3",
                         featured
-                          ? "bg-navy"
-                          : "bg-retro-cream border-b-[1.5px] border-navy/15",
+                          ? "bg-surface-dark"
+                          : "bg-surface border-b-[1.5px] border-line-subtle",
                       )}
                     >
                       {featured && (
@@ -86,7 +86,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                         <div
                           className={cn(
                             "relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 mb-2",
-                            featured ? "border-mustard" : "border-navy",
+                            featured ? "border-mustard" : "border-line",
                           )}
                         >
                           <Image
@@ -101,8 +101,8 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                           className={cn(
                             "w-14 h-14 rounded-full flex items-center justify-center shrink-0 border-2 mb-2",
                             featured
-                              ? "border-mustard bg-navy/60 text-mustard"
-                              : "border-navy bg-navy text-retro-cream",
+                              ? "border-mustard bg-overlay text-mustard"
+                              : "border-line bg-surface-dark text-primary-on-dark",
                           )}
                         >
                           <span className="font-display text-base font-extrabold select-none">
@@ -113,7 +113,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       <h2
                         className={cn(
                           "font-display text-[15px] font-extrabold leading-tight",
-                          featured ? "text-retro-cream" : "text-navy",
+                          featured ? "text-primary-on-dark" : "text-primary",
                         )}
                       >
                         {trainer.name}
@@ -121,7 +121,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       <p
                         className={cn(
                           "text-2xs font-bold uppercase tracking-[0.06em] mt-0.5",
-                          featured ? "text-mustard" : "text-rust",
+                          featured ? "text-mustard" : "text-accent",
                         )}
                       >
                         {trainer.role}
@@ -130,19 +130,19 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
 
                     {/* Body */}
                     <div className="px-4 pt-3 pb-4 flex flex-col gap-3">
-                      <p className="text-xs text-navy/60 leading-relaxed">
+                      <p className="text-xs text-secondary leading-relaxed">
                         {trainer.bio}
                       </p>
                       {trainer.teaches.length > 0 && (
                         <div>
-                          <p className="text-3xs font-bold uppercase tracking-[0.1em] text-navy/45 mb-1">
+                          <p className="text-3xs font-bold uppercase tracking-[0.1em] text-secondary mb-1">
                             Predă la
                           </p>
                           <ul className="flex flex-col gap-0.5">
                             {trainer.teaches.map((group) => (
                               <li
                                 key={group}
-                                className="relative pl-4 text-xs text-navy/65 leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-rust"
+                                className="relative pl-4 text-xs text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                               >
                                 {group}
                               </li>

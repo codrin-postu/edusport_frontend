@@ -104,21 +104,21 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-retro-cream border-[1.5px] border-navy shadow-[10px_10px_0_rgba(14,26,60,0.28)] px-6 pt-6 pb-5 outline-none"
+            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-surface border-[1.5px] border-line shadow-[10px_10px_0_rgba(14,26,60,0.28)] px-6 pt-6 pb-5 outline-none"
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reducedMotion ? 0.15 : 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             {announcement.eyebrow && (
-              <p className="text-3xs font-extrabold uppercase tracking-[0.16em] text-rust mb-[9px]">
+              <p className="text-3xs font-extrabold uppercase tracking-[0.16em] text-accent mb-[9px]">
                 {announcement.eyebrow}
               </p>
             )}
 
             <h2
               id={titleId}
-              className="font-display font-extrabold text-[22px] sm:text-[27px] leading-[1.05] text-navy mb-2.5"
+              className="font-display font-extrabold text-[22px] sm:text-[27px] leading-[1.05] text-primary mb-2.5"
             >
               {announcement.title}
             </h2>
@@ -132,7 +132,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
                 <Link
                   href={announcement.ctaUrl}
                   onClick={onCtaClick}
-                  className="px-[18px] py-2.5 text-[11.5px] font-extrabold uppercase tracking-[0.06em] text-navy bg-mustard border-[1.5px] border-navy shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+                  className="px-[18px] py-2.5 text-[11.5px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-[1.5px] border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
                 >
                   {announcement.ctaLabel}
                 </Link>
@@ -140,7 +140,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
               <button
                 type="button"
                 onClick={dismiss}
-                className="text-xs font-semibold text-gray-500 underline underline-offset-[3px] hover:text-navy transition-colors"
+                className="text-xs font-semibold text-secondary underline underline-offset-[3px] hover:text-primary transition-colors"
               >
                 Mai târziu
               </button>

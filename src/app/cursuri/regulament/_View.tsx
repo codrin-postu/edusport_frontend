@@ -42,27 +42,27 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
     });
 
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <PageHeroSection title={["REGULAMENT"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Regulament" }]}>
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           Regulament Cursuri
         </h1>
-        <p className="text-retro-cream/70 text-base">
+        <p className="text-secondary-on-dark text-base">
           Condițiile de participare, regulile de conduită pe gheață și
           informațiile esențiale pentru o experiență sigură și plăcută la
           cursurile Școlii de Patinaj EduSport.
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-retro-cream py-16 md:py-24">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3 mb-14">
-            <span className="text-eyebrow font-bold uppercase text-rust">Regulament</span>
+            <span className="text-eyebrow font-bold uppercase text-accent">Regulament</span>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px] max-w-lg">
+              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-lg">
                 Regulament Școala de Patinaj EduSport
               </h2>
-              <p className="text-sm text-navy/50 md:text-right md:max-w-xs">
+              <p className="text-sm text-secondary md:text-right md:max-w-xs">
                 Vă rugăm să citiți cu atenție înainte de prima ședință.
               </p>
             </div>
@@ -70,10 +70,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
 
           {categories.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="text-lg font-semibold text-navy/30">
+              <p className="text-lg font-semibold text-secondary">
                 Regulamentul nu este disponibil momentan
               </p>
-              <p className="text-sm text-navy/50 mt-2">Reveniți în curând.</p>
+              <p className="text-sm text-secondary mt-2">Reveniți în curând.</p>
             </div>
           ) : (
             <div className="flex flex-col">
@@ -83,24 +83,24 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                   .slice(0, catIndex)
                   .reduce((sum, c) => sum + c.rules.length, 0);
                 return (
-                  <div key={category.title} className="border-t-[1.5px] border-navy/15">
+                  <div key={category.title} className="border-t-[1.5px] border-line-subtle">
                     <button
                       onClick={() => toggle(category.title)}
                       className="w-full flex items-center gap-3 py-[18px] text-left hover:opacity-70 transition-opacity"
                     >
-                      <span className="w-8 h-8 flex items-center justify-center shrink-0 text-rust">
+                      <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
                         {ICON_MAP[category.icon] ?? <Layers className="w-5 h-5" />}
                       </span>
-                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-navy">
+                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-primary">
                         {category.title}
                       </h3>
-                      <span className="ml-auto text-xs text-navy/45 font-semibold tabular-nums mr-3">
+                      <span className="ml-auto text-xs text-secondary font-semibold tabular-nums mr-3">
                         {category.rules.length}{" "}
                         {category.rules.length === 1 ? "regulă" : "reguli"}
                       </span>
                       <ChevronDown
                         className={cn(
-                          "w-4 h-4 text-navy shrink-0 transition-transform duration-200",
+                          "w-4 h-4 text-primary shrink-0 transition-transform duration-200",
                           isOpen && "rotate-180",
                         )}
                       />
@@ -116,7 +116,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                           return rule.highlight ? (
                             <div
                               key={ruleIndex}
-                              className="flex gap-4 items-start bg-navy -mx-4 px-4 py-4 my-1.5"
+                              className="flex gap-4 items-start bg-surface-dark -mx-4 px-4 py-4 my-1.5"
                             >
                               <span
                                 className="font-display font-extrabold text-[28px] leading-none w-9 shrink-0 text-mustard tabular-nums select-none"
@@ -124,7 +124,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               >
                                 {num}
                               </span>
-                              <p className="text-sm text-retro-cream leading-relaxed pt-1">
+                              <p className="text-sm text-primary-on-dark leading-relaxed pt-1">
                                 {rule.text}
                               </p>
                             </div>
@@ -133,16 +133,16 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               key={ruleIndex}
                               className={cn(
                                 "flex gap-4 items-start py-3.5",
-                                showRule && "border-t border-navy/[0.08]",
+                                showRule && "border-t border-line-subtle",
                               )}
                             >
                               <span
-                                className="font-display font-extrabold text-[28px] leading-none w-9 shrink-0 text-navy/15 tabular-nums select-none"
+                                className="font-display font-extrabold text-[28px] leading-none w-9 shrink-0 text-line-subtle tabular-nums select-none"
                                 aria-hidden
                               >
                                 {num}
                               </span>
-                              <p className="text-sm text-navy/70 leading-relaxed pt-1">
+                              <p className="text-sm text-secondary leading-relaxed pt-1">
                                 {rule.text}
                               </p>
                             </div>
@@ -157,10 +157,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           )}
 
           {/* Acceptance card */}
-          <div className="mt-12 bg-retro-cream border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)] p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
+          <div className="mt-12 bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
-              <p className="text-eyebrow font-bold uppercase text-rust">Acceptare</p>
-              <p className="text-navy text-base leading-relaxed mt-2">
+              <p className="text-eyebrow font-bold uppercase text-accent">Acceptare</p>
+              <p className="text-primary text-base leading-relaxed mt-2">
                 Prin înscrierea la cursurile Școlii de Patinaj EduSport,
                 părinții/tutorii confirmă că au citit, înțeles și acceptat în
                 totalitate prezentul regulament.

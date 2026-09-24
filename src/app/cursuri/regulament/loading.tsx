@@ -5,7 +5,7 @@ import {
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-surface-raised flex flex-col">
       <HeroSkeleton
         title={["REGULAMENT"]}
         breadcrumb={[
@@ -13,7 +13,7 @@ export default function Loading() {
           { label: "Regulament" },
         ]}
       />
-      <div className="relative z-10 bg-white flex-1">
+      <div className="relative z-10 bg-surface-raised flex-1">
         <LongformSkeleton />
       </div>
     </div>

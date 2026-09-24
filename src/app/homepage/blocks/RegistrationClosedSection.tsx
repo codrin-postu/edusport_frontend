@@ -41,21 +41,21 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
             <div className="relative flex flex-col gap-8 max-w-2xl">
               {/* Label + status pill */}
               <div className="flex items-center gap-3">
-                <p className="text-xs font-semibold tracking-widest uppercase text-white/40">
+                <p className="text-xs font-semibold tracking-widest uppercase text-muted-on-dark">
                   {seasonLabel}
                 </p>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/50 text-xs font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark text-xs font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-line-subtle-on-dark" />
                   Înscrieri închise
                 </span>
               </div>
 
               {/* Heading + summary */}
               <div className="flex flex-col gap-4">
-                <h2 className="text-4xl md:text-5xl font-semibold text-white leading-tight">
+                <h2 className="text-4xl md:text-5xl font-semibold text-primary-on-dark leading-tight">
                   {heading}
                 </h2>
-                <p className="text-white/70 text-lg font-light leading-relaxed">
+                <p className="text-secondary-on-dark text-lg font-light leading-relaxed">
                   {body}
                 </p>
               </div>
@@ -64,7 +64,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
               <div className="flex flex-col sm:flex-row gap-3 sm:items-start">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto px-8 py-4 h-auto text-base font-medium rounded-full !bg-transparent text-white/80 border-white/30 hover:!bg-white/10 hover:text-white hover:border-white/50"
+                  className="w-full sm:w-auto px-8 py-4 h-auto text-base font-medium rounded-full !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
                   asChild
                 >
                   <a
@@ -84,7 +84,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto px-8 py-4 h-auto text-base font-medium rounded-full !bg-transparent text-white/80 border-white/30 hover:!bg-white/10 hover:text-white hover:border-white/50"
+                  className="w-full sm:w-auto px-8 py-4 h-auto text-base font-medium rounded-full !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
                   asChild
                 >
                   <Link href={contactUrl}>{contactLabel}</Link>
@@ -94,7 +94,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
               {/* Contact link */}
               <Link
                 href={contactUrl}
-                className="group relative inline-flex items-center gap-1 text-sm text-white/40 hover:text-white/70 transition-colors after:absolute after:left-0 after:bottom-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left w-fit"
+                className="group relative inline-flex items-center gap-1 text-sm text-muted-on-dark hover:text-secondary-on-dark transition-colors after:absolute after:left-0 after:bottom-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left w-fit"
               >
                 Mai multe informații
                 <ArrowUpRight className="w-3.5 h-3.5" />

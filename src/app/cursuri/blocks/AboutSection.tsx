@@ -33,19 +33,19 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   ];
 
   return (
-    <Section className="py-20 bg-retro-cream">
+    <Section className="py-20 bg-surface">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <span className="text-eyebrow font-bold uppercase text-rust">
+            <span className="text-eyebrow font-bold uppercase text-accent">
               {eyebrow}
             </span>
-            <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+            <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
               {heading}
             </h2>
           </div>
 
-          <div className="flex flex-col gap-4 text-navy/65 text-base leading-relaxed">
+          <div className="flex flex-col gap-4 text-secondary text-base leading-relaxed">
             {paragraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -53,8 +53,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
           <div className="flex flex-col gap-3">
             {bullets.map(({ Icon, text }, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm text-navy">
-                <Icon className="w-5 h-5 shrink-0 text-rust" strokeWidth={1.8} />
+              <div key={i} className="flex items-center gap-3 text-sm text-primary">
+                <Icon className="w-5 h-5 shrink-0 text-accent" strokeWidth={1.8} />
                 {text}
               </div>
             ))}
@@ -62,13 +62,13 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
           <Link
             href="/cursuri/program"
-            className="w-fit link-underline-rust text-sm font-bold uppercase tracking-[0.03em] text-navy"
+            className="w-fit link-underline-rust text-sm font-bold uppercase tracking-[0.03em] text-primary"
           >
             Vezi programul complet
           </Link>
         </div>
 
-        <div className="border-[1.5px] border-navy shadow-[8px_8px_0_rgba(14,26,60,0.16)] overflow-hidden">
+        <div className="border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] overflow-hidden">
           <YoutubeEmbed
             url={videoUrl}
             title={videoLabel}

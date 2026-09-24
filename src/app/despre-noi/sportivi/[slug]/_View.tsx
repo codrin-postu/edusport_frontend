@@ -135,7 +135,7 @@ const SportspersonView: React.FC<Props> = ({
   );
 
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <BreadcrumbJsonLd
         items={[
           { name: "Sportivi", url: `${SITE_URL}/despre-noi/sportivi` },
@@ -149,17 +149,17 @@ const SportspersonView: React.FC<Props> = ({
           header (other pages either use PageHeroSection which is
           sticky-positioned, or add their own pt clearance — articles use
           pt-8). Without this the bar tucks behind the nav. */}
-      <div className="bg-navy pt-8">
+      <div className="bg-surface-dark pt-8">
         <div className="mx-auto w-full max-w-content px-4 py-4 md:px-8 lg:px-12">
-          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-retro-cream/55">
+          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary-on-dark">
             <Link
               href="/despre-noi/sportivi"
-              className="text-retro-cream/80 transition-colors hover:text-gold"
+              className="text-primary-on-dark transition-colors hover:text-gold"
             >
               Sportivi
             </Link>
             <ChevronRight className="h-3 w-3 shrink-0" />
-            <span className="truncate text-retro-cream sm:max-w-none max-w-[200px]">
+            <span className="truncate text-primary-on-dark sm:max-w-none max-w-[200px]">
               {sportsperson.name}
             </span>
           </nav>
@@ -167,7 +167,7 @@ const SportspersonView: React.FC<Props> = ({
       </div>
 
       {/* ─── EDITORIAL HERO BAND (navy) ─── */}
-      <section className="relative overflow-hidden bg-navy pt-4 pb-12 text-retro-cream md:pb-14">
+      <section className="relative overflow-hidden bg-surface-dark pt-4 pb-12 text-primary-on-dark md:pb-14">
         <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="grid items-end gap-8 md:grid-cols-[1.4fr_1fr]">
             {/* Left: category eyebrow + huge stacked name. The narrative
@@ -195,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">
+                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-primary-on-dark backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -203,7 +203,7 @@ const SportspersonView: React.FC<Props> = ({
           </div>
 
           {/* Stats row */}
-          <div className="mt-8 grid grid-cols-1 gap-6 border-t border-retro-cream/15 pt-6 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-6 border-t border-line-subtle-on-dark pt-6 sm:grid-cols-3">
             <HeroStat value={pad(stats.totalCompetitions)} label="Competiții" accent />
             {tier ? (
               <HeroStat value={`${tier.count}×`} label={tier.label} />
@@ -225,18 +225,18 @@ const SportspersonView: React.FC<Props> = ({
           same. An absent section reads as complete; a placeholder reads as
           neglected. */}
       {(hasItems(sportsperson.story) || sportsperson.description) && (
-        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
           <SectionWatermark>DESPRE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
               Despre mine
             </div>
             {hasItems(sportsperson.story) ? (
-              <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-navy/85">
+              <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-primary">
                 <StrapiBlocks blocks={sportsperson.story} />
               </div>
             ) : (
-              <p className="mt-6 max-w-[620px] text-base font-semibold text-navy">
+              <p className="mt-6 max-w-[620px] text-base font-semibold text-primary">
                 {sportsperson.description}
               </p>
             )}
@@ -250,7 +250,7 @@ const SportspersonView: React.FC<Props> = ({
         hasItems(sportsperson.coaches) ||
         hasItems(sportsperson.choreographers) ||
         sportsperson.careerGoal) && (
-        <section className="relative overflow-hidden bg-retro-cream pb-16 md:pb-20">
+        <section className="relative overflow-hidden bg-surface pb-16 md:pb-20">
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <DespreGrid>
               {hasItems(sportsperson.favoriteMoves) && (
@@ -266,13 +266,13 @@ const SportspersonView: React.FC<Props> = ({
               {(hasItems(sportsperson.coaches) || hasItems(sportsperson.choreographers)) && (
                 <DespreCell title="Antrenori">
                   {hasItems(sportsperson.coaches) && (
-                    <div className="text-sm font-semibold text-navy">
+                    <div className="text-sm font-semibold text-primary">
                       {sportsperson.coaches.map((c, i) => (
                         <span key={i}>
-                          {i > 0 && <span className="mx-1 text-navy/30">·</span>}
+                          {i > 0 && <span className="mx-1 text-line-subtle">·</span>}
                           {c.name}
                           {c.role && (
-                            <span className="ml-1 text-xs font-light text-navy/60">
+                            <span className="ml-1 text-xs font-light text-secondary">
                               · {c.role}
                             </span>
                           )}
@@ -281,8 +281,8 @@ const SportspersonView: React.FC<Props> = ({
                     </div>
                   )}
                   {hasItems(sportsperson.choreographers) && (
-                    <div className="mt-2 text-sm font-semibold text-navy">
-                      <span className="mr-2 text-3xs font-extrabold uppercase tracking-[0.22em] text-navy/50">
+                    <div className="mt-2 text-sm font-semibold text-primary">
+                      <span className="mr-2 text-3xs font-extrabold uppercase tracking-[0.22em] text-secondary">
                         Coregrafe
                       </span>
                       {sportsperson.choreographers.map((c) => c.name).join(", ")}
@@ -292,7 +292,7 @@ const SportspersonView: React.FC<Props> = ({
               )}
               {sportsperson.careerGoal && (
                 <DespreCell title="Obiectiv">
-                  <p className="border-l-[3px] border-rust pl-3 text-base leading-relaxed text-navy/70">
+                  <p className="border-l-[3px] border-rust pl-3 text-base leading-relaxed text-secondary">
                     {sportsperson.careerGoal}
                   </p>
                 </DespreCell>
@@ -304,13 +304,13 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PROGRAME MUZICALE ─── */}
       {hasItems(sportsperson.seasons) && (
-        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
           <SectionWatermark>MUZICĂ</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
               Programe muzicale
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
               Muzica pe gheață
             </h2>
             <ProgramSeasons seasons={sortSeasonsDesc(sportsperson.seasons)} />
@@ -320,13 +320,13 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PERFORMANȚE DE VÂRF (oversized placement numerals) ─── */}
       {notableResults.length > 0 && (
-        <section className="relative overflow-hidden bg-navy py-16 text-retro-cream md:py-20">
+        <section className="relative overflow-hidden bg-surface-dark py-16 text-primary-on-dark md:py-20">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="text-2xs font-bold uppercase tracking-[0.32em] text-gold">
               Cele mai notabile rezultate
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-retro-cream md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary-on-dark md:text-4xl">
               Performanțe de vârf
             </h2>
             <div className="mt-8 flex flex-col">
@@ -338,7 +338,7 @@ const SportspersonView: React.FC<Props> = ({
                     key={`${r.competition.documentId}-${idx}`}
                     className={cn(
                       "grid grid-cols-[64px_1fr] items-center gap-5 py-5 sm:grid-cols-[86px_1fr] sm:gap-7",
-                      idx < notableResults.length - 1 && "border-b border-retro-cream/15",
+                      idx < notableResults.length - 1 && "border-b border-line-subtle-on-dark",
                     )}
                   >
                     <div
@@ -357,10 +357,10 @@ const SportspersonView: React.FC<Props> = ({
                       >
                         {info.label}
                       </span>
-                      <h3 className="mt-1 text-lg font-bold leading-tight text-retro-cream">
+                      <h3 className="mt-1 text-lg font-bold leading-tight text-primary-on-dark">
                         {r.competition.name}
                       </h3>
-                      <div className="mt-1 text-2xs text-retro-cream/60">
+                      <div className="mt-1 text-2xs text-secondary-on-dark">
                         {formatDate(r.competition.date)}
                         {r.competition.location && <> · {r.competition.location}</>}
                         {r.score !== undefined && (
@@ -383,7 +383,7 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── GALLERY ─── */}
       {hasItems(sportsperson.gallery) && (
-        <section className="relative overflow-hidden bg-retro-cream py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
           <SectionWatermark>GALERIE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <GalleryCarousel
@@ -402,14 +402,14 @@ const SportspersonView: React.FC<Props> = ({
       {hasScrapedResults && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-retro-cream py-16 md:py-20 scroll-mt-24"
+          className="relative overflow-hidden bg-surface py-16 md:py-20 scroll-mt-24"
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
               Rezultate competiții
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
               Toate competițiile
             </h2>
             <SkateResults results={skateResults ?? []} />
@@ -421,14 +421,14 @@ const SportspersonView: React.FC<Props> = ({
       {!hasScrapedResults && historyRows.length > 0 && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-retro-cream py-16 md:py-20 scroll-mt-24"
+          className="relative overflow-hidden bg-surface py-16 md:py-20 scroll-mt-24"
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
               Istoric competițional
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-navy md:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
               Toate competițiile
             </h2>
             <div className="mt-8 flex flex-col">
@@ -440,19 +440,19 @@ const SportspersonView: React.FC<Props> = ({
                     key={key}
                     className={cn(
                       "relative flex flex-col gap-2 py-[18px] sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-x-6",
-                      idx < visibleHistoryRows.length - 1 && "border-b border-navy/10",
+                      idx < visibleHistoryRows.length - 1 && "border-b border-line-subtle",
                     )}
                   >
                     <div className="relative min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-sm font-bold text-navy">{comp.name}</h4>
+                        <h4 className="text-sm font-bold text-primary">{comp.name}</h4>
                         {comp.level === "international" && (
                           <span className="rounded-full bg-edusport-blue/10 px-2 py-0.5 text-3xs font-semibold uppercase tracking-wider text-edusport-blue">
                             Internațional
                           </span>
                         )}
                       </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-navy/50">
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-secondary">
                         <span>{formatDate(comp.date)}</span>
                         {comp.location && (
                           <>
@@ -476,7 +476,7 @@ const SportspersonView: React.FC<Props> = ({
                         sm+ via `display: contents`. */}
                     <div className="flex items-baseline gap-3 sm:contents">
                       {row.score !== undefined && (
-                        <span className="text-xs font-semibold tabular-nums text-navy/60">
+                        <span className="text-xs font-semibold tabular-nums text-secondary">
                           {row.score.toFixed(2)}
                         </span>
                       )}
@@ -507,13 +507,13 @@ const SportspersonView: React.FC<Props> = ({
       )}
 
       {/* ─── OUTRO ─── */}
-      <section className="border-t border-navy/10 bg-retro-cream py-12 md:py-14">
+      <section className="border-t border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-5 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-rust">
+            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
               Mai departe
             </div>
-            <p className="mt-1.5 text-base font-medium text-navy md:text-lg">
+            <p className="mt-1.5 text-base font-medium text-primary md:text-lg">
               Vezi toți sportivii clubului EduSport.
             </p>
           </div>
@@ -586,7 +586,7 @@ function NameStack({ name }: { name: string }) {
   const rest = parts.slice(1).join(" ").toUpperCase();
   return (
     <>
-      <span className="block text-retro-cream">{first}</span>
+      <span className="block text-primary-on-dark">{first}</span>
       {rest && (
         <span
           className="block"
@@ -617,12 +617,12 @@ function HeroStat({
       <div
         className={cn(
           "font-display text-[40px] font-black leading-none tracking-[-0.02em] md:text-[44px]",
-          accent ? "text-gold" : "text-retro-cream",
+          accent ? "text-gold" : "text-primary-on-dark",
         )}
       >
         {value}
       </div>
-      <div className="mt-2 text-3xs font-bold uppercase tracking-[0.22em] text-retro-cream/60">
+      <div className="mt-2 text-3xs font-bold uppercase tracking-[0.22em] text-secondary-on-dark">
         {label}
       </div>
     </div>
@@ -653,7 +653,7 @@ function DespreCell({
 }) {
   return (
     <div className="min-w-0">
-      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.28em] text-rust">
+      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.28em] text-accent">
         {title}
       </div>
       {children}
@@ -680,7 +680,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
       ))}
       {older.length > 0 && (
         <details className="group/seasons">
-          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-2xs font-extrabold uppercase tracking-[0.22em] text-rust transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
+          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-2xs font-extrabold uppercase tracking-[0.22em] text-accent transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
             <span className="group-open/seasons:hidden">
               Vezi sezoanele anterioare ({older.length})
             </span>
@@ -707,7 +707,7 @@ function SeasonRow({
 }) {
   return (
     <div>
-      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.24em] text-navy/40">
+      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.24em] text-secondary">
         Sezon {season}
       </div>
       <div className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
@@ -720,11 +720,11 @@ function SeasonRow({
               {p.type}
             </div>
             <div className="min-w-0">
-              <div className="text-sm font-bold leading-tight text-navy">
+              <div className="text-sm font-bold leading-tight text-primary">
                 {p.title}
               </div>
               {p.artist && (
-                <div className="text-2xs text-navy/50">{p.artist}</div>
+                <div className="text-2xs text-secondary">{p.artist}</div>
               )}
             </div>
           </div>
@@ -741,9 +741,9 @@ function BulletList({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <li
           key={i}
-          className="flex items-start gap-2 text-sm leading-relaxed text-navy/80"
+          className="flex items-start gap-2 text-sm leading-relaxed text-primary"
         >
-          <ChevronRight className="mt-[3px] h-3.5 w-3.5 shrink-0 text-rust" />
+          <ChevronRight className="mt-[3px] h-3.5 w-3.5 shrink-0 text-accent" />
           {item}
         </li>
       ))}

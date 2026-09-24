@@ -239,7 +239,7 @@ export function SportspersonCard({
         <div
           ref={cardRef}
           className={cn(
-            "sp-card relative bg-navy",
+            "sp-card relative bg-surface-dark",
             retro
               ? "sp-card-retro rounded-[12px] overflow-hidden"
               : "rounded-xl overflow-hidden",
@@ -282,7 +282,7 @@ export function SportspersonCard({
                 background: `linear-gradient(140deg, ${pickFallbackGradient(sportsperson.slug).from} 0%, ${pickFallbackGradient(sportsperson.slug).to} 100%)`,
               }}
             >
-              <span className="select-none text-5xl font-semibold text-white/40">
+              <span className="select-none text-5xl font-semibold text-line-subtle-on-dark">
                 {initials}
               </span>
             </div>
@@ -321,7 +321,7 @@ export function SportspersonCard({
                 textShadow: "0 1px 4px rgba(0,0,0,0.55)",
               }}
             >
-              <span className="block text-2xl tracking-[-0.02em] text-white">
+              <span className="block text-2xl tracking-[-0.02em] text-primary-on-dark">
                 {tier.badgeCount}×
               </span>
               <span
@@ -351,18 +351,18 @@ export function SportspersonCard({
           >
             <h4
               className={cn(
-                "mb-[5px] font-bold leading-tight tracking-[-0.01em] text-white",
+                "mb-[5px] font-bold leading-tight tracking-[-0.01em] text-primary-on-dark",
                 isSpotlight ? "text-xl" : "text-lg",
               )}
             >
               {sportsperson.name}
             </h4>
             {sportsperson.activeSince && (
-              <div className="mb-2 text-3xs font-semibold uppercase tracking-[0.16em] text-white/55">
+              <div className="mb-2 text-3xs font-semibold uppercase tracking-[0.16em] text-secondary-on-dark">
                 Membru din {sportsperson.activeSince.slice(0, 4)}
               </div>
             )}
-            <div className="flex gap-[10px] border-t border-white/20 pt-[6px]">
+            <div className="flex gap-[10px] border-t border-line-subtle-on-dark pt-[6px]">
               <div>
                 <div
                   className="text-lg font-extrabold leading-none tracking-[-0.01em]"
@@ -370,7 +370,7 @@ export function SportspersonCard({
                 >
                   {String(stats.totalCompetitions).padStart(2, "0")}
                 </div>
-                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-secondary-on-dark">
                   Comp.
                 </div>
               </div>
@@ -382,18 +382,18 @@ export function SportspersonCard({
                   >
                     {String(medalTotal).padStart(2, "0")}
                   </div>
-                  <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                  <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-secondary-on-dark">
                     Medalii
                   </div>
                 </div>
               )}
               <div>
-                <div className="text-lg font-extrabold leading-none tracking-[-0.01em] text-white">
+                <div className="text-lg font-extrabold leading-none tracking-[-0.01em] text-primary-on-dark">
                   {stats.bestScore !== null
                     ? stats.bestScore.toFixed(2)
                     : "—"}
                 </div>
-                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-white/65">
+                <div className="mt-[3px] text-3xs font-semibold uppercase tracking-[0.18em] text-secondary-on-dark">
                   Best
                 </div>
               </div>

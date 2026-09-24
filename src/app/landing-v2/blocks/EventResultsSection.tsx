@@ -27,9 +27,9 @@ export const PLACEMENT_LABEL: Record<1 | 2 | 3, string> = {
 // Retro medal marker-tags (square, no dot). Aur = mustard, Argint = silver,
 // Bronz = bronze — see globals.css retro tokens.
 export const PLACEMENT_TAG: Record<1 | 2 | 3, string> = {
-  1: "bg-mustard text-navy",
-  2: "bg-silver text-navy",
-  3: "bg-bronze text-retro-cream",
+  1: "bg-mustard text-primary",
+  2: "bg-silver text-primary",
+  3: "bg-bronze text-primary-on-dark",
 };
 
 function formatRoDate(iso: string): string {
@@ -46,10 +46,10 @@ export function formatRoMonthYear(iso: string): string {
 
 export function EventCard({ event }: { event: Event }) {
   return (
-    <article className="flex flex-col border-[1.5px] border-navy bg-white">
+    <article className="flex flex-col border-[1.5px] border-line bg-surface-raised">
       <WarmStripe />
       {event.coverImage && (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100 border-b-[1.5px] border-navy">
+        <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-b-[1.5px] border-line">
           <Image
             src={event.coverImage}
             alt={event.title}
@@ -60,27 +60,27 @@ export function EventCard({ event }: { event: Event }) {
         </div>
       )}
       <div className="p-6 md:p-8 flex flex-col">
-        <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-navy mb-3">
+        <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
           Eveniment următor
         </p>
-        <h3 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px] mb-4">
+        <h3 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px] mb-4">
           {event.title}
         </h3>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-navy/60 mb-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-secondary mb-4">
           <span className="inline-flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 shrink-0 text-rust" />
+            <Calendar className="w-4 h-4 shrink-0 text-accent" />
             {formatRoDate(event.date)}
           </span>
           {event.location && (
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 shrink-0 text-rust" />
+              <MapPin className="w-4 h-4 shrink-0 text-accent" />
               {event.location}
             </span>
           )}
         </div>
-        <p className="text-sm text-navy/60 leading-relaxed mb-5 max-w-[560px]">{event.excerpt}</p>
+        <p className="text-sm text-secondary leading-relaxed mb-5 max-w-[560px]">{event.excerpt}</p>
         {event.admissionInfo && (
-          <p className="text-sm text-navy/45 italic mb-6">{event.admissionInfo}</p>
+          <p className="text-sm text-secondary italic mb-6">{event.admissionInfo}</p>
         )}
         <SpotlightButton
           layers

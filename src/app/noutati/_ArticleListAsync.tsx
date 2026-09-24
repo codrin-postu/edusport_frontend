@@ -39,12 +39,12 @@ export default async function ArticleListAsync({
 
   return (
     <>
-      <p className="text-eyebrow font-bold uppercase text-navy/55 mb-8">
+      <p className="text-eyebrow font-bold uppercase text-secondary mb-8">
         {total} {total === 1 ? "articol" : "articole"} găsite
       </p>
 
       {articles.length > 0 ? (
-        <div className="flex flex-col divide-y divide-navy/10">
+        <div className="flex flex-col divide-y divide-line-subtle">
           {articles.map((article) => (
             <ArticleCard
               key={article.slug}
@@ -59,10 +59,10 @@ export default async function ArticleListAsync({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <p className="font-display text-display-sm font-extrabold text-navy/25">
+          <p className="font-display text-display-sm font-extrabold text-secondary">
             Niciun articol găsit
           </p>
-          <p className="text-sm text-navy/50 mt-2 max-w-sm">
+          <p className="text-sm text-secondary mt-2 max-w-sm">
             Încercați să modificați criteriile de căutare sau să selectați o
             altă categorie.
           </p>

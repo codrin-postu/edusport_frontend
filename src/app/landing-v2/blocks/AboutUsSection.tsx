@@ -117,7 +117,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
   const mobilePaths = useMemo(ribbonPathsMobile, []);
 
   return (
-    <section className="relative bg-retro-cream overflow-hidden py-6 md:py-10">
+    <section className="relative bg-surface overflow-hidden py-6 md:py-10">
       {/* Mobile: the ribbon sits as a faint, out-of-flow background (doesn't
           push any content). Desktop uses the in-flow full-bleed ribbon below. */}
       <svg
@@ -184,11 +184,11 @@ export default AboutUsSection;
 
 const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent = false }) => (
   <>
-    <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-navy mb-3">
+    <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary mb-3">
       {panel.eyebrow}
     </div>
     <h2
-      className="font-display text-display-md font-black text-navy tracking-[-0.5px] mb-3.5"
+      className="font-display text-display-md font-black text-primary tracking-[-0.5px] mb-3.5"
       style={{ lineHeight: accent ? 1.3 : 0.98 }}
     >
       {panel.heading.split("\n").map((line, j) => (
@@ -202,10 +202,10 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
         </React.Fragment>
       ))}
     </h2>
-    <p className="text-sm leading-relaxed text-navy/60 max-w-[440px] mb-5">{panel.body}</p>
+    <p className="text-sm leading-relaxed text-secondary max-w-[440px] mb-5">{panel.body}</p>
     <Link
       href={panel.ctaUrl}
-      className="link-underline-rust inline-block w-fit text-[12.5px] font-bold uppercase tracking-[0.04em] text-navy"
+      className="link-underline-rust inline-block w-fit text-[12.5px] font-bold uppercase tracking-[0.04em] text-primary"
     >
       {panel.ctaLabel}
     </Link>

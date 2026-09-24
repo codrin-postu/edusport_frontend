@@ -11,7 +11,7 @@
 .fc-curs-tooltip {
   --fc-cat-curs: #2138b8;        /* Antrenament (standalone course) */
   --fc-cat-curs-fg: var(--color-retro-cream);
-  --fc-cat-scoala: #0e1a3c;      /* Școala de patinaj */
+  --fc-cat-scoala: var(--color-primary);      /* Școala de patinaj */
   --fc-cat-scoala-fg: var(--color-retro-cream);
   --fc-cat-concurs: #7a1fa2;     /* Competiție */
   --fc-cat-concurs-fg: var(--color-retro-cream);
@@ -20,13 +20,13 @@
   --fc-cat-spectacol: #00838f;   /* Spectacol */
   --fc-cat-spectacol-fg: #ffffff;
   --fc-cat-eveniment: #e08a00;   /* Eveniment */
-  --fc-cat-eveniment-fg: #0e1a3c;
+  --fc-cat-eveniment-fg: var(--color-primary);
   --fc-cat-vacanta: #0891b2;     /* Vacanță */
-  --fc-cat-vacanta-fg: #0e1a3c;
+  --fc-cat-vacanta-fg: var(--color-primary);
   --fc-cat-sarbatoare: #c026d3;  /* Sărbătoare */
   --fc-cat-sarbatoare-fg: #ffffff;
   --fc-cat-liber: #8a8a8a;       /* Pauză / zi liberă */
-  --fc-cat-liber-fg: #0e1a3c;
+  --fc-cat-liber-fg: var(--color-primary);
   --fc-cat-anulat: #be3330;      /* per-date state: anulat */
   --fc-cat-anulat-fg: var(--color-retro-cream);
 }

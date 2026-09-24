@@ -20,14 +20,14 @@ const HeaderTop: React.FC<HeaderTopProps> = ({ contactInfo }) => {
     <div className="w-full bg-black h-8 flex items-center">
       <div className="w-full max-w-content mx-auto px-3 sm:px-4 flex justify-between items-center gap-2">
         {address && (
-          <div className="flex items-center gap-1 sm:gap-2 text-white text-2xs sm:text-sm min-w-0 flex-1">
+          <div className="flex items-center gap-1 sm:gap-2 text-primary-on-dark text-2xs sm:text-sm min-w-0 flex-1">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             {maps ? (
               <a
                 href={maps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="truncate hover:text-gray-300 transition-colors"
+                className="truncate hover:text-secondary-on-dark transition-colors"
                 data-umami-event="address-maps"
                 data-umami-event-source="header"
               >
@@ -40,11 +40,11 @@ const HeaderTop: React.FC<HeaderTopProps> = ({ contactInfo }) => {
         )}
 
         {phone && (
-          <div className="flex items-center gap-1 sm:gap-2 text-white text-2xs sm:text-sm shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 text-primary-on-dark text-2xs sm:text-sm shrink-0">
             <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             <a
               href={`tel:${phone.replace(/\s/g, "")}`}
-              className="hover:text-gray-300 transition-colors whitespace-nowrap"
+              className="hover:text-secondary-on-dark transition-colors whitespace-nowrap"
             >
               {phone}
             </a>

@@ -53,8 +53,8 @@ const EMPTY_STATS: SportspersonStats = {
 export default function AthletesSpotlight({ athletes, stats, totalCount, copy }: AthletesSpotlightProps) {
   if (!athletes.length) {
     return (
-      <section className="bg-retro-cream py-20 md:py-28">
-        <div className="max-w-content mx-auto px-6 md:px-8 text-center text-navy/40 text-sm">
+      <section className="bg-surface py-20 md:py-28">
+        <div className="max-w-content mx-auto px-6 md:px-8 text-center text-secondary text-sm">
           Niciun sportiv încărcat momentan.
         </div>
       </section>
@@ -73,26 +73,26 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
   const ctaUrl = copy?.ctaUrl?.trim() || FALLBACK.ctaUrl;
 
   return (
-    <section className="bg-retro-cream py-20 md:py-28">
+    <section className="bg-surface py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1.15fr] gap-12 md:gap-14 items-center">
           {/* Left — copy + big number + CTA */}
           <div>
             <h2
-              className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px]"
+              className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px]"
             >
               {heading}
             </h2>
-            <p className="text-navy/60 text-sm md:text-base leading-relaxed mt-4 max-w-[46ch]">
+            <p className="text-secondary text-sm md:text-base leading-relaxed mt-4 max-w-[46ch]">
               {intro}
             </p>
 
             {bigNumber && (
               <div className="mt-8 mb-8">
-                <span className="block font-display text-display-xl font-black text-navy leading-[0.9]">
+                <span className="block font-display text-display-xl font-black text-primary leading-[0.9]">
                   {bigNumber}
                 </span>
-                <span className="block text-sm font-bold uppercase tracking-[0.08em] text-rust mt-2">
+                <span className="block text-sm font-bold uppercase tracking-[0.08em] text-accent mt-2">
                   {countLabel}
                 </span>
               </div>

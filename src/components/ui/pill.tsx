@@ -9,7 +9,7 @@ const PILL_CLIP_PATH =
   "polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)";
 
 const pillVariants = cva(
-  "inline-flex items-center font-medium leading-none whitespace-nowrap text-white",
+  "inline-flex items-center font-medium leading-none whitespace-nowrap text-primary-on-dark",
   {
     variants: {
       variant: {

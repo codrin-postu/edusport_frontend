@@ -29,7 +29,7 @@ interface Props {
 
 export function Spotlight({ sportsperson, stats, rank }: Props) {
   return (
-    <section className="relative overflow-hidden bg-retro-cream border-b-[1.5px] border-navy/12 px-6 py-16 md:px-10 md:py-20 text-navy">
+    <section className="relative overflow-hidden bg-surface border-b-[1.5px] border-line-subtle px-6 py-16 md:px-10 md:py-20 text-primary">
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden
@@ -51,7 +51,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
           </h2>
 
           {sportsperson.description && (
-            <p className="mb-[30px] max-w-[460px] text-sm leading-[1.6] text-navy/60">
+            <p className="mb-[30px] max-w-[460px] text-sm leading-[1.6] text-secondary">
               {sportsperson.description}
             </p>
           )}
@@ -92,7 +92,7 @@ function NameStack({ name }: { name: string }) {
   const rest = parts.slice(1).join(" ").toUpperCase();
   return (
     <>
-      <span className="block text-navy">{first}</span>
+      <span className="block text-primary">{first}</span>
       {rest && (
         <span
           className="block"
@@ -119,16 +119,16 @@ function StatRow({
   accent?: boolean;
 }) {
   return (
-    <div className="flex items-baseline gap-[14px] border-t border-navy/15 pt-[14px] first:border-t-0 first:pt-0">
+    <div className="flex items-baseline gap-[14px] border-t border-line-subtle pt-[14px] first:border-t-0 first:pt-0">
       <span
         className={cn(
           "font-display min-w-[100px] text-[44px] font-black leading-[0.9] tracking-[-0.03em]",
-          accent ? "text-rust" : "text-navy",
+          accent ? "text-accent" : "text-primary",
         )}
       >
         {value}
       </span>
-      <div className="text-3xs font-bold uppercase tracking-[0.22em] text-navy/50">
+      <div className="text-3xs font-bold uppercase tracking-[0.22em] text-secondary">
         {label}
       </div>
     </div>

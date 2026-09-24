@@ -9,12 +9,12 @@ export const NoImage: React.FC<{ className?: string; iconClassName?: string }> =
 }) => (
   <div
     className={cn(
-      "flex items-center justify-center border-[1.5px] border-navy bg-navy/[0.03]",
+      "flex items-center justify-center border-[1.5px] border-line bg-surface-subtle",
       className,
     )}
     aria-hidden
   >
-    <ImageIcon className={cn("text-navy/25", iconClassName ?? "w-8 h-8")} strokeWidth={1.5} />
+    <ImageIcon className={cn("text-line-subtle", iconClassName ?? "w-8 h-8")} strokeWidth={1.5} />
   </div>
 );
 

@@ -19,12 +19,12 @@ function SponsorTile({ sponsor }: { sponsor: Sponsor }) {
       className="max-h-12 w-auto object-contain"
     />
   ) : (
-    <span className="px-3 text-center text-sm font-extrabold uppercase tracking-[0.04em] text-navy/70">
+    <span className="px-3 text-center text-sm font-extrabold uppercase tracking-[0.04em] text-secondary">
       {sponsor.name}
     </span>
   );
   const className =
-    "flex h-[82px] w-[150px] shrink-0 items-center justify-center border-[1.5px] border-navy bg-white shadow-[4px_4px_0_rgb(14_26_60_/_0.13)]";
+    "flex h-[82px] w-[150px] shrink-0 items-center justify-center border-[1.5px] border-line bg-surface-raised shadow-[4px_4px_0_rgb(14_26_60_/_0.13)]";
   return sponsor.href ? (
     <a
       href={sponsor.href}

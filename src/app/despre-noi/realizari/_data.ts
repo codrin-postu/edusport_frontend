@@ -99,7 +99,7 @@ export function getPlacementInfo(placement: Placement): PlacementInfo {
   return {
     label: `Locul ${placement}`,
     accent: null,
-    textClass: "text-gray-500",
+    textClass: "text-secondary",
   };
 }
 

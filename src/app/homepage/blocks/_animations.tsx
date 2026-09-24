@@ -49,7 +49,7 @@ export const BoldTextStripClient: React.FC = () => {
       {words.map((word, i) => (
         <motion.span
           key={word}
-          className="text-branding-font text-white leading-none"
+          className="text-branding-font text-primary-on-dark leading-none"
           style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)" }}
           initial={{ x: 60, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}

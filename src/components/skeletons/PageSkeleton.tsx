@@ -16,11 +16,11 @@ export function HeroSkeleton({
 }) {
   return (
     <PageHeroSection title={title} breadcrumb={breadcrumb}>
-      <h1 className="text-4xl md:text-6xl font-semibold text-white leading-[1.1] tracking-tight">
+      <h1 className="text-4xl md:text-6xl font-semibold text-primary-on-dark leading-[1.1] tracking-tight">
         {title.map((w) => w.charAt(0) + w.slice(1).toLowerCase()).join(" ")}
       </h1>
       {blurb && (
-        <p className="text-white/70 text-base font-light border-t border-white/10 pt-4">
+        <p className="text-secondary-on-dark text-base font-light border-t border-line-subtle-on-dark pt-4">
           {blurb}
         </p>
       )}
@@ -40,7 +40,7 @@ export function TextBlockSkeleton({
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className="h-3 bg-gray-200 rounded"
+          className="h-3 bg-surface-subtle rounded"
           style={{ width: `${75 + ((i * 13) % 25)}%` }}
         />
       ))}
@@ -50,7 +50,7 @@ export function TextBlockSkeleton({
 
 export function HeadingSkeleton({ width = "60%" }: { width?: string }) {
   return (
-    <div className="h-8 bg-gray-200 rounded animate-pulse" style={{ width }} />
+    <div className="h-8 bg-surface-subtle rounded animate-pulse" style={{ width }} />
   );
 }
 
@@ -71,10 +71,10 @@ export function CardGridSkeleton({
     <div className={`grid grid-cols-1 ${colClass} gap-6 md:gap-8 animate-pulse`}>
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex flex-col gap-3">
-          <div className="aspect-[4/3] bg-gray-200 rounded-xl" />
-          <div className="h-4 w-3/4 bg-gray-200 rounded" />
-          <div className="h-3 w-full bg-gray-200 rounded" />
-          <div className="h-3 w-2/3 bg-gray-200 rounded" />
+          <div className="aspect-[4/3] bg-surface-subtle rounded-xl" />
+          <div className="h-4 w-3/4 bg-surface-subtle rounded" />
+          <div className="h-3 w-full bg-surface-subtle rounded" />
+          <div className="h-3 w-2/3 bg-surface-subtle rounded" />
         </div>
       ))}
     </div>
@@ -102,11 +102,11 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
       <div className="max-w-2xl mx-auto flex flex-col gap-6 animate-pulse">
         {Array.from({ length: fields }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
-            <div className="h-3 w-24 bg-gray-200 rounded" />
-            <div className="h-11 w-full bg-gray-200 rounded" />
+            <div className="h-3 w-24 bg-surface-subtle rounded" />
+            <div className="h-11 w-full bg-surface-subtle rounded" />
           </div>
         ))}
-        <div className="h-12 w-40 bg-gray-200 rounded mt-2" />
+        <div className="h-12 w-40 bg-surface-subtle rounded mt-2" />
       </div>
     </Section>
   );
@@ -115,37 +115,37 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
 export function ArticleDetailSkeleton() {
   return (
     <>
-      <div className="bg-white border-b border-gray-100 pt-8">
+      <div className="bg-surface-raised border-b border-line-subtle pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
-          <div className="h-3 w-48 bg-gray-200 rounded animate-pulse" />
+          <div className="h-3 w-48 bg-surface-subtle rounded animate-pulse" />
         </div>
       </div>
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-gray-200 animate-pulse" />
-      <article className="bg-white pt-12 pb-40 md:pt-16 md:pb-56">
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-surface-subtle animate-pulse" />
+      <article className="bg-surface-raised pt-12 pb-40 md:pt-16 md:pb-56">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start animate-pulse">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
-                <div className="h-3 w-20 bg-gray-200 rounded" />
-                <div className="h-3 w-24 bg-gray-200 rounded" />
+                <div className="h-3 w-20 bg-surface-subtle rounded" />
+                <div className="h-3 w-24 bg-surface-subtle rounded" />
               </div>
-              <div className="h-8 w-4/5 bg-gray-200 rounded" />
-              <div className="h-px bg-gray-100" />
+              <div className="h-8 w-4/5 bg-surface-subtle rounded" />
+              <div className="h-px bg-surface-subtle" />
               <div className="flex flex-col gap-2">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-3 bg-gray-200 rounded"
+                    className="h-3 bg-surface-subtle rounded"
                     style={{ width: `${70 + ((i * 17) % 30)}%` }}
                   />
                 ))}
               </div>
             </div>
-            <aside className="hidden lg:flex flex-col gap-3 border border-gray-100 p-6">
-              <div className="h-3 w-32 bg-gray-200 rounded" />
-              <div className="h-3 w-40 bg-gray-200 rounded" />
-              <div className="h-3 w-24 bg-gray-200 rounded" />
-              <div className="h-3 w-36 bg-gray-200 rounded" />
+            <aside className="hidden lg:flex flex-col gap-3 border border-line-subtle p-6">
+              <div className="h-3 w-32 bg-surface-subtle rounded" />
+              <div className="h-3 w-40 bg-surface-subtle rounded" />
+              <div className="h-3 w-24 bg-surface-subtle rounded" />
+              <div className="h-3 w-36 bg-surface-subtle rounded" />
             </aside>
           </div>
         </div>

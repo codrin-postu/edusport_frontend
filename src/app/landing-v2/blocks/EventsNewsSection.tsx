@@ -39,13 +39,13 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
   const listArticles = showEvent ? articles : rest;
 
   return (
-    <section className="bg-retro-cream py-20 md:py-28">
+    <section className="bg-surface py-20 md:py-28">
       <div className="max-w-content mx-auto px-6 md:px-8">
         {/* Header */}
-        <p className="text-2xs font-bold tracking-[0.2em] uppercase text-navy mb-2">
+        <p className="text-2xs font-bold tracking-[0.2em] uppercase text-primary mb-2">
           Actualitate
         </p>
-        <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.3px] mb-12 md:mb-14">
+        <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px] mb-12 md:mb-14">
           Evenimente și noutăți
         </h2>
 
@@ -54,7 +54,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
           <div>
             {showEvent ? (
               <>
-                <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-navy/45 mb-4">
+                <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-secondary mb-4">
                   Eveniment următor
                 </p>
                 <EventCard event={event!} />
@@ -76,7 +76,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
 function FeaturedArticle({ article: featured }: { article: LatestArticleData }) {
   return (
     <Link href={`/noutati/${featured.slug}`} className="group block">
-      <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100 border-[1.5px] border-navy">
+      <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-[1.5px] border-line">
         {featured.image && (
           <Image
             src={featured.image}
@@ -91,18 +91,18 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
         )}
       </div>
       {featured.category && (
-        <span className="mt-3 inline-block bg-rust text-retro-cream text-3xs font-extrabold tracking-[0.1em] uppercase px-2 py-1">
+        <span className="mt-3 inline-block bg-rust text-primary-on-dark text-3xs font-extrabold tracking-[0.1em] uppercase px-2 py-1">
           {CATEGORY_LABELS[featured.category]}
         </span>
       )}
-      <h3 className="font-display font-bold text-navy leading-tight mt-2 mb-1.5 text-xl md:text-2xl">
+      <h3 className="font-display font-bold text-primary leading-tight mt-2 mb-1.5 text-xl md:text-2xl">
         {featured.title}
       </h3>
-      <p className="text-xs text-navy/40 mb-2">{featured.date}</p>
+      <p className="text-xs text-secondary mb-2">{featured.date}</p>
       {featured.excerpt && (
-        <p className="text-sm text-navy/55 leading-relaxed line-clamp-2">{featured.excerpt}</p>
+        <p className="text-sm text-secondary leading-relaxed line-clamp-2">{featured.excerpt}</p>
       )}
-      <span className="link-underline-rust inline-block mt-4 text-sm font-bold text-navy">
+      <span className="link-underline-rust inline-block mt-4 text-sm font-bold text-primary">
         Citește articolul
       </span>
     </Link>
@@ -114,17 +114,17 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
   const list = articles.slice(0, 4);
   return (
     <div>
-      <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-navy/45 mb-3">
+      <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-secondary mb-3">
         Alte articole
       </p>
 
       <ul>
         {list.map((a, i) => (
-          <li key={a.slug + i} className="border-t border-navy/10 first:border-t-0">
+          <li key={a.slug + i} className="border-t border-line-subtle first:border-t-0">
             <Link href={`/noutati/${a.slug}`} className="group block py-3.5">
-              <p className="font-display text-base font-bold text-navy leading-snug">{a.title}</p>
+              <p className="font-display text-base font-bold text-primary leading-snug">{a.title}</p>
               {/* One muted line, as drawn: "Competitii, 4 septembrie". */}
-              <p className="text-xs text-navy/40 mt-1">
+              <p className="text-xs text-secondary mt-1">
                 {a.category ? `${CATEGORY_LABELS[a.category]}, ${a.date}` : a.date}
               </p>
             </Link>
@@ -134,7 +134,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
 
       <Link
         href="/noutati"
-        className="link-underline-rust inline-block mt-4 text-sm font-bold text-navy"
+        className="link-underline-rust inline-block mt-4 text-sm font-bold text-primary"
       >
         Toate noutățile
       </Link>

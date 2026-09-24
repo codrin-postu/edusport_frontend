@@ -12,7 +12,7 @@ interface WhatsAppQRProps {
 
 export const WhatsAppQR: React.FC<WhatsAppQRProps> = ({ size, url = CHANNEL_URL }) => {
   return (
-    <div className="bg-white rounded-lg p-[7px] inline-flex">
+    <div className="bg-surface-raised rounded-lg p-[7px] inline-flex">
       <QRCodeSVG
         value={url}
         size={size}

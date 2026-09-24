@@ -23,7 +23,7 @@ const CoursesHeaderSection: React.FC<CoursesHeaderSectionProps> = ({
         )}
       >
         <div
-          className={cn("max-w-4xl", "mx-auto", "text-center", "text-white")}
+          className={cn("max-w-4xl", "mx-auto", "text-center", "text-primary-on-dark")}
         >
           <h1
             className={cn(
@@ -36,7 +36,7 @@ const CoursesHeaderSection: React.FC<CoursesHeaderSectionProps> = ({
           >
             Cursurile Noastre
           </h1>
-          <p className={cn("text-xl", "mb-6", "text-white/90")}>
+          <p className={cn("text-xl", "mb-6", "text-primary-on-dark")}>
             Sezonul {currentSeason}
           </p>
           <div
@@ -47,7 +47,7 @@ const CoursesHeaderSection: React.FC<CoursesHeaderSectionProps> = ({
               "py-2",
               "rounded-full",
               isRegistrationOpen ? "bg-green-500" : "bg-red-500",
-              "text-white",
+              "text-primary-on-dark",
               "font-semibold",
             )}
           >

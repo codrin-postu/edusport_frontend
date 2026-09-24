@@ -67,36 +67,36 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-white border-[1.5px] border-navy text-navy transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust/25",
+      "flex items-stretch w-full bg-surface-raised border-[1.5px] border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust/25",
     groupInvalid: "border-rust",
-    segment: "text-navy data-[placeholder]:text-navy/40 data-[focused]:bg-navy data-[focused]:text-retro-cream",
-    literal: "text-navy/35",
-    trigger: "border-l-[1.5px] border-navy bg-retro-cream text-navy hover:text-rust",
-    popover: "bg-white border-[1.5px] border-navy shadow-[4px_4px_0_rgb(14_26_60_/_0.16)]",
-    heading: "text-navy hover:text-rust",
-    nav: "text-navy hover:text-rust",
-    weekday: "text-navy/45",
+    segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
+    literal: "text-line-subtle",
+    trigger: "border-l-[1.5px] border-line bg-surface text-primary hover:text-accent",
+    popover: "bg-surface-raised border-[1.5px] border-line shadow-[4px_4px_0_rgb(14_26_60_/_0.16)]",
+    heading: "text-primary hover:text-accent",
+    nav: "text-primary hover:text-accent",
+    weekday: "text-secondary",
     cell:
-      "text-navy data-[outside-month]:text-navy/25 data-[hovered]:bg-navy/[0.07] data-[selected]:bg-rust data-[selected]:text-white data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-navy/20",
-    year: "text-navy hover:bg-navy/[0.07]",
-    yearOn: "bg-navy text-retro-cream font-extrabold hover:bg-navy",
+      "text-primary data-[outside-month]:text-line-subtle data-[hovered]:bg-surface-subtle data-[selected]:bg-rust data-[selected]:text-primary-on-dark data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-line-subtle",
+    year: "text-primary hover-layer",
+    yearOn: "bg-surface-dark text-primary-on-dark font-extrabold hover:bg-surface-dark",
   },
   navy: {
     group:
-      "flex items-stretch w-full bg-white/[0.06] border-[1.5px] border-retro-cream/35 text-retro-cream transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard/25",
+      "flex items-stretch w-full bg-surface-subtle-on-dark border-[1.5px] border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard/25",
     groupInvalid: "border-danger",
     segment:
-      "text-retro-cream data-[placeholder]:text-retro-cream/40 data-[focused]:bg-mustard data-[focused]:text-navy",
-    literal: "text-retro-cream/35",
-    trigger: "border-l-[1.5px] border-retro-cream/35 bg-white/[0.06] text-retro-cream hover:text-mustard",
-    popover: "bg-navy border-[1.5px] border-retro-cream/35 shadow-[4px_4px_0_rgb(0_0_0_/_0.3)]",
-    heading: "text-retro-cream hover:text-mustard",
-    nav: "text-retro-cream hover:text-mustard",
-    weekday: "text-retro-cream/45",
+      "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",
+    literal: "text-line-subtle-on-dark",
+    trigger: "border-l-[1.5px] border-line-on-dark bg-surface-subtle-on-dark text-primary-on-dark hover:text-mustard",
+    popover: "bg-surface-dark border-[1.5px] border-line-on-dark shadow-[4px_4px_0_rgb(0_0_0_/_0.3)]",
+    heading: "text-primary-on-dark hover:text-mustard",
+    nav: "text-primary-on-dark hover:text-mustard",
+    weekday: "text-secondary-on-dark",
     cell:
-      "text-retro-cream data-[outside-month]:text-retro-cream/25 data-[hovered]:bg-white/[0.08] data-[selected]:bg-mustard data-[selected]:text-navy data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-retro-cream/20",
-    year: "text-retro-cream hover:bg-white/[0.08]",
-    yearOn: "bg-mustard text-navy font-extrabold hover:bg-mustard",
+      "text-primary-on-dark data-[outside-month]:text-line-subtle-on-dark data-[hovered]:bg-surface-subtle-on-dark data-[selected]:bg-mustard data-[selected]:text-primary data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-line-subtle-on-dark",
+    year: "text-primary-on-dark hover-layer-on-dark",
+    yearOn: "bg-mustard text-primary font-extrabold hover:bg-mustard",
   },
 } as const;
 
@@ -170,7 +170,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         <Label
           className={cn(
             "block text-[11px] font-bold uppercase tracking-[0.08em] mb-1.5",
-            variant === "navy" ? "text-retro-cream/60" : "text-navy/55",
+            variant === "navy" ? "text-secondary-on-dark" : "text-secondary",
           )}
         >
           {label}

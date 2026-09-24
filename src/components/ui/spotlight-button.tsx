@@ -38,19 +38,28 @@ interface SpotlightButtonProps {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  black: "bg-black text-white",
-  white: "bg-white text-black",
+  black: "bg-black text-primary-on-dark",
+  white: "bg-surface-raised text-black",
   outline: "bg-transparent text-black border border-black",
-  "outline-white": "bg-transparent text-white border border-white",
+  "outline-white": "bg-transparent text-primary-on-dark border border-line-on-dark",
 };
 
 // Duration of the sweep fill, matching the reference pen.
 const SWEEP_DURATION = "0.3s";
 
 const layersFaceStyles: Record<LayersFace, string> = {
-  black: "bg-black text-white",
-  white: "bg-white text-navy",
-  cream: "bg-retro-cream text-navy",
+  black: "bg-black text-primary-on-dark",
+  white: "bg-surface-raised text-primary",
+  cream: "bg-surface text-primary",
+};
+
+/** Disabled face colour: solid, not opacity. `black` sits on light panels;
+ * `white`/`cream` sit on navy panels, so their disabled state uses the
+ * on-dark muted tokens. */
+const layersFaceDisabledStyles: Record<LayersFace, string> = {
+  black: "group-disabled:bg-surface-subtle group-disabled:text-muted",
+  white: "group-disabled:bg-surface-subtle-on-dark group-disabled:text-muted-on-dark",
+  cream: "group-disabled:bg-surface-subtle-on-dark group-disabled:text-muted-on-dark",
 };
 
 /**
@@ -74,17 +83,17 @@ const LayersButton: React.FC<{
   // overshoot + snap-pop compile reliably; only face colour/typography here.
   const inner = (
     <>
-      <span aria-hidden className="lcta-layer lcta-l1" />
-      <span aria-hidden className="lcta-layer lcta-l2" />
+      <span aria-hidden className="lcta-layer lcta-l1 group-disabled:hidden" />
+      <span aria-hidden className="lcta-layer lcta-l2 group-disabled:hidden" />
       <span
-        className={`lcta-face px-8 py-3.5 font-bold uppercase tracking-[0.03em] ${layersFaceStyles[face]}`}
+        className={`lcta-face h-12 px-6 inline-flex items-center justify-center font-bold uppercase tracking-[0.03em] ${layersFaceStyles[face]} ${layersFaceDisabledStyles[face]}`}
       >
         {children}
       </span>
     </>
   );
 
-  const wrapperClass = `lcta select-none ${disabled ? "opacity-60 pointer-events-none" : ""} ${className}`;
+  const wrapperClass = `lcta group select-none ${disabled ? "pointer-events-none cursor-not-allowed" : ""} ${className}`;
 
   if (href) {
     return (
@@ -162,7 +171,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
       data-umami-event={umamiEvent}
-      className={`relative overflow-hidden px-6 py-3 rounded-full font-normal outline-none active:ring-2 active:ring-offset-2 active:ring-current ${variantStyles[variant]} ${className}`}
+      className={`relative overflow-hidden h-12 px-6 inline-flex items-center justify-center rounded-full font-normal outline-none active:ring-2 active:ring-offset-2 active:ring-current ${variantStyles[variant]} ${className}`}
     >
       {/* Fill that grows from the left on hover. */}
       <span

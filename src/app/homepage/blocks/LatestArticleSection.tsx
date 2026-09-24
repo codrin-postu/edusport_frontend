@@ -110,7 +110,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
       />
       <Link href={`/noutati/${slug}`} className="relative block z-10">
         {/* Image */}
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100">
+        <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle">
           {image && (
             <Image
               src={image}
@@ -125,27 +125,27 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
           )}
           {/* Category badge */}
           {category && (
-            <span className="absolute top-3 left-3 bg-edusport-blue text-white text-3xs font-bold tracking-widest uppercase px-2 py-1 rounded-full z-10">
+            <span className="absolute top-3 left-3 bg-edusport-blue text-primary-on-dark text-3xs font-bold tracking-widest uppercase px-2 py-1 rounded-full z-10">
               {CATEGORY_LABELS[category]}
             </span>
           )}
         </div>
 
         {/* Below image: title+excerpt | divider | date */}
-        <div className="flex items-stretch py-5 pb-7 bg-white">
+        <div className="flex items-stretch py-5 pb-7 bg-surface-raised">
           <div className="flex-1 pl-4 pr-6 flex flex-col gap-2">
-            <h3 className="text-base md:text-2xl font-bold text-gray-900 leading-tight">
+            <h3 className="text-base md:text-2xl font-bold text-primary leading-tight">
               {title}
             </h3>
-            <p className="text-xs text-gray-400 lg:hidden">{date}</p>
+            <p className="text-xs text-muted lg:hidden">{date}</p>
             {excerpt && (
-              <p className="text-sm text-gray-500 line-clamp-2 hidden md:block">
+              <p className="text-sm text-secondary line-clamp-2 hidden md:block">
                 {excerpt}
               </p>
             )}
           </div>
 
-          <div className="hidden lg:block w-px bg-gray-200 self-stretch" />
+          <div className="hidden lg:block w-px bg-surface-subtle self-stretch" />
 
           <div className="hidden lg:flex flex-col items-center justify-center px-8 min-w-[130px]">
             <DateStack date={date} />
@@ -172,7 +172,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
       href={`/noutati/${slug}`}
       className={cn(
         "group flex items-start gap-3 py-3",
-        !isLast && "border-b border-gray-100",
+        !isLast && "border-b border-line-subtle",
       )}
     >
       {/* Number */}
@@ -193,13 +193,13 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
             </span>
           )}
           {category && <span className="w-[3px] h-[3px] rounded-full bg-gray-300 flex-shrink-0" />}
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-muted">
             {day} {mon}
           </span>
         </div>
 
         {/* Title */}
-        <p className="text-sm font-bold text-gray-900 leading-snug transition-colors duration-200 group-hover:text-edusport-blue">
+        <p className="text-sm font-bold text-primary leading-snug transition-colors duration-200 group-hover:text-edusport-blue">
           {title}
         </p>
       </div>
@@ -247,7 +247,7 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
   const listArticles = rest.slice(0, 4);
 
   return (
-    <section className="relative mt-16 pt-20 pb-0 bg-white">
+    <section className="relative mt-16 pt-20 pb-0 bg-surface-raised">
       <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-24">
           {/* Eyebrow */}

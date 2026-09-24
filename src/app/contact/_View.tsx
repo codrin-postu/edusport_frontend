@@ -72,16 +72,16 @@ const ContactInfoCard: React.FC<{
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-4 p-4 bg-retro-cream border-[1.5px] border-navy shadow-[4px_4px_0_rgb(14_26_60_/_0.14)] hover:shadow-[6px_6px_0_rgb(14_26_60_/_0.2)] transition-all duration-200"
+      className="group flex items-center gap-4 p-4 bg-surface border-[1.5px] border-line shadow-[4px_4px_0_rgb(14_26_60_/_0.14)] hover:shadow-[6px_6px_0_rgb(14_26_60_/_0.2)] transition-all duration-200"
     >
-      <div className="flex-shrink-0 w-9 h-9 border-[1.5px] border-navy bg-navy text-retro-cream flex items-center justify-center">
+      <div className="flex-shrink-0 w-9 h-9 border-[1.5px] border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-3xs font-bold text-navy/45 uppercase tracking-[0.1em] mb-0.5">
+        <p className="text-3xs font-bold text-secondary uppercase tracking-[0.1em] mb-0.5">
           {label}
         </p>
-        <p className="text-sm font-semibold text-navy group-hover:text-rust transition-colors break-all">
+        <p className="text-sm font-semibold text-primary group-hover:text-accent transition-colors break-all">
           {value}
         </p>
       </div>
@@ -250,12 +250,12 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center py-16 px-8 text-center gap-4">
         <div className="w-14 h-14 rounded-full bg-mustard flex items-center justify-center">
-          <Send className="w-6 h-6 text-navy" />
+          <Send className="w-6 h-6 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-retro-cream">
+        <h3 className="font-display text-2xl font-extrabold text-primary-on-dark">
           Mesaj trimis!
         </h3>
-        <p className="text-sm text-retro-cream/60 max-w-xs">
+        <p className="text-sm text-secondary-on-dark max-w-xs">
           Îți mulțumim pentru mesaj. Te vom contacta în cel mai scurt timp.
         </p>
         <button
@@ -369,7 +369,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
             options={selectOptions(config, "reason", CONTACT_REASONS)}
             placeholder="Selectează motivul contactării..."
             required={req("reason")}
-            className="bg-white/[0.06] border-retro-cream/35 text-retro-cream focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
+            className="bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
           />
         </div>
       )}
@@ -421,7 +421,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       >
         {status === "sending" ? (
           <span className="flex items-center gap-2">
-            <span className="w-4 h-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-line-subtle border-t-line rounded-full animate-spin" />
             Se trimite...
           </span>
         ) : (
@@ -465,30 +465,30 @@ const ContactPage: React.FC<{
   ].filter(Boolean) as { icon: LucideIcon; label: string; value: string; href: string }[];
 
   return (
-    <div className="min-h-screen bg-retro-cream">
+    <div className="min-h-screen bg-surface">
       <PageHeroSection title={["CONTACT"]} backgroundImage="/images/courses.png">
-        <h1 className="font-display text-display-md font-extrabold text-retro-cream leading-[1.05] tracking-[-0.5px]">
+        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
           Contact
         </h1>
-        <p className="text-retro-cream/70 text-base max-w-md">
+        <p className="text-secondary-on-dark text-base max-w-md">
           Suntem aici să răspundem întrebărilor tale. Contactează-ne prin
           formularul de mai jos sau direct.
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-retro-cream">
+      <section className="relative z-10 bg-surface">
         <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
-                <p className="text-eyebrow font-bold uppercase text-rust">
+                <p className="text-eyebrow font-bold uppercase text-accent">
                   Datele noastre
                 </p>
-                <h2 className="font-display text-display-sm font-extrabold text-navy leading-[1.05] tracking-[-0.4px]">
+                <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
                   Ia legătura cu noi
                 </h2>
-                <p className="text-sm text-navy/60 leading-relaxed max-w-sm">
+                <p className="text-sm text-secondary leading-relaxed max-w-sm">
                   Fie că vrei să te înscrii la cursuri, ai o întrebare sau
                   dorești o colaborare, suntem bucuroși să te ajutăm.
                 </p>
@@ -508,12 +508,12 @@ const ContactPage: React.FC<{
             </div>
 
             {/* Right - form (navy panel) */}
-            <div className="relative bg-navy p-6 md:p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]">
+            <div className="relative bg-surface-dark p-6 md:p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
-              <h2 className="font-display text-2xl font-extrabold text-retro-cream mb-1">
+              <h2 className="font-display text-2xl font-extrabold text-primary-on-dark mb-1">
                 Trimite-ne un mesaj
               </h2>
-              <p className="text-sm text-retro-cream/50 mb-7">
+              <p className="text-sm text-secondary-on-dark mb-7">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <ContactForm config={formConfig} />

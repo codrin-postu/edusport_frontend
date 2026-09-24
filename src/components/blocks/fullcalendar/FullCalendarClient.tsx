@@ -7,8 +7,8 @@ import React from "react";
 const FullCalendarWrapper = dynamic(() => import("./FullCalendarWrapper"), {
   ssr: false,
   loading: () => (
-    <div className="h-96 flex items-center justify-center bg-navy/[0.04] border border-navy/15">
-      <p className="text-sm text-navy/50">Se încarcă calendarul...</p>
+    <div className="h-96 flex items-center justify-center bg-surface-subtle border border-line-subtle">
+      <p className="text-sm text-secondary">Se încarcă calendarul...</p>
     </div>
   ),
 });

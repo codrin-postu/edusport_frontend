@@ -150,7 +150,7 @@ export default async function RootLayout({
           navItems={navigationItems}
         />
         <main
-          className="relative z-10 pt-20 pb-24 md:pb-32 bg-retro-cream lg:overflow-clip"
+          className="relative z-10 pt-20 pb-24 md:pb-32 bg-surface lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}

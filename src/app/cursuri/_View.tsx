@@ -25,14 +25,14 @@ const CoursesPage: React.FC<CoursesPageProps> = ({
   cursuriPageData,
 }) => {
   return (
-    <div className={cn("min-h-screen", "bg-white")}>
+    <div className={cn("min-h-screen", "bg-surface-raised")}>
       <CoursesBannerSection
         currentSeason={currentSeason}
         isRegistrationOpen={isRegistrationOpen}
         {...cursuriPageData.banner}
       />
 
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10 bg-surface-raised">
         <AboutSection {...cursuriPageData.aboutSection} />
 
         <PricingSection
