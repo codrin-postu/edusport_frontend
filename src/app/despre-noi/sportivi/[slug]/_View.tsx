@@ -29,11 +29,11 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
  * Hero is the showpiece: navy band, huge stacked filled+stroked name
  * (League Spartan display, ~110px on desktop), photo as inset with the
  * brand gold→rust→blue gradient, "01" watermark, and a 3-stat row. Right
- * after it comes "Despre mine" — the athlete's narrative bio (Lora serif
+ * after it comes "Despre mine" — the athlete's narrative bio (Inter
  * lead). The rest (attribute grid, Programe, Performanțe, Galerie,
  * Istoric, Outro) sits on cream so the editorial weight lives up top —
  * same rhythm as the sportivi index, in the shared retro system
- * (cream / navy / rust / gold, League Spartan display + Lora serif).
+ * (cream / navy / rust / gold, League Spartan display + Inter body).
  */
 
 interface Props {
@@ -176,7 +176,7 @@ const SportspersonView: React.FC<Props> = ({
               <div className="mb-4 text-2xs font-bold uppercase tracking-[0.32em] text-gold">
                 {category}
               </div>
-              <h1 className="font-display font-black leading-[0.85] tracking-[-0.055em] text-[56px] md:text-[88px]">
+              <h1 className="font-display font-black leading-[0.85] tracking-[-0.035em] text-[56px] md:text-[88px]">
                 <NameStack name={sportsperson.name} />
               </h1>
             </div>
@@ -236,10 +236,7 @@ const SportspersonView: React.FC<Props> = ({
                 <StrapiBlocks blocks={sportsperson.story} />
               </div>
             ) : (
-              <p
-                className="mt-6 max-w-[620px] text-2xl leading-[1.5] text-navy md:text-[28px]"
-                style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
-              >
+              <p className="mt-6 max-w-[620px] text-base font-semibold text-navy">
                 {sportsperson.description}
               </p>
             )}
@@ -295,10 +292,7 @@ const SportspersonView: React.FC<Props> = ({
               )}
               {sportsperson.careerGoal && (
                 <DespreCell title="Obiectiv">
-                  <p
-                    className="text-base italic leading-relaxed text-navy/80"
-                    style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
-                  >
+                  <p className="border-l-[3px] border-rust pl-3 text-base leading-relaxed text-navy/70">
                     {sportsperson.careerGoal}
                   </p>
                 </DespreCell>

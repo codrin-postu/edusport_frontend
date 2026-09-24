@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
-import { Inter, League_Spartan, Caveat, Lora } from "next/font/google";
+import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { FooterReveal, Header } from "../components/blocks";
@@ -19,35 +19,25 @@ import { OrganizationJsonLd } from "@/components/JsonLd";
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
-  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  // 400/600 cover the redesigned body copy. 700 stays loaded too: the frozen
+  // landing hero (`[data-hero-frozen]`, tests/visual/hero.spec.ts) still has
+  // font-bold buttons that must render pixel-identical to the pre-redesign
+  // snapshot, and dropping 700 renders them with the 600 weight's thinner
+  // strokes instead (a real glyph difference, not synthetic bolding).
+  weight: ["400", "600", "700"],
   variable: "--font-inter",
   display: "swap",
 });
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["800", "900"],
   variable: "--font-league-spartan",
   display: "swap",
 });
 
-const lora = Lora({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-lora",
-  display: "swap",
-});
-
-const caveat = Caveat({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-caveat",
-  display: "swap",
-});
-
 const climateCrisis = localFont({
-  src: "../../public/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf",
+  src: "../../public/fonts/ClimateCrisis-1979.woff2",
   variable: "--font-climate-crisis",
   display: "swap",
 });
@@ -118,7 +108,7 @@ export default async function RootLayout({
   return (
     <html
       lang="ro"
-      className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${caveat.variable} ${climateCrisis.variable} ${lora.variable}`}
+      className={`lv2-nav ${inter.variable} ${leagueSpartan.variable} ${climateCrisis.variable}`}
     >
       <head>
         {/*

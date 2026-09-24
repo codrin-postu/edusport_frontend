@@ -18,18 +18,15 @@ html {
 
 /* Typography Rules */
 
-h4,
-h5,
-h6,
-p,
-span,
-div,
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
-.font-handwriting {
-  font-family: var(--font-caveat), cursive !important;
+/* The frozen landing hero keeps the old element-level rule so it renders
+   exactly as before. Everywhere else, text inherits from its parent, so
+   .font-display reaches its spans. */
+[data-hero-frozen] :is(h4, h5, h6, p, span, div) {
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 .text-branding-font,
@@ -374,7 +371,7 @@ html.lv2-nav footer a[aria-label]:hover {
 /* Footer column typography: League Spartan headings at 17px, links at 14px
    (Text headings render as span.text-lg). */
 html.lv2-nav footer span.text-lg {
-  font-family: "League Spartan", sans-serif;
+  font-family: var(--font-display);
   font-weight: 700 !important;
   font-size: 1.0625rem !important;
 }

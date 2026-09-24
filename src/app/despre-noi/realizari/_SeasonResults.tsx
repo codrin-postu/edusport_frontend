@@ -113,7 +113,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
                         )}
                       >
                         <span>{season.label}</span>
-                        <span className="ml-auto font-sans text-2xs font-semibold text-navy/45 tabular-nums">
+                        <span className="ml-auto text-2xs font-semibold text-navy/45 tabular-nums">
                           {season.resultCount}
                         </span>
                       </Link>

@@ -216,13 +216,13 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
           }
 
           .csstrip-heading {
-            font-family: var(--font-lora), Georgia, "Times New Roman", Times, serif;
+            font-family: var(--font-inter), system-ui, sans-serif;
+            font-weight: 400;
             font-size: clamp(1.25rem, 4.5vw, 2.25rem);
             line-height: 1.2;
             max-width: min(460px, 82vw);
             color: white;
             margin: 0;
-            font-weight: 500;
             text-align: left;
             will-change: transform, opacity;
             animation: linear csstrip-heading-in both;
@@ -285,7 +285,7 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
             background: rgba(255, 255, 255, 0.08);
           }
           .csstrip-heading {
-            font-family: var(--font-lora), Georgia, serif;
+            font-family: var(--font-inter), system-ui, sans-serif; font-weight: 400;
             font-size: 1.5rem; max-width: 320px; color: white; margin: 0;
           }
           /* No scroll timeline → the draw-in can't run; hide the band rather

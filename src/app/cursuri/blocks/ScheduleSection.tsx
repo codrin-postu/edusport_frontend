@@ -1,4 +1,5 @@
 import Section from "@/components/ui/section";
+import { WeekendNote } from "@/components/ui/weekend-note";
 import { cn } from "@/utils/cn";
 import { Info } from "lucide-react";
 import Image from "next/image";
@@ -111,22 +112,10 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               </div>
             </div>
             {/* Handwritten note */}
-            <span
-              aria-hidden
-              className="absolute pointer-events-none select-none"
-              style={{
-                right: "26px",
-                bottom: "12px",
-                fontFamily: "var(--font-caveat)",
-                fontSize: "30px",
-                color: "var(--color-rust)",
-                opacity: 0.6,
-                transform: "rotate(-7deg)",
-                zIndex: 5,
-              }}
-            >
-              weekend!
-            </span>
+            <WeekendNote
+              className="absolute pointer-events-none select-none w-auto"
+              style={{ right: 26, bottom: 12, height: 30, transform: "rotate(-7deg)", color: "#dc7f7d" }}
+            />
 
             {/* Pencil doodle - scattered hand-drawn stars */}
             <div className="absolute bottom-0 right-0 left-[88px] pointer-events-none" style={{ height: "90px" }}>
