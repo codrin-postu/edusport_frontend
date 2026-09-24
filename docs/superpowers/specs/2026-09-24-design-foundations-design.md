@@ -181,7 +181,11 @@ anchor and form scrolls land below the header.
 
 ## 8. Typography
 
-**Families (3, 8 files, down from 5 and about 23):**
+**Families: 3, down from 5.** Inter and League Spartan are variable fonts, so
+all their weights come from one file each (split into Latin and Latin Extended,
+which Romanian ș and ț need). Measured on the live homepage: 11 font files,
+556 KB today; about 5 files after (Inter 2, League Spartan 2, Climate Crisis 1).
+The weight list below limits which weights the design uses, not the download.
 
 | Family | Weights | Use |
 |---|---|---|
