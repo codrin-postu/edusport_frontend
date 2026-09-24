@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { ROUTES, WIDTHS, discoverSlugs, slugName } from "./routes";
-import { blockThirdParty, stabilize } from "./stabilize";
+import { blockHeroVideo, blockThirdParty, stabilize } from "./stabilize";
 
 let slugs: string[] = [];
 
@@ -18,6 +18,7 @@ for (const width of WIDTHS) {
     for (const route of ROUTES) {
       test(`${route}`, async({ page }) => {
         await blockThirdParty(page);
+        await blockHeroVideo(page);
         await page.goto(route);
         await stabilize(page);
         await expect(page).toHaveScreenshot(`${slugName(route)}-${width}.png`, { fullPage: true });
@@ -26,6 +27,7 @@ for (const width of WIDTHS) {
 
     test("detail pages", async({ page }) => {
       await blockThirdParty(page);
+      await blockHeroVideo(page);
       for (const route of slugs) {
         await page.goto(route);
         await stabilize(page);

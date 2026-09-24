@@ -6,6 +6,15 @@ export async function blockThirdParty(page: Page): Promise<void> {
   await page.route(BLOCK, (route) => route.abort());
 }
 
+/**
+ * Blocks the hero background video request so the landing page never enters
+ * the "video on" color state during a screenshot. For the page suite only:
+ * `hero.spec.ts` covers the video-on state separately by force-playing.
+ */
+export async function blockHeroVideo(page: Page): Promise<void> {
+  await page.route("**/hero-0803.mp4", (route) => route.abort());
+}
+
 /** The style freeze `stabilize` injects, shared with `freezeStyles` below. */
 const FREEZE_CSS = `
   #cc-main, [data-visual="announcement"] { display: none !important; }
