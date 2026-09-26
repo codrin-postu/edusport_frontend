@@ -66,11 +66,11 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
 
           {/* Notable achievements list — rust chevron markers */}
           {notableAchievements.length > 0 && (
-            <ul className="flex flex-col gap-2.5 mb-20">
+            <ul className="flex flex-col gap-3 mb-24">
               {notableAchievements.map((achievement, i) => (
                 <li
                   key={i}
-                  className="text-body-sm relative pl-5 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {achievement}
                 </li>

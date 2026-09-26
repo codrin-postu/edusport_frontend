@@ -106,7 +106,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   const [members, nonMembers] = pricingData ?? [null, null];
 
   return (
-    <Section id="preturi" className="py-20 bg-surface">
+    <Section id="preturi" className="py-24 bg-surface">
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-2">
           <span className="text-label uppercase text-accent">
@@ -117,9 +117,9 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-5 items-stretch">
+        <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Promo card — plain navy */}
-          <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-retro">
+          <div className="relative overflow-hidden p-8 md:p-12 flex flex-col gap-6 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-retro">
             <span className="text-label uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
@@ -136,7 +136,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               </p>
               <ul className="flex flex-col gap-2">
                 {subscriptionBullets.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
+                  <li key={i} className="flex items-start gap-3">
                     <span className="shrink-0 font-extrabold text-mustard">›</span>
                     <span>{item}</span>
                   </li>
@@ -155,7 +155,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           </div>
 
           {/* Price cards — 2-col at md, dissolve into parent 3-col at lg */}
-          <div className="grid md:grid-cols-2 lg:contents gap-5 items-stretch">
+          <div className="grid md:grid-cols-2 lg:contents gap-6 items-stretch">
             {pricingData === null || !members || !nonMembers ? (
               <div className="md:col-span-2 lg:col-span-2 bg-surface border-retro border-line shadow-retro flex items-center justify-center min-h-[520px] px-8">
                 <p className="text-body-sm text-secondary text-center">
@@ -176,11 +176,11 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="text-caption flex flex-col gap-1.5 text-secondary max-w-2xl">
+          <div className="text-caption flex flex-col gap-2 text-secondary max-w-2xl">
             <p className="text-label uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>
-            <ul className="flex flex-col gap-1.5">
+            <ul className="flex flex-col gap-2">
               {footerNotes.map((text, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="mt-0.5 shrink-0">·</span>

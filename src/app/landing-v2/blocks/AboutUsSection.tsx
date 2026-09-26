@@ -117,7 +117,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
   const mobilePaths = useMemo(ribbonPathsMobile, []);
 
   return (
-    <section className="relative bg-surface overflow-hidden py-6 md:py-10">
+    <section className="relative bg-surface overflow-hidden py-6 md:py-12">
       {/* Mobile: the ribbon sits as a faint, out-of-flow background (doesn't
           push any content). Desktop uses the in-flow full-bleed ribbon below. */}
       <svg
@@ -133,7 +133,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
 
       <div className="max-w-content mx-auto relative z-[1]">
         {/* ── Section 1 — content + brush-masked skater ── */}
-        <div className="relative flex flex-col md:flex-row items-center gap-10 md:gap-14 py-10 px-6 md:px-16">
+        <div className="relative flex flex-col md:flex-row items-center gap-12 md:gap-16 py-12 px-6 md:px-16">
           <div className="max-w-[620px]">
             <Content panel={PANELS[0]!} />
           </div>
@@ -152,7 +152,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
 
         {/* ── Section 2 — pulled up into the ribbon's empty area (scales with
              the full-bleed ribbon height: ~-62% of ribbon height = -41vw) ── */}
-        <div className="relative z-[2] min-h-[360px] flex items-center py-10 px-6 md:px-16 mt-0 md:[margin-top:max(-656px,-41vw)]">
+        <div className="relative z-[2] min-h-[360px] flex items-center py-12 px-6 md:px-16 mt-0 md:[margin-top:max(-656px,-41vw)]">
           <div className="max-w-[490px]">
             <Content panel={PANELS[1]!} accent />
           </div>
@@ -168,7 +168,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
              capped at 1600px (see above), so the clearance is clamped at the
              matching 336px (41vw-320px at 1600) — beyond 1600 nothing scales,
              so section 3 doesn't drift ever further down. ── */}
-        <div className="min-h-[360px] flex items-center md:justify-end py-10 px-6 md:px-16 mt-0 md:[margin-top:clamp(2.75rem,calc(41vw_-_320px),336px)] text-left md:text-right">
+        <div className="min-h-[360px] flex items-center md:justify-end py-12 px-6 md:px-16 mt-0 md:[margin-top:clamp(2.75rem,calc(41vw_-_320px),336px)] text-left md:text-right">
           <div className="max-w-[490px] md:ml-auto">
             <Content panel={PANELS[2]!} />
           </div>
@@ -188,21 +188,21 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
       {panel.eyebrow}
     </div>
     <h2
-      className="text-display text-primary mb-3.5"
+      className="text-display text-primary mb-4"
       style={{ lineHeight: accent ? 1.3 : 0.98 }}
     >
       {panel.heading.split("\n").map((line, j) => (
         <React.Fragment key={j}>
           {j > 0 && <br />}
           {accent ? (
-            <span className="box-decoration-clone bg-mustard px-1.5">{line}</span>
+            <span className="box-decoration-clone bg-mustard px-2">{line}</span>
           ) : (
             line
           )}
         </React.Fragment>
       ))}
     </h2>
-    <p className="text-body-sm text-secondary max-w-[440px] mb-5">{panel.body}</p>
+    <p className="text-body-sm text-secondary max-w-[440px] mb-6">{panel.body}</p>
     <Link
       href={panel.ctaUrl}
       className="text-label link-underline-rust inline-block w-fit uppercase text-primary"

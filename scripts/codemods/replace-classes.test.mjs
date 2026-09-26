@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { applyMap } from "./replace-classes.mjs";
+import { snap } from "./maps/spacing.mjs";
 
 const map = {
   rules: [
@@ -40,4 +41,15 @@ test("handles named capture groups in regex", () => {
   assert.equal(r.output, "<p className=\"hover:text-secondary\">");
   assert.equal(r.changes, 1);
   assert.equal(receivedGroups.length, 2);
+});
+
+test("snaps to the nearest step, ties up", () => {
+  assert.equal(snap(6), "2");
+  assert.equal(snap(10), "3");
+  assert.equal(snap(14), "4");
+  assert.equal(snap(18), "4");
+  assert.equal(snap(20), "6");
+  assert.equal(snap(28), "8");
+  assert.equal(snap(40), "12");
+  assert.equal(snap(80), "24");
 });

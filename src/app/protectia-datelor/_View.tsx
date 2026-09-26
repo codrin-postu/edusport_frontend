@@ -421,7 +421,7 @@ const ProtectiaDatelor: React.FC = () => {
                   </span>
                   {section.title}
                 </h3>
-                <div className="text-body-sm text-secondary [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-5 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-accent [&_strong]:font-bold [&_strong]:text-primary">
+                <div className="text-body-sm text-secondary [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-6 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-accent [&_strong]:font-bold [&_strong]:text-primary">
                   {section.content}
                 </div>
               </div>
@@ -430,7 +430,7 @@ const ProtectiaDatelor: React.FC = () => {
 
           {/* Contact card */}
           <div className="mt-16 pt-12 border-t-retro border-line-subtle">
-            <div className="relative overflow-hidden bg-surface-dark border-retro border-line shadow-retro px-8 py-10 md:px-14 md:py-12">
+            <div className="relative overflow-hidden bg-surface-dark border-retro border-line shadow-retro px-8 py-12 md:px-16 md:py-12">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               {/* Decorative circles */}
               <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-[0.06] bg-mustard" />
@@ -463,7 +463,7 @@ const ProtectiaDatelor: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="border-t-retro border-line-subtle-on-dark pt-5">
+                <div className="border-t-retro border-line-subtle-on-dark pt-6">
                   <p className="text-label uppercase text-mustard mb-3">
                     Autoritatea de supraveghere
                   </p>

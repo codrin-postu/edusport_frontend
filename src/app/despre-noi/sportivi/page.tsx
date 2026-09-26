@@ -152,7 +152,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
 
       {/* Empty state — render only the hero + a friendly note */}
       {totalAthletes === 0 ? (
-        <section className="relative z-10 bg-surface py-20">
+        <section className="relative z-10 bg-surface py-24">
           <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 text-center">
             <p className="text-heading text-secondary">
               Niciun profil disponibil momentan
@@ -186,7 +186,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               skipping the hero. */}
           <section
             id="sportivi-grid"
-            className="scroll-mt-24 bg-surface px-4 py-16 md:px-8 lg:px-12 md:py-20"
+            className="scroll-mt-24 bg-surface px-4 py-16 md:px-8 lg:px-12 md:py-24"
           >
             <div className="mx-auto max-w-content text-center">
               <h2 className="text-display text-primary">
@@ -212,7 +212,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
             <SearchBar initialValue={search} scrollAnchor="sportivi-grid" />
 
             {gridData.length === 0 ? (
-              <div className="mx-auto mt-10 max-w-md py-12 text-center">
+              <div className="mx-auto mt-12 max-w-md py-12 text-center">
                 <p className="text-body text-secondary">
                   Niciun sportiv găsit.
                 </p>
@@ -223,7 +223,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                 )}
               </div>
             ) : (
-              <div className="mx-auto mt-10 max-w-3xl border-y-retro border-line text-left">
+              <div className="mx-auto mt-12 max-w-3xl border-y-retro border-line text-left">
                 {gridData.map((sp, i) => {
                   const st = statsByAthlete.get(sp.documentId)!;
                   const medalTotal =
@@ -297,10 +297,10 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               AboutSection / evenimente cards: small eyebrow + short
               statement on one side, a text link with an arrow on the
               other. Reads like a footnote, not a parallel headline. */}
-          <section className="border-t-retro border-line-subtle bg-surface px-4 py-12 md:px-8 lg:px-12 md:py-14">
+          <section className="border-t-retro border-line-subtle bg-surface px-4 py-12 md:px-8 lg:px-12 md:py-16">
             <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="text-label mb-1.5 uppercase text-accent">
+                <div className="text-label mb-2 uppercase text-accent">
                   Mai departe
                 </div>
                 <p className="text-body text-primary">

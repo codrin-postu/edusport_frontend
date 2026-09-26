@@ -319,7 +319,7 @@ export function SportspersonCard({
                 {tier.badgeCount}×
               </span>
               <span
-                className="text-label mt-[3px] block uppercase"
+                className="text-label mt-1 block uppercase"
                 /* Bronze (--color-medal-bronze) reads brown against the dark
                    photo — swap to a lighter orange for legibility. */
                 style={{
@@ -336,14 +336,14 @@ export function SportspersonCard({
 
           {/* Name block — translateZ(30) so it sits on top of the photo */}
           <div
-            className="absolute inset-x-0 bottom-0 z-20 px-[14px] pb-[14px] pt-[60px]"
+            className="absolute inset-x-0 bottom-0 z-20 px-4 pb-4 pt-16"
             style={{
               background:
                 "linear-gradient(transparent, rgba(0,0,0,0.92) 60%)",
               transform: "translateZ(30px)",
             }}
           >
-            <h4 className="text-title mb-[5px] text-primary-on-dark">
+            <h4 className="text-title mb-1 text-primary-on-dark">
               {sportsperson.name}
             </h4>
             {sportsperson.activeSince && (
@@ -351,7 +351,7 @@ export function SportspersonCard({
                 Membru din {sportsperson.activeSince.slice(0, 4)}
               </div>
             )}
-            <div className="flex gap-[10px] border-t border-line-subtle-on-dark pt-[6px]">
+            <div className="flex gap-3 border-t border-line-subtle-on-dark pt-2">
               <div>
                 <div
                   className="text-body"
@@ -359,7 +359,7 @@ export function SportspersonCard({
                 >
                   {String(stats.totalCompetitions).padStart(2, "0")}
                 </div>
-                <div className="text-label mt-[3px] uppercase text-secondary-on-dark">
+                <div className="text-label mt-1 uppercase text-secondary-on-dark">
                   Comp.
                 </div>
               </div>
@@ -371,7 +371,7 @@ export function SportspersonCard({
                   >
                     {String(medalTotal).padStart(2, "0")}
                   </div>
-                  <div className="text-label mt-[3px] uppercase text-secondary-on-dark">
+                  <div className="text-label mt-1 uppercase text-secondary-on-dark">
                     Medalii
                   </div>
                 </div>
@@ -382,7 +382,7 @@ export function SportspersonCard({
                     ? stats.bestScore.toFixed(2)
                     : "—"}
                 </div>
-                <div className="text-label mt-[3px] uppercase text-secondary-on-dark">
+                <div className="text-label mt-1 uppercase text-secondary-on-dark">
                   Best
                 </div>
               </div>

@@ -26,7 +26,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
 
   return (
     <div
-      className="relative h-full flex flex-col justify-start md:justify-center pt-20 pb-8"
+      className="relative h-full flex flex-col justify-start md:justify-center pt-24 pb-8"
       style={{
         background:
           "linear-gradient(135deg, oklch(0.18 0.04 264) 0%, oklch(0.28 0.06 264) 60%, oklch(0.32 0.05 240) 100%)",
@@ -44,7 +44,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
                 <p className="text-label uppercase text-muted-on-dark">
                   {seasonLabel}
                 </p>
-                <span className="text-caption inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">
+                <span className="text-caption inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">
                   <span className="w-1.5 h-1.5 rounded-full bg-line-subtle-on-dark" />
                   Înscrieri închise
                 </span>

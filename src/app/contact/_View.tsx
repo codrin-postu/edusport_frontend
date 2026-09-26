@@ -269,7 +269,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {/* Honeypot — visually hidden, real users never fill this. */}
       <input
         type="text"
@@ -306,7 +306,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       )}
 
       {/* Email + Phone row */}
-      <div className="grid sm:grid-cols-2 gap-5">
+      <div className="grid sm:grid-cols-2 gap-6">
         {shown("email") && (
           <div>
             <FieldLabel htmlFor="email" tone="dark">{label("email")}</FieldLabel>
@@ -324,7 +324,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
               className={inputOnNavy}
             />
             {fieldErrors.email && (
-              <p className="text-caption text-danger mt-1.5">
+              <p className="text-caption text-danger mt-2">
                 {fieldErrors.email}
               </p>
             )}
@@ -347,7 +347,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
               className={inputOnNavy}
             />
             {fieldErrors.phone && (
-              <p className="text-caption text-danger mt-1.5">
+              <p className="text-caption text-danger mt-2">
                 {fieldErrors.phone}
               </p>
             )}
@@ -477,8 +477,8 @@ const ContactPage: React.FC<{
       </PageHeroSection>
 
       <section className="relative z-10 bg-surface">
-        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
@@ -513,7 +513,7 @@ const ContactPage: React.FC<{
               <h2 className="text-title text-primary-on-dark mb-1">
                 Trimite-ne un mesaj
               </h2>
-              <p className="text-body-sm text-secondary-on-dark mb-7">
+              <p className="text-body-sm text-secondary-on-dark mb-8">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <ContactForm config={formConfig} />

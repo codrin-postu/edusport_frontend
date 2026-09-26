@@ -165,7 +165,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
 
   if (status === "sent") {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 px-8 py-20 text-center">
+      <div className="flex flex-col items-center justify-center gap-4 px-8 py-24 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-dark">
           <Send className="h-6 w-6 text-mustard" />
         </div>

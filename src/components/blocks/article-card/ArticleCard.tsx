@@ -25,7 +25,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     <a
       href={href}
       className={cn(
-        "group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start outline-none",
+        "group grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start outline-none",
         className,
       )}
     >

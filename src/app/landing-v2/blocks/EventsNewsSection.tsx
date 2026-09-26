@@ -39,18 +39,18 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
   const listArticles = showEvent ? articles : rest;
 
   return (
-    <section className="bg-surface py-20 md:py-28">
+    <section className="bg-surface py-24 md:py-24">
       <div className="max-w-content mx-auto px-6 md:px-8">
         {/* Header */}
         <p className="text-label uppercase text-primary mb-2">
           Actualitate
         </p>
-        <h2 className="text-heading text-primary mb-12 md:mb-14">
+        <h2 className="text-heading text-primary mb-12 md:mb-16">
           Evenimente și noutăți
         </h2>
 
         {/* Lead (left) + list (right) */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.15fr_0.95fr] gap-10 md:gap-14 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[1.15fr_0.95fr] gap-12 md:gap-16 items-start">
           <div>
             {showEvent ? (
               <>
@@ -95,7 +95,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
           {CATEGORY_LABELS[featured.category]}
         </span>
       )}
-      <h3 className="text-title text-primary mt-2 mb-1.5">
+      <h3 className="text-title text-primary mt-2 mb-2">
         {featured.title}
       </h3>
       <p className="text-caption text-secondary mb-2">{featured.date}</p>
@@ -121,7 +121,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
       <ul>
         {list.map((a, i) => (
           <li key={a.slug + i} className="border-t border-line-subtle first:border-t-0">
-            <Link href={`/noutati/${a.slug}`} className="group block py-3.5">
+            <Link href={`/noutati/${a.slug}`} className="group block py-4">
               <p className="text-title text-primary">{a.title}</p>
               {/* One muted line, as drawn: "Competitii, 4 septembrie". */}
               <p className="text-caption text-secondary mt-1">

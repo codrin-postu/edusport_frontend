@@ -181,7 +181,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
 
       {/* Bottom bar */}
       <div
-        className="absolute bottom-0 left-0 right-0 px-5 py-4 flex items-center justify-between"
+        className="absolute bottom-0 left-0 right-0 px-6 py-4 flex items-center justify-between"
         onClick={(e) => e.stopPropagation()}
       >
         {label ? (

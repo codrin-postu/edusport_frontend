@@ -28,13 +28,13 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         <motion.aside
           role="status"
           aria-live="polite"
-          className="fixed z-[900] left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-surface border-retro border-line shadow-retro px-[17px] pt-4 pb-[15px]"
+          className="fixed z-[900] left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-surface border-retro border-line shadow-retro px-4 pt-4 pb-4"
           initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: reducedMotion ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex items-start justify-between gap-2.5">
+          <div className="flex items-start justify-between gap-3">
             {announcement.eyebrow ? (
               <p className="text-label uppercase text-accent">
                 {announcement.eyebrow}
@@ -52,7 +52,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             </button>
           </div>
 
-          <h2 className="text-title text-primary mt-[7px] mb-1.5">
+          <h2 className="text-title text-primary mt-2 mb-2">
             {announcement.title}
           </h2>
 
@@ -64,7 +64,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             <Link
               href={announcement.ctaUrl}
               onClick={onCtaClick}
-              className="text-label inline-block mt-[13px] px-[15px] py-2 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+              className="text-label inline-block mt-3 px-4 py-2 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
             >
               {announcement.ctaLabel}
             </Link>

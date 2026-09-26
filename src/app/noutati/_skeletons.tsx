@@ -6,7 +6,7 @@ import SectionHeader from "@/components/ui/section-header";
 
 export function FeaturedArticleBlockSkeleton() {
   return (
-    <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center animate-pulse">
+    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center animate-pulse">
       <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] bg-surface-subtle" />
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
@@ -28,11 +28,11 @@ export function FeaturedArticleBlockSkeleton() {
 
 export function FeaturedSectionSkeleton() {
   return (
-    <Section className="py-16 md:py-20">
+    <Section className="py-16 md:py-24">
       <SectionHeader
         eyebrow="Cel mai recent articol"
         title="Noutăți"
-        className="mb-10"
+        className="mb-12"
         eyebrowClassName="text-label text-accent"
         titleClassName="text-heading text-primary"
       />
@@ -67,7 +67,7 @@ export function ArticleListSkeleton() {
 
 export function ToolbarSkeleton() {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-10 animate-pulse">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-12 animate-pulse">
       <div className="h-11 w-full max-w-md bg-surface-subtle" />
       <div className="h-11 w-[180px] bg-surface-subtle" />
     </div>

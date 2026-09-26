@@ -36,7 +36,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
   return (
     <RegistrationScrollFrameV2>
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="relative z-10 flex flex-col gap-7 max-w-2xl md:max-w-[52%]">
+        <div className="relative z-10 flex flex-col gap-8 max-w-2xl md:max-w-[52%]">
           <p className="text-label uppercase text-primary">
             {seasonLabel}
           </p>
@@ -56,15 +56,15 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           </div>
 
           <div className="text-body-sm flex flex-wrap items-center text-primary">
-            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-retro border-line-subtle">
+            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
               <Calendar className="w-4 h-4 shrink-0" />
               {scheduleDays}
             </span>
-            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-retro border-line-subtle">
+            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
               <Clock className="w-4 h-4 shrink-0" />
               {scheduleTimes}
             </span>
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4 shrink-0" />
               {locationName}
             </span>

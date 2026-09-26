@@ -70,7 +70,7 @@ function SlidingPillToggle<T extends string>({
             key={option.value}
             onClick={() => handleChange(option.value)}
             className={cn(
-              "text-label relative z-10 px-5 py-2.5 uppercase transition-colors duration-200 select-none",
+              "text-label relative z-10 px-6 py-3 uppercase transition-colors duration-200 select-none",
               !ready
                 ? "text-primary"
                 : value === option.value

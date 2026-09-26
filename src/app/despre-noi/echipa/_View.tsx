@@ -38,10 +38,10 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-20">
+      <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Introduction */}
-          <div className="max-w-2xl mb-14">
+          <div className="max-w-2xl mb-16">
             <p className="text-label uppercase text-accent mb-4">
               Antrenori & Instructori
             </p>
@@ -51,7 +51,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
           </div>
 
           {members.length === 0 ? (
-            <div className="py-20 text-center">
+            <div className="py-24 text-center">
               <p className="text-heading text-secondary">Echipa nu este disponibilă momentan</p>
               <p className="text-body-sm text-secondary mt-2">Reveniți în curând.</p>
             </div>

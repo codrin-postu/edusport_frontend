@@ -1,12 +1,12 @@
 {
   "text-opacity": 14,
-  "off-scale-spacing": 313,
   "z-index": 85,
   "raw-duration": 34,
   "default-palette": 32,
-  "arbitrary-px": 63,
+  "arbitrary-px": 14,
   "bg-opacity": 3,
   "arbitrary-type": 1,
+  "off-scale-spacing": 4,
   "radius": 4,
   "arbitrary-shadow": 4
 }

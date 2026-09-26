@@ -159,7 +159,7 @@ const WeekendRow: React.FC<{
   const row = (
     <div
       className={cn(
-        "flex items-center px-4 py-2.5 text-sm border-t border-line-subtle first:border-t-0 transition-colors",
+        "flex items-center px-4 py-3 text-sm border-t border-line-subtle first:border-t-0 transition-colors",
         isPast && "opacity-40",
         isNext && "bg-mustard/[0.16]",
         hasDescription && "cursor-help",
@@ -195,12 +195,12 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="text-caption z-50 max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-2.5 space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="text-caption z-50 max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-3 space-y-2 animate-in fade-in-0 zoom-in-95"
         >
           <p className="text-label uppercase text-accent">
             {stateLabel}
           </p>
-          <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-primary">
+          <div className="space-y-2 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-primary">
             {renderMarkdown(description)}
           </div>
         </TooltipPrimitive.Content>
@@ -221,7 +221,7 @@ const MonthColumn: React.FC<{
       {/* Month label - acts as table header */}
       <div
         className={cn(
-          "px-4 py-2.5 border-b-retro border-line flex items-center justify-between",
+          "px-4 py-3 border-b-retro border-line flex items-center justify-between",
           allPast && "sm:cursor-default cursor-pointer select-none",
         )}
         onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
@@ -403,7 +403,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             <span className="text-label uppercase text-accent">
               Calendar sezon
             </span>
-            <h2 className="text-heading text-primary mt-1.5">
+            <h2 className="text-heading text-primary mt-2">
               Sezonul {seasonLabel}
             </h2>
           </div>
@@ -474,7 +474,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             </div>
 
             {/* Legend */}
-            <div className="text-caption mt-4 flex flex-wrap gap-x-5 gap-y-2 text-secondary">
+            <div className="text-caption mt-4 flex flex-wrap gap-x-6 gap-y-2 text-secondary">
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-silver" />Liber</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark opacity-45" />Anulat</span>

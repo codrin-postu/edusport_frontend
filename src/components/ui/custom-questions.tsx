@@ -52,7 +52,7 @@ const VARIANT = {
     input: inputBaseOnCard,
     labelTone: "light" as const,
     help: "text-xs text-secondary mb-2 -mt-1",
-    error: "text-xs text-accent font-semibold mt-1.5",
+    error: "text-xs text-accent font-semibold mt-2",
     info: "text-sm text-secondary leading-relaxed",
     link: "link-underline-rust font-semibold text-accent",
     checkboxLabel: "text-xs font-semibold text-primary",
@@ -64,14 +64,14 @@ const VARIANT = {
     cardIcon: "border-line bg-surface-dark text-primary-on-dark",
     cardTitle: "text-primary",
     cardDesc: "text-secondary",
-    cardLink: "link-underline-rust inline-flex items-center gap-1.5 text-xs font-semibold text-accent",
+    cardLink: "link-underline-rust inline-flex items-center gap-2 text-xs font-semibold text-accent",
     cardExternal: "text-secondary group-hover:text-accent",
   },
   navy: {
     input: inputOnNavy,
     labelTone: "dark" as const,
     help: "text-xs text-secondary-on-dark mb-2 -mt-1",
-    error: "text-xs font-semibold text-danger mt-1.5",
+    error: "text-xs font-semibold text-danger mt-2",
     info: "text-sm text-secondary-on-dark leading-relaxed",
     link: "font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
     checkboxLabel: "text-xs font-semibold text-primary-on-dark",
@@ -85,7 +85,7 @@ const VARIANT = {
     cardTitle: "text-primary-on-dark",
     cardDesc: "text-secondary-on-dark",
     cardLink:
-      "inline-flex items-center gap-1.5 text-xs font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
+      "inline-flex items-center gap-2 text-xs font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
     cardExternal: "text-line-subtle-on-dark group-hover:text-mustard",
   },
 } as const;
@@ -120,7 +120,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
   const v = VARIANT[variant];
 
   return (
-    <div className={cn("flex flex-col gap-5", className)}>
+    <div className={cn("flex flex-col gap-6", className)}>
       {questions.map((q) => {
         const key = q.key;
         const required = q.required === true;
@@ -167,7 +167,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center gap-3 border-retro p-5 md:p-6 group",
+                "flex items-center gap-3 border-retro p-6 md:p-6 group",
                 v.card,
                 v.cardHover,
               )}
@@ -180,7 +180,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
           ) : (
             <div
               key={key}
-              className={cn("flex items-center gap-3 border-retro p-5 md:p-6", v.card)}
+              className={cn("flex items-center gap-3 border-retro p-6 md:p-6", v.card)}
             >
               {body}
             </div>
@@ -195,7 +195,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
             <div
               key={key}
               className={cn(
-                "border-retro p-5 md:p-6 transition-colors",
+                "border-retro p-6 md:p-6 transition-colors",
                 checked ? v.cardChecked : v.card,
               )}
             >
@@ -283,7 +283,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 />
                 <span className={v.checkboxLabel}>{labelText}</span>
               </label>
-              {help && <p className={cn(v.help, "mt-1.5 mb-0")}>{help}</p>}
+              {help && <p className={cn(v.help, "mt-2 mb-0")}>{help}</p>}
             </div>
           );
         }
@@ -305,7 +305,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 {labelText}
               </FieldLabel>
               {help && <p className={v.help}>{help}</p>}
-              <div id={key} className="flex flex-col gap-2.5">
+              <div id={key} className="flex flex-col gap-3">
                 {optionItems(q).map((o) => (
                   <label
                     key={o.value}

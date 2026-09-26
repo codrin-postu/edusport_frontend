@@ -117,7 +117,7 @@ const PartnerView: React.FC<{
                       />
                     </div>
                   )}
-                  <div className="p-5">
+                  <div className="p-6">
                     <span className="text-label inline-block border-retro border-rust px-2 py-0.5 uppercase text-accent">
                       cu {ev.partner}
                     </span>
@@ -141,7 +141,7 @@ const PartnerView: React.FC<{
       {/* ─── COLABOREAZĂ (sponsor / event form) ─── */}
       <section className="relative z-10 border-t border-line-subtle bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-24">
             <div className="flex flex-col gap-3">
               <p className="text-label uppercase text-accent">
                 {copy.ctaEyebrow}
@@ -158,7 +158,7 @@ const PartnerView: React.FC<{
               <h3 className="text-title mb-1 text-primary-on-dark">
                 Scrie-ne
               </h3>
-              <p className="text-body-sm mb-7 text-secondary-on-dark">
+              <p className="text-body-sm mb-8 text-secondary-on-dark">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <PartnerForm config={formConfig} />
@@ -168,10 +168,10 @@ const PartnerView: React.FC<{
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-14">
+      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-16">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="text-label mb-1.5 uppercase text-accent">
+            <div className="text-label mb-2 uppercase text-accent">
               Mai departe
             </div>
             <p className="text-body text-primary">

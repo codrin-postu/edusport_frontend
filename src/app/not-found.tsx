@@ -50,7 +50,7 @@ export default function NotFound() {
         </motion.div>
 
         <motion.div
-          className="mt-10 flex flex-col items-center gap-6"
+          className="mt-12 flex flex-col items-center gap-6"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45 }}

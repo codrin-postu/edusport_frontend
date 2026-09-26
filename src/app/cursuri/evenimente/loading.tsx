@@ -5,12 +5,12 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 
 function CurrentEventSkeleton() {
   return (
-    <section className="bg-surface-raised py-16 md:py-20">
+    <section className="bg-surface-raised py-16 md:py-24">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="h-3 w-40 bg-surface-subtle mb-10 animate-pulse" />
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center animate-pulse">
+        <div className="h-3 w-40 bg-surface-subtle mb-12 animate-pulse" />
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center animate-pulse">
           <div className="relative aspect-[16/9] bg-surface-subtle" />
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             <div className="h-9 w-4/5 bg-surface-subtle" />
             <div className="flex flex-col gap-2">
               <div className="h-3 w-40 bg-surface-subtle" />
@@ -33,14 +33,14 @@ function CurrentEventSkeleton() {
 
 function PastEventsSkeleton() {
   return (
-    <section className="bg-surface-subtle py-16 md:py-20">
+    <section className="bg-surface-subtle py-16 md:py-24">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="h-3 w-44 bg-surface-subtle mb-10 animate-pulse" />
+        <div className="h-3 w-44 bg-surface-subtle mb-12 animate-pulse" />
         <div className="flex flex-col divide-y divide-line-subtle animate-pulse">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start"
+              className="grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start"
             >
               <div className="relative w-full sm:w-32 aspect-video sm:aspect-square bg-surface-subtle" />
               <div className="flex flex-col gap-2">

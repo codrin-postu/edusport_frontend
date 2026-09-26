@@ -58,7 +58,7 @@ export default async function ArticleListAsync({
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="flex flex-col items-center justify-center py-24 text-center">
           <p className="text-heading text-secondary">
             Niciun articol găsit
           </p>

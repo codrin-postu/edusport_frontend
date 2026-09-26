@@ -72,7 +72,7 @@ export function Pagination({
   return (
     <nav
       aria-label={ariaLabel ?? "Paginare"}
-      className="flex items-center justify-center gap-1.5 pt-12"
+      className="flex items-center justify-center gap-2 pt-12"
     >
       {currentPage > 1 ? (
         <Link

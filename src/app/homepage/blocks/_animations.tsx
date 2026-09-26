@@ -83,7 +83,7 @@ export const RegistrationScrollFrame: React.FC<RegistrationScrollFrameProps> = (
   return (
     <div
       ref={sectionRef}
-      className="relative h-full flex flex-col justify-start md:justify-center pt-20 pb-8 bg-edusport-blue"
+      className="relative h-full flex flex-col justify-start md:justify-center pt-24 pb-8 bg-edusport-blue"
     >
       {/* Ghost branding text - right side */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2 hidden md:flex">

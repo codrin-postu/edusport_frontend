@@ -82,7 +82,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
-          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary">
+          <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
             <Link href="/cursuri/evenimente" className="text-primary hover:text-accent transition-colors">Evenimente</Link>

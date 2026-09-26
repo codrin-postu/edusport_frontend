@@ -29,7 +29,7 @@ function RenderText({ node }: { node: TextNode }) {
         </React.Fragment>
       ))
     : node.text;
-  if (node.code) el = <code className="text-body-sm bg-surface-subtle px-1.5 py-0.5 font-mono text-accent">{el}</code>;
+  if (node.code) el = <code className="text-body-sm bg-surface-subtle px-2 py-0.5 font-mono text-accent">{el}</code>;
   if (node.bold) el = <strong className="font-bold text-primary">{el}</strong>;
   if (node.italic) el = <em>{el}</em>;
   if (node.underline) el = <u>{el}</u>;
@@ -70,7 +70,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
     case "paragraph": {
       const p = node as ParagraphNode;
       return (
-        <p className="text-body text-secondary mb-[18px]">
+        <p className="text-body text-secondary mb-4">
           <RenderChildren nodes={p.children} />
         </p>
       );
@@ -80,7 +80,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
       const h = node as HeadingNode;
       const inner = <RenderChildren nodes={h.children} />;
       switch (h.level) {
-        case 1: return <h2 className="text-heading text-primary mt-10 mb-4">{inner}</h2>;
+        case 1: return <h2 className="text-heading text-primary mt-12 mb-4">{inner}</h2>;
         case 2: return <h2 className="text-heading text-primary mt-8 mb-3">{inner}</h2>;
         case 3: return <h3 className="text-title text-primary mt-6 mb-2">{inner}</h3>;
         case 4: return <h4 className="text-label text-primary mt-6 mb-2 uppercase">{inner}</h4>;
@@ -98,9 +98,9 @@ function RenderBlock({ node }: { node: BlockNode }) {
         </li>
       ));
       return l.format === "ordered" ? (
-        <ol className="list-decimal list-outside marker:text-accent marker:font-bold ml-5 mb-[18px] space-y-2">{items}</ol>
+        <ol className="list-decimal list-outside marker:text-accent marker:font-bold ml-6 mb-4 space-y-2">{items}</ol>
       ) : (
-        <ul className="mb-[18px] space-y-2 [&>li]:relative [&>li]:pl-5 [&>li]:before:absolute [&>li]:before:left-0.5 [&>li]:before:content-['›'] [&>li]:before:font-extrabold [&>li]:before:text-accent">{items}</ul>
+        <ul className="mb-4 space-y-2 [&>li]:relative [&>li]:pl-6 [&>li]:before:absolute [&>li]:before:left-0.5 [&>li]:before:content-['›'] [&>li]:before:font-extrabold [&>li]:before:text-accent">{items}</ul>
       );
     }
 
@@ -116,7 +116,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
     case "quote": {
       const q = node as QuoteNode;
       return (
-        <blockquote className="border-l-4 border-rust bg-surface-subtle py-4 px-6 mb-[18px] text-primary not-italic">
+        <blockquote className="border-l-4 border-rust bg-surface-subtle py-4 px-6 mb-4 text-primary not-italic">
           <RenderChildren nodes={q.children} />
         </blockquote>
       );
@@ -125,7 +125,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
     case "code": {
       const c = node as CodeNode;
       return (
-        <pre className="text-body-sm bg-surface-dark text-primary-on-dark p-4 mb-[18px] overflow-x-auto font-mono">
+        <pre className="text-body-sm bg-surface-dark text-primary-on-dark p-4 mb-4 overflow-x-auto font-mono">
           <code>{c.children.map((t) => t.text).join("")}</code>
         </pre>
       );

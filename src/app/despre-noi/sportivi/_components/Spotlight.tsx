@@ -29,7 +29,7 @@ interface Props {
 
 export function Spotlight({ sportsperson, stats, rank }: Props) {
   return (
-    <section className="relative overflow-hidden bg-surface border-b-retro border-line-subtle px-6 py-16 md:px-10 md:py-20 text-primary">
+    <section className="relative overflow-hidden bg-surface border-b-retro border-line-subtle px-6 py-16 md:px-12 md:py-24 text-primary">
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden
@@ -51,7 +51,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
           </h2>
 
           {sportsperson.description && (
-            <p className="text-body-sm mb-[30px] max-w-[460px] text-secondary">
+            <p className="text-body-sm mb-8 max-w-[460px] text-secondary">
               {sportsperson.description}
             </p>
           )}
@@ -119,7 +119,7 @@ function StatRow({
   accent?: boolean;
 }) {
   return (
-    <div className="flex items-baseline gap-[14px] border-t border-line-subtle pt-[14px] first:border-t-0 first:pt-0">
+    <div className="flex items-baseline gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0">
       <span
         className={cn(
           "text-heading min-w-[100px]",

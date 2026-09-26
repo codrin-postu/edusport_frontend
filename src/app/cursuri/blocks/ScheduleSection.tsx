@@ -23,8 +23,8 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 }) => {
   return (
     <>
-    <Section className={cn("pt-10 md:pt-14 pb-20 md:pb-28 bg-surface", "overflow-hidden")}>
-        <div className="max-w-4xl mx-auto mb-10 md:mb-12">
+    <Section className={cn("pt-12 md:pt-16 pb-24 md:pb-24 bg-surface", "overflow-hidden")}>
+        <div className="max-w-4xl mx-auto mb-12 md:mb-12">
           <span className="text-label uppercase text-accent">
             Program Școala de Patinaj
           </span>
@@ -57,7 +57,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             />
 
             {/* Spiral holes column */}
-            <div className="absolute top-0 bottom-0 left-0 w-[72px] flex flex-col items-center pt-[22px] gap-[32px] pointer-events-none">
+            <div className="absolute top-0 bottom-0 left-0 w-[72px] flex flex-col items-center pt-6 gap-8 pointer-events-none">
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
@@ -68,7 +68,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             </div>
 
             {/* Page content - left-padded past margin */}
-            <div className="pl-[88px] pr-6 pb-8" style={{ paddingTop: "16px" }}>
+            <div className="pl-24 pr-6 pb-8" style={{ paddingTop: "16px" }}>
               {/* Section label */}
               <p
                 className="text-label uppercase text-accent"
@@ -184,7 +184,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
       {/* Disclaimers — full-width navy band */}
       <section className="bg-surface-dark">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-10">
+        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-start gap-3 mb-4">
               <Info className="w-4 h-4 text-mustard shrink-0 mt-0.5" />
@@ -196,7 +196,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               {(disclaimers ?? []).map((text, i) => (
                 <li
                   key={i}
-                  className="text-body-sm flex gap-2.5 text-primary-on-dark"
+                  className="text-body-sm flex gap-3 text-primary-on-dark"
                 >
                   <span className="shrink-0 font-extrabold text-mustard">›</span>
                   {text}

@@ -33,7 +33,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   ];
 
   return (
-    <Section className="py-20 bg-surface">
+    <Section className="py-24 bg-surface">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">

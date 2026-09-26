@@ -42,8 +42,8 @@ export const Select: React.FC<SelectProps> = ({
   const selected = items.find((o) => o.value === value);
   const triggerSizeClasses =
     size === "compact"
-      ? "bg-surface px-3 py-2.5 text-sm"
-      : "bg-surface px-4 py-3 text-sm";
+      ? "bg-surface h-12 px-3 text-sm"
+      : "bg-surface h-12 px-4 text-sm";
 
   return (
     <>

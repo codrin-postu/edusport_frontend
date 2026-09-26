@@ -20,18 +20,18 @@ export default async function FeaturedAsync() {
   if (!featured) return null;
 
   return (
-    <Section className="py-16 md:py-20">
+    <Section className="py-16 md:py-24">
       <SectionHeader
         eyebrow="Cel mai recent articol"
         title="Noutăți"
-        className="mb-10"
+        className="mb-12"
         eyebrowClassName="text-label text-accent"
         titleClassName="text-heading text-primary"
       />
 
       <a
         href={`/noutati/${featured.slug}`}
-        className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center outline-none"
+        className="group grid lg:grid-cols-2 gap-12 lg:gap-16 items-center outline-none"
       >
         <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-retro border-line bg-surface-subtle">
           <ArticleImage

@@ -12,12 +12,12 @@ export default function Loading() {
         ]}
       />
       <div className="relative z-10 bg-surface flex-1">
-        <Section className="py-16 md:py-20">
+        <Section className="py-16 md:py-24">
           <div className="flex flex-col divide-y divide-line-subtle animate-pulse">
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="grid sm:grid-cols-[120px_1fr] gap-5 sm:gap-8 py-6 items-start"
+                className="grid sm:grid-cols-[120px_1fr] gap-6 sm:gap-8 py-6 items-start"
               >
                 <div className="h-3 w-16 bg-surface-subtle" />
                 <div className="flex flex-col gap-2">

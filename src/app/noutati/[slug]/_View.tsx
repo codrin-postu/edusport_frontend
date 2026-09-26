@@ -140,7 +140,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4 flex items-center justify-between">
-          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary">
+          <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{article.title}</span>
@@ -155,7 +155,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       </div>
 
       {/* Article body */}
-      <article className="bg-surface pt-12 pb-40 md:pt-16 md:pb-56">
+      <article className="bg-surface pt-12 pb-24 md:pt-16 md:pb-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
@@ -203,7 +203,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                   controls, swipe + dots/counter on mobile, fullscreen
                   lightbox with arrow-key nav). */}
               {article.gallery && article.gallery.length > 0 && (
-                <div className="mt-10">
+                <div className="mt-12">
                   <GalleryCarousel
                     images={article.gallery.map((img) => ({
                       src: strapiMediaUrl(img.url),

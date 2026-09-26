@@ -57,7 +57,7 @@ const MenuButton = React.forwardRef<
     >
       <span aria-hidden className="lcta-layer lcta-l1" />
       <span aria-hidden className="lcta-layer lcta-l2" />
-      <span className="lcta-face relative w-[46px] bg-black flex flex-col items-center justify-center gap-[5px]">
+      <span className="lcta-face relative w-[46px] bg-black flex flex-col items-center justify-center gap-1">
         <span className="w-[20px] h-[2px] bg-surface-raised" />
         <span className="w-[20px] h-[2px] bg-surface-raised" />
         <span className="w-[20px] h-[2px] bg-surface-raised" />

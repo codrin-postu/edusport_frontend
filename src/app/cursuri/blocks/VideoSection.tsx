@@ -5,9 +5,9 @@ import React from "react";
 
 const VideoSection: React.FC = () => {
   return (
-    <section className={cn("py-20", "bg-surface-subtle")}>
+    <section className={cn("py-24", "bg-surface-subtle")}>
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="flex flex-col gap-10 items-center">
+        <div className="flex flex-col gap-12 items-center">
           <div className="text-center flex flex-col gap-3 max-w-2xl">
             <p className="text-label uppercase text-edusport-blue/60">
               Ne vedem pe gheață

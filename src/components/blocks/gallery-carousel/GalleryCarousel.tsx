@@ -30,7 +30,7 @@ interface GalleryCarouselProps {
   eyebrow?: string;
   /** Large heading — omit to render only the carousel without a header. */
   title?: string;
-  /** Bottom margin override; default `mb-20` matches the realizari layout. */
+  /** Bottom margin override; default `mb-24` matches the realizari layout. */
   className?: string;
   /** Auto-advance the mobile carousel. Default true. */
   autoplay?: boolean;
@@ -100,7 +100,7 @@ export function GalleryCarousel({
   const showMobileDots = total <= DOT_LIMIT;
 
   return (
-    <div className={cn("mb-20", className)}>
+    <div className={cn("mb-24", className)}>
       {hasHeader && (
         <div className="flex flex-col gap-3 mb-8">
           {eyebrow && (
@@ -194,7 +194,7 @@ export function GalleryCarousel({
         </motion.div>
 
         {maxStart > 0 && (
-          <div className="flex items-center justify-center gap-1.5 mt-4">
+          <div className="flex items-center justify-center gap-2 mt-4">
             {showDesktopDots ? (
               Array.from({ length: maxStart + 1 }).map((_, i) => (
                 <button
@@ -258,7 +258,7 @@ export function GalleryCarousel({
           </AnimatePresence>
 
           {images[current].alt && (
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-5 pb-4 pt-10 pointer-events-none">
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-6 pb-4 pt-12 pointer-events-none">
               <p className="text-body-sm text-primary-on-dark">{images[current].alt}</p>
             </div>
           )}
@@ -273,7 +273,7 @@ export function GalleryCarousel({
             <ChevronLeft className="w-4 h-4" />
           </button>
           {showMobileDots ? (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               {images.map((_, i) => (
                 <button
                   key={i}

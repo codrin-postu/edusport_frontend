@@ -53,7 +53,7 @@ const ViewModeDropdown: React.FC<{
                 setOpen(false);
               }}
               className={cn(
-                "text-label block w-full text-left px-3 py-2.5 uppercase",
+                "text-label block w-full text-left px-3 py-3 uppercase",
                 o.value === value
                   ? "bg-surface-dark text-primary-on-dark"
                   : "text-primary hover-layer",

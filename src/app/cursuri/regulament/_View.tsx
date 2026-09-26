@@ -56,7 +56,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
 
       <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-          <div className="flex flex-col gap-3 mb-14">
+          <div className="flex flex-col gap-3 mb-16">
             <span className="text-label uppercase text-accent">Regulament</span>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <h2 className="text-heading text-primary max-w-lg">
@@ -69,7 +69,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           </div>
 
           {categories.length === 0 ? (
-            <div className="py-20 text-center">
+            <div className="py-24 text-center">
               <p className="text-body text-secondary">
                 Regulamentul nu este disponibil momentan
               </p>
@@ -86,7 +86,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                   <div key={category.title} className="border-t-retro border-line-subtle">
                     <button
                       onClick={() => toggle(category.title)}
-                      className="w-full flex items-center gap-3 py-[18px] text-left hover:opacity-70 transition-opacity"
+                      className="w-full flex items-center gap-3 py-4 text-left hover:opacity-70 transition-opacity"
                     >
                       <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
                         {ICON_MAP[category.icon] ?? <Layers className="w-5 h-5" />}
@@ -116,7 +116,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                           return rule.highlight ? (
                             <div
                               key={ruleIndex}
-                              className="flex gap-4 items-start bg-surface-dark -mx-4 px-4 py-4 my-1.5"
+                              className="flex gap-4 items-start bg-surface-dark -mx-4 px-4 py-4 my-2"
                             >
                               <span
                                 className="text-heading w-9 shrink-0 text-mustard tabular-nums select-none"
@@ -132,7 +132,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                             <div
                               key={ruleIndex}
                               className={cn(
-                                "flex gap-4 items-start py-3.5",
+                                "flex gap-4 items-start py-4",
                                 showRule && "border-t border-line-subtle",
                               )}
                             >
@@ -157,7 +157,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           )}
 
           {/* Acceptance card */}
-          <div className="mt-12 bg-surface border-retro border-line shadow-retro p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
+          <div className="mt-12 bg-surface border-retro border-line shadow-retro p-8 md:p-8 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
               <p className="text-label uppercase text-accent">Acceptare</p>
               <p className="text-body text-primary mt-2">

@@ -21,7 +21,7 @@ const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
       </PageHeroSection>
 
       <section className="relative z-10 bg-surface">
-        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
+        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-24">
           <div className="max-w-xl mx-auto">
             <div className="flex flex-col gap-3">
               <p className="text-label uppercase text-accent">
@@ -36,7 +36,7 @@ const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
               </p>
             </div>
 
-            <div className="mt-10 bg-surface border-retro border-line shadow-retro p-6 md:p-8 min-h-[480px]">
+            <div className="mt-12 bg-surface border-retro border-line shadow-retro p-6 md:p-8 min-h-[480px]">
               <RegistrationForm config={formConfig} />
             </div>
           </div>

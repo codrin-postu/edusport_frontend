@@ -57,7 +57,7 @@ export const StepIndicator: React.FC<{
   const total = Math.max(titles.length, 1);
   const pct = Math.round(((current + 1) / total) * 100);
   return (
-    <div className="flex flex-col gap-2 mb-10">
+    <div className="flex flex-col gap-2 mb-12">
       <div className="flex items-baseline justify-between gap-3">
         <span className={v.title}>{titles[current] ?? ""}</span>
         <span className={v.counter}>

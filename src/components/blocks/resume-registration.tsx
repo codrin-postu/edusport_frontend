@@ -54,7 +54,7 @@ const ResumeRegistration: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[90] bg-surface-dark px-4 py-3 text-primary-on-dark md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-5 md:shadow-retro"
+      className="fixed inset-x-0 bottom-0 z-[90] bg-surface-dark px-4 py-3 text-primary-on-dark md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-6 md:shadow-retro"
       role="region"
       aria-label="Înscriere în curs"
     >
@@ -84,7 +84,7 @@ const ResumeRegistration: React.FC = () => {
       </div>
       <Link
         href={FORM_PATH}
-        className="text-body-sm mt-3 block bg-surface py-2.5 text-center text-primary transition-colors hover:bg-surface-raised md:hidden"
+        className="text-body-sm mt-3 block bg-surface py-3 text-center text-primary transition-colors hover:bg-surface-raised md:hidden"
       >
         Continuă înscrierea
       </Link>

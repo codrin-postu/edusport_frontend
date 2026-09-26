@@ -121,7 +121,7 @@ export function ArticleDetailSkeleton() {
         </div>
       </div>
       <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-surface-subtle animate-pulse" />
-      <article className="bg-surface-raised pt-12 pb-40 md:pt-16 md:pb-56">
+      <article className="bg-surface-raised pt-12 pb-24 md:pt-16 md:pb-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start animate-pulse">
             <div className="flex flex-col gap-4">

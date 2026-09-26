@@ -136,7 +136,7 @@ const HistoryPage: React.FC<Props> = ({
           </div>
 
           {/* Intro text */}
-          <div className="max-w-3xl mb-20 flex flex-col gap-4">
+          <div className="max-w-3xl mb-24 flex flex-col gap-4">
             {introParagraphs.map((para, i) => (
               <p key={i} className="text-body text-secondary">
                 {para}
@@ -145,11 +145,11 @@ const HistoryPage: React.FC<Props> = ({
           </div>
 
           {/* Stats grid — mustard left-stripe cards, number + label side by side */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
             {resolvedStats.map((stat, i) => (
               <div
                 key={i}
-                className="relative flex items-center gap-3 bg-surface border-retro border-line shadow-retro pl-[18px] pr-4 py-4"
+                className="relative flex items-center gap-3 bg-surface border-retro border-line shadow-retro pl-4 pr-4 py-4"
               >
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
                 <span className="text-heading text-primary">{stat.value}</span>
@@ -168,9 +168,9 @@ const HistoryPage: React.FC<Props> = ({
             </h2>
           </div>
 
-          <div className="flex flex-col border-l-retro border-line ml-20">
+          <div className="flex flex-col border-l-retro border-line ml-24">
             {resolvedMilestones.map((milestone, i) => (
-              <div key={i} className="relative pb-8 pl-7">
+              <div key={i} className="relative pb-8 pl-8">
                 <span
                   className="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-rust border-2 border-line-on-dark"
                   aria-hidden
@@ -188,7 +188,7 @@ const HistoryPage: React.FC<Props> = ({
           </div>
 
           {/* Events organized */}
-          <div className="mt-20">
+          <div className="mt-24">
             <div className="flex flex-col gap-3 mb-8">
               <p className="text-label uppercase text-accent">
                 Evenimente
@@ -197,11 +197,11 @@ const HistoryPage: React.FC<Props> = ({
                 Organizate de ACS EduSport
               </h2>
             </div>
-            <ul className="flex flex-col gap-2.5 max-w-3xl">
+            <ul className="flex flex-col gap-3 max-w-3xl">
               {resolvedEventsOrganized.map((event, i) => (
                 <li
                   key={i}
-                  className="text-body-sm relative pl-5 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>
@@ -216,11 +216,11 @@ const HistoryPage: React.FC<Props> = ({
                 Participări ale sportivilor EduSport
               </h2>
             </div>
-            <ul className="flex flex-col gap-2.5 max-w-3xl">
+            <ul className="flex flex-col gap-3 max-w-3xl">
               {resolvedEventsParticipated.map((event, i) => (
                 <li
                   key={i}
-                  className="text-body-sm relative pl-5 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>

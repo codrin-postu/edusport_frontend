@@ -66,19 +66,19 @@ export function EventCard({ event }: { event: Event }) {
         <h3 className="text-heading text-primary mb-4">
           {event.title}
         </h3>
-        <div className="text-body-sm flex flex-wrap items-center gap-x-5 gap-y-2 text-secondary mb-4">
-          <span className="inline-flex items-center gap-1.5">
+        <div className="text-body-sm flex flex-wrap items-center gap-x-6 gap-y-2 text-secondary mb-4">
+          <span className="inline-flex items-center gap-2">
             <Calendar className="w-4 h-4 shrink-0 text-accent" />
             {formatRoDate(event.date)}
           </span>
           {event.location && (
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               <MapPin className="w-4 h-4 shrink-0 text-accent" />
               {event.location}
             </span>
           )}
         </div>
-        <p className="text-body-sm text-secondary mb-5 max-w-[560px]">{event.excerpt}</p>
+        <p className="text-body-sm text-secondary mb-6 max-w-[560px]">{event.excerpt}</p>
         {event.admissionInfo && (
           <p className="text-body-sm text-secondary italic mb-6">{event.admissionInfo}</p>
         )}

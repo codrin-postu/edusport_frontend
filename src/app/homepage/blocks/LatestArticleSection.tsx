@@ -87,7 +87,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
 }) => (
   <div className="relative w-full flex-[5]">
     {/* Number - desktop only */}
-    <div className="hidden lg:flex absolute top-4 left-0 -translate-x-full pr-5 flex-col items-center leading-none select-none">
+    <div className="hidden lg:flex absolute top-4 left-0 -translate-x-full pr-6 flex-col items-center leading-none select-none">
       <span
         className="text-branding-font text-edusport-blue leading-none"
         style={{
@@ -132,7 +132,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
         </div>
 
         {/* Below image: title+excerpt | divider | date */}
-        <div className="flex items-stretch py-5 pb-7 bg-surface-raised">
+        <div className="flex items-stretch py-6 pb-8 bg-surface-raised">
           <div className="flex-1 pl-4 pr-6 flex flex-col gap-2">
             <h3 className="text-title text-primary">
               {title}
@@ -186,7 +186,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
       {/* Text block */}
       <div className="flex flex-col gap-1 min-w-0">
         {/* Meta row */}
-        <div className="flex items-center gap-1.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {category && (
             <span className="text-label uppercase text-edusport-blue">
               {CATEGORY_LABELS[category]}
@@ -247,7 +247,7 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
   const listArticles = rest.slice(0, 4);
 
   return (
-    <section className="relative mt-16 pt-20 pb-0 bg-surface-raised">
+    <section className="relative mt-16 pt-24 pb-0 bg-surface-raised">
       <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-24">
           {/* Eyebrow */}
@@ -256,7 +256,7 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
           </p>
 
           {/* Grid: featured left + list right */}
-          <div className="flex gap-10 items-start flex-col lg:flex-row">
+          <div className="flex gap-12 items-start flex-col lg:flex-row">
             <RevealOnScroll className="w-full flex-[5]" delay={0.1}>
               <FeaturedCard {...hero} index={1} />
             </RevealOnScroll>

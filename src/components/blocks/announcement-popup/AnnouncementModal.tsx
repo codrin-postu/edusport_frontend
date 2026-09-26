@@ -104,21 +104,21 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-surface border-retro border-line shadow-retro px-6 pt-6 pb-5 outline-none"
+            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-surface border-retro border-line shadow-retro px-6 pt-6 pb-6 outline-none"
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reducedMotion ? 0.15 : 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             {announcement.eyebrow && (
-              <p className="text-label uppercase text-accent mb-[9px]">
+              <p className="text-label uppercase text-accent mb-2">
                 {announcement.eyebrow}
               </p>
             )}
 
             <h2
               id={titleId}
-              className="text-heading text-primary mb-2.5"
+              className="text-heading text-primary mb-3"
             >
               {announcement.title}
             </h2>
@@ -127,12 +127,12 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
               {renderMarkdown(announcement.message)}
             </div>
 
-            <div className="flex flex-wrap items-center gap-3.5 mt-[18px]">
+            <div className="flex flex-wrap items-center gap-4 mt-4">
               {announcement.ctaLabel && announcement.ctaUrl && (
                 <Link
                   href={announcement.ctaUrl}
                   onClick={onCtaClick}
-                  className="text-label px-[18px] py-2.5 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+                  className="text-label px-4 py-3 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
                 >
                   {announcement.ctaLabel}
                 </Link>

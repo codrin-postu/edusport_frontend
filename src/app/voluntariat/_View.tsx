@@ -80,7 +80,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="grid border-retro border-line shadow-retro md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
-            <div className="bg-surface-dark p-8 text-primary-on-dark md:p-10">
+            <div className="bg-surface-dark p-8 text-primary-on-dark md:p-12">
               <p className="text-label uppercase text-mustard">
                 Implică-te
               </p>
@@ -92,14 +92,14 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
               </p>
             </div>
             {/* Right — ways list */}
-            <div className="bg-surface px-6 md:px-10">
+            <div className="bg-surface px-6 md:px-12">
               {helpWays.map((way, i) => (
                 <div
                   key={way.title}
                   className={
                     i < helpWays.length - 1
-                      ? "border-b border-line-subtle py-5"
-                      : "py-5"
+                      ? "border-b border-line-subtle py-6"
+                      : "py-6"
                   }
                 >
                   <h3 className="text-title text-primary">
@@ -120,7 +120,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="relative bg-surface-dark p-8 shadow-retro md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
-            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
+            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-12">
               <div className="flex flex-col gap-3">
                 <p className="text-label uppercase text-mustard">
                   Cum aplici
@@ -148,10 +148,10 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-14">
+      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-16">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="text-label mb-1.5 uppercase text-accent">
+            <div className="text-label mb-2 uppercase text-accent">
               Mai departe
             </div>
             <p className="text-body text-primary">

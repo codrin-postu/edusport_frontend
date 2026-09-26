@@ -151,7 +151,7 @@ const SportspersonView: React.FC<Props> = ({
           pt-8). Without this the bar tucks behind the nav. */}
       <div className="bg-surface-dark pt-8">
         <div className="mx-auto w-full max-w-content px-4 py-4 md:px-8 lg:px-12">
-          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary-on-dark">
+          <nav className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
             <Link
               href="/despre-noi/sportivi"
               className="text-primary-on-dark transition-colors hover:text-gold"
@@ -167,7 +167,7 @@ const SportspersonView: React.FC<Props> = ({
       </div>
 
       {/* ─── EDITORIAL HERO BAND (navy) ─── */}
-      <section className="relative overflow-hidden bg-surface-dark pt-4 pb-12 text-primary-on-dark md:pb-14">
+      <section className="relative overflow-hidden bg-surface-dark pt-4 pb-12 text-primary-on-dark md:pb-16">
         <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="grid items-end gap-8 md:grid-cols-[1.4fr_1fr]">
             {/* Left: category eyebrow + huge stacked name. The narrative
@@ -195,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="text-label absolute bottom-3 left-3 bg-black/45 px-2.5 py-1 uppercase text-primary-on-dark backdrop-blur-sm">
+                <span className="text-label absolute bottom-3 left-3 bg-black/45 px-3 py-1 uppercase text-primary-on-dark backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -225,7 +225,7 @@ const SportspersonView: React.FC<Props> = ({
           same. An absent section reads as complete; a placeholder reads as
           neglected. */}
       {(hasItems(sportsperson.story) || sportsperson.description) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
           <SectionWatermark>DESPRE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="text-label uppercase text-accent">
@@ -250,7 +250,7 @@ const SportspersonView: React.FC<Props> = ({
         hasItems(sportsperson.coaches) ||
         hasItems(sportsperson.choreographers) ||
         sportsperson.careerGoal) && (
-        <section className="relative overflow-hidden bg-surface pb-16 md:pb-20">
+        <section className="relative overflow-hidden bg-surface pb-16 md:pb-24">
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <DespreGrid>
               {hasItems(sportsperson.favoriteMoves) && (
@@ -304,7 +304,7 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PROGRAME MUZICALE ─── */}
       {hasItems(sportsperson.seasons) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
           <SectionWatermark>MUZICĂ</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="text-label uppercase text-accent">
@@ -320,7 +320,7 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PERFORMANȚE DE VÂRF (oversized placement numerals) ─── */}
       {notableResults.length > 0 && (
-        <section className="relative overflow-hidden bg-surface-dark py-16 text-primary-on-dark md:py-20">
+        <section className="relative overflow-hidden bg-surface-dark py-16 text-primary-on-dark md:py-24">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="text-label uppercase text-gold">
@@ -337,7 +337,7 @@ const SportspersonView: React.FC<Props> = ({
                   <div
                     key={`${r.competition.documentId}-${idx}`}
                     className={cn(
-                      "grid grid-cols-[64px_1fr] items-center gap-5 py-5 sm:grid-cols-[86px_1fr] sm:gap-7",
+                      "grid grid-cols-[64px_1fr] items-center gap-6 py-6 sm:grid-cols-[86px_1fr] sm:gap-8",
                       idx < notableResults.length - 1 && "border-b border-line-subtle-on-dark",
                     )}
                   >
@@ -383,7 +383,7 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── GALLERY ─── */}
       {hasItems(sportsperson.gallery) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-20">
+        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
           <SectionWatermark>GALERIE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <GalleryCarousel
@@ -402,7 +402,7 @@ const SportspersonView: React.FC<Props> = ({
       {hasScrapedResults && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-surface py-16 md:py-20 scroll-mt-24"
+          className="relative overflow-hidden bg-surface py-16 md:py-24 scroll-mt-24"
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
@@ -421,7 +421,7 @@ const SportspersonView: React.FC<Props> = ({
       {!hasScrapedResults && historyRows.length > 0 && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-surface py-16 md:py-20 scroll-mt-24"
+          className="relative overflow-hidden bg-surface py-16 md:py-24 scroll-mt-24"
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
@@ -439,7 +439,7 @@ const SportspersonView: React.FC<Props> = ({
                   <article
                     key={key}
                     className={cn(
-                      "relative flex flex-col gap-2 py-[18px] sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-x-6",
+                      "relative flex flex-col gap-2 py-4 sm:grid sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-x-6",
                       idx < visibleHistoryRows.length - 1 && "border-b border-line-subtle",
                     )}
                   >
@@ -507,13 +507,13 @@ const SportspersonView: React.FC<Props> = ({
       )}
 
       {/* ─── OUTRO ─── */}
-      <section className="border-t border-line-subtle bg-surface py-12 md:py-14">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-5 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
+      <section className="border-t border-line-subtle bg-surface py-12 md:py-16">
+        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
             <div className="text-label uppercase text-accent">
               Mai departe
             </div>
-            <p className="text-body mt-1.5 text-primary">
+            <p className="text-body mt-2 text-primary">
               Vezi toți sportivii clubului EduSport.
             </p>
           </div>
@@ -636,7 +636,7 @@ function HeroStat({
  */
 function DespreGrid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid gap-y-10 gap-x-14 md:grid-cols-2">{children}</div>
+    <div className="grid gap-y-12 gap-x-16 md:grid-cols-2">{children}</div>
   );
 }
 
@@ -674,7 +674,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
   const primary = seasons.slice(0, PRIMARY);
   const older = seasons.slice(PRIMARY);
   return (
-    <div className="mt-8 flex flex-col gap-7">
+    <div className="mt-8 flex flex-col gap-8">
       {primary.map((s) => (
         <SeasonRow key={s.season} season={s.season} items={s.programs ?? []} />
       ))}
@@ -687,7 +687,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
             <span className="hidden group-open/seasons:inline">Arată mai puțin</span>
             <ChevronRight className="h-3 w-3 transition-transform group-open/seasons:rotate-90" />
           </summary>
-          <div className="mt-7 flex flex-col gap-7">
+          <div className="mt-8 flex flex-col gap-8">
             {older.map((s) => (
               <SeasonRow key={s.season} season={s.season} items={s.programs ?? []} />
             ))}
@@ -710,7 +710,7 @@ function SeasonRow({
       <div className="text-label mb-3 uppercase text-secondary">
         Sezon {season}
       </div>
-      <div className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
+      <div className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
         {items.map((p, i) => (
           <div
             key={`${season}-${i}`}
@@ -737,13 +737,13 @@ function SeasonRow({
 /** Compact chevron bullet list — retro convention (rust chevrons). */
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="flex flex-col gap-1.5">
+    <ul className="flex flex-col gap-2">
       {items.map((item, i) => (
         <li
           key={i}
           className="text-body-sm flex items-start gap-2 text-primary"
         >
-          <ChevronRight className="mt-[3px] h-3.5 w-3.5 shrink-0 text-accent" />
+          <ChevronRight className="mt-1 h-3.5 w-3.5 shrink-0 text-accent" />
           {item}
         </li>
       ))}

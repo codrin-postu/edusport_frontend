@@ -21,8 +21,8 @@ const pillVariants = cva(
       },
       size: {
         sm: "gap-1 py-0.5 text-caption",
-        md: "gap-1.5 py-1 text-caption",
-        lg: "gap-2 py-1.5 text-body-sm",
+        md: "gap-2 py-1 text-caption",
+        lg: "gap-2 py-2 text-body-sm",
       },
       shape: {
         // Classic rounded pill.
@@ -40,7 +40,7 @@ const pillVariants = cva(
       // cramped against the angled tips.
       { shape: "slanted", size: "sm", class: "px-3" },
       { shape: "slanted", size: "md", class: "px-4" },
-      { shape: "slanted", size: "lg", class: "px-5" },
+      { shape: "slanted", size: "lg", class: "px-6" },
     ],
     defaultVariants: { variant: "generic", size: "md", shape: "pill" },
   },

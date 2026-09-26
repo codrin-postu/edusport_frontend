@@ -143,7 +143,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           >
             <div
               className={cn(
-                "relative flex flex-col gap-2 py-[18px] sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-x-6",
+                "relative flex flex-col gap-2 py-4 sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-x-6",
                 hasDetail && "cursor-pointer",
               )}
               onClick={hasDetail ? () => setOpen(isOpen ? null : key) : undefined}
@@ -201,7 +201,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               </div>
             </div>
             {isOpen && hasDetail && (
-              <div className="grid gap-6 pb-5 sm:grid-cols-2">
+              <div className="grid gap-6 pb-6 sm:grid-cols-2">
                 {[...(r.segments ?? [])]
                   .sort((a, b) => Number(b.is_short) - Number(a.is_short))
                   .map((seg, i) => (
@@ -215,7 +215,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
       {totalPages > 1 && (
         <nav
           aria-label="Paginare competiții"
-          className="flex items-center justify-center gap-1.5 pt-10"
+          className="flex items-center justify-center gap-2 pt-12"
         >
           <button
             type="button"

@@ -133,7 +133,7 @@ const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = ({ retro, ...
     return (
       <Link
         href={href}
-        className="font-base relative w-fit pb-[2px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+        className="font-base relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
         variant={LinkVariants.DEFAULT}
         linkType={linkType}
         {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -197,7 +197,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
   ].filter(Boolean) as { label: string; href: string; Icon: React.FC }[];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-footer-content lg:justify-between gap-8 md:gap-10 lg:gap-12 px-22 py-10 mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-footer-content lg:justify-between gap-8 md:gap-12 lg:gap-12 px-22 py-12 mx-auto">
       {/* Meniu + Informații legale */}
       {footerLeftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
@@ -275,10 +275,10 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
             WhatsApp
           </Text>
           <WhatsAppQR size={84} url={waUrl} />
-          <p className="text-caption text-secondary-on-dark mt-[10px] mb-[12px]">
+          <p className="text-caption text-secondary-on-dark mt-3 mb-3">
             Intră pentru a primi ultimele informații
           </p>
-          <div className="flex items-center gap-[6px]">
+          <div className="flex items-center gap-2">
             {!retro && <WhatsAppIcon />}
             <Link
               href={waUrl}
@@ -287,7 +287,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
               target="_blank"
               rel="noopener noreferrer"
               className={retro
-                ? "text-sm relative w-fit pb-[2px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+                ? "text-sm relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
                 : "text-sm"}
             >
               Intră în canal
@@ -300,13 +300,13 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
           <Text variant="heading" className="text-body text-primary-on-dark">
             WhatsApp
           </Text>
-          <p className="text-caption text-secondary-on-dark mb-[12px]">
+          <p className="text-caption text-secondary-on-dark mb-3">
             Intră pentru a primi ultimele informații
           </p>
-          <div className="flex items-center gap-[14px]">
+          <div className="flex items-center gap-4">
             <WhatsAppQR size={72} url={waUrl} />
             <div className="w-px h-[72px] bg-surface-subtle-on-dark shrink-0" />
-            <div className="flex items-center gap-[6px]">
+            <div className="flex items-center gap-2">
               {!retro && <WhatsAppIcon />}
               <Link
                 href={waUrl}
@@ -315,7 +315,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
                 target="_blank"
                 rel="noopener noreferrer"
                 className={retro
-                  ? "text-sm relative w-fit pb-[2px] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+                  ? "text-sm relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
                   : "text-sm"}
               >
                 Intră în canal
@@ -337,7 +337,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 const RegisterBand: React.FC = () => (
   <section className="bg-pastel">
     <WarmStripe />
-    <div className="max-w-content mx-auto px-6 md:px-8 py-9 md:py-11 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10 text-center lg:text-left">
+    <div className="max-w-content mx-auto px-6 md:px-8 py-8 md:py-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12 text-center lg:text-left">
       <div className="lg:max-w-[54%]">
         <h2 className="text-heading text-primary">
           Începe aventura pe gheață

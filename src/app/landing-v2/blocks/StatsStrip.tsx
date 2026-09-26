@@ -81,12 +81,12 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
     <section className="bg-surface-dark">
       <div
         ref={ref}
-        className="grid grid-cols-2 md:grid-cols-4 gap-[3px]"
+        className="grid grid-cols-2 md:grid-cols-4 gap-1"
       >
         {stats.map((s) => (
           <div
             key={s.label}
-            className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center py-16 md:py-20 px-4`}
+            className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center py-16 md:py-24 px-4`}
           >
             <span className="text-display-lg">
               <CountUp target={s.value} suffix={s.suffix} run={inView} />

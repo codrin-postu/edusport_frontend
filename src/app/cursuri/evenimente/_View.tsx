@@ -17,13 +17,13 @@ function formatDate(iso: string) {
 
 function CurrentEventSection({ event }: { event: Event }) {
   return (
-    <section className="bg-surface py-16 md:py-20">
+    <section className="bg-surface py-16 md:py-24">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-label uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-12">
           Următorul eveniment
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Cover (clickable) */}
           <Link
             href={`/cursuri/evenimente/${event.slug}`}
@@ -36,7 +36,7 @@ function CurrentEventSection({ event }: { event: Event }) {
               iconClassName="w-12 h-12"
             />
             <span
-              className="text-label absolute top-3 left-3 inline-flex items-center bg-mustard text-primary uppercase px-4 py-1.5"
+              className="text-label absolute top-3 left-3 inline-flex items-center bg-mustard text-primary uppercase px-4 py-2"
               style={{ clipPath: "polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)" }}
             >
               În curând
@@ -44,17 +44,17 @@ function CurrentEventSection({ event }: { event: Event }) {
           </Link>
 
           {/* Content (not clickable — only image + button lead to the event) */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             <h2 className="text-heading text-primary">
               {event.title}
             </h2>
 
             <div className="text-body-sm flex flex-col gap-2 text-secondary">
-              <span className="flex items-center gap-2.5">
+              <span className="flex items-center gap-3">
                 <CalendarDays className="w-4 h-4 text-accent shrink-0" />
                 {formatDate(event.date)}
               </span>
-              <span className="flex items-center gap-2.5">
+              <span className="flex items-center gap-3">
                 <Clock className="w-4 h-4 text-accent shrink-0" />
                 {new Date(event.date).toLocaleTimeString("ro-RO", {
                   hour: "2-digit",
@@ -62,14 +62,14 @@ function CurrentEventSection({ event }: { event: Event }) {
                 })}
               </span>
               {event.location && (
-                <span className="flex items-center gap-2.5">
+                <span className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-accent shrink-0" />
                   {event.location}
                 </span>
               )}
             </div>
 
-            <p className="text-body text-secondary border-t border-line-subtle pt-5">
+            <p className="text-body text-secondary border-t border-line-subtle pt-6">
               {event.excerpt}
             </p>
 
@@ -90,9 +90,9 @@ function CurrentEventSection({ event }: { event: Event }) {
 
 function NoEventSection() {
   return (
-    <section className="bg-surface py-16 md:py-20">
+    <section className="bg-surface py-16 md:py-24">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-label uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-12">
           Următorul eveniment
         </p>
         <div className="flex flex-col gap-3 py-12 border-l-4 border-rust pl-6">
@@ -113,9 +113,9 @@ function PastEventsSection({ events }: { events: Event[] }) {
   if (events.length === 0) return null;
 
   return (
-    <section className="bg-surface py-16 md:py-20">
+    <section className="bg-surface py-16 md:py-24">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-label uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-12">
           Evenimente anterioare
         </p>
 
@@ -124,7 +124,7 @@ function PastEventsSection({ events }: { events: Event[] }) {
             <Link
               key={event.slug}
               href={`/cursuri/evenimente/${event.slug}`}
-              className="group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start border-t border-line-subtle first:border-t-0 outline-none"
+              className="group grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start border-t border-line-subtle first:border-t-0 outline-none"
             >
               {/* Thumbnail */}
               <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-retro border-line bg-surface-subtle shrink-0">
@@ -150,7 +150,7 @@ function PastEventsSection({ events }: { events: Event[] }) {
           ))}
         </div>
 
-        <div className="mt-10 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <SpotlightButton layers layersFace="black" href="/noutati" className="text-caption">
             Vezi toate evenimentele
           </SpotlightButton>

@@ -235,7 +235,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
       </div>
 
       {/* Demo note (mock data until the backend sends session times) */}
-      <div className="text-caption px-3.5 py-2 border-t border-line-subtle text-secondary">
+      <div className="text-caption px-4 py-2 border-t border-line-subtle text-secondary">
         Orar demonstrativ — orele reale vor fi preluate din sistem.
       </div>
     </div>

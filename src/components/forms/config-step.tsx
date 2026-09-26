@@ -121,7 +121,7 @@ const ConfigStep: React.FC<ConfigStepProps> = ({
       <StepIndicator current={index} labels={stepLabels} variant={variant} />
 
       <motion.div
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-6"
         initial="hidden"
         animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}

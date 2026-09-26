@@ -72,7 +72,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
               onClick={() => toggle(decade.id)}
               aria-expanded={open}
               className={cn(
-                "w-full flex items-start gap-2 px-3 py-2.5 text-left",
+                "w-full flex items-start gap-2 px-3 py-3 text-left",
                 "transition-colors hover-layer",
                 i > 0 && "border-t border-line-subtle",
                 open && "bg-surface-subtle",
@@ -179,14 +179,14 @@ const AthleteName: React.FC<{ result: Result }> = ({ result }) =>
 const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => {
   const meta = [competition.date, competition.location].filter(Boolean).join(", ");
   return (
-    <article className="border-retro border-line bg-surface-raised mb-3.5">
-      <header className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3.5 py-2.5 border-b-retro border-line bg-cream">
+    <article className="border-retro border-line bg-surface-raised mb-4">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b-retro border-line bg-cream">
         <h4 className="text-title text-primary">
           {competition.name}
         </h4>
         <span
           className={cn(
-            "text-label px-1.5 py-0.5 border-retro",
+            "text-label px-2 py-0.5 border-retro",
             competition.level === "international"
               ? "bg-burgundy text-primary-on-dark border-burgundy"
               : "border-line text-primary",
@@ -203,16 +203,16 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
       <table className="text-caption hidden sm:table w-full">
         <thead>
           <tr>
-            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle w-[86px]">
+            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle w-[86px]">
               Loc
             </th>
-            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle">
+            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle">
               Sportiv
             </th>
-            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle">
+            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle">
               Categorie
             </th>
-            <th className="text-label text-right uppercase text-secondary px-3.5 py-2 border-b border-line-subtle w-[92px]">
+            <th className="text-label text-right uppercase text-secondary px-4 py-2 border-b border-line-subtle w-[92px]">
               Punctaj
             </th>
           </tr>
@@ -224,17 +224,17 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
               <tr key={i} className="border-b border-line-subtle last:border-b-0">
                 <td
                   className={cn(
-                    "px-3.5 py-2.5 font-display font-extrabold",
+                    "px-4 py-3 font-display font-extrabold",
                     info?.accent ? info.textClass : "text-secondary",
                   )}
                 >
                   {info?.label ?? "-"}
                 </td>
-                <td className="px-3.5 py-2.5">
+                <td className="px-4 py-3">
                   <AthleteName result={result} />
                 </td>
-                <td className="px-3.5 py-2.5 text-secondary">{result.category || "-"}</td>
-                <td className="px-3.5 py-2.5 text-right tabular-nums text-secondary">
+                <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
+                <td className="px-4 py-3 text-right tabular-nums text-secondary">
                   {formatScore(result.score)}
                 </td>
               </tr>
@@ -253,7 +253,7 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
           return (
             <div
               key={i}
-              className="px-3 py-2.5 border-b border-line-subtle last:border-b-0"
+              className="px-3 py-3 border-b border-line-subtle last:border-b-0"
             >
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span
@@ -323,7 +323,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
   }));
 
   return (
-    <div className="flex flex-col lg:flex-row gap-5 lg:gap-7 items-start">
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
       <SeasonRail index={seasonIndex} selectedId={season.id} pathname={pathname} />
 
       <div className="flex-1 min-w-0 w-full">
@@ -343,11 +343,11 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
         </div>
 
         {/* Summary bar */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-cream px-4 py-3 mb-5">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-cream px-4 py-3 mb-6">
           <Stat value={summary.results} label="rezultate" />
           <Stat value={summary.competitions} label="competiții" />
           <Stat value={summary.athletes} label="sportivi" />
-          <div className="flex gap-1.5 ml-auto">
+          <div className="flex gap-2 ml-auto">
             <Medal count={summary.gold} label="aur" className="bg-mustard text-primary" />
             <Medal count={summary.silver} label="argint" className="bg-silver text-primary" />
             <Medal count={summary.bronze} label="bronz" className="bg-orange text-primary-on-dark" />

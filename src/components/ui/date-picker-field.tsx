@@ -169,7 +169,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
       >
         <Label
           className={cn(
-            "text-label block uppercase mb-1.5",
+            "text-label block uppercase mb-2",
             variant === "navy" ? "text-secondary-on-dark" : "text-secondary",
           )}
         >
@@ -187,7 +187,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   "py-px outline-none",
                   // The dot needs no padding of its own; with it the field
                   // reads as "zz . ll . aaaa" instead of "zz.ll.aaaa".
-                  segment.type === "literal" ? cn("px-0", v.literal) : cn("px-[2px]", v.segment),
+                  segment.type === "literal" ? cn("px-0", v.literal) : cn("px-1", v.segment),
                 )}
               />
             )}
@@ -211,12 +211,12 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
               onFocusChange={setFocused}
               className="w-full"
             >
-              <header className="mb-2.5 flex items-center justify-between">
+              <header className="mb-3 flex items-center justify-between">
                 <Button
                   slot={null}
                   onPress={() => setShowYears((s) => !s)}
                   className={cn(
-                    "text-caption flex items-center gap-1.5 capitalize outline-none transition-colors",
+                    "text-caption flex items-center gap-2 capitalize outline-none transition-colors",
                     v.heading,
                   )}
                 >
@@ -275,7 +275,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                       slot={null}
                       onPress={() => pickYear(year)}
                       className={cn(
-                        "py-2.5 text-center text-xs tabular-nums outline-none transition-colors",
+                        "py-3 text-center text-xs tabular-nums outline-none transition-colors",
                         year === visible.year ? v.yearOn : v.year,
                       )}
                     >

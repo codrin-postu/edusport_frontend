@@ -69,7 +69,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
   return (
     <div
       ref={menuRef}
-      className="relative flex items-center gap-x-5 h-12"
+      className="relative flex items-center gap-x-6 h-12"
       onMouseLeave={close}
     >
       {/* Nav buttons */}
@@ -162,7 +162,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           key={dropdownItem.href}
                           href={dropdownItem.href}
                           variant={LinkVariants.HEADER}
-                          className="group flex items-center gap-3 px-3 py-2.5 hover:bg-surface-subtle transition-colors"
+                          className="group flex items-center gap-3 px-3 py-3 hover:bg-surface-subtle transition-colors"
                           onClick={close}
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}

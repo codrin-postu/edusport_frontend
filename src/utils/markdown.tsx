@@ -203,7 +203,7 @@ export function renderMarkdown(source: string | null | undefined): React.ReactNo
     const isList = lines.every((l) => /^[-*] /.test(l));
     if (isList) {
       return (
-        <ul key={bIdx} className="list-disc pl-5 space-y-1">
+        <ul key={bIdx} className="list-disc pl-6 space-y-1">
           {lines.map((line, lIdx) => (
             <li key={lIdx}>{renderTokens(tokenizeInline(line.slice(2)))}</li>
           ))}

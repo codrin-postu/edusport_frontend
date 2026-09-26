@@ -3,15 +3,15 @@ import React from "react";
 
 /** Base class string for form inputs on light (cream) page backgrounds */
 export const inputBase =
-  "w-full px-4 py-3 text-sm bg-surface border-retro border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
+  "w-full h-12 px-4 text-sm bg-surface border-retro border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
 
 /** Variant for inputs inside a light card/panel container */
 export const inputBaseOnCard =
-  "w-full px-4 py-3 text-sm bg-surface-raised border-retro border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
+  "w-full h-12 px-4 text-sm bg-surface-raised border-retro border-line text-primary outline-none focus:border-rust focus:ring-2 focus:ring-rust/25 transition-[color,box-shadow,border-color] placeholder:text-secondary";
 
 /** Variant for inputs inside a dark (navy) panel — cream text, mustard focus */
 export const inputOnNavy =
-  "w-full px-4 py-3 text-sm bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark outline-none focus:border-mustard focus:ring-2 focus:ring-mustard/25 transition-[color,box-shadow,border-color] placeholder:text-muted-on-dark";
+  "w-full h-12 px-4 text-sm bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark outline-none focus:border-mustard focus:ring-2 focus:ring-mustard/25 transition-[color,box-shadow,border-color] placeholder:text-muted-on-dark";
 
 export const FieldLabel: React.FC<{
   htmlFor: string;
@@ -22,7 +22,7 @@ export const FieldLabel: React.FC<{
   <label
     htmlFor={htmlFor}
     className={cn(
-      "text-label block uppercase mb-1.5",
+      "text-label block uppercase mb-2",
       tone === "dark" ? "text-secondary-on-dark" : "text-secondary",
     )}
   >
