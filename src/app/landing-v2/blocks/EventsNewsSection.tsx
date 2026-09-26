@@ -76,7 +76,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
 function FeaturedArticle({ article: featured }: { article: LatestArticleData }) {
   return (
     <Link href={`/noutati/${featured.slug}`} className="group block">
-      <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-[1.5px] border-line">
+      <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-retro border-line">
         {featured.image && (
           <Image
             src={featured.image}

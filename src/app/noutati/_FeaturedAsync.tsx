@@ -33,7 +33,7 @@ export default async function FeaturedAsync() {
         href={`/noutati/${featured.slug}`}
         className="group grid lg:grid-cols-2 gap-10 lg:gap-16 items-center outline-none"
       >
-        <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-[1.5px] border-line bg-surface-subtle">
+        <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-retro border-line bg-surface-subtle">
           <ArticleImage
             src={featured.coverImage}
             alt={featured.title}
@@ -57,7 +57,7 @@ export default async function FeaturedAsync() {
             {featured.title}
           </h2>
 
-          <p className="text-secondary text-base leading-relaxed border-t-[1.5px] border-line-subtle pt-4">
+          <p className="text-secondary text-base leading-relaxed border-t-retro border-line-subtle pt-4">
             {featured.description}
           </p>
 

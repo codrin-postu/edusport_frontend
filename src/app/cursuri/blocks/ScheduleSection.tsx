@@ -33,7 +33,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
         <div className="max-w-4xl mx-auto relative">
           {/* Card with overflow-hidden so holes/margin line are clipped */}
           <div
-            className="relative rounded-none shadow-[4px_6px_20px_rgba(0,0,0,0.18)] overflow-hidden"
+            className="relative overflow-hidden"
             style={{
               transform: "rotate(-2deg)",
               transformOrigin: "top center",
@@ -86,7 +86,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               </p>
 
               {/* Two-column layout on wide screens */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-dashed sm:divide-line-subtle">
+              <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-line-subtle">
                 {scheduleGroups.map((group, groupIndex) => (
                   <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
                     {/* Time slot line */}

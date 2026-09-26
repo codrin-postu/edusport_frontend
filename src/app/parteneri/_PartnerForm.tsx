@@ -155,7 +155,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
           placeholders={PLACEHOLDERS}
           footer={
             isLast ? (
-              <div className="mt-8 pt-6 border-t-[1.5px] border-line-subtle-on-dark">
+              <div className="mt-8 pt-6 border-t-retro border-line-subtle-on-dark">
                 {status === "error" && (
                   <p className="text-xs text-danger font-semibold mb-4">
                     Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.

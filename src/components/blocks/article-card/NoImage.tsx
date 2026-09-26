@@ -9,7 +9,7 @@ export const NoImage: React.FC<{ className?: string; iconClassName?: string }> =
 }) => (
   <div
     className={cn(
-      "flex items-center justify-center border-[1.5px] border-line bg-surface-subtle",
+      "flex items-center justify-center border-retro border-line bg-surface-subtle",
       className,
     )}
     aria-hidden

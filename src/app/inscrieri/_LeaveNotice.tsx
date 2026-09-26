@@ -154,7 +154,7 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
       aria-labelledby="leave-notice-title"
     >
       <div className="absolute inset-0 bg-overlay" onClick={close} aria-hidden />
-      <div className="relative w-full max-w-sm border-[1.5px] border-line bg-surface p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.28)]">
+      <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
         <h2
           id="leave-notice-title"
           className="font-display text-lg font-extrabold leading-snug text-primary"
@@ -169,14 +169,14 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
             ref={stayRef}
             type="button"
             onClick={close}
-            className="border-[1.5px] border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
+            className="border-retro border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
           >
             Rămâi
           </button>
           <button
             type="button"
             onClick={go}
-            className="border-[1.5px] border-line bg-surface-dark px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover-layer-on-dark"
+            className="border-retro border-line bg-surface-dark px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Continuă
           </button>

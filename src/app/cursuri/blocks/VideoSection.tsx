@@ -21,7 +21,7 @@ const VideoSection: React.FC = () => {
             </p>
           </div>
 
-          <div className="relative w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative w-full max-w-4xl aspect-video overflow-hidden shadow-xl">
             <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
             <iframe
               // youtube-nocookie, not youtube.com: the plain domain sets four

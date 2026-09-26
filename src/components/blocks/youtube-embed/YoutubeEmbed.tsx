@@ -98,7 +98,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
     <div
       className={cn(
         "relative overflow-hidden shadow-lg cursor-pointer",
-        cover ? "absolute inset-0 rounded-none" : "w-full rounded-2xl aspect-video",
+        cover ? "absolute inset-0" : "w-full aspect-video",
         className,
       )}
       onMouseEnter={() => setHovered(true)}

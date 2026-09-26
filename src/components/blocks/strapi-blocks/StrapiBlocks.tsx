@@ -152,7 +152,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
         return (
           <figure className="my-8">
             <div
-              className="relative mx-auto overflow-hidden border-[1.5px] border-line bg-surface-subtle"
+              className="relative mx-auto overflow-hidden border-retro border-line bg-surface-subtle"
               style={{ maxWidth: width }}
             >
               <Image
@@ -175,7 +175,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
 
       return (
         <figure className="my-8">
-          <div className="relative w-full aspect-video overflow-hidden border-[1.5px] border-line bg-surface-subtle">
+          <div className="relative w-full aspect-video overflow-hidden border-retro border-line bg-surface-subtle">
             <ArticleImage
               src={src}
               alt={img.image.alternativeText ?? ""}

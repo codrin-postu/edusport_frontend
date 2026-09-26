@@ -65,9 +65,9 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
   const modifiersClassNames = useMemo(
     () => ({
       active:
-        "bg-green-100 h-3 w-3 text-green-800 hover:bg-green-200 rounded font-medium m-auto",
-      off: "bg-red-100 text-red-800 hover:bg-red-200 rounded font-medium m-auto",
-      next: "bg-green-300 text-green-900 hover:bg-green-400 font-bold rounded m-auto",
+        "bg-green-100 h-3 w-3 text-green-800 hover:bg-green-200 font-medium m-auto",
+      off: "bg-red-100 text-red-800 hover:bg-red-200 font-medium m-auto",
+      next: "bg-green-300 text-green-900 hover:bg-green-400 font-bold m-auto",
     }),
     [],
   );

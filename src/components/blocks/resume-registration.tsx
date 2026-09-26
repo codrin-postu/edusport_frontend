@@ -54,7 +54,7 @@ const ResumeRegistration: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-[90] bg-surface-dark px-4 py-3 text-primary-on-dark shadow-[0_-4px_16px_rgb(14_26_60_/_0.25)] md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-5 md:shadow-[6px_6px_0_rgb(14_26_60_/_0.3)]"
+      className="fixed inset-x-0 bottom-0 z-[90] bg-surface-dark px-4 py-3 text-primary-on-dark md:inset-x-auto md:right-6 md:bottom-6 md:w-auto md:px-5 md:shadow-retro"
       role="region"
       aria-label="Înscriere în curs"
     >

@@ -24,7 +24,7 @@ function SponsorTile({ sponsor }: { sponsor: Sponsor }) {
     </span>
   );
   const className =
-    "flex h-[82px] w-[150px] shrink-0 items-center justify-center border-[1.5px] border-line bg-surface-raised shadow-[4px_4px_0_rgb(14_26_60_/_0.13)]";
+    "flex h-[82px] w-[150px] shrink-0 items-center justify-center border-retro border-line bg-surface-raised shadow-retro-sm";
   return sponsor.href ? (
     <a
       href={sponsor.href}

@@ -83,7 +83,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                   .slice(0, catIndex)
                   .reduce((sum, c) => sum + c.rules.length, 0);
                 return (
-                  <div key={category.title} className="border-t-[1.5px] border-line-subtle">
+                  <div key={category.title} className="border-t-retro border-line-subtle">
                     <button
                       onClick={() => toggle(category.title)}
                       className="w-full flex items-center gap-3 py-[18px] text-left hover:opacity-70 transition-opacity"
@@ -157,7 +157,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           )}
 
           {/* Acceptance card */}
-          <div className="mt-12 bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
+          <div className="mt-12 bg-surface border-retro border-line shadow-retro p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
               <p className="text-eyebrow font-bold uppercase text-accent">Acceptare</p>
               <p className="text-primary text-base leading-relaxed mt-2">

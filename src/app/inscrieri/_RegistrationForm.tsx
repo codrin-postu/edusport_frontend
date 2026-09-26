@@ -151,7 +151,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
       <LeaveNotice scope={formRef} />
 
       {restored && (
-        <div className="mb-6 border-[1.5px] border-line bg-surface-raised px-4 py-3">
+        <div className="mb-6 border-retro border-line bg-surface-raised px-4 py-3">
           <p className="text-sm font-semibold text-primary">Formular salvat.</p>
           <button
             type="button"
@@ -175,7 +175,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             onClick={() => setConfirmReset(false)}
             aria-hidden
           />
-          <div className="relative w-full max-w-sm border-[1.5px] border-line bg-surface p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.28)]">
+          <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
             <h2 id="reset-title" className="font-display text-lg font-extrabold leading-snug text-primary">
               Ștergi răspunsurile salvate?
             </h2>
@@ -186,7 +186,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
               <button
                 type="button"
                 onClick={() => setConfirmReset(false)}
-                className="border-[1.5px] border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
+                className="border-retro border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
               >
                 Renunță
               </button>
@@ -199,7 +199,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                   setRestored(false);
                   setConfirmReset(false);
                 }}
-                className="border-[1.5px] border-rust bg-rust px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover:brightness-110"
+                className="border-retro border-rust bg-rust px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover:brightness-110"
               >
                 Șterge
               </button>
@@ -224,7 +224,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
           onBack={prevStep}
           footer={
             isLast ? (
-              <div className="mt-8 pt-6 border-t-[1.5px] border-line-subtle">
+              <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
                   <p className="text-xs text-accent font-semibold mb-4">
                     Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou.

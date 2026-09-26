@@ -61,7 +61,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
   return (
     <nav
       aria-label="Sezoane"
-      className="hidden lg:block w-[212px] shrink-0 border-r-[1.5px] border-line-subtle"
+      className="hidden lg:block w-[212px] shrink-0 border-r-retro border-line-subtle"
     >
       {decades.map((decade, i) => {
         const open = isOpen(decade.id);
@@ -151,7 +151,7 @@ const Medal: React.FC<{ count: number; label: string; className: string }> = ({
 }) => (
   <span
     className={cn(
-      "font-display text-2xs sm:text-xs font-extrabold border-[1.5px] border-line px-2 py-1 leading-none",
+      "font-display text-2xs sm:text-xs font-extrabold border-retro border-line px-2 py-1 leading-none",
       className,
     )}
   >
@@ -179,14 +179,14 @@ const AthleteName: React.FC<{ result: Result }> = ({ result }) =>
 const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => {
   const meta = [competition.date, competition.location].filter(Boolean).join(", ");
   return (
-    <article className="border-[1.5px] border-line bg-surface-raised mb-3.5">
-      <header className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3.5 py-2.5 border-b-[1.5px] border-line bg-cream">
+    <article className="border-retro border-line bg-surface-raised mb-3.5">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3.5 py-2.5 border-b-retro border-line bg-cream">
         <h4 className="font-display text-[15px] font-extrabold text-primary">
           {competition.name}
         </h4>
         <span
           className={cn(
-            "font-display text-3xs font-extrabold uppercase tracking-[0.1em] px-1.5 py-0.5 border-[1.5px]",
+            "font-display text-3xs font-extrabold uppercase tracking-[0.1em] px-1.5 py-0.5 border-retro",
             competition.level === "international"
               ? "bg-burgundy text-primary-on-dark border-burgundy"
               : "border-line text-primary",
@@ -309,7 +309,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
 
   if (seasonIndex.length === 0 || !season || !summary) {
     return (
-      <div className="border-[1.5px] border-line bg-cream px-4 py-6">
+      <div className="border-retro border-line bg-cream px-4 py-6">
         <p className="text-sm text-secondary">
           Rezultatele pe sezoane vor apărea aici imediat ce sunt publicate.
         </p>
@@ -343,7 +343,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
         </div>
 
         {/* Summary bar */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-[1.5px] border-line bg-cream px-4 py-3 mb-5">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-cream px-4 py-3 mb-5">
           <Stat value={summary.results} label="rezultate" />
           <Stat value={summary.competitions} label="competiții" />
           <Stat value={summary.athletes} label="sportivi" />

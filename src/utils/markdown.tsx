@@ -136,7 +136,7 @@ function renderTokens(tokens: Token[]): React.ReactNode[] {
           key={i}
           src={resolveAssetUrl(t.href)}
           alt={t.content}
-          className="my-1 max-w-full h-auto rounded"
+          className="my-1 max-w-full h-auto"
           loading="lazy"
         />
       );

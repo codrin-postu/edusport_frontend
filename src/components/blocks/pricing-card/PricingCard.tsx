@@ -14,7 +14,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   bottomItem,
 }) => {
   return (
-    <div className="bg-surface-raised rounded-3xl p-8 border border-line-subtle shadow-sm flex flex-col gap-6">
+    <div className="bg-surface-raised p-8 border border-line-subtle shadow-sm flex flex-col gap-6">
       <h3 className="text-sm font-medium tracking-widest uppercase text-edusport-blue">
         {title}
       </h3>

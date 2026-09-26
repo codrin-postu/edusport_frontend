@@ -201,17 +201,14 @@ export function SportspersonCard({
       }
     >
       <style>{`
-        /* Retro drop shadow lives on the static wrapper so it stays flat
-           while the inner card tilts. Hard offset at rest → soft lift on
-           hover (card picks up toward the viewer). */
-        /* Soft blurred shadow, ON THE CARD (not the wrapper) so it tilts with
-           the card and hugs it — same as the live /sportivi card — instead of
-           sitting flat behind and reading as a detached shape. Grows on hover. */
+        /* Retro drop shadow lives ON THE CARD (not the wrapper) so it tilts
+           with the card and hugs it. Hard offset shadow-retro token, at rest
+           and on hover (no blur, per the shape/shadow spec). */
         .sp-card-retro {
-          box-shadow: 4px 8px 16px rgba(14,26,60,0.25);
+          box-shadow: var(--shadow-retro);
         }
         .sp-card-retro.is-tilting {
-          box-shadow: 8px 20px 26px rgba(14,26,60,0.38);
+          box-shadow: var(--shadow-retro);
         }
         .sp-card {
           --rx: 0deg;
@@ -232,7 +229,6 @@ export function SportspersonCard({
         aria-label={`Vezi profilul ${sportsperson.name}`}
         className={cn(
           "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue focus-visible:ring-offset-2",
-          retro ? "rounded-[12px]" : "rounded-xl",
         )}
         style={{ transformStyle: "preserve-3d" }}
       >
@@ -241,25 +237,23 @@ export function SportspersonCard({
           className={cn(
             "sp-card relative bg-surface-dark",
             retro
-              ? "sp-card-retro rounded-[12px] overflow-hidden"
-              : "rounded-xl overflow-hidden",
+              ? "sp-card-retro overflow-hidden"
+              : "overflow-hidden",
             isSpotlight ? "h-[360px] w-[260px]" : "h-[360px] w-full",
           )}
           style={{
-            // Non-retro: soft drop shadow + white hairline. Retro: the navy
-            // "border" is an 8px padding FRAME with a rounded OUTER corner
-            // (rounded-[12px]); the inner layer below is square-clipped, so
-            // only the outside is rounded, the inside stays square.
+            // Non-retro: hard offset retro shadow + white hairline, square
+            // corners throughout. Retro: the navy "border" is an 8px padding
+            // FRAME, square outside and inside (no rounding either way).
             boxShadow: retro
               ? undefined
-              : "0 16px 36px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.12)",
+              : "var(--shadow-retro), 0 0 0 1px rgba(255,255,255,0.12)",
           }}
         >
           {/* Inner content layer — clips the photo to the card's rounding. */}
           <div
             className={cn(
               "relative h-full w-full overflow-hidden",
-              retro ? "rounded-[12px]" : "rounded-xl",
             )}
           >
           {/* Photo or initials fallback */}

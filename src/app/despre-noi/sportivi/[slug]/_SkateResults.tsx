@@ -225,7 +225,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.max(0, p - 1));
             }}
             disabled={safePage === 0}
-            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -240,7 +240,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                 setPage(p);
               }}
               className={cn(
-                "flex h-9 w-9 items-center justify-center border-[1.5px] text-sm font-bold transition-colors",
+                "flex h-9 w-9 items-center justify-center border-retro text-sm font-bold transition-colors",
                 p === safePage
                   ? "border-line bg-surface-dark text-primary-on-dark"
                   : "border-transparent text-secondary hover-layer hover:text-primary",
@@ -258,7 +258,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.min(totalPages - 1, p + 1));
             }}
             disabled={safePage >= totalPages - 1}
-            className="flex h-9 w-9 items-center justify-center border-[1.5px] border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

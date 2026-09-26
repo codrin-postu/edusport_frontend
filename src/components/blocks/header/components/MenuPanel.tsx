@@ -149,7 +149,7 @@ const RetroPanel: React.FC<{
         rel="noopener noreferrer"
         className="flex items-center gap-3 mx-1 mt-1 p-2 transition-opacity hover:opacity-70"
       >
-        <span className="w-[34px] h-[34px] rounded-[9px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
+        <span className="w-[34px] h-[34px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
         <span>
           <span className="block text-[13px] font-semibold text-primary">Instagram</span>
           <span className="block text-2xs text-secondary">{igHandle}</span>
@@ -173,7 +173,7 @@ const RetroPanel: React.FC<{
             className="fixed z-[999] overflow-hidden bg-surface flex flex-col
               inset-x-0 bottom-0
               md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
-              md:border-[1.5px] md:border-line md:shadow-[8px_8px_0_rgba(14,26,60,0.16)]"
+              md:border-retro md:border-line md:shadow-retro"
             style={{ top }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

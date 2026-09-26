@@ -36,7 +36,7 @@ const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
               </p>
             </div>
 
-            <div className="mt-10 bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] p-6 md:p-8 min-h-[480px]">
+            <div className="mt-10 bg-surface border-retro border-line shadow-retro p-6 md:p-8 min-h-[480px]">
               <RegistrationForm config={formConfig} />
             </div>
           </div>

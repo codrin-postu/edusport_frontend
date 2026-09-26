@@ -27,7 +27,7 @@ function CurrentEventSection({ event }: { event: Event }) {
           {/* Cover (clickable) */}
           <Link
             href={`/cursuri/evenimente/${event.slug}`}
-            className="group relative block aspect-[16/9] overflow-hidden border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] bg-surface-subtle"
+            className="group relative block aspect-[16/9] overflow-hidden border-retro border-line shadow-retro bg-surface-subtle"
           >
             <ArticleImage
               src={event.coverImage}
@@ -127,7 +127,7 @@ function PastEventsSection({ events }: { events: Event[] }) {
               className="group grid sm:grid-cols-[128px_1fr] gap-5 sm:gap-8 py-7 items-start border-t border-line-subtle first:border-t-0 outline-none"
             >
               {/* Thumbnail */}
-              <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-[1.5px] border-line bg-surface-subtle shrink-0">
+              <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-retro border-line bg-surface-subtle shrink-0">
                 <ArticleImage src={event.coverImage} alt={event.title} />
               </div>
 

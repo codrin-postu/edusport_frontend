@@ -357,7 +357,7 @@ const RegisterBand: React.FC = () => (
           href="/cursuri"
           linkType="internal"
           variant={LinkVariants.DEFAULT}
-          className="inline-flex items-center justify-center border-[1.5px] border-line !text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
+          className="inline-flex items-center justify-center border-retro border-line !text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
         >
           Școala de patinaj
         </Link>

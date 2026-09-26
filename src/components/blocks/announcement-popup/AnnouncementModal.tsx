@@ -104,7 +104,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             aria-modal="true"
             aria-labelledby={titleId}
             tabIndex={-1}
-            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-surface border-[1.5px] border-line shadow-[10px_10px_0_rgba(14,26,60,0.28)] px-6 pt-6 pb-5 outline-none"
+            className="relative w-[calc(100%-28px)] sm:w-[390px] max-h-[85vh] overflow-y-auto bg-surface border-retro border-line shadow-retro px-6 pt-6 pb-5 outline-none"
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
@@ -132,7 +132,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
                 <Link
                   href={announcement.ctaUrl}
                   onClick={onCtaClick}
-                  className="px-[18px] py-2.5 text-[11.5px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-[1.5px] border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+                  className="px-[18px] py-2.5 text-[11.5px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
                 >
                   {announcement.ctaLabel}
                 </Link>

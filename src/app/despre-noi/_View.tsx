@@ -149,7 +149,7 @@ const HistoryPage: React.FC<Props> = ({
             {resolvedStats.map((stat, i) => (
               <div
                 key={i}
-                className="relative flex items-center gap-3 bg-surface border-[1.5px] border-line shadow-[6px_6px_0_rgb(14_26_60_/_0.16)] pl-[18px] pr-4 py-4"
+                className="relative flex items-center gap-3 bg-surface border-retro border-line shadow-retro pl-[18px] pr-4 py-4"
               >
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
                 <span className="font-display text-3xl font-extrabold text-primary leading-none">{stat.value}</span>
@@ -168,7 +168,7 @@ const HistoryPage: React.FC<Props> = ({
             </h2>
           </div>
 
-          <div className="flex flex-col border-l-[1.5px] border-line ml-20">
+          <div className="flex flex-col border-l-retro border-line ml-20">
             {resolvedMilestones.map((milestone, i) => (
               <div key={i} className="relative pb-8 pl-7">
                 <span

@@ -154,7 +154,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
       <div className="grid grid-cols-[48px_1fr] border-t border-line-subtle">
         {/* Gutter */}
         <div>
-          <div className="h-11 border-b-[1.5px] border-line" />
+          <div className="h-11 border-b-retro border-line" />
           <div className="relative border-r border-line-subtle">
             {HOURS.map((h) => (
               <div key={h} className="relative" style={{ height: HOUR_H }}>
@@ -179,7 +179,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                   style={{ scrollSnapAlign: "start" }}
                 >
                   {/* Day head */}
-                  <div className="h-11 border-b-[1.5px] border-line flex flex-col items-center justify-center gap-0.5">
+                  <div className="h-11 border-b-retro border-line flex flex-col items-center justify-center gap-0.5">
                     <span className="text-[0.66rem] font-bold uppercase tracking-[0.06em] text-secondary">
                       {format(day, "EEEE", { locale: ro })}
                     </span>
@@ -216,7 +216,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                       return (
                         <div
                           key={i}
-                          className="absolute left-1 right-1 px-2 py-1 text-[11px] font-bold overflow-hidden rounded-[2px]"
+                          className="absolute left-1 right-1 px-2 py-1 text-[11px] font-bold overflow-hidden"
                           style={{ top, height, background: st.bg, color: st.fg }}
                         >
                           {e.title}

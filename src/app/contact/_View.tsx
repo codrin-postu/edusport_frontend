@@ -72,9 +72,9 @@ const ContactInfoCard: React.FC<{
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-4 p-4 bg-surface border-[1.5px] border-line shadow-[4px_4px_0_rgb(14_26_60_/_0.14)] hover:shadow-[6px_6px_0_rgb(14_26_60_/_0.2)] transition-all duration-200"
+      className="group flex items-center gap-4 p-4 bg-surface border-retro border-line shadow-retro-sm hover:shadow-retro transition-all duration-200"
     >
-      <div className="flex-shrink-0 w-9 h-9 border-[1.5px] border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
+      <div className="flex-shrink-0 w-9 h-9 border-retro border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
@@ -508,7 +508,7 @@ const ContactPage: React.FC<{
             </div>
 
             {/* Right - form (navy panel) */}
-            <div className="relative bg-surface-dark p-6 md:p-8 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]">
+            <div className="relative bg-surface-dark p-6 md:p-8 shadow-retro">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h2 className="font-display text-2xl font-extrabold text-primary-on-dark mb-1">
                 Trimite-ne un mesaj

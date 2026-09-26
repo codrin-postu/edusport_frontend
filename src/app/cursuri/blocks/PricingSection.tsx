@@ -30,7 +30,7 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
 };
 
 const CARD =
-  "relative flex flex-col overflow-hidden min-h-[520px] bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)]";
+  "relative flex flex-col overflow-hidden min-h-[520px] bg-surface border-retro border-line shadow-retro";
 
 const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
   tier,
@@ -74,7 +74,7 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
       ))}
     </div>
     {tier.bottomItem && (
-      <div className="mt-auto px-8 py-4 flex items-baseline justify-between gap-4 border-t-[1.5px] border-dashed border-line-subtle">
+      <div className="mt-auto px-8 py-4 flex items-baseline justify-between gap-4 border-t-retro border-line-subtle">
         <span className="text-xs text-secondary">{tier.bottomItem.label}</span>
         <span className="text-sm font-bold text-secondary whitespace-nowrap">
           {tier.bottomItem.price}
@@ -119,7 +119,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 
         <div className="grid lg:grid-cols-3 gap-5 items-stretch">
           {/* Promo card — plain navy */}
-          <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-[8px_8px_0_rgba(14,26,60,0.16)]">
+          <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-retro">
             <span className="text-eyebrow font-bold uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
@@ -157,7 +157,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           {/* Price cards — 2-col at md, dissolve into parent 3-col at lg */}
           <div className="grid md:grid-cols-2 lg:contents gap-5 items-stretch">
             {pricingData === null || !members || !nonMembers ? (
-              <div className="md:col-span-2 lg:col-span-2 bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] flex items-center justify-center min-h-[520px] px-8">
+              <div className="md:col-span-2 lg:col-span-2 bg-surface border-retro border-line shadow-retro flex items-center justify-center min-h-[520px] px-8">
                 <p className="text-sm text-secondary text-center">
                   Prețurile nu sunt disponibile momentan. Reveniți în curând sau
                   contactați-ne direct.

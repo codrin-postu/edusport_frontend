@@ -195,7 +195,7 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="z-50 max-w-[320px] bg-surface text-secondary border-[1.5px] border-line shadow-[6px_6px_0_rgb(14_26_60_/_0.18)] px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="z-50 max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
         >
           <p className="text-3xs font-bold uppercase tracking-wider text-accent">
             {stateLabel}
@@ -221,7 +221,7 @@ const MonthColumn: React.FC<{
       {/* Month label - acts as table header */}
       <div
         className={cn(
-          "px-4 py-2.5 border-b-[1.5px] border-line flex items-center justify-between",
+          "px-4 py-2.5 border-b-retro border-line flex items-center justify-between",
           allPast && "sm:cursor-default cursor-pointer select-none",
         )}
         onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
@@ -433,7 +433,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             {/* Shared card chrome (border + offset shadow) for both modes */}
             <div
               ref={calendarContainerRef}
-              className="bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+              className="bg-surface border-retro border-line shadow-retro"
             >
               {calendarMode === "month" ? (
                 shouldMountCalendar ? (
@@ -485,7 +485,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
         {/* Weekend view - month columns */}
         {activeView === "weekends" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle border-[1.5px] border-line">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle border-retro border-line">
             {groupedWeekends.map((group) => (
               <MonthColumn
                 key={group.label}

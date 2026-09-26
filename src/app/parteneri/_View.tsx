@@ -104,10 +104,10 @@ const PartnerView: React.FC<{
               {events.map((ev) => (
                 <article
                   key={ev.title}
-                  className="overflow-hidden border-[1.5px] border-line bg-surface shadow-[6px_6px_0_rgb(14_26_60_/_0.16)]"
+                  className="overflow-hidden border-retro border-line bg-surface shadow-retro"
                 >
                   {ev.image && (
-                    <div className="relative h-44 w-full border-b-[1.5px] border-line bg-surface-subtle">
+                    <div className="relative h-44 w-full border-b-retro border-line bg-surface-subtle">
                       <Image
                         src={ev.image}
                         alt={ev.title}
@@ -118,7 +118,7 @@ const PartnerView: React.FC<{
                     </div>
                   )}
                   <div className="p-5">
-                    <span className="inline-block border-[1.5px] border-rust px-2 py-0.5 text-3xs font-extrabold uppercase tracking-[0.06em] text-accent">
+                    <span className="inline-block border-retro border-rust px-2 py-0.5 text-3xs font-extrabold uppercase tracking-[0.06em] text-accent">
                       cu {ev.partner}
                     </span>
                     <h3 className="mt-3 text-lg font-extrabold text-primary">
@@ -153,7 +153,7 @@ const PartnerView: React.FC<{
                 {copy.ctaBody}
               </p>
             </div>
-            <div className="relative bg-surface-dark p-6 shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] md:p-8">
+            <div className="relative bg-surface-dark p-6 shadow-retro md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h3 className="mb-1 font-display text-2xl font-extrabold text-primary-on-dark">
                 Scrie-ne
@@ -168,7 +168,7 @@ const PartnerView: React.FC<{
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-[1.5px] border-line-subtle bg-surface py-12 md:py-14">
+      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
             <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">

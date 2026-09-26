@@ -183,7 +183,7 @@ const SportspersonView: React.FC<Props> = ({
 
             {/* Right: photo inset with the brand gold→rust→blue gradient
                 (visible as frame / behind photo-less athletes). */}
-            <div className="relative h-[240px] overflow-hidden rounded-sm bg-gradient-to-br from-gold via-rust to-edusport-blue shadow-[0_16px_40px_rgba(0,0,0,0.4)] md:h-[300px]">
+            <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-gold via-rust to-edusport-blue md:h-[300px]">
               {sportsperson.photo?.url && (
                 <Image
                   src={strapiMediaUrl(sportsperson.photo.url)}
@@ -195,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="absolute bottom-3 left-3 rounded-[3px] bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-primary-on-dark backdrop-blur-sm">
+                <span className="absolute bottom-3 left-3 bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-primary-on-dark backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}

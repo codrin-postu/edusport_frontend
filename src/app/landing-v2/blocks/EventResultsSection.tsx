@@ -46,10 +46,10 @@ export function formatRoMonthYear(iso: string): string {
 
 export function EventCard({ event }: { event: Event }) {
   return (
-    <article className="flex flex-col border-[1.5px] border-line bg-surface-raised">
+    <article className="flex flex-col border-retro border-line bg-surface-raised">
       <WarmStripe />
       {event.coverImage && (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-b-[1.5px] border-line">
+        <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-b-retro border-line">
           <Image
             src={event.coverImage}
             alt={event.title}

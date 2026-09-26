@@ -32,7 +32,7 @@ const ViewModeDropdown: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="h-[34px] inline-flex items-center gap-2 border-[1.5px] border-line bg-transparent px-3 text-[11px] font-bold uppercase tracking-[0.04em] text-primary"
+        className="h-[34px] inline-flex items-center gap-2 border-retro border-line bg-transparent px-3 text-[11px] font-bold uppercase tracking-[0.04em] text-primary"
       >
         {current.label}
         <span
@@ -43,7 +43,7 @@ const ViewModeDropdown: React.FC<{
         </span>
       </button>
       {open && (
-        <div className="absolute right-0 max-[520px]:right-auto max-[520px]:left-0 z-30 mt-1 min-w-[150px] border-[1.5px] border-line bg-surface shadow-[4px_4px_0_rgb(14_26_60_/_0.16)]">
+        <div className="absolute right-0 max-[520px]:right-auto max-[520px]:left-0 z-30 mt-1 min-w-[150px] border-retro border-line bg-surface shadow-retro-sm">
           {OPTIONS.map((o) => (
             <button
               key={o.value}

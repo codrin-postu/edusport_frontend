@@ -223,7 +223,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                 )}
               </div>
             ) : (
-              <div className="mx-auto mt-10 max-w-3xl border-y-[1.5px] border-line text-left">
+              <div className="mx-auto mt-10 max-w-3xl border-y-retro border-line text-left">
                 {gridData.map((sp, i) => {
                   const st = statsByAthlete.get(sp.documentId)!;
                   const medalTotal =
@@ -297,7 +297,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               AboutSection / evenimente cards: small eyebrow + short
               statement on one side, a text link with an arrow on the
               other. Reads like a footnote, not a parallel headline. */}
-          <section className="border-t-[1.5px] border-line-subtle bg-surface px-4 py-12 md:px-8 lg:px-12 md:py-14">
+          <section className="border-t-retro border-line-subtle bg-surface px-4 py-12 md:px-8 lg:px-12 md:py-14">
             <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">

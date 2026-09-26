@@ -96,7 +96,7 @@ function SearchBar({
         name="search"
         placeholder="Caută articole..."
         defaultValue={value}
-        className="w-full pl-10 pr-4 py-2.5 text-sm text-primary bg-surface border-[1.5px] border-line outline-none placeholder:text-secondary focus:ring-2 focus:ring-rust/30 focus:border-rust transition-colors"
+        className="w-full pl-10 pr-4 py-2.5 text-sm text-primary bg-surface border-retro border-line outline-none placeholder:text-secondary focus:ring-2 focus:ring-rust/30 focus:border-rust transition-colors"
       />
     </form>
   );

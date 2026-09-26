@@ -65,7 +65,7 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,
-              "border-[1.5px] border-line outline-none transition-all",
+              "border-retro border-line outline-none transition-all",
               "focus:border-rust focus:ring-2 focus:ring-rust/25",
               "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust/25",
               !selected && "text-secondary",
@@ -92,7 +92,7 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "z-50 max-h-72 overflow-auto p-1",
               "min-w-[var(--radix-dropdown-menu-trigger-width)]",
-              "border-[1.5px] border-line bg-surface shadow-[6px_6px_0_rgb(14_26_60_/_0.16)]",
+              "border-retro border-line bg-surface shadow-retro",
               "data-[state=open]:animate-in data-[state=closed]:animate-out",
               "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
               "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",

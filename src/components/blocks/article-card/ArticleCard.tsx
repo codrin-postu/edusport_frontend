@@ -30,7 +30,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       )}
     >
       {/* Thumbnail — square, navy border */}
-      <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-[1.5px] border-line bg-surface-subtle shrink-0">
+      <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-retro border-line bg-surface-subtle shrink-0">
         <ArticleImage src={image} alt={title} sizes="(max-width: 640px) 100vw, 128px" />
       </div>
 

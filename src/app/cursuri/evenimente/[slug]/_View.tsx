@@ -80,7 +80,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
         ]}
       />
       {/* Top bar - breadcrumb */}
-      <div className="bg-surface border-b-[1.5px] border-line pt-8">
+      <div className="bg-surface border-b-retro border-line pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
           <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
@@ -93,7 +93,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       </div>
 
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-[1.5px] border-line bg-surface-subtle">
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-retro border-line bg-surface-subtle">
         <ArticleImage src={event.coverImage} alt={event.title} iconClassName="w-14 h-14" />
         <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-10" />
       </div>
@@ -129,7 +129,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
 
             {/* Sidebar */}
             <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
-              <div className="bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] p-6 flex flex-col gap-4">
+              <div className="bg-surface border-retro border-line shadow-retro p-6 flex flex-col gap-4">
                 <p className="text-eyebrow font-bold uppercase text-accent">
                   {SIDEBAR_HEADER[event.category] ?? "Detalii eveniment"}
                 </p>

@@ -65,7 +65,7 @@ const navigationMenuTriggerStyle = cva([
   "w-max",
   "items-center",
   "justify-center",
-  "rounded-md",
+  "",
   "px-4",
   "py-2",
   "text-sm",
@@ -137,7 +137,6 @@ function NavigationMenuContent({
         "group-data-[viewport=false]/navigation-menu:top-full",
         "group-data-[viewport=false]/navigation-menu:mt-1.5",
         "group-data-[viewport=false]/navigation-menu:overflow-hidden",
-        "group-data-[viewport=false]/navigation-menu:rounded-md",
         "group-data-[viewport=false]/navigation-menu:border",
         "group-data-[viewport=false]/navigation-menu:shadow",
         "group-data-[viewport=false]/navigation-menu:duration-200",
@@ -178,7 +177,7 @@ function NavigationMenuViewport({
           "ease-[cubic-bezier(0.25,0.1,0.25,1)]",
           "w-full",
           "overflow-hidden",
-          "rounded-md",
+          "",
           "border",
           "shadow",
           "md:w-[var(--radix-navigation-menu-viewport-width)]",
@@ -208,7 +207,7 @@ function NavigationMenuLink({
         "flex",
         "flex-col",
         "gap-1",
-        "rounded-sm",
+        "",
         "p-2",
         "text-sm",
         "transition-all",
@@ -246,7 +245,7 @@ function NavigationMenuIndicator({
       ])}
       {...props}
     >
-      <div className="bg-border relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm shadow-md" />
+      <div className="bg-border relative top-[60%] h-2 w-2 rotate-45 shadow-md" />
     </NavigationMenuPrimitive.Indicator>
   );
 }

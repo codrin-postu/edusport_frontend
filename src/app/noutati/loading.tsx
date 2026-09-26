@@ -25,7 +25,7 @@ export default function Loading() {
       <div className="relative z-10 bg-surface">
         <FeaturedSectionSkeleton />
 
-        <Section className="bg-surface border-t-[1.5px] border-line-subtle pt-12 pb-24 md:pt-16 md:pb-32">
+        <Section className="bg-surface border-t-retro border-line-subtle pt-12 pb-24 md:pt-16 md:pb-32">
           <ToolbarSkeleton />
           <ArticleListSkeleton />
         </Section>

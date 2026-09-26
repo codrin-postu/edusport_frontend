@@ -60,7 +60,7 @@ const VARIANT = {
     select: undefined as string | undefined,
     card: "border-line bg-surface",
     cardChecked: "border-rust bg-rust/[0.04]",
-    cardHover: "hover:shadow-[4px_4px_0_rgb(14_26_60_/_0.16)] transition-shadow",
+    cardHover: "hover:shadow-retro-sm transition-shadow",
     cardIcon: "border-line bg-surface-dark text-primary-on-dark",
     cardTitle: "text-primary",
     cardDesc: "text-secondary",
@@ -141,7 +141,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               {Icon && (
                 <span
                   className={cn(
-                    "w-10 h-10 border-[1.5px] flex items-center justify-center shrink-0",
+                    "w-10 h-10 border-retro flex items-center justify-center shrink-0",
                     v.cardIcon,
                   )}
                 >
@@ -167,7 +167,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "flex items-center gap-3 border-[1.5px] p-5 md:p-6 group",
+                "flex items-center gap-3 border-retro p-5 md:p-6 group",
                 v.card,
                 v.cardHover,
               )}
@@ -180,7 +180,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
           ) : (
             <div
               key={key}
-              className={cn("flex items-center gap-3 border-[1.5px] p-5 md:p-6", v.card)}
+              className={cn("flex items-center gap-3 border-retro p-5 md:p-6", v.card)}
             >
               {body}
             </div>
@@ -195,7 +195,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
             <div
               key={key}
               className={cn(
-                "border-[1.5px] p-5 md:p-6 transition-colors",
+                "border-retro p-5 md:p-6 transition-colors",
                 checked ? v.cardChecked : v.card,
               )}
             >
@@ -203,7 +203,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 {Icon && (
                   <div
                     className={cn(
-                      "w-10 h-10 border-[1.5px] flex items-center justify-center shrink-0",
+                      "w-10 h-10 border-retro flex items-center justify-center shrink-0",
                       v.cardIcon,
                     )}
                   >

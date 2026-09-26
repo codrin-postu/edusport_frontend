@@ -67,12 +67,12 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-surface-raised border-[1.5px] border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust/25",
+      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust/25",
     groupInvalid: "border-rust",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
-    trigger: "border-l-[1.5px] border-line bg-surface text-primary hover:text-accent",
-    popover: "bg-surface-raised border-[1.5px] border-line shadow-[4px_4px_0_rgb(14_26_60_/_0.16)]",
+    trigger: "border-l-retro border-line bg-surface text-primary hover:text-accent",
+    popover: "bg-surface-raised border-retro border-line shadow-retro-sm",
     heading: "text-primary hover:text-accent",
     nav: "text-primary hover:text-accent",
     weekday: "text-secondary",
@@ -83,13 +83,13 @@ const V = {
   },
   navy: {
     group:
-      "flex items-stretch w-full bg-surface-subtle-on-dark border-[1.5px] border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard/25",
+      "flex items-stretch w-full bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard/25",
     groupInvalid: "border-danger",
     segment:
       "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",
     literal: "text-line-subtle-on-dark",
-    trigger: "border-l-[1.5px] border-line-on-dark bg-surface-subtle-on-dark text-primary-on-dark hover:text-mustard",
-    popover: "bg-surface-dark border-[1.5px] border-line-on-dark shadow-[4px_4px_0_rgb(0_0_0_/_0.3)]",
+    trigger: "border-l-retro border-line-on-dark bg-surface-subtle-on-dark text-primary-on-dark hover:text-mustard",
+    popover: "bg-surface-dark border-retro border-line-on-dark shadow-retro",
     heading: "text-primary-on-dark hover:text-mustard",
     nav: "text-primary-on-dark hover:text-mustard",
     weekday: "text-secondary-on-dark",
@@ -184,7 +184,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
               <DateSegment
                 segment={segment}
                 className={cn(
-                  "rounded-none py-px outline-none",
+                  "py-px outline-none",
                   // The dot needs no padding of its own; with it the field
                   // reads as "zz . ll . aaaa" instead of "zz.ll.aaaa".
                   segment.type === "literal" ? cn("px-0", v.literal) : cn("px-[2px]", v.segment),

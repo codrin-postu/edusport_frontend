@@ -68,12 +68,12 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           </Link>
         </div>
 
-        <div className="border-[1.5px] border-line shadow-[8px_8px_0_rgba(14,26,60,0.16)] overflow-hidden">
+        <div className="border-retro border-line shadow-retro overflow-hidden">
           <YoutubeEmbed
             url={videoUrl}
             title={videoLabel}
             label={videoLabel}
-            className="rounded-none shadow-none"
+            className="shadow-none"
           />
         </div>
       </div>

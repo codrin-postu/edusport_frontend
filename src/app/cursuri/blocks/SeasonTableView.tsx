@@ -80,7 +80,7 @@ function isMonthFullyPast(monthData: MonthData): boolean {
 
 const tooltipClass = cn(
   "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1",
-  "bg-gray-900 text-primary-on-dark text-xs rounded whitespace-nowrap",
+  "bg-gray-900 text-primary-on-dark text-xs whitespace-nowrap",
   "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10",
 );
 
@@ -111,7 +111,7 @@ const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
   <TooltipWrapper label={dateInfo.days.join(", ")}>
     <span
       className={cn(
-        "inline-flex items-center px-2 py-1 rounded text-xs border cursor-help",
+        "inline-flex items-center px-2 py-1 text-xs border cursor-help",
         isNext
           ? "bg-green-400 text-green-950 font-bold border-green-600"
           : "bg-green-50 text-green-700 font-medium border-green-150",
@@ -130,7 +130,7 @@ const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
 
 const OffDateBadge: React.FC<{ dateInfo: WeekendInfo }> = ({ dateInfo }) => (
   <TooltipWrapper label={dateInfo.days.join(", ")}>
-    <span className="inline-flex items-center px-2 py-1 bg-red-50 text-red-700 rounded text-xs font-medium border border-red-150 cursor-help">
+    <span className="inline-flex items-center px-2 py-1 bg-red-50 text-red-700 text-xs font-medium border border-red-150 cursor-help">
       <div className="w-2 h-2 bg-red-400 rounded-full mr-1" />
       {dateInfo.weekend}
     </span>

@@ -68,7 +68,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                 return (
                   <div
                     key={trainer.name}
-                    className="flex flex-col bg-surface border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)]"
+                    className="flex flex-col bg-surface border-retro border-line shadow-retro"
                   >
                     {/* Header band — avatar + name centered/stacked */}
                     <div
@@ -76,7 +76,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                         "relative flex flex-col items-center text-center px-4 pt-4 pb-3",
                         featured
                           ? "bg-surface-dark"
-                          : "bg-surface border-b-[1.5px] border-line-subtle",
+                          : "bg-surface border-b-retro border-line-subtle",
                       )}
                     >
                       {featured && (

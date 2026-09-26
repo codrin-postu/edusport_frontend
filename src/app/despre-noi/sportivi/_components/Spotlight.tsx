@@ -29,7 +29,7 @@ interface Props {
 
 export function Spotlight({ sportsperson, stats, rank }: Props) {
   return (
-    <section className="relative overflow-hidden bg-surface border-b-[1.5px] border-line-subtle px-6 py-16 md:px-10 md:py-20 text-primary">
+    <section className="relative overflow-hidden bg-surface border-b-retro border-line-subtle px-6 py-16 md:px-10 md:py-20 text-primary">
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden

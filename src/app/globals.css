@@ -150,8 +150,17 @@ h1.text-branding-font {
   --color-line-on-dark: #fbf8f1;
   --color-line-subtle-on-dark: #3d4660;
 
-  --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.12);
+  --shadow-retro-sm: 4px 4px 0 rgb(14 26 60 / 0.16);
+  --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.16);
 }
+
+@utility border-retro { border-width: 1.5px; }
+@utility border-t-retro { border-top-width: 1.5px; }
+@utility border-b-retro { border-bottom-width: 1.5px; }
+@utility border-l-retro { border-left-width: 1.5px; }
+@utility border-r-retro { border-right-width: 1.5px; }
+@utility border-x-retro { border-left-width: 1.5px; border-right-width: 1.5px; }
+@utility border-y-retro { border-top-width: 1.5px; border-bottom-width: 1.5px; }
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -326,12 +335,12 @@ h1.text-branding-font {
   }
   .marker-tag {
     @apply inline-flex items-center justify-center px-2 py-1;
-    @apply border-[1.5px] border-navy;
+    @apply border-retro border-navy;
     @apply text-2xs font-extrabold uppercase tracking-[0.04em];
   }
   .btn-retro-ghost {
     @apply h-12 px-6 inline-flex items-center justify-center;
-    @apply border-[1.5px] border-line text-primary;
+    @apply border-retro border-line text-primary;
     @apply text-sm font-bold uppercase tracking-[0.03em];
     @apply transition-colors hover-layer;
   }
@@ -501,7 +510,7 @@ html.lv2-nav .nav-dropdown-panel {
   border-radius: 0 !important;
   border: 1.5px solid var(--color-navy) !important;
   background: var(--color-retro-cream) !important;
-  box-shadow: 8px 8px 0 rgba(14, 26, 60, 0.12) !important;
+  box-shadow: var(--shadow-retro) !important;
   padding-top: 6px;      /* room for the top stripe (stripe pushes content down) */
   margin-top: -14px;     /* pull up under the bar (kills the pt-6 gap) */
   position: relative;

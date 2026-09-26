@@ -120,7 +120,7 @@ export function GalleryCarousel({
                   onClick={prevDesktop}
                   disabled={desktopStart === 0}
                   aria-label="Imaginile anterioare"
-                  className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -128,7 +128,7 @@ export function GalleryCarousel({
                   onClick={nextDesktop}
                   disabled={desktopStart === maxStart}
                   aria-label="Imaginile următoare"
-                  className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -146,7 +146,7 @@ export function GalleryCarousel({
             onClick={prevDesktop}
             disabled={desktopStart === 0}
             aria-label="Imaginile anterioare"
-            className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -154,7 +154,7 @@ export function GalleryCarousel({
             onClick={nextDesktop}
             disabled={desktopStart === maxStart}
             aria-label="Imaginile următoare"
-            className="w-10 h-10 border-[1.5px] border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -174,7 +174,7 @@ export function GalleryCarousel({
               type="button"
               onClick={() => setLightboxIndex(i)}
               aria-label={`Deschide imaginea: ${img.alt}`}
-              className="group relative aspect-[4/3] overflow-hidden border-[1.5px] border-line bg-surface-subtle shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
+              className="group relative aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
               style={{ width: "calc((100% - 1.5rem) / 3)" }}
             >
               <Image
@@ -219,7 +219,7 @@ export function GalleryCarousel({
       {/* Mobile: single image carousel */}
       <div className="md:hidden">
         <div
-          className="relative w-full aspect-[4/3] overflow-hidden border-[1.5px] border-line bg-surface-subtle select-none cursor-zoom-in"
+          className="relative w-full aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle select-none cursor-zoom-in"
           onClick={() => setLightboxIndex(current)}
           role="button"
           tabIndex={0}

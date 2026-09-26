@@ -61,7 +61,7 @@ const Calendar: React.FC<CalendarProps> = ({
             Day: CustomDayWithProps,
           }}
           className={cn(
-            "rounded-md",
+            "",
             "w-full",
             "max-w-3xs",
             "[&_table]:w-full",

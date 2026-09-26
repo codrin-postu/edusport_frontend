@@ -122,7 +122,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
             className="absolute top-full left-0 pt-6 z-50"
           >
-            <div className="nav-dropdown-panel rounded-2xl bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
+            <div className="nav-dropdown-panel bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={activeItem!.label}
@@ -162,7 +162,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           key={dropdownItem.href}
                           href={dropdownItem.href}
                           variant={LinkVariants.HEADER}
-                          className="group flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
+                          className="group flex items-center gap-3 px-3 py-2.5 hover:bg-surface-subtle transition-colors"
                           onClick={close}
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}

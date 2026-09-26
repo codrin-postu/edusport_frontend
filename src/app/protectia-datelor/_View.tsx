@@ -429,8 +429,8 @@ const ProtectiaDatelor: React.FC = () => {
           </div>
 
           {/* Contact card */}
-          <div className="mt-16 pt-12 border-t-[1.5px] border-line-subtle">
-            <div className="relative overflow-hidden bg-surface-dark border-[1.5px] border-line shadow-[8px_8px_0_rgb(14_26_60_/_0.16)] px-8 py-10 md:px-14 md:py-12">
+          <div className="mt-16 pt-12 border-t-retro border-line-subtle">
+            <div className="relative overflow-hidden bg-surface-dark border-retro border-line shadow-retro px-8 py-10 md:px-14 md:py-12">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               {/* Decorative circles */}
               <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-[0.06] bg-mustard" />
@@ -463,7 +463,7 @@ const ProtectiaDatelor: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="border-t-[1.5px] border-line-subtle-on-dark pt-5">
+                <div className="border-t-retro border-line-subtle-on-dark pt-5">
                   <p className="text-eyebrow font-bold uppercase text-mustard mb-3">
                     Autoritatea de supraveghere
                   </p>

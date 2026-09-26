@@ -78,7 +78,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           </SpotlightButton>
           <Link
             href="/cursuri/program"
-            className="inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-[1.5px] border-line-on-dark bg-transparent text-sm font-bold uppercase tracking-[0.03em] text-primary-on-dark transition-colors hover-layer-on-dark"
+            className="inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-retro border-line-on-dark bg-transparent text-sm font-bold uppercase tracking-[0.03em] text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Vezi programul
           </Link>

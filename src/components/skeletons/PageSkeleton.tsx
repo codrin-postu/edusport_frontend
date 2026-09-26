@@ -40,7 +40,7 @@ export function TextBlockSkeleton({
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className="h-3 bg-surface-subtle rounded"
+          className="h-3 bg-surface-subtle"
           style={{ width: `${75 + ((i * 13) % 25)}%` }}
         />
       ))}
@@ -50,7 +50,7 @@ export function TextBlockSkeleton({
 
 export function HeadingSkeleton({ width = "60%" }: { width?: string }) {
   return (
-    <div className="h-8 bg-surface-subtle rounded animate-pulse" style={{ width }} />
+    <div className="h-8 bg-surface-subtle animate-pulse" style={{ width }} />
   );
 }
 
@@ -71,10 +71,10 @@ export function CardGridSkeleton({
     <div className={`grid grid-cols-1 ${colClass} gap-6 md:gap-8 animate-pulse`}>
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex flex-col gap-3">
-          <div className="aspect-[4/3] bg-surface-subtle rounded-xl" />
-          <div className="h-4 w-3/4 bg-surface-subtle rounded" />
-          <div className="h-3 w-full bg-surface-subtle rounded" />
-          <div className="h-3 w-2/3 bg-surface-subtle rounded" />
+          <div className="aspect-[4/3] bg-surface-subtle" />
+          <div className="h-4 w-3/4 bg-surface-subtle" />
+          <div className="h-3 w-full bg-surface-subtle" />
+          <div className="h-3 w-2/3 bg-surface-subtle" />
         </div>
       ))}
     </div>
@@ -102,11 +102,11 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
       <div className="max-w-2xl mx-auto flex flex-col gap-6 animate-pulse">
         {Array.from({ length: fields }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
-            <div className="h-3 w-24 bg-surface-subtle rounded" />
-            <div className="h-11 w-full bg-surface-subtle rounded" />
+            <div className="h-3 w-24 bg-surface-subtle" />
+            <div className="h-11 w-full bg-surface-subtle" />
           </div>
         ))}
-        <div className="h-12 w-40 bg-surface-subtle rounded mt-2" />
+        <div className="h-12 w-40 bg-surface-subtle mt-2" />
       </div>
     </Section>
   );
@@ -117,7 +117,7 @@ export function ArticleDetailSkeleton() {
     <>
       <div className="bg-surface-raised border-b border-line-subtle pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
-          <div className="h-3 w-48 bg-surface-subtle rounded animate-pulse" />
+          <div className="h-3 w-48 bg-surface-subtle animate-pulse" />
         </div>
       </div>
       <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-surface-subtle animate-pulse" />
@@ -126,26 +126,26 @@ export function ArticleDetailSkeleton() {
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start animate-pulse">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
-                <div className="h-3 w-20 bg-surface-subtle rounded" />
-                <div className="h-3 w-24 bg-surface-subtle rounded" />
+                <div className="h-3 w-20 bg-surface-subtle" />
+                <div className="h-3 w-24 bg-surface-subtle" />
               </div>
-              <div className="h-8 w-4/5 bg-surface-subtle rounded" />
+              <div className="h-8 w-4/5 bg-surface-subtle" />
               <div className="h-px bg-surface-subtle" />
               <div className="flex flex-col gap-2">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-3 bg-surface-subtle rounded"
+                    className="h-3 bg-surface-subtle"
                     style={{ width: `${70 + ((i * 17) % 30)}%` }}
                   />
                 ))}
               </div>
             </div>
             <aside className="hidden lg:flex flex-col gap-3 border border-line-subtle p-6">
-              <div className="h-3 w-32 bg-surface-subtle rounded" />
-              <div className="h-3 w-40 bg-surface-subtle rounded" />
-              <div className="h-3 w-24 bg-surface-subtle rounded" />
-              <div className="h-3 w-36 bg-surface-subtle rounded" />
+              <div className="h-3 w-32 bg-surface-subtle" />
+              <div className="h-3 w-40 bg-surface-subtle" />
+              <div className="h-3 w-24 bg-surface-subtle" />
+              <div className="h-3 w-36 bg-surface-subtle" />
             </aside>
           </div>
         </div>

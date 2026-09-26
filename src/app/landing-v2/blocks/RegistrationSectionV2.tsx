@@ -56,11 +56,11 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           </div>
 
           <div className="flex flex-wrap items-center text-primary text-sm font-medium">
-            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-[1.5px] border-line-subtle">
+            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-retro border-line-subtle">
               <Calendar className="w-4 h-4 shrink-0" />
               {scheduleDays}
             </span>
-            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-[1.5px] border-line-subtle">
+            <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-retro border-line-subtle">
               <Clock className="w-4 h-4 shrink-0" />
               {scheduleTimes}
             </span>
@@ -83,7 +83,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
             <Link
               href={ctaSecondaryUrl}
               data-umami-event="enroll.cta_secondary"
-              className="inline-flex items-center justify-center border-[1.5px] border-line bg-transparent text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
+              className="inline-flex items-center justify-center border-retro border-line bg-transparent text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
             >
               {ctaSecondaryLabel}
             </Link>
