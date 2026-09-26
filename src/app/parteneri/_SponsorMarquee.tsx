@@ -19,7 +19,7 @@ function SponsorTile({ sponsor }: { sponsor: Sponsor }) {
       className="max-h-12 w-auto object-contain"
     />
   ) : (
-    <span className="px-3 text-center text-sm font-extrabold uppercase tracking-[0.04em] text-secondary">
+    <span className="text-label px-3 text-center uppercase text-secondary">
       {sponsor.name}
     </span>
   );

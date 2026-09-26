@@ -67,10 +67,10 @@ export default function Loading() {
           { label: "Evenimente" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Evenimente
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           Spectacole, competiții și momente speciale organizate de Școala de
           Patinaj EduSport de-a lungul sezonului.
         </p>

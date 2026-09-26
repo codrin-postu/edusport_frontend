@@ -41,7 +41,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
 
         <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 flex items-start">
           <div className="flex flex-col gap-6 max-w-xl">
-            <div className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary-on-dark">
+            <div className="text-label flex items-center gap-1.5 uppercase text-secondary-on-dark">
               {breadcrumb ? breadcrumb.map((item, i) => (
                 <React.Fragment key={item.label}>
                   {i > 0 && <ChevronRight className="w-3 h-3 shrink-0" />}

@@ -98,7 +98,7 @@ const RetroPanel: React.FC<{
   const rows: React.ReactNode[] = [];
   rows.push(
     <div key="cta" className="md:hidden mx-1 mb-2">
-      <SpotlightButton layers layersFace="black" href={ctaHref} onClick={onClose} className="w-full text-xs">
+      <SpotlightButton layers layersFace="black" href={ctaHref} onClick={onClose} className="text-caption w-full">
         {ctaLabel}
       </SpotlightButton>
     </div>,
@@ -110,7 +110,7 @@ const RetroPanel: React.FC<{
           key={item.label}
           href={item.href}
           onClick={onClose}
-          className="block px-2.5 py-2 text-[15px] font-medium text-primary border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-accent"
+          className="text-body-sm block px-2.5 py-2 text-primary border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-accent"
           data-umami-event="nav"
           data-umami-event-url={item.href}
         >
@@ -119,7 +119,7 @@ const RetroPanel: React.FC<{
       );
     } else {
       rows.push(
-        <div key={item.label} className="px-2.5 pt-2.5 pb-1 text-[10.5px] font-bold tracking-[0.1em] uppercase text-accent">
+        <div key={item.label} className="text-label px-2.5 pt-2.5 pb-1 uppercase text-accent">
           {item.label}
         </div>,
       );
@@ -129,7 +129,7 @@ const RetroPanel: React.FC<{
             key={sub.href}
             href={sub.href}
             onClick={onClose}
-            className="block pl-[18px] pr-2.5 py-1.5 text-[13.5px] text-primary border-l-[3px] border-transparent transition-colors hover:border-mustard hover:text-primary"
+            className="text-caption block pl-[18px] pr-2.5 py-1.5 text-primary border-l-[3px] border-transparent transition-colors hover:border-mustard hover:text-primary"
             data-umami-event="nav"
             data-umami-event-url={sub.href}
           >
@@ -151,8 +151,8 @@ const RetroPanel: React.FC<{
       >
         <span className="w-[34px] h-[34px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
         <span>
-          <span className="block text-[13px] font-semibold text-primary">Instagram</span>
-          <span className="block text-2xs text-secondary">{igHandle}</span>
+          <span className="text-caption block text-primary">Instagram</span>
+          <span className="text-caption block text-secondary">{igHandle}</span>
         </span>
       </a>,
     );

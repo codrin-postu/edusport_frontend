@@ -161,12 +161,12 @@ const Header: React.FC<HeaderProps> = ({
           <div className="h-full w-full max-w-content mx-auto px-4 flex justify-between items-center">
             {/* Left side - Brand */}
             <Link href="/" className="flex flex-col">
-              <span className="text-sm text-primary tracking-wider">
+              <span className="text-body-sm text-primary">
                 CLUBUL SPORTIV
               </span>
               <CascadingText
                 text="EDUSPORT"
-                className="text-lg text-branding-font tracking-wider"
+                className="text-body text-branding-font"
               />
             </Link>
 
@@ -182,7 +182,7 @@ const Header: React.FC<HeaderProps> = ({
                 layers
                 layersFace="black"
                 href={ctaHref}
-                className="hidden md:inline-flex text-xs"
+                className="text-caption hidden md:inline-flex"
               >
                 {ctaLabel}
               </SpotlightButton>

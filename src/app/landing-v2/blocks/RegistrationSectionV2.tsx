@@ -37,25 +37,25 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
     <RegistrationScrollFrameV2>
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="relative z-10 flex flex-col gap-7 max-w-2xl md:max-w-[52%]">
-          <p className="text-2xs font-bold tracking-[0.16em] uppercase text-primary">
+          <p className="text-label uppercase text-primary">
             {seasonLabel}
           </p>
 
           <div className="flex flex-col gap-4">
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold text-primary leading-[1.05]">
+            <h2 className="text-display text-primary">
               {heading}
             </h2>
-            <p className="text-primary text-sm md:text-base font-normal leading-relaxed">
+            <p className="text-body text-primary">
               {body}
             </p>
             {bodySecondary && (
-              <p className="text-primary text-sm md:text-base font-normal leading-relaxed">
+              <p className="text-body text-primary">
                 {bodySecondary}
               </p>
             )}
           </div>
 
-          <div className="flex flex-wrap items-center text-primary text-sm font-medium">
+          <div className="text-body-sm flex flex-wrap items-center text-primary">
             <span className="flex items-center gap-1.5 pr-4 mr-4 border-r-retro border-line-subtle">
               <Calendar className="w-4 h-4 shrink-0" />
               {scheduleDays}
@@ -75,7 +75,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
               layers
               layersFace="black"
               href={ctaPrimaryUrl}
-              className="text-sm"
+              className="text-body-sm"
               umamiEvent="enroll.cta_primary"
             >
               {ctaPrimaryLabel}
@@ -83,7 +83,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
             <Link
               href={ctaSecondaryUrl}
               data-umami-event="enroll.cta_secondary"
-              className="inline-flex items-center justify-center border-retro border-line bg-transparent text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
+              className="text-label inline-flex items-center justify-center border-retro border-line bg-transparent text-primary h-12 px-6 uppercase transition-colors hover-layer"
             >
               {ctaSecondaryLabel}
             </Link>
@@ -92,7 +92,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           <Link
             href={pricesLinkUrl}
             data-umami-event="enroll.prices"
-            className="link-underline-rust w-fit text-sm font-semibold text-primary"
+            className="text-body-sm link-underline-rust w-fit text-primary"
           >
             {pricesLinkLabel}
           </Link>

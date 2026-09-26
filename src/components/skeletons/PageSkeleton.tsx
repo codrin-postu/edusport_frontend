@@ -16,11 +16,11 @@ export function HeroSkeleton({
 }) {
   return (
     <PageHeroSection title={title} breadcrumb={breadcrumb}>
-      <h1 className="text-4xl md:text-6xl font-semibold text-primary-on-dark leading-[1.1] tracking-tight">
+      <h1 className="text-display text-primary-on-dark">
         {title.map((w) => w.charAt(0) + w.slice(1).toLowerCase()).join(" ")}
       </h1>
       {blurb && (
-        <p className="text-secondary-on-dark text-base font-light border-t border-line-subtle-on-dark pt-4">
+        <p className="text-body text-secondary-on-dark border-t border-line-subtle-on-dark pt-4">
           {blurb}
         </p>
       )}

@@ -9,10 +9,10 @@ const VideoSection: React.FC = () => {
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="flex flex-col gap-10 items-center">
           <div className="text-center flex flex-col gap-3 max-w-2xl">
-            <p className="text-xs font-semibold tracking-widest uppercase text-edusport-blue/60">
+            <p className="text-label uppercase text-edusport-blue/60">
               Ne vedem pe gheață
             </p>
-            <h2 className="text-4xl font-semibold text-primary">
+            <h2 className="text-heading text-primary">
               Cum arată cursurile noastre
             </h2>
             <p className="text-secondary font-light leading-relaxed">

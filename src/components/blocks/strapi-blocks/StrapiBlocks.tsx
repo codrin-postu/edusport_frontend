@@ -29,7 +29,7 @@ function RenderText({ node }: { node: TextNode }) {
         </React.Fragment>
       ))
     : node.text;
-  if (node.code) el = <code className="text-sm bg-surface-subtle px-1.5 py-0.5 font-mono text-accent">{el}</code>;
+  if (node.code) el = <code className="text-body-sm bg-surface-subtle px-1.5 py-0.5 font-mono text-accent">{el}</code>;
   if (node.bold) el = <strong className="font-bold text-primary">{el}</strong>;
   if (node.italic) el = <em>{el}</em>;
   if (node.underline) el = <u>{el}</u>;
@@ -70,7 +70,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
     case "paragraph": {
       const p = node as ParagraphNode;
       return (
-        <p className="text-secondary mb-[18px] leading-[1.7]">
+        <p className="text-body text-secondary mb-[18px]">
           <RenderChildren nodes={p.children} />
         </p>
       );
@@ -80,13 +80,13 @@ function RenderBlock({ node }: { node: BlockNode }) {
       const h = node as HeadingNode;
       const inner = <RenderChildren nodes={h.children} />;
       switch (h.level) {
-        case 1: return <h2 className="font-bold text-primary text-3xl mt-10 mb-4 tracking-tight">{inner}</h2>;
-        case 2: return <h2 className="font-bold text-primary text-2xl mt-8 mb-3 tracking-tight">{inner}</h2>;
-        case 3: return <h3 className="font-bold text-primary text-lg mt-6 mb-2">{inner}</h3>;
-        case 4: return <h4 className="font-bold text-primary text-base mt-6 mb-2">{inner}</h4>;
-        case 5: return <h5 className="font-bold text-primary text-sm mt-4 mb-2 uppercase tracking-widest">{inner}</h5>;
-        case 6: return <h6 className="font-bold text-primary text-xs mt-4 mb-1 uppercase tracking-widest">{inner}</h6>;
-        default: return <h2 className="font-bold text-primary text-2xl mt-8 mb-3 tracking-tight">{inner}</h2>;
+        case 1: return <h2 className="text-heading text-primary mt-10 mb-4">{inner}</h2>;
+        case 2: return <h2 className="text-heading text-primary mt-8 mb-3">{inner}</h2>;
+        case 3: return <h3 className="text-title text-primary mt-6 mb-2">{inner}</h3>;
+        case 4: return <h4 className="text-label text-primary mt-6 mb-2 uppercase">{inner}</h4>;
+        case 5: return <h5 className="text-label text-primary mt-4 mb-2 uppercase">{inner}</h5>;
+        case 6: return <h6 className="text-label text-primary mt-4 mb-1 uppercase">{inner}</h6>;
+        default: return <h2 className="text-heading text-primary mt-8 mb-3">{inner}</h2>;
       }
     }
 
@@ -125,7 +125,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
     case "code": {
       const c = node as CodeNode;
       return (
-        <pre className="bg-surface-dark text-primary-on-dark p-4 mb-[18px] overflow-x-auto text-sm font-mono">
+        <pre className="text-body-sm bg-surface-dark text-primary-on-dark p-4 mb-[18px] overflow-x-auto font-mono">
           <code>{c.children.map((t) => t.text).join("")}</code>
         </pre>
       );
@@ -165,7 +165,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
               />
             </div>
             {caption && (
-              <figcaption className="mt-2 text-center text-xs text-secondary">
+              <figcaption className="text-caption mt-2 text-center text-secondary">
                 {caption}
               </figcaption>
             )}
@@ -183,7 +183,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
             />
           </div>
           {caption && (
-            <figcaption className="mt-2 text-center text-xs text-secondary">
+            <figcaption className="text-caption mt-2 text-center text-secondary">
               {caption}
             </figcaption>
           )}

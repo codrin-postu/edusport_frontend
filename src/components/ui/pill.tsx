@@ -20,9 +20,9 @@ const pillVariants = cva(
         generic: "bg-gray-500",
       },
       size: {
-        sm: "gap-1 py-0.5 text-3xs",
-        md: "gap-1.5 py-1 text-xs",
-        lg: "gap-2 py-1.5 text-sm",
+        sm: "gap-1 py-0.5 text-caption",
+        md: "gap-1.5 py-1 text-caption",
+        lg: "gap-2 py-1.5 text-body-sm",
       },
       shape: {
         // Classic rounded pill.

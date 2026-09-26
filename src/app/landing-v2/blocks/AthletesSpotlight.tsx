@@ -54,7 +54,7 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
   if (!athletes.length) {
     return (
       <section className="bg-surface py-20 md:py-28">
-        <div className="max-w-content mx-auto px-6 md:px-8 text-center text-secondary text-sm">
+        <div className="text-body-sm max-w-content mx-auto px-6 md:px-8 text-center text-secondary">
           Niciun sportiv încărcat momentan.
         </div>
       </section>
@@ -79,20 +79,20 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
           {/* Left — copy + big number + CTA */}
           <div>
             <h2
-              className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px]"
+              className="text-heading text-primary"
             >
               {heading}
             </h2>
-            <p className="text-secondary text-sm md:text-base leading-relaxed mt-4 max-w-[46ch]">
+            <p className="text-body text-secondary mt-4 max-w-[46ch]">
               {intro}
             </p>
 
             {bigNumber && (
               <div className="mt-8 mb-8">
-                <span className="block font-display text-display-xl font-black text-primary leading-[0.9]">
+                <span className="text-display-lg block text-primary">
                   {bigNumber}
                 </span>
-                <span className="block text-sm font-bold uppercase tracking-[0.08em] text-accent mt-2">
+                <span className="text-label block uppercase text-accent mt-2">
                   {countLabel}
                 </span>
               </div>
@@ -102,7 +102,7 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
               layers
               layersFace="cream"
               href={ctaUrl}
-              className="text-xs"
+              className="text-caption"
               umamiEvent="home.sportivi"
             >
               {ctaLabel}

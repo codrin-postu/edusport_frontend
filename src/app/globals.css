@@ -37,6 +37,16 @@ body {
   height: auto;
   padding: 0.875rem 2rem;
 }
+/* The face span now carries the sitewide `text-button` role (fixed size,
+   weight, tracking), but the frozen hero always relied on the caller's own
+   `text-sm` on the `.lcta` wrapper cascading down to it (no size class of
+   its own). Restore that pre-role behaviour here only. */
+[data-hero-frozen] .lcta-face {
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+  letter-spacing: 0.03em;
+}
 
 .text-branding-font,
 .text-branding-font *,
@@ -99,28 +109,11 @@ h1.text-branding-font {
   --color-ink: #111827;           /* neutral near-black text (nav / strip labels) */
 
   /* ── Type scale — single source of truth ────────────────────────────
-     Tailwind ships xs(12px)→9xl. We add the two missing small steps
-     below xs, plus semantic tokens for special cases. Use the named
-     utilities (text-2xs, text-label, …) instead of arbitrary text-[..px].
-     Large display/watermark sizes stay bespoke (clamp/one-off per art). */
-  --text-3xs: 0.625rem;   /* 10px — smallest caps labels */
-  --text-2xs: 0.6875rem;  /* 11px — micro labels */
-
-  /* Semantic — carry intent + treatment, not just size */
-  --text-label: 0.6875rem;              /* uppercase eyebrows/labels */
-  --text-label--line-height: 1.1;
-  --text-label--letter-spacing: 0.08em;
+     Nine type roles (below, as @utility text-*) replace the old ad-hoc
+     size/eyebrow/display tokens. Use the named role utilities instead of
+     arbitrary text-[..px]. Large display/watermark sizes stay bespoke
+     (clamp/one-off per art), plus --text-logo for the hero wordmark. */
   --text-logo: var(--font-size-branding-xl); /* brand wordmark clamp */
-
-  --text-eyebrow: 0.6875rem;
-  --text-eyebrow--line-height: 1.1;
-  --text-eyebrow--letter-spacing: 0.2em;
-
-  /* Retro display headings (League Spartan). Fluid, one scale for all sections. */
-  --text-display-sm: clamp(26px, 3.4vw, 40px);
-  --text-display-md: clamp(30px, 4.2vw, 48px);
-  --text-display-lg: clamp(48px, 6vw, 80px);
-  --text-display-xl: clamp(64px, 8vw, 108px);
 
   --max-content-width: 1280px;
   --max-footer-width: 1480px;
@@ -331,17 +324,17 @@ h1.text-branding-font {
     @apply hover:after:w-full;
   }
   .retro-eyebrow {
-    @apply text-eyebrow font-bold uppercase text-navy;
+    @apply text-label text-primary;
   }
   .marker-tag {
     @apply inline-flex items-center justify-center px-2 py-1;
     @apply border-retro border-navy;
-    @apply text-2xs font-extrabold uppercase tracking-[0.04em];
+    @apply text-label;
   }
   .btn-retro-ghost {
     @apply h-12 px-6 inline-flex items-center justify-center;
     @apply border-retro border-line text-primary;
-    @apply text-sm font-bold uppercase tracking-[0.03em];
+    @apply text-button;
     @apply transition-colors hover-layer;
   }
 }
@@ -385,6 +378,25 @@ h1.text-branding-font {
   }
 }
 
+/* Type roles: each sets size, weight, line-height and letter-spacing. */
+@utility text-display-lg { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 6vw, 5rem); line-height: 1.05; letter-spacing: -0.02em; }
+@utility text-display { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.875rem, 4.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em; }
+@utility text-heading { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.625rem, 3vw, 2.25rem); line-height: 1.1; letter-spacing: -0.02em; }
+@utility text-title {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em;
+  @media (width >= 48rem) { font-size: 1.5rem; }
+}
+@utility text-body { font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
+@utility text-body-sm { font-weight: 400; font-size: 0.875rem; line-height: 1.55; letter-spacing: 0; }
+@utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
+@utility text-label { font-weight: 600; font-size: 0.75rem; line-height: 1.1; letter-spacing: 0.14em; text-transform: uppercase; }
+@utility text-button { font-weight: 600; font-size: 0.8125rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Named exception: athlete page name. */
+@utility text-athlete-name {
+  font-family: var(--font-display); font-weight: 900; font-size: 3.5rem; line-height: 0.85; letter-spacing: -0.035em;
+  @media (width >= 48rem) { font-size: 5.5rem; }
+}
+
 /* Retro footer — navy fill, breathing room before the pinned EDUSPORT
    wordmark, mustard link-hover. Restyles the global Footer via the lv2-nav
    flag on <html> without editing the component. */
@@ -424,8 +436,8 @@ html.lv2-nav footer a[aria-label]:hover {
    (Text headings render as span.text-lg). */
 html.lv2-nav footer span.text-lg {
   font-family: var(--font-display);
-  font-weight: 700 !important;
-  font-size: 1.0625rem !important;
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
 }
 html.lv2-nav footer a {
   font-size: 0.875rem !important;
@@ -483,7 +495,7 @@ html.lv2-nav .gap-x-5.h-12 > a {
   text-transform: uppercase;
   letter-spacing: .05em;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-navy);
   position: relative;
 }
@@ -500,7 +512,7 @@ html.lv2-nav .gap-x-5.h-12 > a:hover::after { width: 100%; }
 /* Brand block — small "Clubul Sportiv" caps over a larger EDUSPORT (match mockup) */
 html.lv2-nav header a[href="/"] { line-height: 1; gap: 1px; }
 html.lv2-nav header a[href="/"] > span:nth-child(1) {
-  font-size: 8.5px !important; letter-spacing: .18em; opacity: .7; font-weight: 400;
+  font-size: 0.75rem !important; letter-spacing: .18em; opacity: .7; font-weight: 400;
 }
 html.lv2-nav header a[href="/"] > span:nth-child(2) { font-size: 22px !important; }
 
@@ -549,7 +561,7 @@ html.lv2-nav .nav-promo .nav-promo-c {
   padding: 16px; color: var(--color-retro-cream);
 }
 html.lv2-nav .nav-promo .nav-promo-t { font-weight: 600; font-size: 16px; line-height: 1.15; }
-html.lv2-nav .nav-promo .nav-promo-d { font-size: 11px; opacity: .85; margin-top: 4px; line-height: 1.4; }
+html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; opacity: .85; margin-top: 4px; line-height: 1.4; }
 
 /* Mobile menu panel → square + cream + brick hover (light pass) */
 html.lv2-nav .z-\[999\] { border-radius: 0 !important; }

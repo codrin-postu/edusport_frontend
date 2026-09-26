@@ -39,7 +39,7 @@ for (const width of WIDTHS) {
     });
     await freezeStyles(page);
     // The header sits over the hero but is not part of the freeze.
-    await page.addStyleTag({ content: "[data-site-header] { visibility: hidden !important; }" });
+    await page.addStyleTag({ content: "[data-site-header], [data-contact-strip] { visibility: hidden !important; }" });
     await expect(page.locator("[data-hero-frozen]")).toHaveScreenshot(`hero-frozen-${width}.png`, { maxDiffPixels: 0 });
   });
 }

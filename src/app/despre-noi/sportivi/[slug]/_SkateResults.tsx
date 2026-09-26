@@ -57,7 +57,7 @@ function Segment({ seg }: { seg: SkateSegment }) {
   );
   return (
     <div className="min-w-0">
-      <div className="text-2xs font-bold uppercase tracking-[0.16em] text-accent">
+      <div className="text-label uppercase text-accent">
         {seg.is_short ? "Program scurt" : "Program liber"}
       </div>
       <dl className="mt-2 space-y-1">
@@ -95,7 +95,7 @@ function Row({
   title?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 text-xs">
+    <div className="text-caption flex items-baseline justify-between gap-4">
       <dt className={cn(muted ? "text-muted" : "text-secondary")} title={title}>
         {k}
       </dt>
@@ -149,8 +149,8 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               onClick={hasDetail ? () => setOpen(isOpen ? null : key) : undefined}
             >
               <div className="relative min-w-0">
-                <h4 className="text-sm font-bold text-primary">{r.event_name}</h4>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-secondary">
+                <h4 className="text-title text-primary">{r.event_name}</h4>
+                <div className="text-caption mt-1 flex flex-wrap items-center gap-2 text-secondary">
                   {r.event_date && <span>{ro_date(r.event_date)}</span>}
                   {r.event_location && (
                     <>
@@ -168,25 +168,25 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               </div>
               <div className="flex items-baseline gap-4 sm:contents">
                 <span
-                  className="text-xs font-medium tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
+                  className="text-caption tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
                   title="Program scurt"
                 >
                   {r.short_score != null ? fmt(r.short_score) : ""}
                 </span>
                 <span
-                  className="text-xs font-medium tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
+                  className="text-caption tabular-nums text-secondary sm:min-w-[3.25rem] sm:text-right"
                   title="Program liber"
                 >
                   {r.free_score != null ? fmt(r.free_score) : ""}
                 </span>
-                <span className="text-xs font-semibold tabular-nums text-primary sm:min-w-[3.5rem] sm:text-right">
+                <span className="text-caption tabular-nums text-primary sm:min-w-[3.5rem] sm:text-right">
                   {fmt(r.total_score)}
                 </span>
                 <span className="flex items-center gap-2 sm:min-w-[3.5rem] sm:justify-end">
                   {r.placement != null && (
                     <span
                       className={cn(
-                        "text-2xs font-extrabold tabular-nums",
+                        "text-caption tabular-nums",
                         placementClass(r.placement),
                       )}
                       title="Loc"

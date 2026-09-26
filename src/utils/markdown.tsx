@@ -179,20 +179,20 @@ export function renderMarkdown(source: string | null | undefined): React.ReactNo
         const text = renderTokens(tokenizeInline(headingMatch[2]));
         if (level === 1) {
           return (
-            <h2 key={bIdx} className="font-bold text-primary text-lg">
+            <h2 key={bIdx} className="text-heading text-primary">
               {text}
             </h2>
           );
         }
         if (level === 2) {
           return (
-            <h3 key={bIdx} className="font-semibold text-primary text-base">
+            <h3 key={bIdx} className="text-title text-primary">
               {text}
             </h3>
           );
         }
         return (
-          <h4 key={bIdx} className="font-semibold text-primary text-sm">
+          <h4 key={bIdx} className="text-label text-primary uppercase">
             {text}
           </h4>
         );

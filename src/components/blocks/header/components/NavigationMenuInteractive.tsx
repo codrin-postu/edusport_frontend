@@ -80,7 +80,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
           return (
             <button
               key={item.label}
-              className="flex items-center gap-1 text-sm font-normal text-primary hover:text-secondary transition-colors outline-none"
+              className="text-body-sm flex items-center gap-1 text-primary hover:text-secondary transition-colors outline-none"
               onMouseEnter={() => open(index)}
               onClick={() => (itemIsOpen ? close() : open(index))}
             >
@@ -97,7 +97,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             key={item.label}
             href={item.href || "#"}
             variant={LinkVariants.HEADER}
-            className="text-sm font-normal text-primary hover:text-secondary transition-colors"
+            className="text-body-sm text-primary hover:text-secondary transition-colors"
             // An item without a dropdown still has to close an open one.
             // onMouseLeave on the row only fires when the pointer leaves the
             // whole nav, so moving from a dropdown item onto a plain link left
@@ -153,7 +153,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
 
                   {/* Links */}
                   <div className="flex flex-col py-3 px-2 min-w-[360px]">
-                    <p className="px-3 pb-2 text-3xs font-semibold tracking-widest uppercase text-muted">
+                    <p className="text-label px-3 pb-2 uppercase text-muted">
                       {activeItem!.label}
                     </p>
                     <div className="flex flex-col gap-0.5">
@@ -169,11 +169,11 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                         >
                           <ChevronRight className="w-3.5 h-3.5 text-line-subtle group-hover:text-edusport-blue transition-colors shrink-0" />
                           <div>
-                            <span className="text-sm font-semibold text-primary group-hover:text-edusport-blue transition-colors">
+                            <span className="text-body-sm text-primary group-hover:text-edusport-blue transition-colors">
                               {dropdownItem.label}
                             </span>
                             {dropdownItem.description && (
-                              <span className="block text-xs text-secondary font-light mt-0.5">
+                              <span className="text-caption block text-secondary mt-0.5">
                                 {dropdownItem.description}
                               </span>
                             )}

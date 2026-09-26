@@ -36,7 +36,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         >
           <div className="flex items-start justify-between gap-2.5">
             {announcement.eyebrow ? (
-              <p className="text-3xs font-extrabold uppercase tracking-[0.14em] text-accent">
+              <p className="text-label uppercase text-accent">
                 {announcement.eyebrow}
               </p>
             ) : (
@@ -52,11 +52,11 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             </button>
           </div>
 
-          <h2 className="font-display font-extrabold text-[19px] leading-[1.1] text-primary mt-[7px] mb-1.5">
+          <h2 className="text-title text-primary mt-[7px] mb-1.5">
             {announcement.title}
           </h2>
 
-          <div className="text-[12.5px] leading-[1.55] text-[#3b4257] space-y-2 [&_a]:underline [&_a]:underline-offset-2">
+          <div className="text-caption text-[#3b4257] space-y-2 [&_a]:underline [&_a]:underline-offset-2">
             {renderMarkdown(announcement.message)}
           </div>
 
@@ -64,7 +64,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             <Link
               href={announcement.ctaUrl}
               onClick={onCtaClick}
-              className="inline-block mt-[13px] px-[15px] py-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+              className="text-label inline-block mt-[13px] px-[15px] py-2 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
             >
               {announcement.ctaLabel}
             </Link>

@@ -157,11 +157,11 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
       <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
         <h2
           id="leave-notice-title"
-          className="font-display text-lg font-extrabold leading-snug text-primary"
+          className="text-title text-primary"
         >
           Linkul se deschide într-o pagină nouă.
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-secondary">
+        <p className="text-body-sm mt-2 text-secondary">
           Formularul rămâne salvat.
         </p>
         <div className="mt-6 flex items-center justify-end gap-3">
@@ -169,14 +169,14 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
             ref={stayRef}
             type="button"
             onClick={close}
-            className="border-retro border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
+            className="text-body-sm border-retro border-line px-4 py-2 text-primary transition-colors hover-layer"
           >
             Rămâi
           </button>
           <button
             type="button"
             onClick={go}
-            className="border-retro border-line bg-surface-dark px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover-layer-on-dark"
+            className="text-body-sm border-retro border-line bg-surface-dark px-4 py-2 text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Continuă
           </button>

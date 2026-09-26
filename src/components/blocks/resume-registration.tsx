@@ -64,12 +64,12 @@ const ResumeRegistration: React.FC = () => {
         {/* Names the form, because the volunteer form saves too and
             "formularul" no longer says which. States the status rather than
             the saving: "salvat" can be read as "sent". */}
-        <p className="flex-1 text-sm font-semibold leading-snug md:flex-none">
+        <p className="text-body-sm flex-1 md:flex-none">
           Înscriere nefinalizată
         </p>
         <Link
           href={FORM_PATH}
-          className="hidden bg-surface px-4 py-2 text-sm font-bold text-primary transition-colors hover:bg-surface-raised md:inline-block"
+          className="text-body-sm hidden bg-surface px-4 py-2 text-primary transition-colors hover:bg-surface-raised md:inline-block"
         >
           Continuă înscrierea
         </Link>
@@ -77,14 +77,14 @@ const ResumeRegistration: React.FC = () => {
           type="button"
           onClick={dismiss}
           aria-label="Închide"
-          className="-mt-1 px-1 text-lg leading-none text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
+          className="text-body -mt-1 px-1 text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
         >
           ✕
         </button>
       </div>
       <Link
         href={FORM_PATH}
-        className="mt-3 block bg-surface py-2.5 text-center text-sm font-bold text-primary transition-colors hover:bg-surface-raised md:hidden"
+        className="text-body-sm mt-3 block bg-surface py-2.5 text-center text-primary transition-colors hover:bg-surface-raised md:hidden"
       >
         Continuă înscrierea
       </Link>

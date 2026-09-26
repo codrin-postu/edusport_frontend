@@ -37,23 +37,23 @@ const PartnerView: React.FC<{
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["PARTENER"]}>
-        <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-primary-on-dark">
+        <h1 className="text-display text-primary-on-dark">
           {copy.heroTitle}
         </h1>
-        <p className="max-w-md text-base text-secondary-on-dark">{copy.heroSubtitle}</p>
+        <p className="text-body max-w-md text-secondary-on-dark">{copy.heroSubtitle}</p>
       </PageHeroSection>
 
       {/* ─── DE CE PARTENERIAT ─── */}
       <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               {copy.introEyebrow}
             </p>
-            <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
+            <h2 className="text-heading max-w-lg text-primary">
               {copy.introHeading}
             </h2>
-            <p className="max-w-xl text-base leading-relaxed text-secondary">
+            <p className="text-body max-w-xl text-secondary">
               {copy.introBody}
             </p>
           </div>
@@ -67,13 +67,13 @@ const PartnerView: React.FC<{
       <section className="relative z-10 bg-surface pb-16 md:pb-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="mb-8 flex flex-col gap-2">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               Alături de noi
             </p>
-            <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
+            <h2 className="text-heading text-primary">
               Sponsorii noștri
             </h2>
-            <p className="text-sm text-secondary">
+            <p className="text-body-sm text-secondary">
               Le mulțumim celor care susțin clubul.
             </p>
           </div>
@@ -90,13 +90,13 @@ const PartnerView: React.FC<{
         <section className="relative z-10 border-t border-line-subtle bg-surface py-16 md:py-24">
           <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
             <div className="mb-8 flex flex-col gap-2">
-              <p className="text-eyebrow font-bold uppercase text-accent">
+              <p className="text-label uppercase text-accent">
                 Împreună
               </p>
-              <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
+              <h2 className="text-heading text-primary">
                 Evenimente & colaborări
               </h2>
-              <p className="max-w-xl text-sm text-secondary">
+              <p className="text-body-sm max-w-xl text-secondary">
                 Momente construite alături de partenerii noștri.
               </p>
             </div>
@@ -118,16 +118,16 @@ const PartnerView: React.FC<{
                     </div>
                   )}
                   <div className="p-5">
-                    <span className="inline-block border-retro border-rust px-2 py-0.5 text-3xs font-extrabold uppercase tracking-[0.06em] text-accent">
+                    <span className="text-label inline-block border-retro border-rust px-2 py-0.5 uppercase text-accent">
                       cu {ev.partner}
                     </span>
-                    <h3 className="mt-3 text-lg font-extrabold text-primary">
+                    <h3 className="text-title mt-3 text-primary">
                       {ev.title}
                     </h3>
-                    <p className="mt-0.5 text-2xs font-semibold uppercase tracking-[0.08em] text-secondary">
+                    <p className="text-label mt-0.5 uppercase text-secondary">
                       {ev.date}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-secondary">
+                    <p className="text-body-sm mt-2 text-secondary">
                       {ev.description}
                     </p>
                   </div>
@@ -143,22 +143,22 @@ const PartnerView: React.FC<{
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
             <div className="flex flex-col gap-3">
-              <p className="text-eyebrow font-bold uppercase text-accent">
+              <p className="text-label uppercase text-accent">
                 {copy.ctaEyebrow}
               </p>
-              <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
+              <h2 className="text-heading text-primary">
                 {copy.ctaHeading}
               </h2>
-              <p className="max-w-sm text-sm leading-relaxed text-secondary">
+              <p className="text-body-sm max-w-sm text-secondary">
                 {copy.ctaBody}
               </p>
             </div>
             <div className="relative bg-surface-dark p-6 shadow-retro md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
-              <h3 className="mb-1 font-display text-2xl font-extrabold text-primary-on-dark">
+              <h3 className="text-title mb-1 text-primary-on-dark">
                 Scrie-ne
               </h3>
-              <p className="mb-7 text-sm text-secondary-on-dark">
+              <p className="text-body-sm mb-7 text-secondary-on-dark">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <PartnerForm config={formConfig} />
@@ -171,16 +171,16 @@ const PartnerView: React.FC<{
       <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">
+            <div className="text-label mb-1.5 uppercase text-accent">
               Mai departe
             </div>
-            <p className="text-base font-semibold text-primary md:text-lg">
+            <p className="text-body text-primary">
               Descoperă clubul și sportivii noștri.
             </p>
           </div>
           <Link
             href="/despre-noi"
-            className="link-underline-rust text-sm font-semibold text-accent"
+            className="text-body-sm link-underline-rust text-accent"
           >
             Despre noi
           </Link>

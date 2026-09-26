@@ -71,7 +71,7 @@ export function EditorialTicker({
         {[...items, ...items].map((item, i) => (
           <span
             key={i}
-            className="inline-block px-7 text-sm font-extrabold uppercase tracking-[0.3em]"
+            className="text-label inline-block px-7 uppercase"
           >
             <span className={prefixClasses}>{prefix}</span>
             {item}

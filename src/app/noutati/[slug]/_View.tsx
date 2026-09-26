@@ -140,7 +140,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4 flex items-center justify-between">
-          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary">
+          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary">
             <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{article.title}</span>
@@ -161,8 +161,8 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             {/* Main content */}
             <div>
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-2 mb-4 text-[11.5px]">
-                <span className="font-bold uppercase tracking-[0.04em] text-accent">
+              <div className="text-caption flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-label text-accent">
                   {CATEGORY_LABELS[article.category]}
                 </span>
                 <span className="text-line-subtle">·</span>
@@ -171,14 +171,14 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                 </span>
               </div>
 
-              <h1 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] mb-4">
+              <h1 className="text-heading text-primary mb-4">
                 {article.title}
               </h1>
 
               {/* Mobile-only date - sidebar is hidden on mobile */}
               <div className="flex items-center gap-2 mb-8 lg:hidden">
                 <CalendarDays className="w-3.5 h-3.5 text-accent shrink-0" />
-                <span className="text-sm text-secondary">{formatDate(article.date)}</span>
+                <span className="text-body-sm text-secondary">{formatDate(article.date)}</span>
               </div>
 
               {/* Article-level video (separate field from body) — placed
@@ -193,7 +193,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
               {article.body && article.body.length > 0 ? (
                 <StrapiBlocks blocks={article.body} />
               ) : (
-                <p className="text-secondary italic text-sm">
+                <p className="text-body-sm text-secondary italic">
                   Conținutul acestui articol nu este disponibil momentan.
                 </p>
               )}
@@ -219,10 +219,10 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             {/* Sidebar */}
             <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-24">
               <div className="bg-surface border-retro border-line shadow-retro p-6 flex flex-col gap-4">
-                <p className="text-eyebrow font-bold uppercase text-accent">
+                <p className="text-label uppercase text-accent">
                   {SIDEBAR_HEADER[article.category] ?? "Detalii articol"}
                 </p>
-                <div className="flex flex-col gap-3 text-sm text-secondary">
+                <div className="text-body-sm flex flex-col gap-3 text-secondary">
                   <span className="flex items-start gap-3">
                     <CalendarDays className="w-4 h-4 text-accent shrink-0 mt-0.5" />
                     {formatDate(

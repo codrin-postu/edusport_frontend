@@ -15,14 +15,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
 }) => {
   return (
     <div className="bg-surface-raised p-8 border border-line-subtle shadow-sm flex flex-col gap-6">
-      <h3 className="text-sm font-medium tracking-widest uppercase text-edusport-blue">
+      <h3 className="text-label uppercase text-edusport-blue">
         {title}
       </h3>
       <div className="flex flex-col gap-4">
         {priceItems.map((item, index) => (
           <div key={index} className="flex justify-between items-baseline gap-4">
-            <span className="text-secondary font-light text-sm">{item.label}</span>
-            <span className="text-edusport-navy font-semibold text-lg whitespace-nowrap">
+            <span className="text-body-sm text-secondary">{item.label}</span>
+            <span className="text-body text-edusport-navy whitespace-nowrap">
               {item.price}
             </span>
           </div>
@@ -30,8 +30,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
       </div>
       {bottomItem && (
         <div className="flex justify-between items-baseline gap-4 pt-4 border-t border-line-subtle">
-          <span className="text-muted font-light text-xs">{bottomItem.label}</span>
-          <span className="text-secondary font-medium text-sm whitespace-nowrap">
+          <span className="text-caption text-muted">{bottomItem.label}</span>
+          <span className="text-body-sm text-secondary whitespace-nowrap">
             {bottomItem.price}
           </span>
         </div>

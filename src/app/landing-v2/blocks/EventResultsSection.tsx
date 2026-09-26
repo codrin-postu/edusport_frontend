@@ -60,13 +60,13 @@ export function EventCard({ event }: { event: Event }) {
         </div>
       )}
       <div className="p-6 md:p-8 flex flex-col">
-        <p className="text-3xs md:text-2xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
+        <p className="text-label uppercase text-primary mb-3">
           Eveniment următor
         </p>
-        <h3 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px] mb-4">
+        <h3 className="text-heading text-primary mb-4">
           {event.title}
         </h3>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-secondary mb-4">
+        <div className="text-body-sm flex flex-wrap items-center gap-x-5 gap-y-2 text-secondary mb-4">
           <span className="inline-flex items-center gap-1.5">
             <Calendar className="w-4 h-4 shrink-0 text-accent" />
             {formatRoDate(event.date)}
@@ -78,15 +78,15 @@ export function EventCard({ event }: { event: Event }) {
             </span>
           )}
         </div>
-        <p className="text-sm text-secondary leading-relaxed mb-5 max-w-[560px]">{event.excerpt}</p>
+        <p className="text-body-sm text-secondary mb-5 max-w-[560px]">{event.excerpt}</p>
         {event.admissionInfo && (
-          <p className="text-sm text-secondary italic mb-6">{event.admissionInfo}</p>
+          <p className="text-body-sm text-secondary italic mb-6">{event.admissionInfo}</p>
         )}
         <SpotlightButton
           layers
           layersFace="cream"
           href={`/cursuri/evenimente/${event.slug}`}
-          className="self-start text-sm"
+          className="text-body-sm self-start"
           umamiEvent="home.event_details"
         >
           Vezi detalii

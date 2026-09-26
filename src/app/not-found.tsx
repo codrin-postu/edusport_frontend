@@ -31,7 +31,7 @@ export default function NotFound() {
           </motion.h1>
 
           <motion.h2
-            className="font-display text-3xl md:text-4xl font-extrabold mt-2 tracking-[-0.4px]"
+            className="text-heading mt-2"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
@@ -40,7 +40,7 @@ export default function NotFound() {
           </motion.h2>
 
           <motion.p
-            className="text-secondary mt-3 text-base max-w-md mx-auto"
+            className="text-body text-secondary mt-3 max-w-md mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -55,12 +55,12 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45 }}
         >
-          <SpotlightButton layers layersFace="black" href="/" className="text-sm">
+          <SpotlightButton layers layersFace="black" href="/" className="text-body-sm">
             Înapoi la pagina principală
           </SpotlightButton>
 
           <div className="w-full">
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+            <div className="text-body-sm flex flex-wrap justify-center gap-x-6 gap-y-2">
               {quickLinks.map((l) => (
                 <Link
                   key={l.href}

@@ -30,10 +30,10 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
           { label: "Echipă" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           {bannerTitle}
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           {bannerSubtitle}
         </p>
       </PageHeroSection>
@@ -42,18 +42,18 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Introduction */}
           <div className="max-w-2xl mb-14">
-            <p className="text-eyebrow font-bold uppercase text-accent mb-4">
+            <p className="text-label uppercase text-accent mb-4">
               Antrenori & Instructori
             </p>
-            <p className="text-secondary text-base leading-relaxed">
+            <p className="text-body text-secondary">
               {introText}
             </p>
           </div>
 
           {members.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="font-display text-display-sm font-extrabold text-secondary">Echipa nu este disponibilă momentan</p>
-              <p className="text-sm text-secondary mt-2">Reveniți în curând.</p>
+              <p className="text-heading text-secondary">Echipa nu este disponibilă momentan</p>
+              <p className="text-body-sm text-secondary mt-2">Reveniți în curând.</p>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -105,14 +105,14 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                               : "border-line bg-surface-dark text-primary-on-dark",
                           )}
                         >
-                          <span className="font-display text-base font-extrabold select-none">
+                          <span className="text-title select-none">
                             {initials}
                           </span>
                         </div>
                       )}
                       <h2
                         className={cn(
-                          "font-display text-[15px] font-extrabold leading-tight",
+                          "text-title",
                           featured ? "text-primary-on-dark" : "text-primary",
                         )}
                       >
@@ -120,7 +120,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       </h2>
                       <p
                         className={cn(
-                          "text-2xs font-bold uppercase tracking-[0.06em] mt-0.5",
+                          "text-label uppercase mt-0.5",
                           featured ? "text-mustard" : "text-accent",
                         )}
                       >
@@ -130,19 +130,19 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
 
                     {/* Body */}
                     <div className="px-4 pt-3 pb-4 flex flex-col gap-3">
-                      <p className="text-xs text-secondary leading-relaxed">
+                      <p className="text-caption text-secondary">
                         {trainer.bio}
                       </p>
                       {trainer.teaches.length > 0 && (
                         <div>
-                          <p className="text-3xs font-bold uppercase tracking-[0.1em] text-secondary mb-1">
+                          <p className="text-label uppercase text-secondary mb-1">
                             Predă la
                           </p>
                           <ul className="flex flex-col gap-0.5">
                             {trainer.teaches.map((group) => (
                               <li
                                 key={group}
-                                className="relative pl-4 text-xs text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                                className="text-caption relative pl-4 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                               >
                                 {group}
                               </li>

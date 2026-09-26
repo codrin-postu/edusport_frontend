@@ -86,7 +86,7 @@ const LayersButton: React.FC<{
       <span aria-hidden className="lcta-layer lcta-l1 group-disabled:hidden" />
       <span aria-hidden className="lcta-layer lcta-l2 group-disabled:hidden" />
       <span
-        className={`lcta-face h-12 px-6 inline-flex items-center justify-center font-bold uppercase tracking-[0.03em] ${layersFaceStyles[face]} ${layersFaceDisabledStyles[face]}`}
+        className={`lcta-face h-12 px-6 inline-flex items-center justify-center text-button ${layersFaceStyles[face]} ${layersFaceDisabledStyles[face]}`}
       >
         {children}
       </span>

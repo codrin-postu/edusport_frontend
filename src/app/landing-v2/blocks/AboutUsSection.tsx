@@ -184,11 +184,11 @@ export default AboutUsSection;
 
 const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent = false }) => (
   <>
-    <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary mb-3">
+    <div className="text-label uppercase text-primary mb-3">
       {panel.eyebrow}
     </div>
     <h2
-      className="font-display text-display-md font-black text-primary tracking-[-0.5px] mb-3.5"
+      className="text-display text-primary mb-3.5"
       style={{ lineHeight: accent ? 1.3 : 0.98 }}
     >
       {panel.heading.split("\n").map((line, j) => (
@@ -202,10 +202,10 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
         </React.Fragment>
       ))}
     </h2>
-    <p className="text-sm leading-relaxed text-secondary max-w-[440px] mb-5">{panel.body}</p>
+    <p className="text-body-sm text-secondary max-w-[440px] mb-5">{panel.body}</p>
     <Link
       href={panel.ctaUrl}
-      className="link-underline-rust inline-block w-fit text-[12.5px] font-bold uppercase tracking-[0.04em] text-primary"
+      className="text-label link-underline-rust inline-block w-fit uppercase text-primary"
     >
       {panel.ctaLabel}
     </Link>

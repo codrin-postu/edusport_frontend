@@ -130,7 +130,7 @@ const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
 
 const OffDateBadge: React.FC<{ dateInfo: WeekendInfo }> = ({ dateInfo }) => (
   <TooltipWrapper label={dateInfo.days.join(", ")}>
-    <span className="inline-flex items-center px-2 py-1 bg-red-50 text-red-700 text-xs font-medium border border-red-150 cursor-help">
+    <span className="text-caption inline-flex items-center px-2 py-1 bg-red-50 text-red-700 border border-red-150 cursor-help">
       <div className="w-2 h-2 bg-red-400 rounded-full mr-1" />
       {dateInfo.weekend}
     </span>
@@ -165,7 +165,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
     <section className="py-16 bg-surface-raised">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center font-display">
+          <h2 className="text-heading text-primary mb-8 text-center">
             Calendar Sezon 2025-2026
           </h2>
           <Table>
@@ -205,7 +205,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                       <div className="flex items-center gap-1">
                         <span>{monthData.month}</span>
                         {isPast && (
-                          <span className="md:hidden text-muted text-xs leading-none">
+                          <span className="text-caption md:hidden text-muted">
                             {isCollapsed ? "▸" : "▾"}
                           </span>
                         )}
@@ -233,7 +233,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                             ))}
                           </div>
                         ) : (
-                          <span className="text-muted text-xs">Niciun weekend liber</span>
+                          <span className="text-caption text-muted">Niciun weekend liber</span>
                         )}
                       </div>
                     </TableCell>

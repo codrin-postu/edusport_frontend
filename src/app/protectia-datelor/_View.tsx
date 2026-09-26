@@ -385,10 +385,10 @@ const ProtectiaDatelor: React.FC = () => {
         title={["GDPR"]}
         breadcrumb={[{ label: "Protecția datelor" }]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Protecția Datelor
         </h1>
-        <p className="text-secondary-on-dark text-base max-w-lg">
+        <p className="text-body text-secondary-on-dark max-w-lg">
           Politica de confidențialitate privind prelucrarea datelor cu caracter
           personal a Asociației Club Sportiv EduSport.
         </p>
@@ -398,14 +398,14 @@ const ProtectiaDatelor: React.FC = () => {
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               GDPR
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-xl">
+              <h2 className="text-heading text-primary max-w-xl">
                 Politica de Confidențialitate
               </h2>
-              <p className="text-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
                 Conform Regulamentului UE 2016/679 (GDPR)
               </p>
             </div>
@@ -415,13 +415,13 @@ const ProtectiaDatelor: React.FC = () => {
           <div className="flex flex-col gap-12 max-w-3xl">
             {SECTIONS.map((section) => (
               <div key={section.number}>
-                <h3 className="text-lg font-bold text-primary mb-4">
+                <h3 className="text-title text-primary mb-4">
                   <span className="font-display text-accent mr-2">
                     {section.number}.
                   </span>
                   {section.title}
                 </h3>
-                <div className="text-sm text-secondary leading-relaxed [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-5 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-accent [&_strong]:font-bold [&_strong]:text-primary">
+                <div className="text-body-sm text-secondary [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-5 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-accent [&_strong]:font-bold [&_strong]:text-primary">
                   {section.content}
                 </div>
               </div>
@@ -438,10 +438,10 @@ const ProtectiaDatelor: React.FC = () => {
 
               <div className="relative flex flex-col gap-6">
                 <div>
-                  <p className="text-eyebrow font-bold uppercase text-mustard mb-3">
+                  <p className="text-label uppercase text-mustard mb-3">
                     Responsabil protecția datelor
                   </p>
-                  <p className="text-primary-on-dark text-base leading-relaxed max-w-xl">
+                  <p className="text-body text-primary-on-dark max-w-xl">
                     Pentru orice întrebări legate de prelucrarea datelor cu
                     caracter personal, ne puteți contacta la:
                   </p>
@@ -450,13 +450,13 @@ const ProtectiaDatelor: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href="mailto:edusporttrophy@gmail.com"
-                    className="inline-flex items-center gap-2 text-sm text-primary-on-dark hover:text-mustard transition-colors"
+                    className="text-body-sm inline-flex items-center gap-2 text-primary-on-dark hover:text-mustard transition-colors"
                   >
                     <Mail className="w-4 h-4" />
                     edusporttrophy@gmail.com
                   </a>
                   <span className="hidden sm:block text-line-subtle-on-dark">|</span>
-                  <span className="inline-flex items-center gap-2 text-sm text-primary-on-dark">
+                  <span className="text-body-sm inline-flex items-center gap-2 text-primary-on-dark">
                     <MapPin className="w-4 h-4 shrink-0" />
                     str. Slt. Stănescu Gheorghe, nr. 1, bl. 213, sc. A, et. 10,
                     ap. 42, sect. 2, București
@@ -464,20 +464,20 @@ const ProtectiaDatelor: React.FC = () => {
                 </div>
 
                 <div className="border-t-retro border-line-subtle-on-dark pt-5">
-                  <p className="text-eyebrow font-bold uppercase text-mustard mb-3">
+                  <p className="text-label uppercase text-mustard mb-3">
                     Autoritatea de supraveghere
                   </p>
-                  <p className="text-sm text-primary-on-dark leading-relaxed">
+                  <p className="text-body-sm text-primary-on-dark">
                     Autoritatea Națională de Supraveghere a Prelucrării Datelor
                     cu Caracter Personal
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <span className="inline-flex items-center gap-2 text-sm text-secondary-on-dark">
+                    <span className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark">
                       <MapPin className="w-4 h-4 shrink-0" />
                       B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București
                     </span>
                     <span className="hidden sm:block text-line-subtle-on-dark">|</span>
-                    <span className="inline-flex items-center gap-2 text-sm text-secondary-on-dark">
+                    <span className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark">
                       <Phone className="w-4 h-4 shrink-0" />
                       +40.318.059.211
                     </span>
@@ -485,7 +485,7 @@ const ProtectiaDatelor: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <a
                       href="mailto:anspdcp@dataprotection.ro"
-                      className="inline-flex items-center gap-2 text-sm text-secondary-on-dark hover:text-mustard transition-colors"
+                      className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark hover:text-mustard transition-colors"
                     >
                       <Mail className="w-4 h-4" />
                       anspdcp@dataprotection.ro
@@ -495,7 +495,7 @@ const ProtectiaDatelor: React.FC = () => {
                       href="https://www.dataprotection.ro"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-secondary-on-dark hover:text-mustard transition-colors"
+                      className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark hover:text-mustard transition-colors"
                     >
                       <ExternalLink className="w-4 h-4" />
                       www.dataprotection.ro

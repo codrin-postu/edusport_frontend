@@ -39,7 +39,7 @@ export default async function ArticleListAsync({
 
   return (
     <>
-      <p className="text-eyebrow font-bold uppercase text-secondary mb-8">
+      <p className="text-label uppercase text-secondary mb-8">
         {total} {total === 1 ? "articol" : "articole"} găsite
       </p>
 
@@ -59,10 +59,10 @@ export default async function ArticleListAsync({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <p className="font-display text-display-sm font-extrabold text-secondary">
+          <p className="text-heading text-secondary">
             Niciun articol găsit
           </p>
-          <p className="text-sm text-secondary mt-2 max-w-sm">
+          <p className="text-body-sm text-secondary mt-2 max-w-sm">
             Încercați să modificați criteriile de căutare sau să selectați o
             altă categorie.
           </p>

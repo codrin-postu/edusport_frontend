@@ -158,7 +158,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
           <div className="relative border-r border-line-subtle">
             {HOURS.map((h) => (
               <div key={h} className="relative" style={{ height: HOUR_H }}>
-                <span className="absolute top-1 right-1.5 text-[10px] text-secondary tabular-nums">
+                <span className="text-caption absolute top-1 right-1.5 text-secondary tabular-nums">
                   {h}:00
                 </span>
               </div>
@@ -180,12 +180,12 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                 >
                   {/* Day head */}
                   <div className="h-11 border-b-retro border-line flex flex-col items-center justify-center gap-0.5">
-                    <span className="text-[0.66rem] font-bold uppercase tracking-[0.06em] text-secondary">
+                    <span className="text-label uppercase text-secondary">
                       {format(day, "EEEE", { locale: ro })}
                     </span>
                     <span
                       className={cn(
-                        "font-display text-[15px] font-extrabold text-primary leading-none",
+                        "text-title text-primary",
                         isToday &&
                           "bg-surface-dark text-primary-on-dark w-[22px] h-[22px] rounded-full inline-flex items-center justify-center",
                       )}
@@ -216,11 +216,11 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                       return (
                         <div
                           key={i}
-                          className="absolute left-1 right-1 px-2 py-1 text-[11px] font-bold overflow-hidden"
+                          className="text-caption absolute left-1 right-1 px-2 py-1 overflow-hidden"
                           style={{ top, height, background: st.bg, color: st.fg }}
                         >
                           {e.title}
-                          <span className="block text-[9.5px] font-medium opacity-85">
+                          <span className="text-caption block opacity-85">
                             {String(e.sH).padStart(2, "0")}:{String(e.sM).padStart(2, "0")} – {String(e.eH).padStart(2, "0")}:{String(e.eM).padStart(2, "0")}
                           </span>
                         </div>
@@ -235,7 +235,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
       </div>
 
       {/* Demo note (mock data until the backend sends session times) */}
-      <div className="px-3.5 py-2 border-t border-line-subtle text-[10.5px] text-secondary">
+      <div className="text-caption px-3.5 py-2 border-t border-line-subtle text-secondary">
         Orar demonstrativ — orele reale vor fi preluate din sistem.
       </div>
     </div>

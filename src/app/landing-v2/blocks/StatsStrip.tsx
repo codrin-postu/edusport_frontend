@@ -88,10 +88,10 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
             key={s.label}
             className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center py-16 md:py-20 px-4`}
           >
-            <span className="font-display text-display-lg font-extrabold leading-none tracking-[-0.02em]">
+            <span className="text-display-lg">
               <CountUp target={s.value} suffix={s.suffix} run={inView} />
             </span>
-            <span className="mt-4 text-3xs md:text-2xs font-bold tracking-[0.24em] uppercase opacity-80">
+            <span className="text-label mt-4 uppercase opacity-80">
               {s.label}
             </span>
           </div>

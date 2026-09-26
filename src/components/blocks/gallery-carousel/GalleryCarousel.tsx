@@ -104,13 +104,13 @@ export function GalleryCarousel({
       {hasHeader && (
         <div className="flex flex-col gap-3 mb-8">
           {eyebrow && (
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               {eyebrow}
             </p>
           )}
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             {title && (
-              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
+              <h2 className="text-heading text-primary">
                 {title}
               </h2>
             )}
@@ -186,7 +186,7 @@ export function GalleryCarousel({
               />
               {img.alt && (
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-3 pt-8">
-                  <p className="text-xs text-primary-on-dark font-light text-left">{img.alt}</p>
+                  <p className="text-caption text-primary-on-dark text-left">{img.alt}</p>
                 </div>
               )}
             </button>
@@ -208,7 +208,7 @@ export function GalleryCarousel({
                 />
               ))
             ) : (
-              <span className="text-xs text-secondary tabular-nums">
+              <span className="text-caption text-secondary tabular-nums">
                 {desktopStart + 1} – {Math.min(desktopStart + DESKTOP_PER_PAGE, total)} din {total}
               </span>
             )}
@@ -259,7 +259,7 @@ export function GalleryCarousel({
 
           {images[current].alt && (
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-5 pb-4 pt-10 pointer-events-none">
-              <p className="text-sm text-primary-on-dark font-light">{images[current].alt}</p>
+              <p className="text-body-sm text-primary-on-dark">{images[current].alt}</p>
             </div>
           )}
         </div>
@@ -287,7 +287,7 @@ export function GalleryCarousel({
               ))}
             </div>
           ) : (
-            <span className="text-xs text-secondary tabular-nums">
+            <span className="text-caption text-secondary tabular-nums">
               {current + 1} / {total}
             </span>
           )}
@@ -422,7 +422,7 @@ function Lightbox({
               draggable={false}
             />
             {images[index].alt && (
-              <p className="text-center text-primary-on-dark text-sm mt-3 max-w-full pointer-events-none">
+              <p className="text-body-sm text-center text-primary-on-dark mt-3 max-w-full pointer-events-none">
                 {images[index].alt}
               </p>
             )}
@@ -434,7 +434,7 @@ function Lightbox({
             className="flex sm:hidden items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="text-secondary-on-dark text-xs tabular-nums">
+            <span className="text-caption text-secondary-on-dark tabular-nums">
               {index + 1} / {images.length}
             </span>
           </div>

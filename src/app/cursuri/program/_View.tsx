@@ -18,10 +18,10 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ data }) => {
   return (
     <div className={cn("min-h-screen", "bg-surface-raised")}>
       <PageHeroSection title={["PROGRAM"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Program" }]}>
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           {data.bannerTitle}
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           {data.bannerSubtitle}
         </p>
       </PageHeroSection>

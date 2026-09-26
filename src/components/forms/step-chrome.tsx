@@ -13,16 +13,14 @@ import type { CustomVariant } from "@/components/ui/custom-questions";
 
 const INDICATOR_VARIANT = {
   card: {
-    title: "text-[15px] font-bold text-primary tracking-[-0.2px]",
-    counter:
-      "text-[10px] font-bold uppercase tracking-[0.1em] text-accent whitespace-nowrap",
+    title: "text-body-sm text-primary",
+    counter: "text-label uppercase text-accent whitespace-nowrap",
     bar: "relative h-2 border-retro border-line bg-surface-subtle overflow-hidden",
     fill: "absolute inset-y-0 left-0 bg-surface-dark transition-[width] duration-500 ease-out",
   },
   navy: {
-    title: "text-[15px] font-bold text-primary-on-dark tracking-[-0.2px]",
-    counter:
-      "text-[10px] font-bold uppercase tracking-[0.1em] text-mustard whitespace-nowrap",
+    title: "text-body-sm text-primary-on-dark",
+    counter: "text-label uppercase text-mustard whitespace-nowrap",
     bar: "relative h-2 border-retro border-line-on-dark bg-surface-subtle-on-dark overflow-hidden",
     fill: "absolute inset-y-0 left-0 bg-mustard transition-[width] duration-500 ease-out",
   },
@@ -32,13 +30,13 @@ const NAVIGATION_VARIANT = {
   card: {
     container:
       "flex items-center justify-between mt-8 pt-6 border-t-retro border-line-subtle",
-    back: "text-sm font-semibold text-secondary hover:text-accent transition-colors",
+    back: "text-body-sm text-secondary hover:text-accent transition-colors",
     face: "black" as const,
   },
   navy: {
     container:
       "flex items-center justify-between mt-8 pt-6 border-t-retro border-line-subtle-on-dark",
-    back: "text-sm font-semibold text-secondary-on-dark hover:text-mustard transition-colors",
+    back: "text-body-sm text-secondary-on-dark hover:text-mustard transition-colors",
     face: "cream" as const,
   },
 } as const;

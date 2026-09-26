@@ -30,7 +30,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
       variant={isRegistrationOpen ? "blue" : "dark"}
     >
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-eyebrow font-bold uppercase text-primary-on-dark">
+        <span className="text-label uppercase text-primary-on-dark">
           Sezonul {currentSeason}
         </span>
         {isRegistrationOpen ? (
@@ -42,11 +42,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
         )}
       </div>
 
-      <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+      <h1 className="text-display text-primary-on-dark">
         {title}
       </h1>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-secondary-on-dark text-sm">
+      <div className="text-body-sm flex flex-wrap gap-x-5 gap-y-2 text-secondary-on-dark">
         <span className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
           {scheduleDays}
@@ -72,13 +72,13 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
             layers
             layersFace="cream"
             href="/inscrieri"
-            className="w-full sm:w-auto text-sm"
+            className="text-body-sm w-full sm:w-auto"
           >
             Înscrie-te acum
           </SpotlightButton>
           <Link
             href="/cursuri/program"
-            className="inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-retro border-line-on-dark bg-transparent text-sm font-bold uppercase tracking-[0.03em] text-primary-on-dark transition-colors hover-layer-on-dark"
+            className="text-label inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-retro border-line-on-dark bg-transparent uppercase text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Vezi programul
           </Link>

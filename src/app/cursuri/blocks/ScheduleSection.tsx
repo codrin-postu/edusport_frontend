@@ -25,7 +25,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <>
     <Section className={cn("pt-10 md:pt-14 pb-20 md:pb-28 bg-surface", "overflow-hidden")}>
         <div className="max-w-4xl mx-auto mb-10 md:mb-12">
-          <span className="text-eyebrow font-bold uppercase text-accent">
+          <span className="text-label uppercase text-accent">
             Program Școala de Patinaj
           </span>
         </div>
@@ -71,7 +71,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             <div className="pl-[88px] pr-6 pb-8" style={{ paddingTop: "16px" }}>
               {/* Section label */}
               <p
-                className="text-xs font-bold tracking-widest uppercase text-accent"
+                className="text-label uppercase text-accent"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 Orarul Cursurilor
@@ -79,7 +79,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
               {/* Subtitle */}
               <p
-                className="text-primary font-semibold text-xl"
+                className="text-body text-primary"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 {scheduleSubtitle || "Sâmbătă & Duminică · 50 min / ședință"}
@@ -91,7 +91,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                   <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
                     {/* Time slot line */}
                     <p
-                      className="text-primary font-bold text-lg"
+                      className="text-body text-primary"
                       style={{ lineHeight: "32px", margin: 0 }}
                     >
                       {group.timeSlot}
@@ -101,7 +101,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                     {group.courses.map((course, courseIndex) => (
                       <p
                         key={courseIndex}
-                        className="text-secondary text-sm"
+                        className="text-body-sm text-secondary"
                         style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
                       >
                         - {course}
@@ -188,7 +188,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
           <div className="max-w-4xl mx-auto">
             <div className="flex items-start gap-3 mb-4">
               <Info className="w-4 h-4 text-mustard shrink-0 mt-0.5" />
-              <p className="text-xs font-bold uppercase tracking-widest text-primary-on-dark">
+              <p className="text-label uppercase text-primary-on-dark">
                 Informații importante
               </p>
             </div>
@@ -196,7 +196,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               {(disclaimers ?? []).map((text, i) => (
                 <li
                   key={i}
-                  className="flex gap-2.5 text-sm text-primary-on-dark leading-relaxed"
+                  className="text-body-sm flex gap-2.5 text-primary-on-dark"
                 >
                   <span className="shrink-0 font-extrabold text-mustard">›</span>
                   {text}

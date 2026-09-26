@@ -39,7 +39,7 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
   <div className={CARD}>
     <div
       className={cn(
-        "flex items-center px-6 shrink-0 h-12 text-xs font-extrabold tracking-[0.14em] uppercase",
+        "text-label flex items-center px-6 shrink-0 h-12 uppercase",
         headerClass,
       )}
     >
@@ -55,7 +55,7 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
           )}
         >
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm text-secondary">
+            <span className="text-body-sm text-secondary">
               {item.label}
               {item.tooltip && (
                 <span className="inline-flex items-center ml-1 translate-y-[2px]">
@@ -64,10 +64,10 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
               )}
             </span>
             {item.note && (
-              <span className="text-xs text-secondary">{item.note}</span>
+              <span className="text-caption text-secondary">{item.note}</span>
             )}
           </div>
-          <span className="font-display font-extrabold text-lg text-primary whitespace-nowrap shrink-0">
+          <span className="text-title text-primary whitespace-nowrap shrink-0">
             {item.price}
           </span>
         </div>
@@ -75,8 +75,8 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
     </div>
     {tier.bottomItem && (
       <div className="mt-auto px-8 py-4 flex items-baseline justify-between gap-4 border-t-retro border-line-subtle">
-        <span className="text-xs text-secondary">{tier.bottomItem.label}</span>
-        <span className="text-sm font-bold text-secondary whitespace-nowrap">
+        <span className="text-caption text-secondary">{tier.bottomItem.label}</span>
+        <span className="text-body-sm text-secondary whitespace-nowrap">
           {tier.bottomItem.price}
         </span>
       </div>
@@ -109,10 +109,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
     <Section id="preturi" className="py-20 bg-surface">
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-2">
-          <span className="text-eyebrow font-bold uppercase text-accent">
+          <span className="text-label uppercase text-accent">
             Tarife
           </span>
-          <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
+          <h2 className="text-heading text-primary">
             Prețuri cursuri grup
           </h2>
         </div>
@@ -120,18 +120,18 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         <div className="grid lg:grid-cols-3 gap-5 items-stretch">
           {/* Promo card — plain navy */}
           <div className="relative overflow-hidden p-8 md:p-10 flex flex-col gap-5 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-retro">
-            <span className="text-eyebrow font-bold uppercase text-secondary-on-dark">
+            <span className="text-label uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
-            <h3 className="text-2xl font-bold text-primary-on-dark leading-snug tracking-[-0.2px]">
+            <h3 className="text-title text-primary-on-dark">
               {title}
             </h3>
-            <p className="text-secondary-on-dark text-sm leading-relaxed">
+            <p className="text-body-sm text-secondary-on-dark">
               {description}
             </p>
 
-            <div className="flex flex-col gap-2 text-sm text-secondary-on-dark border-t border-line-subtle-on-dark pt-4 flex-1">
-              <p className="text-primary-on-dark font-bold text-xs">
+            <div className="text-body-sm flex flex-col gap-2 text-secondary-on-dark border-t border-line-subtle-on-dark pt-4 flex-1">
+              <p className="text-caption text-primary-on-dark">
                 {subscriptionInfoTitle}
               </p>
               <ul className="flex flex-col gap-2">
@@ -148,7 +148,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               layers
               layersFace="cream"
               href="/inscrieri"
-              className="self-start text-xs"
+              className="text-caption self-start"
             >
               Înscrie-te la cursuri
             </SpotlightButton>
@@ -158,7 +158,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           <div className="grid md:grid-cols-2 lg:contents gap-5 items-stretch">
             {pricingData === null || !members || !nonMembers ? (
               <div className="md:col-span-2 lg:col-span-2 bg-surface border-retro border-line shadow-retro flex items-center justify-center min-h-[520px] px-8">
-                <p className="text-sm text-secondary text-center">
+                <p className="text-body-sm text-secondary text-center">
                   Prețurile nu sunt disponibile momentan. Reveniți în curând sau
                   contactați-ne direct.
                 </p>
@@ -176,8 +176,8 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="flex flex-col gap-1.5 text-xs text-secondary max-w-2xl">
-            <p className="text-eyebrow font-bold uppercase text-secondary mb-1">
+          <div className="text-caption flex flex-col gap-1.5 text-secondary max-w-2xl">
+            <p className="text-label uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>
             <ul className="flex flex-col gap-1.5">

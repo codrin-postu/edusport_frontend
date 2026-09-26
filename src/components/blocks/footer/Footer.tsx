@@ -146,7 +146,7 @@ const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = ({ retro, ...
   return (
     <Link
       href={href}
-      className="text-base font-base"
+      className="text-body font-base"
       variant={LinkVariants.FOOTER_ANIMATED}
       linkType={linkType}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -201,7 +201,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
       {/* Meniu + Informații legale */}
       {footerLeftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
-          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-primary-on-dark">
+          <Text variant="heading" className="text-body text-primary-on-dark">
             {section.title}
           </Text>
           <div className="flex flex-col gap-3">
@@ -217,7 +217,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 
       {/* Contactează-ne */}
       <div className="flex flex-col gap-3">
-        <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-primary-on-dark">
+        <Text variant="heading" className="text-body text-primary-on-dark">
           Contacteaza-ne
         </Text>
         {retro ? (
@@ -271,11 +271,11 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">
-          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-primary-on-dark mb-3">
+          <Text variant="heading" className="text-body text-primary-on-dark mb-3">
             WhatsApp
           </Text>
           <WhatsAppQR size={84} url={waUrl} />
-          <p className="text-xs text-secondary-on-dark leading-[1.55] mt-[10px] mb-[12px]">
+          <p className="text-caption text-secondary-on-dark mt-[10px] mb-[12px]">
             Intră pentru a primi ultimele informații
           </p>
           <div className="flex items-center gap-[6px]">
@@ -297,10 +297,10 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 
         {/* Tablet + Desktop: caption → QR + divider + link row */}
         <div className="flex-col gap-0 hidden md:flex">
-          <Text variant="heading" className="font-semibold text-lg lg:text-2xl text-primary-on-dark">
+          <Text variant="heading" className="text-body text-primary-on-dark">
             WhatsApp
           </Text>
-          <p className="text-xs text-secondary-on-dark leading-[1.55] mb-[12px]">
+          <p className="text-caption text-secondary-on-dark mb-[12px]">
             Intră pentru a primi ultimele informații
           </p>
           <div className="flex items-center gap-[14px]">
@@ -339,25 +339,22 @@ const RegisterBand: React.FC = () => (
     <WarmStripe />
     <div className="max-w-content mx-auto px-6 md:px-8 py-9 md:py-11 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10 text-center lg:text-left">
       <div className="lg:max-w-[54%]">
-        <h2
-          className="font-display font-extrabold text-primary leading-[1.05]"
-          style={{ fontSize: "clamp(24px, 3vw, 38px)", letterSpacing: "-0.4px" }}
-        >
+        <h2 className="text-heading text-primary">
           Începe aventura pe gheață
         </h2>
-        <p className="text-secondary text-sm md:text-base leading-relaxed mt-2">
+        <p className="text-body text-secondary mt-2">
           Cursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-center w-full sm:w-auto lg:shrink-0">
-        <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-sm" umamiEvent="footer.enroll">
+        <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-body-sm" umamiEvent="footer.enroll">
           Înscrieri
         </SpotlightButton>
         <Link
           href="/cursuri"
           linkType="internal"
           variant={LinkVariants.DEFAULT}
-          className="inline-flex items-center justify-center border-retro border-line !text-primary h-12 px-6 text-sm font-bold uppercase tracking-[0.03em] transition-colors hover-layer"
+          className="text-label inline-flex items-center justify-center border-retro border-line !text-primary h-12 px-6 uppercase transition-colors hover-layer"
         >
           Școala de patinaj
         </Link>

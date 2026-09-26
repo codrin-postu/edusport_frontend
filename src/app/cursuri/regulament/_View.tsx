@@ -44,10 +44,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["REGULAMENT"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Regulament" }]}>
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Regulament Cursuri
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           Condițiile de participare, regulile de conduită pe gheață și
           informațiile esențiale pentru o experiență sigură și plăcută la
           cursurile Școlii de Patinaj EduSport.
@@ -57,12 +57,12 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
       <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3 mb-14">
-            <span className="text-eyebrow font-bold uppercase text-accent">Regulament</span>
+            <span className="text-label uppercase text-accent">Regulament</span>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-lg">
+              <h2 className="text-heading text-primary max-w-lg">
                 Regulament Școala de Patinaj EduSport
               </h2>
-              <p className="text-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
                 Vă rugăm să citiți cu atenție înainte de prima ședință.
               </p>
             </div>
@@ -70,10 +70,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
 
           {categories.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="text-lg font-semibold text-secondary">
+              <p className="text-body text-secondary">
                 Regulamentul nu este disponibil momentan
               </p>
-              <p className="text-sm text-secondary mt-2">Reveniți în curând.</p>
+              <p className="text-body-sm text-secondary mt-2">Reveniți în curând.</p>
             </div>
           ) : (
             <div className="flex flex-col">
@@ -91,10 +91,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                       <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
                         {ICON_MAP[category.icon] ?? <Layers className="w-5 h-5" />}
                       </span>
-                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-primary">
+                      <h3 className="text-label uppercase text-primary">
                         {category.title}
                       </h3>
-                      <span className="ml-auto text-xs text-secondary font-semibold tabular-nums mr-3">
+                      <span className="text-caption ml-auto text-secondary tabular-nums mr-3">
                         {category.rules.length}{" "}
                         {category.rules.length === 1 ? "regulă" : "reguli"}
                       </span>
@@ -119,12 +119,12 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               className="flex gap-4 items-start bg-surface-dark -mx-4 px-4 py-4 my-1.5"
                             >
                               <span
-                                className="font-display font-extrabold text-[28px] leading-none w-9 shrink-0 text-mustard tabular-nums select-none"
+                                className="text-heading w-9 shrink-0 text-mustard tabular-nums select-none"
                                 aria-hidden
                               >
                                 {num}
                               </span>
-                              <p className="text-sm text-primary-on-dark leading-relaxed pt-1">
+                              <p className="text-body-sm text-primary-on-dark pt-1">
                                 {rule.text}
                               </p>
                             </div>
@@ -137,12 +137,12 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               )}
                             >
                               <span
-                                className="font-display font-extrabold text-[28px] leading-none w-9 shrink-0 text-line-subtle tabular-nums select-none"
+                                className="text-heading w-9 shrink-0 text-line-subtle tabular-nums select-none"
                                 aria-hidden
                               >
                                 {num}
                               </span>
-                              <p className="text-sm text-secondary leading-relaxed pt-1">
+                              <p className="text-body-sm text-secondary pt-1">
                                 {rule.text}
                               </p>
                             </div>
@@ -159,8 +159,8 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           {/* Acceptance card */}
           <div className="mt-12 bg-surface border-retro border-line shadow-retro p-8 md:p-9 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
-              <p className="text-eyebrow font-bold uppercase text-accent">Acceptare</p>
-              <p className="text-primary text-base leading-relaxed mt-2">
+              <p className="text-label uppercase text-accent">Acceptare</p>
+              <p className="text-body text-primary mt-2">
                 Prin înscrierea la cursurile Școlii de Patinaj EduSport,
                 părinții/tutorii confirmă că au citit, înțeles și acceptat în
                 totalitate prezentul regulament.
@@ -170,7 +170,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
               layers
               layersFace="black"
               href="/inscrieri"
-              className="text-xs shrink-0"
+              className="text-caption shrink-0"
             >
               Înscrie-te acum
             </SpotlightButton>

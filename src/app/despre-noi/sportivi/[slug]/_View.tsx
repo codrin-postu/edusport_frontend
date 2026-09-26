@@ -151,7 +151,7 @@ const SportspersonView: React.FC<Props> = ({
           pt-8). Without this the bar tucks behind the nav. */}
       <div className="bg-surface-dark pt-8">
         <div className="mx-auto w-full max-w-content px-4 py-4 md:px-8 lg:px-12">
-          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary-on-dark">
+          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary-on-dark">
             <Link
               href="/despre-noi/sportivi"
               className="text-primary-on-dark transition-colors hover:text-gold"
@@ -173,10 +173,10 @@ const SportspersonView: React.FC<Props> = ({
             {/* Left: category eyebrow + huge stacked name. The narrative
                 bio now lives in its own "Despre mine" section below. */}
             <div>
-              <div className="mb-4 text-2xs font-bold uppercase tracking-[0.32em] text-gold">
+              <div className="text-label mb-4 uppercase text-gold">
                 {category}
               </div>
-              <h1 className="font-display font-black leading-[0.85] tracking-[-0.035em] text-[56px] md:text-[88px]">
+              <h1 className="text-athlete-name">
                 <NameStack name={sportsperson.name} />
               </h1>
             </div>
@@ -195,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="absolute bottom-3 left-3 bg-black/45 px-2.5 py-1 text-3xs font-bold uppercase tracking-[0.22em] text-primary-on-dark backdrop-blur-sm">
+                <span className="text-label absolute bottom-3 left-3 bg-black/45 px-2.5 py-1 uppercase text-primary-on-dark backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -228,15 +228,15 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface py-16 md:py-20">
           <SectionWatermark>DESPRE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+            <div className="text-label uppercase text-accent">
               Despre mine
             </div>
             {hasItems(sportsperson.story) ? (
-              <div className="mt-6 max-w-[620px] text-lg leading-relaxed text-primary">
+              <div className="text-body mt-6 max-w-[620px] text-primary">
                 <StrapiBlocks blocks={sportsperson.story} />
               </div>
             ) : (
-              <p className="mt-6 max-w-[620px] text-base font-semibold text-primary">
+              <p className="text-body mt-6 max-w-[620px] text-primary">
                 {sportsperson.description}
               </p>
             )}
@@ -266,13 +266,13 @@ const SportspersonView: React.FC<Props> = ({
               {(hasItems(sportsperson.coaches) || hasItems(sportsperson.choreographers)) && (
                 <DespreCell title="Antrenori">
                   {hasItems(sportsperson.coaches) && (
-                    <div className="text-sm font-semibold text-primary">
+                    <div className="text-body-sm text-primary">
                       {sportsperson.coaches.map((c, i) => (
                         <span key={i}>
                           {i > 0 && <span className="mx-1 text-line-subtle">·</span>}
                           {c.name}
                           {c.role && (
-                            <span className="ml-1 text-xs font-light text-secondary">
+                            <span className="text-caption ml-1 text-secondary">
                               · {c.role}
                             </span>
                           )}
@@ -281,8 +281,8 @@ const SportspersonView: React.FC<Props> = ({
                     </div>
                   )}
                   {hasItems(sportsperson.choreographers) && (
-                    <div className="mt-2 text-sm font-semibold text-primary">
-                      <span className="mr-2 text-3xs font-extrabold uppercase tracking-[0.22em] text-secondary">
+                    <div className="text-body-sm mt-2 text-primary">
+                      <span className="text-label mr-2 uppercase text-secondary">
                         Coregrafe
                       </span>
                       {sportsperson.choreographers.map((c) => c.name).join(", ")}
@@ -292,7 +292,7 @@ const SportspersonView: React.FC<Props> = ({
               )}
               {sportsperson.careerGoal && (
                 <DespreCell title="Obiectiv">
-                  <p className="border-l-[3px] border-rust pl-3 text-base leading-relaxed text-secondary">
+                  <p className="text-body border-l-[3px] border-rust pl-3 text-secondary">
                     {sportsperson.careerGoal}
                   </p>
                 </DespreCell>
@@ -307,10 +307,10 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface py-16 md:py-20">
           <SectionWatermark>MUZICĂ</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+            <div className="text-label uppercase text-accent">
               Programe muzicale
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
+            <h2 className="text-heading mt-2 text-primary">
               Muzica pe gheață
             </h2>
             <ProgramSeasons seasons={sortSeasonsDesc(sportsperson.seasons)} />
@@ -323,10 +323,10 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface-dark py-16 text-primary-on-dark md:py-20">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-gold">
+            <div className="text-label uppercase text-gold">
               Cele mai notabile rezultate
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary-on-dark md:text-4xl">
+            <h2 className="text-heading mt-2 text-primary-on-dark">
               Performanțe de vârf
             </h2>
             <div className="mt-8 flex flex-col">
@@ -351,16 +351,16 @@ const SportspersonView: React.FC<Props> = ({
                     <div className="min-w-0">
                       <span
                         className={cn(
-                          "text-3xs font-extrabold uppercase tracking-[0.18em]",
+                          "text-label uppercase",
                           info.textClass,
                         )}
                       >
                         {info.label}
                       </span>
-                      <h3 className="mt-1 text-lg font-bold leading-tight text-primary-on-dark">
+                      <h3 className="text-title mt-1 text-primary-on-dark">
                         {r.competition.name}
                       </h3>
-                      <div className="mt-1 text-2xs text-secondary-on-dark">
+                      <div className="text-caption mt-1 text-secondary-on-dark">
                         {formatDate(r.competition.date)}
                         {r.competition.location && <> · {r.competition.location}</>}
                         {r.score !== undefined && (
@@ -406,10 +406,10 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+            <div className="text-label uppercase text-accent">
               Rezultate competiții
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
+            <h2 className="text-heading mt-2 text-primary">
               Toate competițiile
             </h2>
             <SkateResults results={skateResults ?? []} />
@@ -425,10 +425,10 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+            <div className="text-label uppercase text-accent">
               Istoric competițional
             </div>
-            <h2 className="font-display mt-2 text-3xl font-extrabold leading-[0.98] tracking-[-0.03em] text-primary md:text-4xl">
+            <h2 className="text-heading mt-2 text-primary">
               Toate competițiile
             </h2>
             <div className="mt-8 flex flex-col">
@@ -445,14 +445,14 @@ const SportspersonView: React.FC<Props> = ({
                   >
                     <div className="relative min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-sm font-bold text-primary">{comp.name}</h4>
+                        <h4 className="text-title text-primary">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="rounded-full bg-edusport-blue/10 px-2 py-0.5 text-3xs font-semibold uppercase tracking-wider text-edusport-blue">
+                          <span className="text-label rounded-full bg-edusport-blue/10 px-2 py-0.5 uppercase text-edusport-blue">
                             Internațional
                           </span>
                         )}
                       </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-2xs font-light tracking-[0.04em] text-secondary">
+                      <div className="text-caption mt-1 flex flex-wrap items-center gap-2 text-secondary">
                         <span>{formatDate(comp.date)}</span>
                         {comp.location && (
                           <>
@@ -476,14 +476,14 @@ const SportspersonView: React.FC<Props> = ({
                         sm+ via `display: contents`. */}
                     <div className="flex items-baseline gap-3 sm:contents">
                       {row.score !== undefined && (
-                        <span className="text-xs font-semibold tabular-nums text-secondary">
+                        <span className="text-caption tabular-nums text-secondary">
                           {row.score.toFixed(2)}
                         </span>
                       )}
                       {info && (
                         <span
                           className={cn(
-                            "text-2xs font-extrabold uppercase tracking-[0.22em] sm:min-w-[72px] sm:text-right",
+                            "text-label uppercase sm:min-w-[72px] sm:text-right",
                             info.textClass,
                           )}
                         >
@@ -510,10 +510,10 @@ const SportspersonView: React.FC<Props> = ({
       <section className="border-t border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-5 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+            <div className="text-label uppercase text-accent">
               Mai departe
             </div>
-            <p className="mt-1.5 text-base font-medium text-primary md:text-lg">
+            <p className="text-body mt-1.5 text-primary">
               Vezi toți sportivii clubului EduSport.
             </p>
           </div>
@@ -521,7 +521,7 @@ const SportspersonView: React.FC<Props> = ({
             layers
             layersFace="black"
             href="/despre-noi/sportivi"
-            className="text-xs"
+            className="text-caption"
           >
             Toți sportivii
           </SpotlightButton>
@@ -616,13 +616,13 @@ function HeroStat({
     <div>
       <div
         className={cn(
-          "font-display text-[40px] font-black leading-none tracking-[-0.02em] md:text-[44px]",
+          "text-heading",
           accent ? "text-gold" : "text-primary-on-dark",
         )}
       >
         {value}
       </div>
-      <div className="mt-2 text-3xs font-bold uppercase tracking-[0.22em] text-secondary-on-dark">
+      <div className="text-label mt-2 uppercase text-secondary-on-dark">
         {label}
       </div>
     </div>
@@ -653,7 +653,7 @@ function DespreCell({
 }) {
   return (
     <div className="min-w-0">
-      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.28em] text-accent">
+      <div className="text-label mb-3 uppercase text-accent">
         {title}
       </div>
       {children}
@@ -680,7 +680,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
       ))}
       {older.length > 0 && (
         <details className="group/seasons">
-          <summary className="-mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 text-2xs font-extrabold uppercase tracking-[0.22em] text-accent transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
+          <summary className="text-label -mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 uppercase text-accent transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
             <span className="group-open/seasons:hidden">
               Vezi sezoanele anterioare ({older.length})
             </span>
@@ -707,7 +707,7 @@ function SeasonRow({
 }) {
   return (
     <div>
-      <div className="mb-3 text-2xs font-bold uppercase tracking-[0.24em] text-secondary">
+      <div className="text-label mb-3 uppercase text-secondary">
         Sezon {season}
       </div>
       <div className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
@@ -716,15 +716,15 @@ function SeasonRow({
             key={`${season}-${i}`}
             className="grid grid-cols-[120px_1fr] items-baseline gap-3 py-2"
           >
-            <div className="text-3xs font-extrabold uppercase tracking-[0.22em] text-gold">
+            <div className="text-label uppercase text-gold">
               {p.type}
             </div>
             <div className="min-w-0">
-              <div className="text-sm font-bold leading-tight text-primary">
+              <div className="text-body-sm text-primary">
                 {p.title}
               </div>
               {p.artist && (
-                <div className="text-2xs text-secondary">{p.artist}</div>
+                <div className="text-caption text-secondary">{p.artist}</div>
               )}
             </div>
           </div>
@@ -741,7 +741,7 @@ function BulletList({ items }: { items: string[] }) {
       {items.map((item, i) => (
         <li
           key={i}
-          className="flex items-start gap-2 text-sm leading-relaxed text-primary"
+          className="text-body-sm flex items-start gap-2 text-primary"
         >
           <ChevronRight className="mt-[3px] h-3.5 w-3.5 shrink-0 text-accent" />
           {item}

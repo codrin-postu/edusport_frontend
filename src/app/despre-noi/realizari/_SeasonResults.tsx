@@ -84,10 +84,10 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
                 <ChevronRight className="w-3 h-3 shrink-0 mt-1 text-secondary" aria-hidden />
               )}
               <span className="flex flex-col gap-0.5 min-w-0">
-                <span className="font-display text-2xs font-extrabold uppercase tracking-[0.06em] text-primary">
+                <span className="text-title uppercase text-primary">
                   {decade.label}
                 </span>
-                <span className="text-3xs font-semibold text-secondary">
+                <span className="text-caption text-secondary">
                   {seasonsLabel(decade.seasons.length)}, {resultsLabel(decade.resultCount)}
                 </span>
               </span>
@@ -105,7 +105,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
                         aria-current={active ? "page" : undefined}
                         className={cn(
                           "flex items-baseline gap-2 px-3 py-2",
-                          "font-display text-[13.5px] font-extrabold",
+                          "text-title",
                           "border-l-[3px] border-transparent transition-colors",
                           active
                             ? "border-l-rust bg-surface-subtle text-primary"
@@ -113,7 +113,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
                         )}
                       >
                         <span>{season.label}</span>
-                        <span className="ml-auto text-2xs font-semibold text-secondary tabular-nums">
+                        <span className="text-caption ml-auto text-secondary tabular-nums">
                           {season.resultCount}
                         </span>
                       </Link>
@@ -135,10 +135,10 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
 
 const Stat: React.FC<{ value: number; label: string }> = ({ value, label }) => (
   <div className="flex flex-col gap-px">
-    <span className="font-display text-xl sm:text-[23px] font-extrabold leading-none text-primary tabular-nums">
+    <span className="text-title text-primary tabular-nums">
       {value}
     </span>
-    <span className="text-3xs font-bold uppercase tracking-[0.1em] text-secondary">
+    <span className="text-label uppercase text-secondary">
       {label}
     </span>
   </div>
@@ -151,7 +151,7 @@ const Medal: React.FC<{ count: number; label: string; className: string }> = ({
 }) => (
   <span
     className={cn(
-      "font-display text-2xs sm:text-xs font-extrabold border-retro border-line px-2 py-1 leading-none",
+      "text-title border-retro border-line px-2 py-1",
       className,
     )}
   >
@@ -181,12 +181,12 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
   return (
     <article className="border-retro border-line bg-surface-raised mb-3.5">
       <header className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3.5 py-2.5 border-b-retro border-line bg-cream">
-        <h4 className="font-display text-[15px] font-extrabold text-primary">
+        <h4 className="text-title text-primary">
           {competition.name}
         </h4>
         <span
           className={cn(
-            "font-display text-3xs font-extrabold uppercase tracking-[0.1em] px-1.5 py-0.5 border-retro",
+            "text-label px-1.5 py-0.5 border-retro",
             competition.level === "international"
               ? "bg-burgundy text-primary-on-dark border-burgundy"
               : "border-line text-primary",
@@ -195,24 +195,24 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
           {competition.level === "international" ? "Internațional" : "Național"}
         </span>
         {meta && (
-          <span className="text-2xs text-secondary w-full sm:w-auto">{meta}</span>
+          <span className="text-caption text-secondary w-full sm:w-auto">{meta}</span>
         )}
       </header>
 
       {/* Desktop and tablet: table */}
-      <table className="hidden sm:table w-full text-[13px]">
+      <table className="text-caption hidden sm:table w-full">
         <thead>
           <tr>
-            <th className="text-left text-3xs font-extrabold uppercase tracking-[0.11em] text-secondary px-3.5 py-2 border-b border-line-subtle w-[86px]">
+            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle w-[86px]">
               Loc
             </th>
-            <th className="text-left text-3xs font-extrabold uppercase tracking-[0.11em] text-secondary px-3.5 py-2 border-b border-line-subtle">
+            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle">
               Sportiv
             </th>
-            <th className="text-left text-3xs font-extrabold uppercase tracking-[0.11em] text-secondary px-3.5 py-2 border-b border-line-subtle">
+            <th className="text-label text-left uppercase text-secondary px-3.5 py-2 border-b border-line-subtle">
               Categorie
             </th>
-            <th className="text-right text-3xs font-extrabold uppercase tracking-[0.11em] text-secondary px-3.5 py-2 border-b border-line-subtle w-[92px]">
+            <th className="text-label text-right uppercase text-secondary px-3.5 py-2 border-b border-line-subtle w-[92px]">
               Punctaj
             </th>
           </tr>
@@ -258,17 +258,17 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span
                   className={cn(
-                    "font-display text-[13px] font-extrabold",
+                    "text-title",
                     info?.accent ? info.textClass : "text-secondary",
                   )}
                 >
                   {info?.label ?? "-"}
                 </span>
-                <span className="text-[13.5px]">
+                <span className="text-caption">
                   <AthleteName result={result} />
                 </span>
               </div>
-              <p className="text-2xs text-secondary mt-0.5">{detail || "-"}</p>
+              <p className="text-caption text-secondary mt-0.5">{detail || "-"}</p>
             </div>
           );
         })}
@@ -310,7 +310,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
   if (seasonIndex.length === 0 || !season || !summary) {
     return (
       <div className="border-retro border-line bg-cream px-4 py-6">
-        <p className="text-sm text-secondary">
+        <p className="text-body-sm text-secondary">
           Rezultatele pe sezoane vor apărea aici imediat ce sunt publicate.
         </p>
       </div>
@@ -355,7 +355,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
         </div>
 
         {competitions.length === 0 ? (
-          <p className="text-sm text-secondary py-2">
+          <p className="text-body-sm text-secondary py-2">
             Nu avem rezultate pentru acest sezon.
           </p>
         ) : (

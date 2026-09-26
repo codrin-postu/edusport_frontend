@@ -195,9 +195,9 @@ const WeekendRow: React.FC<{
           align="center"
           sideOffset={2}
           collisionPadding={12}
-          className="z-50 max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-2.5 text-2xs leading-snug space-y-1.5 animate-in fade-in-0 zoom-in-95"
+          className="text-caption z-50 max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-2.5 space-y-1.5 animate-in fade-in-0 zoom-in-95"
         >
-          <p className="text-3xs font-bold uppercase tracking-wider text-accent">
+          <p className="text-label uppercase text-accent">
             {stateLabel}
           </p>
           <div className="space-y-1.5 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-primary">
@@ -226,11 +226,11 @@ const MonthColumn: React.FC<{
         )}
         onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
       >
-        <span className="text-xs font-extrabold uppercase tracking-[0.08em] text-primary capitalize">
+        <span className="text-label uppercase text-primary capitalize">
           {group.label}
         </span>
         {allPast && (
-          <span className="sm:hidden text-secondary text-xs">
+          <span className="text-caption sm:hidden text-secondary">
             {collapsed ? "▸" : "▾"}
           </span>
         )}
@@ -400,14 +400,14 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
         {/* Header — eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
           <div>
-            <span className="text-eyebrow font-bold uppercase text-accent">
+            <span className="text-label uppercase text-accent">
               Calendar sezon
             </span>
-            <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] mt-1.5">
+            <h2 className="text-heading text-primary mt-1.5">
               Sezonul {seasonLabel}
             </h2>
           </div>
-          <p className="text-secondary text-sm sm:text-right sm:max-w-xs">
+          <p className="text-body-sm text-secondary sm:text-right sm:max-w-xs">
             Datele în care se desfășoară cursurile și weekend-urile libere.
           </p>
         </div>
@@ -474,7 +474,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             </div>
 
             {/* Legend */}
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-secondary">
+            <div className="text-caption mt-4 flex flex-wrap gap-x-5 gap-y-2 text-secondary">
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-silver" />Liber</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark opacity-45" />Anulat</span>

@@ -78,10 +78,10 @@ const ContactInfoCard: React.FC<{
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-3xs font-bold text-secondary uppercase tracking-[0.1em] mb-0.5">
+        <p className="text-label text-secondary uppercase mb-0.5">
           {label}
         </p>
-        <p className="text-sm font-semibold text-primary group-hover:text-accent transition-colors break-all">
+        <p className="text-body-sm text-primary group-hover:text-accent transition-colors break-all">
           {value}
         </p>
       </div>
@@ -252,15 +252,15 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
         <div className="w-14 h-14 rounded-full bg-mustard flex items-center justify-center">
           <Send className="w-6 h-6 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-primary-on-dark">
+        <h3 className="text-title text-primary-on-dark">
           Mesaj trimis!
         </h3>
-        <p className="text-sm text-secondary-on-dark max-w-xs">
+        <p className="text-body-sm text-secondary-on-dark max-w-xs">
           Îți mulțumim pentru mesaj. Te vom contacta în cel mai scurt timp.
         </p>
         <button
           onClick={resetForm}
-          className="mt-2 text-sm font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity"
+          className="text-body-sm mt-2 text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity"
         >
           Trimite un alt mesaj
         </button>
@@ -324,7 +324,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
               className={inputOnNavy}
             />
             {fieldErrors.email && (
-              <p className="text-xs font-semibold text-danger mt-1.5">
+              <p className="text-caption text-danger mt-1.5">
                 {fieldErrors.email}
               </p>
             )}
@@ -347,7 +347,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
               className={inputOnNavy}
             />
             {fieldErrors.phone && (
-              <p className="text-xs font-semibold text-danger mt-1.5">
+              <p className="text-caption text-danger mt-1.5">
                 {fieldErrors.phone}
               </p>
             )}
@@ -405,7 +405,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="px-4 py-3 border border-danger/30 bg-danger/10 text-sm text-danger"
+          className="text-body-sm px-4 py-3 border border-danger/30 bg-danger/10 text-danger"
         >
           {errorMessage}
         </div>
@@ -467,10 +467,10 @@ const ContactPage: React.FC<{
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["CONTACT"]} backgroundImage="/images/courses.png">
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Contact
         </h1>
-        <p className="text-secondary-on-dark text-base max-w-md">
+        <p className="text-body text-secondary-on-dark max-w-md">
           Suntem aici să răspundem întrebărilor tale. Contactează-ne prin
           formularul de mai jos sau direct.
         </p>
@@ -482,13 +482,13 @@ const ContactPage: React.FC<{
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
-                <p className="text-eyebrow font-bold uppercase text-accent">
+                <p className="text-label uppercase text-accent">
                   Datele noastre
                 </p>
-                <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
+                <h2 className="text-heading text-primary">
                   Ia legătura cu noi
                 </h2>
-                <p className="text-sm text-secondary leading-relaxed max-w-sm">
+                <p className="text-body-sm text-secondary max-w-sm">
                   Fie că vrei să te înscrii la cursuri, ai o întrebare sau
                   dorești o colaborare, suntem bucuroși să te ajutăm.
                 </p>
@@ -510,10 +510,10 @@ const ContactPage: React.FC<{
             {/* Right - form (navy panel) */}
             <div className="relative bg-surface-dark p-6 md:p-8 shadow-retro">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
-              <h2 className="font-display text-2xl font-extrabold text-primary-on-dark mb-1">
+              <h2 className="text-title text-primary-on-dark mb-1">
                 Trimite-ne un mesaj
               </h2>
-              <p className="text-sm text-secondary-on-dark mb-7">
+              <p className="text-body-sm text-secondary-on-dark mb-7">
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <ContactForm config={formConfig} />

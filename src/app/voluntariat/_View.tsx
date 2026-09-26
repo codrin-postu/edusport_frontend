@@ -41,23 +41,23 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
           { label: "Voluntariat" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-primary-on-dark">
+        <h1 className="text-display text-primary-on-dark">
           {heroTitle}
         </h1>
-        <p className="max-w-md text-base text-secondary-on-dark">{heroSubtitle}</p>
+        <p className="text-body max-w-md text-secondary-on-dark">{heroSubtitle}</p>
       </PageHeroSection>
 
       {/* ─── DE CE ─── */}
       <section className="relative z-10 bg-surface py-16 md:py-24">
         <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
           <div className="flex flex-col gap-3">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               {introEyebrow}
             </p>
-            <h2 className="max-w-lg font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary">
+            <h2 className="text-heading max-w-lg text-primary">
               {introHeading}
             </h2>
-            <p className="max-w-xl text-base leading-relaxed text-secondary">
+            <p className="text-body max-w-xl text-secondary">
               {introBody}
             </p>
           </div>
@@ -81,13 +81,13 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
           <div className="grid border-retro border-line shadow-retro md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
             <div className="bg-surface-dark p-8 text-primary-on-dark md:p-10">
-              <p className="text-eyebrow font-bold uppercase text-mustard">
+              <p className="text-label uppercase text-mustard">
                 Implică-te
               </p>
-              <h2 className="mt-2 font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary-on-dark">
+              <h2 className="text-heading mt-2 text-primary-on-dark">
                 Cum poți ajuta
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-secondary-on-dark">
+              <p className="text-body-sm mt-3 text-secondary-on-dark">
                 Fiecare rol contează, la orice nivel de implicare.
               </p>
             </div>
@@ -102,10 +102,10 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
                       : "py-5"
                   }
                 >
-                  <h3 className="text-base font-extrabold text-primary">
+                  <h3 className="text-title text-primary">
                     {way.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-secondary">
+                  <p className="text-body-sm mt-1 text-secondary">
                     {way.desc}
                   </p>
                 </div>
@@ -122,13 +122,13 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
               <div className="flex flex-col gap-3">
-                <p className="text-eyebrow font-bold uppercase text-mustard">
+                <p className="text-label uppercase text-mustard">
                   Cum aplici
                 </p>
-                <h2 className="font-display text-display-sm font-extrabold leading-[1.05] tracking-[-0.4px] text-primary-on-dark">
+                <h2 className="text-heading text-primary-on-dark">
                   Gata să te implici?
                 </h2>
-                <p className="max-w-md text-sm leading-relaxed text-secondary-on-dark">
+                <p className="text-body-sm max-w-md text-secondary-on-dark">
                   Completează formularul de înscriere în câțiva pași simpli.
                   Răspundem de obicei în 24 până la 48 de ore.
                 </p>
@@ -151,16 +151,16 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-14">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
           <div>
-            <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">
+            <div className="text-label mb-1.5 uppercase text-accent">
               Mai departe
             </div>
-            <p className="text-base font-semibold text-primary md:text-lg">
+            <p className="text-body text-primary">
               Descoperă echipa și sportivii clubului EduSport.
             </p>
           </div>
           <Link
             href="/despre-noi"
-            className="link-underline-rust text-sm font-semibold text-accent"
+            className="text-body-sm link-underline-rust text-accent"
           >
             Despre noi
           </Link>

@@ -57,10 +57,10 @@ export default async function Page({
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["NOUTĂȚI"]}>
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Noutăți
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           Rămâneți la curent cu cele mai recente articole, evenimente și
           anunțuri din Școala de Patinaj EduSport.
         </p>

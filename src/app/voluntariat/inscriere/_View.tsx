@@ -21,10 +21,10 @@ const VolunteerInscriereView: React.FC<{ formConfig?: FormConfig | null }> = ({
           { label: "Înscriere" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Înscriere voluntariat
         </h1>
-        <p className="text-secondary-on-dark text-base max-w-md">
+        <p className="text-body text-secondary-on-dark max-w-md">
           Completează formularul de mai jos pentru a te alătura echipei de
           voluntari EduSport.
         </p>
@@ -34,13 +34,13 @@ const VolunteerInscriereView: React.FC<{ formConfig?: FormConfig | null }> = ({
         <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-20">
           <div className="max-w-xl mx-auto">
             <div className="flex flex-col gap-3">
-              <p className="text-eyebrow font-bold uppercase text-accent">
+              <p className="text-label uppercase text-accent">
                 Formular de voluntariat
               </p>
-              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
+              <h2 className="text-heading text-primary">
                 Devino voluntar
               </h2>
-              <p className="text-sm text-secondary leading-relaxed">
+              <p className="text-body-sm text-secondary">
                 Completează pașii de mai jos. Răspundem de obicei în 24 până la
                 48 de ore.
               </p>

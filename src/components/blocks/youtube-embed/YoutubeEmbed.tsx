@@ -185,7 +185,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         onClick={(e) => e.stopPropagation()}
       >
         {label ? (
-          <span className="text-primary-on-dark text-sm font-medium drop-shadow pointer-events-none">
+          <span className="text-body-sm text-primary-on-dark drop-shadow pointer-events-none">
             {label}
           </span>
         ) : (
@@ -207,7 +207,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-secondary-on-dark text-xs hover:text-primary-on-dark transition-colors"
+            className="text-caption inline-flex items-center gap-1 text-secondary-on-dark hover:text-primary-on-dark transition-colors"
           >
             YouTube
             <ArrowUpRight className="w-3 h-3" />

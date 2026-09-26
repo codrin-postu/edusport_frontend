@@ -8,7 +8,7 @@ const FullCalendarWrapper = dynamic(() => import("./FullCalendarWrapper"), {
   ssr: false,
   loading: () => (
     <div className="h-96 flex items-center justify-center bg-surface-subtle border border-line-subtle">
-      <p className="text-sm text-secondary">Se încarcă calendarul...</p>
+      <p className="text-body-sm text-secondary">Se încarcă calendarul...</p>
     </div>
   ),
 });

@@ -32,13 +32,13 @@ function RosterStat({
     <div className={cn("flex flex-col items-end shrink-0", className)}>
       <span
         className={cn(
-          "font-display text-[17px] font-extrabold leading-none tabular-nums",
+          "text-title tabular-nums",
           accent ? "text-accent" : "text-primary",
         )}
       >
         {value}
       </span>
-      <span className="mt-0.5 text-[8px] font-bold uppercase tracking-[0.12em] text-secondary">
+      <span className="text-label mt-0.5 uppercase text-secondary">
         {label}
       </span>
     </div>
@@ -141,10 +141,10 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
           { label: "Sportivi" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Sportivii noștri
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           Sportivii de performanță ai clubului — profil, istoric de competiții
           și medalii câștigate la concursuri naționale și internaționale.
         </p>
@@ -154,10 +154,10 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
       {totalAthletes === 0 ? (
         <section className="relative z-10 bg-surface py-20">
           <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 text-center">
-            <p className="font-display text-display-sm font-extrabold text-secondary">
+            <p className="text-heading text-secondary">
               Niciun profil disponibil momentan
             </p>
-            <p className="mt-2 text-sm text-secondary">
+            <p className="text-body-sm mt-2 text-secondary">
               Reveniți în curând.
             </p>
           </div>
@@ -189,10 +189,10 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
             className="scroll-mt-24 bg-surface px-4 py-16 md:px-8 lg:px-12 md:py-20"
           >
             <div className="mx-auto max-w-content text-center">
-              <h2 className="font-display text-display-md font-extrabold leading-[1.05] tracking-[-0.5px] text-primary">
+              <h2 className="text-display text-primary">
                 {isSearching ? "Rezultate căutare" : "Toți sportivii"}
               </h2>
-              <div className="mt-3 text-2xs font-bold uppercase tracking-[0.32em] text-accent">
+              <div className="text-label mt-3 uppercase text-accent">
                 {isSearching ? (
                   <>
                     {totalAthletes} {totalAthletes === 1 ? "rezultat" : "rezultate"} pentru
@@ -213,11 +213,11 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
 
             {gridData.length === 0 ? (
               <div className="mx-auto mt-10 max-w-md py-12 text-center">
-                <p className="text-base font-semibold text-secondary">
+                <p className="text-body text-secondary">
                   Niciun sportiv găsit.
                 </p>
                 {isSearching && (
-                  <p className="mt-2 text-sm text-secondary">
+                  <p className="text-body-sm mt-2 text-secondary">
                     Încearcă alt nume sau șterge filtrul.
                   </p>
                 )}
@@ -241,16 +241,16 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                       />
                       <span
                         aria-hidden
-                        className="font-display font-black text-[26px] sm:text-[30px] leading-none w-9 sm:w-11 text-center shrink-0 tabular-nums text-line-subtle group-hover:text-accent transition-colors"
+                        className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-line-subtle group-hover:text-accent transition-colors"
                       >
                         {String(rank).padStart(2, "0")}
                       </span>
                       <div className="min-w-0">
-                        <div className="text-base font-bold tracking-[-0.2px] text-primary group-hover:text-accent transition-colors truncate">
+                        <div className="text-body text-primary group-hover:text-accent transition-colors truncate">
                           {sp.name}
                         </div>
                         {sp.activeSince && (
-                          <div className="mt-0.5 text-3xs font-semibold uppercase tracking-[0.1em] text-secondary">
+                          <div className="text-label mt-0.5 uppercase text-secondary">
                             Membru din {sp.activeSince.slice(0, 4)}
                           </div>
                         )}
@@ -300,16 +300,16 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
           <section className="border-t-retro border-line-subtle bg-surface px-4 py-12 md:px-8 lg:px-12 md:py-14">
             <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <div className="mb-1.5 text-eyebrow font-bold uppercase text-accent">
+                <div className="text-label mb-1.5 uppercase text-accent">
                   Mai departe
                 </div>
-                <p className="text-base md:text-lg font-semibold text-primary">
+                <p className="text-body text-primary">
                   Vezi toate competițiile clubului și rezultatele complete.
                 </p>
               </div>
               <Link
                 href="/despre-noi/realizari"
-                className="link-underline-rust text-sm font-semibold text-accent"
+                className="text-body-sm link-underline-rust text-accent"
               >
                 Toate competițiile
               </Link>

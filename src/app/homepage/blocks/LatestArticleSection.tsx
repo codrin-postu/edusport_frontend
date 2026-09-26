@@ -65,10 +65,10 @@ const DateStack: React.FC<DateStackProps> = ({ date, className }) => {
       >
         {day}
       </span>
-      <span className="text-3xs font-bold tracking-widest uppercase text-edusport-blue/70 mt-1">
+      <span className="text-label uppercase text-edusport-blue/70 mt-1">
         {mon}
       </span>
-      <span className="text-3xs font-bold tracking-widest text-edusport-blue/40">
+      <span className="text-caption text-edusport-blue/40">
         {year}
       </span>
     </div>
@@ -125,7 +125,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
           )}
           {/* Category badge */}
           {category && (
-            <span className="absolute top-3 left-3 bg-edusport-blue text-primary-on-dark text-3xs font-bold tracking-widest uppercase px-2 py-1 rounded-full z-10">
+            <span className="text-label absolute top-3 left-3 bg-edusport-blue text-primary-on-dark uppercase px-2 py-1 rounded-full z-10">
               {CATEGORY_LABELS[category]}
             </span>
           )}
@@ -134,12 +134,12 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
         {/* Below image: title+excerpt | divider | date */}
         <div className="flex items-stretch py-5 pb-7 bg-surface-raised">
           <div className="flex-1 pl-4 pr-6 flex flex-col gap-2">
-            <h3 className="text-base md:text-2xl font-bold text-primary leading-tight">
+            <h3 className="text-title text-primary">
               {title}
             </h3>
-            <p className="text-xs text-muted lg:hidden">{date}</p>
+            <p className="text-caption text-muted lg:hidden">{date}</p>
             {excerpt && (
-              <p className="text-sm text-secondary line-clamp-2 hidden md:block">
+              <p className="text-body-sm text-secondary line-clamp-2 hidden md:block">
                 {excerpt}
               </p>
             )}
@@ -177,7 +177,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
     >
       {/* Number */}
       <span
-        className="text-branding-font text-edusport-blue/20 text-xl flex-shrink-0 w-10 leading-none transition-colors duration-200 group-hover:text-edusport-blue/50"
+        className="text-body text-branding-font text-edusport-blue/20 flex-shrink-0 w-10 transition-colors duration-200 group-hover:text-edusport-blue/50"
         style={{ transform: "rotate(-8deg)", display: "inline-block" }}
       >
         {String(index).padStart(2, "0")}
@@ -188,18 +188,18 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
         {/* Meta row */}
         <div className="flex items-center gap-1.5 flex-wrap">
           {category && (
-            <span className="text-3xs font-bold tracking-[0.12em] uppercase text-edusport-blue">
+            <span className="text-label uppercase text-edusport-blue">
               {CATEGORY_LABELS[category]}
             </span>
           )}
           {category && <span className="w-[3px] h-[3px] rounded-full bg-gray-300 flex-shrink-0" />}
-          <span className="text-xs text-muted">
+          <span className="text-caption text-muted">
             {day} {mon}
           </span>
         </div>
 
         {/* Title */}
-        <p className="text-sm font-bold text-primary leading-snug transition-colors duration-200 group-hover:text-edusport-blue">
+        <p className="text-body-sm text-primary transition-colors duration-200 group-hover:text-edusport-blue">
           {title}
         </p>
       </div>
@@ -227,7 +227,7 @@ const ArticleList: React.FC<{ articles: LatestArticleData[] }> = ({ articles }) 
     <div className="mt-6 flex justify-end">
       <Link
         href="/noutati"
-        className="inline-flex items-center gap-1 text-sm font-semibold text-edusport-blue hover:underline underline-offset-4"
+        className="text-body-sm inline-flex items-center gap-1 text-edusport-blue hover:underline underline-offset-4"
       >
         Vezi toate articolele
         <ArrowUpRight className="w-4 h-4" />
@@ -251,7 +251,7 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
       <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-24">
           {/* Eyebrow */}
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-edusport-blue mb-6">
+          <p className="text-label uppercase text-edusport-blue mb-6">
             NOUTĂȚI
           </p>
 

@@ -25,8 +25,8 @@ export default async function FeaturedAsync() {
         eyebrow="Cel mai recent articol"
         title="Noutăți"
         className="mb-10"
-        eyebrowClassName="text-eyebrow font-bold uppercase text-accent"
-        titleClassName="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]"
+        eyebrowClassName="text-label text-accent"
+        titleClassName="text-heading text-primary"
       />
 
       <a
@@ -43,8 +43,8 @@ export default async function FeaturedAsync() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-2 text-[11.5px]">
-            <span className="font-bold uppercase tracking-[0.04em] text-accent">
+          <div className="text-caption flex flex-wrap items-center gap-2">
+            <span className="text-label text-accent">
               {CATEGORY_LABELS[featured.category]}
             </span>
             <span className="text-line-subtle">·</span>
@@ -53,15 +53,15 @@ export default async function FeaturedAsync() {
             </span>
           </div>
 
-          <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] group-hover:text-accent transition-colors">
+          <h2 className="text-heading text-primary group-hover:text-accent transition-colors">
             {featured.title}
           </h2>
 
-          <p className="text-secondary text-base leading-relaxed border-t-retro border-line-subtle pt-4">
+          <p className="text-body text-secondary border-t-retro border-line-subtle pt-4">
             {featured.description}
           </p>
 
-          <span className="link-underline-rust text-accent font-semibold text-sm w-fit">
+          <span className="text-body-sm link-underline-rust text-accent w-fit">
             Citește mai mult
           </span>
         </div>

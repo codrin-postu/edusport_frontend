@@ -169,7 +169,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
       >
         <Label
           className={cn(
-            "block text-[11px] font-bold uppercase tracking-[0.08em] mb-1.5",
+            "text-label block uppercase mb-1.5",
             variant === "navy" ? "text-secondary-on-dark" : "text-secondary",
           )}
         >
@@ -178,7 +178,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         {help && <p className={helpClassName}>{help}</p>}
         <Group className={cn(v.group, invalid && v.groupInvalid)}>
           <DateInput
-            className="flex flex-1 items-center px-4 py-3 text-sm tabular-nums"
+            className="text-body-sm flex flex-1 items-center px-4 py-3 tabular-nums"
           >
             {(segment) => (
               <DateSegment
@@ -216,7 +216,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   slot={null}
                   onPress={() => setShowYears((s) => !s)}
                   className={cn(
-                    "flex items-center gap-1.5 text-[12.5px] font-extrabold capitalize outline-none transition-colors",
+                    "text-caption flex items-center gap-1.5 capitalize outline-none transition-colors",
                     v.heading,
                   )}
                 >
@@ -294,7 +294,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                     {(day) => (
                       <CalendarHeaderCell
                         className={cn(
-                          "pb-1 text-[9.5px] font-extrabold uppercase tracking-wide",
+                          "text-label pb-1 uppercase",
                           v.weekday,
                         )}
                       >

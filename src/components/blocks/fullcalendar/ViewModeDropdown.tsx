@@ -32,12 +32,12 @@ const ViewModeDropdown: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="h-[34px] inline-flex items-center gap-2 border-retro border-line bg-transparent px-3 text-[11px] font-bold uppercase tracking-[0.04em] text-primary"
+        className="text-label h-[34px] inline-flex items-center gap-2 border-retro border-line bg-transparent px-3 uppercase text-primary"
       >
         {current.label}
         <span
           aria-hidden
-          className={cn("text-[8px] leading-none transition-transform duration-200", open && "rotate-180")}
+          className={cn("text-caption transition-transform duration-200", open && "rotate-180")}
         >
           ▼
         </span>
@@ -53,7 +53,7 @@ const ViewModeDropdown: React.FC<{
                 setOpen(false);
               }}
               className={cn(
-                "block w-full text-left px-3 py-2.5 text-[11px] font-bold uppercase tracking-[0.04em]",
+                "text-label block w-full text-left px-3 py-2.5 uppercase",
                 o.value === value
                   ? "bg-surface-dark text-primary-on-dark"
                   : "text-primary hover-layer",

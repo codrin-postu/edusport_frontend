@@ -107,8 +107,8 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         <div className="w-16 h-16 rounded-full bg-surface-dark flex items-center justify-center">
           <CheckCircle className="w-7 h-7 text-mustard" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-primary">Înscriere trimisă!</h3>
-        <p className="text-sm text-secondary max-w-sm leading-relaxed">
+        <h3 className="text-title text-primary">Înscriere trimisă!</h3>
+        <p className="text-body-sm text-secondary max-w-sm">
           Mulțumim pentru înscriere. Te vom contacta în cel mai scurt timp
           pentru confirmare și detalii suplimentare.
         </p>
@@ -121,7 +121,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="mt-2 link-underline-rust text-sm font-semibold text-accent"
+          className="text-body-sm mt-2 link-underline-rust text-accent"
         >
           Trimite o altă înscriere
         </button>
@@ -132,7 +132,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   if (!steps.length) {
     return (
       <div className="py-16 px-8 text-center">
-        <p className="text-sm text-secondary">
+        <p className="text-body-sm text-secondary">
           Formularul de înscriere nu este disponibil momentan. Te rugăm să încerci din nou
           mai târziu sau să ne contactezi direct.
         </p>
@@ -152,11 +152,11 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
       {restored && (
         <div className="mb-6 border-retro border-line bg-surface-raised px-4 py-3">
-          <p className="text-sm font-semibold text-primary">Formular salvat.</p>
+          <p className="text-body-sm text-primary">Formular salvat.</p>
           <button
             type="button"
             onClick={() => setConfirmReset(true)}
-            className="link-underline-rust mt-1 text-xs font-bold text-accent"
+            className="text-caption link-underline-rust mt-1 text-accent"
           >
             Începe de la capăt
           </button>
@@ -176,17 +176,17 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             aria-hidden
           />
           <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
-            <h2 id="reset-title" className="font-display text-lg font-extrabold leading-snug text-primary">
+            <h2 id="reset-title" className="text-title text-primary">
               Ștergi răspunsurile salvate?
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-secondary">
+            <p className="text-body-sm mt-2 text-secondary">
               Toate datele introduse vor fi pierdute.
             </p>
             <div className="mt-6 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setConfirmReset(false)}
-                className="border-retro border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
+                className="text-body-sm border-retro border-line px-4 py-2 text-primary transition-colors hover-layer"
               >
                 Renunță
               </button>
@@ -199,7 +199,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                   setRestored(false);
                   setConfirmReset(false);
                 }}
-                className="border-retro border-rust bg-rust px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover:brightness-110"
+                className="text-body-sm border-retro border-rust bg-rust px-4 py-2 text-primary-on-dark transition-colors hover:brightness-110"
               >
                 Șterge
               </button>
@@ -226,7 +226,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
-                  <p className="text-xs text-accent font-semibold mb-4">
+                  <p className="text-caption text-accent mb-4">
                     Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou.
                   </p>
                 )}
@@ -234,7 +234,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-sm font-semibold text-secondary hover:text-accent transition-colors"
+                    className="text-body-sm text-secondary hover:text-accent transition-colors"
                   >
                     Înapoi
                   </button>

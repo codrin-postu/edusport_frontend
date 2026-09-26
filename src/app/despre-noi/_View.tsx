@@ -110,10 +110,10 @@ const HistoryPage: React.FC<Props> = ({
           { label: "Despre noi" },
         ]}
       >
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           {bannerTitle ?? "Despre Noi"}
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           {bannerSubtitle ?? "Educație prin sport, pentru o viață sănătoasă și activă. Educație pentru sport, în vederea obținerii înaltei performanțe."}
         </p>
       </PageHeroSection>
@@ -122,14 +122,14 @@ const HistoryPage: React.FC<Props> = ({
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               Despre Club
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] max-w-lg">
+              <h2 className="text-heading text-primary max-w-lg">
                 {sectionHeading ?? "Peste un deceniu de pasiune și performanță"}
               </h2>
-              <p className="text-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
                 {sectionSubheading ?? "De la primii pași pe gheață la podiumuri internaționale."}
               </p>
             </div>
@@ -138,7 +138,7 @@ const HistoryPage: React.FC<Props> = ({
           {/* Intro text */}
           <div className="max-w-3xl mb-20 flex flex-col gap-4">
             {introParagraphs.map((para, i) => (
-              <p key={i} className="text-base text-secondary leading-relaxed">
+              <p key={i} className="text-body text-secondary">
                 {para}
               </p>
             ))}
@@ -152,18 +152,18 @@ const HistoryPage: React.FC<Props> = ({
                 className="relative flex items-center gap-3 bg-surface border-retro border-line shadow-retro pl-[18px] pr-4 py-4"
               >
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
-                <span className="font-display text-3xl font-extrabold text-primary leading-none">{stat.value}</span>
-                <span className="text-xs text-secondary leading-tight">{stat.label}</span>
+                <span className="text-heading text-primary">{stat.value}</span>
+                <span className="text-caption text-secondary">{stat.label}</span>
               </div>
             ))}
           </div>
 
           {/* Timeline — node dots + year in the left gutter on a navy rail */}
           <div className="flex flex-col gap-3 mb-12">
-            <p className="text-eyebrow font-bold uppercase text-accent">
+            <p className="text-label uppercase text-accent">
               Parcurs
             </p>
-            <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
+            <h2 className="text-heading text-primary">
               Momentele cheie
             </h2>
           </div>
@@ -176,13 +176,13 @@ const HistoryPage: React.FC<Props> = ({
                   aria-hidden
                 />
                 <span
-                  className="absolute -left-[76px] top-0.5 w-[60px] text-right font-display text-base font-extrabold text-primary tabular-nums leading-none select-none"
+                  className="text-title absolute -left-[76px] top-0.5 w-[60px] text-right text-primary tabular-nums select-none"
                   aria-hidden
                 >
                   {milestone.year}
                 </span>
-                <h3 className="text-sm font-bold text-primary mb-0.5">{milestone.title}</h3>
-                <p className="text-sm text-secondary leading-relaxed">{milestone.description}</p>
+                <h3 className="text-title text-primary mb-0.5">{milestone.title}</h3>
+                <p className="text-body-sm text-secondary">{milestone.description}</p>
               </div>
             ))}
           </div>
@@ -190,10 +190,10 @@ const HistoryPage: React.FC<Props> = ({
           {/* Events organized */}
           <div className="mt-20">
             <div className="flex flex-col gap-3 mb-8">
-              <p className="text-eyebrow font-bold uppercase text-accent">
+              <p className="text-label uppercase text-accent">
                 Evenimente
               </p>
-              <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
+              <h2 className="text-heading text-primary">
                 Organizate de ACS EduSport
               </h2>
             </div>
@@ -201,7 +201,7 @@ const HistoryPage: React.FC<Props> = ({
               {resolvedEventsOrganized.map((event, i) => (
                 <li
                   key={i}
-                  className="relative pl-5 text-sm text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                  className="text-body-sm relative pl-5 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>
@@ -212,7 +212,7 @@ const HistoryPage: React.FC<Props> = ({
           {/* Events participated */}
           <div className="mt-16">
             <div className="flex flex-col gap-3 mb-8">
-              <h2 className="font-display text-display-sm font-extrabold text-primary tracking-[-0.4px]">
+              <h2 className="text-heading text-primary">
                 Participări ale sportivilor EduSport
               </h2>
             </div>
@@ -220,7 +220,7 @@ const HistoryPage: React.FC<Props> = ({
               {resolvedEventsParticipated.map((event, i) => (
                 <li
                   key={i}
-                  className="relative pl-5 text-sm text-secondary leading-relaxed before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
+                  className="text-body-sm relative pl-5 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
                 >
                   {event}
                 </li>

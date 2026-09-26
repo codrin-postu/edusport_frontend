@@ -99,10 +99,10 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-mustard">
           <Send className="h-6 w-6 text-primary" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-primary-on-dark">
+        <h3 className="text-title text-primary-on-dark">
           Mesaj trimis!
         </h3>
-        <p className="max-w-xs text-sm text-secondary-on-dark">
+        <p className="text-body-sm max-w-xs text-secondary-on-dark">
           Îți mulțumim! Revenim în cel mai scurt timp să discutăm colaborarea.
         </p>
         <button
@@ -112,7 +112,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="mt-2 text-sm font-semibold text-mustard underline underline-offset-4 transition-opacity hover:opacity-70"
+          className="text-body-sm mt-2 text-mustard underline underline-offset-4 transition-opacity hover:opacity-70"
         >
           Trimite un alt mesaj
         </button>
@@ -123,7 +123,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   if (!steps.length) {
     return (
       <div className="py-16 px-8 text-center">
-        <p className="text-sm text-secondary-on-dark">
+        <p className="text-body-sm text-secondary-on-dark">
           Formularul de colaborare nu este disponibil momentan. Te rugăm să
           încerci din nou mai târziu sau să ne contactezi direct.
         </p>
@@ -157,7 +157,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle-on-dark">
                 {status === "error" && (
-                  <p className="text-xs text-danger font-semibold mb-4">
+                  <p className="text-caption text-danger mb-4">
                     Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.
                   </p>
                 )}
@@ -165,7 +165,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-sm font-semibold text-secondary-on-dark hover:text-mustard transition-colors"
+                    className="text-body-sm text-secondary-on-dark hover:text-mustard transition-colors"
                   >
                     Înapoi
                   </button>

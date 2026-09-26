@@ -169,10 +169,10 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-dark">
           <Send className="h-6 w-6 text-mustard" />
         </div>
-        <h3 className="font-display text-2xl font-extrabold text-primary">
+        <h3 className="text-title text-primary">
           Cerere trimisă!
         </h3>
-        <p className="max-w-sm text-sm leading-relaxed text-secondary">
+        <p className="text-body-sm max-w-sm text-secondary">
           Îți mulțumim! Te vom contacta în cel mai scurt timp pentru pașii următori.
         </p>
         <button
@@ -184,7 +184,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="mt-2 link-underline-rust text-sm font-semibold text-accent"
+          className="text-body-sm mt-2 link-underline-rust text-accent"
         >
           Trimite o altă cerere
         </button>
@@ -195,7 +195,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
   if (!steps.length) {
     return (
       <div className="py-16 px-8 text-center">
-        <p className="text-sm text-secondary">
+        <p className="text-body-sm text-secondary">
           Formularul de voluntariat nu este disponibil momentan. Te rugăm să încerci
           din nou mai târziu sau să ne contactezi direct.
         </p>
@@ -219,11 +219,11 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
           visitor's explanation of why the fields are already filled. */}
       {restored && (
         <div className="mb-6 border-retro border-line bg-surface-raised px-4 py-3">
-          <p className="text-sm font-semibold text-primary">Formular salvat.</p>
+          <p className="text-body-sm text-primary">Formular salvat.</p>
           <button
             type="button"
             onClick={() => setConfirmReset(true)}
-            className="link-underline-rust mt-1 text-xs font-bold text-accent"
+            className="text-caption link-underline-rust mt-1 text-accent"
           >
             Începe de la capăt
           </button>
@@ -243,17 +243,17 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
             aria-hidden
           />
           <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
-            <h2 id="vol-reset-title" className="font-display text-lg font-extrabold leading-snug text-primary">
+            <h2 id="vol-reset-title" className="text-title text-primary">
               Ștergi răspunsurile salvate?
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-secondary">
+            <p className="text-body-sm mt-2 text-secondary">
               Toate datele introduse vor fi pierdute.
             </p>
             <div className="mt-6 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setConfirmReset(false)}
-                className="border-retro border-line px-4 py-2 text-sm font-bold text-primary transition-colors hover-layer"
+                className="text-body-sm border-retro border-line px-4 py-2 text-primary transition-colors hover-layer"
               >
                 Renunță
               </button>
@@ -266,7 +266,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
                   setRestored(false);
                   setConfirmReset(false);
                 }}
-                className="border-retro border-rust bg-rust px-4 py-2 text-sm font-bold text-primary-on-dark transition-colors hover:brightness-110"
+                className="text-body-sm border-retro border-rust bg-rust px-4 py-2 text-primary-on-dark transition-colors hover:brightness-110"
               >
                 Șterge
               </button>
@@ -296,7 +296,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
-                  <p className="text-xs text-accent font-semibold mb-4">
+                  <p className="text-caption text-accent mb-4">
                     Cererea nu a putut fi trimisă. Te rugăm să încerci din nou.
                   </p>
                 )}
@@ -304,7 +304,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-sm font-semibold text-secondary hover:text-accent transition-colors"
+                    className="text-body-sm text-secondary hover:text-accent transition-colors"
                   >
                     Înapoi
                   </button>
@@ -325,7 +325,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
               </div>
             ) : blocksUnderage ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
-                <p className="text-sm font-semibold text-accent">
+                <p className="text-body-sm text-accent">
                   Vârsta minimă pentru voluntariat este {MIN_VOLUNTEER_AGE} ani.
                 </p>
               </div>

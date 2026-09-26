@@ -37,15 +37,15 @@ const AboutSection: React.FC<AboutSectionProps> = ({
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <span className="text-eyebrow font-bold uppercase text-accent">
+            <span className="text-label uppercase text-accent">
               {eyebrow}
             </span>
-            <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px]">
+            <h2 className="text-heading text-primary">
               {heading}
             </h2>
           </div>
 
-          <div className="flex flex-col gap-4 text-secondary text-base leading-relaxed">
+          <div className="text-body flex flex-col gap-4 text-secondary">
             {paragraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -53,7 +53,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
           <div className="flex flex-col gap-3">
             {bullets.map(({ Icon, text }, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm text-primary">
+              <div key={i} className="text-body-sm flex items-center gap-3 text-primary">
                 <Icon className="w-5 h-5 shrink-0 text-accent" strokeWidth={1.8} />
                 {text}
               </div>
@@ -62,7 +62,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
           <Link
             href="/cursuri/program"
-            className="w-fit link-underline-rust text-sm font-bold uppercase tracking-[0.03em] text-primary"
+            className="text-label w-fit link-underline-rust uppercase text-primary"
           >
             Vezi programul complet
           </Link>

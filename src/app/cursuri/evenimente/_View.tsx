@@ -19,7 +19,7 @@ function CurrentEventSection({ event }: { event: Event }) {
   return (
     <section className="bg-surface py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-eyebrow font-bold uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-10">
           Următorul eveniment
         </p>
 
@@ -36,7 +36,7 @@ function CurrentEventSection({ event }: { event: Event }) {
               iconClassName="w-12 h-12"
             />
             <span
-              className="absolute top-3 left-3 inline-flex items-center bg-mustard text-primary text-[10.5px] font-extrabold uppercase tracking-[0.03em] px-4 py-1.5"
+              className="text-label absolute top-3 left-3 inline-flex items-center bg-mustard text-primary uppercase px-4 py-1.5"
               style={{ clipPath: "polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)" }}
             >
               În curând
@@ -45,11 +45,11 @@ function CurrentEventSection({ event }: { event: Event }) {
 
           {/* Content (not clickable — only image + button lead to the event) */}
           <div className="flex flex-col gap-5">
-            <h2 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.3px]">
+            <h2 className="text-heading text-primary">
               {event.title}
             </h2>
 
-            <div className="flex flex-col gap-2 text-sm text-secondary">
+            <div className="text-body-sm flex flex-col gap-2 text-secondary">
               <span className="flex items-center gap-2.5">
                 <CalendarDays className="w-4 h-4 text-accent shrink-0" />
                 {formatDate(event.date)}
@@ -69,7 +69,7 @@ function CurrentEventSection({ event }: { event: Event }) {
               )}
             </div>
 
-            <p className="text-secondary text-base leading-relaxed border-t border-line-subtle pt-5">
+            <p className="text-body text-secondary border-t border-line-subtle pt-5">
               {event.excerpt}
             </p>
 
@@ -77,7 +77,7 @@ function CurrentEventSection({ event }: { event: Event }) {
               layers
               layersFace="black"
               href={`/cursuri/evenimente/${event.slug}`}
-              className="w-fit text-xs"
+              className="text-caption w-fit"
             >
               Citește mai mult
             </SpotlightButton>
@@ -92,14 +92,14 @@ function NoEventSection() {
   return (
     <section className="bg-surface py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-eyebrow font-bold uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-10">
           Următorul eveniment
         </p>
         <div className="flex flex-col gap-3 py-12 border-l-4 border-rust pl-6">
-          <p className="text-2xl font-semibold text-secondary">
+          <p className="text-body text-secondary">
             Niciun eveniment planificat momentan
           </p>
-          <p className="text-sm text-secondary max-w-md">
+          <p className="text-body-sm text-secondary max-w-md">
             Reveniți mai târziu pentru informații despre următoarele evenimente
             și competiții organizate de Clubul Sportiv EduSport.
           </p>
@@ -115,7 +115,7 @@ function PastEventsSection({ events }: { events: Event[] }) {
   return (
     <section className="bg-surface py-16 md:py-20">
       <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <p className="text-eyebrow font-bold uppercase text-accent mb-10">
+        <p className="text-label uppercase text-accent mb-10">
           Evenimente anterioare
         </p>
 
@@ -133,16 +133,16 @@ function PastEventsSection({ events }: { events: Event[] }) {
 
               {/* Content */}
               <div className="flex flex-col gap-2">
-                <span className="text-[11.5px] text-secondary">
+                <span className="text-caption text-secondary">
                   {formatDate(event.date)}
                 </span>
-                <h3 className="text-lg font-bold text-primary leading-snug">
+                <h3 className="text-title text-primary">
                   {event.title}
                 </h3>
-                <p className="text-sm text-secondary leading-relaxed line-clamp-2">
+                <p className="text-body-sm text-secondary line-clamp-2">
                   {event.excerpt}
                 </p>
-                <span className="relative inline-block w-fit mt-1 pb-0.5 text-[11.5px] font-bold uppercase tracking-[0.03em] text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
+                <span className="text-label relative inline-block w-fit mt-1 pb-0.5 uppercase text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
                   Detalii
                 </span>
               </div>
@@ -151,7 +151,7 @@ function PastEventsSection({ events }: { events: Event[] }) {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <SpotlightButton layers layersFace="black" href="/noutati" className="text-xs">
+          <SpotlightButton layers layersFace="black" href="/noutati" className="text-caption">
             Vezi toate evenimentele
           </SpotlightButton>
         </div>
@@ -169,10 +169,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ currentEvent, pastEvents }) => 
   return (
     <div className={cn("min-h-screen", "bg-surface", "flex", "flex-col")}>
       <PageHeroSection title={["EVENIMENTE"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Evenimente" }]}>
-        <h1 className="font-display text-display-md font-extrabold text-primary-on-dark leading-[1.05] tracking-[-0.5px]">
+        <h1 className="text-display text-primary-on-dark">
           Evenimente
         </h1>
-        <p className="text-secondary-on-dark text-base">
+        <p className="text-body text-secondary-on-dark">
           Spectacole, competiții și momente speciale organizate de Școala de
           Patinaj EduSport de-a lungul sezonului.
         </p>

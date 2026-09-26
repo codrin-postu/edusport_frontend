@@ -111,19 +111,19 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             transition={{ duration: reducedMotion ? 0.15 : 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             {announcement.eyebrow && (
-              <p className="text-3xs font-extrabold uppercase tracking-[0.16em] text-accent mb-[9px]">
+              <p className="text-label uppercase text-accent mb-[9px]">
                 {announcement.eyebrow}
               </p>
             )}
 
             <h2
               id={titleId}
-              className="font-display font-extrabold text-[22px] sm:text-[27px] leading-[1.05] text-primary mb-2.5"
+              className="text-heading text-primary mb-2.5"
             >
               {announcement.title}
             </h2>
 
-            <div className="text-[13px] leading-[1.6] text-[#3b4257] space-y-2 [&_a]:underline [&_a]:underline-offset-2">
+            <div className="text-caption text-[#3b4257] space-y-2 [&_a]:underline [&_a]:underline-offset-2">
               {renderMarkdown(announcement.message)}
             </div>
 
@@ -132,7 +132,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
                 <Link
                   href={announcement.ctaUrl}
                   onClick={onCtaClick}
-                  className="px-[18px] py-2.5 text-[11.5px] font-extrabold uppercase tracking-[0.06em] text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
+                  className="text-label px-[18px] py-2.5 uppercase text-primary bg-mustard border-retro border-line shadow-[4px_4px_0_var(--color-rust)] transition-transform hover:-translate-y-px"
                 >
                   {announcement.ctaLabel}
                 </Link>
@@ -140,7 +140,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
               <button
                 type="button"
                 onClick={dismiss}
-                className="text-xs font-semibold text-secondary underline underline-offset-[3px] hover:text-primary transition-colors"
+                className="text-caption text-secondary underline underline-offset-[3px] hover:text-primary transition-colors"
               >
                 Mai târziu
               </button>

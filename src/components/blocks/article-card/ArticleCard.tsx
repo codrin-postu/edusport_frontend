@@ -36,10 +36,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
       {/* Content */}
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2 mb-0.5 text-[11.5px]">
+        <div className="text-caption flex flex-wrap items-center gap-2 mb-0.5">
           {category && (
             <>
-              <span className="font-bold uppercase tracking-[0.04em] text-accent">
+              <span className="text-label text-accent">
                 {category}
               </span>
               <span className="text-line-subtle">·</span>
@@ -47,13 +47,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           )}
           <span className="text-secondary">{date}</span>
         </div>
-        <h3 className="text-lg font-bold text-primary leading-snug">{title}</h3>
+        <h3 className="text-title text-primary">{title}</h3>
         {excerpt && (
-          <p className="text-sm text-secondary leading-relaxed line-clamp-2">
+          <p className="text-body-sm text-secondary line-clamp-2">
             {excerpt}
           </p>
         )}
-        <span className="relative inline-block w-fit mt-1 pb-0.5 text-[11.5px] font-bold uppercase tracking-[0.03em] text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
+        <span className="text-label relative inline-block w-fit mt-1 pb-0.5 uppercase text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
           Citește mai mult
         </span>
       </div>

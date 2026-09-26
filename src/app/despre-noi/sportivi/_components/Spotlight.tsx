@@ -33,7 +33,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden
-        className="font-display pointer-events-none absolute right-6 top-3 select-none text-[140px] md:text-[220px] font-black leading-[0.82] tracking-[-0.05em]"
+        className="text-display pointer-events-none absolute right-6 top-3 select-none"
         style={{
           color: "transparent",
           WebkitTextStroke: "1.5px rgba(14,26,60,0.10)",
@@ -46,12 +46,12 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
         {/* Left: editorial copy + stats */}
         <div>
           {/* Stacked filled + stroke name — the editorial signature treatment */}
-          <h2 className="font-display mb-6 font-black leading-[0.9] tracking-[-0.045em] text-[56px] md:text-[88px]">
+          <h2 className="text-display mb-6">
             <NameStack name={sportsperson.name} />
           </h2>
 
           {sportsperson.description && (
-            <p className="mb-[30px] max-w-[460px] text-sm leading-[1.6] text-secondary">
+            <p className="text-body-sm mb-[30px] max-w-[460px] text-secondary">
               {sportsperson.description}
             </p>
           )}
@@ -122,13 +122,13 @@ function StatRow({
     <div className="flex items-baseline gap-[14px] border-t border-line-subtle pt-[14px] first:border-t-0 first:pt-0">
       <span
         className={cn(
-          "font-display min-w-[100px] text-[44px] font-black leading-[0.9] tracking-[-0.03em]",
+          "text-heading min-w-[100px]",
           accent ? "text-accent" : "text-primary",
         )}
       >
         {value}
       </span>
-      <div className="text-3xs font-bold uppercase tracking-[0.22em] text-secondary">
+      <div className="text-label uppercase text-secondary">
         {label}
       </div>
     </div>

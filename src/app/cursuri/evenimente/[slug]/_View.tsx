@@ -82,7 +82,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
         <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
-          <nav className="flex items-center gap-1.5 text-eyebrow font-bold uppercase text-secondary">
+          <nav className="text-label flex items-center gap-1.5 uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
             <Link href="/cursuri/evenimente" className="text-primary hover:text-accent transition-colors">Evenimente</Link>
@@ -104,15 +104,15 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-4 text-[11.5px]">
-                <span className="font-bold uppercase tracking-[0.04em] text-accent">
+              <div className="text-caption flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-label text-accent">
                   {SINGULAR_LABEL[event.category] ?? "Eveniment"}
                 </span>
                 <span className="text-line-subtle">·</span>
                 <span className="text-secondary">{formatDate(event.date)}</span>
               </div>
 
-              <h1 className="font-display text-display-sm font-extrabold text-primary leading-[1.05] tracking-[-0.4px] mb-8">
+              <h1 className="text-heading text-primary mb-8">
                 {event.title}
               </h1>
 
@@ -121,7 +121,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
               ) : event.excerpt ? (
                 <p className="text-secondary leading-relaxed">{event.excerpt}</p>
               ) : (
-                <p className="text-secondary italic text-sm">
+                <p className="text-body-sm text-secondary italic">
                   Detaliile despre acest eveniment nu sunt disponibile momentan.
                 </p>
               )}
@@ -130,10 +130,10 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
             {/* Sidebar */}
             <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
               <div className="bg-surface border-retro border-line shadow-retro p-6 flex flex-col gap-4">
-                <p className="text-eyebrow font-bold uppercase text-accent">
+                <p className="text-label uppercase text-accent">
                   {SIDEBAR_HEADER[event.category] ?? "Detalii eveniment"}
                 </p>
-                <div className="flex flex-col gap-3 text-sm text-secondary">
+                <div className="text-body-sm flex flex-col gap-3 text-secondary">
                   <span className="flex items-start gap-3">
                     <CalendarDays className="w-4 h-4 text-accent shrink-0 mt-0.5" />
                     {formatDate(event.eventDate ?? event.date)}

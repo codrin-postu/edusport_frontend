@@ -22,7 +22,7 @@ export const FieldLabel: React.FC<{
   <label
     htmlFor={htmlFor}
     className={cn(
-      "block text-[11px] font-bold uppercase tracking-[0.08em] mb-1.5",
+      "text-label block uppercase mb-1.5",
       tone === "dark" ? "text-secondary-on-dark" : "text-secondary",
     )}
   >

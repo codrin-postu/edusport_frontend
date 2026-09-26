@@ -47,7 +47,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
         {title}
       </h2>
       {description && (
-        <p className="text-sm text-secondary font-light leading-relaxed">
+        <p className="text-body-sm text-secondary">
           {description}
         </p>
       )}
