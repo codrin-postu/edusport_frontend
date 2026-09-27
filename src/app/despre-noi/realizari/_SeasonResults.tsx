@@ -79,9 +79,9 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
               )}
             >
               {open ? (
-                <ChevronDown className="w-3 h-3 shrink-0 mt-1 text-secondary" aria-hidden />
+                <ChevronDown className="size-4 shrink-0 mt-1 text-secondary" aria-hidden />
               ) : (
-                <ChevronRight className="w-3 h-3 shrink-0 mt-1 text-secondary" aria-hidden />
+                <ChevronRight className="size-4 shrink-0 mt-1 text-secondary" aria-hidden />
               )}
               <span className="flex flex-col gap-0.5 min-w-0">
                 <span className="text-title uppercase text-primary">

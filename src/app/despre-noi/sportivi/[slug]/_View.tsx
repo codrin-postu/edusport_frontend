@@ -158,7 +158,7 @@ const SportspersonView: React.FC<Props> = ({
             >
               Sportivi
             </Link>
-            <ChevronRight className="h-3 w-3 shrink-0" />
+            <ChevronRight className="size-4 shrink-0" />
             <span className="truncate text-primary-on-dark sm:max-w-none max-w-[200px]">
               {sportsperson.name}
             </span>
@@ -458,7 +458,7 @@ const SportspersonView: React.FC<Props> = ({
                           <>
                             <span>·</span>
                             <span className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
+                              <MapPin className="size-4" />
                               {comp.location}
                             </span>
                           </>
@@ -685,7 +685,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
               Vezi sezoanele anterioare ({older.length})
             </span>
             <span className="hidden group-open/seasons:inline">Arată mai puțin</span>
-            <ChevronRight className="h-3 w-3 transition-transform group-open/seasons:rotate-90" />
+            <ChevronRight className="size-4 transition-transform group-open/seasons:rotate-90" />
           </summary>
           <div className="mt-8 flex flex-col gap-8">
             {older.map((s) => (
@@ -743,7 +743,7 @@ function BulletList({ items }: { items: string[] }) {
           key={i}
           className="text-body-sm flex items-start gap-2 text-primary"
         >
-          <ChevronRight className="mt-1 h-3.5 w-3.5 shrink-0 text-accent" />
+          <ChevronRight className="mt-1 size-4 shrink-0 text-accent" />
           {item}
         </li>
       ))}

@@ -72,7 +72,7 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
 
   return (
     <div className="relative mx-auto mt-8 w-full max-w-narrow">
-      <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary" />
+      <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-secondary" />
       <input
         type="search"
         value={value}
@@ -85,9 +85,9 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
           type="button"
           onClick={() => setValue("")}
           aria-label="Șterge căutarea"
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-secondary transition-colors hover-layer hover:text-accent"
+          className="absolute right-1 top-1/2 inline-flex size-10 -translate-y-1/2 items-center justify-center text-secondary transition-colors hover-layer hover:text-accent"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="size-6" />
         </button>
       )}
     </div>

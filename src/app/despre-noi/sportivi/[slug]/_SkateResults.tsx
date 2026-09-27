@@ -12,7 +12,7 @@
  */
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
 import type { SkateResult, SkateSegment } from "@/lib/skate-results";
 
@@ -195,7 +195,13 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                     </span>
                   )}
                   {hasDetail && (
-                    <span className="text-muted">{isOpen ? "▾" : "▸"}</span>
+                    <span className="text-muted">
+                      {isOpen ? (
+                        <ChevronDown className="size-4" />
+                      ) : (
+                        <ChevronRight className="size-4" />
+                      )}
+                    </span>
                   )}
                 </span>
               </div>
@@ -225,9 +231,9 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.max(0, p - 1));
             }}
             disabled={safePage === 0}
-            className="flex h-9 w-9 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="size-4" />
           </button>
 
           {Array.from({ length: totalPages }, (_, i) => i).map((p) => (
@@ -240,7 +246,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                 setPage(p);
               }}
               className={cn(
-                "flex h-9 w-9 items-center justify-center border-retro text-sm font-bold transition-colors",
+                "flex size-10 items-center justify-center border-retro text-sm font-bold transition-colors",
                 p === safePage
                   ? "border-line bg-surface-dark text-primary-on-dark"
                   : "border-transparent text-secondary hover-layer hover:text-primary",
@@ -258,9 +264,9 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.min(totalPages - 1, p + 1));
             }}
             disabled={safePage >= totalPages - 1}
-            className="flex h-9 w-9 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="size-4" />
           </button>
         </nav>
       )}

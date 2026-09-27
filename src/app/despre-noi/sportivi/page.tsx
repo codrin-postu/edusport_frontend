@@ -276,7 +276,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                           label="Best"
                           className="hidden sm:flex w-14"
                         />
-                        <ChevronRight className="w-4 h-4 shrink-0 text-secondary group-hover:text-accent transition-colors" />
+                        <ChevronRight className="size-4 shrink-0 text-secondary group-hover:text-accent transition-colors" />
                       </div>
                     </Link>
                   );
