@@ -168,7 +168,7 @@ const HistoryPage: React.FC<Props> = ({
             </h2>
           </div>
 
-          <div className="flex flex-col border-l-retro border-line">
+          <div className="flex flex-col border-l-retro border-line ml-24">
             {resolvedMilestones.map((milestone, i) => (
               <div key={i} className="relative pb-8 pl-8">
                 <span
