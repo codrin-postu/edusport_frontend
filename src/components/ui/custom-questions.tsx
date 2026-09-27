@@ -54,7 +54,7 @@ const VARIANT = {
     help: "text-xs text-secondary mb-2 -mt-1",
     error: "text-xs text-accent font-semibold mt-2",
     info: "text-sm text-secondary leading-relaxed",
-    link: "link-underline-rust font-semibold text-accent",
+    link: "link font-semibold text-accent",
     checkboxLabel: "text-xs font-semibold text-primary",
     checkboxAccent: "accent-rust",
     select: undefined as string | undefined,
@@ -64,7 +64,7 @@ const VARIANT = {
     cardIcon: "border-line bg-surface-dark text-primary-on-dark",
     cardTitle: "text-primary",
     cardDesc: "text-secondary",
-    cardLink: "link-underline-rust inline-flex items-center gap-2 text-xs font-semibold text-accent",
+    cardLink: "link inline-flex items-center gap-2 text-xs font-semibold text-accent",
     cardExternal: "text-secondary group-hover:text-accent",
   },
   navy: {

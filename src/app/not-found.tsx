@@ -65,7 +65,7 @@ export default function NotFound() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="link-underline-rust font-semibold text-accent"
+                  className="link font-semibold text-accent"
                 >
                   {l.label}
                 </Link>

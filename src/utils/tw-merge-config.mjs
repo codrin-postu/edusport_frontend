@@ -48,6 +48,13 @@ export const twMergeConfig = {
       // Registered in its own group so it conflicts only with itself and
       // survives alongside width/background classes.
       "gutter": ["gutter"],
+      // Link utilities (defined via @utility in globals.css). Each gets its
+      // own conflict group so `link` and `link-on-dark` can be combined on
+      // the same element (`className="link link-on-dark"`), and so neither
+      // is folded into an unrelated group (e.g. text color) and dropped.
+      "link": ["link"],
+      "link-on-dark": ["link-on-dark"],
+      "link-footer": ["link-footer"],
     },
   },
 };

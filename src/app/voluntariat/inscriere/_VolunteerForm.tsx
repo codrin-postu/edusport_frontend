@@ -184,7 +184,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="text-body-sm mt-2 link-underline-rust text-accent"
+          className="text-body-sm mt-2 link text-accent"
         >
           Trimite o altă cerere
         </button>
@@ -223,7 +223,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
           <button
             type="button"
             onClick={() => setConfirmReset(true)}
-            className="text-caption link-underline-rust mt-1 text-accent"
+            className="text-caption link mt-1 text-accent"
           >
             Începe de la capăt
           </button>

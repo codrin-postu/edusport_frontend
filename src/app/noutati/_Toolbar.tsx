@@ -60,7 +60,7 @@ export default function Toolbar({
                 }),
               )
             }
-            className="text-label link-underline-rust uppercase text-secondary hover:text-accent transition-colors"
+            className="text-label link uppercase text-secondary hover:text-accent transition-colors"
           >
             Resetează
           </button>

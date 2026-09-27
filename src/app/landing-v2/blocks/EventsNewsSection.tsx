@@ -102,7 +102,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
       {featured.excerpt && (
         <p className="text-body-sm text-secondary line-clamp-2">{featured.excerpt}</p>
       )}
-      <span className="text-body-sm link-underline-rust inline-block mt-4 text-primary">
+      <span className="text-body-sm link inline-block mt-4 text-primary">
         Citește articolul
       </span>
     </Link>
@@ -134,7 +134,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
 
       <Link
         href="/noutati"
-        className="text-body-sm link-underline-rust inline-block mt-4 text-primary"
+        className="text-body-sm link inline-block mt-4 text-primary"
       >
         Toate noutățile
       </Link>

@@ -27,7 +27,7 @@ export default function CookiePreferencesLink({ className }: { className?: strin
       }}
       className={
         className ??
-        "font-base relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+        "font-base link-footer"
       }
     >
       Preferințe cookies

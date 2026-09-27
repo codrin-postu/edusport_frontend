@@ -61,7 +61,7 @@ export default async function FeaturedAsync() {
             {featured.description}
           </p>
 
-          <span className="text-body-sm link-underline-rust text-accent w-fit">
+          <span className="text-body-sm link text-accent w-fit">
             Citește mai mult
           </span>
         </div>

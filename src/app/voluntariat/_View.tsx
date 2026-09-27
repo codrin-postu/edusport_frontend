@@ -160,7 +160,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
           </div>
           <Link
             href="/despre-noi"
-            className="text-body-sm link-underline-rust text-accent"
+            className="text-body-sm link text-accent"
           >
             Despre noi
           </Link>

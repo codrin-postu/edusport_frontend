@@ -14,7 +14,7 @@ interface LinkProps extends React.ComponentPropsWithoutRef<typeof NextLink> {
 
 const variantClasses: Record<LinkVariants, string> = {
   header: "text-primary hover:text-edusport-blue",
-  footer: "text-primary-on-dark hover:text-secondary-on-dark",
+  footer: "",
   footerAnimated:
     "text-secondary-on-dark hover:text-primary-on-dark relative inline-flex items-center gap-1 group transition-colors",
   default: "text-edusport-blue hover:text-primary",
@@ -41,7 +41,7 @@ const Link: React.FC<LinkProps> = ({
     const Icon = linkTypeIcons[linkType];
     return (
       <NextLink className={classes} href={href} {...rest}>
-        <span className="link-underline-animate">{children}</span>
+        <span className="link">{children}</span>
         {Icon && (
           <Icon className="w-4 h-4 shrink-0 opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0" />
         )}

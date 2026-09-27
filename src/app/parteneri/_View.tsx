@@ -180,7 +180,7 @@ const PartnerView: React.FC<{
           </div>
           <Link
             href="/despre-noi"
-            className="text-body-sm link-underline-rust text-accent"
+            className="text-body-sm link text-accent"
           >
             Despre noi
           </Link>

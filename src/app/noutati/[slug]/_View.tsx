@@ -79,7 +79,7 @@ const ArticleVideo: React.FC<{ video: StrapiVideoField }> = ({ video }) => {
         href={video.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="link-underline-rust text-accent font-semibold"
+        className="link text-accent font-semibold"
       >
         {video.url}
       </a>

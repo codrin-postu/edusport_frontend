@@ -50,6 +50,29 @@ body {
   letter-spacing: 0.03em;
 }
 
+/* The frozen hero still uses `.link-underline-rust`. The utility itself was
+   replaced by `link`/`link-on-dark`/`link-footer` (see @layer utilities
+   below), so its old styling is kept alive here, scoped to the hero only,
+   reproducing the pre-migration rule exactly. */
+[data-hero-frozen] .link-underline-rust {
+  position: relative;
+  padding-bottom: 3px;
+}
+[data-hero-frozen] .link-underline-rust::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-rust);
+  transition-property: width;
+  transition-duration: 200ms;
+}
+[data-hero-frozen] .link-underline-rust:hover::after {
+  width: 100%;
+}
+
 .text-branding-font,
 .text-branding-font *,
 h1.text-branding-font {
@@ -312,31 +335,7 @@ h1.text-branding-font {
     max-width: 45rem;
   }
 
-  .link-underline-animate {
-    @apply relative;
-    @apply after:absolute after:left-0 after:bottom-0;
-    @apply after:w-full after:h-[1px] after:bg-current;
-    @apply after:scale-x-0 after:origin-right;
-    @apply after:transition-transform after:duration-300;
-    @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
-  }
-
-  .menu-link-underline {
-    @apply relative;
-    @apply after:absolute after:left-0 after:bottom-0;
-    @apply after:w-full after:h-[1px] after:bg-current;
-    @apply after:scale-x-0 after:origin-right;
-    @apply after:transition-transform after:duration-300;
-    @apply group-hover:after:scale-x-100 group-hover:after:origin-left;
-  }
-
   /* Retro building blocks — shared across the site theme. */
-  .link-underline-rust {
-    @apply relative pb-[3px];
-    @apply after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-rust;
-    @apply after:transition-[width] after:duration-200;
-    @apply hover:after:w-full;
-  }
   .retro-eyebrow {
     @apply text-label text-primary;
   }
@@ -390,6 +389,39 @@ h1.text-branding-font {
   &:hover {
     box-shadow: inset 0 0 0 100vmax rgb(251 248 241 / 0.1);
   }
+}
+
+@utility link {
+  font-weight: 600;
+  color: var(--color-primary);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  background-position: right bottom;
+  padding-bottom: 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: color var(--duration-fast, 150ms) ease;
+  &:hover { color: var(--color-accent); animation: link-slide 750ms ease-in-out; }
+  @media (prefers-reduced-motion: reduce) { &:hover { animation: none; } }
+}
+@utility link-on-dark {
+  color: var(--color-primary-on-dark);
+  background-image: linear-gradient(var(--color-accent-on-dark), var(--color-accent-on-dark));
+  &:hover { color: var(--color-accent-on-dark); }
+}
+@utility link-footer {
+  position: relative;
+  width: fit-content;
+  padding-bottom: 2px;
+  &::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--color-mustard); transition: width 200ms; }
+  &:hover::after { width: 100%; }
+}
+@keyframes link-slide {
+  0% { background-size: 100% 2px; background-position: right bottom; }
+  49% { background-size: 0% 2px; background-position: right bottom; }
+  50% { background-size: 0% 2px; background-position: left bottom; }
+  100% { background-size: 100% 2px; background-position: left bottom; }
 }
 
 /* Type roles: each sets size, weight, line-height and letter-spacing. */

@@ -25,3 +25,11 @@ test("section-py utility and a background color both survive", () => {
 test("gutter utility and a width class both survive", () => {
   assert.equal(cn("gutter max-w-content"), "gutter max-w-content");
 });
+
+test("link utility and a text color class both survive", () => {
+  assert.equal(cn("link text-primary"), "link text-primary");
+});
+
+test("link and link-on-dark both survive (used together on navy)", () => {
+  assert.equal(cn("link link-on-dark"), "link link-on-dark");
+});

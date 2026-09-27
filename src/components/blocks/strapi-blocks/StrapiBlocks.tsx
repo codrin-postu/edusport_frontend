@@ -60,7 +60,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
           href={l.url}
           target={isExternal ? "_blank" : undefined}
           rel={isExternal ? "noopener noreferrer" : undefined}
-          className="link-underline-rust text-accent font-semibold"
+          className="link text-accent font-semibold"
         >
           {l.children.map((t, i) => <RenderText key={i} node={t} />)}
         </a>

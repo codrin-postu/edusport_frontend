@@ -92,7 +92,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           <Link
             href={pricesLinkUrl}
             data-umami-event="enroll.prices"
-            className="text-body-sm link-underline-rust w-fit text-primary"
+            className="text-body-sm link w-fit text-primary"
           >
             {pricesLinkLabel}
           </Link>

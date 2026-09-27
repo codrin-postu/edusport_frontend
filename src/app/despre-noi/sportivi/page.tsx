@@ -309,7 +309,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               </div>
               <Link
                 href="/despre-noi/realizari"
-                className="text-body-sm link-underline-rust text-accent"
+                className="text-body-sm link text-accent"
               >
                 Toate competițiile
               </Link>

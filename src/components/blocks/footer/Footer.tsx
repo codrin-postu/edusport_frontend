@@ -133,7 +133,7 @@ const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = ({ retro, ...
     return (
       <Link
         href={href}
-        className="font-base relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+        className="font-base link-footer"
         variant={LinkVariants.DEFAULT}
         linkType={linkType}
         {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -287,7 +287,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
               target="_blank"
               rel="noopener noreferrer"
               className={retro
-                ? "text-sm relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+                ? "text-sm link-footer"
                 : "text-sm"}
             >
               Intră în canal
@@ -315,7 +315,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
                 target="_blank"
                 rel="noopener noreferrer"
                 className={retro
-                  ? "text-sm relative w-fit pb-1 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-mustard after:transition-[width] after:duration-200 hover:after:w-full"
+                  ? "text-sm link-footer"
                   : "text-sm"}
               >
                 Intră în canal
