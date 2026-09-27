@@ -33,3 +33,19 @@ test("link utility and a text color class both survive", () => {
 test("link and link-on-dark both survive (used together on navy)", () => {
   assert.equal(cn("link link-on-dark"), "link link-on-dark");
 });
+
+test("z-header wins over a numeric z-index conflict", () => {
+  assert.equal(cn("z-10 z-header"), "z-header");
+});
+
+test("z-header and an unrelated class both survive", () => {
+  assert.equal(cn("z-header max-w-content"), "z-header max-w-content");
+});
+
+test("duration-fast wins over a numeric duration conflict", () => {
+  assert.equal(cn("duration-200 duration-fast"), "duration-fast");
+});
+
+test("duration-fast and an unrelated class both survive", () => {
+  assert.equal(cn("duration-fast bg-surface"), "duration-fast bg-surface");
+});

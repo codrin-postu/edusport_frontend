@@ -55,6 +55,18 @@ export const twMergeConfig = {
       "link": ["link"],
       "link-on-dark": ["link-on-dark"],
       "link-footer": ["link-footer"],
+      // Layer z-index utilities (defined via @utility in globals.css).
+      // tailwind-merge's default `z` group only recognizes numeric/arbitrary
+      // z-index values, so an unknown `z-header` etc. falls outside every
+      // conflict group and survives alongside a numeric `z-*` class instead
+      // of replacing it. Registering them under the real `z` group makes
+      // them conflict with `z-10` and each other, the way `z-[100]` used to.
+      "z": ["z-base", "z-raised", "z-sticky", "z-header", "z-menu", "z-dialog", "z-popup"],
+      // Motion duration utilities (defined via @utility in globals.css).
+      // Same problem as `z` above: tailwind-merge's `duration` group only
+      // knows numeric/arbitrary values, so `duration-fast` would not
+      // conflict with `duration-200` and both would survive a merge.
+      "duration": ["duration-fast", "duration-base", "duration-slow", "duration-long"],
     },
   },
 };

@@ -77,10 +77,11 @@
   font-size: 1.6rem;
 }
 
-/* 2. The default 40px close button is oversized next to that title. */
+/* 2. Keep the library's 40px hit area (accessibility floor); border is the
+      only retro styling touch here. */
 #cc-main .pm__close-btn {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   border-width: 1.5px;
 }
 #cc-main .pm__close-btn svg {

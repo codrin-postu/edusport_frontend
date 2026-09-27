@@ -75,8 +75,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border: 1.5px solid var(--color-navy);
   background: transparent;
   color: var(--color-navy);
