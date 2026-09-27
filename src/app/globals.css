@@ -8,6 +8,8 @@ html {
   scrollbar-color: var(--color-line) transparent;
   /* Kill the browser's rubber-band / overscroll bounce at the page edges. */
   overscroll-behavior: none;
+  /* header 80px plus the 32px contact strip */
+  scroll-padding-top: 7rem;
   /* The canvas colour, which is what the browser paints outside the body box:
      the safe-area insets beside the notch in landscape, and any overscroll.
      Without this the canvas inherits body's blue and those edges read blue on
@@ -116,7 +118,9 @@ h1.text-branding-font {
   --text-logo: var(--font-size-branding-xl); /* brand wordmark clamp */
 
   --max-content-width: 1280px;
-  --max-footer-width: 1480px;
+  --container-prose: 45rem;
+  --container-narrow: 35rem;
+  --container-aside: 20rem;
   --font-size-branding-xl: clamp(2rem, 12.8vw, 12rem);
 
   --font-display: var(--font-league-spartan), "League Spartan", sans-serif;
@@ -154,6 +158,11 @@ h1.text-branding-font {
 @utility border-r-retro { border-right-width: 1.5px; }
 @utility border-x-retro { border-left-width: 1.5px; border-right-width: 1.5px; }
 @utility border-y-retro { border-top-width: 1.5px; border-bottom-width: 1.5px; }
+
+@utility section-compact { padding-block: 3rem; @media (width >= 48rem) { padding-block: 4rem; } }
+@utility section { padding-block: 4rem; @media (width >= 48rem) { padding-block: 6rem; } }
+@utility section-feature { padding-block: 6rem; @media (width >= 48rem) { padding-block: 8rem; } }
+@utility gutter { padding-inline: 1rem; @media (width >= 48rem) { padding-inline: 2rem; } @media (width >= 64rem) { padding-inline: 3rem; } }
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -294,8 +303,13 @@ h1.text-branding-font {
   .max-w-content {
     max-width: var(--max-content-width);
   }
-  .max-footer-content {
-    max-width: var(--max-footer-width);
+  /* Tailwind v4 ships a built-in max-w-prose (65ch) that --container-prose
+     does not override, so it is redefined explicitly here (controller
+     ruling R3). A plain class in @layer utilities, placed after the token
+     block, so it wins the cascade over the built-in utility of the same
+     name. */
+  .max-w-prose {
+    max-width: 45rem;
   }
 
   .link-underline-animate {

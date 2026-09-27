@@ -39,6 +39,15 @@ export const twMergeConfig = {
         "text-button",
         "text-athlete-name",
       ],
+      // Section vertical-rhythm utilities (defined via @utility in
+      // globals.css). Registered in their own group so they never get
+      // folded into an unrelated conflict group (e.g. a background color)
+      // and silently dropped when merged together with other classes.
+      "section-py": ["section-compact", "section", "section-feature"],
+      // Gutter side-padding utility (defined via @utility in globals.css).
+      // Registered in its own group so it conflicts only with itself and
+      // survives alongside width/background classes.
+      "gutter": ["gutter"],
     },
   },
 };

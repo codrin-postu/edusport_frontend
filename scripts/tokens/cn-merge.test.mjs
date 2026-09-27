@@ -17,3 +17,11 @@ test("two type role classes conflict, only the last one survives", () => {
 test("border-retro width + border-line color both survive (existing behaviour)", () => {
   assert.equal(cn("border-retro border-line"), "border-retro border-line");
 });
+
+test("section-py utility and a background color both survive", () => {
+  assert.equal(cn("section bg-surface"), "section bg-surface");
+});
+
+test("gutter utility and a width class both survive", () => {
+  assert.equal(cn("gutter max-w-content"), "gutter max-w-content");
+});

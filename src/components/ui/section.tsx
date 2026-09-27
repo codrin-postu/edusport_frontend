@@ -29,7 +29,7 @@ const Section: React.FC<SectionProps> = ({
     <section id={id} className={className}>
       <div
         className={cn(
-          "w-full max-w-content mx-auto px-4 md:px-8 lg:px-12",
+          "w-full max-w-content mx-auto gutter",
           innerClassName,
         )}
       >

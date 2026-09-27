@@ -197,7 +197,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
   ].filter(Boolean) as { label: string; href: string; Icon: React.FC }[];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-footer-content lg:justify-between gap-8 md:gap-12 lg:gap-12 px-22 py-12 mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-w-content lg:justify-between gap-8 md:gap-12 lg:gap-12 gutter py-12 mx-auto">
       {/* Meniu + Informații legale */}
       {footerLeftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
@@ -337,7 +337,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 const RegisterBand: React.FC = () => (
   <section className="bg-pastel">
     <WarmStripe />
-    <div className="max-w-content mx-auto px-6 md:px-8 py-8 md:py-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12 text-center lg:text-left">
+    <div className="max-w-content mx-auto gutter py-8 md:py-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12 text-center lg:text-left">
       <div className="lg:max-w-[54%]">
         <h2 className="text-heading text-primary">
           Începe aventura pe gheață

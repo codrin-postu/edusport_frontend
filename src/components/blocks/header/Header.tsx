@@ -158,7 +158,7 @@ const Header: React.FC<HeaderProps> = ({
             Cream (--color-retro-cream, #fbf8f1) matches the page body; white
             read as a separate band floating above the content. */}
         <header data-site-header className="w-full bg-surface h-20">
-          <div className="h-full w-full max-w-content mx-auto px-4 flex justify-between items-center">
+          <div className="h-full w-full max-w-content mx-auto gutter flex justify-between items-center">
             {/* Left side - Brand */}
             <Link href="/" className="flex flex-col">
               <span className="text-body-sm text-primary">
