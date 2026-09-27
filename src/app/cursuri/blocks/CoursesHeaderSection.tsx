@@ -11,19 +11,17 @@ const CoursesHeaderSection: React.FC<CoursesHeaderSectionProps> = ({
   isRegistrationOpen,
 }) => {
   return (
-    <section className={cn("py-16", "bg-edusport-blue")}>
+    <section className={cn("section", "bg-edusport-blue")}>
       <div
         className={cn(
           "w-full",
           "max-w-content",
           "mx-auto",
-          "px-4",
-          "md:px-8",
-          "lg:px-12",
+          "gutter",
         )}
       >
         <div
-          className={cn("max-w-4xl", "mx-auto", "text-center", "text-primary-on-dark")}
+          className={cn("max-w-content", "mx-auto", "text-center", "text-primary-on-dark")}
         >
           <h1
             className={cn(

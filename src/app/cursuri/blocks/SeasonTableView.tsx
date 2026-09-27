@@ -162,9 +162,9 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
   );
 
   return (
-    <section className="py-16 bg-surface-raised">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="max-w-6xl mx-auto">
+    <section className="section bg-surface-raised">
+      <div className="w-full max-w-content mx-auto gutter">
+        <div className="max-w-content mx-auto">
           <h2 className="text-heading text-primary mb-8 text-center">
             Calendar Sezon 2025-2026
           </h2>

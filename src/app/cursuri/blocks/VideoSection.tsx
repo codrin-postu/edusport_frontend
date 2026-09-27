@@ -5,10 +5,10 @@ import React from "react";
 
 const VideoSection: React.FC = () => {
   return (
-    <section className={cn("py-24", "bg-surface-subtle")}>
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className={cn("section", "bg-surface-subtle")}>
+      <div className="w-full max-w-content mx-auto gutter">
         <div className="flex flex-col gap-12 items-center">
-          <div className="text-center flex flex-col gap-3 max-w-2xl">
+          <div className="text-center flex flex-col gap-3 max-w-prose">
             <p className="text-label uppercase text-edusport-blue/60">
               Ne vedem pe gheață
             </p>
@@ -21,7 +21,7 @@ const VideoSection: React.FC = () => {
             </p>
           </div>
 
-          <div className="relative w-full max-w-4xl aspect-video overflow-hidden shadow-xl">
+          <div className="relative w-full max-w-content aspect-video overflow-hidden shadow-xl">
             <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
             <iframe
               // youtube-nocookie, not youtube.com: the plain domain sets four

@@ -12,12 +12,12 @@ export default function Loading() {
         blurb="Cursuri de patinaj artistic pentru toate vârstele și nivelurile."
       />
       <div className="relative z-10 bg-surface-raised flex-1">
-        <Section className="py-16 md:py-24">
+        <Section className="section">
           <div className="h-3 w-32 bg-surface-subtle mb-6 animate-pulse" />
           <div className="h-9 w-2/3 bg-surface-subtle mb-12 animate-pulse" />
           <CardGridSkeleton count={3} cols={3} />
         </Section>
-        <Section className="bg-surface-subtle py-16 md:py-24">
+        <Section className="bg-surface-subtle section">
           <div className="h-3 w-32 bg-surface-subtle mb-6 animate-pulse" />
           <div className="h-9 w-2/3 bg-surface-subtle mb-12 animate-pulse" />
           <div className="grid md:grid-cols-2 gap-8 animate-pulse">

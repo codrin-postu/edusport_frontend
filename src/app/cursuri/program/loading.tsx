@@ -14,7 +14,7 @@ export default function Loading() {
         ]}
       />
       <div className="relative z-10 bg-surface-raised flex-1">
-        <Section className="py-16 md:py-24">
+        <Section className="section">
           <div className="h-3 w-40 bg-surface-subtle mb-3 animate-pulse" />
           <div className="h-9 w-2/3 bg-surface-subtle mb-3 animate-pulse" />
           <div className="h-3 w-1/2 bg-surface-subtle mb-12 animate-pulse" />
@@ -33,7 +33,7 @@ export default function Loading() {
             ))}
           </div>
         </Section>
-        <Section className="bg-surface-subtle py-12 md:py-16">
+        <Section className="bg-surface-subtle section-compact">
           <div className="h-3 w-32 bg-surface-subtle mb-3 animate-pulse" />
           <div className="h-9 w-1/3 bg-surface-subtle mb-12 animate-pulse" />
           <div className="bg-surface-raised border border-line-subtle p-6 animate-pulse">

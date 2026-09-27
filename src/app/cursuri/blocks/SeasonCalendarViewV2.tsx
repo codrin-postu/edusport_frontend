@@ -396,7 +396,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
   return (
     <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-surface">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <div className="w-full max-w-content mx-auto gutter">
         {/* Header — eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
           <div>
@@ -407,7 +407,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
               Sezonul {seasonLabel}
             </h2>
           </div>
-          <p className="text-body-sm text-secondary sm:text-right sm:max-w-xs">
+          <p className="text-body-sm text-secondary sm:text-right sm:max-w-aside">
             Datele în care se desfășoară cursurile și weekend-urile libere.
           </p>
         </div>

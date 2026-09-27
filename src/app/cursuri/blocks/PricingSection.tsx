@@ -106,7 +106,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   const [members, nonMembers] = pricingData ?? [null, null];
 
   return (
-    <Section id="preturi" className="py-24 bg-surface">
+    <Section id="preturi" className="section bg-surface">
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-2">
           <span className="text-label uppercase text-accent">
@@ -176,7 +176,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="text-caption flex flex-col gap-2 text-secondary max-w-2xl">
+          <div className="text-caption flex flex-col gap-2 text-secondary max-w-prose">
             <p className="text-label uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>

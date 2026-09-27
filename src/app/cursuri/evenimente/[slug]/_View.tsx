@@ -81,7 +81,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       />
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
+        <div className="w-full max-w-content mx-auto gutter py-4">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
@@ -99,8 +99,8 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       </div>
 
       {/* Event body */}
-      <article className="bg-surface py-12 md:py-16">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <article className="bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
             <div>

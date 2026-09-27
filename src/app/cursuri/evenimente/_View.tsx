@@ -17,8 +17,8 @@ function formatDate(iso: string) {
 
 function CurrentEventSection({ event }: { event: Event }) {
   return (
-    <section className="bg-surface py-16 md:py-24">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className="bg-surface section">
+      <div className="w-full max-w-content mx-auto gutter">
         <p className="text-label uppercase text-accent mb-12">
           Următorul eveniment
         </p>
@@ -90,8 +90,8 @@ function CurrentEventSection({ event }: { event: Event }) {
 
 function NoEventSection() {
   return (
-    <section className="bg-surface py-16 md:py-24">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className="bg-surface section">
+      <div className="w-full max-w-content mx-auto gutter">
         <p className="text-label uppercase text-accent mb-12">
           Următorul eveniment
         </p>
@@ -99,7 +99,7 @@ function NoEventSection() {
           <p className="text-body text-secondary">
             Niciun eveniment planificat momentan
           </p>
-          <p className="text-body-sm text-secondary max-w-md">
+          <p className="text-body-sm text-secondary max-w-narrow">
             Reveniți mai târziu pentru informații despre următoarele evenimente
             și competiții organizate de Clubul Sportiv EduSport.
           </p>
@@ -113,8 +113,8 @@ function PastEventsSection({ events }: { events: Event[] }) {
   if (events.length === 0) return null;
 
   return (
-    <section className="bg-surface py-16 md:py-24">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className="bg-surface section">
+      <div className="w-full max-w-content mx-auto gutter">
         <p className="text-label uppercase text-accent mb-12">
           Evenimente anterioare
         </p>

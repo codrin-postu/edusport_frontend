@@ -54,15 +54,15 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           <div className="flex flex-col gap-3 mb-16">
             <span className="text-label uppercase text-accent">Regulament</span>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <h2 className="text-heading text-primary max-w-lg">
+              <h2 className="text-heading text-primary max-w-narrow">
                 Regulament Școala de Patinaj EduSport
               </h2>
-              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-aside">
                 Vă rugăm să citiți cu atenție înainte de prima ședință.
               </p>
             </div>

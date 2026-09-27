@@ -9,8 +9,8 @@ interface InfoSectionProps {
 
 const InfoSection: React.FC<InfoSectionProps> = ({ sectionLabel, tips, closingLine }) => {
   return (
-    <Section className="py-12 bg-surface">
-      <div className="max-w-2xl mx-auto flex flex-col gap-4">
+    <Section className="section-compact bg-surface">
+      <div className="max-w-prose mx-auto flex flex-col gap-4">
         <p className="text-label uppercase text-accent">{sectionLabel}</p>
         <ul className="flex flex-col gap-3">
           {tips.map((tip, index) => (

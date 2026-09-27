@@ -24,13 +24,13 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
   return (
     <>
     <Section className={cn("pt-12 md:pt-16 pb-24 md:pb-24 bg-surface", "overflow-hidden")}>
-        <div className="max-w-4xl mx-auto mb-12 md:mb-12">
+        <div className="max-w-content mx-auto mb-12 md:mb-12">
           <span className="text-label uppercase text-accent">
             Program Școala de Patinaj
           </span>
         </div>
         {/* Notebook page */}
-        <div className="max-w-4xl mx-auto relative">
+        <div className="max-w-content mx-auto relative">
           {/* Card with overflow-hidden so holes/margin line are clipped */}
           <div
             className="relative overflow-hidden"
@@ -184,8 +184,8 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
       {/* Disclaimers — full-width navy band */}
       <section className="bg-surface-dark">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12">
-          <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-content mx-auto gutter section-compact">
+          <div className="max-w-prose mx-auto">
             <div className="flex items-start gap-3 mb-4">
               <Info className="w-4 h-4 text-mustard shrink-0 mt-0.5" />
               <p className="text-label uppercase text-primary-on-dark">

@@ -5,8 +5,8 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 
 function CurrentEventSkeleton() {
   return (
-    <section className="bg-surface-raised py-16 md:py-24">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className="bg-surface-raised section">
+      <div className="w-full max-w-content mx-auto gutter">
         <div className="h-3 w-40 bg-surface-subtle mb-12 animate-pulse" />
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center animate-pulse">
           <div className="relative aspect-[16/9] bg-surface-subtle" />
@@ -33,8 +33,8 @@ function CurrentEventSkeleton() {
 
 function PastEventsSkeleton() {
   return (
-    <section className="bg-surface-subtle py-16 md:py-24">
-      <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+    <section className="bg-surface-subtle section">
+      <div className="w-full max-w-content mx-auto gutter">
         <div className="h-3 w-44 bg-surface-subtle mb-12 animate-pulse" />
         <div className="flex flex-col divide-y divide-line-subtle animate-pulse">
           {Array.from({ length: 3 }).map((_, i) => (
