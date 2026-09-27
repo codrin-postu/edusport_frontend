@@ -97,7 +97,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
                 className="text-body-sm group relative inline-flex items-center gap-1 text-muted-on-dark hover:text-secondary-on-dark transition-colors after:absolute after:left-0 after:bottom-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-base hover:after:scale-x-100 hover:after:origin-left w-fit"
               >
                 Mai multe informații
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="size-4" />
               </Link>
             </div>
           </div>

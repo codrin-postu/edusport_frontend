@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { DURATION, EASE } from "@/lib/motion";
 import SpotlightButton from "@/components/ui/spotlight-button";
 
 const quickLinks = [
@@ -19,13 +20,13 @@ export default function NotFound() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: DURATION.long, ease: EASE.out }}
         >
           <motion.h1
             className="font-display text-9xl md:text-[11rem] font-black text-primary leading-none tracking-tight"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: DURATION.long, ease: EASE.out }}
           >
             404
           </motion.h1>
@@ -34,7 +35,7 @@ export default function NotFound() {
             className="text-heading mt-2"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: DURATION.long, delay: 0.15 }}
           >
             Ai patinat puțin prea departe
           </motion.h2>
@@ -43,7 +44,7 @@ export default function NotFound() {
             className="text-body text-secondary mt-3 max-w-md mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: DURATION.long, delay: 0.3 }}
           >
             Pagina pe care o cauți nu există sau a fost mutată.
           </motion.p>
@@ -53,7 +54,7 @@ export default function NotFound() {
           className="mt-12 flex flex-col items-center gap-6"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
+          transition={{ duration: DURATION.long, delay: 0.45 }}
         >
           <SpotlightButton layers layersFace="black" href="/" className="text-body-sm">
             Înapoi la pagina principală

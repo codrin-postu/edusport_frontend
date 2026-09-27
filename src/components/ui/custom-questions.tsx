@@ -229,7 +229,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                       className={v.cardLink}
                     >
                       {q.linkLabel || "Detalii"}
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="size-4" />
                     </a>
                   )}
                   <label className="flex items-center gap-2 cursor-pointer mt-3">

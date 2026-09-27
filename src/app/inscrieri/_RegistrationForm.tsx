@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ConfigStep, { stepComplete } from "./_ConfigStep";
 import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types";
 import { track } from "@/lib/analytics";
+import { DURATION, EASE } from "@/lib/motion";
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
@@ -212,7 +213,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         key={step}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: DURATION.slow, ease: EASE.out }}
       >
         <ConfigStep
           step={current}

@@ -200,7 +200,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
               v.trigger,
             )}
           >
-            <CalendarDays className="size-[17px]" aria-hidden />
+            <CalendarDays className="size-6" aria-hidden />
           </Button>
         </Group>
 
@@ -224,20 +224,20 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                     ? `${yearPage} - ${yearPage + YEARS_PER_PAGE - 1}`
                     : formatMonthYear(visible)}
                   <ChevronDown
-                    className={cn("size-3 opacity-55 transition-transform", showYears && "rotate-180")}
+                    className={cn("size-4 opacity-55 transition-transform", showYears && "rotate-180")}
                     aria-hidden
                   />
                 </Button>
                 {/* Borderless navigation: no box, no hover fill, the chevron
-                    itself takes the accent colour. The 26px hit area stays. */}
+                    itself takes the accent colour. The hit area is 40px. */}
                 <div className="flex gap-0.5">
                   {showYears ? (
                     <>
                       <NavButton label="Anii anteriori" tone={v.nav} onPress={() => setYearPage((y) => y - YEARS_PER_PAGE)}>
-                        <ChevronLeft className="size-[18px]" aria-hidden />
+                        <ChevronLeft className="size-6" aria-hidden />
                       </NavButton>
                       <NavButton label="Anii următori" tone={v.nav} onPress={() => setYearPage((y) => y + YEARS_PER_PAGE)}>
-                        <ChevronRight className="size-[18px]" aria-hidden />
+                        <ChevronRight className="size-6" aria-hidden />
                       </NavButton>
                     </>
                   ) : (
@@ -246,21 +246,21 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                         slot="previous"
                         aria-label="Luna anterioară"
                         className={cn(
-                          "flex size-[26px] items-center justify-center outline-none transition-colors",
+                          "flex size-10 items-center justify-center outline-none transition-colors",
                           v.nav,
                         )}
                       >
-                        <ChevronLeft className="size-[18px]" aria-hidden />
+                        <ChevronLeft className="size-6" aria-hidden />
                       </Button>
                       <Button
                         slot="next"
                         aria-label="Luna următoare"
                         className={cn(
-                          "flex size-[26px] items-center justify-center outline-none transition-colors",
+                          "flex size-10 items-center justify-center outline-none transition-colors",
                           v.nav,
                         )}
                       >
-                        <ChevronRight className="size-[18px]" aria-hidden />
+                        <ChevronRight className="size-6" aria-hidden />
                       </Button>
                     </>
                   )}
@@ -341,7 +341,7 @@ function NavButton({
       slot={null}
       aria-label={label}
       onPress={onPress}
-      className={cn("flex size-[26px] items-center justify-center outline-none transition-colors", tone)}
+      className={cn("flex size-10 items-center justify-center outline-none transition-colors", tone)}
     >
       {children}
     </Button>

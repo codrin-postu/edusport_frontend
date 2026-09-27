@@ -142,7 +142,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         <div className="w-full max-w-content mx-auto gutter py-4 flex items-center justify-between">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
-            <ChevronRight className="w-3 h-3 shrink-0" />
+            <ChevronRight className="size-4 shrink-0" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
         </div>
@@ -177,7 +177,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
 
               {/* Mobile-only date - sidebar is hidden on mobile */}
               <div className="flex items-center gap-2 mb-8 lg:hidden">
-                <CalendarDays className="w-3.5 h-3.5 text-accent shrink-0" />
+                <CalendarDays className="size-4 text-accent shrink-0" />
                 <span className="text-body-sm text-secondary">{formatDate(article.date)}</span>
               </div>
 

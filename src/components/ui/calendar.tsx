@@ -81,7 +81,7 @@ function Calendar({
           "select-none font-medium",
           captionLayout === "label"
             ? "text-sm"
-            : "pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-ui-muted-foreground [&>svg]:size-3.5",
+            : "pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-ui-muted-foreground [&>svg]:size-4",
           defaultClassNames.caption_label,
         ),
         table: "w-full border-collapse",

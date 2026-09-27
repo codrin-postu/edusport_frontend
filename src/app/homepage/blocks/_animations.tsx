@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { motion } from "motion/react";
 import { ScrollSkatingFigure } from "@/components/ui/skating-figure";
+import { DURATION, EASE } from "@/lib/motion";
 
 /* ------------------------------------------------------------------ */
 /* RevealOnScroll - thin wrapper around motion.div whileInView         */
@@ -22,7 +23,7 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
   children,
   className,
   delay = 0,
-  duration = 0.5,
+  duration = DURATION.slow,
   y = 24,
   once = true,
   margin = "-80px",
@@ -31,7 +32,7 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
     className={className}
     initial={{ opacity: 0, y }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration, ease: "easeOut", delay }}
+    transition={{ duration, ease: EASE.out, delay }}
     viewport={{ once, margin }}
   >
     {children}
@@ -55,8 +56,8 @@ export const BoldTextStripClient: React.FC = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{
             delay: 0.15 + i * 0.1,
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
+            duration: DURATION.long,
+            ease: EASE.out,
           }}
         >
           {word}
