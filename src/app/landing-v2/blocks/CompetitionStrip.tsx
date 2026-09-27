@@ -101,7 +101,7 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
            text must stay dark (more specific selector wins over the rule above). */
         html.lv2-nav-dark header[data-site-header] .nav-dropdown-panel,
         html.lv2-nav-dark header[data-site-header] .nav-dropdown-panel * {
-          color: var(--color-ink) !important;
+          color: var(--color-primary) !important;
         }
         /* The home hero adds a white ::before to the nav bar for its
            scroll-to-solid effect, which would otherwise cover the colour above.

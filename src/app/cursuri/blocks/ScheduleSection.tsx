@@ -52,8 +52,8 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
           >
             {/* Margin line (rust) */}
             <div
-              className="absolute top-0 bottom-0 w-px"
-              style={{ left: "72px", background: "var(--color-rust)", opacity: 0.5 }}
+              className="absolute top-0 bottom-0 left-[72px] w-px"
+              style={{ background: "var(--color-rust)", opacity: 0.5 }}
             />
 
             {/* Spiral holes column */}
@@ -118,7 +118,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             />
 
             {/* Pencil doodle - scattered hand-drawn stars */}
-            <div className="absolute bottom-0 right-0 pointer-events-none" style={{ left: "88px", height: "90px" }}>
+            <div className="absolute bottom-0 right-0 left-[88px] pointer-events-none" style={{ height: "90px" }}>
               <svg
                 width="100%"
                 height="90"

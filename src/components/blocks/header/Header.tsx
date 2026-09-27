@@ -29,7 +29,7 @@ const CascadingText: React.FC<{ text: string; className?: string }> = ({
           key={index}
           className="text-branding-font"
           animate={{
-            color: isHovered ? "var(--color-edusport-blue)" : "var(--color-ink)",
+            color: isHovered ? "var(--color-edusport-blue)" : "var(--color-primary)",
           }}
           transition={{
             duration: DURATION.fast,

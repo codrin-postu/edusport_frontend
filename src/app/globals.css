@@ -88,7 +88,7 @@ h1.text-branding-font {
 @theme {
   /* ── Color system — single source of truth ──────────────────────────
      Every UI color lives here. Components reference these tokens (Tailwind
-     classes like `bg-navy` / `text-gold`, or `var(--color-…)` in styles)
+     classes like `bg-navy` / `text-medal-gold`, or `var(--color-…)` in styles)
      instead of hardcoding hexes. Functional colors (status, medals) keep
      their values but are named so they live in one place too.
      Carve-outs (own self-contained palettes): fullcalendar-overrides.css,
@@ -96,9 +96,7 @@ h1.text-branding-font {
 
   /* Brand */
   --color-edusport-blue: #2138b8; /* primary: links, buttons, header overlays */
-  --color-cream: #f2ebdd;         /* light brand surface */
   --color-navy: #0e1a3c;          /* dark surfaces + darkest ink text (one token) */
-  --color-gold: #fbbf24;          /* highlight / achievement accent */
 
   /* Status — semantic, values preserved */
   --color-warning: #f59e0b;       /* alerts, announcement type */
@@ -119,9 +117,7 @@ h1.text-branding-font {
   --color-burgundy: #6e4256;
   --color-brown: #8a4b2f;
   --color-pastel: #8ca3db;        /* softened brand blue — scheme surfaces */
-  --color-silver: #aeb6c4;        /* retro medal — Argint */
-  --color-bronze: #c77b41;        /* retro medal — Bronz */
-  --color-ink: #111827;           /* neutral near-black text (nav / strip labels) */
+  --color-ink: #111827;           /* used only by the frozen landing hero (HeroSection.tsx) */
 
   /* ── Type scale — single source of truth ────────────────────────────
      Nine type roles (below, as @utility text-*) replace the old ad-hoc

@@ -226,12 +226,11 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
                   {info?.chipClass ? (
                     <span
                       className={cn(
-                        "inline-flex size-7 items-center justify-center font-display font-extrabold text-primary",
+                        "h-7 px-2 inline-flex items-center justify-center font-display font-extrabold text-primary",
                         info.chipClass,
                       )}
-                      aria-label={info.label}
                     >
-                      {result.placement}
+                      {info.label}
                     </span>
                   ) : (
                     <span className="font-display font-extrabold text-secondary">
@@ -268,12 +267,11 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
                 {info?.chipClass ? (
                   <span
                     className={cn(
-                      "inline-flex size-7 items-center justify-center text-title text-primary",
+                      "h-7 px-2 inline-flex items-center justify-center text-title text-primary",
                       info.chipClass,
                     )}
-                    aria-label={info.label}
                   >
-                    {result.placement}
+                    {info.label}
                   </span>
                 ) : (
                   <span className="text-title text-secondary">{info?.label ?? "-"}</span>

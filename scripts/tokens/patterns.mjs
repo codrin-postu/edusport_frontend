@@ -48,6 +48,16 @@ export const ALLOWLIST = [
     reason: "named exception: athlete name / decorative numbers keep custom tracking/leading.",
   },
   {
+    file: "src/app/despre-noi/sportivi/[slug]/_View.tsx",
+    id: "arbitrary-px",
+    reason: "decorative big numbers: placement numeral and watermark, the named exception.",
+  },
+  {
+    file: "src/app/cursuri/blocks/ScheduleSection.tsx",
+    id: "arbitrary-px",
+    reason: "notebook margin positions aligned with the 72px hole column.",
+  },
+  {
     file: "src/hooks/useSeasonCalendar.ts",
     id: "default-palette",
     reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
