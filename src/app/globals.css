@@ -100,10 +100,6 @@ h1.text-branding-font {
   --color-navy: #0e1a3c;          /* dark surfaces + darkest ink text (one token) */
   --color-gold: #fbbf24;          /* highlight / achievement accent */
 
-  /* Light tints (consolidated near-creams + faint brand wash) */
-  --color-surface-soft: #faf8f3;  /* off-white panels (was #fffbeb/#faf8f3) */
-  --color-blue-tint: #eef2fb;     /* faint brand-blue wash (was #eef2fb/#ddeeff) */
-
   /* Status — semantic, values preserved */
   --color-warning: #f59e0b;       /* alerts, announcement type */
   --color-success: #10b981;
@@ -113,12 +109,6 @@ h1.text-branding-font {
   --color-medal-gold: #fbbf24;   /* amber-400 */
   --color-medal-silver: #9ca3af; /* gray-400 */
   --color-medal-bronze: #ea580c; /* orange-600 */
-
-  /* Overlays / scrims */
-  --color-scrim: rgba(0, 0, 0, 0.35);
-  --color-scrim-light: rgba(255, 255, 255, 0.12);
-
-  --color-light: oklch(0.9827 0.0026 286.35);
 
   /* Retro palette — the site-wide 70s theme. Blue softened to a pastel
      scheme colour (never the saturated #2138b8 as a section fill). */
@@ -235,7 +225,6 @@ h1.text-branding-font {
   --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-input: var(--input);
-  --color-light: var(--color-light);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);

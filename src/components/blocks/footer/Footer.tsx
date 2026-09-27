@@ -342,7 +342,7 @@ const RegisterBand: React.FC = () => (
         <h2 className="text-heading text-primary">
           Începe aventura pe gheață
         </h2>
-        <p className="text-body text-secondary mt-2">
+        <p className="text-body text-primary mt-2">
           Cursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.
         </p>
       </div>

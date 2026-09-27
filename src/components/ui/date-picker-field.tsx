@@ -67,7 +67,7 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust/25",
+      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust",
     groupInvalid: "border-rust",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
@@ -83,7 +83,7 @@ const V = {
   },
   navy: {
     group:
-      "flex items-stretch w-full bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard/25",
+      "flex items-stretch w-full bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard",
     groupInvalid: "border-danger",
     segment:
       "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",

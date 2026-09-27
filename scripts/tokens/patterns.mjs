@@ -20,3 +20,46 @@ export const FROZEN = [
   "src/app/landing-v2/blocks/HeroWordmarkMorph.tsx",
   "src/components/blocks/fullcalendar/fullcalendar-overrides.css",
 ];
+
+// Explicit, per-file-and-pattern exceptions. Each entry is a named, reviewed
+// exception from the SP1 spec, not a blanket carve-out: only the given
+// pattern is ignored in the given file, everything else in that file is
+// still checked normally. Do not add to this list without a reason tied to
+// a real spec decision; prefer fixing the violation instead.
+export const ALLOWLIST = [
+  {
+    file: "src/components/blocks/announcement-popup/AnnouncementCard.tsx",
+    id: "arbitrary-shadow",
+    reason: "rust CTA layer shadow on the approved primary announcement button (SP1 spec).",
+  },
+  {
+    file: "src/components/blocks/announcement-popup/AnnouncementModal.tsx",
+    id: "arbitrary-shadow",
+    reason: "rust CTA layer shadow on the approved primary announcement button (SP1 spec).",
+  },
+  {
+    file: "src/components/ui/date-picker-field.tsx",
+    id: "arbitrary-shadow",
+    reason: "mustard inset focus ring, the SP2 focus utility, needs an arbitrary inset shadow value.",
+  },
+  {
+    file: "src/app/despre-noi/sportivi/[slug]/_View.tsx",
+    id: "arbitrary-type",
+    reason: "named exception: athlete name / decorative numbers keep custom tracking/leading.",
+  },
+  {
+    file: "src/hooks/useSeasonCalendar.ts",
+    id: "default-palette",
+    reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
+  },
+  {
+    file: "src/app/cursuri/blocks/SeasonTableView.tsx",
+    id: "default-palette",
+    reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
+  },
+  {
+    file: "src/components/ui/pill.tsx",
+    id: "default-palette",
+    reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
+  },
+];

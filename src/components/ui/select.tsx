@@ -66,8 +66,8 @@ export const Select: React.FC<SelectProps> = ({
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,
               "border-retro border-line outline-none transition-all",
-              "focus:border-rust focus:ring-2 focus:ring-rust/25",
-              "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust/25",
+              "focus:border-rust focus:ring-2 focus:ring-rust",
+              "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust",
               !selected && "text-secondary",
               selected && "text-primary",
               disabled && "opacity-60 cursor-not-allowed",
@@ -79,7 +79,7 @@ export const Select: React.FC<SelectProps> = ({
             </span>
             <ChevronDown
               className={cn(
-                "w-4 h-4 text-secondary shrink-0 transition-transform duration-fast",
+                "size-4 text-secondary shrink-0 transition-transform duration-fast",
                 open && "rotate-180 text-accent",
               )}
             />
@@ -116,7 +116,7 @@ export const Select: React.FC<SelectProps> = ({
                 >
                   <span className="flex-1 truncate">{opt.label}</span>
                   <DropdownMenu.ItemIndicator>
-                    <Check className="w-4 h-4 shrink-0" />
+                    <Check className="size-4 shrink-0" />
                   </DropdownMenu.ItemIndicator>
                 </DropdownMenu.RadioItem>
               ))}

@@ -43,7 +43,7 @@ const Link: React.FC<LinkProps> = ({
       <NextLink className={classes} href={href} {...rest}>
         <span className="link">{children}</span>
         {Icon && (
-          <Icon className="w-4 h-4 shrink-0 opacity-0 translate-y-1 transition-all duration-base group-hover:opacity-100 group-hover:translate-y-0" />
+          <Icon className="size-4 shrink-0 opacity-0 translate-y-1 transition-all duration-base group-hover:opacity-100 group-hover:translate-y-0" />
         )}
       </NextLink>
     );

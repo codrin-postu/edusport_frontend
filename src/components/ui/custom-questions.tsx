@@ -77,7 +77,7 @@ const VARIANT = {
     checkboxLabel: "text-xs font-semibold text-primary-on-dark",
     checkboxAccent: "accent-mustard",
     select:
-      "bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25",
+      "bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard data-[state=open]:border-mustard data-[state=open]:ring-mustard",
     card: "border-line-on-dark bg-surface-subtle-on-dark",
     cardChecked: "border-mustard bg-mustard/[0.06]",
     cardHover: "hover:border-mustard transition-colors",
