@@ -147,7 +147,7 @@ const WeekendRow: React.FC<{
 
   // Colour square = course colour (navy) / silver for liber / faded navy for cancelled.
   const squareColor =
-    card.type === "liber" ? "bg-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
+    card.type === "liber" ? "bg-medal-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
   const stateColor = isNext
     ? "text-primary font-bold"
     : isCancelled
@@ -476,7 +476,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             {/* Legend */}
             <div className="text-caption mt-4 flex flex-wrap gap-x-6 gap-y-2 text-secondary">
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-silver" />Liber</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-medal-silver" />Liber</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark opacity-45" />Anulat</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-orange" />Eveniment</span>
             </div>

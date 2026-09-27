@@ -1,4 +1,3 @@
-export { default as CoursesHeaderSection } from "./CoursesHeaderSection";
 export { PageHeroSection } from "@/components/blocks/page-hero-section";
 export { default as CoursesBannerSection } from "./CoursesBannerSection";
 export { default as AboutSection } from "./AboutSection";

@@ -137,7 +137,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               )}
                             >
                               <span
-                                className="text-heading w-9 shrink-0 text-line-subtle tabular-nums select-none"
+                                className="text-heading w-9 shrink-0 text-muted tabular-nums select-none"
                                 aria-hidden
                               >
                                 {num}
