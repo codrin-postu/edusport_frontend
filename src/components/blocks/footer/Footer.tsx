@@ -201,7 +201,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
       {/* Meniu + Informații legale */}
       {footerLeftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
-          <Text variant="heading" className="text-body text-primary-on-dark">
+          <Text variant="heading" className="text-primary-on-dark">
             {section.title}
           </Text>
           <div className="flex flex-col gap-3">
@@ -217,7 +217,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 
       {/* Contactează-ne */}
       <div className="flex flex-col gap-3">
-        <Text variant="heading" className="text-body text-primary-on-dark">
+        <Text variant="heading" className="text-primary-on-dark">
           Contacteaza-ne
         </Text>
         {retro ? (
@@ -271,7 +271,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
       <div className="lg:flex-shrink-0 lg:min-w-[160px]">
         {/* Mobile: large QR → caption → link */}
         <div className="flex flex-col items-start gap-0 md:hidden">
-          <Text variant="heading" className="text-body text-primary-on-dark mb-3">
+          <Text variant="heading" className="text-primary-on-dark mb-3">
             WhatsApp
           </Text>
           <WhatsAppQR size={84} url={waUrl} />
@@ -297,7 +297,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
 
         {/* Tablet + Desktop: caption → QR + divider + link row */}
         <div className="flex-col gap-0 hidden md:flex">
-          <Text variant="heading" className="text-body text-primary-on-dark">
+          <Text variant="heading" className="text-primary-on-dark">
             WhatsApp
           </Text>
           <p className="text-caption text-secondary-on-dark mb-3">

@@ -70,6 +70,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
   return (
     <div
       ref={menuRef}
+      data-nav-row
       className="relative flex items-center gap-x-6 h-12"
       onMouseLeave={close}
     >

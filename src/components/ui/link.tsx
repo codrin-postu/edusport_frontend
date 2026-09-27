@@ -35,7 +35,11 @@ const Link: React.FC<LinkProps> = ({
   linkType = "external",
   ...rest
 }) => {
-  const classes = `${variantClasses[variant]} transition-colors ${className}`;
+  // A caller using a link utility (link, link-on-dark, link-footer) gets its
+  // colours from that utility; the variant's hover colour would otherwise
+  // override it, since both sit at the same specificity.
+  const usesLinkUtility = /(^|\s)link(-on-dark|-footer)?(\s|$)/.test(className);
+  const classes = `${usesLinkUtility ? "" : variantClasses[variant]} transition-colors ${className}`;
 
   if (variant === LinkVariants.FOOTER_ANIMATED) {
     const Icon = linkTypeIcons[linkType];

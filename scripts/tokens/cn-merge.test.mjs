@@ -49,3 +49,10 @@ test("duration-fast wins over a numeric duration conflict", () => {
 test("duration-fast and an unrelated class both survive", () => {
   assert.equal(cn("duration-fast bg-surface"), "duration-fast bg-surface");
 });
+
+test("branding font and size survive next to a text colour", () => {
+  assert.equal(
+    cn("text-base text-branding-font text-primary-on-dark", "text-branding-xl"),
+    "text-branding-font text-primary-on-dark text-branding-xl",
+  );
+});

@@ -38,7 +38,13 @@ export const twMergeConfig = {
         "text-label",
         "text-button",
         "text-athlete-name",
+        "text-branding-xl",
       ],
+      // The brand wordmark font class (a plain class in globals.css). Its
+      // `text-` prefix would otherwise make tailwind-merge read it as a text
+      // colour and drop it next to a real colour class, which turned the
+      // footer wordmark into plain Inter.
+      "font-family": ["text-branding-font"],
       // Section vertical-rhythm utilities (defined via @utility in
       // globals.css). Registered in their own group so they never get
       // folded into an unrelated conflict group (e.g. a background color)
