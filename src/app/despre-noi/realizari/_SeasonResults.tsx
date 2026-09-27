@@ -168,7 +168,7 @@ const AthleteName: React.FC<{ result: Result }> = ({ result }) =>
   result.athleteSlug ? (
     <Link
       href={`/despre-noi/sportivi/${result.athleteSlug}`}
-      className="link font-semibold text-primary hover:text-accent transition-colors"
+      className="link font-semibold text-primary transition-colors"
     >
       {result.athlete}
     </Link>
