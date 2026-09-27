@@ -25,11 +25,11 @@ export const PLACEMENT_LABEL: Record<1 | 2 | 3, string> = {
   3: "Bronz",
 };
 // Retro medal marker-tags (square, no dot). Aur = mustard, Argint = medal-silver,
-// Bronz = medal-bronze, see globals.css retro tokens.
+// Bronz = brown, see globals.css retro tokens.
 export const PLACEMENT_TAG: Record<1 | 2 | 3, string> = {
   1: "bg-mustard text-primary",
   2: "bg-medal-silver text-primary",
-  3: "bg-medal-bronze text-primary",
+  3: "bg-brown text-primary-on-dark",
 };
 
 function formatRoDate(iso: string): string {

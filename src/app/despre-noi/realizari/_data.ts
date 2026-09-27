@@ -93,7 +93,7 @@ const PODIUM_TEXT: Record<number, string> = {
 const PODIUM_CHIP: Record<number, string> = {
   1: "bg-medal-gold",
   2: "bg-medal-silver",
-  3: "bg-medal-bronze",
+  3: "bg-brown text-primary-on-dark",
 };
 
 export function getPlacementInfo(placement: Placement): PlacementInfo {

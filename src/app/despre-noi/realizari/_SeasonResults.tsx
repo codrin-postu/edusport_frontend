@@ -362,7 +362,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
           <div className="flex gap-2 ml-auto">
             <Medal count={summary.gold} label="aur" className="bg-mustard text-primary" />
             <Medal count={summary.silver} label="argint" className="bg-medal-silver text-primary" />
-            <Medal count={summary.bronze} label="bronz" className="bg-orange text-primary" />
+            <Medal count={summary.bronze} label="bronz" className="bg-brown text-primary-on-dark" />
           </div>
         </div>
 
