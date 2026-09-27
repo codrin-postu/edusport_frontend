@@ -150,7 +150,7 @@ const SportspersonView: React.FC<Props> = ({
           sticky-positioned, or add their own pt clearance — articles use
           pt-8). Without this the bar tucks behind the nav. */}
       <div className="bg-surface-dark pt-8">
-        <div className="mx-auto w-full max-w-content px-4 py-4 md:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-content gutter py-4">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
             <Link
               href="/despre-noi/sportivi"
@@ -168,7 +168,7 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── EDITORIAL HERO BAND (navy) ─── */}
       <section className="relative overflow-hidden bg-surface-dark pt-4 pb-12 text-primary-on-dark md:pb-16">
-        <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+        <div className="relative mx-auto w-full max-w-content gutter">
           <div className="grid items-end gap-8 md:grid-cols-[1.4fr_1fr]">
             {/* Left: category eyebrow + huge stacked name. The narrative
                 bio now lives in its own "Despre mine" section below. */}
@@ -225,18 +225,18 @@ const SportspersonView: React.FC<Props> = ({
           same. An absent section reads as complete; a placeholder reads as
           neglected. */}
       {(hasItems(sportsperson.story) || sportsperson.description) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
+        <section className="relative overflow-hidden bg-surface section">
           <SectionWatermark>DESPRE</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <div className="text-label uppercase text-accent">
               Despre mine
             </div>
             {hasItems(sportsperson.story) ? (
-              <div className="text-body mt-6 max-w-[620px] text-primary">
+              <div className="text-body mt-6 max-w-prose text-primary">
                 <StrapiBlocks blocks={sportsperson.story} />
               </div>
             ) : (
-              <p className="text-body mt-6 max-w-[620px] text-primary">
+              <p className="text-body mt-6 max-w-prose text-primary">
                 {sportsperson.description}
               </p>
             )}
@@ -251,7 +251,7 @@ const SportspersonView: React.FC<Props> = ({
         hasItems(sportsperson.choreographers) ||
         sportsperson.careerGoal) && (
         <section className="relative overflow-hidden bg-surface pb-16 md:pb-24">
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <DespreGrid>
               {hasItems(sportsperson.favoriteMoves) && (
                 <DespreCell title="Mișcări preferate">
@@ -304,9 +304,9 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PROGRAME MUZICALE ─── */}
       {hasItems(sportsperson.seasons) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
+        <section className="relative overflow-hidden bg-surface section">
           <SectionWatermark>MUZICĂ</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <div className="text-label uppercase text-accent">
               Programe muzicale
             </div>
@@ -320,9 +320,9 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── PERFORMANȚE DE VÂRF (oversized placement numerals) ─── */}
       {notableResults.length > 0 && (
-        <section className="relative overflow-hidden bg-surface-dark py-16 text-primary-on-dark md:py-24">
+        <section className="relative overflow-hidden bg-surface-dark section text-primary-on-dark">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <div className="text-label uppercase text-gold">
               Cele mai notabile rezultate
             </div>
@@ -383,9 +383,9 @@ const SportspersonView: React.FC<Props> = ({
 
       {/* ─── GALLERY ─── */}
       {hasItems(sportsperson.gallery) && (
-        <section className="relative overflow-hidden bg-surface py-16 md:py-24">
+        <section className="relative overflow-hidden bg-surface section">
           <SectionWatermark>GALERIE</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <GalleryCarousel
               images={sportsperson.gallery.map((img) => ({
                 src: strapiMediaUrl(img.url),
@@ -402,10 +402,10 @@ const SportspersonView: React.FC<Props> = ({
       {hasScrapedResults && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-surface py-16 md:py-24 scroll-mt-24"
+          className="relative overflow-hidden bg-surface section scroll-mt-24"
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <div className="text-label uppercase text-accent">
               Rezultate competiții
             </div>
@@ -421,10 +421,10 @@ const SportspersonView: React.FC<Props> = ({
       {!hasScrapedResults && historyRows.length > 0 && (
         <section
           id="istoric"
-          className="relative overflow-hidden bg-surface py-16 md:py-24 scroll-mt-24"
+          className="relative overflow-hidden bg-surface section scroll-mt-24"
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
-          <div className="relative mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+          <div className="relative mx-auto w-full max-w-content gutter">
             <div className="text-label uppercase text-accent">
               Istoric competițional
             </div>
@@ -507,8 +507,8 @@ const SportspersonView: React.FC<Props> = ({
       )}
 
       {/* ─── OUTRO ─── */}
-      <section className="border-t border-line-subtle bg-surface py-12 md:py-16">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
+      <section className="border-t border-line-subtle bg-surface section-compact">
+        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-6 gutter sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-label uppercase text-accent">
               Mai departe

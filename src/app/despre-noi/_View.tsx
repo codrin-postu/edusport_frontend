@@ -118,8 +118,8 @@ const HistoryPage: React.FC<Props> = ({
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
             <p className="text-label uppercase text-accent">
@@ -129,14 +129,14 @@ const HistoryPage: React.FC<Props> = ({
               <h2 className="text-heading text-primary max-w-lg">
                 {sectionHeading ?? "Peste un deceniu de pasiune și performanță"}
               </h2>
-              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-aside">
                 {sectionSubheading ?? "De la primii pași pe gheață la podiumuri internaționale."}
               </p>
             </div>
           </div>
 
           {/* Intro text */}
-          <div className="max-w-3xl mb-24 flex flex-col gap-4">
+          <div className="max-w-prose mb-24 flex flex-col gap-4">
             {introParagraphs.map((para, i) => (
               <p key={i} className="text-body text-secondary">
                 {para}
@@ -168,7 +168,7 @@ const HistoryPage: React.FC<Props> = ({
             </h2>
           </div>
 
-          <div className="flex flex-col border-l-retro border-line ml-24">
+          <div className="flex flex-col border-l-retro border-line">
             {resolvedMilestones.map((milestone, i) => (
               <div key={i} className="relative pb-8 pl-8">
                 <span
@@ -197,7 +197,7 @@ const HistoryPage: React.FC<Props> = ({
                 Organizate de ACS EduSport
               </h2>
             </div>
-            <ul className="flex flex-col gap-3 max-w-3xl">
+            <ul className="flex flex-col gap-3 max-w-prose">
               {resolvedEventsOrganized.map((event, i) => (
                 <li
                   key={i}
@@ -216,7 +216,7 @@ const HistoryPage: React.FC<Props> = ({
                 Participări ale sportivilor EduSport
               </h2>
             </div>
-            <ul className="flex flex-col gap-3 max-w-3xl">
+            <ul className="flex flex-col gap-3 max-w-prose">
               {resolvedEventsParticipated.map((event, i) => (
                 <li
                   key={i}

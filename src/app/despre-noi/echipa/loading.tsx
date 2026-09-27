@@ -15,7 +15,7 @@ export default function Loading() {
         ]}
       />
       <div className="relative z-10 bg-surface flex-1">
-        <Section className="py-16 md:py-24">
+        <Section className="section">
           <CardGridSkeleton count={6} cols={3} />
         </Section>
       </div>

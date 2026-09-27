@@ -12,7 +12,7 @@ export default function Loading() {
         ]}
       />
       <div className="relative z-10 bg-surface flex-1">
-        <Section className="py-16 md:py-24">
+        <Section className="section">
           <div className="flex flex-col divide-y divide-line-subtle animate-pulse">
             {Array.from({ length: 5 }).map((_, i) => (
               <div

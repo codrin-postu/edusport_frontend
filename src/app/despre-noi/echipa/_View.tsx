@@ -38,10 +38,10 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           {/* Introduction */}
-          <div className="max-w-2xl mb-16">
+          <div className="max-w-prose mb-16">
             <p className="text-label uppercase text-accent mb-4">
               Antrenori & Instructori
             </p>

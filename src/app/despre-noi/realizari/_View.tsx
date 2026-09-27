@@ -47,8 +47,8 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
             <p className="text-label uppercase text-accent">
@@ -58,7 +58,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
               <h2 className="text-heading text-primary max-w-lg">
                 Realizări notabile
               </h2>
-              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right md:max-w-aside">
                 Momente de referință din activitatea competițională a clubului.
               </p>
             </div>
