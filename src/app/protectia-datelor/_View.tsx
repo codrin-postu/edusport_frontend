@@ -394,8 +394,8 @@ const ProtectiaDatelor: React.FC = () => {
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
             <p className="text-label uppercase text-accent">
@@ -405,14 +405,14 @@ const ProtectiaDatelor: React.FC = () => {
               <h2 className="text-heading text-primary max-w-xl">
                 Politica de Confidențialitate
               </h2>
-              <p className="text-body-sm text-secondary md:text-right md:max-w-xs">
+              <p className="text-body-sm text-secondary md:text-right max-w-aside">
                 Conform Regulamentului UE 2016/679 (GDPR)
               </p>
             </div>
           </div>
 
           {/* Sections */}
-          <div className="flex flex-col gap-12 max-w-3xl">
+          <div className="flex flex-col gap-12 max-w-prose">
             {SECTIONS.map((section) => (
               <div key={section.number}>
                 <h3 className="text-title text-primary mb-4">
@@ -441,7 +441,7 @@ const ProtectiaDatelor: React.FC = () => {
                   <p className="text-label uppercase text-mustard mb-3">
                     Responsabil protecția datelor
                   </p>
-                  <p className="text-body text-primary-on-dark max-w-xl">
+                  <p className="text-body text-primary-on-dark max-w-prose">
                     Pentru orice întrebări legate de prelucrarea datelor cu
                     caracter personal, ne puteți contacta la:
                   </p>

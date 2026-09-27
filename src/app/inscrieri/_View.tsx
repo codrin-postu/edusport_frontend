@@ -21,8 +21,8 @@ const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
       </PageHeroSection>
 
       <section className="relative z-10 bg-surface">
-        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-24">
-          <div className="max-w-xl mx-auto">
+        <div className="max-w-content mx-auto gutter section">
+          <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">
               <p className="text-label uppercase text-accent">
                 Formular de înscriere

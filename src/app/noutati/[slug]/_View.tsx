@@ -139,7 +139,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       />
       {/* Top bar - breadcrumb */}
       <div className="bg-surface border-b-retro border-line pt-8">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4 flex items-center justify-between">
+        <div className="w-full max-w-content mx-auto gutter py-4 flex items-center justify-between">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
             <ChevronRight className="w-3 h-3 shrink-0" />
@@ -155,8 +155,8 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       </div>
 
       {/* Article body */}
-      <article className="bg-surface pt-12 pb-24 md:pt-16 md:pb-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <article className="bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
             <div>
@@ -191,9 +191,11 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
 
               {/* Body - Strapi Blocks */}
               {article.body && article.body.length > 0 ? (
-                <StrapiBlocks blocks={article.body} />
+                <div className="max-w-prose">
+                  <StrapiBlocks blocks={article.body} />
+                </div>
               ) : (
-                <p className="text-body-sm text-secondary italic">
+                <p className="text-body-sm text-secondary italic max-w-prose">
                   Conținutul acestui articol nu este disponibil momentan.
                 </p>
               )}

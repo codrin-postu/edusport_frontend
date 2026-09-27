@@ -73,7 +73,7 @@ export default async function Page({
           <FeaturedAsync />
         </Suspense>
 
-        <Section className="bg-surface border-t-retro border-line-subtle pt-12 pb-24 md:pt-16 md:pb-32">
+        <Section className="bg-surface border-t-retro border-line-subtle section">
           {/* Toolbar is interactive immediately — no data dependency. */}
           <Toolbar currentCategory={category} currentSearch={search} />
 

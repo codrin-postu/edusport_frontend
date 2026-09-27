@@ -44,8 +44,8 @@ const PartnerView: React.FC<{
       </PageHeroSection>
 
       {/* ─── DE CE PARTENERIAT ─── */}
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="flex flex-col gap-3">
             <p className="text-label uppercase text-accent">
               {copy.introEyebrow}
@@ -53,7 +53,7 @@ const PartnerView: React.FC<{
             <h2 className="text-heading max-w-lg text-primary">
               {copy.introHeading}
             </h2>
-            <p className="text-body max-w-xl text-secondary">
+            <p className="text-body max-w-prose text-secondary">
               {copy.introBody}
             </p>
           </div>
@@ -65,7 +65,7 @@ const PartnerView: React.FC<{
           susțin clubul" above an empty strip reads worse than no section. */}
       {sponsors.length > 0 && (
       <section className="relative z-10 bg-surface pb-16 md:pb-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="mb-8 flex flex-col gap-2">
             <p className="text-label uppercase text-accent">
               Alături de noi
@@ -79,7 +79,7 @@ const PartnerView: React.FC<{
           </div>
         </div>
         {/* Full-bleed strip (edge fades handle the sides) */}
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-content gutter">
           <SponsorMarquee sponsors={sponsors} />
         </div>
       </section>
@@ -87,8 +87,8 @@ const PartnerView: React.FC<{
 
       {/* ─── EVENIMENTE & COLABORĂRI ─── */}
       {events.length > 0 && (
-        <section className="relative z-10 border-t border-line-subtle bg-surface py-16 md:py-24">
-          <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+        <section className="relative z-10 border-t border-line-subtle bg-surface section">
+          <div className="mx-auto w-full max-w-content gutter">
             <div className="mb-8 flex flex-col gap-2">
               <p className="text-label uppercase text-accent">
                 Împreună
@@ -96,7 +96,7 @@ const PartnerView: React.FC<{
               <h2 className="text-heading text-primary">
                 Evenimente & colaborări
               </h2>
-              <p className="text-body-sm max-w-xl text-secondary">
+              <p className="text-body-sm max-w-prose text-secondary">
                 Momente construite alături de partenerii noștri.
               </p>
             </div>
@@ -139,8 +139,8 @@ const PartnerView: React.FC<{
       )}
 
       {/* ─── COLABOREAZĂ (sponsor / event form) ─── */}
-      <section className="relative z-10 border-t border-line-subtle bg-surface py-16 md:py-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 border-t border-line-subtle bg-surface section">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-24">
             <div className="flex flex-col gap-3">
               <p className="text-label uppercase text-accent">
@@ -168,8 +168,8 @@ const PartnerView: React.FC<{
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-16">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
+      <section className="relative z-10 border-t-retro border-line-subtle bg-surface section-compact">
+        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-label mb-2 uppercase text-accent">
               Mai departe

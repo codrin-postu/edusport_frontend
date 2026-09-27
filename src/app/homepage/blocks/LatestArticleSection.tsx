@@ -248,8 +248,8 @@ const LatestArticleSection: React.FC<LatestArticleSectionProps> = ({ articles })
 
   return (
     <section className="relative mt-16 pt-24 pb-0 bg-surface-raised">
-      <div className="relative w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-24">
+      <div className="relative w-full max-w-content mx-auto gutter">
+        <div className="max-w-content mx-auto px-3 sm:px-6 lg:px-24">
           {/* Eyebrow */}
           <p className="text-label uppercase text-edusport-blue mb-6">
             NOUTĂȚI

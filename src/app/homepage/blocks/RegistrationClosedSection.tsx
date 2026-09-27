@@ -37,7 +37,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
             <BoldTextStripClient />
           </div>
 
-          <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+          <div className="w-full max-w-content mx-auto gutter">
             <div className="relative flex flex-col gap-8 max-w-2xl">
               {/* Label + status pill */}
               <div className="flex items-center gap-3">

@@ -20,7 +20,7 @@ export default async function FeaturedAsync() {
   if (!featured) return null;
 
   return (
-    <Section className="py-16 md:py-24">
+    <Section className="section">
       <SectionHeader
         eyebrow="Cel mai recent articol"
         title="Noutăți"

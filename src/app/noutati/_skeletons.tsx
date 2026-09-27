@@ -28,7 +28,7 @@ export function FeaturedArticleBlockSkeleton() {
 
 export function FeaturedSectionSkeleton() {
   return (
-    <Section className="py-16 md:py-24">
+    <Section className="section">
       <SectionHeader
         eyebrow="Cel mai recent articol"
         title="Noutăți"

@@ -83,7 +83,7 @@ export function CardGridSkeleton({
 
 export function LongformSkeleton() {
   return (
-    <Section className="py-12 md:py-16">
+    <Section className="section-compact">
       <div className="max-w-3xl mx-auto flex flex-col gap-8 animate-pulse">
         <HeadingSkeleton width="50%" />
         <TextBlockSkeleton lines={6} />
@@ -98,7 +98,7 @@ export function LongformSkeleton() {
 
 export function FormSkeleton({ fields = 5 }: { fields?: number }) {
   return (
-    <Section className="py-12 md:py-16">
+    <Section className="section-compact">
       <div className="max-w-2xl mx-auto flex flex-col gap-6 animate-pulse">
         {Array.from({ length: fields }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2">
@@ -116,13 +116,13 @@ export function ArticleDetailSkeleton() {
   return (
     <>
       <div className="bg-surface-raised border-b border-line-subtle pt-8">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12 py-4">
+        <div className="w-full max-w-content mx-auto gutter py-4">
           <div className="h-3 w-48 bg-surface-subtle animate-pulse" />
         </div>
       </div>
       <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-surface-subtle animate-pulse" />
-      <article className="bg-surface-raised pt-12 pb-24 md:pt-16 md:pb-24">
-        <div className="w-full max-w-content mx-auto px-4 md:px-8 lg:px-12">
+      <article className="bg-surface-raised section">
+        <div className="w-full max-w-content mx-auto gutter">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start animate-pulse">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">

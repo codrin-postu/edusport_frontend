@@ -14,7 +14,7 @@ const quickLinks = [
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-surface text-primary flex items-center justify-center px-4 py-24">
+    <div className="relative min-h-screen overflow-hidden bg-surface text-primary flex items-center justify-center gutter py-24">
       <div className="relative z-10 max-w-xl w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

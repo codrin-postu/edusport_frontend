@@ -48,8 +48,8 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </PageHeroSection>
 
       {/* ─── DE CE ─── */}
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="flex flex-col gap-3">
             <p className="text-label uppercase text-accent">
               {introEyebrow}
@@ -57,7 +57,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
             <h2 className="text-heading max-w-lg text-primary">
               {introHeading}
             </h2>
-            <p className="text-body max-w-xl text-secondary">
+            <p className="text-body max-w-prose text-secondary">
               {introBody}
             </p>
           </div>
@@ -66,7 +66,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
 
       {/* ─── FOTO ─── */}
       <section className="relative z-10 bg-surface pb-4">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-content gutter">
           <GalleryCarousel
             images={photos}
             eyebrow="Din culise"
@@ -76,8 +76,8 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM POȚI AJUTA (split panel) ─── */}
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="grid border-retro border-line shadow-retro md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
             <div className="bg-surface-dark p-8 text-primary-on-dark md:p-12">
@@ -116,8 +116,8 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM APLICI (CTA) ─── */}
-      <section className="relative z-10 bg-surface py-16 md:py-24">
-        <div className="mx-auto w-full max-w-content px-4 md:px-8 lg:px-12">
+      <section className="relative z-10 bg-surface section">
+        <div className="mx-auto w-full max-w-content gutter">
           <div className="relative bg-surface-dark p-8 shadow-retro md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-12">
@@ -148,8 +148,8 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface py-12 md:py-16">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
+      <section className="relative z-10 border-t-retro border-line-subtle bg-surface section-compact">
+        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-label mb-2 uppercase text-accent">
               Mai departe

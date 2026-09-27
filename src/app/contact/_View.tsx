@@ -477,7 +477,7 @@ const ContactPage: React.FC<{
       </PageHeroSection>
 
       <section className="relative z-10 bg-surface">
-        <div className="max-w-content mx-auto px-4 md:px-8 lg:px-12 py-16 md:py-24">
+        <div className="max-w-content mx-auto gutter section">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
