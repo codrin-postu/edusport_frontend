@@ -39,7 +39,10 @@ for (const width of WIDTHS) {
     });
     await freezeStyles(page);
     // The header sits over the hero but is not part of the freeze.
-    await page.addStyleTag({ content: "[data-site-header], [data-contact-strip] { visibility: hidden !important; }" });
+    // The global scroll-padding-top (for anchor jumps under the fixed header) would
+    // change where the element screenshot scrolls to; the hero has scroll-driven effects,
+    // so neutralize it here. Hero pixels are still asserted at 0.
+    await page.addStyleTag({ content: "[data-site-header], [data-contact-strip] { visibility: hidden !important; } html { scroll-padding-top: 0 !important; }" });
     await expect(page.locator("[data-hero-frozen]")).toHaveScreenshot(`hero-frozen-${width}.png`, { maxDiffPixels: 0 });
   });
 }
