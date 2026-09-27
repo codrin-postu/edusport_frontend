@@ -369,7 +369,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
             options={selectOptions(config, "reason", CONTACT_REASONS)}
             placeholder="Selectează motivul contactării..."
             required={req("reason")}
-            className="bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard/25 data-[state=open]:border-mustard data-[state=open]:ring-mustard/25"
+            className="bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard data-[state=open]:border-mustard data-[state=open]:ring-mustard"
           />
         </div>
       )}

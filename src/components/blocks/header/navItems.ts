@@ -34,7 +34,7 @@ export const navItems: NavItem[] = [
     promo: {
       title: "Despre Noi",
       description: "Află povestea clubului, cunoaște echipa și descoperă realizările noastre.",
-      gradient: "from-edusport-blue to-blue-500",
+      gradient: "from-edusport-blue to-pastel",
     },
     dropdown: [
       {
@@ -71,7 +71,7 @@ export const navItems: NavItem[] = [
     promo: {
       title: "Cursuri Patinaj",
       description: "Tot ce trebuie să știi despre cursurile Școlii de Patinaj EduSport.",
-      gradient: "from-edusport-blue to-blue-500",
+      gradient: "from-edusport-blue to-pastel",
     },
     dropdown: [
       {

@@ -356,7 +356,7 @@ function Lightbox({
     <AnimatePresence>
       {index !== null && (
         <motion.div
-          className="fixed inset-0 z-dialog bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
+          className="fixed inset-0 z-dialog bg-overlay backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

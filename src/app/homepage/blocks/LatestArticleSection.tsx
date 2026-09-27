@@ -192,7 +192,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
               {CATEGORY_LABELS[category]}
             </span>
           )}
-          {category && <span className="w-[3px] h-[3px] rounded-full bg-gray-300 flex-shrink-0" />}
+          {category && <span className="w-[3px] h-[3px] rounded-full bg-line-subtle flex-shrink-0" />}
           <span className="text-caption text-muted">
             {day} {mon}
           </span>

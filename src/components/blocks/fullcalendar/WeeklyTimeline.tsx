@@ -17,15 +17,16 @@ const PAGE = 7;
 
 const HOURS = Array.from({ length: END_HOUR - START_HOUR + 1 }, (_, i) => START_HOUR + i);
 
-// Course colour = type.
-function typeStyle(type?: string): { bg: string; fg: string } {
+// Course colour = type. `captionClass` is the solid, no-opacity role token
+// that passes 4.5:1 for the secondary (time-range) line on that background.
+function typeStyle(type?: string): { bg: string; fg: string; captionClass: string } {
   switch (type) {
     case "eveniment":
     case "concurs":
     case "special":
-      return { bg: "var(--color-orange)", fg: "#ffffff" };
+      return { bg: "var(--color-orange)", fg: "#ffffff", captionClass: "text-primary" };
     default:
-      return { bg: "var(--color-navy)", fg: "var(--color-retro-cream)" };
+      return { bg: "var(--color-navy)", fg: "var(--color-retro-cream)", captionClass: "text-primary-on-dark" };
   }
 }
 
@@ -220,7 +221,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                           style={{ top, height, background: st.bg, color: st.fg }}
                         >
                           {e.title}
-                          <span className="text-caption block opacity-85">
+                          <span className={cn("text-caption block", st.captionClass)}>
                             {String(e.sH).padStart(2, "0")}:{String(e.sM).padStart(2, "0")} – {String(e.eH).padStart(2, "0")}:{String(e.eM).padStart(2, "0")}
                           </span>
                         </div>

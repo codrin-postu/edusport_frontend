@@ -91,7 +91,7 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
             <span className="text-display-lg">
               <CountUp target={s.value} suffix={s.suffix} run={inView} />
             </span>
-            <span className="text-label mt-4 uppercase opacity-80">
+            <span className="text-label mt-4 uppercase">
               {s.label}
             </span>
           </div>
