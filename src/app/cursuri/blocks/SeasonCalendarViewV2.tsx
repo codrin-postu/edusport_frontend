@@ -146,9 +146,12 @@ const WeekendRow: React.FC<{
     isCancelled && !!description && description.trim().length > 0;
 
   // Colour square = course colour (navy) / silver for liber / faded navy for cancelled.
-  const squareColor =
-    card.type === "liber" ? "bg-medal-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
-  const stateColor = isNext
+  const squareColor = isPast
+    ? "bg-disabled"
+    : card.type === "liber" ? "bg-medal-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
+  const stateColor = isPast
+    ? "text-disabled"
+    : isNext
     ? "text-primary font-bold"
     : isCancelled
       ? "text-accent font-medium"
@@ -160,7 +163,6 @@ const WeekendRow: React.FC<{
     <div
       className={cn(
         "flex items-center px-4 py-3 text-sm border-t border-line-subtle first:border-t-0 transition-colors",
-        isPast && "opacity-40",
         isNext && "bg-mustard/[0.16]",
         hasDescription && "cursor-help",
       )}
@@ -173,6 +175,7 @@ const WeekendRow: React.FC<{
         className={cn(
           "flex-1 tabular-nums whitespace-nowrap text-primary",
           isCancelled && "line-through text-secondary",
+          isPast && "text-disabled",
         )}
       >
         {startLabel}
@@ -477,7 +480,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             <div className="text-caption mt-4 flex flex-wrap gap-x-6 gap-y-2 text-secondary">
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-medal-silver" />Liber</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark opacity-45" />Anulat</span>
+              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-overlay" />Anulat</span>
               <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-orange" />Eveniment</span>
             </div>
           </>

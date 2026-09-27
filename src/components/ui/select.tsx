@@ -70,7 +70,7 @@ export const Select: React.FC<SelectProps> = ({
               "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust",
               !selected && "text-secondary",
               selected && "text-primary",
-              disabled && "opacity-60 cursor-not-allowed",
+              disabled && "text-disabled border-line-subtle cursor-not-allowed",
               className,
             )}
           >

@@ -121,7 +121,7 @@ export function GalleryCarousel({
                   onClick={prevDesktop}
                   disabled={desktopStart === 0}
                   aria-label="Imaginile anterioare"
-                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
@@ -129,7 +129,7 @@ export function GalleryCarousel({
                   onClick={nextDesktop}
                   disabled={desktopStart === maxStart}
                   aria-label="Imaginile următoare"
-                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -147,7 +147,7 @@ export function GalleryCarousel({
             onClick={prevDesktop}
             disabled={desktopStart === 0}
             aria-label="Imaginile anterioare"
-            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -155,7 +155,7 @@ export function GalleryCarousel({
             onClick={nextDesktop}
             disabled={desktopStart === maxStart}
             aria-label="Imaginile următoare"
-            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-primary"
+            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

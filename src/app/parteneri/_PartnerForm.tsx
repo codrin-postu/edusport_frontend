@@ -113,7 +113,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
             setStatus("idle");
             setStep(0);
           }}
-          className="text-body-sm mt-2 text-mustard underline underline-offset-4 transition-opacity hover:opacity-70"
+          className="link link-on-dark text-body-sm mt-2"
         >
           Trimite un alt mesaj
         </button>

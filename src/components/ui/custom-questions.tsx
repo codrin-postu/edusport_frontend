@@ -73,7 +73,7 @@ const VARIANT = {
     help: "text-xs text-secondary-on-dark mb-2 -mt-1",
     error: "text-xs font-semibold text-danger mt-2",
     info: "text-sm text-secondary-on-dark leading-relaxed",
-    link: "font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
+    link: "link link-on-dark",
     checkboxLabel: "text-xs font-semibold text-primary-on-dark",
     checkboxAccent: "accent-mustard",
     select:
@@ -85,7 +85,7 @@ const VARIANT = {
     cardTitle: "text-primary-on-dark",
     cardDesc: "text-secondary-on-dark",
     cardLink:
-      "inline-flex items-center gap-2 text-xs font-semibold text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity",
+      "link link-on-dark inline-flex items-center gap-2 text-xs",
     cardExternal: "text-line-subtle-on-dark group-hover:text-mustard",
   },
 } as const;

@@ -148,11 +148,11 @@ const RetroPanel: React.FC<{
         href={instagramUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-3 mx-1 mt-1 p-2 transition-opacity hover:opacity-70"
+        className="group flex items-center gap-3 mx-1 mt-1 p-2"
       >
         <span className="w-[34px] h-[34px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
         <span>
-          <span className="text-caption block text-primary">Instagram</span>
+          <span className="text-caption block text-primary transition-colors group-hover:text-accent">Instagram</span>
           <span className="text-caption block text-secondary">{igHandle}</span>
         </span>
       </a>,

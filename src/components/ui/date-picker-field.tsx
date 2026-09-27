@@ -224,7 +224,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                     ? `${yearPage} - ${yearPage + YEARS_PER_PAGE - 1}`
                     : formatMonthYear(visible)}
                   <ChevronDown
-                    className={cn("size-4 opacity-55 transition-transform", showYears && "rotate-180")}
+                    className={cn("size-4 text-muted transition-transform", showYears && "rotate-180")}
                     aria-hidden
                   />
                 </Button>

@@ -157,6 +157,9 @@ h1.text-branding-font {
   --color-secondary-on-dark: #c0c0c4;
   --color-muted-on-dark: #979ba5;
   --color-accent-on-dark: #efb22b;
+  /* Past or disabled items only (past weekends, disabled controls). Solid,
+     never opacity. 3.09:1 on surface: meets the 3:1 UI bar, not body text. */
+  --color-disabled: #8a8e9a;
 
   --color-surface: #fbf8f1;
   --color-surface-raised: #ffffff;
@@ -580,7 +583,7 @@ html.lv2-nav [data-nav-row] > a:hover::after { width: 100%; }
 /* Brand block — small "Clubul Sportiv" caps over a larger EDUSPORT (match mockup) */
 html.lv2-nav header a[href="/"] { line-height: 1; gap: 1px; }
 html.lv2-nav header a[href="/"] > span:nth-child(1) {
-  font-size: 0.75rem !important; letter-spacing: .18em; opacity: .7; font-weight: 400;
+  font-size: 0.75rem !important; letter-spacing: .18em; color: var(--color-secondary); font-weight: 400;
 }
 html.lv2-nav header a[href="/"] > span:nth-child(2) { font-size: 22px !important; }
 
@@ -629,7 +632,7 @@ html.lv2-nav .nav-promo .nav-promo-c {
   padding: 16px; color: var(--color-retro-cream);
 }
 html.lv2-nav .nav-promo .nav-promo-t { font-weight: 600; font-size: 16px; line-height: 1.15; }
-html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; opacity: .85; margin-top: 4px; line-height: 1.4; }
+html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; margin-top: 4px; line-height: 1.4; }
 
 /* Mobile menu panel → square + cream + brick hover (light pass) */
 html.lv2-nav .z-menu { border-radius: 0 !important; }

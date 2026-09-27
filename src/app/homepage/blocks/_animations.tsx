@@ -46,11 +46,11 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
 export const BoldTextStripClient: React.FC = () => {
   const words = ["SCOALA", "DE", "PATINAJ"];
   return (
-    <div className="flex flex-col gap-0 items-end opacity-[0.1] pointer-events-none select-none">
+    <div className="flex flex-col gap-0 items-end pointer-events-none select-none">
       {words.map((word, i) => (
         <motion.span
           key={word}
-          className="text-branding-font text-primary-on-dark leading-none"
+          className="text-branding-font text-surface-subtle-on-dark leading-none"
           style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)" }}
           initial={{ x: 60, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}

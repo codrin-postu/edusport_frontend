@@ -6,7 +6,7 @@ interface SectionHeaderProps {
   title: string;
   description?: string;
   className?: string;
-  /** Eyebrow text colour override (Tailwind class). Defaults to text-edusport-blue/60 */
+  /** Eyebrow text colour override (Tailwind class). Defaults to text-accent */
   eyebrowClassName?: string;
   /** Title text colour override (Tailwind class). Defaults to text-primary */
   titleClassName?: string;
@@ -32,7 +32,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
         <p
           className={cn(
             "text-xs font-semibold tracking-widest uppercase",
-            eyebrowClassName ?? "text-edusport-blue/60",
+            eyebrowClassName ?? "text-accent",
           )}
         >
           {eyebrow}

@@ -52,14 +52,17 @@ function SlidingPillToggle<T extends string>({
       aria-disabled={disabled || undefined}
       className={cn(
         "relative inline-flex border-[1.5px] border-line bg-surface",
-        disabled && "pointer-events-none opacity-60",
+        disabled && "pointer-events-none border-line-subtle",
         className,
       )}
     >
       {/* Sliding indicator — snappy tight ease */}
       <span
         aria-hidden
-        className="pointer-events-none absolute top-0 bottom-0 left-0 bg-surface-dark transition-all duration-fast ease-standard"
+        className={cn(
+          "pointer-events-none absolute top-0 bottom-0 left-0 transition-all duration-fast ease-standard",
+          disabled ? "bg-disabled" : "bg-surface-dark",
+        )}
         style={indicatorStyle}
       />
 
@@ -71,11 +74,13 @@ function SlidingPillToggle<T extends string>({
             onClick={() => handleChange(option.value)}
             className={cn(
               "text-label relative z-raised px-6 py-3 uppercase transition-colors duration-fast select-none",
-              !ready
-                ? "text-primary"
-                : value === option.value
-                  ? "text-primary-on-dark"
-                  : "text-secondary hover:text-primary",
+              disabled
+                ? value === option.value ? "text-primary-on-dark" : "text-disabled"
+                : !ready
+                  ? "text-primary"
+                  : value === option.value
+                    ? "text-primary-on-dark"
+                    : "text-secondary hover:text-primary",
             )}
           >
             {option.label}

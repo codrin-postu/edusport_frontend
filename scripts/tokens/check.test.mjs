@@ -67,3 +67,18 @@ test("stripComments removes block comments spanning multiple lines", () => {
   assert.doesNotMatch(stripped, /text-red-500/);
   assert.match(stripped, /const x = 1;/);
 });
+
+test("counts text opacity on any colour, not size/leading shorthands", () => {
+  const c = countMatches("<p className=\"text-edusport-blue/60 hover:text-danger/80 text-sm/6\">");
+  assert.equal(c["text-opacity"], 2);
+});
+
+test("counts opacity utilities except the opacity-0/100 show and hide pair", () => {
+  const c = countMatches("<p className=\"opacity-40 hover:opacity-70 disabled:opacity-30 opacity-[0.1] opacity-0 group-hover:opacity-100\">");
+  assert.equal(c["opacity"], 4);
+});
+
+test("counts opacity and rgba text colour in CSS, styles and SVG", () => {
+  const c = countMatches("a{opacity:.7} <div style={{ opacity: 0.5, color: \"rgba(1,2,3,.4)\" }} /> <path opacity=\"0.22\" /> <i style={{ opacity: 0 }} />");
+  assert.equal(c["css-opacity"], 4);
+});

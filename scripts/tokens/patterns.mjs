@@ -2,7 +2,16 @@
 const V = "(?:^|[\\s\"'`:])"; // start of a class token, after any variant prefix
 
 export const PATTERNS = [
-  { id: "text-opacity", why: "text and borders never use opacity", regex: new RegExp(`${V}(?:text|border(?:-[trblxy])?|divide|ring|placeholder:text)-(?:navy|retro-cream|cream|white|black|mustard|rust|gold)\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
+  // Any colour, not a fixed list: `text-edusport-blue/60` slipped past the old
+  // list. `text-sm/6` style size/line-height shorthands are not colours.
+  { id: "text-opacity", why: "text and borders never use opacity", regex: new RegExp(`${V}(?:text|border(?:-[trblxy])?|divide|ring|placeholder:text)-(?!(?:xs|sm|base|lg|[2-9]?xl)\\/)[a-z][a-z-]*\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
+  // Fading an element with opacity fades its text too. Only the show/hide
+  // pair opacity-0 / opacity-100 is allowed; states use solid colours
+  // (text-disabled, text-muted, hover colours) instead.
+  { id: "opacity", why: "no opacity except opacity-0/100 show and hide", regex: new RegExp(`${V}opacity-(?!(?:0|100)(?![\\d.]))(?:\\d+|\\[)`, "g") },
+  // The same through CSS, inline styles and SVG attributes, which class
+  // scans never saw: `opacity: .7` in globals.css, `rgba(...)` text colours.
+  { id: "css-opacity", why: "no opacity or rgba text colour in CSS, styles or SVG", regex: /(?:\bopacity\s*[:=]\s*["'{]?\s*0?\.\d|\bcolor\s*:\s*["']?rgba\()/g },
   { id: "bg-opacity", why: "use surface tokens, hover layers or bg-overlay", regex: new RegExp(`${V}bg-(?:navy|retro-cream|white|black)\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
   { id: "default-palette", why: "only theme tokens", regex: new RegExp(`${V}(?:text|bg|border|ring|divide|from|to|via|fill|stroke)-(?:gray|slate|zinc|neutral|stone|red|green|blue|amber|yellow|orange|emerald|rose|sky|indigo|teal|lime|purple|pink)-\\d{2,3}\\b`, "g") },
   { id: "arbitrary-px", why: "sizes and spacing come from the scale", regex: new RegExp(`${V}(?:text|p[trblxy]?|m[trblxy]?|gap(?:-[xy])?|space-[xy]|top|bottom|left|right|inset(?:-[xy])?)-\\[-?\\d+(?:\\.\\d+)?px\\]`, "g") },
@@ -71,5 +80,35 @@ export const ALLOWLIST = [
     file: "src/components/ui/pill.tsx",
     id: "default-palette",
     reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
+  },
+  {
+    file: "src/app/cursuri/blocks/ScheduleSection.tsx",
+    id: "css-opacity",
+    reason: "notebook rail line and background doodle SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/despre-noi/sportivi/_components/SportspersonCard.tsx",
+    id: "css-opacity",
+    reason: "card stripe SVG paths tinted by the medal colour: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
+    id: "css-opacity",
+    reason: "pinwheel square grid SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
+    id: "opacity",
+    reason: "pinwheel grid faded behind text on mobile: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/landing-v2/blocks/AboutUsSection.tsx",
+    id: "opacity",
+    reason: "mobile background ribbon SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/protectia-datelor/_View.tsx",
+    id: "opacity",
+    reason: "background circles in the contact card: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
 ];

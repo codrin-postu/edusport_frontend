@@ -148,7 +148,7 @@ function renderTokens(tokens: Token[]): React.ReactNode[] {
           href={t.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-edusport-blue underline underline-offset-2 hover:text-edusport-blue/80"
+          className="link"
         >
           {t.content}
         </a>

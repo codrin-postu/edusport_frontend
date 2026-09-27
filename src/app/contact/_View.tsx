@@ -260,7 +260,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
         </p>
         <button
           onClick={resetForm}
-          className="text-body-sm mt-2 text-mustard underline underline-offset-4 hover:opacity-70 transition-opacity"
+          className="link link-on-dark text-body-sm mt-2"
         >
           Trimite un alt mesaj
         </button>
@@ -405,7 +405,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="text-body-sm px-4 py-3 border border-danger/30 bg-danger/10 text-danger"
+          className="text-body-sm px-4 py-3 border border-danger bg-danger/10 text-danger"
         >
           {errorMessage}
         </div>

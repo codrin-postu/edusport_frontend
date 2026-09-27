@@ -25,12 +25,12 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
         {title && (
           <div
             aria-hidden
-            className="absolute right-0 top-16 pr-2 hidden md:flex flex-col items-end opacity-[0.1] pointer-events-none select-none"
+            className="absolute right-0 top-16 pr-2 hidden md:flex flex-col items-end pointer-events-none select-none"
           >
             {title.map((word) => (
               <span
                 key={word}
-                className="text-branding-font text-primary-on-dark leading-none"
+                className="text-branding-font text-surface-subtle-on-dark leading-none"
                 style={{ fontSize: "clamp(3.5rem, 9vw, 8rem)" }}
               >
                 {word}

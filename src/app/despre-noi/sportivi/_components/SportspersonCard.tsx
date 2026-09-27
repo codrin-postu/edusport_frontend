@@ -93,7 +93,7 @@ function tierFor(stats: SportspersonStats): {
     };
   }
   return {
-    color: "rgba(255,255,255,0.22)",
+    color: "var(--color-muted-on-dark)",
     label: stats.totalCompetitions > 0 ? "Sportiv" : "Începător",
     badgeText: null,
     badgeCount: 0,

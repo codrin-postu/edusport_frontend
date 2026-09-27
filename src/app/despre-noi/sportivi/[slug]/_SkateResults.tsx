@@ -231,7 +231,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.max(0, p - 1));
             }}
             disabled={safePage === 0}
-            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:text-disabled disabled:border-line-subtle"
           >
             <ChevronLeft className="size-4" />
           </button>
@@ -264,7 +264,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               setPage((p) => Math.min(totalPages - 1, p + 1));
             }}
             disabled={safePage >= totalPages - 1}
-            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:opacity-30"
+            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:text-disabled disabled:border-line-subtle"
           >
             <ChevronRight className="size-4" />
           </button>

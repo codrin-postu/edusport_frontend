@@ -44,7 +44,7 @@ export default function OpengraphImage() {
         <div style={{ fontSize: 46, fontWeight: 700, color: "#fbbf24", marginTop: 18 }}>
           Școala de Patinaj
         </div>
-        <div style={{ fontSize: 30, color: "rgba(251,248,241,0.72)", marginTop: 26 }}>
+        <div style={{ fontSize: 30, color: "#c0c0c4", marginTop: 26 }}>
           Patinaj artistic pentru copii și adulți · București
         </div>
       </div>
