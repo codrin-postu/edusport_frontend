@@ -71,7 +71,7 @@ export default async function PreviewPage({ params, searchParams }: Props) {
   return (
     <>
       {/* Draft banner — fixed across the very top, ABOVE the site header
-          (which is `fixed top-0 z-[100]`). Uses z-[9999] so it stays
+          (which is `fixed top-0 z-header`). Uses z-[9999] so it stays
           visible no matter how the layout reshuffles. The spacer div below
           reserves matching vertical space so the article isn't clipped by
           the banner. */}

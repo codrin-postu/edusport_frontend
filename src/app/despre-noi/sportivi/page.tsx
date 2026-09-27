@@ -152,7 +152,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
 
       {/* Empty state — render only the hero + a friendly note */}
       {totalAthletes === 0 ? (
-        <section className="relative z-10 bg-surface section">
+        <section className="relative z-raised bg-surface section">
           <div className="w-full max-w-content mx-auto gutter text-center">
             <p className="text-heading text-secondary">
               Niciun profil disponibil momentan
@@ -163,7 +163,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
           </div>
         </section>
       ) : (
-        <div className="relative z-10">
+        <div className="relative z-raised">
           {/* SPOTLIGHT — pinned on every page so the featured athlete
               stays visible while the grid below paginates. Hidden when
               the user has typed a search query (it'd just compete with

@@ -11,7 +11,7 @@ export default function Loading() {
         title={["SCOALA", "DE", "PATINAJ"]}
         blurb="Cursuri de patinaj artistic pentru toate vârstele și nivelurile."
       />
-      <div className="relative z-10 bg-surface-raised flex-1">
+      <div className="relative z-raised bg-surface-raised flex-1">
         <Section className="section">
           <div className="h-3 w-32 bg-surface-subtle mb-6 animate-pulse" />
           <div className="h-9 w-2/3 bg-surface-subtle mb-12 animate-pulse" />

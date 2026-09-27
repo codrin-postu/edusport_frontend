@@ -144,11 +144,11 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
 
   if (!mounted) return null;
 
-  // Rendered on <body>: main is `relative z-10`, which is a stacking context,
+  // Rendered on <body>: main is `relative z-raised`, which is a stacking context,
   // so a dialog inside it can never paint over the header at z-[100].
   return createPortal(
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      className="fixed inset-0 z-dialog flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="leave-notice-title"

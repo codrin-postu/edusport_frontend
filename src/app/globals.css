@@ -429,7 +429,10 @@ h1.text-branding-font {
   box-decoration-break: clone;
   transition: color var(--duration-fast, 150ms) ease;
   &:hover { color: var(--color-accent); animation: link-slide var(--duration-long) var(--ease-in-out); }
-  @media (prefers-reduced-motion: reduce) { &:hover { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover { animation: none; }
+  }
 }
 @utility link-on-dark {
   color: var(--color-primary-on-dark);
@@ -636,10 +639,10 @@ html.lv2-nav .nav-promo .nav-promo-t { font-weight: 600; font-size: 16px; line-h
 html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; opacity: .85; margin-top: 4px; line-height: 1.4; }
 
 /* Mobile menu panel → square + cream + brick hover (light pass) */
-html.lv2-nav .z-\[999\] { border-radius: 0 !important; }
+html.lv2-nav .z-menu { border-radius: 0 !important; }
 /* Row links tint rust on hover — but NOT the layers CTA button (.lcta), whose
    face text must stay white. */
-html.lv2-nav .z-\[999\] a:not(.lcta):hover span { color: var(--color-rust) !important; }
+html.lv2-nav .z-menu a:not(.lcta):hover span { color: var(--color-rust) !important; }
 
 /* Black contact strip: hidden by default, shown only when we KNOW we are at
    the top of the page.

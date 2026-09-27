@@ -28,7 +28,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         <motion.aside
           role="status"
           aria-live="polite"
-          className="fixed z-[900] left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-surface border-retro border-line shadow-retro px-4 pt-4 pb-4"
+          className="fixed z-popup left-[14px] right-[14px] bottom-[14px] sm:left-auto sm:right-[22px] sm:bottom-[22px] sm:w-[310px] bg-surface border-retro border-line shadow-retro px-4 pt-4 pb-4"
           initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}

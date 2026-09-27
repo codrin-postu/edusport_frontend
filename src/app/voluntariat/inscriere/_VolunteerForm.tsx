@@ -232,7 +232,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
 
       {confirmReset && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+          className="fixed inset-0 z-dialog flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="vol-reset-title"

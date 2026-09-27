@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <HeroSkeleton title={["INSCRIERI"]} blurb="Înscrie-te la cursurile EduSport." />
-      <div className="relative z-10 bg-surface flex-1">
+      <div className="relative z-raised bg-surface flex-1">
         <FormSkeleton fields={6} />
       </div>
     </div>

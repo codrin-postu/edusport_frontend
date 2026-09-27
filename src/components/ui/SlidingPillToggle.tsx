@@ -59,7 +59,7 @@ function SlidingPillToggle<T extends string>({
       {/* Sliding indicator — snappy tight ease */}
       <span
         aria-hidden
-        className="pointer-events-none absolute top-0 bottom-0 left-0 bg-surface-dark transition-all duration-200 ease-[cubic-bezier(0.85,0,0.15,1)]"
+        className="pointer-events-none absolute top-0 bottom-0 left-0 bg-surface-dark transition-all duration-fast ease-standard"
         style={indicatorStyle}
       />
 
@@ -70,7 +70,7 @@ function SlidingPillToggle<T extends string>({
             key={option.value}
             onClick={() => handleChange(option.value)}
             className={cn(
-              "text-label relative z-10 px-6 py-3 uppercase transition-colors duration-200 select-none",
+              "text-label relative z-raised px-6 py-3 uppercase transition-colors duration-fast select-none",
               !ready
                 ? "text-primary"
                 : value === option.value

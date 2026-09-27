@@ -18,9 +18,9 @@ interface PageHeroSectionProps {
 
 const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, breadcrumb }) => {
   return (
-    <section className="sticky top-20 z-0">
+    <section className="sticky top-20 z-base">
       <div className="relative w-full overflow-hidden bg-surface-dark text-primary-on-dark" style={{ minHeight: "330px" }}>
-        <WarmStripe className="absolute inset-x-0 top-0 z-20 h-1.5" />
+        <WarmStripe className="absolute inset-x-0 top-0 z-raised h-1.5" />
 
         {title && (
           <div

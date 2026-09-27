@@ -124,14 +124,14 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
         viewBox="0 0 400 1400"
         preserveAspectRatio="xMidYMin meet"
         aria-hidden
-        className="md:hidden absolute inset-x-0 top-0 w-full h-auto opacity-[0.12] pointer-events-none z-0 overflow-visible"
+        className="md:hidden absolute inset-x-0 top-0 w-full h-auto opacity-[0.12] pointer-events-none z-base overflow-visible"
       >
         {mobilePaths.map((d, k) => (
           <path key={k} d={d} fill="none" stroke={RIBBON_COLS[k]} strokeWidth={RIBBON_SW_MOBILE} />
         ))}
       </svg>
 
-      <div className="max-w-content mx-auto relative z-[1]">
+      <div className="max-w-content mx-auto relative z-raised">
         {/* ── Section 1 — content + brush-masked skater ── */}
         <div className="relative flex flex-col md:flex-row items-center gap-12 md:gap-16 py-12 px-6 md:px-16">
           <div className="max-w-[620px]">
@@ -153,7 +153,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
 
         {/* ── Section 2 — pulled up into the ribbon's empty area (scales with
              the full-bleed ribbon height: ~-62% of ribbon height = -41vw) ── */}
-        <div className="relative z-[2] min-h-[360px] flex items-center py-12 px-6 md:px-16 mt-0 md:[margin-top:max(-656px,-41vw)]">
+        <div className="relative z-raised min-h-[360px] flex items-center py-12 px-6 md:px-16 mt-0 md:[margin-top:max(-656px,-41vw)]">
           <div className="max-w-[490px]">
             <Content panel={PANELS[1]!} accent />
           </div>

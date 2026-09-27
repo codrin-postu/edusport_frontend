@@ -182,7 +182,7 @@ export function GalleryCarousel({
                 alt={img.alt}
                 fill
                 sizes="400px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-slow group-hover:scale-105"
               />
               {img.alt && (
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-3 pt-8">
@@ -202,7 +202,7 @@ export function GalleryCarousel({
                   onClick={() => setDesktopStart(i)}
                   aria-label={`Mergi la grupul ${i + 1}`}
                   className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
+                    "w-2 h-2 rounded-full transition-all duration-base",
                     i === desktopStart ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                   )}
                 />
@@ -280,7 +280,7 @@ export function GalleryCarousel({
                   onClick={() => go(i)}
                   aria-label={`Mergi la imaginea ${i + 1}`}
                   className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
+                    "w-2 h-2 rounded-full transition-all duration-base",
                     i === current ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                   )}
                 />
@@ -345,7 +345,7 @@ function Lightbox({
     <AnimatePresence>
       {index !== null && (
         <motion.div
-          className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
+          className="fixed inset-0 z-dialog bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

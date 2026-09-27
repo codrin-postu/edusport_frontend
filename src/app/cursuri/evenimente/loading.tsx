@@ -76,7 +76,7 @@ export default function Loading() {
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-surface-raised flex-1">
+      <div className="relative z-raised bg-surface-raised flex-1">
         <CurrentEventSkeleton />
         <PastEventsSkeleton />
       </div>

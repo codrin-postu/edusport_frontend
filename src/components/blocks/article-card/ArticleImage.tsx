@@ -34,7 +34,7 @@ export const ArticleImage: React.FC<{
         fill
         sizes={sizes}
         className={cn(
-          "object-cover transition-opacity duration-200",
+          "object-cover transition-opacity duration-fast",
           loaded ? "opacity-100" : "opacity-0",
           imgClassName,
         )}

@@ -10,7 +10,7 @@ export default function Loading() {
         title={["CONTACT"]}
         blurb="Suntem aici să răspundem la întrebările tale."
       />
-      <div className="relative z-10 bg-surface flex-1">
+      <div className="relative z-raised bg-surface flex-1">
         <FormSkeleton fields={5} />
       </div>
     </div>

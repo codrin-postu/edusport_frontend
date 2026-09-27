@@ -14,7 +14,7 @@ import type { FormConfig } from "@/lib/strapi-forms";
  * Retro layout on the shared system: PageHeroSection navy band (no image),
  * a "De ce" intro, an auto-scrolling sponsor logo strip, a grid of past
  * events done with partners, the sponsor/event form (config-driven, submits
- * to /api/forms/parteneri), and the slim "Mai departe" outro. All content sections are `relative z-10`
+ * to /api/forms/parteneri), and the slim "Mai departe" outro. All content sections are `relative z-raised`
  * so the sticky hero doesn't bleed through on scroll.
  */
 interface PartnersCopy {
@@ -44,7 +44,7 @@ const PartnerView: React.FC<{
       </PageHeroSection>
 
       {/* ─── DE CE PARTENERIAT ─── */}
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="flex flex-col gap-3">
             <p className="text-label uppercase text-accent">
@@ -64,7 +64,7 @@ const PartnerView: React.FC<{
           Hidden entirely when there are no sponsors: a heading saying "cei care
           susțin clubul" above an empty strip reads worse than no section. */}
       {sponsors.length > 0 && (
-      <section className="relative z-10 bg-surface pb-16 md:pb-24">
+      <section className="relative z-raised bg-surface pb-16 md:pb-24">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="mb-8 flex flex-col gap-2">
             <p className="text-label uppercase text-accent">
@@ -87,7 +87,7 @@ const PartnerView: React.FC<{
 
       {/* ─── EVENIMENTE & COLABORĂRI ─── */}
       {events.length > 0 && (
-        <section className="relative z-10 border-t border-line-subtle bg-surface section">
+        <section className="relative z-raised border-t border-line-subtle bg-surface section">
           <div className="mx-auto w-full max-w-content gutter">
             <div className="mb-8 flex flex-col gap-2">
               <p className="text-label uppercase text-accent">
@@ -139,7 +139,7 @@ const PartnerView: React.FC<{
       )}
 
       {/* ─── COLABOREAZĂ (sponsor / event form) ─── */}
-      <section className="relative z-10 border-t border-line-subtle bg-surface section">
+      <section className="relative z-raised border-t border-line-subtle bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-24">
             <div className="flex flex-col gap-3">
@@ -168,7 +168,7 @@ const PartnerView: React.FC<{
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface section-compact">
+      <section className="relative z-raised border-t-retro border-line-subtle bg-surface section-compact">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-label mb-2 uppercase text-accent">

@@ -54,7 +54,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
           <div className="flex flex-col gap-3 mb-16">
             <span className="text-label uppercase text-accent">Regulament</span>
@@ -100,7 +100,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                       </span>
                       <ChevronDown
                         className={cn(
-                          "w-4 h-4 text-primary shrink-0 transition-transform duration-200",
+                          "w-4 h-4 text-primary shrink-0 transition-transform duration-fast",
                           isOpen && "rotate-180",
                         )}
                       />

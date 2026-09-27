@@ -87,7 +87,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
   return (
     <AnimatePresence>
       {visible && (
-        <div className="fixed inset-0 z-[900] flex items-center justify-center">
+        <div className="fixed inset-0 z-popup flex items-center justify-center">
           <motion.div
             aria-hidden="true"
             onClick={dismiss}

@@ -92,7 +92,7 @@ function NavigationMenuTrigger({
     >
       {children}{" "}
       <ChevronDownIcon
-        className="relative top-[1px] ml-1 size-4 transition duration-200 group-data-[state=open]:rotate-180"
+        className="relative top-[1px] ml-1 size-4 transition duration-fast group-data-[state=open]:rotate-180"
         aria-hidden="true"
       />
     </NavigationMenuPrimitive.Trigger>
@@ -120,7 +120,7 @@ function NavigationMenuContent({
         // fade for open/close
         "data-[motion^=from-]:fade-in",
         "data-[motion^=to-]:fade-out",
-        "duration-200",
+        "duration-fast",
         "top-0",
         "left-0",
         "w-full",
@@ -139,7 +139,7 @@ function NavigationMenuContent({
         "group-data-[viewport=false]/navigation-menu:overflow-hidden",
         "group-data-[viewport=false]/navigation-menu:border",
         "group-data-[viewport=false]/navigation-menu:shadow",
-        "group-data-[viewport=false]/navigation-menu:duration-200",
+        "group-data-[viewport=false]/navigation-menu:duration-fast",
         "**:data-[slot=navigation-menu-link]:focus:ring-0",
         "**:data-[slot=navigation-menu-link]:focus:outline-none",
         className,
@@ -156,7 +156,7 @@ function NavigationMenuViewport({
   return (
     <div
       className={cn(
-        "absolute top-full left-0 isolate z-50 flex justify-center",
+        "absolute top-full left-0 isolate z-sticky flex justify-center",
       )}
     >
       <NavigationMenuPrimitive.Viewport
@@ -173,8 +173,8 @@ function NavigationMenuViewport({
           "mt-2",
           "h-[var(--radix-navigation-menu-viewport-height)]",
           "transition-[width,height]",
-          "duration-200",
-          "ease-[cubic-bezier(0.25,0.1,0.25,1)]",
+          "duration-fast",
+          "ease-standard",
           "w-full",
           "overflow-hidden",
           "",
@@ -235,7 +235,7 @@ function NavigationMenuIndicator({
         "data-[state=hidden]:fade-out",
         "data-[state=visible]:fade-in",
         "top-full",
-        "z-[1]",
+        "z-raised",
         "flex",
         "h-1.5",
         "items-end",

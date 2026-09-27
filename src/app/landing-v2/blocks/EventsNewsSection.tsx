@@ -83,7 +83,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
             alt={featured.title}
             fill
             loading="lazy"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-long group-hover:scale-105"
             sizes="(min-width: 768px) 55vw, 100vw"
             placeholder="blur"
             blurDataURL={SHIMMER_DATA_URL}

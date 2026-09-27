@@ -30,7 +30,7 @@ const VolunteerInscriereView: React.FC<{ formConfig?: FormConfig | null }> = ({
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface">
+      <section className="relative z-raised bg-surface">
         <div className="max-w-content mx-auto gutter section">
           <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">

@@ -205,7 +205,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                         const mins = now.getHours() * 60 + now.getMinutes();
                         const top = (mins / 60 - START_HOUR) * HOUR_H;
                         if (top < 0 || top > (END_HOUR - START_HOUR + 1) * HOUR_H) return null;
-                        return <div className="absolute left-0 right-0 h-0.5 bg-rust z-10" style={{ top }} />;
+                        return <div className="absolute left-0 right-0 h-0.5 bg-rust z-raised" style={{ top }} />;
                       })()}
                     {sessions.map((e, i) => {
                       const sMin = e.sH * 60 + e.sM;

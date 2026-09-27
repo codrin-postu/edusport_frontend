@@ -63,8 +63,8 @@ export default function SponsorMarquee({ sponsors }: { sponsors: Sponsor[] }) {
         }
       `}</style>
       {/* Edge fades so tiles slide in/out softly against the cream section. */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-retro-cream to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-retro-cream to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-raised w-12 bg-gradient-to-r from-retro-cream to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-raised w-12 bg-gradient-to-l from-retro-cream to-transparent" />
       <div className="sponsor-track py-2">
         {belt.map((s, i) => (
           <SponsorTile key={`${s.name}-${i}`} sponsor={s} />

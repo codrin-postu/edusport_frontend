@@ -30,7 +30,7 @@ const RegistrationWaveDivider: React.FC = () => {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute left-0 right-0 bottom-full translate-y-[1px] z-[1] h-[clamp(140px,16vw,210px)] select-none"
+      className="pointer-events-none absolute left-0 right-0 bottom-full translate-y-[1px] z-raised h-[clamp(140px,16vw,210px)] select-none"
     >
       <svg
         width="100%"

@@ -72,7 +72,7 @@ const ContactInfoCard: React.FC<{
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-4 p-4 bg-surface border-retro border-line shadow-retro-sm hover:shadow-retro transition-all duration-200"
+      className="group flex items-center gap-4 p-4 bg-surface border-retro border-line shadow-retro-sm hover:shadow-retro transition-all duration-fast"
     >
       <div className="flex-shrink-0 w-9 h-9 border-retro border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
         <Icon className="w-4 h-4" />
@@ -476,7 +476,7 @@ const ContactPage: React.FC<{
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface">
+      <section className="relative z-raised bg-surface">
         <div className="max-w-content mx-auto gutter section">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24">
             {/* Left - contact info */}

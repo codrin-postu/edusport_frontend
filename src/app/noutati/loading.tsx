@@ -22,7 +22,7 @@ export default function Loading() {
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-surface">
+      <div className="relative z-raised bg-surface">
         <FeaturedSectionSkeleton />
 
         <Section className="bg-surface border-t-retro border-line-subtle section">

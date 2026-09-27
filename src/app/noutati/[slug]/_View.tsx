@@ -151,7 +151,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
       {/* Cover image */}
       <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-retro border-line bg-surface-subtle">
         <ArticleImage src={article.coverImage} alt={article.title} iconClassName="w-14 h-14" />
-        <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-10" />
+        <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-raised" />
       </div>
 
       {/* Article body */}

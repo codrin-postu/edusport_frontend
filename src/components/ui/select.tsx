@@ -79,7 +79,7 @@ export const Select: React.FC<SelectProps> = ({
             </span>
             <ChevronDown
               className={cn(
-                "w-4 h-4 text-secondary shrink-0 transition-transform duration-200",
+                "w-4 h-4 text-secondary shrink-0 transition-transform duration-fast",
                 open && "rotate-180 text-accent",
               )}
             />
@@ -90,7 +90,7 @@ export const Select: React.FC<SelectProps> = ({
             align="start"
             sideOffset={6}
             className={cn(
-              "z-50 max-h-72 overflow-auto p-1",
+              "z-sticky max-h-72 overflow-auto p-1",
               "min-w-[var(--radix-dropdown-menu-trigger-width)]",
               "border-retro border-line bg-surface shadow-retro",
               "data-[state=open]:animate-in data-[state=closed]:animate-out",

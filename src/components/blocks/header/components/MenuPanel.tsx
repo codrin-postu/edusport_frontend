@@ -163,14 +163,14 @@ const RetroPanel: React.FC<{
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 z-[998] md:bg-black/30"
+            className="fixed inset-0 z-menu md:bg-black/30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
           <motion.div
-            className="fixed z-[999] overflow-hidden bg-surface flex flex-col
+            className="fixed z-menu overflow-hidden bg-surface flex flex-col
               inset-x-0 bottom-0
               md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
               md:border-retro md:border-line md:shadow-retro"
@@ -181,9 +181,9 @@ const RetroPanel: React.FC<{
             transition={{ duration: 0.14, ease: "easeOut" }}
           >
             {/* warm top stripe */}
-            <WarmStripe className="relative z-[1] h-1" />
+            <WarmStripe className="relative z-raised h-1" />
 
-            <div className="relative z-[1] flex-1 min-h-0 overflow-y-auto px-4 py-3">
+            <div className="relative z-raised flex-1 min-h-0 overflow-y-auto px-4 py-3">
               {rows.map((r, i) => (
                 <div key={i}>{r}</div>
               ))}

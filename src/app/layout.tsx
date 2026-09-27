@@ -150,7 +150,7 @@ export default async function RootLayout({
           navItems={navigationItems}
         />
         <main
-          className="relative z-10 pt-24 bg-surface lg:overflow-clip"
+          className="relative z-raised pt-24 bg-surface lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}

@@ -291,7 +291,7 @@ export function SportspersonCard({
           {tier.badgeText && (
             <svg
               aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 z-[4] h-full w-[80px]"
+              className="pointer-events-none absolute inset-y-0 left-0 z-raised h-full w-[80px]"
               viewBox="0 0 80 100"
               preserveAspectRatio="none"
               fill="none"
@@ -309,7 +309,7 @@ export function SportspersonCard({
           {!bottomMedals && tier.badgeText && (
             <div
               aria-hidden
-              className="absolute left-[14px] top-[14px] z-20 font-black leading-none"
+              className="absolute left-[14px] top-[14px] z-raised font-black leading-none"
               style={{
                 transform: "translateZ(20px)",
                 textShadow: "0 1px 4px rgba(0,0,0,0.55)",
@@ -336,7 +336,7 @@ export function SportspersonCard({
 
           {/* Name block — translateZ(30) so it sits on top of the photo */}
           <div
-            className="absolute inset-x-0 bottom-0 z-20 px-4 pb-4 pt-16"
+            className="absolute inset-x-0 bottom-0 z-raised px-4 pb-4 pt-16"
             style={{
               background:
                 "linear-gradient(transparent, rgba(0,0,0,0.92) 60%)",

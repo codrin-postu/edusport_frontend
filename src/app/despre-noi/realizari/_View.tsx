@@ -47,7 +47,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">

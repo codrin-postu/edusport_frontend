@@ -32,7 +32,7 @@ function CurrentEventSection({ event }: { event: Event }) {
             <ArticleImage
               src={event.coverImage}
               alt={event.title}
-              imgClassName="transition-transform duration-500 group-hover:scale-105"
+              imgClassName="transition-transform duration-slow group-hover:scale-105"
               iconClassName="w-12 h-12"
             />
             <span
@@ -178,7 +178,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ currentEvent, pastEvents }) => 
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-surface flex-1">
+      <div className="relative z-raised bg-surface flex-1">
         {currentEvent ? (
           <CurrentEventSection event={currentEvent} />
         ) : (

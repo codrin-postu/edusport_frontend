@@ -32,7 +32,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({
         {...cursuriPageData.banner}
       />
 
-      <div className="relative z-10 bg-surface-raised">
+      <div className="relative z-raised bg-surface-raised">
         <AboutSection {...cursuriPageData.aboutSection} />
 
         <PricingSection

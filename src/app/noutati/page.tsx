@@ -66,7 +66,7 @@ export default async function Page({
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-surface">
+      <div className="relative z-raised bg-surface">
         {/* Featured article streams independently — its skeleton holds the
             whole section so the Toolbar below can render immediately. */}
         <Suspense fallback={<FeaturedSectionSkeleton />}>

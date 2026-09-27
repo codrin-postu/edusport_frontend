@@ -13,7 +13,7 @@ export default function Loading() {
           { label: "Program" },
         ]}
       />
-      <div className="relative z-10 bg-surface-raised flex-1">
+      <div className="relative z-raised bg-surface-raised flex-1">
         <Section className="section">
           <div className="h-3 w-40 bg-surface-subtle mb-3 animate-pulse" />
           <div className="h-9 w-2/3 bg-surface-subtle mb-3 animate-pulse" />

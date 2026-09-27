@@ -184,7 +184,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
         }}
       />
       <span
-        className="relative z-10 transition-colors duration-300"
+        className="relative z-raised transition-colors duration-base"
         style={
           hoverTextColor
             ? { color: isHovered ? hoverTextColor : undefined }

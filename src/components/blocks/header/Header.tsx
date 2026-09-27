@@ -137,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col w-full items-center bg-black">
+      <div className="fixed top-0 left-0 right-0 z-header flex flex-col w-full items-center bg-black">
         {/* Height comes from CSS (see globals.css), not from motion. The state
             has to be right in the first painted frame, and anything React does
             happens after hydration, which is after the browser has painted. */}

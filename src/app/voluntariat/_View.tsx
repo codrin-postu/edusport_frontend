@@ -48,7 +48,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </PageHeroSection>
 
       {/* ─── DE CE ─── */}
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="flex flex-col gap-3">
             <p className="text-label uppercase text-accent">
@@ -65,7 +65,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── FOTO ─── */}
-      <section className="relative z-10 bg-surface pb-4">
+      <section className="relative z-raised bg-surface pb-4">
         <div className="mx-auto w-full max-w-content gutter">
           <GalleryCarousel
             images={photos}
@@ -76,7 +76,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM POȚI AJUTA (split panel) ─── */}
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="grid border-retro border-line shadow-retro md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
@@ -116,7 +116,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── CUM APLICI (CTA) ─── */}
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="relative bg-surface-dark p-8 shadow-retro md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
@@ -148,7 +148,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       </section>
 
       {/* ─── OUTRO ─── */}
-      <section className="relative z-10 border-t-retro border-line-subtle bg-surface section-compact">
+      <section className="relative z-raised border-t-retro border-line-subtle bg-surface section-compact">
         <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-label mb-2 uppercase text-accent">

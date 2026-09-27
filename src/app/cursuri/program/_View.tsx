@@ -26,7 +26,7 @@ const ProgramPage: React.FC<ProgramPageProps> = ({ data }) => {
         </p>
       </PageHeroSection>
 
-      <div className="relative z-10 bg-surface-raised">
+      <div className="relative z-raised bg-surface-raised">
         <SeasonCalendarViewV2
           seasonCalendar={data.calendarEvents}
           seasonLabel={data.seasonLabel}

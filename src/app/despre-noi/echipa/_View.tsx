@@ -38,7 +38,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
         </p>
       </PageHeroSection>
 
-      <section className="relative z-10 bg-surface section">
+      <section className="relative z-raised bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
           {/* Introduction */}
           <div className="max-w-prose mb-16">

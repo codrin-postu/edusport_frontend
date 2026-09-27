@@ -106,9 +106,9 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
     <div className="group relative">
       <div
         aria-hidden
-        className="absolute inset-0 bg-edusport-blue pointer-events-none transition-transform duration-300 ease-out group-hover:translate-x-4 group-hover:translate-y-4"
+        className="absolute inset-0 bg-edusport-blue pointer-events-none transition-transform duration-base ease-out group-hover:translate-x-4 group-hover:translate-y-4"
       />
-      <Link href={`/noutati/${slug}`} className="relative block z-10">
+      <Link href={`/noutati/${slug}`} className="relative block z-raised">
         {/* Image */}
         <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle">
           {image && (
@@ -117,7 +117,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
               alt={title}
               fill
               loading="lazy"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-long group-hover:scale-105"
               sizes="(min-width: 1024px) 55vw, 100vw"
               placeholder="blur"
               blurDataURL={SHIMMER_DATA_URL}
@@ -125,7 +125,7 @@ const FeaturedCard: React.FC<LatestArticleData & { index: number }> = ({
           )}
           {/* Category badge */}
           {category && (
-            <span className="text-label absolute top-3 left-3 bg-edusport-blue text-primary-on-dark uppercase px-2 py-1 rounded-full z-10">
+            <span className="text-label absolute top-3 left-3 bg-edusport-blue text-primary-on-dark uppercase px-2 py-1 rounded-full z-raised">
               {CATEGORY_LABELS[category]}
             </span>
           )}
@@ -177,7 +177,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
     >
       {/* Number */}
       <span
-        className="text-body text-branding-font text-edusport-blue/20 flex-shrink-0 w-10 transition-colors duration-200 group-hover:text-edusport-blue/50"
+        className="text-body text-branding-font text-edusport-blue/20 flex-shrink-0 w-10 transition-colors duration-fast group-hover:text-edusport-blue/50"
         style={{ transform: "rotate(-8deg)", display: "inline-block" }}
       >
         {String(index).padStart(2, "0")}
@@ -199,7 +199,7 @@ const ArticleListItem: React.FC<LatestArticleData & { index: number; isLast: boo
         </div>
 
         {/* Title */}
-        <p className="text-body-sm text-primary transition-colors duration-200 group-hover:text-edusport-blue">
+        <p className="text-body-sm text-primary transition-colors duration-fast group-hover:text-edusport-blue">
           {title}
         </p>
       </div>

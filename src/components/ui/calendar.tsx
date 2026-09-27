@@ -201,7 +201,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "data-[selected-single=true]:bg-ui-primary data-[selected-single=true]:text-ui-primary-foreground data-[range-middle=true]:bg-ui-accent data-[range-middle=true]:text-ui-accent-foreground data-[range-start=true]:bg-ui-primary data-[range-start=true]:text-ui-primary-foreground data-[range-end=true]:bg-ui-primary data-[range-end=true]:text-ui-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-ui-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70",
+        "data-[selected-single=true]:bg-ui-primary data-[selected-single=true]:text-ui-primary-foreground data-[range-middle=true]:bg-ui-accent data-[range-middle=true]:text-ui-accent-foreground data-[range-start=true]:bg-ui-primary data-[range-start=true]:text-ui-primary-foreground data-[range-end=true]:bg-ui-primary data-[range-end=true]:text-ui-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-ui-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-raised group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className,
       )}

@@ -37,13 +37,13 @@ const ViewModeDropdown: React.FC<{
         {current.label}
         <span
           aria-hidden
-          className={cn("text-caption transition-transform duration-200", open && "rotate-180")}
+          className={cn("text-caption transition-transform duration-fast", open && "rotate-180")}
         >
           ▼
         </span>
       </button>
       {open && (
-        <div className="absolute right-0 max-[520px]:right-auto max-[520px]:left-0 z-30 mt-1 min-w-[150px] border-retro border-line bg-surface shadow-retro-sm">
+        <div className="absolute right-0 max-[520px]:right-auto max-[520px]:left-0 z-raised mt-1 min-w-[150px] border-retro border-line bg-surface shadow-retro-sm">
           {OPTIONS.map((o) => (
             <button
               key={o.value}

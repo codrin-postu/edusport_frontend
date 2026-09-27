@@ -86,7 +86,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             >
               {item.label}
               <ChevronDown
-                className={`size-4 transition-transform duration-200 ${itemIsOpen ? "rotate-180" : ""}`}
+                className={`size-4 transition-transform duration-fast ${itemIsOpen ? "rotate-180" : ""}`}
               />
             </button>
           );
@@ -120,7 +120,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute top-full left-0 pt-6 z-50"
+            className="absolute top-full left-0 pt-6 z-sticky"
           >
             <div className="nav-dropdown-panel bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>

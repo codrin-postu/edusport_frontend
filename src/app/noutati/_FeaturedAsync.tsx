@@ -37,9 +37,9 @@ export default async function FeaturedAsync() {
           <ArticleImage
             src={featured.coverImage}
             alt={featured.title}
-            imgClassName="transition-transform duration-500 group-hover:scale-105"
+            imgClassName="transition-transform duration-slow group-hover:scale-105"
           />
-          <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-10" />
+          <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-raised" />
         </div>
 
         <div className="flex flex-col gap-4">

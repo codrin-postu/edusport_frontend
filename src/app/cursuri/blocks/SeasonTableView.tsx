@@ -81,7 +81,7 @@ function isMonthFullyPast(monthData: MonthData): boolean {
 const tooltipClass = cn(
   "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1",
   "bg-gray-900 text-primary-on-dark text-xs whitespace-nowrap",
-  "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10",
+  "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-raised",
 );
 
 const tooltipArrowClass = cn(

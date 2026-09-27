@@ -13,7 +13,7 @@ export default function Loading() {
           { label: "Regulament" },
         ]}
       />
-      <div className="relative z-10 bg-surface-raised flex-1">
+      <div className="relative z-raised bg-surface-raised flex-1">
         <LongformSkeleton />
       </div>
     </div>

@@ -16,13 +16,13 @@ const INDICATOR_VARIANT = {
     title: "text-body-sm text-primary",
     counter: "text-label uppercase text-accent whitespace-nowrap",
     bar: "relative h-2 border-retro border-line bg-surface-subtle overflow-hidden",
-    fill: "absolute inset-y-0 left-0 bg-surface-dark transition-[width] duration-500 ease-out",
+    fill: "absolute inset-y-0 left-0 bg-surface-dark transition-[width] duration-slow ease-out",
   },
   navy: {
     title: "text-body-sm text-primary-on-dark",
     counter: "text-label uppercase text-mustard whitespace-nowrap",
     bar: "relative h-2 border-retro border-line-on-dark bg-surface-subtle-on-dark overflow-hidden",
-    fill: "absolute inset-y-0 left-0 bg-mustard transition-[width] duration-500 ease-out",
+    fill: "absolute inset-y-0 left-0 bg-mustard transition-[width] duration-slow ease-out",
   },
 } as const;
 
