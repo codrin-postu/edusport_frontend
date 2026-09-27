@@ -78,7 +78,7 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Caută sportiv după nume…"
-        className="text-body-sm w-full border-retro border-line bg-surface py-3 pl-12 pr-12 text-primary placeholder:text-secondary focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/25"
+        className="text-body-sm w-full border-retro border-line bg-surface py-3 pl-12 pr-12 text-primary placeholder:text-secondary focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust"
       />
       {value && (
         <button

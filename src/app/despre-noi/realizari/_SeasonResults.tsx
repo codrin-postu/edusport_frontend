@@ -180,7 +180,7 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
   const meta = [competition.date, competition.location].filter(Boolean).join(", ");
   return (
     <article className="border-retro border-line bg-surface-raised mb-4">
-      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b-retro border-line bg-cream">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b-retro border-line bg-surface-subtle">
         <h4 className="text-title text-primary">
           {competition.name}
         </h4>
@@ -222,13 +222,22 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
             const info = result.placement != null ? getPlacementInfo(result.placement) : null;
             return (
               <tr key={i} className="border-b border-line-subtle last:border-b-0">
-                <td
-                  className={cn(
-                    "px-4 py-3 font-display font-extrabold",
-                    info?.accent ? info.textClass : "text-secondary",
+                <td className="px-4 py-3">
+                  {info?.chipClass ? (
+                    <span
+                      className={cn(
+                        "inline-flex size-7 items-center justify-center font-display font-extrabold text-primary",
+                        info.chipClass,
+                      )}
+                      aria-label={info.label}
+                    >
+                      {result.placement}
+                    </span>
+                  ) : (
+                    <span className="font-display font-extrabold text-secondary">
+                      {info?.label ?? "-"}
+                    </span>
                   )}
-                >
-                  {info?.label ?? "-"}
                 </td>
                 <td className="px-4 py-3">
                   <AthleteName result={result} />
@@ -256,14 +265,19 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
               className="px-3 py-3 border-b border-line-subtle last:border-b-0"
             >
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span
-                  className={cn(
-                    "text-title",
-                    info?.accent ? info.textClass : "text-secondary",
-                  )}
-                >
-                  {info?.label ?? "-"}
-                </span>
+                {info?.chipClass ? (
+                  <span
+                    className={cn(
+                      "inline-flex size-7 items-center justify-center text-title text-primary",
+                      info.chipClass,
+                    )}
+                    aria-label={info.label}
+                  >
+                    {result.placement}
+                  </span>
+                ) : (
+                  <span className="text-title text-secondary">{info?.label ?? "-"}</span>
+                )}
                 <span className="text-caption">
                   <AthleteName result={result} />
                 </span>
@@ -309,7 +323,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
 
   if (seasonIndex.length === 0 || !season || !summary) {
     return (
-      <div className="border-retro border-line bg-cream px-4 py-6">
+      <div className="border-retro border-line bg-surface-subtle px-4 py-6">
         <p className="text-body-sm text-secondary">
           Rezultatele pe sezoane vor apărea aici imediat ce sunt publicate.
         </p>
@@ -343,13 +357,13 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
         </div>
 
         {/* Summary bar */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-cream px-4 py-3 mb-6">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-surface-subtle px-4 py-3 mb-6">
           <Stat value={summary.results} label="rezultate" />
           <Stat value={summary.competitions} label="competiții" />
           <Stat value={summary.athletes} label="sportivi" />
           <div className="flex gap-2 ml-auto">
             <Medal count={summary.gold} label="aur" className="bg-mustard text-primary" />
-            <Medal count={summary.silver} label="argint" className="bg-silver text-primary" />
+            <Medal count={summary.silver} label="argint" className="bg-medal-silver text-primary" />
             <Medal count={summary.bronze} label="bronz" className="bg-orange text-primary-on-dark" />
           </div>
         </div>

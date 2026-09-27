@@ -177,7 +177,7 @@ export function SportspersonCard({
   const medalTotal = stats.goldCount + stats.silverCount + stats.bronzeCount;
   const medalColor =
     medalTotal === 0
-      ? "var(--color-cream)"
+      ? "var(--color-retro-cream)"
       : tier.color === "var(--color-medal-bronze)"
         ? "var(--color-orange)"
         : tier.color;
@@ -309,7 +309,7 @@ export function SportspersonCard({
           {!bottomMedals && tier.badgeText && (
             <div
               aria-hidden
-              className="absolute left-[14px] top-[14px] z-raised font-black leading-none"
+              className="absolute left-4 top-4 z-raised font-black leading-none"
               style={{
                 transform: "translateZ(20px)",
                 textShadow: "0 1px 4px rgba(0,0,0,0.55)",

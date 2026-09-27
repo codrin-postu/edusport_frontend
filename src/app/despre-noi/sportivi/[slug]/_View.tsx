@@ -154,7 +154,7 @@ const SportspersonView: React.FC<Props> = ({
           <nav className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
             <Link
               href="/despre-noi/sportivi"
-              className="text-primary-on-dark transition-colors hover:text-gold"
+              className="text-primary-on-dark transition-colors hover:text-medal-gold"
             >
               Sportivi
             </Link>
@@ -173,7 +173,7 @@ const SportspersonView: React.FC<Props> = ({
             {/* Left: category eyebrow + huge stacked name. The narrative
                 bio now lives in its own "Despre mine" section below. */}
             <div>
-              <div className="text-label mb-4 uppercase text-gold">
+              <div className="text-label mb-4 uppercase text-medal-gold">
                 {category}
               </div>
               <h1 className="text-athlete-name">
@@ -183,7 +183,7 @@ const SportspersonView: React.FC<Props> = ({
 
             {/* Right: photo inset with the brand gold→rust→blue gradient
                 (visible as frame / behind photo-less athletes). */}
-            <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-gold via-rust to-edusport-blue md:h-[300px]">
+            <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-medal-gold via-rust to-edusport-blue md:h-[300px]">
               {sportsperson.photo?.url && (
                 <Image
                   src={strapiMediaUrl(sportsperson.photo.url)}
@@ -195,7 +195,7 @@ const SportspersonView: React.FC<Props> = ({
                 />
               )}
               {sportsperson.activeSince && (
-                <span className="text-label absolute bottom-3 left-3 bg-black/45 px-3 py-1 uppercase text-primary-on-dark backdrop-blur-sm">
+                <span className="text-label absolute bottom-3 left-3 bg-overlay px-3 py-1 uppercase text-primary-on-dark backdrop-blur-sm">
                   Membru din {sportsperson.activeSince.slice(0, 4)}
                 </span>
               )}
@@ -323,7 +323,7 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface-dark section text-primary-on-dark">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-gold">
+            <div className="text-label uppercase text-medal-gold">
               Cele mai notabile rezultate
             </div>
             <h2 className="text-heading mt-2 text-primary-on-dark">
@@ -366,7 +366,7 @@ const SportspersonView: React.FC<Props> = ({
                         {r.score !== undefined && (
                           <>
                             {" · "}
-                            <span className="font-bold text-gold">
+                            <span className="font-bold text-medal-gold">
                               {r.score.toFixed(2)}
                             </span>
                           </>
@@ -617,7 +617,7 @@ function HeroStat({
       <div
         className={cn(
           "text-heading",
-          accent ? "text-gold" : "text-primary-on-dark",
+          accent ? "text-medal-gold" : "text-primary-on-dark",
         )}
       >
         {value}
@@ -680,7 +680,7 @@ function ProgramSeasons({ seasons }: { seasons: SportspersonSeason[] }) {
       ))}
       {older.length > 0 && (
         <details className="group/seasons">
-          <summary className="text-label -mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 uppercase text-accent transition-colors hover:text-rust/70 [&::-webkit-details-marker]:hidden">
+          <summary className="text-label -mx-1 inline-flex cursor-pointer list-none items-center gap-2 px-1 uppercase text-accent transition-colors hover:text-primary [&::-webkit-details-marker]:hidden">
             <span className="group-open/seasons:hidden">
               Vezi sezoanele anterioare ({older.length})
             </span>
@@ -716,7 +716,7 @@ function SeasonRow({
             key={`${season}-${i}`}
             className="grid grid-cols-[120px_1fr] items-baseline gap-3 py-2"
           >
-            <div className="text-label uppercase text-gold">
+            <div className="text-label uppercase text-medal-gold">
               {p.type}
             </div>
             <div className="min-w-0">

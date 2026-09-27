@@ -241,7 +241,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                       />
                       <span
                         aria-hidden
-                        className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-line-subtle group-hover:text-accent transition-colors"
+                        className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-muted group-hover:text-accent transition-colors"
                       >
                         {String(rank).padStart(2, "0")}
                       </span>

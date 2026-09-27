@@ -66,8 +66,10 @@ export interface PlacementInfo {
   label: string;
   /** Accent colour for top-3 podium positions; null otherwise. */
   accent: string | null;
-  /** Class for the placement text colour. */
+  /** Class for the placement text colour (dark-background use only). */
   textClass: string;
+  /** Solid chip background for top-3 podium positions on a light background; null otherwise. */
+  chipClass: string | null;
 }
 
 const PODIUM_ACCENT: Record<number, string> = {
@@ -88,18 +90,26 @@ const PODIUM_TEXT: Record<number, string> = {
   3: "text-medal-bronze",
 };
 
+const PODIUM_CHIP: Record<number, string> = {
+  1: "bg-medal-gold",
+  2: "bg-medal-silver",
+  3: "bg-medal-bronze",
+};
+
 export function getPlacementInfo(placement: Placement): PlacementInfo {
   if (placement === 1 || placement === 2 || placement === 3) {
     return {
       label: PODIUM_LABEL[placement],
       accent: PODIUM_ACCENT[placement],
       textClass: PODIUM_TEXT[placement],
+      chipClass: PODIUM_CHIP[placement],
     };
   }
   return {
     label: `Locul ${placement}`,
     accent: null,
     textClass: "text-secondary",
+    chipClass: null,
   };
 }
 

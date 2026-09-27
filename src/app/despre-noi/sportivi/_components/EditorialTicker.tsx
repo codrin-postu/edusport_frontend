@@ -37,7 +37,7 @@ export function EditorialTicker({
 
   const colorClasses =
     variant === "gold"
-      ? "bg-gold text-primary"
+      ? "bg-medal-gold text-primary"
       : variant === "blue"
         ? "bg-edusport-blue text-primary-on-dark"
         : variant === "black"
@@ -48,7 +48,7 @@ export function EditorialTicker({
     variant === "gold"
       ? "text-primary"
       : variant === "blue" || variant === "black"
-        ? "text-gold"
+        ? "text-medal-gold"
         : "text-edusport-blue";
 
   const prefix = variant === "gold" ? "◆ " : "★ ";
