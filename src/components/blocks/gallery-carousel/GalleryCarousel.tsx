@@ -6,6 +6,7 @@ import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { DURATION, EASE } from "@/lib/motion";
 
 /**
  * Reusable image gallery with desktop sliding window (3-up), mobile single-
@@ -166,7 +167,7 @@ export function GalleryCarousel({
         <motion.div
           className="flex gap-3"
           animate={{ x: `calc(-${desktopStart} * (33.333% + 0.25rem))` }}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: DURATION.slow, ease: EASE.standard }}
         >
           {images.map((img, i) => (
             <button
@@ -201,11 +202,16 @@ export function GalleryCarousel({
                   key={i}
                   onClick={() => setDesktopStart(i)}
                   aria-label={`Mergi la grupul ${i + 1}`}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-base",
-                    i === desktopStart ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
-                  )}
-                />
+                  className="size-10 flex items-center justify-center"
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all duration-base",
+                      i === desktopStart ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
+                    )}
+                  />
+                </button>
               ))
             ) : (
               <span className="text-caption text-secondary tabular-nums">
@@ -236,7 +242,7 @@ export function GalleryCarousel({
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: DURATION.slow, ease: EASE.standard }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.12}
@@ -268,7 +274,7 @@ export function GalleryCarousel({
           <button
             onClick={prev}
             aria-label="Imaginea anterioară"
-            className="w-8 h-8 flex items-center justify-center text-primary hover:text-accent transition-colors"
+            className="size-10 flex items-center justify-center text-primary hover:text-accent transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -279,11 +285,16 @@ export function GalleryCarousel({
                   key={i}
                   onClick={() => go(i)}
                   aria-label={`Mergi la imaginea ${i + 1}`}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-base",
-                    i === current ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
-                  )}
-                />
+                  className="size-10 flex items-center justify-center"
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all duration-base",
+                      i === current ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
+                    )}
+                  />
+                </button>
               ))}
             </div>
           ) : (
@@ -294,7 +305,7 @@ export function GalleryCarousel({
           <button
             onClick={next}
             aria-label="Imaginea următoare"
-            className="w-8 h-8 flex items-center justify-center text-primary hover:text-accent transition-colors"
+            className="size-10 flex items-center justify-center text-primary hover:text-accent transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -349,7 +360,7 @@ function Lightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: DURATION.fast }}
           onClick={onClose}
         >
           <button
@@ -390,7 +401,7 @@ function Lightbox({
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: DURATION.fast }}
             // No fixed aspect — let the image's natural dimensions drive the
             // wrapper size, capped at 95vw / 90vh. This way portraits get the
             // full vertical viewport instead of being letterboxed inside a

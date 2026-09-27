@@ -5,6 +5,7 @@ import ConsentGate from "@/components/blocks/cookie-consent/ConsentGate";
 import { COOKIE_CATEGORIES } from "@/components/blocks/cookie-consent/config";
 import { ArrowUpRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { DURATION } from "@/lib/motion";
 import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef, memo } from "react";
 
 function extractVideoId(url: string): string {
@@ -141,9 +142,9 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             animate={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              transition: { duration: 0.25, delay: 0.3 },
+              transition: { duration: DURATION.base, delay: 0.3 },
             }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: DURATION.base }}
             style={{
               backgroundImage: `url(${thumbnail})`,
               backgroundSize: "cover",
@@ -166,7 +167,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: DURATION.fast }}
           >
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
               {playing ? (
@@ -194,13 +195,13 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         <div className="flex items-center gap-3">
           <button
             onClick={toggleMute}
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
+            className="size-10 flex items-center justify-center rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
             aria-label={muted ? "Activează sunetul" : "Dezactivează sunetul"}
           >
             {muted ? (
-              <VolumeX className="w-3.5 h-3.5" />
+              <VolumeX className="size-6" />
             ) : (
-              <Volume2 className="w-3.5 h-3.5" />
+              <Volume2 className="size-6" />
             )}
           </button>
           <a
@@ -210,7 +211,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             className="text-caption inline-flex items-center gap-1 text-secondary-on-dark hover:text-primary-on-dark transition-colors"
           >
             YouTube
-            <ArrowUpRight className="w-3 h-3" />
+            <ArrowUpRight className="size-4" />
           </a>
         </div>
       </div>

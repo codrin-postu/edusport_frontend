@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { DURATION } from "@/lib/motion";
 import { usePathname } from "next/navigation";
 import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
@@ -31,7 +32,7 @@ const CascadingText: React.FC<{ text: string; className?: string }> = ({
             color: isHovered ? "var(--color-edusport-blue)" : "var(--color-ink)",
           }}
           transition={{
-            duration: 0.1,
+            duration: DURATION.fast,
             delay: index * 0.05,
           }}
         >

@@ -44,7 +44,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
             <div className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
               {breadcrumb ? breadcrumb.map((item, i) => (
                 <React.Fragment key={item.label}>
-                  {i > 0 && <ChevronRight className="w-3 h-3 shrink-0" />}
+                  {i > 0 && <ChevronRight className="size-4 shrink-0" />}
                   {item.href ? (
                     <a href={item.href} className="transition-colors hover:text-accent">
                       {item.label}

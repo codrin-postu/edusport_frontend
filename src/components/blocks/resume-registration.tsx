@@ -77,7 +77,7 @@ const ResumeRegistration: React.FC = () => {
           type="button"
           onClick={dismiss}
           aria-label="Închide"
-          className="text-body -mt-1 px-1 text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
+          className="text-body -mt-2 -mr-2 size-10 inline-flex items-center justify-center text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
         >
           ✕
         </button>

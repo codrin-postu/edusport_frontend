@@ -21,7 +21,7 @@ const HeaderTop: React.FC<HeaderTopProps> = ({ contactInfo }) => {
       <div className="w-full max-w-content mx-auto px-3 sm:px-4 flex justify-between items-center gap-2">
         {address && (
           <div className="text-body-sm flex items-center gap-1 sm:gap-2 text-primary-on-dark min-w-0 flex-1">
-            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+            <MapPin className="size-4 shrink-0" />
             {maps ? (
               <a
                 href={maps}
@@ -41,7 +41,7 @@ const HeaderTop: React.FC<HeaderTopProps> = ({ contactInfo }) => {
 
         {phone && (
           <div className="text-body-sm flex items-center gap-1 sm:gap-2 text-primary-on-dark shrink-0">
-            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+            <Phone className="size-4 shrink-0" />
             <a
               href={`tel:${phone.replace(/\s/g, "")}`}
               className="hover:text-secondary-on-dark transition-colors whitespace-nowrap"

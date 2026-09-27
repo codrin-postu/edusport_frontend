@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { DURATION, EASE } from "@/lib/motion";
 import Link from "next/link";
 import { useEffect, useId, useRef } from "react";
 
@@ -95,7 +96,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reducedMotion ? 0.15 : 0.25 }}
+            transition={{ duration: reducedMotion ? DURATION.fast : DURATION.base }}
           />
 
           <motion.div
@@ -108,7 +109,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
-            transition={{ duration: reducedMotion ? 0.15 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: reducedMotion ? DURATION.fast : DURATION.base, ease: EASE.out }}
           >
             {announcement.eyebrow && (
               <p className="text-label uppercase text-accent mb-2">

@@ -4,6 +4,7 @@ import Link from "@/components/ui/link";
 import { LinkVariants } from "@/utils/constants";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { DURATION, EASE } from "@/lib/motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface DropdownItem {
@@ -119,7 +120,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: DURATION.fast, ease: EASE.out }}
             className="absolute top-full left-0 pt-6 z-sticky"
           >
             <div className="nav-dropdown-panel bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
@@ -130,7 +131,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ duration: DURATION.fast, ease: EASE.out }}
                   className="flex"
                 >
                   {/* Promo tile (image + title + description). */}
@@ -167,7 +168,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}
                         >
-                          <ChevronRight className="w-3.5 h-3.5 text-line-subtle group-hover:text-edusport-blue transition-colors shrink-0" />
+                          <ChevronRight className="size-4 text-line-subtle group-hover:text-edusport-blue transition-colors shrink-0" />
                           <div>
                             <span className="text-body-sm text-primary group-hover:text-edusport-blue transition-colors">
                               {dropdownItem.label}

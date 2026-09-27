@@ -3,6 +3,7 @@
 import SpotlightButton from "@/components/ui/spotlight-button";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { AnimatePresence, motion } from "motion/react";
+import { DURATION, EASE } from "@/lib/motion";
 import Link from "next/link";
 import React, { useEffect, useCallback } from "react";
 import { navItems as staticNavItems, type NavItem } from "../navItems";
@@ -178,7 +179,7 @@ const RetroPanel: React.FC<{
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.14, ease: "easeOut" }}
+            transition={{ duration: DURATION.fast, ease: EASE.out }}
           >
             {/* warm top stripe */}
             <WarmStripe className="relative z-raised h-1" />

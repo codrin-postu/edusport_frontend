@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { DURATION, EASE } from "@/lib/motion";
 import Link from "next/link";
 import { X } from "lucide-react";
 
@@ -32,7 +33,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
           initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: reducedMotion ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: reducedMotion ? DURATION.fast : DURATION.slow, ease: EASE.out }}
         >
           <div className="flex items-start justify-between gap-3">
             {announcement.eyebrow ? (
@@ -46,9 +47,9 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
               type="button"
               onClick={dismiss}
               aria-label="Închide anunțul"
-              className="-mt-0.5 -mr-1 shrink-0 p-1 text-secondary hover:text-primary transition-colors"
+              className="-mt-2 -mr-2 shrink-0 size-10 inline-flex items-center justify-center text-secondary hover:text-primary transition-colors"
             >
-              <X className="w-[15px] h-[15px]" aria-hidden="true" />
+              <X className="size-6" aria-hidden="true" />
             </button>
           </div>
 

@@ -612,11 +612,16 @@
   text-transform: capitalize;
 }
 .fc-mobile-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -8px -2px -8px 0;
   font-size: 1rem;
   color: var(--color-navy);
   background: none;
   border: none;
-  padding: 0 2px;
   cursor: pointer;
   line-height: 1;
 }
@@ -702,7 +707,16 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.fc-mobile-band-close { font-size: 1rem; line-height: 1; }
+.fc-mobile-band-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -12px -8px -12px 0;
+  font-size: 1rem;
+  line-height: 1;
+}
 .fc-mobile-band-title {
   font-family: var(--font-league-spartan), "League Spartan", sans-serif;
   font-size: 1.3rem;

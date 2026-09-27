@@ -31,7 +31,7 @@ export const MobileDetailSheet: React.FC<{
             <button className="fc-mobile-band-back" onClick={onBack}>
               Înapoi
             </button>
-            <button className="fc-mobile-band-close" onClick={onClose}>
+            <button className="fc-mobile-band-close" onClick={onClose} aria-label="Închide">
               ✕
             </button>
           </div>
@@ -112,7 +112,7 @@ export const MobileListSheet: React.FC<{
         <div className="fc-mobile-grip" />
         <div className="fc-mobile-modal-header">
           <span className="fc-mobile-modal-date">{dateLabel}</span>
-          <button className="fc-mobile-modal-close" onClick={onClose}>
+          <button className="fc-mobile-modal-close" onClick={onClose} aria-label="Închide">
             ✕
           </button>
         </div>

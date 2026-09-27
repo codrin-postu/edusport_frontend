@@ -249,7 +249,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
                     aria-label={s.label}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary-on-dark transition-colors"
+                    className="-my-3 size-10 inline-flex items-center justify-center text-primary-on-dark transition-colors"
                   >
                     <s.Icon />
                   </a>

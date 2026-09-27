@@ -32,7 +32,7 @@ const ViewModeDropdown: React.FC<{
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="text-label h-[34px] inline-flex items-center gap-2 border-retro border-line bg-transparent px-3 uppercase text-primary"
+        className="text-label min-h-10 inline-flex items-center gap-2 border-retro border-line bg-transparent px-3 uppercase text-primary"
       >
         {current.label}
         <span

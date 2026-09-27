@@ -66,7 +66,7 @@ export function Pagination({
   };
 
   const arrowClass =
-    "flex h-9 w-9 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark";
+    "flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark";
   const arrowDisabled = cn(arrowClass, "pointer-events-none opacity-30");
 
   return (
