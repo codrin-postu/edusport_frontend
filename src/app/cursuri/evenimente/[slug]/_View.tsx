@@ -84,9 +84,9 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
         <div className="w-full max-w-content mx-auto gutter py-4">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
-            <ChevronRight className="w-3 h-3 shrink-0" />
+            <ChevronRight className="size-4 shrink-0" />
             <Link href="/cursuri/evenimente" className="text-primary hover:text-accent transition-colors">Evenimente</Link>
-            <ChevronRight className="w-3 h-3 shrink-0" />
+            <ChevronRight className="size-4 shrink-0" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{event.title}</span>
           </nav>
         </div>
@@ -135,11 +135,11 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
                 </p>
                 <div className="text-body-sm flex flex-col gap-3 text-secondary">
                   <span className="flex items-start gap-3">
-                    <CalendarDays className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <CalendarDays className="size-4 text-accent shrink-0 mt-0.5" />
                     {formatDate(event.eventDate ?? event.date)}
                   </span>
                   <span className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <Clock className="size-4 text-accent shrink-0 mt-0.5" />
                     {new Date(event.eventDate ?? event.date).toLocaleTimeString("ro-RO", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -147,19 +147,19 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
                   </span>
                   {event.location && (
                     <span className="flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <MapPin className="size-4 text-accent shrink-0 mt-0.5" />
                       {event.location}
                     </span>
                   )}
                   {event.admissionInfo && (
                     <span className="flex items-start gap-3">
-                      <Ticket className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <Ticket className="size-4 text-accent shrink-0 mt-0.5" />
                       {event.admissionInfo}
                     </span>
                   )}
                   {event.tags && event.tags.length > 0 && (
                     <span className="flex items-start gap-3">
-                      <Tag className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <Tag className="size-4 text-accent shrink-0 mt-0.5" />
                       {event.tags.join(", ")}
                     </span>
                   )}

@@ -48,11 +48,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
 
       <div className="text-body-sm flex flex-wrap gap-x-6 gap-y-2 text-secondary-on-dark">
         <span className="flex items-center gap-2">
-          <Calendar className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
+          <Calendar className="size-4 shrink-0 text-primary-on-dark" />
           {scheduleDays}
         </span>
         <span className="flex items-center gap-2">
-          <Clock className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
+          <Clock className="size-4 shrink-0 text-primary-on-dark" />
           {scheduleTimes}
         </span>
         <a
@@ -61,7 +61,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           rel="noopener noreferrer"
           className="flex items-center gap-2 link link-on-dark"
         >
-          <MapPin className="w-3.5 h-3.5 shrink-0 text-primary-on-dark" />
+          <MapPin className="size-4 shrink-0 text-primary-on-dark" />
           {locationName}
         </a>
       </div>

@@ -17,10 +17,14 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
       <TooltipTrigger asChild>
-        <Info
-          className="w-3.5 h-3.5 text-secondary hover:text-primary cursor-pointer shrink-0 transition-colors"
+        <button
+          type="button"
+          aria-label="Detalii"
           onClick={() => setOpen((v) => !v)}
-        />
+          className="size-10 -my-3 -mx-3 inline-flex items-center justify-center shrink-0 text-secondary hover:text-primary transition-colors"
+        >
+          <Info className="size-4" />
+        </button>
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-60">
         {text}

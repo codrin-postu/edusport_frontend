@@ -100,7 +100,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                       </span>
                       <ChevronDown
                         className={cn(
-                          "w-4 h-4 text-primary shrink-0 transition-transform duration-fast",
+                          "size-4 text-primary shrink-0 transition-transform duration-fast",
                           isOpen && "rotate-180",
                         )}
                       />
