@@ -23,9 +23,9 @@ test("counts arbitrary px and off-scale spacing", () => {
   assert.equal(c["off-scale-spacing"], 2);
 });
 
-test("counts rounded but not rounded-none or rounded-full", () => {
+test("counts every rounded shape, pills and circles included, but not rounded-none", () => {
   const c = countMatches("<div className=\"rounded-md rounded rounded-full rounded-none\">");
-  assert.equal(c["radius"], 2);
+  assert.equal(c["radius"], 3);
 });
 
 test("counts numeric z-index", () => {
@@ -81,4 +81,9 @@ test("counts opacity utilities except the opacity-0/100 show and hide pair", () 
 test("counts opacity and rgba text colour in CSS, styles and SVG", () => {
   const c = countMatches("a{opacity:.7} <div style={{ opacity: 0.5, color: \"rgba(1,2,3,.4)\" }} /> <path opacity=\"0.22\" /> <i style={{ opacity: 0 }} />");
   assert.equal(c["css-opacity"], 4);
+});
+
+test("counts background opacity on any colour", () => {
+  const c = countMatches("<div className=\"bg-mustard/[0.16] hover:bg-edusport-blue/5 bg-overlay\">");
+  assert.equal(c["bg-opacity"], 2);
 });

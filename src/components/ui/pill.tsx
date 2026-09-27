@@ -25,24 +25,18 @@ const pillVariants = cva(
         lg: "gap-2 py-2 text-body-sm",
       },
       shape: {
-        // Classic rounded pill.
-        pill: "rounded-full",
         // Right-leaning parallelogram (clip-path applied via inline style).
         slanted: "",
       },
     },
     compoundVariants: [
-      // Tighter horizontal padding for the rounded pill.
-      { shape: "pill", size: "sm", class: "px-2" },
-      { shape: "pill", size: "md", class: "px-3" },
-      { shape: "pill", size: "lg", class: "px-4" },
       // Extra horizontal padding for the slanted shape so text isn't
       // cramped against the angled tips.
       { shape: "slanted", size: "sm", class: "px-3" },
       { shape: "slanted", size: "md", class: "px-4" },
       { shape: "slanted", size: "lg", class: "px-6" },
     ],
-    defaultVariants: { variant: "generic", size: "md", shape: "pill" },
+    defaultVariants: { variant: "generic", size: "md", shape: "slanted" },
   },
 );
 
@@ -58,7 +52,7 @@ function Pill({
   className,
   variant,
   size,
-  shape = "pill",
+  shape = "slanted",
   color,
   asChild = false,
   style,

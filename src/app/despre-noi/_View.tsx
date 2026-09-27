@@ -172,7 +172,7 @@ const HistoryPage: React.FC<Props> = ({
             {resolvedMilestones.map((milestone, i) => (
               <div key={i} className="relative pb-8 pl-8">
                 <span
-                  className="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-rust border-2 border-line-on-dark"
+                  className="absolute -left-[7px] top-1.5 w-3 h-3 bg-rust border-2 border-line-on-dark"
                   aria-hidden
                 />
                 <span

@@ -105,7 +105,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   if (status === "sent") {
     return (
       <div className="flex flex-col items-center justify-center py-24 px-8 text-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-surface-dark flex items-center justify-center">
+        <div className="w-16 h-16 bg-surface-dark flex items-center justify-center">
           <CheckCircle className="w-7 h-7 text-mustard" />
         </div>
         <h3 className="text-title text-primary">Înscriere trimisă!</h3>

@@ -249,7 +249,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
   if (status === "sent") {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-8 text-center gap-4">
-        <div className="w-14 h-14 rounded-full bg-mustard flex items-center justify-center">
+        <div className="w-14 h-14 bg-mustard flex items-center justify-center">
           <Send className="w-6 h-6 text-primary" />
         </div>
         <h3 className="text-title text-primary-on-dark">
@@ -405,7 +405,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       {status === "error" && errorMessage && (
         <div
           role="alert"
-          className="text-body-sm px-4 py-3 border border-danger bg-danger/10 text-danger"
+          className="text-body-sm px-4 py-3 bg-accent text-primary-on-dark"
         >
           {errorMessage}
         </div>

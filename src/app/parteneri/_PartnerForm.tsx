@@ -97,7 +97,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   if (status === "sent") {
     return (
       <div className="flex flex-col items-center justify-center gap-4 px-8 py-16 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-mustard">
+        <div className="flex h-14 w-14 items-center justify-center bg-mustard">
           <Send className="h-6 w-6 text-primary" />
         </div>
         <h3 className="text-title text-primary-on-dark">

@@ -24,12 +24,16 @@ Dialog, IconButton, form fields) is SP2 and gets its own spec.
 
 ## Principles
 
-1. **No opacity on text or borders.** Every text and line color is a solid
-   value. The only translucent values allowed are the hover layers, the overlay
-   and the two shadows.
+1. **No opacity on text, borders or fills.** Every text, line and background
+   color is a solid value, and no element is faded with `opacity-*` (only the
+   `opacity-0` / `opacity-100` show and hide pair). The only translucent values
+   allowed are the hover layers, the overlay, the two shadows and decorative
+   text-free shapes (ruling 2026-09-27).
 2. **One token per role.** Pages pick a role (`text-secondary`, `section`,
    `text-title`), never a raw size, color or padding.
-3. **Square corners.** `rounded-full` stays for pills and dots only.
+3. **Square corners, everywhere.** No pills and no circles: tags, dots,
+   avatars and round icon buttons are square too. The one exception is the
+   loading spinner ring (ruling 2026-09-27).
 4. **No dashed or dotted lines** anywhere.
 5. **Rem, not px, for type**, so browser zoom and the phone text-size setting
    work.
@@ -63,6 +67,7 @@ cleanly (`text-secondary`, not `text-text-secondary`).
 | `text-secondary-on-dark` | #c0c0c4 | 9.4 | Subtitles, footer text on navy |
 | `text-muted-on-dark` | #979ba5 | 6.1 | Placeholders, disabled on navy |
 | `text-accent-on-dark` | #efb22b | 9.0 | Eyebrows, links, accents on navy |
+| `text-disabled` | #8a8e9a | 3.1 on cream | Past items (Program weekends, text and square) and disabled controls only; never body copy |
 
 **Migration.** `text-navy`, `/85` and `/80` become `text-primary`. Readable text
 at `/75` to `/40` becomes `text-secondary`. Placeholders and disabled labels
@@ -78,7 +83,9 @@ become `text-muted`. Cream and white opacities on navy map the same way to the
 | `bg-surface-raised` | #ffffff | Cards, inputs |
 | `bg-surface-subtle` | #ece8e0 | Skeletons, image placeholders, blockquotes and code, table header, selected row, progress track, disabled button |
 | `bg-surface-dark` | #0e1a3c | Navy sections, footer, panels |
-| `bg-surface-subtle-on-dark` | #26304e | The same roles on navy |
+| `bg-surface-subtle-on-dark` | #26304e | The same roles on navy; selected option card and page hero watermark on navy |
+| `bg-surface-highlight` | #f9edd1 | The one "next" item in a list (Program's next weekend) |
+| `bg-surface-brand-subtle` | #e5e3ec | Small brand tags (Internațional), with brand blue text |
 
 `bg-surface-subtle` replaces `bg-navy/[0.03]` through `bg-navy/10` and the
 default gray backgrounds (about 45 static uses).
@@ -278,8 +285,9 @@ utility.
   easing).
 - Secondary hover: the `hover` layer (`hover-on-dark` on navy); border and text
   unchanged.
-- Disabled: `bg-surface-subtle` with `text-muted` (on navy
-  `bg-surface-subtle-on-dark` with `text-muted-on-dark`); no border, no dashes.
+- Disabled: `bg-surface-subtle` with `text-disabled` (on navy
+  `bg-surface-subtle-on-dark` with `text-muted-on-dark`); outline controls get
+  `border-line-subtle`; no dashes, never `opacity-*`.
   Visibly different from a white input.
 
 The Button component rewrite itself is SP2.

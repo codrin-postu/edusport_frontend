@@ -44,8 +44,8 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
                 <p className="text-label uppercase text-muted-on-dark">
                   {seasonLabel}
                 </p>
-                <span className="text-caption inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">
-                  <span className="w-1.5 h-1.5 rounded-full bg-line-subtle-on-dark" />
+                <span className="text-caption inline-flex items-center gap-2 px-3 py-1 bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">
+                  <span className="w-1.5 h-1.5 bg-line-subtle-on-dark" />
                   Înscrieri închise
                 </span>
               </div>
@@ -64,7 +64,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
               <div className="flex flex-col sm:flex-row gap-3 sm:items-start">
                 <Button
                   variant="outline"
-                  className="text-body w-full sm:w-auto px-8 py-4 h-auto rounded-full !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
+                  className="text-body w-full sm:w-auto px-8 py-4 h-auto !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
                   asChild
                 >
                   <a
@@ -84,7 +84,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-body w-full sm:w-auto px-8 py-4 h-auto rounded-full !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
+                  className="text-body w-full sm:w-auto px-8 py-4 h-auto !bg-transparent text-primary-on-dark border-line-on-dark hover-layer-on-dark hover:text-primary-on-dark hover:border-line-on-dark"
                   asChild
                 >
                   <Link href={contactUrl}>{contactLabel}</Link>

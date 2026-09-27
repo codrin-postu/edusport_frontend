@@ -433,8 +433,8 @@ const ProtectiaDatelor: React.FC = () => {
             <div className="relative overflow-hidden bg-surface-dark border-retro border-line shadow-retro px-8 py-12 md:px-16 md:py-12">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               {/* Decorative circles */}
-              <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-[0.06] bg-mustard" />
-              <div className="pointer-events-none absolute -bottom-6 -left-6 w-32 h-32 rounded-full opacity-[0.05] bg-surface" />
+              <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 opacity-[0.06] bg-mustard" />
+              <div className="pointer-events-none absolute -bottom-6 -left-6 w-32 h-32 opacity-[0.05] bg-surface" />
 
               <div className="relative flex flex-col gap-6">
                 <div>

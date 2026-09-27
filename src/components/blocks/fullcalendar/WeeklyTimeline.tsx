@@ -188,7 +188,7 @@ const WeeklyTimeline: React.FC<WeeklyTimelineProps> = ({
                       className={cn(
                         "text-title text-primary",
                         isToday &&
-                          "bg-surface-dark text-primary-on-dark w-[22px] h-[22px] rounded-full inline-flex items-center justify-center",
+                          "bg-surface-dark text-primary-on-dark w-[22px] h-[22px] inline-flex items-center justify-center",
                       )}
                     >
                       {format(day, "d")}

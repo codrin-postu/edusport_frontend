@@ -164,6 +164,11 @@ h1.text-branding-font {
   --color-surface: #fbf8f1;
   --color-surface-raised: #ffffff;
   --color-surface-subtle: #ece8e0;
+  /* Warm fill for the one "next" or "current" item in a list (Program's next
+     weekend). Solid equivalent of mustard over surface. */
+  --color-surface-highlight: #f9edd1;
+  /* Brand-blue tinted fill for small tags (Internațional). */
+  --color-surface-brand-subtle: #e5e3ec;
   --color-surface-dark: #0e1a3c;
   --color-surface-subtle-on-dark: #26304e;
   --color-overlay: rgb(14 26 60 / 0.55);
@@ -565,7 +570,7 @@ html.lv2-nav [data-nav-row] > a {
   font-family: var(--font-inter), system-ui, sans-serif;
   text-transform: uppercase;
   letter-spacing: .05em;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 0.8125rem;
   color: var(--color-navy);
   position: relative;

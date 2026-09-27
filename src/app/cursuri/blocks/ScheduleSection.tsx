@@ -61,7 +61,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className="w-5 h-5 rounded-full border-2 border-line-subtle bg-surface shrink-0"
+                  className="w-5 h-5 border-2 border-line-subtle bg-surface shrink-0"
                   style={{ boxShadow: "inset 0 1px 3px rgba(14,26,60,0.15)" }}
                 />
               ))}

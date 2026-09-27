@@ -169,7 +169,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             exit={{ opacity: 0 }}
             transition={{ duration: DURATION.fast }}
           >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
+            <div className="flex items-center justify-center w-16 h-16 bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
               {playing ? (
                 <Pause className="w-6 h-6 text-primary-on-dark fill-white" />
               ) : (
@@ -195,7 +195,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         <div className="flex items-center gap-3">
           <button
             onClick={toggleMute}
-            className="size-10 flex items-center justify-center rounded-full bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
+            className="size-10 flex items-center justify-center bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
             aria-label={muted ? "Activează sunetul" : "Dezactivează sunetul"}
           >
             {muted ? (

@@ -207,7 +207,7 @@ export function GalleryCarousel({
                   <span
                     aria-hidden
                     className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-base",
+                      "w-2 h-2 transition-all duration-base",
                       i === desktopStart ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                     )}
                   />
@@ -290,7 +290,7 @@ export function GalleryCarousel({
                   <span
                     aria-hidden
                     className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-base",
+                      "w-2 h-2 transition-all duration-base",
                       i === current ? "bg-surface-dark w-6" : "bg-line-subtle hover-layer",
                     )}
                   />
@@ -367,7 +367,7 @@ function Lightbox({
             type="button"
             onClick={onClose}
             aria-label="Închide"
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark flex items-center justify-center transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark flex items-center justify-center transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -379,7 +379,7 @@ function Lightbox({
               onChange((index - 1 + images.length) % images.length);
             }}
             aria-label="Imaginea anterioară"
-            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -391,7 +391,7 @@ function Lightbox({
               onChange((index + 1) % images.length);
             }}
             aria-label="Imaginea următoare"
-            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

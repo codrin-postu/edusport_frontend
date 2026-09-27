@@ -171,12 +171,12 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
       data-umami-event={umamiEvent}
-      className={`relative overflow-hidden h-12 px-6 inline-flex items-center justify-center rounded-full font-normal outline-none active:ring-2 active:ring-offset-2 active:ring-current ${variantStyles[variant]} ${className}`}
+      className={`relative overflow-hidden h-12 px-6 inline-flex items-center justify-center font-normal outline-none active:ring-2 active:ring-offset-2 active:ring-current ${variantStyles[variant]} ${className}`}
     >
       {/* Fill that grows from the left on hover. */}
       <span
         aria-hidden
-        className="absolute inset-y-0 left-0 rounded-full pointer-events-none"
+        className="absolute inset-y-0 left-0 pointer-events-none"
         style={{
           backgroundColor: hoverColor,
           width: isHovered ? "100%" : "0%",

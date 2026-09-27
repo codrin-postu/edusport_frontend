@@ -59,7 +59,7 @@ const VARIANT = {
     checkboxAccent: "accent-rust",
     select: undefined as string | undefined,
     card: "border-line bg-surface",
-    cardChecked: "border-rust bg-rust/[0.04]",
+    cardChecked: "border-rust bg-surface-raised",
     cardHover: "hover:shadow-retro-sm transition-shadow",
     cardIcon: "border-line bg-surface-dark text-primary-on-dark",
     cardTitle: "text-primary",
@@ -79,7 +79,7 @@ const VARIANT = {
     select:
       "bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard data-[state=open]:border-mustard data-[state=open]:ring-mustard",
     card: "border-line-on-dark bg-surface-subtle-on-dark",
-    cardChecked: "border-mustard bg-mustard/[0.06]",
+    cardChecked: "border-mustard bg-surface-subtle-on-dark",
     cardHover: "hover:border-mustard transition-colors",
     cardIcon: "border-mustard bg-mustard text-primary",
     cardTitle: "text-primary-on-dark",

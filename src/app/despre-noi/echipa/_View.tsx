@@ -85,7 +85,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       {trainer.image ? (
                         <div
                           className={cn(
-                            "relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 mb-2",
+                            "relative w-14 h-14 overflow-hidden shrink-0 border-2 mb-2",
                             featured ? "border-mustard" : "border-line",
                           )}
                         >
@@ -99,7 +99,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       ) : (
                         <div
                           className={cn(
-                            "w-14 h-14 rounded-full flex items-center justify-center shrink-0 border-2 mb-2",
+                            "w-14 h-14 flex items-center justify-center shrink-0 border-2 mb-2",
                             featured
                               ? "border-mustard bg-overlay text-mustard"
                               : "border-line bg-surface-dark text-primary-on-dark",

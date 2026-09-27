@@ -163,7 +163,7 @@ const WeekendRow: React.FC<{
     <div
       className={cn(
         "flex items-center px-4 py-3 text-sm border-t border-line-subtle first:border-t-0 transition-colors",
-        isNext && "bg-mustard/[0.16]",
+        isNext && "bg-surface-highlight",
         hasDescription && "cursor-help",
       )}
     >

@@ -12,12 +12,14 @@ export const PATTERNS = [
   // The same through CSS, inline styles and SVG attributes, which class
   // scans never saw: `opacity: .7` in globals.css, `rgba(...)` text colours.
   { id: "css-opacity", why: "no opacity or rgba text colour in CSS, styles or SVG", regex: /(?:\bopacity\s*[:=]\s*["'{]?\s*0?\.\d|\bcolor\s*:\s*["']?rgba\()/g },
-  { id: "bg-opacity", why: "use surface tokens, hover layers or bg-overlay", regex: new RegExp(`${V}bg-(?:navy|retro-cream|white|black)\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
+  // Any colour. Hovers use the hover-layer utilities; image overlays use bg-overlay.
+  { id: "bg-opacity", why: "use surface tokens, hover layers or bg-overlay", regex: new RegExp(`${V}bg-[a-z][a-z-]*\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
   { id: "default-palette", why: "only theme tokens", regex: new RegExp(`${V}(?:text|bg|border|ring|divide|from|to|via|fill|stroke)-(?:gray|slate|zinc|neutral|stone|red|green|blue|amber|yellow|orange|emerald|rose|sky|indigo|teal|lime|purple|pink)-\\d{2,3}\\b`, "g") },
   { id: "arbitrary-px", why: "sizes and spacing come from the scale", regex: new RegExp(`${V}(?:text|p[trblxy]?|m[trblxy]?|gap(?:-[xy])?|space-[xy]|top|bottom|left|right|inset(?:-[xy])?)-\\[-?\\d+(?:\\.\\d+)?px\\]`, "g") },
   { id: "off-scale-spacing", why: "4px grid: 1,2,3,4,6,8,12,16,24", regex: new RegExp(`${V}-?(?:p[trblxy]?|m[trblxy]?|gap(?:-[xy])?|space-[xy])-(?:1\\.5|2\\.5|3\\.5|5|7|9|10|11|14|20|28|32|40|56)\\b`, "g") },
   { id: "arbitrary-shadow", why: "shadow-retro-sm or shadow-retro", regex: new RegExp(`${V}shadow-\\[`, "g") },
-  { id: "radius", why: "square corners", regex: new RegExp(`${V}rounded(?:-[trbl]{1,2})?(?:-(?:sm|md|lg|xl|2xl|3xl|\\[[^\\]]+\\]))?(?=[\\s"'\`]|$)`, "g") },
+  // No rounded shapes at all, pills and circles included (rounded-none is fine).
+  { id: "radius", why: "square corners, no pills or circles", regex: new RegExp(`${V}rounded(?:-[trbl]{1,2})?(?:-(?:sm|md|lg|xl|2xl|3xl|full|\\[[^\\]]+\\]))?(?=[\\s"'\`]|$)`, "g") },
   { id: "z-index", why: "use z-base ... z-popup", regex: new RegExp(`${V}-?z-(?:\\[\\d+\\]|\\d+)(?=[\\s"'\`]|$)`, "g") },
   { id: "arbitrary-type", why: "type roles set tracking and leading", regex: new RegExp(`${V}(?:tracking|leading)-\\[`, "g") },
   { id: "raw-duration", why: "duration-fast, -base, -slow, -long", regex: new RegExp(`${V}duration-\\d+\\b`, "g") },
@@ -110,5 +112,10 @@ export const ALLOWLIST = [
     file: "src/app/protectia-datelor/_View.tsx",
     id: "opacity",
     reason: "background circles in the contact card: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
+  },
+  {
+    file: "src/app/contact/_View.tsx",
+    id: "radius",
+    reason: "the loading spinner in the submit button is a spinning ring; a square would wobble.",
   },
 ];

@@ -119,7 +119,7 @@ const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
     >
       <div
         className={cn(
-          "w-2 h-2 rounded-full mr-1",
+          "w-2 h-2 mr-1",
           isNext ? "bg-green-600 animate-pulse" : "bg-green-400",
         )}
       />
@@ -131,7 +131,7 @@ const CourseDateBadge: React.FC<{ dateInfo: WeekendInfo; isNext: boolean }> = ({
 const OffDateBadge: React.FC<{ dateInfo: WeekendInfo }> = ({ dateInfo }) => (
   <TooltipWrapper label={dateInfo.days.join(", ")}>
     <span className="text-caption inline-flex items-center px-2 py-1 bg-red-50 text-red-700 border border-red-150 cursor-help">
-      <div className="w-2 h-2 bg-red-400 rounded-full mr-1" />
+      <div className="w-2 h-2 bg-red-400 mr-1" />
       {dateInfo.weekend}
     </span>
   </TooltipWrapper>
@@ -188,7 +188,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                     key={rowIndex}
                     className={cn(
                       rowIndex % 2 === 0 ? "bg-surface-subtle" : "bg-surface-raised",
-                      "hover:bg-edusport-blue/5 transition-colors",
+                      "hover-layer transition-colors",
                     )}
                   >
                     <TableCell

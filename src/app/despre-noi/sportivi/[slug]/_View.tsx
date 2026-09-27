@@ -447,7 +447,7 @@ const SportspersonView: React.FC<Props> = ({
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-title text-primary">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="text-label rounded-full bg-edusport-blue/10 px-2 py-0.5 uppercase text-edusport-blue">
+                          <span className="text-label bg-surface-brand-subtle px-2 py-0.5 uppercase text-edusport-blue">
                             Internațional
                           </span>
                         )}
