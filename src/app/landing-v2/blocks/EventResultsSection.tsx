@@ -78,7 +78,7 @@ export function EventCard({ event }: { event: Event }) {
             </span>
           )}
         </div>
-        <p className="text-body-sm text-secondary mb-6 max-w-[560px]">{event.excerpt}</p>
+        <p className="text-body-sm text-secondary mb-6 max-w-narrow">{event.excerpt}</p>
         {event.admissionInfo && (
           <p className="text-body-sm text-secondary italic mb-6">{event.admissionInfo}</p>
         )}

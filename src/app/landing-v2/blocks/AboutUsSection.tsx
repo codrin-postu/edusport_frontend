@@ -142,6 +142,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
         {/* ── Ribbon (desktop) — full-bleed to the screen edges, uniform scale.
              The horizontal segments start/end at the viewport edge; the SVG
              breaks out of the 1040 container via the left-1/2 / w-screen trick. */}
+        {/* Decorative ribbon: intentionally wider than max-w-content (1600px). */}
         <div className="hidden md:block relative left-1/2 -translate-x-1/2 w-screen max-w-[1600px]">
           <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" className="block w-full h-auto overflow-visible" aria-hidden>
             {paths.map((d, k) => (

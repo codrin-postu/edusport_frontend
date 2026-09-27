@@ -39,8 +39,8 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
   const listArticles = showEvent ? articles : rest;
 
   return (
-    <section className="bg-surface py-24 md:py-24">
-      <div className="max-w-content mx-auto px-6 md:px-8">
+    <section className="bg-surface section-feature">
+      <div className="max-w-content mx-auto gutter">
         {/* Header */}
         <p className="text-label uppercase text-primary mb-2">
           Actualitate

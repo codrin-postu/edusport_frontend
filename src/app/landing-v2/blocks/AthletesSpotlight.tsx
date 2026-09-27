@@ -53,8 +53,8 @@ const EMPTY_STATS: SportspersonStats = {
 export default function AthletesSpotlight({ athletes, stats, totalCount, copy }: AthletesSpotlightProps) {
   if (!athletes.length) {
     return (
-      <section className="bg-surface py-24 md:py-24">
-        <div className="text-body-sm max-w-content mx-auto px-6 md:px-8 text-center text-secondary">
+      <section className="bg-surface section-feature">
+        <div className="text-body-sm max-w-content mx-auto gutter text-center text-secondary">
           Niciun sportiv încărcat momentan.
         </div>
       </section>
@@ -73,8 +73,8 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
   const ctaUrl = copy?.ctaUrl?.trim() || FALLBACK.ctaUrl;
 
   return (
-    <section className="bg-surface py-24 md:py-24">
-      <div className="max-w-content mx-auto px-6 md:px-8">
+    <section className="bg-surface section-feature">
+      <div className="max-w-content mx-auto gutter">
         <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1.15fr] gap-12 md:gap-16 items-center">
           {/* Left — copy + big number + CTA */}
           <div>
