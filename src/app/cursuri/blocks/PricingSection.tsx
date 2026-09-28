@@ -3,6 +3,7 @@
 import Section from "@/components/ui/section";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import SectionHeader from "@/components/ui/section-header";
 import {
   Tooltip,
   TooltipContent,
@@ -112,14 +113,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <Section id="preturi" className="section bg-surface">
       <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-2">
-          <span className="text-label uppercase text-accent">
-            Tarife
-          </span>
-          <h2 className="text-heading text-primary">
-            Prețuri cursuri grup
-          </h2>
-        </div>
+        <SectionHeader eyebrow="Tarife" title="Prețuri cursuri grup" />
 
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Promo card — plain navy. Card always draws a border-retro edge;

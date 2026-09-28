@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import Button from "@/components/ui/button";
@@ -21,8 +20,8 @@ interface VolunteerViewProps {
  *
  * Retro layout on the shared system: PageHeroSection navy band (no image),
  * a "De ce" intro, a volunteer photo gallery, a split navy/list panel for
- * the ways to help, a CTA panel leading to the application form page at
- * /voluntariat/inscriere, and the slim "Mai departe" outro.
+ * the ways to help, and a CTA panel leading to the application form page at
+ * /voluntariat/inscriere.
  */
 const VolunteerView: React.FC<VolunteerViewProps> = ({
   heroTitle,
@@ -144,26 +143,6 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
               </Button>
             </div>
           </Card>
-        </div>
-      </section>
-
-      {/* ─── OUTRO ─── */}
-      <section className="relative z-raised border-t-retro border-line-subtle bg-surface section-compact">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="text-label mb-2 uppercase text-accent">
-              Mai departe
-            </div>
-            <p className="text-body text-primary">
-              Descoperă echipa și sportivii clubului EduSport.
-            </p>
-          </div>
-          <Link
-            href="/despre-noi"
-            className="text-body-sm link text-accent"
-          >
-            Despre noi
-          </Link>
         </div>
       </section>
     </div>

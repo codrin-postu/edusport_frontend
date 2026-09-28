@@ -3,6 +3,7 @@
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
+import SectionHeader from "@/components/ui/section-header";
 import SeasonResults from "./_SeasonResults";
 import type { GalleryImage, Season, SeasonIndexEntry } from "./_data";
 
@@ -89,14 +90,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
           />
 
           {/* Results, one season at a time */}
-          <div className="flex flex-col gap-3 mb-8">
-            <p className="text-label uppercase text-accent">
-              Rezultate
-            </p>
-            <h2 className="text-heading text-primary">
-              Competiții pe sezoane
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Rezultate" title="Competiții pe sezoane" className="mb-8" />
 
           <SeasonResults seasonIndex={seasonIndex} seasons={seasons} initialSeasonId={initialSeasonId} />
         </div>

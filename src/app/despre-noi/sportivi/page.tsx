@@ -270,29 +270,6 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               extraQuery={search ? { search } : undefined}
             />
           </section>
-
-          {/* OUTRO — slim "next step" band. Same inline-link pattern as
-              AboutSection / evenimente cards: small eyebrow + short
-              statement on one side, a text link with an arrow on the
-              other. Reads like a footnote, not a parallel headline. */}
-          <section className="border-t-retro border-line-subtle bg-surface gutter section-compact">
-            <div className="mx-auto flex max-w-content flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <div className="text-label mb-2 uppercase text-accent">
-                  Mai departe
-                </div>
-                <p className="text-body text-primary">
-                  Vezi toate competițiile clubului și rezultatele complete.
-                </p>
-              </div>
-              <Link
-                href="/despre-noi/realizari"
-                className="text-body-sm link text-accent"
-              >
-                Toate competițiile
-              </Link>
-            </div>
-          </section>
         </div>
       )}
     </div>

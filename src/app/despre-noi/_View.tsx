@@ -2,6 +2,7 @@ import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Card from "@/components/ui/card";
 import { Stat } from "@/components/ui/stat";
+import SectionHeader from "@/components/ui/section-header";
 
 // ---------------------------------------------------------------------------
 // Fallback data (used when CMS fields are empty)
@@ -157,14 +158,7 @@ const HistoryPage: React.FC<Props> = ({
           </div>
 
           {/* Timeline — node dots + year in the left gutter on a navy rail */}
-          <div className="flex flex-col gap-3 mb-12">
-            <p className="text-label uppercase text-accent">
-              Parcurs
-            </p>
-            <h2 className="text-heading text-primary">
-              Momentele cheie
-            </h2>
-          </div>
+          <SectionHeader eyebrow="Parcurs" title="Momentele cheie" className="mb-12" />
 
           <div className="flex flex-col border-l-retro border-line ml-24">
             {resolvedMilestones.map((milestone, i) => (
@@ -187,14 +181,7 @@ const HistoryPage: React.FC<Props> = ({
 
           {/* Events organized */}
           <div className="mt-24">
-            <div className="flex flex-col gap-3 mb-8">
-              <p className="text-label uppercase text-accent">
-                Evenimente
-              </p>
-              <h2 className="text-heading text-primary">
-                Organizate de ACS EduSport
-              </h2>
-            </div>
+            <SectionHeader eyebrow="Evenimente" title="Organizate de ACS EduSport" className="mb-8" />
             <ul className="flex flex-col gap-3 max-w-prose">
               {resolvedEventsOrganized.map((event, i) => (
                 <li

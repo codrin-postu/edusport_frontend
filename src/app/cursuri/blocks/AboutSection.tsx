@@ -3,6 +3,7 @@ import Section from "@/components/ui/section";
 import Icon, { type IconName } from "@/components/ui/icon";
 import YoutubeEmbed from "@/components/blocks/youtube-embed/YoutubeEmbed";
 import Card from "@/components/ui/card";
+import SectionHeader from "@/components/ui/section-header";
 import React from "react";
 
 interface AboutSectionProps {
@@ -37,14 +38,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     <Section className="py-24 bg-surface">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-2">
-            <span className="text-label uppercase text-accent">
-              {eyebrow}
-            </span>
-            <h2 className="text-heading text-primary">
-              {heading}
-            </h2>
-          </div>
+          <SectionHeader eyebrow={eyebrow} title={heading} />
 
           <div className="text-body flex flex-col gap-4 text-secondary">
             {paragraphs.map((p, i) => (

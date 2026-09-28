@@ -9,6 +9,14 @@ import { Icon, type IconName } from "@/components/ui/icon";
 import AccordionItem from "@/components/ui/accordion";
 import { Stat } from "@/components/ui/stat";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   decadeOf,
   getPlacementInfo,
   groupSeasonsByDecade,
@@ -263,40 +271,36 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
       }
     >
       {/* Desktop and tablet: table, fixed columns so every card lines up */}
-      <table className="text-body-sm hidden sm:table w-full table-fixed">
-        <thead>
-          <tr>
-            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-20">
-              Loc
-            </th>
-            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-2/5">
-              Sportiv
-            </th>
-            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle">
-              Categorie
-            </th>
-            <th className="text-label text-right text-secondary px-4 py-2 border-b border-line-subtle w-24">
+      <Table className="hidden sm:table w-full table-fixed">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="h-auto w-20">Loc</TableHead>
+            <TableHead className="h-auto w-2/5">Sportiv</TableHead>
+            <TableHead className="h-auto">Categorie</TableHead>
+            <TableHead numeric className="h-auto w-24">
               Punctaj
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {competition.results.map((result, i) => (
-            <tr key={i} className="border-b border-line-subtle last:border-b-0">
-              <td className="px-4 py-3 align-middle">
+            <TableRow key={i}>
+              <TableCell>
                 <Place placement={result.placement} />
-              </td>
-              <td className="px-4 py-3">
+              </TableCell>
+              <TableCell className="whitespace-normal">
                 <AthleteName result={result} />
-              </td>
-              <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
-              <td className="px-4 py-3 text-right tabular-nums text-secondary">
+              </TableCell>
+              <TableCell className="whitespace-normal text-secondary">
+                {result.category || "-"}
+              </TableCell>
+              <TableCell numeric className="text-secondary">
                 {formatScore(result.score)}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
       {/* Mobile: one row per result, nothing scrolls sideways */}
       <div className="sm:hidden">

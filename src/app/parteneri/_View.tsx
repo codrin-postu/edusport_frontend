@@ -1,9 +1,9 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Card, { CardTitle } from "@/components/ui/card";
 import Chip from "@/components/ui/chip";
+import SectionHeader from "@/components/ui/section-header";
 import SponsorMarquee from "./_SponsorMarquee";
 import PartnerForm from "./_PartnerForm";
 import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
@@ -15,9 +15,9 @@ import type { FormConfig } from "@/lib/strapi-forms";
  *
  * Retro layout on the shared system: PageHeroSection navy band (no image),
  * a "De ce" intro, an auto-scrolling sponsor logo strip, a grid of past
- * events done with partners, the sponsor/event form (config-driven, submits
- * to /api/forms/parteneri), and the slim "Mai departe" outro. All content sections are `relative z-raised`
- * so the sticky hero doesn't bleed through on scroll.
+ * events done with partners, and the sponsor/event form (config-driven,
+ * submits to /api/forms/parteneri). All content sections are `relative
+ * z-raised` so the sticky hero doesn't bleed through on scroll.
  */
 interface PartnersCopy {
   heroTitle: string;
@@ -68,17 +68,12 @@ const PartnerView: React.FC<{
       {sponsors.length > 0 && (
       <section className="relative z-raised bg-surface pb-16 md:pb-24">
         <div className="mx-auto w-full max-w-content gutter">
-          <div className="mb-8 flex flex-col gap-2">
-            <p className="text-label uppercase text-accent">
-              Alături de noi
-            </p>
-            <h2 className="text-heading text-primary">
-              Sponsorii noștri
-            </h2>
-            <p className="text-body-sm text-secondary">
-              Le mulțumim celor care susțin clubul.
-            </p>
-          </div>
+          <SectionHeader
+            eyebrow="Alături de noi"
+            title="Sponsorii noștri"
+            description="Le mulțumim celor care susțin clubul."
+            className="mb-8"
+          />
         </div>
         {/* Full-bleed strip (edge fades handle the sides) */}
         <div className="mx-auto w-full max-w-content gutter">
@@ -91,17 +86,12 @@ const PartnerView: React.FC<{
       {events.length > 0 && (
         <section className="relative z-raised border-t border-line-subtle bg-surface section">
           <div className="mx-auto w-full max-w-content gutter">
-            <div className="mb-8 flex flex-col gap-2">
-              <p className="text-label uppercase text-accent">
-                Împreună
-              </p>
-              <h2 className="text-heading text-primary">
-                Evenimente & colaborări
-              </h2>
-              <p className="text-body-sm max-w-prose text-secondary">
-                Momente construite alături de partenerii noștri.
-              </p>
-            </div>
+            <SectionHeader
+              eyebrow="Împreună"
+              title="Evenimente & colaborări"
+              description="Momente construite alături de partenerii noștri."
+              className="mb-8 max-w-prose"
+            />
             <div className="grid gap-6 sm:grid-cols-2">
               {events.map((ev) => (
                 <Card
@@ -147,17 +137,12 @@ const PartnerView: React.FC<{
       <section className="relative z-raised border-t border-line-subtle bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-24">
-            <div className="flex flex-col gap-3">
-              <p className="text-label uppercase text-accent">
-                {copy.ctaEyebrow}
-              </p>
-              <h2 className="text-heading text-primary">
-                {copy.ctaHeading}
-              </h2>
-              <p className="text-body-sm max-w-sm text-secondary">
-                {copy.ctaBody}
-              </p>
-            </div>
+            <SectionHeader
+              eyebrow={copy.ctaEyebrow}
+              title={copy.ctaHeading}
+              description={copy.ctaBody}
+              className="max-w-sm"
+            />
             <Card as="div" surface="dark" padding="md" className="relative md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h3 className="text-title mb-1 text-primary-on-dark">
@@ -169,26 +154,6 @@ const PartnerView: React.FC<{
               <PartnerForm config={formConfig} />
             </Card>
           </div>
-        </div>
-      </section>
-
-      {/* ─── OUTRO ─── */}
-      <section className="relative z-raised border-t-retro border-line-subtle bg-surface section-compact">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-4 gutter sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="text-label mb-2 uppercase text-accent">
-              Mai departe
-            </div>
-            <p className="text-body text-primary">
-              Descoperă clubul și sportivii noștri.
-            </p>
-          </div>
-          <Link
-            href="/despre-noi"
-            className="text-body-sm link text-accent"
-          >
-            Despre noi
-          </Link>
         </div>
       </section>
     </div>

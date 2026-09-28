@@ -20,10 +20,10 @@ import SkateResults from "./_SkateResults";
 import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
-import Button from "@/components/ui/button";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
+import SectionHeader from "@/components/ui/section-header";
 
 /**
  * Sportsperson profile — retro editorial layout.
@@ -33,7 +33,7 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
  * brand gold→rust→navy gradient, "01" watermark, and a 3-stat row. Right
  * after it comes "Despre mine" — the athlete's narrative bio (Inter
  * lead). The rest (attribute grid, Programe, Performanțe, Galerie,
- * Istoric, Outro) sits on cream so the editorial weight lives up top —
+ * Istoric) sits on cream so the editorial weight lives up top —
  * same rhythm as the sportivi index, in the shared retro system
  * (cream / navy / rust / gold, League Spartan display + Inter body).
  */
@@ -305,12 +305,7 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface section">
           <SectionWatermark>MUZICĂ</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-accent">
-              Programe muzicale
-            </div>
-            <h2 className="text-heading mt-2 text-primary">
-              Muzica pe gheață
-            </h2>
+            <SectionHeader eyebrow="Programe muzicale" title="Muzica pe gheață" />
             <ProgramSeasons seasons={sortSeasonsDesc(sportsperson.seasons)} />
           </div>
         </section>
@@ -404,12 +399,7 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-accent">
-              Rezultate competiții
-            </div>
-            <h2 className="text-heading mt-2 text-primary">
-              Toate competițiile
-            </h2>
+            <SectionHeader eyebrow="Rezultate competiții" title="Toate competițiile" />
             <SkateResults results={skateResults ?? []} />
           </div>
         </section>
@@ -423,12 +413,7 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-accent">
-              Istoric competițional
-            </div>
-            <h2 className="text-heading mt-2 text-primary">
-              Toate competițiile
-            </h2>
+            <SectionHeader eyebrow="Istoric competițional" title="Toate competițiile" />
             <div className="mt-8 flex flex-col">
               {visibleHistoryRows.map(({ comp, row, key }, idx) => {
                 const info: PlacementInfo | null =
@@ -501,26 +486,6 @@ const SportspersonView: React.FC<Props> = ({
           </div>
         </section>
       )}
-
-      {/* ─── OUTRO ─── */}
-      <section className="border-t border-line-subtle bg-surface section-compact">
-        <div className="mx-auto flex w-full max-w-content flex-col items-start gap-6 gutter sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="text-label uppercase text-accent">
-              Mai departe
-            </div>
-            <p className="text-body mt-2 text-primary">
-              Vezi toți sportivii clubului EduSport.
-            </p>
-          </div>
-          <Button
-            face="black"
-            href="/despre-noi/sportivi"
-          >
-            Toți sportivii
-          </Button>
-        </div>
-      </section>
     </div>
   );
 };
