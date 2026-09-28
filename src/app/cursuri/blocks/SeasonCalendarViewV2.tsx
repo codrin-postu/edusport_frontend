@@ -419,6 +419,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
         {/* View toggle */}
         <div className="mt-6 mb-8">
           <ToggleGroup
+            aria-label="Mod de afișare"
             options={CALENDAR_VIEW_OPTIONS}
             value={activeView}
             onChange={(v) => {

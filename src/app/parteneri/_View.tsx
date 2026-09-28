@@ -116,7 +116,7 @@ const PartnerView: React.FC<{
                     <Chip tone="outline" size="sm">
                       cu {ev.partner}
                     </Chip>
-                    <CardTitle className="mt-3">
+                    <CardTitle className="text-title mt-3">
                       {ev.title}
                     </CardTitle>
                     <p className="text-label mt-0.5 uppercase text-secondary">
@@ -143,7 +143,7 @@ const PartnerView: React.FC<{
               description={copy.ctaBody}
               className="max-w-sm"
             />
-            <Card as="div" surface="dark" padding="md" className="relative md:p-8">
+            <Card as="div" surface="dark" padding="md" className="relative border-none md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h3 className="text-title mb-1 text-primary-on-dark">
                 Scrie-ne

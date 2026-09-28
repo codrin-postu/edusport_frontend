@@ -72,7 +72,7 @@ function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "text-label text-secondary h-10 px-4 py-2 text-left align-middle font-normal whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-label text-secondary h-10 px-4 py-2 text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         numeric && "text-right tabular-nums",
         className,
       )}

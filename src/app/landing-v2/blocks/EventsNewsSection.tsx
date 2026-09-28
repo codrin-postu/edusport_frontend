@@ -77,7 +77,12 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
 /** The one article that gets an image, in the left column when there is no event. */
 function FeaturedArticle({ article: featured }: { article: LatestArticleData }) {
   return (
-    <Card href={`/noutati/${featured.slug}`} shadow="none" padding="none" className="group block">
+    <Card
+      href={`/noutati/${featured.slug}`}
+      shadow="none"
+      padding="none"
+      className="group block border-none bg-transparent"
+    >
       <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-retro border-line">
         {featured.image && (
           <Image
@@ -97,7 +102,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
           {CATEGORY_LABELS[featured.category]}
         </Chip>
       )}
-      <CardTitle className="mt-2 mb-2">
+      <CardTitle className="text-title mt-2 mb-2">
         {featured.title}
       </CardTitle>
       <p className="text-caption text-secondary mb-2">{featured.date}</p>

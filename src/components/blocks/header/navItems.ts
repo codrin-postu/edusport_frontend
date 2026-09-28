@@ -109,6 +109,3 @@ export const navItems: NavItem[] = [
 export function getDesktopNavItems(items: NavItem[]): NavItem[] {
   return items.filter((item) => item.key !== "acasa");
 }
-
-// Desktop nav excludes "Acasă" (no need for a home link in the top bar)
-export const desktopNavItems = getDesktopNavItems(navItems);

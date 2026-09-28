@@ -24,6 +24,10 @@ interface SelectProps {
   onDark?: boolean;
   className?: string;
   contentClassName?: string;
+  "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
+  "aria-required"?: boolean | "true" | "false";
+  "aria-labelledby"?: string;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -39,6 +43,10 @@ export const Select: React.FC<SelectProps> = ({
   onDark = false,
   className,
   contentClassName,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
+  "aria-labelledby": ariaLabelledby,
 }) => {
   const [open, setOpen] = useState(false);
   const items = options.filter((o) => o.value !== "");
@@ -66,6 +74,10 @@ export const Select: React.FC<SelectProps> = ({
             type="button"
             disabled={disabled}
             aria-haspopup="listbox"
+            aria-invalid={ariaInvalid}
+            aria-describedby={ariaDescribedby}
+            aria-required={ariaRequired}
+            aria-labelledby={ariaLabelledby}
             className={cn(
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,

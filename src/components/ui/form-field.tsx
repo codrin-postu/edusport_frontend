@@ -192,15 +192,6 @@ export const Field: React.FC<FieldProps> = ({
 // forms that still import them keep working until they move onto Field/Input.
 // ---------------------------------------------------------------------------
 
-/** @deprecated use Field + Input */
-export const inputBase = cn(CONTROL_BASE, "h-12 px-4", CONTROL_LIGHT.page, FOCUS_LIGHT, DISABLED_LIGHT, INVALID_LIGHT);
-
-/** @deprecated use Field + Input (surface="card") */
-export const inputBaseOnCard = cn(CONTROL_BASE, "h-12 px-4", CONTROL_LIGHT.card, FOCUS_LIGHT, DISABLED_LIGHT, INVALID_LIGHT);
-
-/** @deprecated use Field + Input (onDark) */
-export const inputOnNavy = cn(CONTROL_BASE, "h-12 px-4", CONTROL_DARK, FOCUS_DARK, DISABLED_DARK, INVALID_DARK);
-
 /** @deprecated use Field */
 export const FieldLabel: React.FC<{
   htmlFor: string;
@@ -216,17 +207,3 @@ export const FieldLabel: React.FC<{
   </label>
 );
 
-/** @deprecated use Field + Input */
-interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  id: string;
-  label?: string;
-  wrapperClassName?: string;
-}
-
-/** @deprecated use Field + Input */
-export const TextInput: React.FC<TextInputProps> = ({ id, label, wrapperClassName, className, ...props }) => (
-  <div className={wrapperClassName}>
-    {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
-    <input id={id} className={cn(inputBase, className)} {...props} />
-  </div>
-);

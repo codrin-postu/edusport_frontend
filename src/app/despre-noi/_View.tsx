@@ -152,7 +152,13 @@ const HistoryPage: React.FC<Props> = ({
             {resolvedStats.map((stat, i) => (
               <Card key={i} padding="sm" className="relative">
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
-                <Stat value={stat.value} label={stat.label} layout="inline" />
+                <Stat
+                  value={stat.value}
+                  label={stat.label}
+                  layout="inline"
+                  className="items-center gap-3"
+                  labelClassName="text-caption normal-case tracking-normal font-normal"
+                />
               </Card>
             ))}
           </div>

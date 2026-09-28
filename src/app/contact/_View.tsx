@@ -499,7 +499,7 @@ const ContactPage: React.FC<{
             </div>
 
             {/* Right - form (navy panel) */}
-            <Card as="div" surface="dark" padding="md" className="relative md:p-8">
+            <Card as="div" surface="dark" padding="md" className="relative border-none md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h2 className="text-title text-primary-on-dark mb-1">
                 Trimite-ne un mesaj

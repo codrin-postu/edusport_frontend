@@ -118,7 +118,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       {/* ─── CUM APLICI (CTA) ─── */}
       <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
-          <Card as="div" surface="dark" padding="lg" className="relative md:p-12">
+          <Card as="div" surface="dark" padding="lg" className="relative border-none md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-12">
               <div className="flex flex-col gap-3">

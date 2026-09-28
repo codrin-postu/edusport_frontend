@@ -32,7 +32,7 @@ export default async function FeaturedAsync() {
         href={`/noutati/${featured.slug}`}
         shadow="none"
         padding="none"
-        className="group grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+        className="group grid lg:grid-cols-2 gap-12 lg:gap-16 items-center border-none bg-transparent"
       >
         <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-retro border-line bg-surface-subtle">
           <ArticleImage

@@ -14,6 +14,7 @@ export interface ToggleGroupProps<T extends string> {
   onChange: (value: T) => void;
   className?: string;
   disabled?: boolean;
+  "aria-label"?: string;
 }
 
 function ToggleGroup<T extends string>({
@@ -22,6 +23,7 @@ function ToggleGroup<T extends string>({
   onChange,
   className,
   disabled,
+  "aria-label": ariaLabel,
 }: ToggleGroupProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
@@ -78,6 +80,7 @@ function ToggleGroup<T extends string>({
   return (
     <div
       role="radiogroup"
+      aria-label={ariaLabel}
       aria-disabled={disabled || undefined}
       className={cn(
         "relative inline-flex border-[1.5px] border-line bg-surface",
