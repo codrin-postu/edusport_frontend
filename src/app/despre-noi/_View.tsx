@@ -173,7 +173,7 @@ const HistoryPage: React.FC<Props> = ({
                 >
                   {milestone.year}
                 </span>
-                <h3 className="text-title text-primary mb-0.5">{milestone.title}</h3>
+                <h3 className="text-body-lg font-semibold text-primary mb-0.5">{milestone.title}</h3>
                 <p className="text-body-sm text-secondary">{milestone.description}</p>
               </div>
             ))}
