@@ -60,6 +60,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
             <Stat
               size="xl"
               layout="inline"
+              valueClassName="min-w-[100px]"
               value={String(stats.totalCompetitions).padStart(2, "0")}
               label="Competiții"
               accent
@@ -68,6 +69,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
             <Stat
               size="xl"
               layout="inline"
+              valueClassName="min-w-[100px]"
               value={stats.bestScore !== null ? stats.bestScore.toFixed(2) : "—"}
               label="Cel mai bun scor"
               className="gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0"

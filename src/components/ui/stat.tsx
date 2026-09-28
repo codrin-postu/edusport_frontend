@@ -19,6 +19,8 @@ type StatProps = {
   accent?: boolean;
   onDark?: boolean;
   className?: string;
+  /** Extra classes on the number only (e.g. a fixed min width to align rows). */
+  valueClassName?: string;
 };
 
 /**
@@ -33,6 +35,7 @@ export default function Stat({
   accent = false,
   onDark = false,
   className,
+  valueClassName,
 }: StatProps) {
   const valueColor = accent
     ? onDark ? "text-accent-on-dark" : "text-accent"
@@ -45,7 +48,7 @@ export default function Stat({
         className,
       )}
     >
-      <span className={cn(VALUE_SIZE[size], "tabular-nums", valueColor)}>{value}</span>
+      <span className={cn(VALUE_SIZE[size], "tabular-nums", valueColor, valueClassName)}>{value}</span>
       <span className={cn("text-label", onDark ? "text-secondary-on-dark" : "text-secondary")}>{label}</span>
     </div>
   );

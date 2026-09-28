@@ -110,7 +110,7 @@ const RIBBON_SW_MOBILE = 17;
 
 // Dithered skater illustration beside one panel's text, desktop only.
 // Hardcoded, not from the CMS. Which panel carries it: 1 (image right) or 3 (image left).
-const SKATER_PANEL: 1 | 3 = 1;
+const SKATER_PANEL = 1 as 1 | 3;
 
 const Skater: React.FC = () => (
   // The bottom fades into the cream so the cut-off legs don't end on a hard edge.

@@ -99,7 +99,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
       aria-label="Sezoane"
       className="hidden lg:block w-[212px] shrink-0 border-r-retro border-line-subtle"
     >
-      {decades.map((decade) => {
+      {decades.map((decade, i) => {
         const open = isOpen(decade.id);
         // A folded decade still shows its selected season (as a standalone
         // row below the trigger), so the current choice is always visible.
@@ -111,7 +111,11 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
               headingAs="div"
               open={open}
               onOpenChange={() => toggle(decade.id)}
-              triggerClassName="px-3"
+              triggerClassName={cn(
+                "px-3 py-3 border-b-0 hover-layer",
+                i > 0 && "border-t-retro border-line-subtle",
+                open && "bg-surface-subtle",
+              )}
               title={
                 <span className="flex flex-col gap-1 min-w-0">
                   <span className="text-label text-primary">{decade.label}</span>
