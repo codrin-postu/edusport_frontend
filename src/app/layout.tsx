@@ -150,7 +150,11 @@ export default async function RootLayout({
           navItems={navigationItems}
         />
         <main
-          className="relative z-raised pt-24 bg-surface lg:overflow-clip"
+          // pt matches --header-h (the fixed header's own live height, see
+          // globals.css) so page content, and any sticky PageHeroSection
+          // inside it, starts exactly under the header with zero gap or
+          // overlap at any scroll position.
+          className="relative z-raised pt-[var(--header-h)] bg-surface lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}

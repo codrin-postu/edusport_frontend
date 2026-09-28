@@ -64,6 +64,9 @@ const Header: React.FC<HeaderProps> = ({
     const y = window.scrollY;
     const atTop = y <= 400;
     // The class is what actually shows or hides the strip; see globals.css.
+    // The same class also drives --header-h there (the header's live
+    // total height), so anything sitting flush under the fixed header
+    // stays in sync with the strip without any extra bookkeeping here.
     document.documentElement.classList.toggle("nav-strip-open", atTop);
     // Remembered so the inline script in layout.tsx can get the very first
     // painted frame right if this page is reloaded from here. Keyed per path,

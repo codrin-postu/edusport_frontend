@@ -671,3 +671,29 @@ html.nav-anim [data-contact-strip] {
   background-color: var(--color-accent-on-dark);
   color: var(--color-primary);
 }
+
+/* --header-h: the header's current visible bottom edge (80px header, plus
+   2rem when the contact strip above is open), published on <html> right
+   alongside the class that drives the strip's own height so the two never
+   fall out of sync. Anything that needs to sit flush under the fixed header
+   (`main`'s top padding, PageHeroSection's sticky offset) reads this instead
+   of a hardcoded number, so it moves in lockstep with the strip rather than
+   jumping once the strip finishes collapsing.
+
+   Registering the property lets the browser interpolate it like any other
+   animatable length, so the transition below matches the strip's own
+   height transition and nothing using var(--header-h) ever snaps. */
+@property --header-h {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 5rem;
+}
+:root {
+  --header-h: 5rem;
+}
+html.nav-strip-open {
+  --header-h: 7rem;
+}
+html.nav-anim {
+  transition: --header-h 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}

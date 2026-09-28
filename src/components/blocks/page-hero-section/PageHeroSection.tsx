@@ -1,6 +1,5 @@
 import React from "react";
 import Breadcrumb, { type BreadcrumbItem } from "@/components/ui/breadcrumb";
-import { WarmStripe } from "@/components/ui/warm-stripe";
 
 interface PageHeroSectionProps {
   children: React.ReactNode;
@@ -13,10 +12,12 @@ interface PageHeroSectionProps {
 
 const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, breadcrumb }) => {
   return (
-    <section className="sticky top-20 z-base">
+    // Sticks at the header's own live bottom edge (--header-h, published by
+    // Header.tsx) instead of a fixed offset, so it never shifts as the
+    // contact strip collapses. Its static position under `main`'s pt is the
+    // same variable, so there is zero movement at any scroll position.
+    <section className="sticky top-[var(--header-h)] z-base">
       <div className="relative w-full overflow-hidden bg-surface-dark text-primary-on-dark" style={{ minHeight: "330px" }}>
-        <WarmStripe className="absolute inset-x-0 top-0 z-raised h-1.5" />
-
         {title && (
           <div
             aria-hidden
