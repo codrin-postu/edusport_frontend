@@ -1,7 +1,10 @@
 export type CalendarEventType =
+  /** Weekend model, read only by the Weekenduri list. */
   | "curs"
   | "liber"
   | "anulat"
+  /** One Școala de patinaj date, drawn as a tile in the grids. */
+  | "scoala"
   | "holiday"
   | "vacation"
   | "eveniment"
@@ -9,6 +12,7 @@ export type CalendarEventType =
   | "cantonament"
   | "spectacol"
   | "pauza"
+  /** Standalone course such as Antrenament. */
   | "curs-special";
 
 export interface CalendarEvent {
@@ -16,10 +20,10 @@ export interface CalendarEvent {
   startDate: string; // "YYYY-MM-DD"
   endDate: string;   // "YYYY-MM-DD" (inclusive)
   title?: string | null;
-  description?: string | null; // shown in tooltip/mobile sheet (e.g. "10:00–10:50 · 11:00–11:50")
-  /** "curs-special" only - label shown on the calendar tile. */
-  courseLabel?: string | null;
-  /** "curs-special" only - e.g. "10:00–11:30". */
+  description?: string | null; // shown in tooltip/mobile sheet
+  /** "scoala" only: the per-date state set in the admin calendar. */
+  state?: "curs" | "liber" | "anulat" | null;
+  /** Timed events only, e.g. "10:00 - 11:30". Shown first in the tooltip. */
   timeSlot?: string | null;
 }
 

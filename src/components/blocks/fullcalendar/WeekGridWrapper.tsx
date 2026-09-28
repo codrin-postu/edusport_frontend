@@ -6,18 +6,19 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import type { EventInput } from "@fullcalendar/core";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
-import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
+import { SpecialEventWithTooltip } from "./CursEvent";
+import type { CalendarGroup } from "./calendar-colors";
 import { MobileDetailSheet } from "./MobileSheets";
 import { useCalendarNav } from "./useCalendarNav";
 import type { CursEventInfo } from "./types";
 
-// Standardized "date · start – end" label from the event (times only if not all-day).
+// Standardized "date · start - end" label from the event (times only if not all-day).
 function eventDateLabel(e: { start: Date | null; end: Date | null; allDay: boolean }): string | undefined {
   if (!e.start) return undefined;
   const d = e.start.toLocaleDateString("ro-RO", { day: "numeric", month: "long" });
   if (e.allDay) return d;
   const t = (x: Date) => x.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" });
-  return `${d} · ${t(e.start)}${e.end ? ` – ${t(e.end)}` : ""}`;
+  return `${d} · ${t(e.start)}${e.end ? ` - ${t(e.end)}` : ""}`;
 }
 
 interface WeekGridWrapperProps {
@@ -107,20 +108,20 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
           dayHeaderFormat={{ weekday: "long", day: "numeric" }}
           datesSet={syncHeader}
           eventContent={(info) => {
-            const type = info.event.extendedProps?.type as string | undefined;
             const description = info.event.extendedProps?.description as string | null | undefined;
             const dateLabel = eventDateLabel({
               start: info.event.start,
               end: info.event.end,
               allDay: info.event.allDay,
             });
-            // The week grid is fed raw occurrence types (see occurrencesToEvents):
-            // the skating school is "scoala", while "curs" is an extra course such
-            // as Antrenament. Only the school links to its regulament.
-            if (type === "scoala") {
-              return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
-            }
-            return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
+            return (
+              <SpecialEventWithTooltip
+                title={info.event.title}
+                dateLabel={dateLabel}
+                description={description ?? undefined}
+                group={info.event.extendedProps?.group as CalendarGroup}
+              />
+            );
           }}
           eventClick={(arg) => {
             // Touch has no hover: tapping an event opens its detail sheet.
@@ -130,7 +131,8 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
               title: arg.event.title,
               dateLabel: eventDateLabel({ start: arg.event.start, end: arg.event.end, allDay: arg.event.allDay }),
               description: (arg.event.extendedProps?.description as string | null) ?? undefined,
-              type: (arg.event.extendedProps?.type as string) ?? "curs",
+              type: arg.event.extendedProps?.type as string | undefined,
+              group: arg.event.extendedProps?.group as CalendarGroup | undefined,
             });
           }}
         />

@@ -1,3 +1,5 @@
+import type { CalendarGroup } from "./calendar-colors";
+
 export type CalendarMode = "month" | "week";
 
 export interface TooltipPos {
@@ -15,5 +17,5 @@ export interface CursEventInfo {
   dateLabel?: string;
   description?: string | null;
   type?: string;
-  color?: string;
+  group?: CalendarGroup;
 }

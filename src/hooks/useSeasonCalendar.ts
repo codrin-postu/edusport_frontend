@@ -37,18 +37,10 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
     [allActiveWeekends],
   );
 
-  const specialEvents = useMemo(
-    () => events.filter(
-      (e) =>
-        e.type === "holiday" ||
-        e.type === "vacation" ||
-        e.type === "eveniment" ||
-        e.type === "concurs" ||
-        e.type === "cantonament" ||
-        e.type === "spectacol" ||
-        e.type === "pauza" ||
-        e.type === "curs-special",
-    ),
+  // Everything the grids draw as a tile: all events except the weekend model,
+  // which only the Weekenduri list reads.
+  const tileEvents = useMemo(
+    () => events.filter((e) => e.type !== "curs" && e.type !== "liber" && e.type !== "anulat"),
     [events],
   );
 
@@ -77,7 +69,7 @@ export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
     allOffWeekends,
     allCancelledWeekends,
     nextActiveWeekend,
-    specialEvents,
+    tileEvents,
     modifiers,
     modifiersClassNames,
   };

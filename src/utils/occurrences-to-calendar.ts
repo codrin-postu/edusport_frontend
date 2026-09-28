@@ -1,14 +1,14 @@
 import type { CalendarEvent, CalendarEventType } from "@/app/cursuri/program/_types";
 import type { CalendarOccurrence } from "@/lib/strapi-calendar";
+import { groupForOccurrence } from "@/components/blocks/fullcalendar/calendar-colors";
 
 /**
- * Adapt backend calendar occurrences into the legacy `CalendarEvent[]` shape the
- * season calendar already renders (month grid, weekend list, tooltips).
+ * Adapt backend calendar occurrences into the `CalendarEvent[]` shape the
+ * season calendar renders.
  *
- * The "Școala de patinaj" recurring event is the source of the weekend model:
- * each weekend occurrence carries a `state` (curs / liber / anulat) set in the
- * admin calendar, so its Saturday+Sunday occurrences become the Curs / Liber /
- * Curs anulat weekend cards. Every other event type becomes a special tile.
+ * Every occurrence becomes a plain tile. "Școala de patinaj" dates are tiles too
+ * (type "scoala", with their per-date state), and they ALSO feed the weekend
+ * model (curs / liber / anulat) that only the Weekenduri list reads.
  *
  * Consecutive dates of the same event merge into a single span only when the
  * occurrences are ALL-DAY (no startTime): a vacation or a camp really is one
@@ -36,12 +36,28 @@ function weekendAnchor(d: Date): string {
   return ymd(new Date(d.getFullYear(), d.getMonth(), d.getDate() - back));
 }
 
-type WeekendKind = "curs" | "liber" | "anulat";
-function scoalaDayKind(o: CalendarOccurrence): WeekendKind {
-  if (o.state === "anulat") return "anulat";
-  if (o.state === "liber") return "liber";
-  if (o.status === "cancelled") return "liber"; // blackout / pauză
+type ScoalaState = "curs" | "liber" | "anulat";
+function scoalaState(o: CalendarOccurrence): ScoalaState {
+  const group = groupForOccurrence(o);
+  if (group === "anulat") return "anulat";
+  if (group === "liber") return "liber";
   return "curs";
+}
+
+/** "10:00 - 11:30", "10:00", or null for an all-day occurrence. */
+export function occurrenceTimeSlot(o: CalendarOccurrence): string | null {
+  if (!o.startTime) return null;
+  return o.endTime ? `${o.startTime} - ${o.endTime}` : o.startTime;
+}
+
+/**
+ * Tile title. The label is prefixed only when it adds information (skip
+ * "Grupa A · Grupa A" and "Școala · Școala de patinaj").
+ */
+export function occurrenceTitle(o: CalendarOccurrence): string {
+  return o.label && !o.title.toLowerCase().includes(o.label.toLowerCase())
+    ? `${o.label} · ${o.title}`
+    : o.title;
 }
 
 function specialType(t: string): CalendarEventType {
@@ -76,9 +92,23 @@ export function occurrencesToCalendarEvents(
 
   const events: CalendarEvent[] = [];
 
-  // ── Școala weekends ──────────────────────────────────────────────────────
+  // ── Școala tiles: one per occurrence, the CMS title and time ─────────────
+  for (const o of scoala) {
+    const state = scoalaState(o);
+    events.push({
+      type: "scoala",
+      state,
+      startDate: o.date,
+      endDate: o.date,
+      title: state === "curs" ? occurrenceTitle(o) : null,
+      description: state === "curs" ? o.description ?? null : o.note || o.description || null,
+      timeSlot: state === "curs" ? occurrenceTimeSlot(o) : null,
+    });
+  }
+
+  // ── Școala weekends (Weekenduri list only) ───────────────────────────────
   // Bucket by weekend, then by state within the weekend, so a normal weekend is
-  // one Sat–Sun card and a mixed one (e.g. Sat curs, Sun liber) splits cleanly.
+  // one Sat to Sun row and a mixed one (e.g. Sat curs, Sun liber) splits cleanly.
   const weekends = new Map<string, CalendarOccurrence[]>();
   for (const o of scoala) {
     const key = weekendAnchor(parseYMD(o.date));
@@ -87,34 +117,23 @@ export function occurrencesToCalendarEvents(
     weekends.set(key, arr);
   }
   for (const days of weekends.values()) {
-    const byKind = new Map<WeekendKind, CalendarOccurrence[]>();
+    const byState = new Map<ScoalaState, CalendarOccurrence[]>();
     for (const o of days) {
-      const kind = scoalaDayKind(o);
-      const arr = byKind.get(kind) ?? [];
+      const state = scoalaState(o);
+      const arr = byState.get(state) ?? [];
       arr.push(o);
-      byKind.set(kind, arr);
+      byState.set(state, arr);
     }
-    for (const [kind, group] of byKind) {
+    for (const [state, group] of byState) {
       const sorted = [...group].sort((a, b) => a.date.localeCompare(b.date));
-      const first = sorted[0];
-      const hours =
-        first.startTime && first.endTime
-          ? `${first.startTime}–${first.endTime}`
-          : first.startTime || "";
       const note = sorted.map((o) => o.note).find((n) => n && n.trim()) ?? null;
       const evDesc = sorted.map((o) => o.description).find((d) => d && d.trim()) ?? null;
-      // Curs: show the session hours (fall back to the event description).
-      // Liber/Anulat: show the reason note, else the event description.
-      const description =
-        kind === "curs"
-          ? evDesc || (hours ? `Ore: ${hours}` : null)
-          : note || evDesc || (hours ? `Ore: ${hours}` : null);
       events.push({
-        type: kind,
-        startDate: first.date,
+        type: state,
+        startDate: sorted[0].date,
         endDate: sorted[sorted.length - 1].date,
-        description,
-        timeSlot: hours || null,
+        // The list shows this as the reason for a Curs anulat weekend.
+        description: note || evDesc,
       });
     }
   }
@@ -136,19 +155,13 @@ export function occurrencesToCalendarEvents(
       if (!run.length) return;
       const first = run[0];
       const last = run[run.length - 1];
-      const isCursSpecial = first.type === "curs";
-      const timeSlot =
-        first.startTime && first.endTime
-          ? `${first.startTime}–${first.endTime}`
-          : first.startTime || null;
       events.push({
         type: specialType(first.type),
         startDate: first.date,
         endDate: last.date,
-        title: first.title,
+        title: occurrenceTitle(first),
         description: first.description ?? first.note ?? null,
-        courseLabel: isCursSpecial ? first.label || first.title : null,
-        timeSlot: isCursSpecial ? timeSlot : null,
+        timeSlot: occurrenceTimeSlot(first),
       });
       run = [];
     };
@@ -174,4 +187,29 @@ export function occurrencesToCalendarEvents(
   }
 
   return events;
+}
+
+/**
+ * Legacy fallback data (no occurrences endpoint) carries only the weekend model.
+ * Give its weekends the same per-day Școala tiles the occurrence path produces,
+ * so the grids look the same either way.
+ */
+export function withScoalaTiles(events: CalendarEvent[]): CalendarEvent[] {
+  if (events.some((e) => e.type === "scoala")) return events;
+  const tiles: CalendarEvent[] = [];
+  for (const e of events) {
+    if (e.type !== "curs" && e.type !== "liber" && e.type !== "anulat") continue;
+    const end = parseYMD(e.endDate);
+    for (let d = parseYMD(e.startDate); d <= end; d.setDate(d.getDate() + 1)) {
+      tiles.push({
+        type: "scoala",
+        state: e.type,
+        startDate: ymd(d),
+        endDate: ymd(d),
+        title: null,
+        description: e.description ?? null,
+      });
+    }
+  }
+  return [...events, ...tiles];
 }

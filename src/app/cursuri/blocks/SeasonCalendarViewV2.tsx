@@ -11,6 +11,11 @@ import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
 import type { CalendarMode } from "@/components/blocks/fullcalendar/types";
+import {
+  CALENDAR_GROUP,
+  CALENDAR_GROUPS,
+  type CalendarGroup,
+} from "@/components/blocks/fullcalendar/calendar-colors";
 import { CalendarViewModeSelect } from "@/components/blocks/fullcalendar/CalendarViewModeSelect";
 import ToggleGroup from "@/components/ui/toggle-group";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
@@ -127,6 +132,13 @@ const STATE_LABEL: Record<WeekendKind, string> = {
   anulat: "Curs anulat",
 };
 
+// Same colours as the grid tiles and the legend.
+const STATE_GROUP: Record<WeekendKind, CalendarGroup> = {
+  curs: "scoala",
+  liber: "liber",
+  anulat: "anulat",
+};
+
 const WeekendRow: React.FC<{
   card: WeekendCardData;
   nextActiveWeekend: WeekendDate | null;
@@ -146,10 +158,7 @@ const WeekendRow: React.FC<{
   const hasDescription =
     isCancelled && !!description && description.trim().length > 0;
 
-  // Colour square = course colour (navy) / silver for liber / faded navy for cancelled.
-  const squareColor = isPast
-    ? "bg-disabled"
-    : card.type === "liber" ? "bg-medal-silver" : isCancelled ? "bg-overlay" : "bg-surface-dark";
+  const squareColor = CALENDAR_GROUP[STATE_GROUP[card.type]].bg;
   const stateColor = isPast
     ? "text-disabled"
     : isNext
@@ -169,7 +178,10 @@ const WeekendRow: React.FC<{
       )}
     >
       {/* Status square */}
-      <span className={cn("w-2.5 h-2.5 flex-shrink-0 mr-3", squareColor)} />
+      <span
+        className="w-2.5 h-2.5 flex-shrink-0 mr-3"
+        style={{ backgroundColor: squareColor }}
+      />
 
       {/* Date */}
       <span
@@ -180,7 +192,7 @@ const WeekendRow: React.FC<{
         )}
       >
         {startLabel}
-        {endLabel ? ` – ${endLabel}` : ""}
+        {endLabel ? ` - ${endLabel}` : ""}
       </span>
 
       {/* Status label */}
@@ -258,7 +270,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   seasonStart,
   seasonEnd,
 }) => {
-  const { allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, specialEvents } =
+  const { allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, tileEvents } =
     useSeasonCalendar(seasonCalendar);
 
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
@@ -282,7 +294,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   const [calendarMode, setCalendarMode] = useState<CalendarMode>("month");
 
   // Defer FullCalendar bundle until the container scrolls near the viewport.
-  // Saves ~50–80 KB of initial JS on /cursuri/program.
+  // Saves ~50 to 80 KB of initial JS on /cursuri/program.
   const calendarContainerRef = useRef<HTMLDivElement>(null);
   const [shouldMountCalendar, setShouldMountCalendar] = useState(false);
 
@@ -334,10 +346,9 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   // Shared focus date so switching Lunar <-> Săptămânal keeps roughly the same period.
   const [focusDate, setFocusDate] = useState<string>(calendarInitialDate);
 
-  // Timed hourly sessions for the WEEK grid only (month + weekend views keep the
-  // existing weekend model). Fetched per visible week from the backend expansion
-  // endpoint — a full season exceeds its 92-day cap, so we request just the
-  // focused week and refetch as you navigate.
+  // Timed hourly sessions for the WEEK grid only. Fetched per visible week from
+  // the backend expansion endpoint: a full season exceeds its 92-day cap, so we
+  // request just the focused week and refetch as you navigate.
   const [hourlyEvents, setHourlyEvents] = useState<EventInput[]>([]);
   useEffect(() => {
     if (calendarMode !== "week") return;
@@ -359,17 +370,16 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
     };
   }, [calendarMode, focusDate]);
 
-  const calendarEvents = useMemo(
-    () =>
-      buildCalendarEvents(
-        allActiveWeekends,
-        allOffWeekends,
-        nextActiveWeekend,
-        specialEvents,
-        allCancelledWeekends,
-      ),
-    [allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, specialEvents],
-  );
+  const calendarEvents = useMemo(() => buildCalendarEvents(tileEvents), [tileEvents]);
+
+  // Legend: only the groups the loaded season actually uses, in map order.
+  const legendGroups = useMemo(() => {
+    const present = new Set(
+      calendarEvents.map((e) => e.extendedProps?.group as CalendarGroup | undefined),
+    );
+    const shown = CALENDAR_GROUPS.filter((g) => present.has(g.id));
+    return shown.length ? shown : CALENDAR_GROUPS;
+  }, [calendarEvents]);
 
   // Filter weekends to the season bounds before building the list view
   const { filteredActive, filteredOff, filteredCancelled } = useMemo(() => {
@@ -401,7 +411,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   return (
     <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-surface">
       <div className="w-full max-w-content mx-auto gutter">
-        {/* Header — eyebrow + title left, description right */}
+        {/* Header: eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
           <div>
             <span className="text-label uppercase text-accent">
@@ -432,7 +442,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           />
         </div>
 
-        {/* Calendar view — Lunar (month grid) / Săptămânal (rolling timeline) */}
+        {/* Calendar view: Lunar (month grid) / Săptămânal (rolling timeline) */}
         {activeView === "calendar" && (
           <>
             {/* Shared card chrome (border + offset shadow) for both modes */}
@@ -480,10 +490,12 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
             {/* Legend */}
             <div className="text-caption mt-4 flex flex-wrap gap-x-6 gap-y-2 text-secondary">
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-surface-dark" />Curs</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-medal-silver" />Liber</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-overlay" />Anulat</span>
-              <span className="inline-flex items-center gap-2"><i className="w-3.5 h-2.5 bg-orange" />Eveniment</span>
+              {legendGroups.map((g) => (
+                <span key={g.id} className="inline-flex items-center gap-2">
+                  <i className="w-3.5 h-2.5" style={{ backgroundColor: g.bg }} />
+                  {g.label}
+                </span>
+              ))}
             </div>
           </>
         )}

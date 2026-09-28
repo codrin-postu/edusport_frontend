@@ -1,35 +1,8 @@
-/* Retro FullCalendar overrides — scoped to .fc + custom header/tooltip/sheet classes.
-   Event colour = the admin panel's category colour (see the --fc-cat-* tokens below),
-   so the public calendar and the backend calendar editor read as the same legend.
-   State still rides on top: anulat keeps its own red plus the strike-through. */
-
-/* ── Event category palette — mirrors ProgramOverviewEditor.tsx in the backend ──
-   Each token carries its own foreground: several of these are much lighter than
-   navy, so cream text on them would be unreadable. */
-.fc,
-.fc-mobile-modal,
-.fc-curs-tooltip {
-  --fc-cat-curs: var(--color-burgundy); /* Antrenament (standalone course) */
-  --fc-cat-curs-fg: var(--color-retro-cream);
-  --fc-cat-scoala: var(--color-primary);      /* Școala de patinaj */
-  --fc-cat-scoala-fg: var(--color-retro-cream);
-  --fc-cat-concurs: #7a1fa2;     /* Competiție */
-  --fc-cat-concurs-fg: var(--color-retro-cream);
-  --fc-cat-cantonament: #1f7a4d; /* Cantonament */
-  --fc-cat-cantonament-fg: var(--color-retro-cream);
-  --fc-cat-spectacol: #00838f;   /* Spectacol */
-  --fc-cat-spectacol-fg: #ffffff;
-  --fc-cat-eveniment: #e08a00;   /* Eveniment */
-  --fc-cat-eveniment-fg: var(--color-primary);
-  --fc-cat-vacanta: #0891b2;     /* Vacanță */
-  --fc-cat-vacanta-fg: var(--color-primary);
-  --fc-cat-sarbatoare: #c026d3;  /* Sărbătoare */
-  --fc-cat-sarbatoare-fg: #ffffff;
-  --fc-cat-liber: #8a8a8a;       /* Pauză / zi liberă */
-  --fc-cat-liber-fg: var(--color-primary);
-  --fc-cat-anulat: #be3330;      /* per-date state: anulat */
-  --fc-cat-anulat-fg: var(--color-retro-cream);
-}
+/* Retro FullCalendar overrides, scoped to .fc + custom header/tooltip/sheet classes.
+   Event colours are NOT set here: tiles, sheet dots and tooltip bars all get them
+   inline from calendar-colors.ts (the same map the legend reads), so there is one
+   colour source. This file only adds the per-group behaviour: the strike-through
+   on Anulat, no leading dot, and the mobile tap pass-through. */
 
 /* ── Custom header (month title + Azi badge + prev/next), all 34px tall ────────── */
 .fc-custom-header {
@@ -159,7 +132,7 @@
   color: rgb(14 26 60 / 0.2);
 }
 
-/* Today — navy filled circle behind the number */
+/* Today, navy filled circle behind the number */
 .fc .fc-day-today {
   background-color: transparent !important;
 }
@@ -178,7 +151,7 @@
   line-height: 1;
 }
 
-/* Event block — square, colour classes control fill.
+/* Event block, square; the fill is set inline per group.
    The padding lives on .fc-hover-anchor instead of here, so the hover target
    covers the padded area too (see the fc-hover-anchor block below). */
 .fc .fc-daygrid-event {
@@ -205,119 +178,23 @@
   letter-spacing: 0.02em;
 }
 
-/* --- Event type colours (course = colour; state = strike/opacity) --- */
+/* --- Event groups (class names from calendar-colors.ts) --- */
 
-/* Școala de patinaj (+ the "next" weekend, not distinguished) — navy */
-.fc-event-curs,
-.fc-event-next-weekend {
-  background-color: var(--fc-cat-scoala) !important;
-  border-color: var(--fc-cat-scoala) !important;
-  color: var(--fc-cat-scoala-fg) !important;
-  box-shadow: none !important;
-}
-
-/* Antrenament / standalone course — blue */
-.fc-event-curs-special {
-  background-color: var(--fc-cat-curs) !important;
-  border-color: var(--fc-cat-curs) !important;
-  color: var(--fc-cat-curs-fg) !important;
-  box-shadow: none !important;
-}
-
-/* Anulat — its own red, plus the strike-through */
+/* Anulat: struck through */
 .fc-event-anulat {
-  background-color: var(--fc-cat-anulat) !important;
-  border-color: var(--fc-cat-anulat) !important;
-  color: var(--fc-cat-anulat-fg) !important;
   text-decoration: line-through;
 }
 
-/* Liber / pauză — grey */
-.fc-event-liber,
-.fc-event-pauza {
-  background-color: var(--fc-cat-liber) !important;
-  border-color: var(--fc-cat-liber) !important;
-  color: var(--fc-cat-liber-fg) !important;
-}
-
-/* Sărbătoare — magenta */
-.fc-event-holiday {
-  background-color: var(--fc-cat-sarbatoare) !important;
-  border-color: var(--fc-cat-sarbatoare) !important;
-  color: var(--fc-cat-sarbatoare-fg) !important;
-}
-
-/* Vacanță — cyan */
-.fc-event-vacation {
-  background-color: var(--fc-cat-vacanta) !important;
-  border-color: var(--fc-cat-vacanta) !important;
-  color: var(--fc-cat-vacanta-fg) !important;
-}
-
-/* Eveniment — amber (dark text: the background is far lighter than navy) */
-.fc-event-eveniment {
-  background-color: var(--fc-cat-eveniment) !important;
-  border-color: var(--fc-cat-eveniment) !important;
-  color: var(--fc-cat-eveniment-fg) !important;
-}
-
-/* Competiție — purple */
-.fc-event-concurs {
-  background-color: var(--fc-cat-concurs) !important;
-  border-color: var(--fc-cat-concurs) !important;
-  color: var(--fc-cat-concurs-fg) !important;
-}
-
-/* Cantonament — green */
-.fc-event-cantonament {
-  background-color: var(--fc-cat-cantonament) !important;
-  border-color: var(--fc-cat-cantonament) !important;
-  color: var(--fc-cat-cantonament-fg) !important;
-}
-
-/* Spectacol — teal */
-.fc-event-spectacol {
-  background-color: var(--fc-cat-spectacol) !important;
-  border-color: var(--fc-cat-spectacol) !important;
-  color: var(--fc-cat-spectacol-fg) !important;
-}
-
-/* No leading dot on any coloured block event */
-.fc-event-curs .fc-daygrid-event-dot,
-.fc-event-next-weekend .fc-daygrid-event-dot,
-.fc-event-curs-special .fc-daygrid-event-dot,
-.fc-event-anulat .fc-daygrid-event-dot,
-.fc-event-liber .fc-daygrid-event-dot,
-.fc-event-pauza .fc-daygrid-event-dot,
-.fc-event-holiday .fc-daygrid-event-dot,
-.fc-event-vacation .fc-daygrid-event-dot,
+/* No leading dot on any block event */
+.fc-event-scoala .fc-daygrid-event-dot,
+.fc-event-antrenament .fc-daygrid-event-dot,
 .fc-event-eveniment .fc-daygrid-event-dot,
-.fc-event-concurs .fc-daygrid-event-dot,
-.fc-event-cantonament .fc-daygrid-event-dot,
-.fc-event-spectacol .fc-daygrid-event-dot {
+.fc-event-liber .fc-daygrid-event-dot,
+.fc-event-anulat .fc-daygrid-event-dot {
   display: none !important;
 }
 
-/* Cursuri event — inline layout (no leading dot) */
-.fc-curs-event {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  overflow: visible;
-  white-space: nowrap;
-  font-weight: 600;
-}
-.fc-curs-dot { display: none !important; }
-.fc-curs-desktop-title {
-  font-size: 0.68rem;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ── Desktop hover tooltip — retro card, course-colour top bar ─────────────────── */
+/* ── Desktop hover tooltip, retro card, group-colour top bar ─────────────────── */
 .fc-curs-tooltip {
   position: fixed;
   transform: translateY(-100%);
@@ -335,14 +212,11 @@
   animation: fc-tooltip-in 0.12s ease both;
 }
 
-/* Course-colour top bar (navy default; orange for events) */
+/* Group-colour top bar (set inline from calendar-colors.ts; navy fallback) */
 .fc-curs-tooltip-bar {
   height: 5px;
   background: var(--color-navy);
   flex-shrink: 0;
-}
-.fc-curs-tooltip--event .fc-curs-tooltip-bar {
-  background: var(--color-orange);
 }
 
 .fc-curs-tooltip-image {
@@ -417,7 +291,7 @@
   height: 44px;
   border-color: rgb(14 26 60 / 0.07);
 }
-/* hide the minor (half-hour) intermediate line — whole-hour slots only */
+/* hide the minor (half-hour) intermediate line, whole-hour slots only */
 .fc .fc-timegrid-slot-minor {
   border-top-style: none;
 }
@@ -439,7 +313,7 @@
   letter-spacing: 0.04em;
   color: rgb(14 26 60 / 0.5);
 }
-/* divider between the all-day row and the time grid → navy rule */
+/* divider between the all-day row and the time grid is a navy rule */
 .fc .fc-timegrid-divider {
   border: 0;
   border-top: 1.5px solid var(--color-navy);
@@ -449,7 +323,7 @@
 .fc .fc-timegrid-col.fc-day-today {
   background-color: transparent !important;
 }
-/* now indicator → rust */
+/* now indicator is rust */
 .fc .fc-timegrid-now-indicator-line {
   border-color: var(--color-rust);
 }
@@ -457,7 +331,7 @@
   border-color: var(--color-rust);
   color: var(--color-rust);
 }
-/* timed event blocks — square; cream outline separates overlapping same-colour blocks
+/* timed event blocks, square; cream outline separates overlapping same-colour blocks
    (outline isn't killed by the colour classes' `box-shadow: none !important`) */
 .fc .fc-timegrid-event {
   border: none;
@@ -476,7 +350,7 @@
   border-bottom: 1.5px solid var(--color-navy) !important;
 }
 
-/* Mobile: horizontal scroll so ~2–3 days show (FC free lacks sticky ScrollGrid) */
+/* Mobile: horizontal scroll so ~2 to 3 days show (FC free lacks sticky ScrollGrid) */
 @media (max-width: 767px) {
   .wg-scroll {
     overflow-x: auto;
@@ -489,35 +363,11 @@
 
 /* ── Mobile ───────────────────────────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  .fc-curs-event { cursor: pointer; }
-  /* Block events pass clicks through to the day cell so the mobile sheet picks them up. */
-  .fc .fc-event-liber,
-  .fc .fc-event-pauza,
-  .fc .fc-event-holiday,
-  .fc .fc-event-vacation,
-  .fc .fc-event-eveniment,
-  .fc .fc-event-concurs,
-  .fc .fc-event-cantonament,
-  .fc .fc-event-spectacol,
-  .fc .fc-event-anulat,
-  .fc .fc-event-liber *,
-  .fc .fc-event-pauza *,
-  .fc .fc-event-holiday *,
-  .fc .fc-event-vacation *,
-  .fc .fc-event-eveniment *,
-  .fc .fc-event-concurs *,
-  .fc .fc-event-cantonament *,
-  .fc .fc-event-spectacol *,
-  .fc .fc-event-anulat *,
-  .fc-daygrid-event-harness:has(.fc-event-liber),
-  .fc-daygrid-event-harness:has(.fc-event-pauza),
-  .fc-daygrid-event-harness:has(.fc-event-holiday),
-  .fc-daygrid-event-harness:has(.fc-event-vacation),
-  .fc-daygrid-event-harness:has(.fc-event-eveniment),
-  .fc-daygrid-event-harness:has(.fc-event-concurs),
-  .fc-daygrid-event-harness:has(.fc-event-cantonament),
-  .fc-daygrid-event-harness:has(.fc-event-spectacol),
-  .fc-daygrid-event-harness:has(.fc-event-anulat) {
+  /* Month tiles pass taps through to the day cell so the day sheet opens.
+     Week-grid blocks keep their own tap (they open the detail sheet). */
+  .fc .fc-daygrid-event,
+  .fc .fc-daygrid-event *,
+  .fc-daygrid-event-harness {
     pointer-events: none;
   }
 }
@@ -535,7 +385,7 @@
 }
 @keyframes fc-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* List sheet — cream, navy top, grip. Detail sheet adds .fc-mobile-modal--detail. */
+/* List sheet, cream, navy top, grip. Detail sheet adds .fc-mobile-modal--detail. */
 .fc-mobile-modal {
   background: var(--color-retro-cream);
   border-top: 3px solid var(--color-navy);
@@ -618,32 +468,13 @@
   color: rgb(14 26 60 / 0.4);
 }
 
-/* List status square (colour = course/state) */
+/* List status square (colour set inline from calendar-colors.ts) */
 .fc-mobile-modal-dot {
   flex-shrink: 0;
   width: 10px;
   height: 10px;
   background-color: var(--color-navy);
 }
-/* The month view passes CalendarEventType here ("curs", "curs-special", …); the
-   week view passes the raw backend category ("scoala", "vacanta", …). Both are
-   listed so a dot never falls back to the default navy by accident. */
-.fc-mobile-modal-dot--curs,
-.fc-mobile-modal-dot--next,
-.fc-mobile-modal-dot--scoala { background-color: var(--fc-cat-scoala); }
-.fc-mobile-modal-dot--curs-special { background-color: var(--fc-cat-curs); }
-.fc-mobile-modal-dot--anulat { background-color: var(--fc-cat-anulat); }
-.fc-mobile-modal-dot--liber,
-.fc-mobile-modal-dot--pauza { background-color: var(--fc-cat-liber); }
-.fc-mobile-modal-dot--holiday,
-.fc-mobile-modal-dot--sarbatoare { background-color: var(--fc-cat-sarbatoare); }
-.fc-mobile-modal-dot--vacation,
-.fc-mobile-modal-dot--vacanta { background-color: var(--fc-cat-vacanta); }
-.fc-mobile-modal-dot--eveniment { background-color: var(--fc-cat-eveniment); }
-.fc-mobile-modal-dot--concurs { background-color: var(--fc-cat-concurs); }
-.fc-mobile-modal-dot--cantonament { background-color: var(--fc-cat-cantonament); }
-.fc-mobile-modal-dot--spectacol { background-color: var(--fc-cat-spectacol); }
-
 /* Detail sheet (C2): navy band pinned + image + scrollable body */
 .fc-mobile-band {
   background: var(--color-navy);
@@ -715,9 +546,9 @@
 }
 
 /* ── Hover target = the whole event card ──────────────────────────────────────
-   Every tooltip variant (CursEvent, SpecialEventWithTooltip, HoverTooltip) marks
+   SpecialEventWithTooltip marks
    its anchor with .fc-hover-anchor. The anchor is a child of FullCalendar's own
-   wrappers, so height:100% only resolves once those wrappers stretch too —
+   wrappers, so height:100% only resolves once those wrappers stretch too , 
    otherwise the hover area collapses back to the height of the title text and
    the empty part of a card stays dead. The event's padding also moves onto the
    anchor (see the .fc-daygrid-event / .fc-timegrid-event rules above) so the
@@ -734,7 +565,7 @@
   height: 100%;
   cursor: default;
 }
-/* .fc-curs-event sets its own display:flex; the title variant needs a block. */
+/* The title anchor needs a block to fill the card. */
 .fc .fc-event-title.fc-hover-anchor {
   display: block;
 }
@@ -745,10 +576,4 @@
   /* Slightly more above than below: the text sits at the top of the block, and
      2px read as touching the edge. */
   padding: 4px 5px 2px;
-}
-/* In the week view a block spans its whole duration, so centring the label put
-   a two-hour course's title in the middle of a tall empty rectangle. The month
-   view keeps centring, where blocks are a single line tall. */
-.fc .fc-timegrid-event .fc-curs-event {
-  align-items: flex-start;
 }

@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FocusScope } from "@radix-ui/react-focus-scope";
 import type { CursEventInfo } from "./types";
+import { CALENDAR_GROUP } from "./calendar-colors";
 import IconButton from "@/components/ui/icon-button";
-import Link from "@/components/ui/link";
 import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
 
 // Shared Esc-to-close for both bottom sheets.
@@ -19,12 +19,12 @@ function useEscToClose(onClose: () => void) {
   }, [onClose]);
 }
 
-// An event has a detail view if it has a description OR is a curs/next type
+// An event has a detail view when it has a description.
 function hasDetail(event: CursEventInfo): boolean {
-  return !!(event.description) || event.type === "curs" || event.type === "next";
+  return !!event.description;
 }
 
-// ── Detail sheet (C2) — navy band pinned, image + body scroll ──────────────────
+// ── Detail sheet (C2), navy band pinned, image + body scroll ───────────────────
 
 export const MobileDetailSheet: React.FC<{
   event: CursEventInfo;
@@ -33,7 +33,6 @@ export const MobileDetailSheet: React.FC<{
 }> = ({ event, onBack, onClose }) => {
   const { image, body } = extractFirstImage(event.description);
   const hasContent = !!body && body.trim().length > 0;
-  const showRegulament = event.type === "curs" || event.type === "next";
   useEscToClose(onClose);
   return createPortal(
     <div className="fc-mobile-modal-backdrop" onClick={onClose}>
@@ -70,11 +69,6 @@ export const MobileDetailSheet: React.FC<{
             {hasContent && (
               <span className="fc-curs-tooltip-hours">{renderMarkdown(body)}</span>
             )}
-            {showRegulament && (
-              <Link href="/cursuri/regulament" onClick={(e) => e.stopPropagation()}>
-                Vezi regulamentul
-              </Link>
-            )}
           </div>
         </div>
       </FocusScope>
@@ -83,7 +77,7 @@ export const MobileDetailSheet: React.FC<{
   );
 };
 
-// ── List sheet — shown when a day is tapped ────────────────────────────────────
+// ── List sheet, shown when a day is tapped ─────────────────────────────────────
 
 export const MobileListSheet: React.FC<{
   events: CursEventInfo[];
@@ -130,14 +124,17 @@ export const MobileListSheet: React.FC<{
           {events.map((event, i) => (
             <button
               key={i}
-              className={`fc-mobile-modal-item fc-mobile-modal-item--${event.type ?? "curs"}`}
+              className="fc-mobile-modal-item"
               onClick={() => hasDetail(event) && setDetail(event)}
               style={hasDetail(event) ? undefined : { cursor: "default" }}
             >
               <span
-                className={`fc-mobile-modal-dot fc-mobile-modal-dot--${event.type ?? "curs"}`}
+                className="fc-mobile-modal-dot"
+                style={event.group ? { backgroundColor: CALENDAR_GROUP[event.group].bg } : undefined}
               />
-              <span>{event.title}</span>
+              <span className={event.group === "anulat" ? "line-through" : undefined}>
+                {event.title}
+              </span>
               {hasDetail(event) && (
                 <span className="fc-mobile-modal-chevron">›</span>
               )}

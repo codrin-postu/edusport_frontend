@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchSeasonOccurrences } from "@/lib/strapi-calendar";
-import { occurrencesToCalendarEvents } from "@/utils/occurrences-to-calendar";
+import { occurrencesToCalendarEvents, withScoalaTiles } from "@/utils/occurrences-to-calendar";
 import ProgramPage from "./_View";
 import type { ProgramPageData, ScheduleGroup, CalendarEvent } from "./_types";
 import { PROGRAM_PAGE_DATA } from "./_data";
@@ -134,13 +134,13 @@ export default async function Page() {
   const bounds = padSeasonBounds(rawBounds);
 
   // The calendar-event collection (via /api/calendar/occurrences) is the source
-  // of truth for the calendar. The Școala de patinaj recurring event drives the
-  // weekend model (per-date curs/liber/anulat). Fall back to the legacy weekend
+  // of truth for the calendar. Școala de patinaj dates become tiles and also feed
+  // the weekend list (per-date curs/liber/anulat). Fall back to the legacy weekend
   // model only if the endpoint returns nothing. Fetch the padded window so the
   // shoulder months are covered too.
   const rangeFrom = bounds ? `${bounds.seasonStart}-01` : null;
   const rangeTo = bounds ? lastDayOfMonth(bounds.seasonEnd) : null;
-  let calendarEvents = legacyEvents;
+  let calendarEvents = withScoalaTiles(legacyEvents);
   if (rangeFrom && rangeTo) {
     const { occurrences } = await fetchSeasonOccurrences(rangeFrom, rangeTo);
     if (occurrences.length) calendarEvents = occurrencesToCalendarEvents(occurrences);

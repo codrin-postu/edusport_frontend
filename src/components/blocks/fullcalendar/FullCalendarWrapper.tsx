@@ -8,8 +8,9 @@ import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
-import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
-import { MobileListSheet, MobileDetailSheet } from "./MobileSheets";
+import { SpecialEventWithTooltip } from "./CursEvent";
+import type { CalendarGroup } from "./calendar-colors";
+import { MobileListSheet } from "./MobileSheets";
 import { useCalendarNav } from "./useCalendarNav";
 import type { CursEventInfo } from "./types";
 
@@ -23,7 +24,7 @@ interface FullCalendarWrapperProps {
 }
 
 // Standardized event date label from the event start (backend-driven).
-// allDay events carry no time, so only the date shows — nothing fabricated.
+// allDay events carry no time, so only the date shows, nothing fabricated.
 function formatEventDate(date: Date | null): string | undefined {
   if (!date) return undefined;
   return date.toLocaleDateString("ro-RO", { day: "numeric", month: "long" });
@@ -50,7 +51,6 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
     events: CursEventInfo[];
     dateLabel: string;
   } | null>(null);
-  const [mobileEvent, setMobileEvent] = useState<CursEventInfo | null>(null);
   const todayNum = useMemo(() => new Date().getDate(), []);
 
   const {
@@ -129,27 +129,22 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
         dayMaxEvents={5}
         datesSet={syncHeader}
         eventContent={(info) => {
-          const type = info.event.extendedProps?.type as string | undefined;
           const description = info.event.extendedProps?.description as string | null | undefined;
           const dateLabel = formatEventDate(info.event.start);
-          if (type === "curs" || type === "next") {
-            return <CursEvent title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
-          }
-          // Every other event gets a hover tooltip too (title + date at minimum,
+          // Every event gets a hover tooltip (title + date at minimum,
           // description when present), so nothing is silently un-hoverable.
-          return <SpecialEventWithTooltip title={info.event.title} dateLabel={dateLabel} description={description ?? undefined} />;
+          return (
+            <SpecialEventWithTooltip
+              title={info.event.title}
+              dateLabel={dateLabel}
+              description={description ?? undefined}
+              group={info.event.extendedProps?.group as CalendarGroup}
+            />
+          );
         }}
-        eventClick={(arg) => {
-          // Touch has no hover: tapping an event opens its detail sheet.
-          if (!window.matchMedia("(max-width: 767px)").matches) return;
-          arg.jsEvent?.stopPropagation();
-          setMobileEvent({
-            title: arg.event.title,
-            dateLabel: formatEventDate(arg.event.start),
-            description: (arg.event.extendedProps?.description as string | null) ?? undefined,
-            type: (arg.event.extendedProps?.type as string) ?? "curs",
-          });
-        }}
+        // No eventClick: on touch, tiles pass taps through to the day cell
+        // (see the mobile rules in fullcalendar-overrides.css), which opens the
+        // day sheet with every event of that day.
         dayCellDidMount={(info) => {
           const handler = () => {
             if (!window.matchMedia("(max-width: 767px)").matches) return;
@@ -176,7 +171,8 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
               title: event.title,
               dateLabel: formatEventDate(event.start),
               description: (event.extendedProps?.description as string | null) ?? undefined,
-              type: (event.extendedProps?.type as string) ?? "curs",
+              type: event.extendedProps?.type as string | undefined,
+              group: event.extendedProps?.group as CalendarGroup | undefined,
             }));
             const dateLabel = info.date.toLocaleDateString("ro-RO", {
               day: "numeric",
@@ -193,14 +189,6 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
           events={mobileSheet.events}
           dateLabel={mobileSheet.dateLabel}
           onClose={() => setMobileSheet(null)}
-        />
-      )}
-
-      {mobileEvent && (
-        <MobileDetailSheet
-          event={mobileEvent}
-          onBack={() => setMobileEvent(null)}
-          onClose={() => setMobileEvent(null)}
         />
       )}
     </>
