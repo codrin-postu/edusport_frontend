@@ -356,6 +356,7 @@ const SportspersonView: React.FC<Props> = ({
                       <div className="text-caption mt-1 text-secondary-on-dark">
                         {formatDate(r.competition.date)}
                         {r.competition.location && <> · {r.competition.location}</>}
+                        {r.category && <> · {r.category}</>}
                         {r.score !== undefined && (
                           <>
                             {" · "}
