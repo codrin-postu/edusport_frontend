@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -12,7 +12,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom text-body-sm text-primary", className)}
         {...props}
       />
     </div>
@@ -23,7 +23,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn("[&_tr]:border-b [&_tr]:border-line-subtle", className)}
       {...props}
     />
   );
@@ -44,7 +44,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-surface-subtle border-t font-medium [&>tr]:last:border-b-0",
+        "bg-surface-subtle border-t border-line-subtle font-medium [&>tr]:last:border-b-0",
         className,
       )}
       {...props}
@@ -56,21 +56,24 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
       data-slot="table-row"
-      className={cn(
-        "hover-layer data-[state=selected]:bg-ui-muted border-b transition-colors",
-        className,
-      )}
+      className={cn("border-b border-line-subtle transition-colors", className)}
       {...props}
     />
   );
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+/** numeric right-aligns the label with tabular figures, for columns of numbers. */
+function TableHead({
+  className,
+  numeric,
+  ...props
+}: React.ComponentProps<"th"> & { numeric?: boolean }) {
   return (
     <th
       data-slot="table-head"
       className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-label text-secondary h-10 px-4 py-2 text-left align-middle font-normal whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        numeric && "text-right tabular-nums",
         className,
       )}
       {...props}
@@ -78,12 +81,18 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   );
 }
 
-function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+/** numeric right-aligns the value with tabular figures, for columns of numbers. */
+function TableCell({
+  className,
+  numeric,
+  ...props
+}: React.ComponentProps<"td"> & { numeric?: boolean }) {
   return (
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "px-4 py-3 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        numeric && "text-right tabular-nums",
         className,
       )}
       {...props}
@@ -98,7 +107,7 @@ function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn("text-ui-muted-foreground mt-4 text-sm", className)}
+      className={cn("text-caption text-secondary mt-4", className)}
       {...props}
     />
   );

@@ -33,8 +33,6 @@ export function FeaturedSectionSkeleton() {
         eyebrow="Cel mai recent articol"
         title="Noutăți"
         className="mb-12"
-        eyebrowClassName="text-label text-accent"
-        titleClassName="text-heading text-primary"
       />
       <FeaturedArticleBlockSkeleton />
     </Section>
