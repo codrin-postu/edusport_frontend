@@ -21,8 +21,8 @@ import { Spotlight } from "./_components/Spotlight";
 // rendered dynamically per request — can't be statically pre-rendered.
 export const dynamic = "force-dynamic";
 
-/** Cards shown per page. Spotlight is bonus on page 1; not counted here. */
-const PAGE_SIZE = 8;
+/** Rows shown per page. Spotlight is bonus on page 1; not counted here. */
+const PAGE_SIZE = 10;
 const BASE_PATH = "/despre-noi/sportivi";
 
 export const metadata: Metadata = {
