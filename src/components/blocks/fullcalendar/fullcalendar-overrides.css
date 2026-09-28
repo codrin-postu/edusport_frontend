@@ -71,32 +71,6 @@
   }
 }
 
-.fc-custom-nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid var(--color-navy);
-  background: transparent;
-  color: var(--color-navy);
-  font-size: 1.05rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
-  padding: 0;
-}
-
-.fc-custom-nav-btn:hover:not(:disabled) {
-  background-color: var(--color-navy);
-  color: var(--color-retro-cream);
-}
-
-.fc-custom-nav-btn:disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
 .fc-custom-today-btn {
   display: inline-flex;
   align-items: center;

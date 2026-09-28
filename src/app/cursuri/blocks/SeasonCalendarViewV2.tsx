@@ -10,8 +10,9 @@ import type { EventInput } from "@fullcalendar/core";
 import { WeekendDate, isWeekendInPast, isNextWeekend } from "@/utils/date";
 import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
 import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
-import ViewModeDropdown, { type CalendarMode } from "@/components/blocks/fullcalendar/ViewModeDropdown";
-import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
+import type { CalendarMode } from "@/components/blocks/fullcalendar/types";
+import { CalendarViewModeSelect } from "@/components/blocks/fullcalendar/CalendarViewModeSelect";
+import ToggleGroup from "@/components/ui/toggle-group";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { renderMarkdown } from "@/utils/markdown";
@@ -417,7 +418,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
         {/* View toggle */}
         <div className="mt-6 mb-8">
-          <SlidingPillToggle
+          <ToggleGroup
             options={CALENDAR_VIEW_OPTIONS}
             value={activeView}
             onChange={(v) => {
@@ -447,7 +448,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                     validRangeEnd={fcValidEnd}
                     onDatesChange={setFocusDate}
                     viewModeControl={
-                      <ViewModeDropdown value={calendarMode} onChange={setCalendarMode} />
+                      <CalendarViewModeSelect value={calendarMode} onChange={setCalendarMode} />
                     }
                   />
                 ) : (
@@ -470,7 +471,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                   validRangeEnd={fcValidEnd}
                   onDatesChange={setFocusDate}
                   viewModeControl={
-                    <ViewModeDropdown value={calendarMode} onChange={setCalendarMode} />
+                    <CalendarViewModeSelect value={calendarMode} onChange={setCalendarMode} />
                   }
                 />
               )}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import type { EventInput } from "@fullcalendar/core";
@@ -10,6 +10,7 @@ import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
 import { MobileListSheet, MobileDetailSheet } from "./MobileSheets";
+import { useCalendarNav } from "./useCalendarNav";
 import type { CursEventInfo } from "./types";
 
 interface FullCalendarWrapperProps {
@@ -45,17 +46,27 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
   onDatesChange,
 }) => {
   const resolvedInitialDate = initialDate ?? clampToRange(validRangeStart, validRangeEnd);
-  const calRef = useRef<FullCalendar>(null);
   const [mobileSheet, setMobileSheet] = useState<{
     events: CursEventInfo[];
     dateLabel: string;
   } | null>(null);
   const [mobileEvent, setMobileEvent] = useState<CursEventInfo | null>(null);
-  const [headerTitle, setHeaderTitle] = useState("");
-  const [isCurrentMonth, setIsCurrentMonth] = useState(true);
-  const [canPrev, setCanPrev] = useState(true);
-  const [canNext, setCanNext] = useState(true);
   const todayNum = useMemo(() => new Date().getDate(), []);
+
+  const {
+    calRef,
+    headerTitle,
+    setHeaderTitle,
+    isCurrentPeriod: isCurrentMonth,
+    setIsCurrentPeriod: setIsCurrentMonth,
+    canPrev,
+    setCanPrev,
+    canNext,
+    setCanNext,
+    handlePrev,
+    handleNext,
+    handleToday,
+  } = useCalendarNav();
 
   const syncHeader = useCallback(
     (info: { view: { title: string; currentStart: Date } }) => {
@@ -81,15 +92,12 @@ const FullCalendarWrapper: React.FC<FullCalendarWrapperProps> = ({
       const d = String(currentStart.getDate()).padStart(2, "0");
       onDatesChange?.(`${y}-${m}-${d}`);
     },
-    [validRangeStart, validRangeEnd, onDatesChange],
+    [validRangeStart, validRangeEnd, onDatesChange, setHeaderTitle, setIsCurrentMonth, setCanPrev, setCanNext],
   );
 
   // datesSet fires after every navigation and on mount -
   // that's the only place we need to sync. Calling syncHeader() imperatively
   // right after api.prev/next reads the old view before it has updated.
-  const handlePrev = useCallback(() => calRef.current?.getApi().prev(), []);
-  const handleNext = useCallback(() => calRef.current?.getApi().next(), []);
-  const handleToday = useCallback(() => calRef.current?.getApi().today(), []);
 
   return (
     <>

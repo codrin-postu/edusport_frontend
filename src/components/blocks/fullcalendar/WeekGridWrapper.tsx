@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import type { EventInput } from "@fullcalendar/core";
@@ -8,6 +8,7 @@ import "./fullcalendar-overrides.css";
 import CalendarHeader from "./CalendarHeader";
 import CursEvent, { SpecialEventWithTooltip } from "./CursEvent";
 import { MobileDetailSheet } from "./MobileSheets";
+import { useCalendarNav } from "./useCalendarNav";
 import type { CursEventInfo } from "./types";
 
 // Standardized "date · start – end" label from the event (times only if not all-day).
@@ -39,13 +40,23 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
   viewModeControl,
   onDatesChange,
 }) => {
-  const calRef = useRef<FullCalendar>(null);
-  const [headerTitle, setHeaderTitle] = useState("");
-  const [isCurrentWeek, setIsCurrentWeek] = useState(true);
-  const [canPrev, setCanPrev] = useState(true);
-  const [canNext, setCanNext] = useState(true);
   const [mobileEvent, setMobileEvent] = useState<CursEventInfo | null>(null);
   const todayNum = new Date().getDate();
+
+  const {
+    calRef,
+    headerTitle,
+    setHeaderTitle,
+    isCurrentPeriod: isCurrentWeek,
+    setIsCurrentPeriod: setIsCurrentWeek,
+    canPrev,
+    setCanPrev,
+    canNext,
+    setCanNext,
+    handlePrev,
+    handleNext,
+    handleToday,
+  } = useCalendarNav();
 
   const syncHeader = useCallback(
     (info: { view: { title: string; currentStart: Date; currentEnd: Date } }) => {
@@ -57,12 +68,8 @@ const WeekGridWrapper: React.FC<WeekGridWrapperProps> = ({
       setCanNext(currentEnd < new Date(validRangeEnd));
       onDatesChange?.(toYMD(currentStart));
     },
-    [validRangeStart, validRangeEnd, onDatesChange],
+    [validRangeStart, validRangeEnd, onDatesChange, setHeaderTitle, setIsCurrentWeek, setCanPrev, setCanNext],
   );
-
-  const handlePrev = useCallback(() => calRef.current?.getApi().prev(), []);
-  const handleNext = useCallback(() => calRef.current?.getApi().next(), []);
-  const handleToday = useCallback(() => calRef.current?.getApi().today(), []);
 
   return (
     <>

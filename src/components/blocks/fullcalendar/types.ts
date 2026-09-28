@@ -1,3 +1,5 @@
+export type CalendarMode = "month" | "week";
+
 export interface TooltipPos {
   /** Absolute Y to use when the tooltip points downward (above the anchor).
    * Combined with CSS `transform: translateY(-100%)` to render upward. */

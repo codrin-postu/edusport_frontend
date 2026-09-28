@@ -135,9 +135,12 @@ const CursEvent: React.FC<{ title: string; dateLabel?: string; description?: str
   return (
     <span
       ref={anchorRef as React.RefObject<HTMLSpanElement>}
-      className="fc-curs-event fc-hover-anchor"
+      className="fc-curs-event fc-hover-anchor outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+      tabIndex={0}
       onMouseEnter={show}
       onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
     >
       <span className="fc-curs-desktop-title">{title}</span>
 
@@ -167,9 +170,12 @@ export const SpecialEventWithTooltip: React.FC<{ title: string; dateLabel?: stri
       // fc-hover-anchor fills the card, not just the text. The hover target used
       // to be the title's own box, so the empty area below it in a week-view
       // block did not open the tooltip.
-      className="fc-event-title fc-hover-anchor"
+      className="fc-event-title fc-hover-anchor outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
+      tabIndex={0}
       onMouseEnter={show}
       onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
     >
       {title}
       {pos !== null && typeof document !== "undefined" && (

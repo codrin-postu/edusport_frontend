@@ -2,10 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { FocusScope } from "@radix-ui/react-focus-scope";
 import type { CursEventInfo } from "./types";
 import IconButton from "@/components/ui/icon-button";
 import Link from "@/components/ui/link";
 import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
+
+// Shared Esc-to-close for both bottom sheets.
+function useEscToClose(onClose: () => void) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+}
 
 // An event has a detail view if it has a description OR is a curs/next type
 function hasDetail(event: CursEventInfo): boolean {
@@ -22,9 +34,13 @@ export const MobileDetailSheet: React.FC<{
   const { image, body } = extractFirstImage(event.description);
   const hasContent = !!body && body.trim().length > 0;
   const showRegulament = event.type === "curs" || event.type === "next";
+  useEscToClose(onClose);
   return createPortal(
     <div className="fc-mobile-modal-backdrop" onClick={onClose}>
-      <div
+      <FocusScope
+        asChild={false}
+        trapped
+        loop
         className="fc-mobile-modal fc-mobile-modal--detail"
         onClick={(e) => e.stopPropagation()}
       >
@@ -61,7 +77,7 @@ export const MobileDetailSheet: React.FC<{
             )}
           </div>
         </div>
-      </div>
+      </FocusScope>
     </div>,
     document.body,
   );
@@ -76,18 +92,15 @@ export const MobileListSheet: React.FC<{
 }> = ({ events, dateLabel, onClose }) => {
   const [detail, setDetail] = useState<CursEventInfo | null>(null);
 
+  useEscToClose(onClose);
+
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.body.style.overflow = prev;
-      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, []);
 
   if (detail) {
     return (
@@ -101,7 +114,10 @@ export const MobileListSheet: React.FC<{
 
   return createPortal(
     <div className="fc-mobile-modal-backdrop" onClick={onClose}>
-      <div
+      <FocusScope
+        asChild={false}
+        trapped
+        loop
         className="fc-mobile-modal"
         onClick={(e) => e.stopPropagation()}
       >
@@ -128,7 +144,7 @@ export const MobileListSheet: React.FC<{
             </button>
           ))}
         </div>
-      </div>
+      </FocusScope>
     </div>,
     document.body,
   );
