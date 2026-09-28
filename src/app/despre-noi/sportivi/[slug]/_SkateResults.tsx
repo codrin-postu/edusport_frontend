@@ -21,14 +21,35 @@ const PER_PAGE = 12;
 
 const COMPONENT_LABELS: Record<string, string> = {
   SS: "Aptitudini de patinaj",
-  TR: "Tranziții",
-  PE: "Execuție",
-  CO: "Compoziție",
-  IN: "Interpretare",
   SK: "Aptitudini de patinaj",
+  SKATINGSKILLS: "Aptitudini de patinaj",
+  TR: "Tranziții",
+  TRANSITIONS: "Tranziții",
+  PE: "Execuție",
+  PERFORMANCE: "Execuție",
+  EXECUTION: "Execuție",
+  CO: "Compoziție",
+  COMPOSITION: "Compoziție",
+  IN: "Interpretare",
+  INTERPRETATION: "Interpretare",
+  INTERPRETATIONOFTHEMUSIC: "Interpretare",
   PR: "Prezentare",
+  PRESENTATION: "Prezentare",
   TI: "Sincronizare",
+  TIMING: "Sincronizare",
 };
+
+/** Uppercases and strips spaces/underscores so "Skating Skills", "SKATING_SKILLS"
+ * and "SK" all normalise to keys COMPONENT_LABELS recognises. */
+function normalizeComponentKey(key: string): string {
+  return key.toUpperCase().replace(/[\s_]/g, "");
+}
+
+/** Long Romanian label for a program-component code or English name.
+ * Falls back to the raw key when it is not one of the known codes/names. */
+function componentLabel(key: string): string {
+  return COMPONENT_LABELS[normalizeComponentKey(key)] ?? key;
+}
 
 function fmt(v: number | null | undefined): string {
   return typeof v === "number" ? v.toFixed(2) : "—";
@@ -62,17 +83,11 @@ function Segment({ seg }: { seg: SkateSegment }) {
         {seg.is_short ? "Program scurt" : "Program liber"}
       </div>
       <dl className="mt-2 space-y-1">
-        <Row k="TSS" v={fmt(seg.tss)} strong title="Scor total segment" />
-        <Row k="TES" v={fmt(seg.tes)} title="Scor elemente tehnice" />
-        <Row k="PCS" v={fmt(seg.pcs)} title="Scor componente program" />
+        <Row k="Scor total segment" v={fmt(seg.tss)} strong title="TSS" />
+        <Row k="Scor elemente tehnice" v={fmt(seg.tes)} title="TES" />
+        <Row k="Scor componente program" v={fmt(seg.pcs)} title="PCS" />
         {comps.map(([code, v]) => (
-          <Row
-            key={code}
-            k={code}
-            v={fmt(v)}
-            muted
-            title={COMPONENT_LABELS[code.toUpperCase()]}
-          />
+          <Row key={code} k={componentLabel(code)} v={fmt(v)} muted title={code} />
         ))}
         {seg.deductions != null && seg.deductions !== 0 && (
           <Row k="Penalizări" v={`-${fmt(seg.deductions)}`} />
@@ -97,12 +112,15 @@ function Row({
 }) {
   return (
     <div className="text-caption flex items-baseline justify-between gap-4">
-      <dt className={cn(muted ? "text-muted" : "text-secondary")} title={title}>
+      <dt
+        className={cn("min-w-0", muted ? "text-muted" : "text-secondary")}
+        title={title}
+      >
         {k}
       </dt>
       <dd
         className={cn(
-          "tabular-nums text-primary",
+          "shrink-0 tabular-nums text-primary",
           strong ? "font-bold" : "font-medium",
         )}
       >
@@ -138,10 +156,19 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
         {rows.map((r, idx) => {
           const key = `${r.event_id}-${r.category}`;
           const hasDetail = (r.segments?.length ?? 0) > 0;
+          // Detail rows render their name inside AccordionItem's own <h4>
+          // (via headingAs), so the name here is a plain span to avoid a
+          // block heading nested in the trigger button. Rows with no detail
+          // have no such wrapper, so they keep a real heading.
+          const eventName = hasDetail ? (
+            <span className="text-title text-primary">{r.event_name}</span>
+          ) : (
+            <h4 className="text-title text-primary">{r.event_name}</h4>
+          );
           const row = (
             <div className="relative flex flex-col gap-2 sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-x-6">
               <div className="relative min-w-0">
-                <h4 className="text-title text-primary">{r.event_name}</h4>
+                {eventName}
                 <div className="text-caption mt-1 flex flex-wrap items-center gap-2 text-secondary">
                   {r.event_date && <span>{ro_date(r.event_date)}</span>}
                   {r.event_location && (
@@ -187,6 +214,13 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                     </span>
                   )}
                 </span>
+                {/* Detail rows are AccordionItem triggers: the chevron
+                    (size-4) plus its gap-3 eats 28px on the right that a
+                    plain row's div doesn't have, so plain rows reserve the
+                    same width here to keep every column lined up. */}
+                {!hasDetail && (
+                  <span aria-hidden className="hidden shrink-0 sm:block sm:w-7" />
+                )}
               </div>
             </div>
           );
@@ -198,7 +232,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               )}
             >
               {hasDetail ? (
-                <AccordionItem look="row" headingAs="div" triggerClassName="border-b-0 py-4" title={row}>
+                <AccordionItem look="row" headingAs="h4" triggerClassName="border-b-0 py-4" title={row}>
                   <div className="grid gap-6 pb-6 sm:grid-cols-2">
                     {[...(r.segments ?? [])]
                       .sort((a, b) => Number(b.is_short) - Number(a.is_short))
