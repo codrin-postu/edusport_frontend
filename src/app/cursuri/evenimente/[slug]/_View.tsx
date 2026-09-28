@@ -2,6 +2,7 @@ import { cn } from "@/utils/cn";
 import type { BlockNode, CategoryKey } from "@/lib/strapi-article";
 import React from "react";
 import Icon from "@/components/ui/icon";
+import Card from "@/components/ui/card";
 import { notFound } from "next/navigation";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
@@ -133,7 +134,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
 
             {/* Sidebar */}
             <aside className="flex flex-col gap-6 lg:sticky lg:top-24">
-              <div className="bg-surface border-retro border-line shadow-retro p-6 flex flex-col gap-4">
+              <Card className="flex flex-col gap-4">
                 <p className="text-label uppercase text-accent">
                   {SIDEBAR_HEADER[event.category] ?? "Detalii eveniment"}
                 </p>
@@ -168,7 +169,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
                     </span>
                   )}
                 </div>
-              </div>
+              </Card>
             </aside>
           </div>
         </div>

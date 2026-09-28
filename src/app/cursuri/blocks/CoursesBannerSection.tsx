@@ -1,5 +1,5 @@
 import Button from "@/components/ui/button";
-import { Pill } from "@/components/ui/pill";
+import Chip from "@/components/ui/chip";
 import Icon from "@/components/ui/icon";
 import Link from "@/components/ui/link";
 import React from "react";
@@ -35,11 +35,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           Sezonul {currentSeason}
         </span>
         {isRegistrationOpen ? (
-          <Pill color="var(--color-mustard)" shape="slanted" className="text-primary">
+          <Chip tone="highlight" size="md" shape="slanted">
             Înscrieri deschise
-          </Pill>
+          </Chip>
         ) : (
-          <Pill variant="error" shape="slanted">Înscrieri închise</Pill>
+          <Chip tone="accent" size="md" shape="slanted">Înscrieri închise</Chip>
         )}
       </div>
 

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
+import AccordionItem from "@/components/ui/accordion";
 import Icon, { type IconName } from "@/components/ui/icon";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 
@@ -24,17 +26,6 @@ const ICON_MAP: Record<string, IconName> = {
 };
 
 const RegulamentPage: React.FC<Props> = ({ categories }) => {
-  const [openSections, setOpenSections] = useState<Set<string>>(
-    () => new Set(categories.map((c) => c.title)),
-  );
-
-  const toggle = (title: string) =>
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      next.has(title) ? next.delete(title) : next.add(title);
-      return next;
-    });
-
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["REGULAMENT"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Regulament" }]}>
@@ -72,36 +63,31 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
           ) : (
             <div className="flex flex-col">
               {categories.map((category, catIndex) => {
-                const isOpen = openSections.has(category.title);
                 const ruleOffset = categories
                   .slice(0, catIndex)
                   .reduce((sum, c) => sum + c.rules.length, 0);
                 return (
-                  <div key={category.title} className="border-t-retro border-line-subtle">
-                    <button
-                      onClick={() => toggle(category.title)}
-                      className="w-full flex items-center gap-3 py-4 text-left transition-colors hover:text-accent"
-                    >
-                      <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
-                        <Icon name={ICON_MAP[category.icon] ?? "layers"} size="md" />
+                  <AccordionItem
+                    key={category.title}
+                    look="row"
+                    defaultOpen
+                    className="border-t-retro border-line-subtle"
+                    triggerClassName="border-b-0"
+                    title={
+                      <span className="flex items-center gap-3">
+                        <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
+                          <Icon name={ICON_MAP[category.icon] ?? "layers"} size="md" />
+                        </span>
+                        <h3 className="text-label uppercase text-primary">
+                          {category.title}
+                        </h3>
+                        <span className="text-caption ml-auto text-secondary tabular-nums">
+                          {category.rules.length}{" "}
+                          {category.rules.length === 1 ? "regulă" : "reguli"}
+                        </span>
                       </span>
-                      <h3 className="text-label uppercase text-primary">
-                        {category.title}
-                      </h3>
-                      <span className="text-caption ml-auto text-secondary tabular-nums mr-3">
-                        {category.rules.length}{" "}
-                        {category.rules.length === 1 ? "regulă" : "reguli"}
-                      </span>
-                      <Icon
-                        name="chevron-down"
-                        className={cn(
-                          "text-primary transition-transform duration-fast",
-                          isOpen && "rotate-180",
-                        )}
-                      />
-                    </button>
-
-                    {isOpen && (
+                    }
+                  >
                       <div className="flex flex-col pb-4">
                         {category.rules.map((rule, ruleIndex) => {
                           const num = String(ruleOffset + ruleIndex + 1).padStart(2, "0");
@@ -144,15 +130,14 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                           );
                         })}
                       </div>
-                    )}
-                  </div>
+                  </AccordionItem>
                 );
               })}
             </div>
           )}
 
           {/* Acceptance card */}
-          <div className="mt-12 bg-surface border-retro border-line shadow-retro p-8 md:p-8 flex flex-col md:flex-row md:items-center gap-6">
+          <Card padding="lg" className="mt-12 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
               <p className="text-label uppercase text-accent">Acceptare</p>
               <p className="text-body text-primary mt-2">
@@ -168,7 +153,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
             >
               {ENROL_CTA}
             </Button>
-          </div>
+          </Card>
         </div>
       </section>
     </div>

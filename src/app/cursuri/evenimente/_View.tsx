@@ -4,6 +4,8 @@ import Button from "@/components/ui/button";
 import React from "react";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
+import Card from "@/components/ui/card";
+import Chip from "@/components/ui/chip";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import type { Event } from "./_data";
 
@@ -25,23 +27,22 @@ function CurrentEventSection({ event }: { event: Event }) {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Cover (clickable) */}
-          <Link
+          <Card
             href={`/cursuri/evenimente/${event.slug}`}
-            className="group relative block aspect-[16/9] overflow-hidden border-retro border-line shadow-retro bg-surface-subtle"
+            surface="subtle"
+            padding="none"
+            className="relative block aspect-[16/9] overflow-hidden"
           >
             <ArticleImage
               src={event.coverImage}
               alt={event.title}
-              imgClassName="transition-transform duration-slow group-hover:scale-105"
+              imgClassName="transition-transform duration-slow group-hover/card:scale-105"
               iconClassName="w-12 h-12"
             />
-            <span
-              className="text-label absolute top-3 left-3 inline-flex items-center bg-mustard text-primary uppercase px-4 py-2"
-              style={{ clipPath: "polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)" }}
-            >
+            <Chip tone="highlight" size="md" shape="slanted" className="absolute top-3 left-3">
               În curând
-            </span>
-          </Link>
+            </Chip>
+          </Card>
 
           {/* Content (not clickable — only image + button lead to the event) */}
           <div className="flex flex-col gap-6">
@@ -126,9 +127,15 @@ function PastEventsSection({ events }: { events: Event[] }) {
               className="group grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start border-t border-line-subtle first:border-t-0 outline-none"
             >
               {/* Thumbnail */}
-              <div className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden border-retro border-line bg-surface-subtle shrink-0">
+              <Card
+                as="div"
+                surface="subtle"
+                shadow="none"
+                padding="none"
+                className="relative w-full sm:w-32 aspect-video sm:aspect-square overflow-hidden shrink-0"
+              >
                 <ArticleImage src={event.coverImage} alt={event.title} />
-              </div>
+              </Card>
 
               {/* Content */}
               <div className="flex flex-col gap-2">

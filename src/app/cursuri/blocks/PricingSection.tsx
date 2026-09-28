@@ -2,6 +2,7 @@
 
 import Section from "@/components/ui/section";
 import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
@@ -33,14 +34,13 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
-const CARD =
-  "relative flex flex-col overflow-hidden min-h-[520px] bg-surface border-retro border-line shadow-retro";
+const CARD = "relative flex flex-col overflow-hidden min-h-[520px]";
 
 const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
   tier,
   headerClass,
 }) => (
-  <div className={CARD}>
+  <Card padding="none" className={CARD}>
     <div
       className={cn(
         "text-label flex items-center px-6 shrink-0 h-12 uppercase",
@@ -85,7 +85,7 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
         </span>
       </div>
     )}
-  </div>
+  </Card>
 );
 
 interface PricingSectionProps {
@@ -122,8 +122,13 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
-          {/* Promo card — plain navy */}
-          <div className="relative overflow-hidden p-8 md:p-12 flex flex-col gap-6 min-h-[520px] bg-surface-dark text-primary-on-dark shadow-retro">
+          {/* Promo card — plain navy. Card always draws a border-retro edge;
+              this card had none, so it is cancelled with border-none. */}
+          <Card
+            surface="dark"
+            padding="none"
+            className="relative overflow-hidden p-8 md:p-12 flex flex-col gap-6 min-h-[520px] border-none"
+          >
             <span className="text-label uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
@@ -155,17 +160,20 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             >
               {ENROL_CTA}
             </Button>
-          </div>
+          </Card>
 
           {/* Price cards — 2-col at md, dissolve into parent 3-col at lg */}
           <div className="grid md:grid-cols-2 lg:contents gap-6 items-stretch">
             {pricingData === null || !members || !nonMembers ? (
-              <div className="md:col-span-2 lg:col-span-2 bg-surface border-retro border-line shadow-retro flex items-center justify-center min-h-[520px] px-8">
+              <Card
+                padding="none"
+                className="md:col-span-2 lg:col-span-2 flex items-center justify-center min-h-[520px] px-8"
+              >
                 <p className="text-body-sm text-secondary text-center">
                   Prețurile nu sunt disponibile momentan. Reveniți în curând sau
                   contactați-ne direct.
                 </p>
-              </div>
+              </Card>
             ) : (
               <>
                 <PriceCard tier={members} headerClass="bg-burgundy text-primary-on-dark" />

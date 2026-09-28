@@ -2,6 +2,7 @@ import Link from "@/components/ui/link";
 import Section from "@/components/ui/section";
 import Icon, { type IconName } from "@/components/ui/icon";
 import YoutubeEmbed from "@/components/blocks/youtube-embed/YoutubeEmbed";
+import Card from "@/components/ui/card";
 import React from "react";
 
 interface AboutSectionProps {
@@ -68,14 +69,14 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           </Link>
         </div>
 
-        <div className="border-retro border-line shadow-retro overflow-hidden">
+        <Card padding="none" className="overflow-hidden">
           <YoutubeEmbed
             url={videoUrl}
             title={videoLabel}
             label={videoLabel}
             className="shadow-none"
           />
-        </div>
+        </Card>
       </div>
     </Section>
   );
