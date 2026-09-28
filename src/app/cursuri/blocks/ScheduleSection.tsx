@@ -25,9 +25,9 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <>
     <Section className={cn("pt-12 md:pt-16 pb-24 md:pb-24 bg-surface", "overflow-hidden")}>
         <div className="max-w-content mx-auto mb-12 md:mb-12">
-          <span className="text-label uppercase text-accent">
+          <h2 className="text-heading text-primary">
             Program Școala de Patinaj
-          </span>
+          </h2>
         </div>
         {/* Notebook page */}
         <div className="max-w-content mx-auto relative">
@@ -79,7 +79,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
               {/* Subtitle */}
               <p
-                className="text-body text-primary"
+                className="text-body font-semibold text-primary"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 {scheduleSubtitle || "Sâmbătă & Duminică · 50 min / ședință"}
@@ -91,7 +91,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                   <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
                     {/* Time slot line */}
                     <p
-                      className="text-body text-primary"
+                      className="text-body font-semibold text-primary"
                       style={{ lineHeight: "32px", margin: 0 }}
                     >
                       {group.timeSlot}
