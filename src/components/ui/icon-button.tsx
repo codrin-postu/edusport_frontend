@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import NextLink from "next/link";
 import { cn } from "@/utils/cn";
@@ -16,6 +14,8 @@ interface IconButtonProps {
   onClick?: (event: React.MouseEvent) => void;
   /** Renders a link. Internal paths use the Next.js Link. */
   href?: string;
+  /** Internal links only: false keeps the scroll position on navigation. */
+  scroll?: boolean;
   disabled?: boolean;
   className?: string;
   /** Forwarded for toggles and disclosures. */
@@ -35,6 +35,7 @@ export default function IconButton({
   onDark = false,
   onClick,
   href,
+  scroll,
   disabled,
   className,
   ...aria
@@ -57,7 +58,7 @@ export default function IconButton({
   if (href && !disabled) {
     if (href.startsWith("/")) {
       return (
-        <NextLink href={href} aria-label={label} onClick={onClick} className={classes} {...aria}>
+        <NextLink href={href} scroll={scroll} aria-label={label} onClick={onClick} className={classes} {...aria}>
           {inner}
         </NextLink>
       );

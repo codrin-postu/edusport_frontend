@@ -97,3 +97,8 @@ test("counts rgba text strokes", () => {
   const c = countMatches("<div style={{ WebkitTextStroke: \"1.5px rgba(14,26,60,0.10)\" }} />");
   assert.equal(c["css-opacity"], 1);
 });
+
+test("counts direct icon library imports", () => {
+  const c = countMatches("import { MapPin } from \"lucide-react\";");
+  assert.equal(c["icon-import"], 1);
+});

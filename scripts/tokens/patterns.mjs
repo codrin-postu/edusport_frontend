@@ -26,6 +26,10 @@ export const PATTERNS = [
   // The saturated brand blue is retired from the theme (2026-09-28). Only the
   // frozen landing hero keeps its own hard-coded copy.
   { id: "retired-blue", why: "edusport-blue is retired; use navy, rust or burgundy", regex: /(?:edusport-blue|#2138b8)/gi },
+  // Icons come from <Icon name> (separate SVG files in public/icons, see
+  // scripts/icons). Importing the icon library directly would bypass the
+  // approved list and ship icon code in the bundle.
+  { id: "icon-import", why: "use <Icon name> (public/icons), not lucide-react", regex: /from\s+["']lucide-react["']/g },
 ];
 
 // Frozen or third-party files the checker and codemods never touch.

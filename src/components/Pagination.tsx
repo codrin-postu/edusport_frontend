@@ -74,6 +74,7 @@ export function Pagination({
         icon="chevron-left"
         href={currentPage > 1 ? href(currentPage - 1) : undefined}
         disabled={currentPage <= 1}
+        scroll={scrollToAnchor}
         label="Pagina anterioară"
       />
 
@@ -98,6 +99,7 @@ export function Pagination({
         icon="chevron-right"
         href={currentPage < totalPages ? href(currentPage + 1) : undefined}
         disabled={currentPage >= totalPages}
+        scroll={scrollToAnchor}
         label="Pagina următoare"
       />
     </nav>
