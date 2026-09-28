@@ -87,3 +87,8 @@ test("counts background opacity on any colour", () => {
   const c = countMatches("<div className=\"bg-mustard/[0.16] hover:bg-edusport-blue/5 bg-overlay\">");
   assert.equal(c["bg-opacity"], 2);
 });
+
+test("counts the retired brand blue", () => {
+  const c = countMatches("<div className=\"bg-edusport-blue\" style={{ color: \"#2138B8\" }} />");
+  assert.equal(c["retired-blue"], 2);
+});

@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
-import { DURATION } from "@/lib/motion";
 import { usePathname } from "next/navigation";
 import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
@@ -11,37 +9,6 @@ import HeaderTop from "./components/HeaderTop";
 import NavigationMenuInteractive from "./components/NavigationMenuInteractive";
 import { navItems as staticNavItems, type NavItem } from "./navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
-
-const CascadingText: React.FC<{ text: string; className?: string }> = ({
-  text,
-  className = "",
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <span
-      className={`inline-flex ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {text.split("").map((letter, index) => (
-        <motion.span
-          key={index}
-          className="text-branding-font"
-          animate={{
-            color: isHovered ? "var(--color-edusport-blue)" : "var(--color-primary)",
-          }}
-          transition={{
-            duration: DURATION.fast,
-            delay: index * 0.05,
-          }}
-        >
-          {letter}
-        </motion.span>
-      ))}
-    </span>
-  );
-};
 
 // Layers button (same hover fan as the CTA), square, matched to the CTA
 // height, with a hamburger face.
@@ -165,10 +132,7 @@ const Header: React.FC<HeaderProps> = ({
               <span className="text-body-sm text-primary">
                 CLUBUL SPORTIV
               </span>
-              <CascadingText
-                text="EDUSPORT"
-                className="text-body text-branding-font"
-              />
+              <span className="text-body text-branding-font text-primary">EDUSPORT</span>
             </Link>
 
             {/* Center - Desktop nav (lg+) */}

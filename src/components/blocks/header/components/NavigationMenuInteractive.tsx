@@ -169,9 +169,9 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}
                         >
-                          <ChevronRight className="size-4 text-line-subtle group-hover:text-edusport-blue transition-colors shrink-0" />
+                          <ChevronRight className="size-4 text-line-subtle group-hover:text-accent transition-colors shrink-0" />
                           <div>
-                            <span className="text-body-sm text-primary group-hover:text-edusport-blue transition-colors">
+                            <span className="text-body-sm text-primary group-hover:text-accent transition-colors">
                               {dropdownItem.label}
                             </span>
                             {dropdownItem.description && (

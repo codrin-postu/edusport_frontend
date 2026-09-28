@@ -134,7 +134,7 @@ const LayersButton: React.FC<{
 const SpotlightButton: React.FC<SpotlightButtonProps> = ({
   children,
   variant = "black",
-  hoverColor = "var(--color-edusport-blue)",
+  hoverColor = "var(--color-accent)",
   hoverTextColor,
   className = "",
   onClick,

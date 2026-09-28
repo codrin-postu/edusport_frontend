@@ -193,7 +193,7 @@ const SeasonTableView: React.FC<SeasonTableViewProps> = ({ seasonCalendar }) => 
                   >
                     <TableCell
                       className={cn(
-                        "font-semibold text-edusport-blue min-w-[150px] py-3",
+                        "font-semibold text-primary min-w-[150px] py-3",
                         isPast && "md:cursor-default cursor-pointer select-none",
                       )}
                       onClick={

@@ -85,7 +85,6 @@ become `text-muted`. Cream and white opacities on navy map the same way to the
 | `bg-surface-dark` | #0e1a3c | Navy sections, footer, panels |
 | `bg-surface-subtle-on-dark` | #26304e | The same roles on navy; selected option card and page hero watermark on navy |
 | `bg-surface-highlight` | #f9edd1 | The one "next" item in a list (Program's next weekend) |
-| `bg-surface-brand-subtle` | #e5e3ec | Small brand tags (Internațional), with brand blue text |
 
 `bg-surface-subtle` replaces `bg-navy/[0.03]` through `bg-navy/10` and the
 default gray backgrounds (about 45 static uses).
@@ -227,7 +226,7 @@ which renders as Inter Black, and 9 Realizări season headers). Fix: set Inter o
 `body` only and let inheritance work. The pixel diff lists every element this
 changes before commit.
 
-**Type roles (9 roles, 7 sizes, rem):** each role sets size, weight,
+**Type roles (11 roles, rem; `text-subtitle` and `text-body-lg` added 2026-09-28):** each role sets size, weight,
 line-height and letter-spacing together.
 
 | Role | Size | Font | Line | Spacing |
@@ -236,12 +235,18 @@ line-height and letter-spacing together.
 | `text-display` | 30 to 48 | Spartan 800 | 1.05 | -0.02em |
 | `text-heading` | 26 to 36 | Spartan 800 | 1.1 | -0.02em |
 | `text-title` | 20 to 24 | Spartan 800 | 1.2 | -0.01em |
+| `text-subtitle` | 20 to 24 | Inter 600 | 1.35 | 0 |
+| `text-body-lg` | 18 | Inter 400 | 1.6 | 0 |
 | `text-body` | 16 | Inter 400 | 1.6 | 0 |
 | `text-body-sm` | 14 | Inter 400 | 1.55 | 0 |
 | `text-caption` | 12 | Inter 400 | 1.4 | 0 |
 | `text-label` | 12 | Inter 600 caps | 1.1 | +0.14em |
 | `text-button` | 13 | Inter 600 caps | 1 | +0.06em |
 
+- `text-subtitle`: the line under a page or section title. `text-body-lg`: intro
+  paragraphs.
+- Named exceptions: `text-athlete-name` (Spartan 900, 56 / 88px, -0.055em, as
+  before SP1) and `text-branding-font` (Climate Crisis).
 - Minimum size is 12px. 8, 9.5, 10, 10.5 and 11px are removed.
 - `text-label` covers both eyebrows and labels.
 - `text-title` absorbs the 15 to 24px small headings (form titles, pricing
@@ -375,3 +380,13 @@ is an editor-only tool and stays separate.
 - A single label for the Înscrieri CTA (seven variants today).
 - The landing section 2 color.
 - Order of the SP4 page passes.
+
+
+## Ruling 2026-09-28: brand blue retired
+
+`edusport-blue` (#2138b8) is removed from the theme. Logo is plain navy with no
+hover animation; photo-less athlete gradients use burgundy; the athlete frame
+ends in navy; the page-load bar is rust; Antrenament in the calendar is
+burgundy (the admin panel's category colour must match); body and the
+registration-closed section are navy. The checker blocks `edusport-blue` and
+#2138b8. Only the frozen landing hero keeps its own hard-coded copy.

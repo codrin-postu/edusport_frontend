@@ -53,7 +53,7 @@ export default function ConsentGate({
           <button
             type="button"
             onClick={() => CC.acceptCategory(category)}
-            className="text-label border-retro border-line bg-surface-dark px-4 py-2 uppercase text-primary-on-dark transition-colors hover:bg-edusport-blue hover:border-edusport-blue"
+            className="text-label border-retro border-line bg-surface-dark px-4 py-2 uppercase text-primary-on-dark transition-colors hover-layer-on-dark"
           >
             Permite și afișează
           </button>

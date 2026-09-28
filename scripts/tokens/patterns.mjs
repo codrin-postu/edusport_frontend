@@ -23,6 +23,9 @@ export const PATTERNS = [
   { id: "z-index", why: "use z-base ... z-popup", regex: new RegExp(`${V}-?z-(?:\\[\\d+\\]|\\d+)(?=[\\s"'\`]|$)`, "g") },
   { id: "arbitrary-type", why: "type roles set tracking and leading", regex: new RegExp(`${V}(?:tracking|leading)-\\[`, "g") },
   { id: "raw-duration", why: "duration-fast, -base, -slow, -long", regex: new RegExp(`${V}duration-\\d+\\b`, "g") },
+  // The saturated brand blue is retired from the theme (2026-09-28). Only the
+  // frozen landing hero keeps its own hard-coded copy.
+  { id: "retired-blue", why: "edusport-blue is retired; use navy, rust or burgundy", regex: /(?:edusport-blue|#2138b8)/gi },
 ];
 
 // Frozen or third-party files the checker and codemods never touch.

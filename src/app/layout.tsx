@@ -137,7 +137,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="bg-edusport-blue overflow-x-clip">
+      <body className="bg-surface-dark overflow-x-clip">
         <OrganizationJsonLd
           telephone={contactInfo.phone}
           email={contactInfo.email}

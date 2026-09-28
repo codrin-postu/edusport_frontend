@@ -122,7 +122,7 @@ export default function NavigationProgress() {
     <motion.div
       ref={scope}
       aria-hidden
-      className="fixed top-0 left-0 right-0 h-[4px] bg-edusport-blue origin-left pointer-events-none"
+      className="fixed top-0 left-0 right-0 h-[4px] bg-accent origin-left pointer-events-none"
       style={{ zIndex: 9999, opacity: 0, transform: "scaleX(0)" }}
     />
   );

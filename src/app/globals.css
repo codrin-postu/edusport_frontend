@@ -109,7 +109,6 @@ h1.text-branding-font {
      and the canvas animations RinkTransition.tsx / SkateLoader.tsx. */
 
   /* Brand */
-  --color-edusport-blue: #2138b8; /* primary: links, buttons, header overlays */
   --color-navy: #0e1a3c;          /* dark surfaces + darkest ink text (one token) */
 
   /* Status — semantic, values preserved */
@@ -167,8 +166,6 @@ h1.text-branding-font {
   /* Warm fill for the one "next" or "current" item in a list (Program's next
      weekend). Solid equivalent of mustard over surface. */
   --color-surface-highlight: #f9edd1;
-  /* Brand-blue tinted fill for small tags (Internațional). */
-  --color-surface-brand-subtle: #e5e3ec;
   --color-surface-dark: #0e1a3c;
   --color-surface-subtle-on-dark: #26304e;
   --color-overlay: rgb(14 26 60 / 0.55);
@@ -469,13 +466,18 @@ h1.text-branding-font {
   @media (width >= 48rem) { font-size: 1.5rem; }
 }
 @utility text-body { font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
+@utility text-subtitle {
+  font-weight: 600; font-size: 1.25rem; line-height: 1.35; letter-spacing: 0;
+  @media (width >= 48rem) { font-size: 1.5rem; }
+}
+@utility text-body-lg { font-weight: 400; font-size: 1.125rem; line-height: 1.6; letter-spacing: 0; }
 @utility text-body-sm { font-weight: 400; font-size: 0.875rem; line-height: 1.55; letter-spacing: 0; }
 @utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
 @utility text-label { font-weight: 600; font-size: 0.75rem; line-height: 1.1; letter-spacing: 0.14em; text-transform: uppercase; }
 @utility text-button { font-weight: 600; font-size: 0.8125rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
 /* Named exception: athlete page name. */
 @utility text-athlete-name {
-  font-family: var(--font-display); font-weight: 900; font-size: 3.5rem; line-height: 0.85; letter-spacing: -0.035em;
+  font-family: var(--font-display); font-weight: 900; font-size: 3.5rem; line-height: 0.85; letter-spacing: -0.055em;
   @media (width >= 48rem) { font-size: 5.5rem; }
 }
 

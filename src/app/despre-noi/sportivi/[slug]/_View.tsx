@@ -28,7 +28,7 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
  *
  * Hero is the showpiece: navy band, huge stacked filled+stroked name
  * (League Spartan display, ~110px on desktop), photo as inset with the
- * brand gold→rust→blue gradient, "01" watermark, and a 3-stat row. Right
+ * brand gold→rust→navy gradient, "01" watermark, and a 3-stat row. Right
  * after it comes "Despre mine" — the athlete's narrative bio (Inter
  * lead). The rest (attribute grid, Programe, Performanțe, Galerie,
  * Istoric, Outro) sits on cream so the editorial weight lives up top —
@@ -181,9 +181,9 @@ const SportspersonView: React.FC<Props> = ({
               </h1>
             </div>
 
-            {/* Right: photo inset with the brand gold→rust→blue gradient
+            {/* Right: photo inset with the brand gold→rust→navy gradient
                 (visible as frame / behind photo-less athletes). */}
-            <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-medal-gold via-rust to-edusport-blue md:h-[300px]">
+            <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-medal-gold via-rust to-navy md:h-[300px]">
               {sportsperson.photo?.url && (
                 <Image
                   src={strapiMediaUrl(sportsperson.photo.url)}
@@ -447,7 +447,7 @@ const SportspersonView: React.FC<Props> = ({
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-title text-primary">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="text-label bg-surface-brand-subtle px-2 py-0.5 uppercase text-edusport-blue">
+                          <span className="text-label bg-surface-subtle px-2 py-0.5 uppercase text-primary">
                             Internațional
                           </span>
                         )}

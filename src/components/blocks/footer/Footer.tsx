@@ -377,7 +377,7 @@ const Footer: React.FC<FooterProps> = ({ contactInfo, retro, registrationOpen })
       className={cn(
         "relative",
         "overflow-hidden",
-        "bg-edusport-blue",
+        "bg-surface-dark",
         "w-full",
         "min-h-[250px]",
         "pb-[10vw] 2xl:pb-[9.5em]",

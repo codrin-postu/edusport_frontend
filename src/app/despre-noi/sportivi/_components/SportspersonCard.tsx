@@ -228,7 +228,7 @@ export function SportspersonCard({
         href={`/despre-noi/sportivi/${sportsperson.slug}`}
         aria-label={`Vezi profilul ${sportsperson.name}`}
         className={cn(
-          "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-edusport-blue focus-visible:ring-offset-2",
+          "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
         )}
         style={{ transformStyle: "preserve-3d" }}
       >
@@ -400,18 +400,18 @@ export function SportspersonCard({
  * from the athlete's slug so the same person always gets the same colours
  * across SSR and re-renders. Each pair anchors on a dark/saturated brand tone
  * (navy/blue/rust) so the white name text over the bottom overlay stays legible.
- * Values mirror the globals.css @theme tokens (navy #0e1a3c, blue #2138b8,
+ * Values mirror the globals.css @theme tokens (navy #0e1a3c, burgundy #6e4256,
  * rust #be3330, gold #fbbf24).
  */
 const FALLBACK_GRADIENTS: Array<{ from: string; to: string }> = [
-  { from: "#0e1a3c", to: "#2138b8" }, // navy → blue
-  { from: "#2138b8", to: "#0e1a3c" }, // blue → navy
+  { from: "#0e1a3c", to: "#6e4256" }, // navy → burgundy
+  { from: "#6e4256", to: "#0e1a3c" }, // burgundy → navy
   { from: "#0e1a3c", to: "#be3330" }, // navy → rust
   { from: "#be3330", to: "#0e1a3c" }, // rust → navy
-  { from: "#2138b8", to: "#be3330" }, // blue → rust
+  { from: "#6e4256", to: "#be3330" }, // burgundy → rust
   { from: "#be3330", to: "#fbbf24" }, // rust → gold
   { from: "#0e1a3c", to: "#fbbf24" }, // navy → gold
-  { from: "#2138b8", to: "#fbbf24" }, // blue → gold
+  { from: "#6e4256", to: "#fbbf24" }, // burgundy → gold
 ];
 
 function pickFallbackGradient(seed: string): { from: string; to: string } {

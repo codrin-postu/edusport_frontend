@@ -9,7 +9,7 @@
 .fc,
 .fc-mobile-modal,
 .fc-curs-tooltip {
-  --fc-cat-curs: #2138b8;        /* Antrenament (standalone course) */
+  --fc-cat-curs: var(--color-burgundy); /* Antrenament (standalone course) */
   --fc-cat-curs-fg: var(--color-retro-cream);
   --fc-cat-scoala: var(--color-primary);      /* Școala de patinaj */
   --fc-cat-scoala-fg: var(--color-retro-cream);
