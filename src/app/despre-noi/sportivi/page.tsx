@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { Icon } from "@/components/ui/icon";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import { Stat } from "@/components/ui/stat";
 import {
   computeStats,
   fetchCompetitionsForSportspeople,
@@ -15,35 +16,6 @@ import {
 import { Pagination } from "@/components/Pagination";
 import { SearchBar } from "./_components/SearchBar";
 import { Spotlight } from "./_components/Spotlight";
-
-/** One numeric stat in a roster row. */
-function RosterStat({
-  value,
-  label,
-  accent = false,
-  className,
-}: {
-  value: string;
-  label: string;
-  accent?: boolean;
-  className?: string;
-}) {
-  return (
-    <div className={cn("flex flex-col items-end shrink-0", className)}>
-      <span
-        className={cn(
-          "text-title tabular-nums",
-          accent ? "text-accent" : "text-primary",
-        )}
-      >
-        {value}
-      </span>
-      <span className="text-label mt-0.5 uppercase text-secondary">
-        {label}
-      </span>
-    </div>
-  );
-}
 
 // Reads `searchParams.page` + `searchParams.search`, so the page must be
 // rendered dynamically per request — can't be statically pre-rendered.
@@ -256,25 +228,31 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                         )}
                       </div>
                       <div className="ml-auto flex items-center gap-4 sm:gap-6">
-                        <RosterStat
+                        <Stat
+                          size="sm"
+                          layout="stack"
                           value={String(st.totalCompetitions).padStart(2, "0")}
                           label="Comp."
                           accent
-                          className="w-12"
+                          className="items-end shrink-0 w-12"
                         />
-                        <RosterStat
+                        <Stat
+                          size="sm"
+                          layout="stack"
                           value={String(medalTotal).padStart(2, "0")}
                           label="Medalii"
-                          className="w-12"
+                          className="items-end shrink-0 w-12"
                         />
-                        <RosterStat
+                        <Stat
+                          size="sm"
+                          layout="stack"
                           value={
                             st.bestScore !== null
                               ? st.bestScore.toFixed(2)
                               : "—"
                           }
                           label="Best"
-                          className="hidden sm:flex w-14"
+                          className="items-end shrink-0 hidden sm:flex w-14"
                         />
                         <Icon name="chevron-right" className="text-secondary group-hover:text-accent transition-colors" />
                       </div>

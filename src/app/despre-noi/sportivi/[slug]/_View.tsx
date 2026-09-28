@@ -3,6 +3,8 @@ import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { Icon } from "@/components/ui/icon";
 import Breadcrumb from "@/components/ui/breadcrumb";
+import { Stat } from "@/components/ui/stat";
+import { Chip } from "@/components/ui/chip";
 import {
   computeStats,
   pickNotableResults,
@@ -199,15 +201,16 @@ const SportspersonView: React.FC<Props> = ({
 
           {/* Stats row */}
           <div className="mt-8 grid grid-cols-1 gap-6 border-t border-line-subtle-on-dark pt-6 sm:grid-cols-3">
-            <HeroStat value={pad(stats.totalCompetitions)} label="Competiții" accent />
+            <Stat value={pad(stats.totalCompetitions)} label="Competiții" onDark accent />
             {tier ? (
-              <HeroStat value={`${tier.count}×`} label={tier.label} />
+              <Stat value={`${tier.count}×`} label={tier.label} onDark />
             ) : (
-              <HeroStat value="—" label="Medalii" />
+              <Stat value="—" label="Medalii" onDark />
             )}
-            <HeroStat
+            <Stat
               value={stats.bestScore !== null ? stats.bestScore.toFixed(2) : "—"}
               label="Cel mai bun scor"
+              onDark
             />
           </div>
         </div>
@@ -442,9 +445,7 @@ const SportspersonView: React.FC<Props> = ({
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-title text-primary">{comp.name}</h4>
                         {comp.level === "international" && (
-                          <span className="text-label bg-surface-subtle px-2 py-0.5 uppercase text-primary">
-                            Internațional
-                          </span>
+                          <Chip tone="neutral">Internațional</Chip>
                         )}
                       </div>
                       <div className="text-caption mt-1 flex flex-wrap items-center gap-2 text-secondary">
@@ -592,33 +593,6 @@ function NameStack({ name }: { name: string }) {
         </span>
       )}
     </>
-  );
-}
-
-function HeroStat({
-  value,
-  label,
-  accent = false,
-}: {
-  value: string;
-  label: string;
-  /** Highlight as the lead metric (gold). */
-  accent?: boolean;
-}) {
-  return (
-    <div>
-      <div
-        className={cn(
-          "text-heading",
-          accent ? "text-medal-gold" : "text-primary-on-dark",
-        )}
-      >
-        {value}
-      </div>
-      <div className="text-label mt-2 uppercase text-secondary-on-dark">
-        {label}
-      </div>
-    </div>
   );
 }
 

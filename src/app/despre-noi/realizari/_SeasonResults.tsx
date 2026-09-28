@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { Select } from "@/components/ui/select";
 import { Icon, type IconName } from "@/components/ui/icon";
+import AccordionItem from "@/components/ui/accordion";
+import { Stat } from "@/components/ui/stat";
 import {
   decadeOf,
   getPlacementInfo,
@@ -47,6 +49,42 @@ interface RailProps {
  * A folded decade still shows its selected season, so the current choice is
  * always visible. Folding and picking are both local state.
  */
+/** A real link, so a new tab or a shared URL opens on this season; a plain
+ *  click is handled here instead of by the router (a router navigation
+ *  would reload the page and jump to the top). */
+const SeasonLink: React.FC<{
+  season: SeasonIndexEntry;
+  active: boolean;
+  pathname: string;
+  onSelect: (id: string) => void;
+}> = ({ season, active, pathname, onSelect }) => (
+  <li>
+    <a
+      href={seasonHref(pathname, season.id)}
+      onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+        onSelect(season.id);
+      }}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "flex items-baseline gap-2 px-3 py-2",
+        "text-body-sm",
+        active && "font-semibold",
+        "border-l-[3px] border-transparent transition-colors",
+        active
+          ? "border-l-rust bg-surface-subtle text-primary"
+          : "text-secondary hover:text-primary hover-layer",
+      )}
+    >
+      <span>{season.label}</span>
+      <span className="text-caption ml-auto text-secondary tabular-nums">
+        {season.competitionCount}
+      </span>
+    </a>
+  </li>
+);
+
 const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect }) => {
   const decades = useMemo(() => groupSeasonsByDecade(index), [index]);
   const selectedDecade = selectedId ? decadeOf(selectedId) : decades[0]?.id ?? null;
@@ -61,74 +99,44 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
       aria-label="Sezoane"
       className="hidden lg:block w-[212px] shrink-0 border-r-retro border-line-subtle"
     >
-      {decades.map((decade, i) => {
+      {decades.map((decade) => {
         const open = isOpen(decade.id);
+        // A folded decade still shows its selected season (as a standalone
+        // row below the trigger), so the current choice is always visible.
+        const selectedInDecade = decade.seasons.find((season) => season.id === selectedId);
         return (
           <div key={decade.id}>
-            <button
-              type="button"
-              onClick={() => toggle(decade.id)}
-              aria-expanded={open}
-              className={cn(
-                "w-full flex items-center justify-between gap-2 px-3 py-3 text-left",
-                "transition-colors hover-layer",
-                i > 0 && "border-t-retro border-line-subtle",
-                open && "bg-surface-subtle",
-              )}
+            <AccordionItem
+              look="row"
+              headingAs="div"
+              open={open}
+              onOpenChange={() => toggle(decade.id)}
+              triggerClassName="px-3"
+              title={
+                <span className="flex flex-col gap-1 min-w-0">
+                  <span className="text-label text-primary">{decade.label}</span>
+                  <span className="text-caption text-secondary">
+                    {seasonsLabel(decade.seasons.length)}
+                  </span>
+                </span>
+              }
             >
-              <span className="flex flex-col gap-1 min-w-0">
-                <span className="text-label text-primary">
-                  {decade.label}
-                </span>
-                <span className="text-caption text-secondary">
-                  {seasonsLabel(decade.seasons.length)}
-                </span>
-              </span>
-              <Icon
-                name="chevron-down"
-                className={cn(
-                  "text-secondary transition-transform duration-fast",
-                  open && "rotate-180",
-                )}
-              />
-            </button>
-
-            {(open || decade.seasons.some((season) => season.id === selectedId)) && (
               <ul>
-                {decade.seasons.filter((season) => open || season.id === selectedId).map((season) => {
-                  const active = season.id === selectedId;
-                  return (
-                    <li key={season.id}>
-                      {/* A real link, so a new tab or a shared URL opens on this
-                          season; a plain click is handled here instead of by
-                          the router (a router navigation would reload the
-                          page and jump to the top). */}
-                      <a
-                        href={seasonHref(pathname, season.id)}
-                        onClick={(e) => {
-                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-                          e.preventDefault();
-                          onSelect(season.id);
-                        }}
-                        aria-current={active ? "page" : undefined}
-                        className={cn(
-                          "flex items-baseline gap-2 px-3 py-2",
-                          "text-body-sm",
-                          active && "font-semibold",
-                          "border-l-[3px] border-transparent transition-colors",
-                          active
-                            ? "border-l-rust bg-surface-subtle text-primary"
-                            : "text-secondary hover:text-primary hover-layer",
-                        )}
-                      >
-                        <span>{season.label}</span>
-                        <span className="text-caption ml-auto text-secondary tabular-nums">
-                          {season.competitionCount}
-                        </span>
-                      </a>
-                    </li>
-                  );
-                })}
+                {decade.seasons.map((season) => (
+                  <SeasonLink
+                    key={season.id}
+                    season={season}
+                    active={season.id === selectedId}
+                    pathname={pathname}
+                    onSelect={onSelect}
+                  />
+                ))}
+              </ul>
+            </AccordionItem>
+
+            {!open && selectedInDecade && (
+              <ul>
+                <SeasonLink season={selectedInDecade} active pathname={pathname} onSelect={onSelect} />
               </ul>
             )}
           </div>
@@ -236,96 +244,81 @@ const Place: React.FC<{ placement: number | null }> = ({ placement }) => {
 
 /** One competition, open by default; the header folds its results away. */
 const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => {
-  const [open, setOpen] = useState(true);
   const meta = [competition.date, competition.location].filter(Boolean).join(", ");
   return (
-    <article className="mb-6">
-      <h4>
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          className={cn(
-            "w-full flex items-center justify-between gap-3 px-4 py-3 text-left bg-surface-subtle transition-colors hover-layer",
-            "border-b-retro border-line",
-          )}
-        >
-          <span className="flex flex-col gap-1 min-w-0">
-            <span className="text-body font-semibold text-primary">{competition.name}</span>
-            {meta && <span className="text-caption text-secondary">{meta}</span>}
-          </span>
-          <Icon
-            name="chevron-down"
-            className={cn("text-secondary transition-transform duration-fast", open && "rotate-180")}
-          />
-        </button>
-      </h4>
+    <AccordionItem
+      className="mb-6"
+      look="band"
+      defaultOpen
+      headingAs="h4"
+      title={
+        <span className="flex flex-col gap-1 min-w-0">
+          <span className="text-body font-semibold text-primary">{competition.name}</span>
+          {meta && <span className="text-caption text-secondary">{meta}</span>}
+        </span>
+      }
+    >
+      {/* Desktop and tablet: table, fixed columns so every card lines up */}
+      <table className="text-body-sm hidden sm:table w-full table-fixed">
+        <thead>
+          <tr>
+            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-20">
+              Loc
+            </th>
+            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-2/5">
+              Sportiv
+            </th>
+            <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle">
+              Categorie
+            </th>
+            <th className="text-label text-right text-secondary px-4 py-2 border-b border-line-subtle w-24">
+              Punctaj
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {competition.results.map((result, i) => (
+            <tr key={i} className="border-b border-line-subtle last:border-b-0">
+              <td className="px-4 py-3 align-middle">
+                <Place placement={result.placement} />
+              </td>
+              <td className="px-4 py-3">
+                <AthleteName result={result} />
+              </td>
+              <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
+              <td className="px-4 py-3 text-right tabular-nums text-secondary">
+                {formatScore(result.score)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      {open && (
-        <>
-          {/* Desktop and tablet: table, fixed columns so every card lines up */}
-          <table className="text-body-sm hidden sm:table w-full table-fixed">
-            <thead>
-              <tr>
-                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-20">
-                  Loc
-                </th>
-                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-2/5">
-                  Sportiv
-                </th>
-                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle">
-                  Categorie
-                </th>
-                <th className="text-label text-right text-secondary px-4 py-2 border-b border-line-subtle w-24">
-                  Punctaj
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {competition.results.map((result, i) => (
-                <tr key={i} className="border-b border-line-subtle last:border-b-0">
-                  <td className="px-4 py-3 align-middle">
-                    <Place placement={result.placement} />
-                  </td>
-                  <td className="px-4 py-3">
-                    <AthleteName result={result} />
-                  </td>
-                  <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
-                  <td className="px-4 py-3 text-right tabular-nums text-secondary">
-                    {formatScore(result.score)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Mobile: one row per result, nothing scrolls sideways */}
-          <div className="sm:hidden">
-            {competition.results.map((result, i) => {
-              const detail = [result.category, result.score != null ? `${result.score.toFixed(2)} puncte` : null]
-                .filter(Boolean)
-                .join(", ");
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 px-3 py-3 border-b border-line-subtle last:border-b-0"
-                >
-                  <span className="w-8 shrink-0 inline-flex justify-center">
-                    <Place placement={result.placement} />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="text-body-sm block">
-                      <AthleteName result={result} />
-                    </span>
-                    <span className="text-caption text-secondary block mt-1">{detail || "-"}</span>
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </>
-      )}
-    </article>
+      {/* Mobile: one row per result, nothing scrolls sideways */}
+      <div className="sm:hidden">
+        {competition.results.map((result, i) => {
+          const detail = [result.category, result.score != null ? `${result.score.toFixed(2)} puncte` : null]
+            .filter(Boolean)
+            .join(", ");
+          return (
+            <div
+              key={i}
+              className="flex items-center gap-3 px-3 py-3 border-b border-line-subtle last:border-b-0"
+            >
+              <span className="w-8 shrink-0 inline-flex justify-center">
+                <Place placement={result.placement} />
+              </span>
+              <span className="min-w-0">
+                <span className="text-body-sm block">
+                  <AthleteName result={result} />
+                </span>
+                <span className="text-caption text-secondary block mt-1">{detail || "-"}</span>
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </AccordionItem>
   );
 };
 
@@ -434,12 +427,12 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
 
         {/* Summary band: the whole season, whatever the filter shows */}
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 bg-surface-subtle px-4 py-3 mb-6">
-          <div className="flex items-center gap-3">
-            <span className="text-title text-primary tabular-nums">{seasonCompetitions.length}</span>
-            <span className="text-label text-secondary">
-              {seasonCompetitions.length === 1 ? "Competiție" : "Competiții"} în sezonul {season.label}
-            </span>
-          </div>
+          <Stat
+            layout="inline"
+            size="sm"
+            value={seasonCompetitions.length}
+            label={`${seasonCompetitions.length === 1 ? "Competiție" : "Competiții"} în sezonul ${season.label}`}
+          />
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="text-label text-secondary">Medalii</span>
             <MedalCount place={1} count={summary.gold} />

@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import Card from "@/components/ui/card";
 
 interface Trainer {
   name: string;
@@ -66,9 +67,10 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                   .map((n) => n[0])
                   .join("");
                 return (
-                  <div
+                  <Card
                     key={trainer.name}
-                    className="flex flex-col bg-surface border-retro border-line shadow-retro"
+                    padding="none"
+                    className="flex flex-col"
                   >
                     {/* Header band — avatar + name centered/stacked */}
                     <div
@@ -151,7 +153,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                         </div>
                       )}
                     </div>
-                  </div>
+                  </Card>
                 );
               })}
             </div>

@@ -13,8 +13,8 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
-import { Icon } from "@/components/ui/icon";
 import IconButton from "@/components/ui/icon-button";
+import AccordionItem, { AccordionGroup } from "@/components/ui/accordion";
 import type { SkateResult, SkateSegment } from "@/lib/skate-results";
 
 const PER_PAGE = 12;
@@ -113,7 +113,6 @@ function Row({
 }
 
 export default function SkateResults({ results }: { results: SkateResult[] }) {
-  const [open, setOpen] = useState<string | null>(null);
   const [page, setPage] = useState(0);
 
   // Most recent first. Dates are "YYYY-MM-DD" so a string compare is
@@ -131,24 +130,16 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
 
   return (
     <div className="mt-8 flex flex-col">
-      {rows.map((r, idx) => {
-        const key = `${r.event_id}-${r.category}`;
-        const hasDetail = (r.segments?.length ?? 0) > 0;
-        const isOpen = open === key;
-        return (
-          <div
-            key={key}
-            className={cn(
-              idx < rows.length - 1 && "border-b border-line-subtle",
-            )}
-          >
-            <div
-              className={cn(
-                "relative flex flex-col gap-2 py-4 sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-x-6",
-                hasDetail && "cursor-pointer",
-              )}
-              onClick={hasDetail ? () => setOpen(isOpen ? null : key) : undefined}
-            >
+      {/* AccordionGroup is `single`: only one competition's detail is open at
+          a time, same as before. Keying on the page number resets it (no
+          row from the previous page stays "open" underneath) instead of the
+          old explicit setOpen(null) on page change. */}
+      <AccordionGroup single key={safePage}>
+        {rows.map((r, idx) => {
+          const key = `${r.event_id}-${r.category}`;
+          const hasDetail = (r.segments?.length ?? 0) > 0;
+          const row = (
+            <div className="relative flex flex-col gap-2 sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-x-6">
               <div className="relative min-w-0">
                 <h4 className="text-title text-primary">{r.event_name}</h4>
                 <div className="text-caption mt-1 flex flex-wrap items-center gap-2 text-secondary">
@@ -195,30 +186,34 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                       #{r.placement}
                     </span>
                   )}
-                  {hasDetail && (
-                    <span className="text-muted">
-                      {isOpen ? (
-                        <Icon name="chevron-down" />
-                      ) : (
-                        <Icon name="chevron-right" />
-                      )}
-                    </span>
-                  )}
                 </span>
               </div>
             </div>
-            {isOpen && hasDetail && (
-              <div className="grid gap-6 pb-6 sm:grid-cols-2">
-                {[...(r.segments ?? [])]
-                  .sort((a, b) => Number(b.is_short) - Number(a.is_short))
-                  .map((seg, i) => (
-                    <Segment key={i} seg={seg} />
-                  ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
+          );
+          return (
+            <div
+              key={key}
+              className={cn(
+                idx < rows.length - 1 && "border-b border-line-subtle",
+              )}
+            >
+              {hasDetail ? (
+                <AccordionItem look="row" headingAs="div" triggerClassName="border-b-0 py-4" title={row}>
+                  <div className="grid gap-6 pb-6 sm:grid-cols-2">
+                    {[...(r.segments ?? [])]
+                      .sort((a, b) => Number(b.is_short) - Number(a.is_short))
+                      .map((seg, i) => (
+                        <Segment key={i} seg={seg} />
+                      ))}
+                  </div>
+                </AccordionItem>
+              ) : (
+                <div className="py-4">{row}</div>
+              )}
+            </div>
+          );
+        })}
+      </AccordionGroup>
       {totalPages > 1 && (
         <nav
           aria-label="Paginare competiții"
@@ -227,10 +222,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           <IconButton
             icon="chevron-left"
             label="Pagina anterioară"
-            onClick={() => {
-              setOpen(null);
-              setPage((p) => Math.max(0, p - 1));
-            }}
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={safePage === 0}
           />
 
@@ -239,10 +231,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
               key={p}
               type="button"
               aria-current={p === safePage ? "page" : undefined}
-              onClick={() => {
-                setOpen(null);
-                setPage(p);
-              }}
+              onClick={() => setPage(p)}
               className={cn(
                 "flex size-10 items-center justify-center border-retro text-sm font-bold transition-colors",
                 p === safePage
@@ -257,10 +246,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           <IconButton
             icon="chevron-right"
             label="Pagina următoare"
-            onClick={() => {
-              setOpen(null);
-              setPage((p) => Math.min(totalPages - 1, p + 1));
-            }}
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={safePage >= totalPages - 1}
           />
         </nav>

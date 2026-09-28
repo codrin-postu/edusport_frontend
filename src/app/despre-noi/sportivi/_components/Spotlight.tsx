@@ -1,9 +1,9 @@
 import React from "react";
-import { cn } from "@/utils/cn";
 import type {
   StrapiSportsperson,
   SportspersonStats,
 } from "@/lib/strapi-sportsperson";
+import { Stat } from "@/components/ui/stat";
 import { SportspersonCard } from "./SportspersonCard";
 
 /**
@@ -57,14 +57,20 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
           )}
 
           <div className="flex max-w-narrow flex-col gap-4">
-            <StatRow
+            <Stat
+              size="xl"
+              layout="inline"
               value={String(stats.totalCompetitions).padStart(2, "0")}
               label="Competiții"
               accent
+              className="gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0"
             />
-            <StatRow
+            <Stat
+              size="xl"
+              layout="inline"
               value={stats.bestScore !== null ? stats.bestScore.toFixed(2) : "—"}
               label="Cel mai bun scor"
+              className="gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0"
             />
           </div>
         </div>
@@ -105,33 +111,6 @@ function NameStack({ name }: { name: string }) {
         </span>
       )}
     </>
-  );
-}
-
-function StatRow({
-  value,
-  label,
-  accent = false,
-}: {
-  value: string;
-  label: string;
-  /** Use medal-gold colour for the number (signals "lead metric"). */
-  accent?: boolean;
-}) {
-  return (
-    <div className="flex items-baseline gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0">
-      <span
-        className={cn(
-          "text-athlete-stat min-w-[100px]",
-          accent ? "text-accent" : "text-primary",
-        )}
-      >
-        {value}
-      </span>
-      <div className="text-label uppercase text-secondary">
-        {label}
-      </div>
-    </div>
   );
 }
 

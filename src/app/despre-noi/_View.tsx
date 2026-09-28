@@ -1,5 +1,7 @@
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import Card from "@/components/ui/card";
+import { Stat } from "@/components/ui/stat";
 
 // ---------------------------------------------------------------------------
 // Fallback data (used when CMS fields are empty)
@@ -147,14 +149,10 @@ const HistoryPage: React.FC<Props> = ({
           {/* Stats grid — mustard left-stripe cards, number + label side by side */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
             {resolvedStats.map((stat, i) => (
-              <div
-                key={i}
-                className="relative flex items-center gap-3 bg-surface border-retro border-line shadow-retro pl-4 pr-4 py-4"
-              >
+              <Card key={i} padding="sm" className="relative">
                 <span className="absolute left-0 top-0 bottom-0 w-1.5 bg-mustard" aria-hidden />
-                <span className="text-heading text-primary">{stat.value}</span>
-                <span className="text-caption text-secondary">{stat.label}</span>
-              </div>
+                <Stat value={stat.value} label={stat.label} layout="inline" />
+              </Card>
             ))}
           </div>
 
