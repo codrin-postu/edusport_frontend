@@ -67,8 +67,8 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary transition-[box-shadow,border-color] data-[focus-within]:border-rust data-[focus-within]:ring-2 data-[focus-within]:ring-rust",
-    groupInvalid: "border-rust",
+      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-3 data-[focus-within]:outline-primary",
+    groupInvalid: "border-accent",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
     trigger: "border-l-retro border-line bg-surface text-primary hover:text-accent",
@@ -83,8 +83,8 @@ const V = {
   },
   navy: {
     group:
-      "flex items-stretch w-full bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark transition-[box-shadow,border-color] data-[focus-within]:border-mustard data-[focus-within]:ring-2 data-[focus-within]:ring-mustard",
-    groupInvalid: "border-danger",
+      "flex items-stretch w-full bg-surface-subtle-on-dark border-retro border-line-on-dark text-primary-on-dark outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-3 data-[focus-within]:outline-primary-on-dark",
+    groupInvalid: "border-accent-on-dark",
     segment:
       "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",
     literal: "text-line-subtle-on-dark",

@@ -3,7 +3,8 @@
 import React from "react";
 import Icon, { type IconName } from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
-import { FieldLabel, inputBaseOnCard, inputOnNavy } from "@/components/ui/form-field";
+import { FieldLabel, Input, Textarea, type Surface } from "@/components/ui/form-field";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import { DatePickerField } from "@/components/ui/date-picker-field";
 import {
@@ -41,15 +42,14 @@ const isCard = (q: FormQuestion) =>
 
 const VARIANT = {
   card: {
-    input: inputBaseOnCard,
+    onDark: false as const,
+    surface: "card" as Surface,
     labelTone: "light" as const,
-    help: "text-xs text-secondary mb-2 -mt-1",
-    error: "text-xs text-accent font-semibold mt-2",
+    help: "text-caption text-secondary mb-2 -mt-1",
+    error: "text-caption text-accent mt-2",
     info: "text-sm text-secondary leading-relaxed",
     link: "link font-semibold text-accent",
     checkboxLabel: "text-xs font-semibold text-primary",
-    checkboxAccent: "accent-rust",
-    select: undefined as string | undefined,
     card: "border-line bg-surface",
     cardChecked: "border-rust bg-surface-raised",
     cardHover: "hover:shadow-retro-sm transition-shadow",
@@ -60,16 +60,14 @@ const VARIANT = {
     cardExternal: "text-secondary group-hover:text-accent",
   },
   navy: {
-    input: inputOnNavy,
+    onDark: true as const,
+    surface: "page" as Surface,
     labelTone: "dark" as const,
-    help: "text-xs text-secondary-on-dark mb-2 -mt-1",
-    error: "text-xs font-semibold text-danger mt-2",
+    help: "text-caption text-secondary-on-dark mb-2 -mt-1",
+    error: "text-caption text-accent-on-dark mt-2",
     info: "text-sm text-secondary-on-dark leading-relaxed",
     link: "link link-on-dark",
     checkboxLabel: "text-xs font-semibold text-primary-on-dark",
-    checkboxAccent: "accent-mustard",
-    select:
-      "bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard data-[state=open]:border-mustard data-[state=open]:ring-mustard",
     card: "border-line-on-dark bg-surface-subtle-on-dark",
     cardChecked: "border-mustard bg-surface-subtle-on-dark",
     cardHover: "hover:border-mustard transition-colors",
@@ -225,16 +223,14 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                       <Icon name="external-link" />
                     </a>
                   )}
-                  <label className="flex items-center gap-2 cursor-pointer mt-3">
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      required={required}
-                      onChange={(e) => onChange(key, e.target.checked)}
-                      className={cn("w-4 h-4 cursor-pointer", v.checkboxAccent)}
-                    />
-                    <span className={v.checkboxLabel}>{labelText}</span>
-                  </label>
+                  <Checkbox
+                    className="mt-3"
+                    onDark={v.onDark}
+                    checked={checked}
+                    required={required}
+                    onChange={(e) => onChange(key, e.target.checked)}
+                    label={<span className={v.checkboxLabel}>{labelText}</span>}
+                  />
                 </div>
               </div>
             </div>
@@ -266,16 +262,13 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
         if (q.type === "checkbox") {
           return (
             <div key={key}>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={raw === true}
-                  required={required}
-                  onChange={(e) => onChange(key, e.target.checked)}
-                  className={cn("w-4 h-4 cursor-pointer", v.checkboxAccent)}
-                />
-                <span className={v.checkboxLabel}>{labelText}</span>
-              </label>
+              <Checkbox
+                onDark={v.onDark}
+                checked={raw === true}
+                required={required}
+                onChange={(e) => onChange(key, e.target.checked)}
+                label={<span className={v.checkboxLabel}>{labelText}</span>}
+              />
               {help && <p className={cn(v.help, "mt-2 mb-0")}>{help}</p>}
             </div>
           );
@@ -300,18 +293,13 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               {help && <p className={v.help}>{help}</p>}
               <div id={key} className="flex flex-col gap-3">
                 {optionItems(q).map((o) => (
-                  <label
+                  <Checkbox
                     key={o.value}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected.includes(o.value)}
-                      onChange={() => toggle(o.value)}
-                      className={cn("w-4 h-4 cursor-pointer", v.checkboxAccent)}
-                    />
-                    <span className={v.checkboxLabel}>{o.label}</span>
-                  </label>
+                    onDark={v.onDark}
+                    checked={selected.includes(o.value)}
+                    onChange={() => toggle(o.value)}
+                    label={<span className={v.checkboxLabel}>{o.label}</span>}
+                  />
                 ))}
               </div>
               {error && <p className={v.error}>{error}</p>}
@@ -334,7 +322,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 options={optionItems(q)}
                 placeholder="Selectează..."
                 required={required}
-                className={v.select}
+                onDark={v.onDark}
               />
             </div>
           );
@@ -347,7 +335,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 {labelText}
               </FieldLabel>
               {help && <p className={v.help}>{help}</p>}
-              <textarea
+              <Textarea
                 id={key}
                 name={key}
                 required={required}
@@ -355,7 +343,10 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 placeholder={placeholders?.[key]}
                 value={strValue}
                 onChange={(e) => onChange(key, e.target.value)}
-                className={cn(v.input, "resize-none")}
+                onDark={v.onDark}
+                surface={v.surface}
+                invalid={Boolean(error)}
+                className="resize-none"
               />
               {error && <p className={v.error}>{error}</p>}
             </div>
@@ -397,7 +388,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               {labelText}
             </FieldLabel>
             {help && <p className={v.help}>{help}</p>}
-            <input
+            <Input
               id={key}
               name={key}
               type={inputType}
@@ -408,7 +399,9 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               onChange={(e) => onChange(key, e.target.value)}
               onBlur={onBlur ? () => onBlur(key) : undefined}
               aria-invalid={error ? true : undefined}
-              className={v.input}
+              onDark={v.onDark}
+              surface={v.surface}
+              invalid={Boolean(error)}
             />
             {error && <p className={v.error}>{error}</p>}
           </div>

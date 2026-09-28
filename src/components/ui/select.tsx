@@ -20,6 +20,8 @@ interface SelectProps {
   required?: boolean;
   disabled?: boolean;
   size?: "default" | "compact";
+  /** The trigger sits on a dark (navy) panel. */
+  onDark?: boolean;
   className?: string;
   contentClassName?: string;
 }
@@ -34,16 +36,18 @@ export const Select: React.FC<SelectProps> = ({
   required,
   disabled,
   size = "default",
+  onDark = false,
   className,
   contentClassName,
 }) => {
   const [open, setOpen] = useState(false);
   const items = options.filter((o) => o.value !== "");
   const selected = items.find((o) => o.value === value);
-  const triggerSizeClasses =
-    size === "compact"
-      ? "bg-surface h-12 px-3 text-sm"
-      : "bg-surface h-12 px-4 text-sm";
+  const triggerSizeClasses = cn(
+    onDark ? "bg-surface-subtle-on-dark" : "bg-surface",
+    size === "compact" ? "h-12 px-3" : "h-12 px-4",
+    "text-body-sm",
+  );
 
   return (
     <>
@@ -65,12 +69,18 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,
-              "border-retro border-line outline-none transition-all",
-              "focus:border-rust focus:ring-2 focus:ring-rust",
-              "data-[state=open]:border-rust data-[state=open]:ring-2 data-[state=open]:ring-rust",
-              !selected && "text-secondary",
-              selected && "text-primary",
-              disabled && "text-disabled border-line-subtle cursor-not-allowed",
+              "border-retro outline-none transition-all",
+              onDark ? "border-line-on-dark" : "border-line",
+              onDark
+                ? "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-on-dark"
+                : "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+              !selected && (onDark ? "text-secondary-on-dark" : "text-secondary"),
+              selected && (onDark ? "text-primary-on-dark" : "text-primary"),
+              disabled &&
+                (onDark
+                  ? "text-disabled border-line-subtle-on-dark"
+                  : "text-disabled border-line-subtle"),
+              disabled && "cursor-not-allowed",
               className,
             )}
           >
