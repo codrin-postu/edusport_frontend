@@ -40,6 +40,7 @@ export const twMergeConfig = {
         "text-label",
         "text-button",
         "text-athlete-name",
+        "text-header-logo",
         "text-athlete-watermark",
         "text-athlete-stat",
         "text-branding-xl",

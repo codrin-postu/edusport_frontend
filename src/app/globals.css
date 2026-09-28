@@ -466,6 +466,9 @@ h1.text-branding-font {
   @media (width >= 48rem) { font-size: 13.75rem; }
 }
 @utility text-athlete-stat { font-family: var(--font-display); font-weight: 900; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; }
+/* Named exception: the header logo wordmark (Climate Crisis, 22px, the
+   0.05em letter spacing it had before SP1). */
+@utility text-header-logo { font-size: 1.375rem; line-height: 1; letter-spacing: 0.05em; }
 /* Named exception: athlete page name. */
 @utility text-athlete-name {
   font-family: var(--font-display); font-weight: 900; font-size: 3.5rem; line-height: 0.85; letter-spacing: -0.055em;
@@ -578,7 +581,6 @@ html.lv2-nav header a[href="/"] { line-height: 1; gap: 1px; }
 html.lv2-nav header a[href="/"] > span:nth-child(1) {
   font-size: 0.75rem !important; letter-spacing: .18em; color: var(--color-secondary); font-weight: 400;
 }
-html.lv2-nav header a[href="/"] > span:nth-child(2) { font-size: 22px !important; }
 
 /* Dropdown panel → square, cream, hard offset shadow, warm top stripe, sits
    close under the bar (matches the brainstorm preview). */

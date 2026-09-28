@@ -133,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({
               <span className="text-body-sm text-primary">
                 CLUBUL SPORTIV
               </span>
-              <span className="text-body text-branding-font text-primary">EDUSPORT</span>
+              <span className="text-header-logo text-branding-font text-primary">EDUSPORT</span>
             </Link>
 
             {/* Center - Desktop nav (lg+) */}
