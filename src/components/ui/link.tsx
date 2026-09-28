@@ -2,6 +2,7 @@ import { LinkVariants } from "@/utils/constants";
 import { ArrowUpRight, Mail, Phone } from "lucide-react";
 import NextLink from "next/link";
 import React from "react";
+import { cn } from "@/utils/cn";
 
 type LinkType = "internal" | "external" | "phone" | "email";
 
@@ -17,7 +18,7 @@ const variantClasses: Record<LinkVariants, string> = {
   footer: "",
   footerAnimated:
     "text-secondary-on-dark hover:text-primary-on-dark relative inline-flex items-center gap-1 group transition-colors",
-  default: "text-primary hover:text-accent",
+  default: "text-primary",
 };
 
 const linkTypeIcons: Record<LinkType, React.FC<{ className?: string }> | null> = {
@@ -39,7 +40,9 @@ const Link: React.FC<LinkProps> = ({
   // colours from that utility; the variant's hover colour would otherwise
   // override it, since both sit at the same specificity.
   const usesLinkUtility = /(^|\s)link(-on-dark|-footer)?(\s|$)/.test(className);
-  const classes = `${usesLinkUtility ? "" : variantClasses[variant]} transition-colors ${className}`;
+  // cn() so a colour passed by the caller replaces the variant colour instead
+  // of both landing on the element and the stylesheet order picking one.
+  const classes = cn(usesLinkUtility ? "" : variantClasses[variant], "transition-colors", className);
 
   if (variant === LinkVariants.FOOTER_ANIMATED) {
     const Icon = linkTypeIcons[linkType];
