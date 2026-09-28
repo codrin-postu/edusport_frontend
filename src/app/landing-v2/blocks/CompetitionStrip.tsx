@@ -191,7 +191,6 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
           .csstrip-band i:nth-child(3) { background: var(--color-rust);     animation-range: contain 8% contain 65%; }
           .csstrip-band i:nth-child(4) { background: var(--color-burgundy); animation-range: contain 8% contain 89%; }
           @keyframes csstrip-band-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-          @keyframes csstrip-heading-in { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
 
           .csstrip-track > * {
             padding: 0 5vmax;
@@ -224,10 +223,6 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
             color: white;
             margin: 0;
             text-align: left;
-            will-change: transform, opacity;
-            animation: linear csstrip-heading-in both;
-            animation-timeline: --csstrip-tl;
-            animation-range: contain 0% contain 8%;
           }
 
           /* The heading is the first track item. Instead of a full-viewport
@@ -242,8 +237,7 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
             justify-content: flex-start;
           }
 
-          /* Small screens: heading readable immediately (no scroll-in fade),
-             images spread further apart, and the end offset recomputed for the
+          /* Small screens: images spread further apart, and the end offset recomputed for the
              mobile padding + 86vw image so the last image still centers. */
           @media (max-width: 640px) {
             .csstrip-track {
@@ -252,11 +246,6 @@ export default function CompetitionStrip({ images, heading }: CompetitionStripPr
               --end-extra: calc(54vw + 43vw + 9vw);
             }
             .csstrip-track > * { padding: 0 9vw; }
-            .csstrip-heading {
-              animation: none;
-              opacity: 1;
-              transform: none;
-            }
           }
         }
 
