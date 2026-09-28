@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import React from "react";
 import Link from "next/link";
 import { CalendarDays, Clock, MapPin } from "lucide-react";
@@ -73,14 +73,13 @@ function CurrentEventSection({ event }: { event: Event }) {
               {event.excerpt}
             </p>
 
-            <SpotlightButton
-              layers
-              layersFace="black"
+            <Button
+              face="black"
               href={`/cursuri/evenimente/${event.slug}`}
-              className="text-caption w-fit"
+              className="w-fit"
             >
               Citește mai mult
-            </SpotlightButton>
+            </Button>
           </div>
         </div>
       </div>
@@ -151,9 +150,9 @@ function PastEventsSection({ events }: { events: Event[] }) {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <SpotlightButton layers layersFace="black" href="/noutati" className="text-caption">
+          <Button face="black" href="/noutati">
             Vezi toate evenimentele
-          </SpotlightButton>
+          </Button>
         </div>
       </div>
     </section>

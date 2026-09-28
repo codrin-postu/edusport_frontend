@@ -7,7 +7,7 @@ import ConfigStep, { stepComplete } from "./_ConfigStep";
 import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types";
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
 import { clearDraft, loadDraft, saveDraft } from "./_draft";
@@ -239,15 +239,14 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                   >
                     Înapoi
                   </button>
-                  <SpotlightButton
-                    layers
-                    layersFace="black"
+                  <Button
+                    face="black"
                     type="button"
                     onClick={handleSubmit}
                     disabled={status === "sending" || !stepComplete(current, answers)}
                   >
                     {status === "sending" ? "Se trimite..." : "Trimite înscrierea"}
-                  </SpotlightButton>
+                  </Button>
                 </div>
               </div>
             ) : undefined

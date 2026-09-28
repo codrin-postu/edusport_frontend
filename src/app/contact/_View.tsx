@@ -5,7 +5,7 @@ import { type LucideIcon, Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { track } from "@/lib/analytics";
@@ -412,9 +412,8 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       )}
 
       {/* Submit — retro layers CTA (cream face on the navy panel) */}
-      <SpotlightButton
-        layers
-        layersFace="cream"
+      <Button
+        face="cream"
         type="submit"
         disabled={status === "sending"}
         className="w-full sm:w-fit"
@@ -430,7 +429,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
             Trimite mesajul
           </span>
         )}
-      </SpotlightButton>
+      </Button>
     </form>
   );
 };

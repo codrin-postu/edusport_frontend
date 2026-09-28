@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { Calendar, MapPin } from "lucide-react";
 import type { Event } from "../../cursuri/evenimente/_data";
@@ -82,15 +82,14 @@ export function EventCard({ event }: { event: Event }) {
         {event.admissionInfo && (
           <p className="text-body-sm text-secondary italic mb-6">{event.admissionInfo}</p>
         )}
-        <SpotlightButton
-          layers
-          layersFace="cream"
+        <Button
+          face="cream"
           href={`/cursuri/evenimente/${event.slug}`}
-          className="text-body-sm self-start"
+          className="self-start"
           umamiEvent="home.event_details"
         >
           Vezi detalii
-        </SpotlightButton>
+        </Button>
       </div>
     </article>
   );

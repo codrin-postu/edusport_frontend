@@ -7,7 +7,7 @@ import ConfigStep, { stepComplete } from "@/components/forms/config-step";
 import { FALLBACK_CONFIG, submitPartner, type SubmitStatus } from "./_form-config";
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import {
   type CustomAnswer,
   type FormConfig,
@@ -170,9 +170,8 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
                   >
                     Înapoi
                   </button>
-                  <SpotlightButton
-                    layers
-                    layersFace="cream"
+                  <Button
+                    face="cream"
                     type="button"
                     onClick={handleSubmit}
                     disabled={
@@ -180,7 +179,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
                     }
                   >
                     {status === "sending" ? "Se trimite..." : "Trimite mesajul"}
-                  </SpotlightButton>
+                  </Button>
                 </div>
               </div>
             ) : undefined

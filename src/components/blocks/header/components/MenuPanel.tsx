@@ -1,6 +1,6 @@
 "use client";
 
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { AnimatePresence, motion } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
@@ -99,9 +99,9 @@ const RetroPanel: React.FC<{
   const rows: React.ReactNode[] = [];
   rows.push(
     <div key="cta" className="md:hidden mx-1 mb-2">
-      <SpotlightButton layers layersFace="black" href={ctaHref} onClick={onClose} className="text-caption w-full">
+      <Button face="black" href={ctaHref} onClick={onClose} className="w-full">
         {ctaLabel}
-      </SpotlightButton>
+      </Button>
     </div>,
   );
   navItems.forEach((item) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import type { CustomVariant } from "@/components/ui/custom-questions";
 
 // ---------------------------------------------------------------------------
@@ -92,15 +92,14 @@ export const StepNavigation: React.FC<{
       ) : (
         <span />
       )}
-      <SpotlightButton
-        layers
-        layersFace={v.face}
+      <Button
+        face={v.face}
         type="button"
         onClick={onNext}
         disabled={!canProceed}
       >
         Continuă
-      </SpotlightButton>
+      </Button>
     </div>
   );
 };

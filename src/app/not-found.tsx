@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { DURATION, EASE } from "@/lib/motion";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 
 const quickLinks = [
   { href: "/cursuri", label: "Cursuri" },
@@ -56,9 +56,9 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.long, delay: 0.45 }}
         >
-          <SpotlightButton layers layersFace="black" href="/" className="text-body-sm">
+          <Button face="black" href="/">
             Înapoi la pagina principală
-          </SpotlightButton>
+          </Button>
 
           <div className="w-full">
             <div className="text-body-sm flex flex-wrap justify-center gap-x-6 gap-y-2">

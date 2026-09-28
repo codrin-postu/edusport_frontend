@@ -1,5 +1,4 @@
-import Link from "@/components/ui/link";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import React from "react";
@@ -68,20 +67,16 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
 
       {isRegistrationOpen && (
         <div className="flex flex-col sm:flex-row gap-3 sm:items-start pt-1">
-          <SpotlightButton
-            layers
-            layersFace="cream"
+          <Button
+            face="cream"
             href="/inscrieri"
-            className="text-body-sm w-full sm:w-auto"
+            className="w-full sm:w-auto"
           >
             Înscrie-te acum
-          </SpotlightButton>
-          <Link
-            href="/cursuri/program"
-            className="text-label inline-flex items-center justify-center w-full sm:w-auto h-12 px-6 border-retro border-line-on-dark bg-transparent uppercase text-primary-on-dark transition-colors hover-layer-on-dark"
-          >
+          </Button>
+          <Button variant="secondary" onDark href="/cursuri/program" className="w-full sm:w-auto">
             Vezi programul
-          </Link>
+          </Button>
         </div>
       )}
     </PageHeroSection>

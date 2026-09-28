@@ -1,58 +1,145 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+"use client";
 
-import { cn } from "@/lib/utils";
+import React from "react";
+import NextLink from "next/link";
+import { cn } from "@/utils/cn";
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:text-disabled [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[3px] aria-invalid:ring-destructive aria-invalid:border-destructive",
-  {
-    variants: {
-      variant: {
-        default: "bg-ui-primary text-ui-primary-foreground hover-layer-on-dark disabled:bg-surface-subtle",
-        destructive:
-          "bg-destructive text-primary-on-dark hover-layer-on-dark",
-        outline:
-          "border bg-background shadow-xs hover:bg-ui-accent hover:text-ui-accent-foreground",
-        secondary:
-          "bg-ui-secondary text-ui-secondary-foreground hover-layer",
-        ghost:
-          "hover:bg-ui-accent hover:text-ui-accent-foreground",
-        link: "text-ui-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 gap-2 px-3 has-[>svg]:px-3",
-        lg: "h-10 px-6 has-[>svg]:px-4",
-        icon: "size-10",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-);
+/** Face colour of the primary (layers) button. */
+export type ButtonFace = "black" | "white" | "cream";
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
-  const Comp = asChild ? Slot : "button";
-
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  );
+interface ButtonProps {
+  children: React.ReactNode;
+  /**
+   * primary: the retro layers CTA (square face with a mustard and a rust
+   * layer behind it). secondary: outline with the hover wash.
+   */
+  variant?: "primary" | "secondary";
+  /** Primary only. black sits on light surfaces; cream and white on navy. */
+  face?: ButtonFace;
+  /** Secondary only: the button sits on a dark (navy) surface. */
+  onDark?: boolean;
+  className?: string;
+  onClick?: () => void;
+  /** Renders a link. Internal paths use the Next.js Link (no full reload). */
+  href?: string;
+  /** Opens in a new tab. */
+  external?: boolean;
+  /** Button type (ignored when `href` is set), so a Button can submit a form. */
+  type?: "button" | "submit";
+  /** Disabled state (button element only). */
+  disabled?: boolean;
+  /** Umami event name, set as `data-umami-event` so clicks are tracked. */
+  umamiEvent?: string;
 }
 
-export { Button, buttonVariants };
+const FACE: Record<ButtonFace, string> = {
+  black: "bg-black text-primary-on-dark",
+  white: "bg-surface-raised text-primary",
+  cream: "bg-surface text-primary",
+};
+
+/** Disabled face: solid colours, never opacity. black sits on light panels,
+ * white and cream on navy panels, so they use the on-dark tokens. */
+const FACE_DISABLED: Record<ButtonFace, string> = {
+  black: "group-disabled:bg-surface-subtle group-disabled:text-disabled",
+  white: "group-disabled:bg-surface-subtle-on-dark group-disabled:text-muted-on-dark",
+  cream: "group-disabled:bg-surface-subtle-on-dark group-disabled:text-muted-on-dark",
+};
+
+// Keyboard focus ring (shown for keyboard navigation only): navy on light
+// surfaces, cream on dark ones.
+const FOCUS_LIGHT = "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary";
+const FOCUS_DARK = "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-on-dark";
+
+const SECONDARY_LIGHT = "border-line text-primary hover-layer disabled:text-disabled disabled:border-line-subtle";
+const SECONDARY_DARK = "border-line-on-dark text-primary-on-dark hover-layer-on-dark disabled:text-muted-on-dark disabled:border-line-subtle-on-dark";
+
+/**
+ * The site's button. Primary is the retro layers CTA: on hover the two layers
+ * fan out to the bottom right (spring), on press the face snaps onto them
+ * (motion lives in the `.lcta` rules in globals.css). Secondary is the outline
+ * button with the hover wash. Both are 48px with the text-button role.
+ */
+const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = "primary",
+  face = "black",
+  onDark = false,
+  className,
+  onClick,
+  href,
+  external,
+  type = "button",
+  disabled,
+  umamiEvent,
+}) => {
+  let classes: string;
+  let content: React.ReactNode;
+
+  if (variant === "secondary") {
+    classes = cn(
+      "text-button inline-flex items-center justify-center gap-2 h-12 px-6 border-retro bg-transparent transition-colors select-none",
+      "disabled:pointer-events-none disabled:cursor-not-allowed",
+      onDark ? SECONDARY_DARK : SECONDARY_LIGHT,
+      onDark ? FOCUS_DARK : FOCUS_LIGHT,
+      className,
+      // Every button uses the same type role; a caller cannot resize it.
+      "text-button",
+    );
+    content = children;
+  } else {
+    classes = cn(
+      "lcta group select-none",
+      face === "black" ? FOCUS_LIGHT : FOCUS_DARK,
+      disabled && "pointer-events-none cursor-not-allowed",
+      className,
+    );
+    content = (
+      <>
+        <span aria-hidden className="lcta-layer lcta-l1 group-disabled:hidden" />
+        <span aria-hidden className="lcta-layer lcta-l2 group-disabled:hidden" />
+        <span
+          className={cn(
+            "lcta-face h-12 px-6 inline-flex items-center justify-center gap-2 text-button",
+            FACE[face],
+            FACE_DISABLED[face],
+          )}
+        >
+          {children}
+        </span>
+      </>
+    );
+  }
+
+  if (href) {
+    const internal = href.startsWith("/") && !external;
+    if (internal) {
+      return (
+        <NextLink href={href} onClick={onClick} className={classes} data-button="" data-umami-event={umamiEvent}>
+          {content}
+        </NextLink>
+      );
+    }
+    return (
+      <a
+        href={href}
+        onClick={onClick}
+        className={classes}
+        data-button=""
+        data-umami-event={umamiEvent}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button type={type} onClick={onClick} disabled={disabled} className={classes} data-button="" data-umami-event={umamiEvent}>
+      {content}
+    </button>
+  );
+};
+
+export default Button;
+export { Button };

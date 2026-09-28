@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import type { VolunteerHelpWay } from "@/lib/strapi-volunteer";
 
 interface VolunteerViewProps {
@@ -133,15 +133,14 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
                   Răspundem de obicei în 24 până la 48 de ore.
                 </p>
               </div>
-              <SpotlightButton
-                layers
-                layersFace="cream"
+              <Button
+                face="cream"
                 href="/voluntariat/inscriere"
                 umamiEvent="voluntariat.cta_inscriere"
                 className="shrink-0"
               >
                 Înscrie-te ca voluntar
-              </SpotlightButton>
+              </Button>
             </div>
           </div>
         </div>

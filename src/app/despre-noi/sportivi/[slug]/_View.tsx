@@ -18,7 +18,7 @@ import SkateResults from "./_SkateResults";
 import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
@@ -517,14 +517,12 @@ const SportspersonView: React.FC<Props> = ({
               Vezi toți sportivii clubului EduSport.
             </p>
           </div>
-          <SpotlightButton
-            layers
-            layersFace="black"
+          <Button
+            face="black"
             href="/despre-noi/sportivi"
-            className="text-caption"
           >
             Toți sportivii
-          </SpotlightButton>
+          </Button>
         </div>
       </section>
     </div>

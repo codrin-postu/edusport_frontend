@@ -1,7 +1,7 @@
 "use client";
 
 import Section from "@/components/ui/section";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -148,14 +148,13 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               </ul>
             </div>
 
-            <SpotlightButton
-              layers
-              layersFace="cream"
+            <Button
+              face="cream"
               href="/inscrieri"
-              className="text-caption self-start"
+              className="self-start"
             >
               Înscrie-te la cursuri
-            </SpotlightButton>
+            </Button>
           </div>
 
           {/* Price cards — 2-col at md, dissolve into parent 3-col at lg */}

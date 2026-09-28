@@ -15,7 +15,7 @@ import {
 import { track } from "@/lib/analytics";
 import { createDraftStore } from "@/lib/form-draft";
 import { DURATION, EASE } from "@/lib/motion";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import {
   type CustomAnswer,
   type FormConfig,
@@ -309,9 +309,8 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
                   >
                     Înapoi
                   </button>
-                  <SpotlightButton
-                    layers
-                    layersFace="black"
+                  <Button
+                    face="black"
                     type="button"
                     onClick={handleSubmit}
                     disabled={
@@ -321,7 +320,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
                     }
                   >
                     {status === "sending" ? "Se trimite..." : "Trimite cererea"}
-                  </SpotlightButton>
+                  </Button>
                 </div>
               </div>
             ) : blocksUnderage ? (

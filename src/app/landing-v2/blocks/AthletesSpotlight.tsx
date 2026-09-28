@@ -1,6 +1,6 @@
 "use client";
 
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import type {
   StrapiSportsperson,
   SportspersonStats,
@@ -98,15 +98,13 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
               </div>
             )}
 
-            <SpotlightButton
-              layers
-              layersFace="cream"
+            <Button
+              face="cream"
               href={ctaUrl}
-              className="text-caption"
               umamiEvent="home.sportivi"
             >
               {ctaLabel}
-            </SpotlightButton>
+            </Button>
           </div>
 
           {/* Right — two featured retro cards. Fixed-width slots keep a strict

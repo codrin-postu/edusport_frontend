@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import NextLink from "next/link";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { type HeroVariant } from "./HeroVariant";
 
 // WebGL hover-morph overlay for the wordmark — heavy (three.js), client-only,
@@ -352,26 +352,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ ctaLabel, ctaUrl, nextEvent }
           {/* Action row — primary layers CTA + secondary Noutăți button.
               Replaces the old motto. Rises in gently after the wordmark. */}
           <div className="lv2-hero-rise w-full px-6 md:px-12 mt-8 md:mt-10 z-30 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <SpotlightButton
-              layers
-              layersFace={videoOn ? "cream" : "black"}
+            <Button
+              face={videoOn ? "cream" : "black"}
               href={displayCtaUrl}
-              className="text-sm w-full sm:w-auto"
+              className="w-full sm:w-auto"
               umamiEvent="hero.cta_primary"
             >
               {displayCtaLabel}
-            </SpotlightButton>
-            <NextLink
+            </Button>
+            <Button
+              variant="secondary"
+              onDark={videoOn}
               href="/noutati"
-              data-umami-event="hero.cta_noutati"
-              className={`inline-flex items-center justify-center w-full sm:w-auto border-[1.5px] bg-transparent px-8 py-3.5 text-sm font-bold uppercase tracking-[0.03em] transition-colors ${
-                videoOn
-                  ? "border-[var(--color-retro-cream)] text-retro-cream hover:bg-retro-cream hover:text-navy"
-                  : "border-navy text-navy hover:bg-black hover:text-white"
-              }`}
+              className="w-full sm:w-auto"
+              umamiEvent="hero.cta_noutati"
             >
               Noutăți
-            </NextLink>
+            </Button>
           </div>
         </div>
 

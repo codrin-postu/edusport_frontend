@@ -45,25 +45,6 @@ body {
   font-size: 0.6875rem;
 }
 
-/* The frozen hero's primary layers CTA reuses the sitewide `.lcta-face`,
-   which is now a fixed 48px (h-12 px-6). Restore its old px-8 py-3.5 sizing
-   here only, so the hero stays pixel-frozen while every other layers CTA
-   on the site is 48px tall. */
-[data-hero-frozen] .lcta-face {
-  height: auto;
-  padding: 0.875rem 2rem;
-}
-/* The face span now carries the sitewide `text-button` role (fixed size,
-   weight, tracking), but the frozen hero always relied on the caller's own
-   `text-sm` on the `.lcta` wrapper cascading down to it (no size class of
-   its own). Restore that pre-role behaviour here only. */
-[data-hero-frozen] .lcta-face {
-  font-size: inherit;
-  font-weight: 700;
-  line-height: inherit;
-  letter-spacing: 0.03em;
-}
-
 /* The frozen hero still uses `.link-underline-rust`. The utility itself was
    replaced by `link`/`link-on-dark`/`link-footer` (see @layer utilities
    below), so its old styling is kept alive here, scoped to the hero only,
@@ -507,27 +488,22 @@ html.lv2-nav main {
 
 /* Nav: force the CTA layers face and the burger layers face to the same height
    with centered contents, so they line up exactly in the items-center row. */
-html.lv2-nav header .lcta-face {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-html.lv2-nav footer a,
-html.lv2-nav footer a span {
+/* Footer text links. Buttons (data-button) keep their own colours and size. */
+html.lv2-nav footer a:not([data-button]),
+html.lv2-nav footer a:not([data-button]) span {
   color: var(--color-retro-cream) !important;
 }
 /* text links: hover to white (the mustard underline comes from the link's own
    ::after). Social icon links (they carry an aria-label): hover to mustard. */
-html.lv2-nav footer a:hover,
-html.lv2-nav footer a:hover span {
+html.lv2-nav footer a:not([data-button]):hover,
+html.lv2-nav footer a:not([data-button]):hover span {
   color: #ffffff !important;
 }
 html.lv2-nav footer a[aria-label]:hover {
   color: var(--color-mustard) !important;
 }
 /* Footer links at 14px. */
-html.lv2-nav footer a {
+html.lv2-nav footer a:not([data-button]) {
   font-size: 0.875rem !important;
 }
 

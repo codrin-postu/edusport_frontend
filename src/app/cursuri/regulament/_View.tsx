@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import {
   Users,
   CalendarCheck,
@@ -166,14 +166,13 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                 totalitate prezentul regulament.
               </p>
             </div>
-            <SpotlightButton
-              layers
-              layersFace="black"
+            <Button
+              face="black"
               href="/inscrieri"
-              className="text-caption shrink-0"
+              className="shrink-0"
             >
               Înscrie-te acum
-            </SpotlightButton>
+            </Button>
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import MenuPanel from "./components/MenuPanel";
 import HeaderTop from "./components/HeaderTop";
 import NavigationMenuInteractive from "./components/NavigationMenuInteractive";
@@ -143,14 +143,13 @@ const Header: React.FC<HeaderProps> = ({
             {/* Right side */}
             <div className="flex items-center gap-4">
               {/* CTA: hidden on mobile, visible on tablet+  */}
-              <SpotlightButton
-                layers
-                layersFace="black"
+              <Button
+                face="black"
                 href={ctaHref}
-                className="text-caption hidden md:inline-flex"
+                className="hidden md:inline-flex"
               >
                 {ctaLabel}
-              </SpotlightButton>
+              </Button>
               {/* Meniu: hidden on desktop */}
               <div className="lg:hidden">
                 <MenuButton ref={menuButtonRef} onToggle={toggleMenu} />

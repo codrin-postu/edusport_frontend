@@ -1,6 +1,6 @@
 import { Link } from "@/components";
 import CookiePreferencesLink from "@/components/blocks/cookie-consent/CookiePreferencesLink";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { mapsHref } from "@/lib/mapsLink";
@@ -347,17 +347,12 @@ const RegisterBand: React.FC = () => (
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-center w-full sm:w-auto lg:shrink-0">
-        <SpotlightButton layers layersFace="black" href="/inscrieri" className="text-body-sm" umamiEvent="footer.enroll">
+        <Button face="black" href="/inscrieri"  umamiEvent="footer.enroll">
           Înscrieri
-        </SpotlightButton>
-        <Link
-          href="/cursuri"
-          linkType="internal"
-          variant={LinkVariants.DEFAULT}
-          className="text-label inline-flex items-center justify-center border-retro border-line !text-primary h-12 px-6 uppercase transition-colors hover-layer"
-        >
+        </Button>
+        <Button variant="secondary" href="/cursuri">
           Școala de patinaj
-        </Link>
+        </Button>
       </div>
     </div>
   </section>

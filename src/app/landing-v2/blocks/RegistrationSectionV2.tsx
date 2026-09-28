@@ -1,5 +1,5 @@
 import Link from "@/components/ui/link";
-import SpotlightButton from "@/components/ui/spotlight-button";
+import Button from "@/components/ui/button";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import React from "react";
 import { RegistrationScrollFrameV2 } from "./RegistrationScrollFrameV2";
@@ -71,22 +71,16 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-            <SpotlightButton
-              layers
-              layersFace="black"
+            <Button
+              face="black"
               href={ctaPrimaryUrl}
-              className="text-body-sm"
               umamiEvent="enroll.cta_primary"
             >
               {ctaPrimaryLabel}
-            </SpotlightButton>
-            <Link
-              href={ctaSecondaryUrl}
-              data-umami-event="enroll.cta_secondary"
-              className="text-label inline-flex items-center justify-center border-retro border-line bg-transparent text-primary h-12 px-6 uppercase transition-colors hover-layer"
-            >
+            </Button>
+            <Button variant="secondary" href={ctaSecondaryUrl} umamiEvent="enroll.cta_secondary">
               {ctaSecondaryLabel}
-            </Link>
+            </Button>
           </div>
 
           <Link
