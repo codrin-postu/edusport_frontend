@@ -110,7 +110,7 @@ h1.text-branding-font {
   --color-rust: #be3330;          /* brick red — eyebrows, hover underlines */
   --color-burgundy: #6e4256;
   --color-brown: #8a4b2f;
-  --color-pastel: #8ca3db;        /* softened brand blue — scheme surfaces */
+  --color-pastel: #aabbe5;        /* soft retro blue: registration band, stats tile */
   --color-ink: #111827;           /* used only by the frozen landing hero (HeroSection.tsx) */
 
   /* ── Type scale — single source of truth ────────────────────────────

@@ -95,12 +95,17 @@ const RegistrationPinwheelGrid: React.FC = () => {
   return (
     <div
       aria-hidden
-      className="absolute right-0 top-0 bottom-0 w-[62%] md:w-[48%] overflow-hidden pointer-events-none opacity-[0.28] md:opacity-100"
+      className="absolute right-0 top-0 bottom-0 w-[62%] md:w-2/5 overflow-hidden pointer-events-none opacity-[0.28] md:opacity-100"
       style={{
-        // Fade the left edge (toward the content) — on mobile the full-width
-        // text sits over the grid, so it must not compete with it.
-        WebkitMaskImage: "linear-gradient(to right, transparent, #000 55%)",
-        maskImage: "linear-gradient(to right, transparent, #000 55%)",
+        // Fade the left edge (toward the content) and the top edge (so the
+        // grid has no visible starting line). On mobile the full-width text
+        // sits over the grid, so it must not compete with it.
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent, #000 55%), linear-gradient(to bottom, transparent, #000 22%)",
+        maskImage:
+          "linear-gradient(to right, transparent, #000 55%), linear-gradient(to bottom, transparent, #000 22%)",
+        WebkitMaskComposite: "source-in",
+        maskComposite: "intersect",
       }}
     >
       <style>{`

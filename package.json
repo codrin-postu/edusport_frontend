@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "icons": "node scripts/icons/build.mjs",
+    "predev": "node scripts/icons/build.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/icons/build.mjs",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",

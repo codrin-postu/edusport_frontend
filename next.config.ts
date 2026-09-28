@@ -66,6 +66,17 @@ const nextConfig: NextConfig = {
 
   // Compression
   compress: true,
+
+  // Icons (public/icons) never change under the same URL: <Icon> adds a
+  // content hash as ?v=, so they can be cached for a year.
+  async headers() {
+    return [
+      {
+        source: "/icons/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
+  },
 };
 
 // Wrap with Sentry last so its build-time instrumentation (onRequestError
