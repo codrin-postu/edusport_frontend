@@ -658,3 +658,16 @@ html.nav-strip-open [data-contact-strip] {
 html.nav-anim [data-contact-strip] {
   transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+
+/* Text selection: navy highlight + cream text on light surfaces (default),
+   mustard highlight + navy text on dark surfaces so the contrast reads
+   clearly either way. */
+::selection {
+  background-color: var(--color-surface-dark);
+  color: var(--color-primary-on-dark);
+}
+.bg-surface-dark ::selection,
+[data-on-dark] ::selection {
+  background-color: var(--color-accent-on-dark);
+  color: var(--color-primary);
+}

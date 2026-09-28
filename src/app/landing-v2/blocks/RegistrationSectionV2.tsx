@@ -57,11 +57,11 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
           </div>
 
           <div className="text-body-sm flex flex-wrap items-center text-primary">
-            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
+            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-primary">
               <Icon name="calendar" />
               {scheduleDays}
             </span>
-            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
+            <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-primary">
               <Icon name="clock" />
               {scheduleTimes}
             </span>
