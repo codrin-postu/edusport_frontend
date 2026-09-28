@@ -1,5 +1,5 @@
 import { inputBaseOnCard } from "@/components/ui/form-field";
-import { User, CalendarDays, ClipboardCheck } from "lucide-react";
+import type { IconName } from "@/components/ui/icon";
 
 // inputBase alias for inscrieri - on-card variant (white bg + navy border)
 export const inputBase = inputBaseOnCard;
@@ -8,11 +8,11 @@ export const inputBase = inputBaseOnCard;
 // Step definitions
 // ---------------------------------------------------------------------------
 
-export const STEPS = [
-  { label: "Date personale", icon: User },
-  { label: "Experiență", icon: CalendarDays },
-  { label: "Confirmare", icon: ClipboardCheck },
-] as const;
+export const STEPS: { label: string; icon: IconName }[] = [
+  { label: "Date personale", icon: "user" },
+  { label: "Experiență", icon: "calendar-days" },
+  { label: "Confirmare", icon: "clipboard-check" },
+];
 
 // ---------------------------------------------------------------------------
 // Step chrome now lives in src/components/forms/step-chrome.tsx (shared with

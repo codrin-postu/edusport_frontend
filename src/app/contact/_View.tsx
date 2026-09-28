@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { type LucideIcon, Mail, Phone, Send, ExternalLink } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { Icon, type IconName } from "@/components/ui/icon";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
@@ -62,11 +62,11 @@ const FIELD_FALLBACK: Record<
 // ---------------------------------------------------------------------------
 
 const ContactInfoCard: React.FC<{
-  icon: LucideIcon;
+  icon: IconName;
   label: string;
   value: string;
   href: string;
-}> = ({ icon: Icon, label, value, href }) => {
+}> = ({ icon, label, value, href }) => {
   return (
     <a
       href={href}
@@ -75,7 +75,7 @@ const ContactInfoCard: React.FC<{
       className="group flex items-center gap-4 p-4 bg-surface border-retro border-line shadow-retro-sm hover:shadow-retro transition-all duration-fast"
     >
       <div className="flex-shrink-0 w-9 h-9 border-retro border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
-        <Icon className="w-4 h-4" />
+        <Icon name={icon} />
       </div>
       <div className="min-w-0">
         <p className="text-label text-secondary uppercase mb-0.5">
@@ -250,7 +250,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center py-16 px-8 text-center gap-4">
         <div className="w-14 h-14 bg-mustard flex items-center justify-center">
-          <Send className="w-6 h-6 text-primary" />
+          <Icon name="send" size="md" className="text-primary" />
         </div>
         <h3 className="text-title text-primary-on-dark">
           Mesaj trimis!
@@ -425,7 +425,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
           </span>
         ) : (
           <span className="flex items-center gap-2">
-            <Send className="w-4 h-4" />
+            <Icon name="send" />
             Trimite mesajul
           </span>
         )}
@@ -444,24 +444,24 @@ const ContactPage: React.FC<{
 }> = ({ contactInfo = {}, formConfig = null }) => {
   const contactItems = [
     contactInfo.phone && {
-      icon: Phone,
+      icon: "phone" as const,
       label: "Telefon",
       value: contactInfo.phone,
       href: `tel:${contactInfo.phone.replace(/\s/g, "")}`,
     },
     contactInfo.email && {
-      icon: Mail,
+      icon: "mail" as const,
       label: "E-mail",
       value: contactInfo.email,
       href: `mailto:${contactInfo.email}`,
     },
     contactInfo.facebookUrl1 && {
-      icon: ExternalLink,
+      icon: "external-link" as const,
       label: "Facebook",
       value: "Școala de Patinaj EduSport",
       href: contactInfo.facebookUrl1,
     },
-  ].filter(Boolean) as { icon: LucideIcon; label: string; value: string; href: string }[];
+  ].filter(Boolean) as { icon: IconName; label: string; value: string; href: string }[];
 
   return (
     <div className="min-h-screen bg-surface">

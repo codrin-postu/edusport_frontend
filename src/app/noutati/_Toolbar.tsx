@@ -2,8 +2,8 @@
 
 import React, { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
 import { Select } from "@/components/ui/select";
+import { Icon } from "@/components/ui/icon";
 import { CATEGORIES, buildUrl } from "./_helpers";
 import type { CategoryKey } from "./_data";
 
@@ -89,7 +89,7 @@ function SearchBar({
 
   return (
     <form onSubmit={handleSubmit} className="relative w-full max-w-md flex">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary pointer-events-none" />
+      <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none" />
       <input
         ref={inputRef}
         type="text"

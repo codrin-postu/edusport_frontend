@@ -1,6 +1,6 @@
 import React from "react";
-import { Mail, MapPin, Phone, ExternalLink } from "lucide-react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import { Icon } from "@/components/ui/icon";
 
 // ---------------------------------------------------------------------------
 // Section data
@@ -452,12 +452,12 @@ const ProtectiaDatelor: React.FC = () => {
                     href="mailto:edusporttrophy@gmail.com"
                     className="text-body-sm inline-flex items-center gap-2 text-primary-on-dark hover:text-mustard transition-colors"
                   >
-                    <Mail className="w-4 h-4" />
+                    <Icon name="mail" />
                     edusporttrophy@gmail.com
                   </a>
                   <span className="hidden sm:block text-line-subtle-on-dark">|</span>
                   <span className="text-body-sm inline-flex items-center gap-2 text-primary-on-dark">
-                    <MapPin className="w-4 h-4 shrink-0" />
+                    <Icon name="map-pin" />
                     str. Slt. Stănescu Gheorghe, nr. 1, bl. 213, sc. A, et. 10,
                     ap. 42, sect. 2, București
                   </span>
@@ -473,12 +473,12 @@ const ProtectiaDatelor: React.FC = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <span className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark">
-                      <MapPin className="w-4 h-4 shrink-0" />
+                      <Icon name="map-pin" />
                       B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, București
                     </span>
                     <span className="hidden sm:block text-line-subtle-on-dark">|</span>
                     <span className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark">
-                      <Phone className="w-4 h-4 shrink-0" />
+                      <Icon name="phone" />
                       +40.318.059.211
                     </span>
                   </div>
@@ -487,7 +487,7 @@ const ProtectiaDatelor: React.FC = () => {
                       href="mailto:anspdcp@dataprotection.ro"
                       className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark hover:text-mustard transition-colors"
                     >
-                      <Mail className="w-4 h-4" />
+                      <Icon name="mail" />
                       anspdcp@dataprotection.ro
                     </a>
                     <span className="hidden sm:block text-line-subtle-on-dark">|</span>
@@ -497,7 +497,7 @@ const ProtectiaDatelor: React.FC = () => {
                       rel="noopener noreferrer"
                       className="text-body-sm inline-flex items-center gap-2 text-secondary-on-dark hover:text-mustard transition-colors"
                     >
-                      <ExternalLink className="w-4 h-4" />
+                      <Icon name="external-link" />
                       www.dataprotection.ro
                     </a>
                   </div>

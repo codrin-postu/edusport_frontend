@@ -1,6 +1,5 @@
 "use client";
 
-import { Send } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import ConfigStep, { stepComplete } from "@/components/forms/config-step";
@@ -8,6 +7,7 @@ import { FALLBACK_CONFIG, submitPartner, type SubmitStatus } from "./_form-confi
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import {
   type CustomAnswer,
   type FormConfig,
@@ -98,7 +98,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center gap-4 px-8 py-16 text-center">
         <div className="flex h-14 w-14 items-center justify-center bg-mustard">
-          <Send className="h-6 w-6 text-primary" />
+          <Icon name="send" size="md" className="text-primary" />
         </div>
         <h3 className="text-title text-primary-on-dark">
           Mesaj trimis!

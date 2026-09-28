@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { Icon } from "@/components/ui/icon";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import {
   computeStats,
@@ -276,7 +276,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                           label="Best"
                           className="hidden sm:flex w-14"
                         />
-                        <ChevronRight className="size-4 shrink-0 text-secondary group-hover:text-accent transition-colors" />
+                        <Icon name="chevron-right" className="text-secondary group-hover:text-accent transition-colors" />
                       </div>
                     </Link>
                   );

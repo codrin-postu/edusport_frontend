@@ -1,8 +1,9 @@
 "use client";
 
-import { Search, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState, useTransition } from "react";
+import { Icon } from "@/components/ui/icon";
+import IconButton from "@/components/ui/icon-button";
 
 /**
  * URL-driven search input for the sportivi index.
@@ -72,7 +73,7 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
 
   return (
     <div className="relative mx-auto mt-8 w-full max-w-narrow">
-      <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-secondary" />
+      <Icon name="search" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary" />
       <input
         type="search"
         value={value}
@@ -81,14 +82,12 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
         className="text-body-sm w-full border-retro border-line bg-surface py-3 pl-12 pr-12 text-primary placeholder:text-secondary focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust"
       />
       {value && (
-        <button
-          type="button"
+        <IconButton
+          icon="close"
+          label="Șterge căutarea"
           onClick={() => setValue("")}
-          aria-label="Șterge căutarea"
-          className="absolute right-1 top-1/2 inline-flex size-10 -translate-y-1/2 items-center justify-center text-secondary transition-colors hover-layer hover:text-accent"
-        >
-          <X className="size-6" />
-        </button>
+          className="absolute right-1 top-1/2 -translate-y-1/2 text-secondary hover:text-accent"
+        />
       )}
     </div>
   );

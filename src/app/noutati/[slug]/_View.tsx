@@ -11,8 +11,8 @@ import {
 } from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
-import { CalendarDays, ChevronRight, Clock, MapPin, Tag, Ticket } from "lucide-react";
 import { notFound } from "next/navigation";
+import { Icon } from "@/components/ui/icon";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
@@ -142,7 +142,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         <div className="w-full max-w-content mx-auto gutter py-4 flex items-center justify-between">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
-            <ChevronRight className="size-4 shrink-0" />
+            <Icon name="chevron-right" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
         </div>
@@ -177,7 +177,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
 
               {/* Mobile-only date - sidebar is hidden on mobile */}
               <div className="flex items-center gap-2 mb-8 lg:hidden">
-                <CalendarDays className="size-4 text-accent shrink-0" />
+                <Icon name="calendar-days" className="text-accent" />
                 <span className="text-body-sm text-secondary">{formatDate(article.date)}</span>
               </div>
 
@@ -226,7 +226,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                 </p>
                 <div className="text-body-sm flex flex-col gap-3 text-secondary">
                   <span className="flex items-start gap-3">
-                    <CalendarDays className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <Icon name="calendar-days" className="text-accent mt-0.5" />
                     {formatDate(
                       isEventLike && article.eventDate
                         ? article.eventDate
@@ -235,7 +235,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                   </span>
                   {isEventLike && article.eventDate && (
                     <span className="flex items-start gap-3">
-                      <Clock className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="clock" className="text-accent mt-0.5" />
                       {new Date(article.eventDate).toLocaleTimeString("ro-RO", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -244,18 +244,18 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                   )}
                   {isEventLike && article.eventLocation && (
                     <span className="flex items-start gap-3">
-                      <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="map-pin" className="text-accent mt-0.5" />
                       {article.eventLocation}
                     </span>
                   )}
                   {isEventLike && article.eventAdmissionInfo && (
                     <span className="flex items-start gap-3">
-                      <Ticket className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="ticket" className="text-accent mt-0.5" />
                       {article.eventAdmissionInfo}
                     </span>
                   )}
                   <span className="flex items-start gap-3">
-                    <Tag className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <Icon name="tag" className="text-accent mt-0.5" />
                     {CATEGORY_LABELS[article.category]}
                   </span>
                 </div>

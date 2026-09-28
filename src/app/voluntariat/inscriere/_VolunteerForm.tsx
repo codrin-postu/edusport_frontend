@@ -1,6 +1,5 @@
 "use client";
 
-import { Send } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ConfigStep, { stepComplete } from "@/components/forms/config-step";
@@ -16,6 +15,7 @@ import { track } from "@/lib/analytics";
 import { createDraftStore } from "@/lib/form-draft";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import {
   type CustomAnswer,
   type FormConfig,
@@ -168,7 +168,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center gap-4 px-8 py-24 text-center">
         <div className="flex h-16 w-16 items-center justify-center bg-surface-dark">
-          <Send className="h-6 w-6 text-mustard" />
+          <Icon name="send" size="md" className="text-mustard" />
         </div>
         <h3 className="text-title text-primary">
           Cerere trimisă!

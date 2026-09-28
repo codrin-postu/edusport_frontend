@@ -12,8 +12,9 @@
  */
 
 import { useMemo, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { Icon } from "@/components/ui/icon";
+import IconButton from "@/components/ui/icon-button";
 import type { SkateResult, SkateSegment } from "@/lib/skate-results";
 
 const PER_PAGE = 12;
@@ -197,9 +198,9 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                   {hasDetail && (
                     <span className="text-muted">
                       {isOpen ? (
-                        <ChevronDown className="size-4" />
+                        <Icon name="chevron-down" />
                       ) : (
-                        <ChevronRight className="size-4" />
+                        <Icon name="chevron-right" />
                       )}
                     </span>
                   )}
@@ -223,18 +224,15 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           aria-label="Paginare competiții"
           className="flex items-center justify-center gap-2 pt-12"
         >
-          <button
-            type="button"
-            aria-label="Pagina anterioară"
+          <IconButton
+            icon="chevron-left"
+            label="Pagina anterioară"
             onClick={() => {
               setOpen(null);
               setPage((p) => Math.max(0, p - 1));
             }}
             disabled={safePage === 0}
-            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:text-disabled disabled:border-line-subtle"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
+          />
 
           {Array.from({ length: totalPages }, (_, i) => i).map((p) => (
             <button
@@ -256,18 +254,15 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
             </button>
           ))}
 
-          <button
-            type="button"
-            aria-label="Pagina următoare"
+          <IconButton
+            icon="chevron-right"
+            label="Pagina următoare"
             onClick={() => {
               setOpen(null);
               setPage((p) => Math.min(totalPages - 1, p + 1));
             }}
             disabled={safePage >= totalPages - 1}
-            className="flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark disabled:pointer-events-none disabled:text-disabled disabled:border-line-subtle"
-          >
-            <ChevronRight className="size-4" />
-          </button>
+          />
         </nav>
       )}
     </div>

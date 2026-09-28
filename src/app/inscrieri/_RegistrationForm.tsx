@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckCircle } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import ConfigStep, { stepComplete } from "./_ConfigStep";
@@ -8,6 +7,7 @@ import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
 import { clearDraft, loadDraft, saveDraft } from "./_draft";
@@ -106,7 +106,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     return (
       <div className="flex flex-col items-center justify-center py-24 px-8 text-center gap-4">
         <div className="w-16 h-16 bg-surface-dark flex items-center justify-center">
-          <CheckCircle className="w-7 h-7 text-mustard" />
+          <Icon name="circle-check" size="md" className="text-mustard" />
         </div>
         <h3 className="text-title text-primary">Înscriere trimisă!</h3>
         <p className="text-body-sm text-secondary max-w-sm">

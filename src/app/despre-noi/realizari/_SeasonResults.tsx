@@ -3,10 +3,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { Select } from "@/components/ui/select";
-import { MedalIcon, type MedalPlace } from "@/components/ui/medal-icon";
+import { Icon, type IconName } from "@/components/ui/icon";
 import {
   decadeOf,
   getPlacementInfo,
@@ -85,12 +84,12 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
                   {seasonsLabel(decade.seasons.length)}
                 </span>
               </span>
-              <ChevronDown
+              <Icon
+                name="chevron-down"
                 className={cn(
-                  "size-4 shrink-0 text-secondary transition-transform duration-fast",
+                  "text-secondary transition-transform duration-fast",
                   open && "rotate-180",
                 )}
-                aria-hidden
               />
             </button>
 
@@ -143,9 +142,41 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
 // Summary bar
 // ---------------------------------------------------------------------------
 
+type MedalPlace = 1 | 2 | 3;
+
+const MEDAL: Record<MedalPlace, { icon: IconName; label: string }> = {
+  1: { icon: "medal-gold", label: "Aur" },
+  2: { icon: "medal-silver", label: "Argint" },
+  3: { icon: "medal-bronze", label: "Bronz" },
+};
+
+/**
+ * Medal icon with a hover tooltip showing its label ("Aur" or, with an
+ * override, e.g. "Aur, locul 1") — mirrors the retired MedalIcon component.
+ */
+const MedalDisplay: React.FC<{ place: MedalPlace; label?: string; className?: string }> = ({
+  place,
+  label,
+  className,
+}) => {
+  const medal = MEDAL[place];
+  const name = label ?? medal.label;
+  return (
+    <span className={cn("group relative inline-flex shrink-0", className)}>
+      <Icon name={medal.icon} size="md" label={name} />
+      <span
+        aria-hidden="true"
+        className="text-caption pointer-events-none absolute bottom-full left-1/2 z-popup mb-2 -translate-x-1/2 whitespace-nowrap bg-surface-dark px-2 py-1 font-semibold text-primary-on-dark opacity-0 transition-opacity duration-fast group-hover:opacity-100"
+      >
+        {name}
+      </span>
+    </span>
+  );
+};
+
 const MedalCount: React.FC<{ place: MedalPlace; count: number }> = ({ place, count }) => (
   <span className="inline-flex items-center gap-2">
-    <MedalIcon place={place} />
+    <MedalDisplay place={place} />
     <span className="text-body font-semibold text-primary tabular-nums">{count}</span>
   </span>
 );
@@ -194,7 +225,7 @@ const AthleteName: React.FC<{ result: Result }> = ({ result }) =>
 const Place: React.FC<{ placement: number | null }> = ({ placement }) => {
   if (placement === 1 || placement === 2 || placement === 3) {
     const info = getPlacementInfo(placement);
-    return <MedalIcon place={placement} label={`${info.label}, locul ${placement}`} />;
+    return <MedalDisplay place={placement} label={`${info.label}, locul ${placement}`} />;
   }
   return (
     <span className="text-body font-semibold text-secondary tabular-nums">
@@ -223,9 +254,9 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
             <span className="text-body font-semibold text-primary">{competition.name}</span>
             {meta && <span className="text-caption text-secondary">{meta}</span>}
           </span>
-          <ChevronDown
-            className={cn("size-4 shrink-0 text-secondary transition-transform duration-fast", open && "rotate-180")}
-            aria-hidden
+          <Icon
+            name="chevron-down"
+            className={cn("text-secondary transition-transform duration-fast", open && "rotate-180")}
           />
         </button>
       </h4>
