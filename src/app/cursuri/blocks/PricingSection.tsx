@@ -21,8 +21,9 @@ const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
         <IconButton
           icon="info"
           label="Detalii"
+          size="sm"
           onClick={() => setOpen((v) => !v)}
-          className="-my-3 -mx-3 text-secondary hover:text-primary"
+          className="-my-3 -mx-3 text-secondary"
         />
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-60">

@@ -172,7 +172,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                         >
                           <Icon name="chevron-right" className="text-line-subtle group-hover:text-accent transition-colors" />
                           <div>
-                            <span className="text-body-sm text-primary group-hover:text-accent transition-colors">
+                            <span className="text-body-sm font-semibold text-primary group-hover:text-accent transition-colors">
                               {dropdownItem.label}
                             </span>
                             {dropdownItem.description && (

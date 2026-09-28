@@ -247,6 +247,7 @@ line-height and letter-spacing together.
   paragraphs.
 - Named exceptions: `text-athlete-name` (Spartan 900, 56 / 88px, -0.055em, as
   before SP1) and `text-branding-font` (Climate Crisis).
+- Emphasis: `font-semibold` (600) is the one approved weight modifier on a body role (text-body-lg, text-body, text-body-sm), used like <strong> (nav dropdown titles, athlete names in tables). No other weight overrides (ruling 2026-09-28).
 - Minimum size is 12px. 8, 9.5, 10, 10.5 and 11px are removed.
 - `text-label` covers both eyebrows and labels.
 - `text-title` absorbs the 15 to 24px small headings (form titles, pricing

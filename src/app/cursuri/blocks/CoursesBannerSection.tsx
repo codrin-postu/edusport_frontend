@@ -59,7 +59,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           href={locationUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 link link-on-dark"
+          className="flex items-center gap-2 transition-colors hover:text-accent-on-dark"
         >
           <Icon name="map-pin" className="text-primary-on-dark" />
           {locationName}

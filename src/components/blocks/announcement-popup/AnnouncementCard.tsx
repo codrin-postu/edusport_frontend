@@ -47,7 +47,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
               icon="close"
               onClick={dismiss}
               label="Închide anunțul"
-              className="-mt-2 -mr-2 text-secondary hover:text-primary"
+              className="-mt-2 -mr-2 text-secondary"
             />
           </div>
 
