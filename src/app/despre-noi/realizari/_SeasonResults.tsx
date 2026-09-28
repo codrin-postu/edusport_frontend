@@ -220,7 +220,7 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
           )}
         >
           <span className="flex flex-col gap-1 min-w-0">
-            <span className="text-subtitle text-primary">{competition.name}</span>
+            <span className="text-body font-semibold text-primary">{competition.name}</span>
             {meta && <span className="text-caption text-secondary">{meta}</span>}
           </span>
           <ChevronDown
