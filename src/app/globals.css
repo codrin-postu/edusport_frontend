@@ -159,6 +159,7 @@ h1.text-branding-font {
 
   --shadow-retro-sm: 4px 4px 0 rgb(14 26 60 / 0.16);
   --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.16);
+  --shadow-paper: 4px 6px 20px rgb(0 0 0 / 0.18); /* the Cursuri schedule notebook paper */
 
   /* ── Motion + layer system — single source of truth ─────────────────
      Durations/easings mirror src/lib/motion.ts (seconds) for the motion

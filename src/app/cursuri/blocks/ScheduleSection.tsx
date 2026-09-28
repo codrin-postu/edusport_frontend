@@ -33,7 +33,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
         <div className="max-w-content mx-auto relative">
           {/* Card with overflow-hidden so holes/margin line are clipped */}
           <div
-            className="relative overflow-hidden"
+            className="relative overflow-hidden shadow-paper"
             style={{
               transform: "rotate(-2deg)",
               transformOrigin: "top center",
