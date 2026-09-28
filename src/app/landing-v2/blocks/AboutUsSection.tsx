@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import Image from "next/image";
 import Link from "@/components/ui/link";
 import type { HomepageAboutPanel } from "../_types";
 
@@ -107,6 +108,26 @@ function ribbonPathsMobile(): string[] {
 }
 const RIBBON_SW_MOBILE = 17;
 
+// Dithered skater illustration beside one panel's text, desktop only.
+// Hardcoded, not from the CMS. Which panel carries it: 1 (image right) or 3 (image left).
+const SKATER_PANEL: 1 | 3 = 1;
+
+const Skater: React.FC = () => (
+  // The bottom fades into the cream so the cut-off legs don't end on a hard edge.
+  <div
+    className="hidden md:block relative shrink-0 w-[420px] lg:w-[540px] aspect-square"
+    style={{ maskImage: "linear-gradient(to bottom, black 55%, transparent 95%)" }}
+  >
+    <Image
+      src="/images/skater-dither.png"
+      alt=""
+      fill
+      sizes="(min-width: 1024px) 540px, 420px"
+      className="object-contain"
+    />
+  </div>
+);
+
 interface AboutUsSectionProps {
   panels?: HomepageAboutPanel[] | null;
 }
@@ -133,10 +154,11 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
 
       <div className="max-w-content mx-auto relative z-raised">
         {/* ── Section 1 — content + brush-masked skater ── */}
-        <div className="relative flex flex-col md:flex-row items-center gap-12 md:gap-16 py-12 px-6 md:px-16">
+        <div className="relative flex flex-col md:flex-row items-center md:justify-between gap-12 md:gap-16 py-12 px-6 md:px-16">
           <div className="max-w-[620px]">
             <Content panel={PANELS[0]!} />
           </div>
+          {SKATER_PANEL === 1 && <Skater />}
         </div>
 
         {/* ── Ribbon (desktop) — full-bleed to the screen edges, uniform scale.
@@ -169,7 +191,8 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ panels: cmsPanels }) =>
              capped at 1600px (see above), so the clearance is clamped at the
              matching 336px (41vw-320px at 1600) — beyond 1600 nothing scales,
              so section 3 doesn't drift ever further down. ── */}
-        <div className="min-h-[360px] flex items-center md:justify-end py-12 px-6 md:px-16 mt-0 md:[margin-top:clamp(2.75rem,calc(41vw_-_320px),336px)] text-left md:text-right">
+        <div className="min-h-[360px] flex items-center md:justify-end gap-16 py-12 px-6 md:px-16 mt-0 md:[margin-top:clamp(2.75rem,calc(41vw_-_320px),336px)] text-left md:text-right">
+          {SKATER_PANEL === 3 && <Skater />}
           <div className="max-w-[490px] md:ml-auto">
             <Content panel={PANELS[2]!} />
           </div>
