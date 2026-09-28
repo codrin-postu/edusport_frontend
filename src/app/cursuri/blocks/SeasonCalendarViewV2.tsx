@@ -12,8 +12,6 @@ import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarCli
 import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
 import ViewModeDropdown, { type CalendarMode } from "@/components/blocks/fullcalendar/ViewModeDropdown";
 import SlidingPillToggle from "@/components/ui/SlidingPillToggle";
-import Card from "@/components/ui/card";
-import AccordionItem from "@/components/ui/accordion";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { renderMarkdown } from "@/utils/markdown";
@@ -219,24 +217,35 @@ const MonthColumn: React.FC<{
   nextActiveWeekend: WeekendDate | null;
 }> = ({ group, nextActiveWeekend }) => {
   const allPast = group.cards.every((c) => isWeekendInPast(c.weekend));
+  const [collapsed, setCollapsed] = useState(allPast);
 
   return (
-    <AccordionItem
-      look="row"
-      defaultOpen={!allPast}
-      className="overflow-hidden"
-      triggerClassName="px-4 py-3 border-b-retro border-line"
-      panelClassName="sm:block"
-      title={
+    <div className="overflow-hidden">
+      {/* Month label - acts as table header */}
+      <div
+        className={cn(
+          "px-4 py-3 border-b-retro border-line flex items-center justify-between",
+          allPast && "sm:cursor-default cursor-pointer select-none",
+        )}
+        onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
+      >
         <span className="text-label uppercase text-primary capitalize">
           {group.label}
         </span>
-      }
-    >
-      {group.cards.map((card, i) => (
-        <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
-      ))}
-    </AccordionItem>
+        {allPast && (
+          <span className="text-caption sm:hidden text-secondary">
+            {collapsed ? "▸" : "▾"}
+          </span>
+        )}
+      </div>
+
+      {/* Weekend rows */}
+      <div className={cn(collapsed && "hidden sm:block")}>
+        {group.cards.map((card, i) => (
+          <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -479,11 +488,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
 
         {/* Weekend view - month columns */}
         {activeView === "weekends" && (
-          <Card
-            shadow="none"
-            padding="none"
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle bg-transparent"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle border-retro border-line">
             {groupedWeekends.map((group) => (
               <MonthColumn
                 key={group.label}
@@ -491,7 +496,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
                 nextActiveWeekend={nextActiveWeekend}
               />
             ))}
-          </Card>
+          </div>
         )}
       </div>
     </section>
