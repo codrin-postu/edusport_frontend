@@ -16,7 +16,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
     // Header.tsx) instead of a fixed offset, so it never shifts as the
     // contact strip collapses. Its static position under `main`'s pt is the
     // same variable, so there is zero movement at any scroll position.
-    <section className="sticky top-[var(--header-h)] z-base">
+    <section className="sticky top-[calc(var(--header-h)-1rem)] z-base">
       <div className="relative w-full overflow-hidden bg-surface-dark text-primary-on-dark" style={{ minHeight: "330px" }}>
         {title && (
           <div
