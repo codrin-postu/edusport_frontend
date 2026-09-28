@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { Icon } from "@/components/ui/icon";
@@ -18,6 +18,7 @@ import { strapiMediaUrl } from "@/lib/strapi-article";
 import type { SkateResult } from "@/lib/skate-results";
 import SkateResults from "./_SkateResults";
 import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
+import { MedalTotals } from "@/components/ui/medal";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -134,6 +135,23 @@ const SportspersonView: React.FC<Props> = ({
   const visibleHistoryRows = historyRows.slice(
     (safeIstoricPage - 1) * ISTORIC_PER_PAGE,
     safeIstoricPage * ISTORIC_PER_PAGE,
+  );
+
+  // Medal totals across the whole history, not just the visible page.
+  // Hidden automatically (by MedalTotals) when none of the rows carry a
+  // podium placement.
+  const historyMedalTotals = useMemo(
+    () =>
+      historyRows.reduce(
+        (acc, { row }) => {
+          if (row.placement === 1) acc.gold += 1;
+          else if (row.placement === 2) acc.silver += 1;
+          else if (row.placement === 3) acc.bronze += 1;
+          return acc;
+        },
+        { gold: 0, silver: 0, bronze: 0 },
+      ),
+    [historyRows],
   );
 
   return (
@@ -415,6 +433,7 @@ const SportspersonView: React.FC<Props> = ({
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
             <SectionHeader eyebrow="Istoric competițional" title="Toate competițiile" />
+            <MedalTotals {...historyMedalTotals} className="mt-8" />
             <div className="mt-8 flex flex-col">
               {visibleHistoryRows.map(({ comp, row, key }, idx) => {
                 const info: PlacementInfo | null =
