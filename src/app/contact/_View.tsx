@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { cn } from "@/utils/cn";
 import { Icon, type IconName } from "@/components/ui/icon";
 import Card, { CardTitle } from "@/components/ui/card";
-import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
+import { Field, Input, Textarea } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
 import PageHeroSection from "@/components/blocks/page-hero-section";
@@ -245,7 +244,7 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
   const req = (key: keyof typeof FIELD_FALLBACK) =>
     isRequired(config, key, FIELD_FALLBACK[key].required);
   const label = (key: keyof typeof FIELD_FALLBACK) =>
-    `${fieldLabel(config, key, FIELD_FALLBACK[key].label)}${req(key) ? " *" : ""}`;
+    fieldLabel(config, key, FIELD_FALLBACK[key].label);
   const placeholder = (key: keyof typeof FIELD_FALLBACK) =>
     fieldHelp(config, key, FIELD_FALLBACK[key].placeholder);
 
@@ -293,75 +292,66 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
       />
       {/* Name */}
       {shown("name") && (
-        <div>
-          <FieldLabel htmlFor="name" tone="dark">{label("name")}</FieldLabel>
-          <input
+        <Field label={label("name")} required={req("name")} onDark>
+          <Input
             id="name"
             name="name"
             type="text"
-            required={req("name")}
             placeholder={placeholder("name")}
             value={form.name}
             onChange={handleChange}
-            className={inputOnNavy}
+            onDark
           />
-        </div>
+        </Field>
       )}
 
       {/* Email + Phone row */}
       <div className="grid sm:grid-cols-2 gap-6">
         {shown("email") && (
-          <div>
-            <FieldLabel htmlFor="email" tone="dark">{label("email")}</FieldLabel>
-            <input
+          <Field
+            label={label("email")}
+            required={req("email")}
+            error={fieldErrors.email}
+            onDark
+          >
+            <Input
               id="email"
               name="email"
               type="email"
               inputMode="email"
-              required={req("email")}
               placeholder={placeholder("email")}
               value={form.email}
               onChange={handleChange}
               onBlur={handleFieldBlur("email")}
-              aria-invalid={fieldErrors.email ? true : undefined}
-              className={inputOnNavy}
+              onDark
             />
-            {fieldErrors.email && (
-              <p className="text-caption text-danger mt-2">
-                {fieldErrors.email}
-              </p>
-            )}
-          </div>
+          </Field>
         )}
         {shown("phone") && (
-          <div>
-            <FieldLabel htmlFor="phone" tone="dark">{label("phone")}</FieldLabel>
-            <input
+          <Field
+            label={label("phone")}
+            required={req("phone")}
+            error={fieldErrors.phone}
+            onDark
+          >
+            <Input
               id="phone"
               name="phone"
               type="tel"
               inputMode="tel"
-              required={req("phone")}
               placeholder={placeholder("phone")}
               value={form.phone}
               onChange={handleChange}
               onBlur={handleFieldBlur("phone")}
-              aria-invalid={fieldErrors.phone ? true : undefined}
-              className={inputOnNavy}
+              onDark
             />
-            {fieldErrors.phone && (
-              <p className="text-caption text-danger mt-2">
-                {fieldErrors.phone}
-              </p>
-            )}
-          </div>
+          </Field>
         )}
       </div>
 
       {/* Reason */}
       {shown("reason") && (
-        <div>
-          <FieldLabel htmlFor="reason" tone="dark">{label("reason")}</FieldLabel>
+        <Field label={label("reason")} required={req("reason")} onDark>
           <Select
             id="reason"
             name="reason"
@@ -372,26 +362,25 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
             options={selectOptions(config, "reason", CONTACT_REASONS)}
             placeholder="Selectează motivul contactării..."
             required={req("reason")}
-            className="bg-surface-subtle-on-dark border-line-on-dark text-primary-on-dark focus:border-mustard focus:ring-mustard data-[state=open]:border-mustard data-[state=open]:ring-mustard"
+            onDark
           />
-        </div>
+        </Field>
       )}
 
       {/* Message */}
       {shown("message") && (
-        <div>
-          <FieldLabel htmlFor="message" tone="dark">{label("message")}</FieldLabel>
-          <textarea
+        <Field label={label("message")} required={req("message")} onDark>
+          <Textarea
             id="message"
             name="message"
-            required={req("message")}
             rows={5}
             placeholder={placeholder("message")}
             value={form.message}
             onChange={handleChange}
-            className={cn(inputOnNavy, "resize-none")}
+            onDark
+            className="resize-none"
           />
-        </div>
+        </Field>
       )}
 
       {/* Custom (admin-added) questions — appended in config order */}

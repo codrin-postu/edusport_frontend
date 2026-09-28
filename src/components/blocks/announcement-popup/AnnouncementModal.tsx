@@ -124,7 +124,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
               {announcement.title}
             </h2>
 
-            <div className="text-caption text-[#3b4257] space-y-2 [&_a]:underline [&_a]:underline-offset-2">
+            <div className="text-caption text-secondary space-y-2 [&_a]:underline [&_a]:underline-offset-2">
               {renderMarkdown(announcement.message)}
             </div>
 

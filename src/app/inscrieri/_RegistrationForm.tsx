@@ -8,6 +8,7 @@ import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
@@ -165,50 +166,32 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
         </Card>
       )}
 
-      {confirmReset && (
-        <div
-          className="fixed inset-0 z-dialog flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="reset-title"
-        >
-          <div
-            className="absolute inset-0 bg-overlay"
-            onClick={() => setConfirmReset(false)}
-            aria-hidden
-          />
-          <Card as="div" className="relative w-full max-w-sm">
-            <h2 id="reset-title" className="text-title text-primary">
-              Ștergi răspunsurile salvate?
-            </h2>
-            <p className="text-body-sm mt-2 text-secondary">
-              Toate datele introduse vor fi pierdute.
-            </p>
-            <div className="mt-6 flex items-center justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setConfirmReset(false)}
-                className="text-body-sm border-retro border-line px-4 py-2 text-primary transition-colors hover-layer"
-              >
-                Renunță
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  clearDraft();
-                  setAnswers({});
-                  setStep(0);
-                  setRestored(false);
-                  setConfirmReset(false);
-                }}
-                className="text-body-sm border-retro border-rust bg-rust px-4 py-2 text-primary-on-dark transition-colors hover:brightness-110"
-              >
-                Șterge
-              </button>
-            </div>
-          </Card>
-        </div>
-      )}
+      <Dialog
+        open={confirmReset}
+        onOpenChange={setConfirmReset}
+        title="Ștergi răspunsurile salvate?"
+        description="Toate datele introduse vor fi pierdute."
+        width="sm"
+      >
+        <DialogActions>
+          <Button variant="secondary" onClick={() => setConfirmReset(false)}>
+            Renunță
+          </Button>
+          <Button
+            variant="primary"
+            face="black"
+            onClick={() => {
+              clearDraft();
+              setAnswers({});
+              setStep(0);
+              setRestored(false);
+              setConfirmReset(false);
+            }}
+          >
+            Șterge
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <motion.div
         key={step}

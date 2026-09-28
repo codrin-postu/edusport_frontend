@@ -3,6 +3,7 @@
 import React, { useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Select } from "@/components/ui/select";
+import { Input } from "@/components/ui/form-field";
 import { Icon } from "@/components/ui/icon";
 import { CATEGORIES, buildUrl } from "./_helpers";
 import type { CategoryKey } from "./_data";
@@ -90,13 +91,13 @@ function SearchBar({
   return (
     <form onSubmit={handleSubmit} className="relative w-full max-w-md flex">
       <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary pointer-events-none" />
-      <input
+      <Input
         ref={inputRef}
         type="text"
         name="search"
         placeholder="Caută articole..."
         defaultValue={value}
-        className="text-body-sm w-full pl-12 pr-4 py-3 text-primary bg-surface border-retro border-line outline-none placeholder:text-secondary focus:ring-2 focus:ring-rust focus:border-rust transition-colors"
+        className="pl-12"
       />
     </form>
   );

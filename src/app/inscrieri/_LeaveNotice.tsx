@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Card from "@/components/ui/card";
+import Button from "@/components/ui/button";
+import { Dialog, DialogActions } from "@/components/ui/dialog";
 
 /**
  * Tells the visitor the page is about to change before it does.
@@ -34,10 +34,6 @@ interface Pending {
 const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({ scope }) => {
   const router = useRouter();
   const [pending, setPending] = useState<Pending | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const stayRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handle = (event: MouseEvent) => {
@@ -94,40 +90,8 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
 
   const close = useCallback(() => setPending(null), []);
 
-  useEffect(() => {
-    if (!pending) return;
-    // preventScroll, or the browser scrolls the page to bring the button into
-    // view as it takes focus. The dialog is fixed and already on screen, so
-    // the only visible effect was the page lurching down behind it.
-    stayRef.current?.focus({ preventScroll: true });
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    document.addEventListener("keydown", onKey);
-
-    // Freeze the page behind the dialog. Without this the form scrolls under
-    // it, which reads as the page having moved already.
-    //
-    // Both elements, not just body: this page scrolls on the root element, so
-    // hiding body's overflow alone left the wheel working (measured: 300 to
-    // 1321 with the dialog open). The scrollbar gutter is reserved globally in
-    // globals.css, so hiding the overflow does not shift the layout sideways.
-    const root = document.documentElement;
-    const previousRoot = root.style.overflow;
-    const previousBody = document.body.style.overflow;
-    root.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      root.style.overflow = previousRoot;
-      document.body.style.overflow = previousBody;
-    };
-  }, [pending, close]);
-
-  if (!pending) return null;
-
   const go = () => {
+    if (!pending) return;
     const { href, newTab } = pending;
     setPending(null);
     if (newTab) {
@@ -143,48 +107,25 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
     router.push(href);
   };
 
-  if (!mounted) return null;
-
-  // Rendered on <body>: main is `relative z-raised`, which is a stacking context,
-  // so a dialog inside it can never paint over the header at z-[100].
-  return createPortal(
-    <div
-      className="fixed inset-0 z-dialog flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="leave-notice-title"
+  return (
+    <Dialog
+      open={pending !== null}
+      onOpenChange={(open) => {
+        if (!open) close();
+      }}
+      title="Linkul se deschide într-o pagină nouă."
+      description="Formularul rămâne salvat."
+      width="sm"
     >
-      <div className="absolute inset-0 bg-overlay" onClick={close} aria-hidden />
-      <Card as="div" className="relative w-full max-w-sm">
-        <h2
-          id="leave-notice-title"
-          className="text-title text-primary"
-        >
-          Linkul se deschide într-o pagină nouă.
-        </h2>
-        <p className="text-body-sm mt-2 text-secondary">
-          Formularul rămâne salvat.
-        </p>
-        <div className="mt-6 flex items-center justify-end gap-3">
-          <button
-            ref={stayRef}
-            type="button"
-            onClick={close}
-            className="text-body-sm border-retro border-line px-4 py-2 text-primary transition-colors hover-layer"
-          >
-            Rămâi
-          </button>
-          <button
-            type="button"
-            onClick={go}
-            className="text-body-sm border-retro border-line bg-surface-dark px-4 py-2 text-primary-on-dark transition-colors hover-layer-on-dark"
-          >
-            Continuă
-          </button>
-        </div>
-      </Card>
-    </div>,
-    document.body,
+      <DialogActions>
+        <Button variant="secondary" onClick={close}>
+          Rămâi
+        </Button>
+        <Button variant="primary" face="black" onClick={go}>
+          Continuă
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

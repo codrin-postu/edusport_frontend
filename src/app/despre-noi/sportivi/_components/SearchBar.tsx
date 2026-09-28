@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { Icon } from "@/components/ui/icon";
 import IconButton from "@/components/ui/icon-button";
+import { Input } from "@/components/ui/form-field";
 
 /**
  * URL-driven search input for the sportivi index.
@@ -74,12 +75,12 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
   return (
     <div className="relative mx-auto mt-8 w-full max-w-narrow">
       <Icon name="search" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary" />
-      <input
+      <Input
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Caută sportiv după nume…"
-        className="text-body-sm w-full border-retro border-line bg-surface py-3 pl-12 pr-12 text-primary placeholder:text-secondary focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust"
+        className="pl-12 pr-12"
       />
       {value && (
         <IconButton
