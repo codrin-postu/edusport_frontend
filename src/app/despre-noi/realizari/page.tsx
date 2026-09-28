@@ -101,6 +101,7 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
         comps.set(cKey, {
           name: r.event_name ?? "Competiție",
           date: r.event_date ? formatDate(r.event_date) : "",
+          isoDate: r.event_date ?? "",
           location: r.event_location ?? "",
           level: levelOf(r.event_name ?? ""),
           results: [],

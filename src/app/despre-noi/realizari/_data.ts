@@ -20,6 +20,8 @@ export interface Result {
 export interface Competition {
   name: string;
   date: string;
+  /** Event date as an ISO string, for sorting; empty when the source has none. */
+  isoDate: string;
   location: string;
   level: "national" | "international";
   results: Result[];
@@ -39,7 +41,8 @@ export interface Season {
 export interface SeasonIndexEntry {
   id: string;
   label: string;
-  resultCount: number;
+  /** Competitions in the season that have at least one result. */
+  competitionCount: number;
 }
 
 /** A rail group: one calendar decade of seasons. */
@@ -49,7 +52,8 @@ export interface DecadeGroup {
   /** Display label, e.g. "2020 - 2029". */
   label: string;
   seasons: SeasonIndexEntry[];
-  resultCount: number;
+  /** Competitions in the season that have at least one result. */
+  competitionCount: number;
 }
 
 export interface GalleryImage {
@@ -113,10 +117,6 @@ export function getPlacementInfo(placement: Placement): PlacementInfo {
   };
 }
 
-export function countSeasonResults(season: Season): number {
-  return season.competitions.reduce((sum, comp) => sum + comp.results.length, 0);
-}
-
 // ---------------------------------------------------------------------------
 // Season index and decade grouping
 // ---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ export function buildSeasonIndex(seasons: Season[]): SeasonIndexEntry[] {
   return seasons.map((s) => ({
     id: s.id,
     label: s.label,
-    resultCount: countSeasonResults(s),
+    competitionCount: s.competitions.filter((c) => c.results.length > 0).length,
   }));
 }
 
@@ -151,7 +151,7 @@ export function groupSeasonsByDecade(index: SeasonIndexEntry[]): DecadeGroup[] {
       id,
       label: `${id} - ${Number(id) + 9}`,
       seasons: [...entries].sort((a, b) => b.id.localeCompare(a.id)),
-      resultCount: entries.reduce((sum, e) => sum + e.resultCount, 0),
+      competitionCount: entries.reduce((sum, e) => sum + e.competitionCount, 0),
     }))
     .sort((a, b) => Number(b.id) - Number(a.id));
 }

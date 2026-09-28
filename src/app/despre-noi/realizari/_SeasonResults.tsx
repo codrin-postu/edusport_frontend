@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { Select } from "@/components/ui/select";
+import { MedalIcon, type MedalPlace } from "@/components/ui/medal-icon";
 import {
   decadeOf,
   getPlacementInfo,
@@ -20,10 +21,6 @@ import {
 /** Season links stay on the current route, so the season lives in the query. */
 function seasonHref(pathname: string, id: string): string {
   return `${pathname}?sezon=${id}`;
-}
-
-function resultsLabel(n: number): string {
-  return n === 1 ? "1 rezultat" : `${n} rezultate`;
 }
 
 function seasonsLabel(n: number): string {
@@ -127,7 +124,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
                       >
                         <span>{season.label}</span>
                         <span className="text-caption ml-auto text-secondary tabular-nums">
-                          {season.resultCount}
+                          {season.competitionCount}
                         </span>
                       </a>
                     </li>
@@ -146,32 +143,37 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect
 // Summary bar
 // ---------------------------------------------------------------------------
 
-const Stat: React.FC<{ value: number; label: string }> = ({ value, label }) => (
-  <div className="flex flex-col gap-px">
-    <span className="text-title text-primary tabular-nums">
-      {value}
-    </span>
-    <span className="text-label uppercase text-secondary">
-      {label}
-    </span>
-  </div>
-);
-
-const Medal: React.FC<{ count: number; label: string; className: string }> = ({
-  count,
-  label,
-  className,
-}) => (
-  <span
-    className={cn(
-      "text-title border-retro border-line px-2 py-1",
-      className,
-    )}
-  >
-    <span className="tabular-nums">{count}</span>
-    <span className="hidden sm:inline"> {label}</span>
+const MedalCount: React.FC<{ place: MedalPlace; count: number }> = ({ place, count }) => (
+  <span className="inline-flex items-center gap-2">
+    <MedalIcon place={place} />
+    <span className="text-body font-semibold text-primary tabular-nums">{count}</span>
   </span>
 );
+
+type SortKey = "newest" | "oldest" | "medals" | "name";
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "newest", label: "Cele mai noi" },
+  { value: "oldest", label: "Cele mai vechi" },
+  { value: "medals", label: "Cele mai multe medalii" },
+  { value: "name", label: "Alfabetic" },
+];
+
+const ALL_ATHLETES = "toti";
+
+function medalCount(comp: Competition): number {
+  return comp.results.filter((r) => r.placement === 1 || r.placement === 2 || r.placement === 3).length;
+}
+
+function sortCompetitions(list: Competition[], key: SortKey): Competition[] {
+  const byDate = (a: Competition, b: Competition) => a.isoDate.localeCompare(b.isoDate);
+  const sorted = [...list];
+  if (key === "newest") sorted.sort((a, b) => byDate(b, a));
+  else if (key === "oldest") sorted.sort(byDate);
+  else if (key === "medals") sorted.sort((a, b) => medalCount(b) - medalCount(a) || byDate(b, a));
+  else sorted.sort((a, b) => a.name.localeCompare(b.name, "ro"));
+  return sorted;
+}
 
 // ---------------------------------------------------------------------------
 // Competition card
@@ -189,115 +191,109 @@ const AthleteName: React.FC<{ result: Result }> = ({ result }) =>
     <span className="font-semibold text-primary">{result.athlete}</span>
   );
 
+const Place: React.FC<{ placement: number | null }> = ({ placement }) => {
+  if (placement === 1 || placement === 2 || placement === 3) {
+    const info = getPlacementInfo(placement);
+    return <MedalIcon place={placement} label={`${info.label}, locul ${placement}`} />;
+  }
+  return (
+    <span className="text-body font-semibold text-secondary tabular-nums">
+      {placement ?? "-"}
+    </span>
+  );
+};
+
+/** One competition, open by default; the header folds its results away. */
 const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }) => {
+  const [open, setOpen] = useState(true);
   const meta = [competition.date, competition.location].filter(Boolean).join(", ");
   return (
-    <article className="border-retro border-line bg-surface-raised mb-4">
-      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 border-b-retro border-line bg-surface-subtle">
-        <h4 className="text-title text-primary">
-          {competition.name}
-        </h4>
-        <span
+    <article className="mb-6">
+      <h4>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
           className={cn(
-            "text-label px-2 py-0.5 border-retro",
-            competition.level === "international"
-              ? "bg-burgundy text-primary-on-dark border-burgundy"
-              : "border-line text-primary",
+            "w-full flex items-center justify-between gap-3 px-4 py-3 text-left bg-surface-subtle transition-colors hover-layer",
+            "border-b-retro border-line",
           )}
         >
-          {competition.level === "international" ? "Internațional" : "Național"}
-        </span>
-        {meta && (
-          <span className="text-caption text-secondary w-full sm:w-auto">{meta}</span>
-        )}
-      </header>
+          <span className="flex flex-col gap-1 min-w-0">
+            <span className="text-subtitle text-primary">{competition.name}</span>
+            {meta && <span className="text-caption text-secondary">{meta}</span>}
+          </span>
+          <ChevronDown
+            className={cn("size-4 shrink-0 text-secondary transition-transform duration-fast", open && "rotate-180")}
+            aria-hidden
+          />
+        </button>
+      </h4>
 
-      {/* Desktop and tablet: table */}
-      <table className="text-caption hidden sm:table w-full">
-        <thead>
-          <tr>
-            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle w-[86px]">
-              Loc
-            </th>
-            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle">
-              Sportiv
-            </th>
-            <th className="text-label text-left uppercase text-secondary px-4 py-2 border-b border-line-subtle">
-              Categorie
-            </th>
-            <th className="text-label text-right uppercase text-secondary px-4 py-2 border-b border-line-subtle w-[92px]">
-              Punctaj
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {competition.results.map((result, i) => {
-            const info = result.placement != null ? getPlacementInfo(result.placement) : null;
-            return (
-              <tr key={i} className="border-b border-line-subtle last:border-b-0">
-                <td className="px-4 py-3">
-                  {info?.chipClass ? (
-                    <span
-                      className={cn(
-                        "h-7 px-2 inline-flex items-center justify-center font-display font-extrabold text-primary",
-                        info.chipClass,
-                      )}
-                    >
-                      {info.label}
-                    </span>
-                  ) : (
-                    <span className="font-display font-extrabold text-secondary">
-                      {info?.label ?? "-"}
-                    </span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <AthleteName result={result} />
-                </td>
-                <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
-                <td className="px-4 py-3 text-right tabular-nums text-secondary">
-                  {formatScore(result.score)}
-                </td>
+      {open && (
+        <>
+          {/* Desktop and tablet: table, fixed columns so every card lines up */}
+          <table className="text-body-sm hidden sm:table w-full table-fixed">
+            <thead>
+              <tr>
+                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-20">
+                  Loc
+                </th>
+                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle w-2/5">
+                  Sportiv
+                </th>
+                <th className="text-label text-left text-secondary px-4 py-2 border-b border-line-subtle">
+                  Categorie
+                </th>
+                <th className="text-label text-right text-secondary px-4 py-2 border-b border-line-subtle w-24">
+                  Punctaj
+                </th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {competition.results.map((result, i) => (
+                <tr key={i} className="border-b border-line-subtle last:border-b-0">
+                  <td className="px-4 py-3 align-middle">
+                    <Place placement={result.placement} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <AthleteName result={result} />
+                  </td>
+                  <td className="px-4 py-3 text-secondary">{result.category || "-"}</td>
+                  <td className="px-4 py-3 text-right tabular-nums text-secondary">
+                    {formatScore(result.score)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-      {/* Mobile: one card per result, nothing scrolls sideways */}
-      <div className="sm:hidden">
-        {competition.results.map((result, i) => {
-          const info = result.placement != null ? getPlacementInfo(result.placement) : null;
-          const detail = [result.category, result.score != null ? `${result.score.toFixed(2)} puncte` : null]
-            .filter(Boolean)
-            .join(", ");
-          return (
-            <div
-              key={i}
-              className="px-3 py-3 border-b border-line-subtle last:border-b-0"
-            >
-              <div className="flex items-baseline gap-2 flex-wrap">
-                {info?.chipClass ? (
-                  <span
-                    className={cn(
-                      "h-7 px-2 inline-flex items-center justify-center text-title text-primary",
-                      info.chipClass,
-                    )}
-                  >
-                    {info.label}
+          {/* Mobile: one row per result, nothing scrolls sideways */}
+          <div className="sm:hidden">
+            {competition.results.map((result, i) => {
+              const detail = [result.category, result.score != null ? `${result.score.toFixed(2)} puncte` : null]
+                .filter(Boolean)
+                .join(", ");
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-3 py-3 border-b border-line-subtle last:border-b-0"
+                >
+                  <span className="w-8 shrink-0 inline-flex justify-center">
+                    <Place placement={result.placement} />
                   </span>
-                ) : (
-                  <span className="text-title text-secondary">{info?.label ?? "-"}</span>
-                )}
-                <span className="text-caption">
-                  <AthleteName result={result} />
-                </span>
-              </div>
-              <p className="text-caption text-secondary mt-0.5">{detail || "-"}</p>
-            </div>
-          );
-        })}
-      </div>
+                  <span className="min-w-0">
+                    <span className="text-body-sm block">
+                      <AthleteName result={result} />
+                    </span>
+                    <span className="text-caption text-secondary block mt-1">{detail || "-"}</span>
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </article>
   );
 };
@@ -318,6 +314,8 @@ interface SeasonResultsProps {
 const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, initialSeasonId }) => {
   const pathname = usePathname();
   const [selectedId, setSelectedId] = useState(initialSeasonId);
+  const [sortKey, setSortKey] = useState<SortKey>("newest");
+  const [athlete, setAthlete] = useState(ALL_ATHLETES);
   const season = seasons.find((s) => s.id === selectedId) ?? seasons[0] ?? null;
 
   // Switching seasons is local state: the results for every season are
@@ -326,13 +324,15 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
   const selectSeason = useCallback(
     (id: string) => {
       setSelectedId(id);
+      // Another season has other athletes, so the athlete filter starts over.
+      setAthlete(ALL_ATHLETES);
       window.history.replaceState(window.history.state, "", seasonHref(pathname, id));
     },
     [pathname],
   );
-  // Results are ordered by placement, best first. Entries with no placement
-  // sort last rather than being dropped.
-  const competitions = useMemo(() => {
+  // Competitions with results, each ordered by placement, best first.
+  // Entries with no placement sort last rather than being dropped.
+  const seasonCompetitions = useMemo(() => {
     if (!season) return [];
     return season.competitions
       .map((comp) => ({
@@ -343,6 +343,26 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
       }))
       .filter((comp) => comp.results.length > 0);
   }, [season]);
+
+  const athleteOptions = useMemo(() => {
+    const names = new Set<string>();
+    for (const comp of seasonCompetitions) for (const r of comp.results) names.add(r.athlete);
+    return [
+      { value: ALL_ATHLETES, label: "Toți sportivii" },
+      ...[...names].sort((a, b) => a.localeCompare(b, "ro")).map((name) => ({ value: name, label: name })),
+    ];
+  }, [seasonCompetitions]);
+
+  // The list as shown: filtered to one athlete when picked, then sorted.
+  const competitions = useMemo(() => {
+    const filtered =
+      athlete === ALL_ATHLETES
+        ? seasonCompetitions
+        : seasonCompetitions
+          .map((comp) => ({ ...comp, results: comp.results.filter((r) => r.athlete === athlete) }))
+          .filter((comp) => comp.results.length > 0);
+    return sortCompetitions(filtered, sortKey);
+  }, [seasonCompetitions, athlete, sortKey]);
 
   const summary = useMemo(() => (season ? summarizeSeason(season) : null), [season]);
 
@@ -358,7 +378,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
 
   const seasonOptions = seasonIndex.map((s) => ({
     value: s.id,
-    label: `${s.label}, ${resultsLabel(s.resultCount)}`,
+    label: `${s.label}, ${s.competitionCount === 1 ? "1 competiție" : `${s.competitionCount} competiții`}`,
   }));
 
   return (
@@ -381,15 +401,49 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
           />
         </div>
 
-        {/* Summary bar */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-retro border-line bg-surface-subtle px-4 py-3 mb-6">
-          <Stat value={summary.results} label="rezultate" />
-          <Stat value={summary.competitions} label="competiții" />
-          <Stat value={summary.athletes} label="sportivi" />
-          <div className="flex gap-2 ml-auto">
-            <Medal count={summary.gold} label="aur" className="bg-mustard text-primary" />
-            <Medal count={summary.silver} label="argint" className="bg-medal-silver text-primary" />
-            <Medal count={summary.bronze} label="bronz" className="bg-brown text-primary-on-dark" />
+        {/* Summary band: the whole season, whatever the filter shows */}
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 bg-surface-subtle px-4 py-3 mb-6">
+          <div className="flex items-center gap-3">
+            <span className="text-title text-primary tabular-nums">{seasonCompetitions.length}</span>
+            <span className="text-label text-secondary">
+              {seasonCompetitions.length === 1 ? "Competiție" : "Competiții"} în sezonul {season.label}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="text-label text-secondary">Medalii</span>
+            <MedalCount place={1} count={summary.gold} />
+            <MedalCount place={2} count={summary.silver} />
+            <MedalCount place={3} count={summary.bronze} />
+          </div>
+        </div>
+
+        {/* Sort and athlete filter, within the season shown */}
+        <div className="flex flex-wrap items-end gap-4 mb-6">
+          <div className="w-full sm:w-64">
+            <label className="text-label text-secondary block mb-2" htmlFor="sortare-competitii">
+              Sortează
+            </label>
+            <Select
+              id="sortare-competitii"
+              value={sortKey}
+              onValueChange={(v) => setSortKey(v as SortKey)}
+              options={SORT_OPTIONS}
+              size="compact"
+              className="w-full"
+            />
+          </div>
+          <div className="w-full sm:w-72">
+            <label className="text-label text-secondary block mb-2" htmlFor="filtru-sportiv">
+              Sportiv
+            </label>
+            <Select
+              id="filtru-sportiv"
+              value={athlete}
+              onValueChange={setAthlete}
+              options={athleteOptions}
+              size="compact"
+              className="w-full"
+            />
           </div>
         </div>
 
@@ -398,8 +452,8 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, ini
             Nu avem rezultate pentru acest sezon.
           </p>
         ) : (
-          competitions.map((comp, i) => (
-            <CompetitionCard key={`${comp.name}-${comp.date}-${i}`} competition={comp} />
+          competitions.map((comp) => (
+            <CompetitionCard key={`${season.id}-${comp.name}-${comp.isoDate}`} competition={comp} />
           ))
         )}
       </div>
