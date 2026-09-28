@@ -37,7 +37,11 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
 
         <div className="relative w-full max-w-content mx-auto gutter py-16 flex items-start">
           <div className="flex flex-col gap-6 max-w-narrow">
-            {breadcrumb && <Breadcrumb items={breadcrumb} onDark />}
+            {breadcrumb ? (
+              <Breadcrumb items={breadcrumb} onDark />
+            ) : (
+              <span>&nbsp;</span>
+            )}
             {children}
           </div>
         </div>
