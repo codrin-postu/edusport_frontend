@@ -15,10 +15,12 @@ interface AccomplishmentsPageProps {
   bannerSubtitle?: string;
   notableAchievements: string[];
   galleryImages: GalleryImage[];
-  /** Label plus result count for every season, a few hundred bytes in total. */
+  /** Label plus result count for every season. */
   seasonIndex: SeasonIndexEntry[];
-  /** Full data for the requested season only. */
-  season: Season | null;
+  /** Every season with results, so switching seasons needs no server round trip. */
+  seasons: Season[];
+  /** The season shown first: the one in ?sezon=, else the most recent. */
+  initialSeasonId: string | null;
 }
 
 const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
@@ -27,7 +29,8 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
   notableAchievements,
   galleryImages,
   seasonIndex,
-  season,
+  seasons,
+  initialSeasonId,
 }) => {
   return (
     <div className="min-h-screen bg-surface">
@@ -95,7 +98,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
             </h2>
           </div>
 
-          <SeasonResults seasonIndex={seasonIndex} season={season} />
+          <SeasonResults seasonIndex={seasonIndex} seasons={seasons} initialSeasonId={initialSeasonId} />
         </div>
       </section>
     </div>

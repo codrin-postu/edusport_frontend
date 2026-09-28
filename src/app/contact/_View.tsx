@@ -459,7 +459,7 @@ const ContactPage: React.FC<{
     contactInfo.facebookUrl1 && {
       icon: ExternalLink,
       label: "Facebook",
-      value: "Scoala de Patinaj EduSport",
+      value: "Școala de Patinaj EduSport",
       href: contactInfo.facebookUrl1,
     },
   ].filter(Boolean) as { icon: LucideIcon; label: string; value: string; href: string }[];

@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const pathname = usePathname();
   const ctaHref = registrationOpen !== false ? "/inscrieri" : "/cursuri";
-  const ctaLabel = registrationOpen !== false ? "Inscrie-te la cursuri" : "Cursuri";
+  const ctaLabel = registrationOpen !== false ? "Înscrie-te la cursuri" : "Cursuri";
   // Desktop nav excludes "Acasa" (no need for a home link in the top bar)
   const desktopNavItems = React.useMemo(
     () => navItems.filter((item) => item.key !== "acasa"),

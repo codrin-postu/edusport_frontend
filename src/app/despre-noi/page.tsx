@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Istoria școlii de patinaj EduSport. Momente importante, evoluția clubului și reperele parcursului nostru.",
   alternates: { canonical: "/despre-noi" },
   openGraph: {
-    title: "Despre Noi | EduSport",
+    title: "Despre noi | EduSport",
     description:
       "Istoria școlii de patinaj EduSport. Momente importante, evoluția clubului și reperele parcursului nostru.",
     type: "website",

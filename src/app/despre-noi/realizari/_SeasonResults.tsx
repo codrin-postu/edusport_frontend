@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { Select } from "@/components/ui/select";
 import {
@@ -42,14 +42,16 @@ interface RailProps {
   index: SeasonIndexEntry[];
   selectedId: string | null;
   pathname: string;
+  onSelect: (id: string) => void;
 }
 
 /**
  * Decade-grouped season list. The decade holding the selected season is open,
  * the rest are folded, so forty seasons stay four rows plus one open decade.
- * Folding is local state, picking a season navigates.
+ * A folded decade still shows its selected season, so the current choice is
+ * always visible. Folding and picking are both local state.
  */
-const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
+const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname, onSelect }) => {
   const decades = useMemo(() => groupSeasonsByDecade(index), [index]);
   const selectedDecade = selectedId ? decadeOf(selectedId) : decades[0]?.id ?? null;
   const [overrides, setOverrides] = useState<Record<string, boolean>>({});
@@ -72,40 +74,51 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
               onClick={() => toggle(decade.id)}
               aria-expanded={open}
               className={cn(
-                "w-full flex items-start gap-2 px-3 py-3 text-left",
+                "w-full flex items-center justify-between gap-2 px-3 py-3 text-left",
                 "transition-colors hover-layer",
-                i > 0 && "border-t border-line-subtle",
+                i > 0 && "border-t-retro border-line-subtle",
                 open && "bg-surface-subtle",
               )}
             >
-              {open ? (
-                <ChevronDown className="size-4 shrink-0 mt-1 text-secondary" aria-hidden />
-              ) : (
-                <ChevronRight className="size-4 shrink-0 mt-1 text-secondary" aria-hidden />
-              )}
-              <span className="flex flex-col gap-0.5 min-w-0">
-                <span className="text-title uppercase text-primary">
+              <span className="flex flex-col gap-1 min-w-0">
+                <span className="text-label text-primary">
                   {decade.label}
                 </span>
                 <span className="text-caption text-secondary">
-                  {seasonsLabel(decade.seasons.length)}, {resultsLabel(decade.resultCount)}
+                  {seasonsLabel(decade.seasons.length)}
                 </span>
               </span>
+              <ChevronDown
+                className={cn(
+                  "size-4 shrink-0 text-secondary transition-transform duration-fast",
+                  open && "rotate-180",
+                )}
+                aria-hidden
+              />
             </button>
 
-            {open && (
+            {(open || decade.seasons.some((season) => season.id === selectedId)) && (
               <ul>
-                {decade.seasons.map((season) => {
+                {decade.seasons.filter((season) => open || season.id === selectedId).map((season) => {
                   const active = season.id === selectedId;
                   return (
                     <li key={season.id}>
-                      <Link
+                      {/* A real link, so a new tab or a shared URL opens on this
+                          season; a plain click is handled here instead of by
+                          the router (a router navigation would reload the
+                          page and jump to the top). */}
+                      <a
                         href={seasonHref(pathname, season.id)}
-                        scroll={false}
+                        onClick={(e) => {
+                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                          e.preventDefault();
+                          onSelect(season.id);
+                        }}
                         aria-current={active ? "page" : undefined}
                         className={cn(
                           "flex items-baseline gap-2 px-3 py-2",
-                          "text-title",
+                          "text-body-sm",
+                          active && "font-semibold",
                           "border-l-[3px] border-transparent transition-colors",
                           active
                             ? "border-l-rust bg-surface-subtle text-primary"
@@ -116,7 +129,7 @@ const SeasonRail: React.FC<RailProps> = ({ index, selectedId, pathname }) => {
                         <span className="text-caption ml-auto text-secondary tabular-nums">
                           {season.resultCount}
                         </span>
-                      </Link>
+                      </a>
                     </li>
                   );
                 })}
@@ -296,13 +309,27 @@ const CompetitionCard: React.FC<{ competition: Competition }> = ({ competition }
 interface SeasonResultsProps {
   /** Every season, reduced to label plus result count. */
   seasonIndex: SeasonIndexEntry[];
-  /** The one season shown in full. Null when the club has no results yet. */
-  season: Season | null;
+  /** Every season with results, in full. Empty when the club has none yet. */
+  seasons: Season[];
+  /** The season shown first. */
+  initialSeasonId: string | null;
 }
 
-const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) => {
-  const router = useRouter();
+const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, seasons, initialSeasonId }) => {
   const pathname = usePathname();
+  const [selectedId, setSelectedId] = useState(initialSeasonId);
+  const season = seasons.find((s) => s.id === selectedId) ?? seasons[0] ?? null;
+
+  // Switching seasons is local state: the results for every season are
+  // already on the page. The URL is updated in place (no router navigation,
+  // which would reload the page and reset the scroll) so it stays shareable.
+  const selectSeason = useCallback(
+    (id: string) => {
+      setSelectedId(id);
+      window.history.replaceState(window.history.state, "", seasonHref(pathname, id));
+    },
+    [pathname],
+  );
   // Results are ordered by placement, best first. Entries with no placement
   // sort last rather than being dropped.
   const competitions = useMemo(() => {
@@ -336,7 +363,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-      <SeasonRail index={seasonIndex} selectedId={season.id} pathname={pathname} />
+      <SeasonRail index={seasonIndex} selectedId={season.id} pathname={pathname} onSelect={selectSeason} />
 
       <div className="flex-1 min-w-0 w-full">
         {/* Mobile and tablet season picker */}
@@ -347,7 +374,7 @@ const SeasonResults: React.FC<SeasonResultsProps> = ({ seasonIndex, season }) =>
           <Select
             id="selector-sezon"
             value={season.id}
-            onValueChange={(value) => router.push(seasonHref(pathname, value), { scroll: false })}
+            onValueChange={selectSeason}
             options={seasonOptions}
             size="compact"
             className="w-full"

@@ -124,7 +124,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               >
                                 {num}
                               </span>
-                              <p className="text-body-sm text-primary-on-dark pt-1">
+                              <p className="text-body-sm text-primary-on-dark pt-1 min-w-0 [overflow-wrap:anywhere]">
                                 {rule.text}
                               </p>
                             </div>
@@ -142,7 +142,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                               >
                                 {num}
                               </span>
-                              <p className="text-body-sm text-secondary pt-1">
+                              <p className="text-body-sm text-secondary pt-1 min-w-0 [overflow-wrap:anywhere]">
                                 {rule.text}
                               </p>
                             </div>

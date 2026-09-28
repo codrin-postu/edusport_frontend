@@ -111,7 +111,7 @@ const HistoryPage: React.FC<Props> = ({
         ]}
       >
         <h1 className="text-display text-primary-on-dark">
-          {bannerTitle ?? "Despre Noi"}
+          {bannerTitle ?? "Despre noi"}
         </h1>
         <p className="text-body text-secondary-on-dark">
           {bannerSubtitle ?? "Educație prin sport, pentru o viață sănătoasă și activă. Educație pentru sport, în vederea obținerii înaltei performanțe."}

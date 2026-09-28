@@ -101,7 +101,7 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
       {/* Event body */}
       <article className="bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
-          <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start">
             {/* Main content */}
             <div>
               <div className="text-caption flex flex-wrap items-center gap-2 mb-4">

@@ -26,13 +26,13 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { key: "acasa", label: "Acasa", href: "/" },
+  { key: "acasa", label: "Acasă", href: "/" },
   {
     key: "despre-noi",
-    label: "Despre Noi",
+    label: "Despre noi",
     image: "/images/menu/about_image.png",
     promo: {
-      title: "Despre Noi",
+      title: "Despre noi",
       description: "Află povestea clubului, cunoaște echipa și descoperă realizările noastre.",
       gradient: "from-navy to-pastel",
     },
@@ -45,7 +45,7 @@ export const navItems: NavItem[] = [
       {
         label: "Echipa",
         href: "/despre-noi/echipa",
-        description: "Cunoaste instructorii nostri",
+        description: "Cunoaște instructorii noștri",
       },
       {
         label: "Sportivi",
@@ -53,14 +53,14 @@ export const navItems: NavItem[] = [
         description: "Profilurile sportivilor clubului",
       },
       {
-        label: "Realizari",
+        label: "Realizări",
         href: "/despre-noi/realizari",
-        description: "Performantele si premiile noastre",
+        description: "Performanțele și premiile noastre",
       },
       {
         label: "Voluntariat",
         href: "/voluntariat",
-        description: "Implica-te in comunitatea clubului",
+        description: "Implică-te în comunitatea clubului",
       },
     ],
   },
@@ -75,34 +75,34 @@ export const navItems: NavItem[] = [
     },
     dropdown: [
       {
-        label: "Scoala de Patinaj - AFI Cotroceni",
+        label: "Școala de Patinaj - AFI Cotroceni",
         href: "/cursuri",
-        description: "Informatii generale despre Scoala de Patinaj",
+        description: "Informații generale despre Școala de Patinaj",
       },
       {
         label: "Program Cursuri",
         href: "/cursuri/program",
-        description: "Orarul si programul saptamanal",
+        description: "Orarul și programul săptămânal",
       },
       {
-        label: "Evenimente si Competitii",
+        label: "Evenimente și competiții",
         href: "/cursuri/evenimente",
         description:
-          "Informatii despre spectacole, competitii sau alte evenimente",
+          "Informații despre spectacole, competiții sau alte evenimente",
       },
       {
         label: "Regulament Cursuri",
         href: "/cursuri/regulament",
-        description: "Regulamentul pentru cursurile scolii de patinaj",
+        description: "Regulamentul pentru cursurile școlii de patinaj",
       },
     ],
   },
-  { key: "noutati", label: "Noutati", href: "/noutati" },
+  { key: "noutati", label: "Noutăți", href: "/noutati" },
   { key: "parteneri", label: "Parteneri", href: "/parteneri" },
   { key: "contact", label: "Contact", href: "/contact" },
 ];
 
-// Desktop nav excludes "Acasa" (no need for a home link in the top bar)
+// Desktop nav excludes "Acasă" (no need for a home link in the top bar)
 export const desktopNavItems = navItems.filter(
-  (item) => item.label !== "Acasa",
+  (item) => item.label !== "Acasă",
 );

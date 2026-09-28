@@ -43,7 +43,7 @@ const footerLeftSections = [
     title: "Informații legale",
     items: [
       {
-        label: "Politica de confidentialitate",
+        label: "Politica de confidențialitate",
         href: "/protectia-datelor",
         type: "link" as const,
       },
@@ -54,7 +54,7 @@ const footerLeftSections = [
         external: true,
       },
       {
-        label: "Solutionarea online a litigiilor",
+        label: "Soluționarea online a litigiilor",
         href: "https://ec.europa.eu/consumers/odr/",
         type: "link" as const,
         external: true,
@@ -218,7 +218,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
       {/* Contactează-ne */}
       <div className="flex flex-col gap-3">
         <Text variant="heading" className="text-primary-on-dark">
-          Contacteaza-ne
+          Contactează-ne
         </Text>
         {retro ? (
           <div className="flex flex-col gap-3">

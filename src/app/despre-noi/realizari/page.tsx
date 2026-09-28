@@ -163,7 +163,8 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
       notableAchievements={cms.notableAchievements ?? []}
       galleryImages={galleryImages}
       seasonIndex={seasonIndex}
-      season={selectedSeason}
+      seasons={withResults}
+      initialSeasonId={selectedSeason?.id ?? null}
     />
   );
 }

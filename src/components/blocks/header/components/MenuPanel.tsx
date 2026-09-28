@@ -46,7 +46,7 @@ const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, navIt
   }, [isOpen, handleEscapeKey]);
 
   const ctaHref = registrationOpen !== false ? "/inscrieri" : "/cursuri";
-  const ctaLabel = registrationOpen !== false ? "Inscrie-te la cursuri" : "Cursuri";
+  const ctaLabel = registrationOpen !== false ? "Înscrie-te la cursuri" : "Cursuri";
 
   return (
     <RetroPanel

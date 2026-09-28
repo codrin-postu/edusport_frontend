@@ -429,6 +429,8 @@ h1.text-branding-font {
   background-size: 100% 2px;
   background-position: right bottom;
   padding-bottom: 4px;
+  /* Long URLs used as link text wrap instead of widening the page. */
+  overflow-wrap: anywhere;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color var(--duration-fast, 150ms) ease;

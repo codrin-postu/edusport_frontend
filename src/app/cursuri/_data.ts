@@ -18,7 +18,7 @@ export const CURSURI_PAGE_DATA: CoursePageContent = {
     locationUrl: "https://maps.app.goo.gl/gmrERwQePvxYY6zx6",
   },
   aboutSection: {
-    eyebrow: "Scoala de Patinaj",
+    eyebrow: "Școala de Patinaj",
     heading: "Patinaj pentru toți, ghidați de campioni",
     content:
       "Organizată anual în perioada octombrie – mai de foști sportivi de performanță, Școala de Patinaj EduSport oferă cursuri structurate pe mai multe niveluri - de la primii pași până la avansați.\n\nCei mai talentați cursanți pot fi selectați pentru spectacole și demonstrații de patinaj artistic sau pentru a continua pregătirea în cadrul Clubului Sportiv EduSport.",
