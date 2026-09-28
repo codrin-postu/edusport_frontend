@@ -139,14 +139,11 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
           {/* SPOTLIGHT — pinned on every page so the featured athlete
               stays visible while the grid below paginates. Hidden when
               the user has typed a search query (it'd just compete with
-              the matching results). Spotlight still uses `rank` for its
-              giant outlined "01" watermark — that's intentional (the
-              spotlight is always #01). Grid cards dropped the rank chip. */}
+              the matching results). Grid cards dropped the rank chip. */}
           {spotlight && (
             <Spotlight
               sportsperson={spotlight}
               stats={statsByAthlete.get(spotlight.documentId)!}
-              rank={1}
             />
           )}
 

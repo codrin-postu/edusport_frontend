@@ -9,10 +9,10 @@ import { SportspersonCard } from "./SportspersonCard";
 /**
  * Editorial spread spotlighting one athlete at the top of the index page.
  *
- * Picks visual cues from the magazine-style B mockup: a giant outlined
- * number watermark, eyebrow with a pulsing dot, two-line stacked filled +
- * stroke name treatment, descriptive paragraph, and three stat rows with
- * thin animated bar fills.
+ * Picks visual cues from the magazine-style B mockup: eyebrow with a
+ * pulsing dot, two-line stacked filled + stroke name treatment,
+ * descriptive paragraph, and three stat rows with thin animated bar
+ * fills.
  *
  * The trading card on the right side reuses the same SportspersonCard
  * component as the grid below (so editors see the exact card they'll get
@@ -23,25 +23,11 @@ import { SportspersonCard } from "./SportspersonCard";
 interface Props {
   sportsperson: StrapiSportsperson;
   stats: SportspersonStats;
-  /** 1-based rank for the giant outlined number watermark. */
-  rank: number;
 }
 
-export function Spotlight({ sportsperson, stats, rank }: Props) {
+export function Spotlight({ sportsperson, stats }: Props) {
   return (
     <section className="relative overflow-hidden bg-surface border-b-retro border-line-subtle gutter section text-primary">
-      {/* Giant outlined rank number — top right watermark */}
-      <div
-        aria-hidden
-        className="text-athlete-watermark pointer-events-none absolute right-6 top-3 select-none"
-        style={{
-          color: "transparent",
-          WebkitTextStroke: "1.5px var(--color-line-subtle)",
-        }}
-      >
-        {String(rank).padStart(2, "0")}
-      </div>
-
       <div className="relative grid grid-cols-1 items-center gap-12 md:grid-cols-[1.5fr_1fr]">
         {/* Left: editorial copy + stats */}
         <div>
