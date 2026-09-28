@@ -489,8 +489,6 @@ html.lv2-nav main {
   padding-bottom: 0 !important;
 }
 
-/* Nav: force the CTA layers face and the burger layers face to the same height
-   with centered contents, so they line up exactly in the items-center row. */
 /* Footer text links. Buttons (data-button) keep their own colours and size. */
 html.lv2-nav footer a:not([data-button]),
 html.lv2-nav footer a:not([data-button]) span {
@@ -524,7 +522,7 @@ html.lv2-nav footer a:not([data-button]) {
   .lcta { display: inline-flex; }
   /* Face always fills the wrapper so it matches the layers no matter how the
      wrapper got its width (auto → shrink-to-content, w-full, or flex-stretch).
-     In @layer components so a fixed width utility (the burger's w-[46px]) wins. */
+     In @layer components so a fixed size utility (the burger's size-12) wins. */
   .lcta-face { width: 100%; }
 }
 .lcta-layer {
