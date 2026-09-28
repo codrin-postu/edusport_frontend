@@ -37,7 +37,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
             style={{
               transform: "rotate(-2deg)",
               transformOrigin: "top center",
-              background: "var(--color-surface)",
+              background: "var(--color-surface-paper)",
               backgroundImage: `
                 repeating-linear-gradient(
                   transparent,

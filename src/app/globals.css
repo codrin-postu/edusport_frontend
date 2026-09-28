@@ -147,6 +147,7 @@ h1.text-branding-font {
   /* Warm fill for the one "next" or "current" item in a list (Program's next
      weekend). Solid equivalent of mustard over surface. */
   --color-surface-highlight: #f9edd1;
+  --color-surface-paper: #f2ebdd;  /* the lined notebook paper in the Cursuri schedule */
   --color-surface-dark: #0e1a3c;
   --color-surface-subtle-on-dark: #26304e;
   --color-overlay: rgb(14 26 60 / 0.55);
