@@ -33,6 +33,7 @@ export const twMergeConfig = {
         "text-heading",
         "text-title",
         "text-subtitle",
+        "text-lead",
         "text-body-lg",
         "text-body",
         "text-body-sm",

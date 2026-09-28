@@ -455,6 +455,8 @@ h1.text-branding-font {
   font-weight: 600; font-size: 1.25rem; line-height: 1.35; letter-spacing: 0;
   @media (width >= 48rem) { font-size: 1.5rem; }
 }
+/* Big intro line (landing competition strip heading): Inter 400, 20px to 30px. */
+@utility text-lead { font-weight: 400; font-size: clamp(1.25rem, 3.5vw, 1.875rem); line-height: 1.25; letter-spacing: 0; }
 @utility text-body-lg { font-weight: 400; font-size: 1.125rem; line-height: 1.6; letter-spacing: 0; }
 @utility text-body-sm { font-weight: 400; font-size: 0.875rem; line-height: 1.55; letter-spacing: 0; }
 @utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
