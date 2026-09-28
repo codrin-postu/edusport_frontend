@@ -25,7 +25,10 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <>
     <Section className={cn("pt-12 md:pt-16 pb-24 md:pb-24 bg-surface", "overflow-hidden")}>
         <div className="max-w-content mx-auto mb-12 md:mb-12">
-          <h2 className="text-heading text-primary">
+          <span className="text-label uppercase text-accent">
+            Orarul Cursurilor
+          </span>
+          <h2 className="text-heading text-primary mt-2">
             Program Școala de Patinaj
           </h2>
         </div>
@@ -69,21 +72,14 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
 
             {/* Page content - left-padded past margin */}
             <div className="pl-24 pr-6 pb-8" style={{ paddingTop: "16px" }}>
-              {/* Section label */}
-              <p
-                className="text-label uppercase text-accent"
-                style={{ lineHeight: "32px", margin: 0 }}
-              >
-                Orarul Cursurilor
-              </p>
-
-              {/* Subtitle */}
+              {/* Subtitle, then one empty ruled line */}
               <p
                 className="text-body font-semibold text-primary"
                 style={{ lineHeight: "32px", margin: 0 }}
               >
                 {scheduleSubtitle || "Sâmbătă & Duminică · 50 min / ședință"}
               </p>
+              <div aria-hidden style={{ height: "32px" }} />
 
               {/* Two-column layout on wide screens */}
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-line-subtle">
