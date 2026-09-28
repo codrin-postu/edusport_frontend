@@ -50,13 +50,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           )}
           <span className="text-secondary">{date}</span>
         </div>
-        <CardTitle className="text-title text-primary">{title}</CardTitle>
+        <CardTitle className="text-body-lg font-semibold text-primary">{title}</CardTitle>
         {excerpt && (
           <p className="text-body-sm text-secondary line-clamp-2">
             {excerpt}
           </p>
         )}
-        <span className="text-label relative inline-block w-fit mt-1 pb-0.5 uppercase text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover/card:after:scale-x-100">
+        <span className="text-label link w-fit mt-1">
           Citește mai mult
         </span>
       </div>

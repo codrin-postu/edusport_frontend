@@ -95,10 +95,18 @@ type CardTitleProps = {
   children?: React.ReactNode;
 };
 
-/** The card's title. Inside a link card it turns accent on hover. */
+/**
+ * The card's title. Inside a link card it turns accent on hover.
+ *
+ * The hover colour is applied by a plain CSS rule (globals.css, keyed off
+ * `data-card-title`), not a `group-hover/card:` utility class: a Tailwind
+ * utility here would tie for specificity with any text colour class the
+ * caller adds (e.g. `text-primary`) and the winner would depend on utility
+ * generation order. The plain selector always wins.
+ */
 export function CardTitle({ as: Tag = "h3", className, children }: CardTitleProps) {
   return (
-    <Tag className={cn("transition-colors group-hover/card:text-(color:--card-hover)", className)}>{children}</Tag>
+    <Tag data-card-title className={cn("transition-colors", className)}>{children}</Tag>
   );
 }
 

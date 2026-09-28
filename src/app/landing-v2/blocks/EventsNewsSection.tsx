@@ -102,7 +102,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
           {CATEGORY_LABELS[featured.category]}
         </Chip>
       )}
-      <CardTitle className="text-title mt-2 mb-2">
+      <CardTitle className="text-body-lg font-semibold mt-2 mb-2">
         {featured.title}
       </CardTitle>
       <p className="text-caption text-secondary mb-2">{featured.date}</p>
@@ -129,7 +129,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
         {list.map((a, i) => (
           <li key={a.slug + i} className="border-t border-line-subtle first:border-t-0">
             <Link href={`/noutati/${a.slug}`} tone="plain" className="group block py-4">
-              <p className="text-title text-primary">{a.title}</p>
+              <p className="text-body-lg font-semibold text-primary transition-colors group-hover:text-accent">{a.title}</p>
               {/* One muted line, as drawn: "Competitii, 4 septembrie". */}
               <p className="text-caption text-secondary mt-1">
                 {a.category ? `${CATEGORY_LABELS[a.category]}, ${a.date}` : a.date}

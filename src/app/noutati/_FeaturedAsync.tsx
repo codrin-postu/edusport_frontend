@@ -54,7 +54,7 @@ export default async function FeaturedAsync() {
             </span>
           </div>
 
-          <CardTitle as="h2" className="text-heading">
+          <CardTitle as="h2" className="text-body-lg font-semibold">
             {featured.title}
           </CardTitle>
 

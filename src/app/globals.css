@@ -435,6 +435,14 @@ h1.text-branding-font {
   &::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--color-mustard); transition: width 200ms; }
   &:hover::after { width: 100%; }
 }
+/* Card link hover: only the title turns accent (accent-on-dark on navy
+   surfaces, via --card-hover set on the anchor in card.tsx). Plain CSS, not
+   a group-hover/card: utility class, so it always wins over any text colour
+   class the caller passes to CardTitle (e.g. text-primary). */
+.group\/card:hover [data-card-title] {
+  color: var(--card-hover);
+}
+
 @keyframes link-slide {
   0% { background-size: 100% 2px; background-position: right bottom; }
   49% { background-size: 0% 2px; background-position: right bottom; }
