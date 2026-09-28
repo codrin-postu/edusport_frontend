@@ -13,8 +13,8 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
-import IconButton from "@/components/ui/icon-button";
 import AccordionItem, { AccordionGroup } from "@/components/ui/accordion";
+import { Pagination } from "@/components/Pagination";
 import type { SkateResult, SkateSegment } from "@/lib/skate-results";
 
 const PER_PAGE = 12;
@@ -214,43 +214,16 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
           );
         })}
       </AccordionGroup>
-      {totalPages > 1 && (
-        <nav
-          aria-label="Paginare competiții"
-          className="flex items-center justify-center gap-2 pt-12"
-        >
-          <IconButton
-            icon="chevron-left"
-            label="Pagina anterioară"
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={safePage === 0}
-          />
-
-          {Array.from({ length: totalPages }, (_, i) => i).map((p) => (
-            <button
-              key={p}
-              type="button"
-              aria-current={p === safePage ? "page" : undefined}
-              onClick={() => setPage(p)}
-              className={cn(
-                "flex size-10 items-center justify-center border-retro text-sm font-bold transition-colors",
-                p === safePage
-                  ? "border-line bg-surface-dark text-primary-on-dark"
-                  : "border-transparent text-secondary hover-layer hover:text-primary",
-              )}
-            >
-              {p + 1}
-            </button>
-          ))}
-
-          <IconButton
-            icon="chevron-right"
-            label="Pagina următoare"
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={safePage >= totalPages - 1}
-          />
-        </nav>
-      )}
+      {/* Page state is client-side only (no URL involved), so this uses
+          Pagination's onPageChange mode rather than its default href/Link
+          navigation. Pagination is 1-indexed; `page`/`safePage` here are
+          0-indexed, so the conversion happens at this boundary only. */}
+      <Pagination
+        currentPage={safePage + 1}
+        totalPages={totalPages}
+        ariaLabel="Paginare competiții"
+        onPageChange={(p) => setPage(p - 1)}
+      />
     </div>
   );
 }

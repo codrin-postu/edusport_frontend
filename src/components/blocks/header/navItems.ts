@@ -102,7 +102,13 @@ export const navItems: NavItem[] = [
   { key: "contact", label: "Contact", href: "/contact" },
 ];
 
+// Desktop nav excludes "Acasa" (no need for a home link in the top bar).
+// A function rather than a plain filtered constant, so callers that render a
+// CMS-merged menu (see mergeNavOverrides) can derive the same desktop subset
+// from whatever list they were given, not just the static definition.
+export function getDesktopNavItems(items: NavItem[]): NavItem[] {
+  return items.filter((item) => item.key !== "acasa");
+}
+
 // Desktop nav excludes "Acasă" (no need for a home link in the top bar)
-export const desktopNavItems = navItems.filter(
-  (item) => item.label !== "Acasă",
-);
+export const desktopNavItems = getDesktopNavItems(navItems);

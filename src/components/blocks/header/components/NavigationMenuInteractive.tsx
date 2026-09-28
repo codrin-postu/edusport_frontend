@@ -36,11 +36,20 @@ const contentVariants = {
   exit: { opacity: 0 },
 };
 
+// Keyboard focus ring shown on the trigger and every link this menu renders.
+const FOCUS_RING =
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary";
+
+// Only one dropdown panel is ever mounted at a time (see isOpen below), so a
+// single fixed id is enough for every trigger's aria-controls.
+const DROPDOWN_PANEL_ID = "nav-dropdown-panel";
+
 const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
   items,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const open = (index: number) => setActiveIndex(index);
 
@@ -52,16 +61,27 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
         close();
       }
     };
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
     document.addEventListener("mousedown", handleClick);
-    document.addEventListener("keydown", handleKey);
     return () => {
       document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("keydown", handleKey);
     };
   }, []);
+
+  useEffect(() => {
+    // Re-armed whenever the open dropdown changes, so this always closes the
+    // one that's actually open and returns focus to its own trigger, rather
+    // than a stale index captured once on mount.
+    if (activeIndex === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      close();
+      triggerRefs.current[activeIndex]?.focus();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [activeIndex]);
 
   const activeItem = activeIndex !== null ? items[activeIndex] : null;
   const isOpen = activeItem?.dropdown != null;
@@ -81,7 +101,13 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
           return (
             <button
               key={item.label}
-              className="text-body-sm flex items-center gap-1 text-primary hover:text-secondary transition-colors outline-none"
+              ref={(el) => {
+                triggerRefs.current[index] = el;
+              }}
+              className={`text-body-sm flex items-center gap-1 text-primary hover:text-secondary transition-colors ${FOCUS_RING}`}
+              aria-expanded={itemIsOpen}
+              aria-haspopup="true"
+              aria-controls={DROPDOWN_PANEL_ID}
               onMouseEnter={() => open(index)}
               onClick={() => (itemIsOpen ? close() : open(index))}
             >
@@ -99,7 +125,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             key={item.label}
             href={item.href || "#"}
             tone="plain"
-            className="text-body-sm text-primary hover:text-secondary transition-colors"
+            className={`text-body-sm text-primary hover:text-secondary transition-colors ${FOCUS_RING}`}
             // An item without a dropdown still has to close an open one.
             // onMouseLeave on the row only fires when the pointer leaves the
             // whole nav, so moving from a dropdown item onto a plain link left
@@ -124,7 +150,10 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
             transition={{ duration: DURATION.fast, ease: EASE.out }}
             className="absolute top-full left-0 pt-6 z-sticky"
           >
-            <div className="nav-dropdown-panel bg-surface-raised border border-line-subtle shadow-xl overflow-hidden">
+            <div
+              id={DROPDOWN_PANEL_ID}
+              className="nav-dropdown-panel bg-surface-raised border border-line-subtle shadow-xl overflow-hidden"
+            >
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={activeItem!.label}
@@ -164,7 +193,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           key={dropdownItem.href}
                           href={dropdownItem.href}
                           tone="plain"
-                          className="group flex items-center gap-3 px-3 py-3 hover:bg-surface-subtle transition-colors"
+                          className={`group flex items-center gap-3 px-3 py-3 hover:bg-surface-subtle transition-colors ${FOCUS_RING}`}
                           onClick={close}
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}

@@ -5,7 +5,8 @@ import { WarmStripe } from "@/components/ui/warm-stripe";
 import { AnimatePresence, motion } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
 import Link from "next/link";
-import React, { useEffect, useCallback } from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import React from "react";
 import { navItems as staticNavItems, type NavItem } from "../navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { ENROL_CTA, ENROL_CTA_CLOSED, ENROL_HREF } from "@/lib/cta";
@@ -26,26 +27,9 @@ interface MenuPanelProps {
 }
 
 const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, navItems = staticNavItems, registrationOpen, contactInfo }) => {
-  const handleEscapeKey = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    },
-    [onClose],
-  );
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, handleEscapeKey]);
-
+  // Esc-to-close, the focus trap and the body scroll lock all come from
+  // Dialog.Root/Content below (Radix's modal behaviour), instead of the
+  // manual document listener + overflow toggle this used to carry.
   const ctaHref = registrationOpen !== false ? ENROL_HREF : "/cursuri";
   const ctaLabel = registrationOpen !== false ? ENROL_CTA : ENROL_CTA_CLOSED;
 
@@ -161,38 +145,64 @@ const RetroPanel: React.FC<{
   }
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            className="fixed inset-0 z-menu md:bg-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          <motion.div
-            className="fixed z-menu overflow-hidden bg-surface flex flex-col
-              inset-x-0 bottom-0
-              md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
-              md:border-retro md:border-line md:shadow-retro"
-            style={{ top }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: DURATION.fast, ease: EASE.out }}
-          >
-            {/* warm top stripe */}
-            <WarmStripe className="relative z-raised h-1" />
+    <DialogPrimitive.Root
+      open={isOpen}
+      onOpenChange={(next) => {
+        if (!next) onClose();
+      }}
+    >
+      <AnimatePresence>
+        {isOpen && (
+          // forceMount on Portal/Overlay/Content: Radix always renders them
+          // while AnimatePresence owns the actual mount/unmount, so the exit
+          // animation plays exactly as it did before Radix was introduced.
+          <DialogPrimitive.Portal forceMount>
+            <DialogPrimitive.Overlay asChild forceMount>
+              <motion.div
+                className="fixed inset-0 z-menu md:bg-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={onClose}
+              />
+            </DialogPrimitive.Overlay>
+            <DialogPrimitive.Content
+              asChild
+              forceMount
+              aria-describedby={undefined}
+              onCloseAutoFocus={(event) => {
+                // Explicit, rather than relying on Radix's own "last focused
+                // element" heuristic: the burger button is what opened this,
+                // so it is always where focus goes back to.
+                event.preventDefault();
+                buttonRef.current?.focus();
+              }}
+            >
+              <motion.div
+                className="fixed z-menu overflow-hidden bg-surface flex flex-col
+                  inset-x-0 bottom-0
+                  md:right-4 md:left-auto md:bottom-auto md:mt-2 md:w-[380px] md:max-h-[calc(100vh-120px)]
+                  md:border-retro md:border-line md:shadow-retro"
+                style={{ top }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: DURATION.fast, ease: EASE.out }}
+              >
+                <DialogPrimitive.Title className="sr-only">Meniu</DialogPrimitive.Title>
+                {/* warm top stripe */}
+                <WarmStripe className="relative z-raised h-1" />
 
-            <div className="relative z-raised flex-1 min-h-0 overflow-y-auto px-4 py-3">
-              {rows.map((r, i) => (
-                <div key={i}>{r}</div>
-              ))}
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+                <div className="relative z-raised flex-1 min-h-0 overflow-y-auto px-4 py-3">
+                  {rows.map((r, i) => (
+                    <div key={i}>{r}</div>
+                  ))}
+                </div>
+              </motion.div>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   );
 };

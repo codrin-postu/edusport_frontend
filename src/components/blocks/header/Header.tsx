@@ -7,7 +7,11 @@ import Button from "@/components/ui/button";
 import MenuPanel from "./components/MenuPanel";
 import HeaderTop from "./components/HeaderTop";
 import NavigationMenuInteractive from "./components/NavigationMenuInteractive";
-import { navItems as staticNavItems, type NavItem } from "./navItems";
+import {
+  navItems as staticNavItems,
+  getDesktopNavItems,
+  type NavItem,
+} from "./navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 import { ENROL_CTA, ENROL_CTA_CLOSED, ENROL_HREF } from "@/lib/cta";
 
@@ -76,9 +80,11 @@ const Header: React.FC<HeaderProps> = ({
   const pathname = usePathname();
   const ctaHref = registrationOpen !== false ? ENROL_HREF : "/cursuri";
   const ctaLabel = registrationOpen !== false ? ENROL_CTA : ENROL_CTA_CLOSED;
-  // Desktop nav excludes "Acasa" (no need for a home link in the top bar)
+  // Desktop nav excludes "Acasa" (no need for a home link in the top bar).
+  // The filter itself lives in navItems.ts so both this and the mobile panel
+  // stay in sync with a single definition.
   const desktopNavItems = React.useMemo(
-    () => navItems.filter((item) => item.key !== "acasa"),
+    () => getDesktopNavItems(navItems),
     [navItems],
   );
   const toggleMenu = useCallback(() => setIsMenuOpen((open) => !open), []);
