@@ -6,12 +6,13 @@ const VALUE_SIZE = {
   md: "text-heading",
   lg: "text-display",
   xl: "text-athlete-stat",
+  "2xl": "text-display-lg",
 } as const;
 
 type StatProps = {
   value: React.ReactNode;
   label: React.ReactNode;
-  /** sm text-title, md (default) text-heading, lg text-display, xl text-athlete-stat. */
+  /** sm text-title, md (default) text-heading, lg text-display, xl text-athlete-stat, 2xl text-display-lg. */
   size?: keyof typeof VALUE_SIZE;
   /** stack (default): label under the number. inline: label beside it. */
   layout?: "stack" | "inline";
@@ -21,6 +22,8 @@ type StatProps = {
   className?: string;
   /** Extra classes on the number only (e.g. a fixed min width to align rows). */
   valueClassName?: string;
+  /** Extra classes on the label only (e.g. a colour on a coloured tile). */
+  labelClassName?: string;
 };
 
 /**
@@ -36,6 +39,7 @@ export default function Stat({
   onDark = false,
   className,
   valueClassName,
+  labelClassName,
 }: StatProps) {
   const valueColor = accent
     ? onDark ? "text-accent-on-dark" : "text-accent"
@@ -49,7 +53,7 @@ export default function Stat({
       )}
     >
       <span className={cn(VALUE_SIZE[size], "tabular-nums", valueColor, valueClassName)}>{value}</span>
-      <span className={cn("text-label", onDark ? "text-secondary-on-dark" : "text-secondary")}>{label}</span>
+      <span className={cn("text-label", onDark ? "text-secondary-on-dark" : "text-secondary", labelClassName)}>{label}</span>
     </div>
   );
 }

@@ -28,7 +28,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       shadow="none"
       padding="none"
       className={cn(
-        "grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start",
+        "grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start border-none bg-transparent",
         className,
       )}
     >
@@ -50,7 +50,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           )}
           <span className="text-secondary">{date}</span>
         </div>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-title text-primary">{title}</CardTitle>
         {excerpt && (
           <p className="text-body-sm text-secondary line-clamp-2">
             {excerpt}

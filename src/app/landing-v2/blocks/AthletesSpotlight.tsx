@@ -92,8 +92,9 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
               <Stat
                 value={bigNumber}
                 label={countLabel}
-                size="xl"
+                size="2xl"
                 layout="stack"
+                labelClassName="text-accent mt-1"
                 className="mt-8 mb-8"
               />
             )}

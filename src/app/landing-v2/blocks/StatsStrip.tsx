@@ -92,9 +92,10 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
             <Stat
               value={<CountUp target={s.value} suffix={s.suffix} run={inView} />}
               label={s.label}
-              size="xl"
+              size="2xl"
               layout="stack"
-              onDark={s.text === "text-primary-on-dark"}
+              valueClassName={s.text}
+              labelClassName={`${s.text} mt-3`}
               className="items-center"
             />
           </div>
