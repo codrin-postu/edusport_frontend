@@ -11,7 +11,7 @@ export const PATTERNS = [
   { id: "opacity", why: "no opacity except opacity-0/100 show and hide", regex: new RegExp(`${V}opacity-(?!(?:0|100)(?![\\d.]))(?:\\d+|\\[)`, "g") },
   // The same through CSS, inline styles and SVG attributes, which class
   // scans never saw: `opacity: .7` in globals.css, `rgba(...)` text colours.
-  { id: "css-opacity", why: "no opacity or rgba text colour in CSS, styles or SVG", regex: /(?:\bopacity\s*[:=]\s*["'{]?\s*0?\.\d|\bcolor\s*:\s*["']?rgba\()/g },
+  { id: "css-opacity", why: "no opacity or rgba text colour in CSS, styles or SVG", regex: /(?:\bopacity\s*[:=]\s*["'{]?\s*0?\.\d|\bcolor\s*:\s*["']?rgba\(|TextStroke\s*:\s*["']?[^"'\n]*rgba\()/gi },
   // Any colour. Hovers use the hover-layer utilities; image overlays use bg-overlay.
   { id: "bg-opacity", why: "use surface tokens, hover layers or bg-overlay", regex: new RegExp(`${V}bg-[a-z][a-z-]*\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
   { id: "default-palette", why: "only theme tokens", regex: new RegExp(`${V}(?:text|bg|border|ring|divide|from|to|via|fill|stroke)-(?:gray|slate|zinc|neutral|stone|red|green|blue|amber|yellow|orange|emerald|rose|sky|indigo|teal|lime|purple|pink)-\\d{2,3}\\b`, "g") },

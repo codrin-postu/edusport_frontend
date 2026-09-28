@@ -92,3 +92,8 @@ test("counts the retired brand blue", () => {
   const c = countMatches("<div className=\"bg-edusport-blue\" style={{ color: \"#2138B8\" }} />");
   assert.equal(c["retired-blue"], 2);
 });
+
+test("counts rgba text strokes", () => {
+  const c = countMatches("<div style={{ WebkitTextStroke: \"1.5px rgba(14,26,60,0.10)\" }} />");
+  assert.equal(c["css-opacity"], 1);
+});

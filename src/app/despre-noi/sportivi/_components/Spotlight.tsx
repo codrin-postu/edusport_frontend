@@ -33,10 +33,10 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
       {/* Giant outlined rank number — top right watermark */}
       <div
         aria-hidden
-        className="text-display pointer-events-none absolute right-6 top-3 select-none"
+        className="text-athlete-watermark pointer-events-none absolute right-6 top-3 select-none"
         style={{
           color: "transparent",
-          WebkitTextStroke: "1.5px rgba(14,26,60,0.10)",
+          WebkitTextStroke: "1.5px var(--color-line-subtle)",
         }}
       >
         {String(rank).padStart(2, "0")}
@@ -46,7 +46,7 @@ export function Spotlight({ sportsperson, stats, rank }: Props) {
         {/* Left: editorial copy + stats */}
         <div>
           {/* Stacked filled + stroke name — the editorial signature treatment */}
-          <h2 className="text-display mb-6">
+          <h2 className="text-athlete-name mb-6">
             <NameStack name={sportsperson.name} />
           </h2>
 
@@ -122,7 +122,7 @@ function StatRow({
     <div className="flex items-baseline gap-4 border-t border-line-subtle pt-4 first:border-t-0 first:pt-0">
       <span
         className={cn(
-          "text-heading min-w-[100px]",
+          "text-athlete-stat min-w-[100px]",
           accent ? "text-accent" : "text-primary",
         )}
       >

@@ -475,6 +475,14 @@ h1.text-branding-font {
 @utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
 @utility text-label { font-weight: 600; font-size: 0.75rem; line-height: 1.1; letter-spacing: 0.14em; text-transform: uppercase; }
 @utility text-button { font-weight: 600; font-size: 0.8125rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Named exceptions for the athlete pages (Sportivi spotlight + athlete page):
+   the name, the outlined rank watermark and the big stat numbers keep their
+   pre-SP1 sizes. */
+@utility text-athlete-watermark {
+  font-family: var(--font-display); font-weight: 900; font-size: 8.75rem; line-height: 0.82; letter-spacing: -0.05em;
+  @media (width >= 48rem) { font-size: 13.75rem; }
+}
+@utility text-athlete-stat { font-family: var(--font-display); font-weight: 900; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; }
 /* Named exception: athlete page name. */
 @utility text-athlete-name {
   font-family: var(--font-display); font-weight: 900; font-size: 3.5rem; line-height: 0.85; letter-spacing: -0.055em;
