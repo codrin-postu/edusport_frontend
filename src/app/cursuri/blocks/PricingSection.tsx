@@ -8,23 +8,22 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/utils/cn";
-import { Info } from "lucide-react";
+import IconButton from "@/components/ui/icon-button";
 import React, { useState } from "react";
 import type { PricingTier } from "../_types_pricing";
+import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 
 const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
   const [open, setOpen] = useState(false);
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
       <TooltipTrigger asChild>
-        <button
-          type="button"
-          aria-label="Detalii"
+        <IconButton
+          icon="info"
+          label="Detalii"
           onClick={() => setOpen((v) => !v)}
-          className="size-10 -my-3 -mx-3 inline-flex items-center justify-center shrink-0 text-secondary hover:text-primary transition-colors"
-        >
-          <Info className="size-4" />
-        </button>
+          className="-my-3 -mx-3 text-secondary hover:text-primary"
+        />
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-60">
         {text}
@@ -150,10 +149,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 
             <Button
               face="cream"
-              href="/inscrieri"
+              href={ENROL_HREF}
               className="self-start"
             >
-              Înscrie-te la cursuri
+              {ENROL_CTA}
             </Button>
           </div>
 

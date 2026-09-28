@@ -1,7 +1,7 @@
 import Section from "@/components/ui/section";
 import { WeekendNote } from "@/components/ui/weekend-note";
 import { cn } from "@/utils/cn";
-import { Info } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import Image from "next/image";
 import React from "react";
 
@@ -187,7 +187,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
         <div className="w-full max-w-content mx-auto gutter section-compact">
           <div className="max-w-prose mx-auto">
             <div className="flex items-start gap-3 mb-4">
-              <Info className="size-4 text-mustard shrink-0 mt-0.5" />
+              <Icon name="info" className="text-mustard mt-0.5" />
               <p className="text-label uppercase text-primary-on-dark">
                 Informații importante
               </p>

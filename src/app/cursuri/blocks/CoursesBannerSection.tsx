@@ -1,8 +1,9 @@
 import Button from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 
 interface CoursesBannerSectionProps {
   currentSeason: string;
@@ -47,11 +48,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
 
       <div className="text-body-sm flex flex-wrap gap-x-6 gap-y-2 text-secondary-on-dark">
         <span className="flex items-center gap-2">
-          <Calendar className="size-4 shrink-0 text-primary-on-dark" />
+          <Icon name="calendar" className="text-primary-on-dark" />
           {scheduleDays}
         </span>
         <span className="flex items-center gap-2">
-          <Clock className="size-4 shrink-0 text-primary-on-dark" />
+          <Icon name="clock" className="text-primary-on-dark" />
           {scheduleTimes}
         </span>
         <a
@@ -60,7 +61,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           rel="noopener noreferrer"
           className="flex items-center gap-2 link link-on-dark"
         >
-          <MapPin className="size-4 shrink-0 text-primary-on-dark" />
+          <Icon name="map-pin" className="text-primary-on-dark" />
           {locationName}
         </a>
       </div>
@@ -69,10 +70,10 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
         <div className="flex flex-col sm:flex-row gap-3 sm:items-start pt-1">
           <Button
             face="cream"
-            href="/inscrieri"
+            href={ENROL_HREF}
             className="w-full sm:w-auto"
           >
-            Înscrie-te acum
+            {ENROL_CTA}
           </Button>
           <Button variant="secondary" onDark href="/cursuri/program" className="w-full sm:w-auto">
             Vezi programul

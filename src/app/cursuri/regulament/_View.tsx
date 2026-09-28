@@ -4,14 +4,8 @@ import React, { useState } from "react";
 import { cn } from "@/utils/cn";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Button from "@/components/ui/button";
-import {
-  Users,
-  CalendarCheck,
-  Layers,
-  ShieldAlert,
-  MessageCircle,
-  ChevronDown,
-} from "lucide-react";
+import Icon, { type IconName } from "@/components/ui/icon";
+import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 
 import type { RegulationCategory } from "./_types";
 
@@ -21,12 +15,12 @@ interface Props {
   categories: RuleCategory[];
 }
 
-const ICON_MAP: Record<string, React.ReactNode> = {
-  Users: <Users className="w-5 h-5" />,
-  CalendarCheck: <CalendarCheck className="w-5 h-5" />,
-  Layers: <Layers className="w-5 h-5" />,
-  ShieldAlert: <ShieldAlert className="w-5 h-5" />,
-  MessageCircle: <MessageCircle className="w-5 h-5" />,
+const ICON_MAP: Record<string, IconName> = {
+  Users: "users",
+  CalendarCheck: "calendar-check",
+  Layers: "layers",
+  ShieldAlert: "shield-alert",
+  MessageCircle: "message-circle",
 };
 
 const RegulamentPage: React.FC<Props> = ({ categories }) => {
@@ -89,7 +83,7 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                       className="w-full flex items-center gap-3 py-4 text-left transition-colors hover:text-accent"
                     >
                       <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
-                        {ICON_MAP[category.icon] ?? <Layers className="w-5 h-5" />}
+                        <Icon name={ICON_MAP[category.icon] ?? "layers"} size="md" />
                       </span>
                       <h3 className="text-label uppercase text-primary">
                         {category.title}
@@ -98,9 +92,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
                         {category.rules.length}{" "}
                         {category.rules.length === 1 ? "regulă" : "reguli"}
                       </span>
-                      <ChevronDown
+                      <Icon
+                        name="chevron-down"
                         className={cn(
-                          "size-4 text-primary shrink-0 transition-transform duration-fast",
+                          "text-primary transition-transform duration-fast",
                           isOpen && "rotate-180",
                         )}
                       />
@@ -168,10 +163,10 @@ const RegulamentPage: React.FC<Props> = ({ categories }) => {
             </div>
             <Button
               face="black"
-              href="/inscrieri"
+              href={ENROL_HREF}
               className="shrink-0"
             >
-              Înscrie-te acum
+              {ENROL_CTA}
             </Button>
           </div>
         </div>

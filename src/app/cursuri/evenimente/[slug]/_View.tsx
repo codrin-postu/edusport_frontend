@@ -2,7 +2,7 @@ import { cn } from "@/utils/cn";
 import type { BlockNode, CategoryKey } from "@/lib/strapi-article";
 import React from "react";
 import Link from "next/link";
-import { CalendarDays, ChevronRight, Clock, MapPin, Tag, Ticket } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import { notFound } from "next/navigation";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
@@ -84,9 +84,9 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
         <div className="w-full max-w-content mx-auto gutter py-4">
           <nav className="text-label flex items-center gap-2 uppercase text-secondary">
             <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
-            <ChevronRight className="size-4 shrink-0" />
+            <Icon name="chevron-right" />
             <Link href="/cursuri/evenimente" className="text-primary hover:text-accent transition-colors">Evenimente</Link>
-            <ChevronRight className="size-4 shrink-0" />
+            <Icon name="chevron-right" />
             <span className="text-primary truncate max-w-[200px] sm:max-w-none">{event.title}</span>
           </nav>
         </div>
@@ -135,11 +135,11 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
                 </p>
                 <div className="text-body-sm flex flex-col gap-3 text-secondary">
                   <span className="flex items-start gap-3">
-                    <CalendarDays className="size-4 text-accent shrink-0 mt-0.5" />
+                    <Icon name="calendar-days" className="text-accent mt-0.5" />
                     {formatDate(event.eventDate ?? event.date)}
                   </span>
                   <span className="flex items-start gap-3">
-                    <Clock className="size-4 text-accent shrink-0 mt-0.5" />
+                    <Icon name="clock" className="text-accent mt-0.5" />
                     {new Date(event.eventDate ?? event.date).toLocaleTimeString("ro-RO", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -147,19 +147,19 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
                   </span>
                   {event.location && (
                     <span className="flex items-start gap-3">
-                      <MapPin className="size-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="map-pin" className="text-accent mt-0.5" />
                       {event.location}
                     </span>
                   )}
                   {event.admissionInfo && (
                     <span className="flex items-start gap-3">
-                      <Ticket className="size-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="ticket" className="text-accent mt-0.5" />
                       {event.admissionInfo}
                     </span>
                   )}
                   {event.tags && event.tags.length > 0 && (
                     <span className="flex items-start gap-3">
-                      <Tag className="size-4 text-accent shrink-0 mt-0.5" />
+                      <Icon name="tag" className="text-accent mt-0.5" />
                       {event.tags.join(", ")}
                     </span>
                   )}

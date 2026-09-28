@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Button from "@/components/ui/button";
 import { WarmStripe } from "@/components/ui/warm-stripe";
-import { Calendar, MapPin } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import type { Event } from "../../cursuri/evenimente/_data";
 
 // Helpers module (the standalone EventResults section was merged into
@@ -68,12 +68,12 @@ export function EventCard({ event }: { event: Event }) {
         </h3>
         <div className="text-body-sm flex flex-wrap items-center gap-x-6 gap-y-2 text-secondary mb-4">
           <span className="inline-flex items-center gap-2">
-            <Calendar className="w-4 h-4 shrink-0 text-accent" />
+            <Icon name="calendar" className="text-accent" />
             {formatRoDate(event.date)}
           </span>
           {event.location && (
             <span className="inline-flex items-center gap-2">
-              <MapPin className="w-4 h-4 shrink-0 text-accent" />
+              <Icon name="map-pin" className="text-accent" />
               {event.location}
             </span>
           )}

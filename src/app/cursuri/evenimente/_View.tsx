@@ -3,7 +3,7 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 import Button from "@/components/ui/button";
 import React from "react";
 import Link from "next/link";
-import { CalendarDays, Clock, MapPin } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import type { Event } from "./_data";
 
@@ -51,11 +51,11 @@ function CurrentEventSection({ event }: { event: Event }) {
 
             <div className="text-body-sm flex flex-col gap-2 text-secondary">
               <span className="flex items-center gap-3">
-                <CalendarDays className="w-4 h-4 text-accent shrink-0" />
+                <Icon name="calendar-days" className="text-accent" />
                 {formatDate(event.date)}
               </span>
               <span className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-accent shrink-0" />
+                <Icon name="clock" className="text-accent" />
                 {new Date(event.date).toLocaleTimeString("ro-RO", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -63,7 +63,7 @@ function CurrentEventSection({ event }: { event: Event }) {
               </span>
               {event.location && (
                 <span className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-accent shrink-0" />
+                  <Icon name="map-pin" className="text-accent" />
                   {event.location}
                 </span>
               )}

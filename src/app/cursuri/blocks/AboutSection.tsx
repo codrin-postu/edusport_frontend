@@ -1,6 +1,6 @@
 import Link from "@/components/ui/link";
 import Section from "@/components/ui/section";
-import { MapPin, Users, Award } from "lucide-react";
+import Icon, { type IconName } from "@/components/ui/icon";
 import YoutubeEmbed from "@/components/blocks/youtube-embed/YoutubeEmbed";
 import React from "react";
 
@@ -26,10 +26,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   videoLabel,
 }) => {
   const paragraphs = (content ?? "").split("\n\n").filter(Boolean);
-  const bullets = [
-    { Icon: MapPin, text: locationBullet },
-    { Icon: Users, text: levelsBullet },
-    { Icon: Award, text: coachesBullet },
+  const bullets: { icon: IconName; text: string }[] = [
+    { icon: "map-pin", text: locationBullet },
+    { icon: "users", text: levelsBullet },
+    { icon: "award", text: coachesBullet },
   ];
 
   return (
@@ -52,9 +52,9 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           </div>
 
           <div className="flex flex-col gap-3">
-            {bullets.map(({ Icon, text }, i) => (
+            {bullets.map(({ icon, text }, i) => (
               <div key={i} className="text-body-sm flex items-center gap-3 text-primary">
-                <Icon className="w-5 h-5 shrink-0 text-accent" strokeWidth={1.8} />
+                <Icon name={icon} className="text-accent" />
                 {text}
               </div>
             ))}

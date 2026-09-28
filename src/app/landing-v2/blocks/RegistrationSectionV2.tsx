@@ -1,9 +1,10 @@
 import Link from "@/components/ui/link";
 import Button from "@/components/ui/button";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import React from "react";
 import { RegistrationScrollFrameV2 } from "./RegistrationScrollFrameV2";
 import type { HomepageRegistration } from "../_types";
+import { ENROL_CTA } from "@/lib/cta";
 
 /**
  * Registration panel (season-open): season label, heading, body, schedule, the
@@ -26,7 +27,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
   const scheduleDays = cms?.scheduleDays ?? "Sâmbătă & Duminică";
   const scheduleTimes = cms?.scheduleTimes ?? "10:00–10:50 & 11:00–11:50";
   const locationName = cms?.locationName ?? "AFI Cotroceni";
-  const ctaPrimaryLabel = cms?.ctaPrimaryLabel ?? "Înscrie-te";
+  const ctaPrimaryLabel = cms?.ctaPrimaryLabel ?? ENROL_CTA;
   const ctaPrimaryUrl = cms?.ctaPrimaryUrl ?? "/inscrieri";
   const ctaSecondaryLabel = cms?.ctaSecondaryLabel ?? "Află mai mult";
   const ctaSecondaryUrl = cms?.ctaSecondaryUrl ?? "/cursuri";
@@ -57,15 +58,15 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
 
           <div className="text-body-sm flex flex-wrap items-center text-primary">
             <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
-              <Calendar className="w-4 h-4 shrink-0" />
+              <Icon name="calendar" />
               {scheduleDays}
             </span>
             <span className="flex items-center gap-2 pr-4 mr-4 border-r-retro border-line-subtle">
-              <Clock className="w-4 h-4 shrink-0" />
+              <Icon name="clock" />
               {scheduleTimes}
             </span>
             <span className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 shrink-0" />
+              <Icon name="map-pin" />
               {locationName}
             </span>
           </div>
