@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import Icon from "@/components/ui/icon";
 import type { Event } from "../../cursuri/evenimente/_data";
@@ -46,7 +47,7 @@ export function formatRoMonthYear(iso: string): string {
 
 export function EventCard({ event }: { event: Event }) {
   return (
-    <article className="flex flex-col border-retro border-line bg-surface-raised">
+    <Card as="article" surface="raised" shadow="none" padding="none" className="flex flex-col">
       <WarmStripe />
       {event.coverImage && (
         <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-b-retro border-line">
@@ -91,6 +92,6 @@ export function EventCard({ event }: { event: Event }) {
           Vezi detalii
         </Button>
       </div>
-    </article>
+    </Card>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
+import Card from "@/components/ui/card";
 
 /**
  * Tells the visitor the page is about to change before it does.
@@ -154,7 +155,7 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
       aria-labelledby="leave-notice-title"
     >
       <div className="absolute inset-0 bg-overlay" onClick={close} aria-hidden />
-      <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
+      <Card as="div" className="relative w-full max-w-sm">
         <h2
           id="leave-notice-title"
           className="text-title text-primary"
@@ -181,7 +182,7 @@ const LeaveNotice: React.FC<{ scope: React.RefObject<HTMLElement | null> }> = ({
             Continuă
           </button>
         </div>
-      </div>
+      </Card>
     </div>,
     document.body,
   );

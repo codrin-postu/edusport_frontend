@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { Icon, type IconName } from "@/components/ui/icon";
+import Card, { CardTitle } from "@/components/ui/card";
 import { FieldLabel, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import Button from "@/components/ui/button";
@@ -68,11 +69,13 @@ const ContactInfoCard: React.FC<{
   href: string;
 }> = ({ icon, label, value, href }) => {
   return (
-    <a
+    <Card
       href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      className="group flex items-center gap-4 p-4 bg-surface border-retro border-line shadow-retro-sm hover:shadow-retro transition-all duration-fast"
+      external={href.startsWith("http")}
+      surface="raised"
+      shadow="sm"
+      padding="sm"
+      className="flex items-center gap-4"
     >
       <div className="flex-shrink-0 w-9 h-9 border-retro border-line bg-surface-dark text-primary-on-dark flex items-center justify-center">
         <Icon name={icon} />
@@ -81,11 +84,11 @@ const ContactInfoCard: React.FC<{
         <p className="text-label text-secondary uppercase mb-0.5">
           {label}
         </p>
-        <p className="text-body-sm text-primary group-hover:text-accent transition-colors break-all">
+        <CardTitle as="p" className="text-body-sm break-all">
           {value}
-        </p>
+        </CardTitle>
       </div>
-    </a>
+    </Card>
   );
 };
 
@@ -507,7 +510,7 @@ const ContactPage: React.FC<{
             </div>
 
             {/* Right - form (navy panel) */}
-            <div className="relative bg-surface-dark p-6 md:p-8 shadow-retro">
+            <Card as="div" surface="dark" padding="md" className="relative md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h2 className="text-title text-primary-on-dark mb-1">
                 Trimite-ne un mesaj
@@ -516,7 +519,7 @@ const ContactPage: React.FC<{
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <ContactForm config={formConfig} />
-            </div>
+            </Card>
           </div>
         </div>
       </section>

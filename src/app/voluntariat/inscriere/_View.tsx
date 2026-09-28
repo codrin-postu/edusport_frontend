@@ -2,6 +2,7 @@
 
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import React from "react";
+import Card from "@/components/ui/card";
 import VolunteerForm from "./_VolunteerForm";
 import type { FormConfig } from "@/lib/strapi-forms";
 
@@ -46,9 +47,9 @@ const VolunteerInscriereView: React.FC<{ formConfig?: FormConfig | null }> = ({
               </p>
             </div>
 
-            <div className="mt-12 bg-surface border-retro border-line shadow-retro p-6 md:p-8 min-h-[480px]">
+            <Card as="div" padding="md" className="mt-12 min-h-[480px] md:p-8">
               <VolunteerForm config={formConfig} />
-            </div>
+            </Card>
           </div>
         </div>
       </section>

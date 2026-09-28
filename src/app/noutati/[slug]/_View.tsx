@@ -19,6 +19,7 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
+import Card from "@/components/ui/card";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -225,7 +226,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
 
             {/* Sidebar */}
             <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-24">
-              <div className="bg-surface border-retro border-line shadow-retro p-6 flex flex-col gap-4">
+              <Card className="flex flex-col gap-4">
                 <p className="text-label uppercase text-accent">
                   {SIDEBAR_HEADER[article.category] ?? "Detalii articol"}
                 </p>
@@ -264,7 +265,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                     {CATEGORY_LABELS[article.category]}
                   </span>
                 </div>
-              </div>
+              </Card>
             </aside>
           </div>
         </div>

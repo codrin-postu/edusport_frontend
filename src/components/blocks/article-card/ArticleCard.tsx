@@ -1,5 +1,6 @@
 import { cn } from "@/utils/cn";
 import React from "react";
+import Card, { CardTitle } from "@/components/ui/card";
 import { ArticleImage } from "./ArticleImage";
 
 interface ArticleCardProps {
@@ -22,10 +23,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   category,
 }) => {
   return (
-    <a
+    <Card
       href={href}
+      shadow="none"
+      padding="none"
       className={cn(
-        "group grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start outline-none",
+        "grid sm:grid-cols-[128px_1fr] gap-6 sm:gap-8 py-8 items-start",
         className,
       )}
     >
@@ -47,17 +50,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           )}
           <span className="text-secondary">{date}</span>
         </div>
-        <h3 className="text-title text-primary">{title}</h3>
+        <CardTitle>{title}</CardTitle>
         {excerpt && (
           <p className="text-body-sm text-secondary line-clamp-2">
             {excerpt}
           </p>
         )}
-        <span className="text-label relative inline-block w-fit mt-1 pb-0.5 uppercase text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover:after:scale-x-100">
+        <span className="text-label relative inline-block w-fit mt-1 pb-0.5 uppercase text-accent after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-rust after:transition-transform group-hover/card:after:scale-x-100">
           Citește mai mult
         </span>
       </div>
-    </a>
+    </Card>
   );
 };
 

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "@/components/ui/link";
+import Card, { CardTitle } from "@/components/ui/card";
+import Chip from "@/components/ui/chip";
 import { CATEGORY_LABELS } from "@/app/noutati/_data";
 import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
 import type { Event } from "../../cursuri/evenimente/_data";
@@ -75,7 +77,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
 /** The one article that gets an image, in the left column when there is no event. */
 function FeaturedArticle({ article: featured }: { article: LatestArticleData }) {
   return (
-    <Link href={`/noutati/${featured.slug}`} tone="plain" className="group block">
+    <Card href={`/noutati/${featured.slug}`} shadow="none" padding="none" className="group block">
       <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-retro border-line">
         {featured.image && (
           <Image
@@ -91,13 +93,13 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
         )}
       </div>
       {featured.category && (
-        <span className="text-label mt-3 inline-block bg-rust text-primary-on-dark uppercase px-2 py-1">
+        <Chip tone="accent" size="sm" className="mt-3">
           {CATEGORY_LABELS[featured.category]}
-        </span>
+        </Chip>
       )}
-      <h3 className="text-title text-primary mt-2 mb-2">
+      <CardTitle className="mt-2 mb-2">
         {featured.title}
-      </h3>
+      </CardTitle>
       <p className="text-caption text-secondary mb-2">{featured.date}</p>
       {featured.excerpt && (
         <p className="text-body-sm text-secondary line-clamp-2">{featured.excerpt}</p>
@@ -105,7 +107,7 @@ function FeaturedArticle({ article: featured }: { article: LatestArticleData }) 
       <span className="text-body-sm link inline-block mt-4 text-primary">
         Citește articolul
       </span>
-    </Link>
+    </Card>
   );
 }
 

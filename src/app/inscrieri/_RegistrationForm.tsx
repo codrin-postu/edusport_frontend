@@ -7,6 +7,7 @@ import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
 import LeaveNotice from "./_LeaveNotice";
@@ -152,7 +153,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
       <LeaveNotice scope={formRef} />
 
       {restored && (
-        <div className="mb-6 border-retro border-line bg-surface-raised px-4 py-3">
+        <Card as="div" surface="raised" shadow="none" padding="none" className="mb-6 px-4 py-3">
           <p className="text-body-sm text-primary">Formular salvat.</p>
           <button
             type="button"
@@ -161,7 +162,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
           >
             Începe de la capăt
           </button>
-        </div>
+        </Card>
       )}
 
       {confirmReset && (
@@ -176,7 +177,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             onClick={() => setConfirmReset(false)}
             aria-hidden
           />
-          <div className="relative w-full max-w-sm border-retro border-line bg-surface p-6 shadow-retro">
+          <Card as="div" className="relative w-full max-w-sm">
             <h2 id="reset-title" className="text-title text-primary">
               Ștergi răspunsurile salvate?
             </h2>
@@ -205,7 +206,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                 Șterge
               </button>
             </div>
-          </div>
+          </Card>
         </div>
       )}
 

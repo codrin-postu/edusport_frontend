@@ -1,5 +1,6 @@
 import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
+import Card, { CardTitle } from "@/components/ui/card";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { fetchArticlesPaginated } from "@/lib/strapi-article";
@@ -29,9 +30,11 @@ export default async function FeaturedAsync() {
         titleClassName="text-heading text-primary"
       />
 
-      <a
+      <Card
         href={`/noutati/${featured.slug}`}
-        className="group grid lg:grid-cols-2 gap-12 lg:gap-16 items-center outline-none"
+        shadow="none"
+        padding="none"
+        className="group grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
       >
         <div className="relative aspect-[16/9] lg:aspect-auto lg:h-[300px] overflow-hidden border-retro border-line bg-surface-subtle">
           <ArticleImage
@@ -53,9 +56,9 @@ export default async function FeaturedAsync() {
             </span>
           </div>
 
-          <h2 className="text-heading text-primary group-hover:text-accent transition-colors">
+          <CardTitle as="h2" className="text-heading">
             {featured.title}
-          </h2>
+          </CardTitle>
 
           <p className="text-body text-secondary border-t-retro border-line-subtle pt-4">
             {featured.description}
@@ -65,7 +68,7 @@ export default async function FeaturedAsync() {
             Citește mai mult
           </span>
         </div>
-      </a>
+      </Card>
     </Section>
   );
 }

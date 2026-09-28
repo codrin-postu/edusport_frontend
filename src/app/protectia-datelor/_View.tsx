@@ -1,6 +1,7 @@
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { Icon } from "@/components/ui/icon";
+import Card from "@/components/ui/card";
 
 // ---------------------------------------------------------------------------
 // Section data
@@ -430,7 +431,12 @@ const ProtectiaDatelor: React.FC = () => {
 
           {/* Contact card */}
           <div className="mt-16 pt-12 border-t-retro border-line-subtle">
-            <div className="relative overflow-hidden bg-surface-dark border-retro border-line shadow-retro px-8 py-12 md:px-16 md:py-12">
+            <Card
+              as="div"
+              surface="dark"
+              padding="none"
+              className="relative overflow-hidden px-8 py-12 md:px-16 md:py-12"
+            >
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               {/* Decorative circles */}
               <div className="pointer-events-none absolute -top-8 -right-8 w-48 h-48 opacity-[0.06] bg-mustard" />
@@ -503,7 +509,7 @@ const ProtectiaDatelor: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </section>

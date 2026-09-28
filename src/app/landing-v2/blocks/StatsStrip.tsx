@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "motion/react";
+import Stat from "@/components/ui/stat";
 import type { HomepageStatItem } from "@/app/homepage/_types";
 
 // Mirrors the 4 evergreen numbers surfaced on /despre-noi.
@@ -86,14 +87,16 @@ export default function StatsStrip({ items }: { items?: HomepageStatItem[] | nul
         {stats.map((s) => (
           <div
             key={s.label}
-            className={`${s.bg} ${s.text} flex flex-col items-center justify-center text-center section px-4`}
+            className={`${s.bg} flex flex-col items-center justify-center text-center section px-4`}
           >
-            <span className="text-display-lg">
-              <CountUp target={s.value} suffix={s.suffix} run={inView} />
-            </span>
-            <span className="text-label mt-4 uppercase">
-              {s.label}
-            </span>
+            <Stat
+              value={<CountUp target={s.value} suffix={s.suffix} run={inView} />}
+              label={s.label}
+              size="xl"
+              layout="stack"
+              onDark={s.text === "text-primary-on-dark"}
+              className="items-center"
+            />
           </div>
         ))}
       </div>

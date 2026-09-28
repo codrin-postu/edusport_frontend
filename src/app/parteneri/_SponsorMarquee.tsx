@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Card from "@/components/ui/card";
 import type { Sponsor } from "./_data";
 
 /**
@@ -23,20 +24,23 @@ function SponsorTile({ sponsor }: { sponsor: Sponsor }) {
       {sponsor.name}
     </span>
   );
-  const className =
-    "flex h-[82px] w-[150px] shrink-0 items-center justify-center border-retro border-line bg-surface-raised shadow-retro-sm";
+  const tileClassName = "flex h-[82px] w-[150px] shrink-0 items-center justify-center";
   return sponsor.href ? (
-    <a
+    <Card
       href={sponsor.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={className}
+      external
+      surface="raised"
+      shadow="sm"
+      padding="none"
+      className={tileClassName}
       aria-label={sponsor.name}
     >
       {inner}
-    </a>
+    </Card>
   ) : (
-    <div className={className}>{inner}</div>
+    <Card as="div" surface="raised" shadow="sm" padding="none" className={tileClassName}>
+      {inner}
+    </Card>
   );
 }
 

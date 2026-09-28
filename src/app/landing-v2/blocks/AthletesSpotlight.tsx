@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/button";
+import Stat from "@/components/ui/stat";
 import type {
   StrapiSportsperson,
   SportspersonStats,
@@ -88,14 +89,13 @@ export default function AthletesSpotlight({ athletes, stats, totalCount, copy }:
             </p>
 
             {bigNumber && (
-              <div className="mt-8 mb-8">
-                <span className="text-display-lg block text-primary">
-                  {bigNumber}
-                </span>
-                <span className="text-label block uppercase text-accent mt-2">
-                  {countLabel}
-                </span>
-              </div>
+              <Stat
+                value={bigNumber}
+                label={countLabel}
+                size="xl"
+                layout="stack"
+                className="mt-8 mb-8"
+              />
             )}
 
             <Button

@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
 import type { VolunteerHelpWay } from "@/lib/strapi-volunteer";
 
 interface VolunteerViewProps {
@@ -78,7 +79,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       {/* ─── CUM POȚI AJUTA (split panel) ─── */}
       <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
-          <div className="grid border-retro border-line shadow-retro md:grid-cols-[1fr_1.3fr]">
+          <Card as="div" padding="none" className="grid md:grid-cols-[1fr_1.3fr]">
             {/* Left — navy intro */}
             <div className="bg-surface-dark p-8 text-primary-on-dark md:p-12">
               <p className="text-label uppercase text-mustard">
@@ -111,14 +112,14 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 
       {/* ─── CUM APLICI (CTA) ─── */}
       <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
-          <div className="relative bg-surface-dark p-8 shadow-retro md:p-12">
+          <Card as="div" surface="dark" padding="lg" className="relative md:p-12">
             <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-12">
               <div className="flex flex-col gap-3">
@@ -142,7 +143,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
                 Înscrie-te ca voluntar
               </Button>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 

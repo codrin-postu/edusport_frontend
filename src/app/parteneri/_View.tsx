@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import PageHeroSection from "@/components/blocks/page-hero-section";
+import Card, { CardTitle } from "@/components/ui/card";
+import Chip from "@/components/ui/chip";
 import SponsorMarquee from "./_SponsorMarquee";
 import PartnerForm from "./_PartnerForm";
 import type { Sponsor, CollabEvent } from "@/lib/strapi-partners";
@@ -102,9 +104,12 @@ const PartnerView: React.FC<{
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
               {events.map((ev) => (
-                <article
+                <Card
+                  as="article"
                   key={ev.title}
-                  className="overflow-hidden border-retro border-line bg-surface shadow-retro"
+                  shadow="md"
+                  padding="none"
+                  className="overflow-hidden"
                 >
                   {ev.image && (
                     <div className="relative h-44 w-full border-b-retro border-line bg-surface-subtle">
@@ -118,12 +123,12 @@ const PartnerView: React.FC<{
                     </div>
                   )}
                   <div className="p-6">
-                    <span className="text-label inline-block border-retro border-rust px-2 py-0.5 uppercase text-accent">
+                    <Chip tone="outline" size="sm">
                       cu {ev.partner}
-                    </span>
-                    <h3 className="text-title mt-3 text-primary">
+                    </Chip>
+                    <CardTitle className="mt-3">
                       {ev.title}
-                    </h3>
+                    </CardTitle>
                     <p className="text-label mt-0.5 uppercase text-secondary">
                       {ev.date}
                     </p>
@@ -131,7 +136,7 @@ const PartnerView: React.FC<{
                       {ev.description}
                     </p>
                   </div>
-                </article>
+                </Card>
               ))}
             </div>
           </div>
@@ -153,7 +158,7 @@ const PartnerView: React.FC<{
                 {copy.ctaBody}
               </p>
             </div>
-            <div className="relative bg-surface-dark p-6 shadow-retro md:p-8">
+            <Card as="div" surface="dark" padding="md" className="relative md:p-8">
               <span className="absolute inset-x-0 top-0 h-1.5 bg-rust" aria-hidden />
               <h3 className="text-title mb-1 text-primary-on-dark">
                 Scrie-ne
@@ -162,7 +167,7 @@ const PartnerView: React.FC<{
                 Răspundem de obicei în 24 până la 48 de ore.
               </p>
               <PartnerForm config={formConfig} />
-            </div>
+            </Card>
           </div>
         </div>
       </section>
