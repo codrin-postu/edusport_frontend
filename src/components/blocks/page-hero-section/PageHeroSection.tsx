@@ -8,9 +8,12 @@ interface PageHeroSectionProps {
   title?: string[];
   breadcrumb?: BreadcrumbItem[];
   variant?: "blue" | "light" | "dark";
+  /** Without a breadcrumb the hero keeps an empty line in its place, so titles
+   *  line up across pages. `tight` drops that line (the Cursuri banner). */
+  tight?: boolean;
 }
 
-const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, breadcrumb }) => {
+const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, breadcrumb, tight = false }) => {
   return (
     // Sticks at the header's own live bottom edge (--header-h, published by
     // Header.tsx) instead of a fixed offset, so it never shifts as the
@@ -40,7 +43,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
             {breadcrumb ? (
               <Breadcrumb items={breadcrumb} onDark />
             ) : (
-              <span>&nbsp;</span>
+              !tight && <span>&nbsp;</span>
             )}
             {children}
           </div>

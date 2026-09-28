@@ -27,6 +27,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
 }) => {
   return (
     <PageHeroSection
+      tight
       title={["SCOALA", "DE", "PATINAJ"]}
       variant={isRegistrationOpen ? "blue" : "dark"}
     >
