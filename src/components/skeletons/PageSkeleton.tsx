@@ -115,12 +115,13 @@ export function FormSkeleton({ fields = 5 }: { fields?: number }) {
 export function ArticleDetailSkeleton() {
   return (
     <>
-      <div className="bg-surface-raised border-b border-line-subtle pt-8">
-        <div className="w-full max-w-content mx-auto gutter py-4">
-          <div className="h-3 w-48 bg-surface-subtle animate-pulse" />
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] bg-surface-subtle animate-pulse">
+        <div className="absolute inset-x-0 top-0 z-raised">
+          <div className="w-full max-w-content mx-auto gutter pt-8">
+            <div className="h-3 w-48 bg-surface-subtle-on-dark" />
+          </div>
         </div>
       </div>
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] bg-surface-subtle animate-pulse" />
       <article className="bg-surface-raised section">
         <div className="w-full max-w-content mx-auto gutter">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12 lg:gap-16 items-start animate-pulse">

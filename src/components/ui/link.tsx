@@ -1,69 +1,65 @@
-import { LinkVariants } from "@/utils/constants";
 import NextLink from "next/link";
 import React from "react";
-import Icon, { type IconName } from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
-type LinkType = "internal" | "external" | "phone" | "email";
+export type LinkTone = "default" | "quiet" | "footer" | "plain";
 
-interface LinkProps extends React.ComponentPropsWithoutRef<typeof NextLink> {
-  className?: string;
+interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
   href: string;
-  variant?: LinkVariants;
-  linkType?: LinkType;
+  /**
+   * default: permanent underline, slide on hover (text and standalone links).
+   * quiet: no underline, regular weight, only the colour changes on hover
+   *   (meta links: locations, breadcrumbs, contact details).
+   * footer: the footer's grow-in underline.
+   * plain: no text styling, for links that wrap a whole card.
+   */
+  tone?: LinkTone;
+  /** The link sits on a dark (navy) surface. */
+  onDark?: boolean;
+  /** Opens in a new tab. */
+  external?: boolean;
+  /** Internal links only: false keeps the scroll position on navigation. */
+  scroll?: boolean;
+  ref?: React.Ref<HTMLAnchorElement>;
 }
 
-const variantClasses: Record<LinkVariants, string> = {
-  header: "text-primary hover:text-accent",
-  footer: "",
-  footerAnimated:
-    "text-secondary-on-dark hover:text-primary-on-dark relative inline-flex items-center gap-1 group transition-colors",
-  default: "text-primary",
+const TONE: Record<LinkTone, { light: string; dark: string }> = {
+  default: { light: "link", dark: "link link-on-dark" },
+  quiet: { light: "transition-colors hover:text-accent", dark: "transition-colors hover:text-accent-on-dark" },
+  footer: { light: "link-footer", dark: "link-footer" },
+  plain: { light: "", dark: "" },
 };
 
-const linkTypeIcons: Record<LinkType, IconName | null> = {
-  internal: null,
-  external: "arrow-up-right",
-  phone: "phone",
-  email: "mail",
-};
-
-const Link: React.FC<LinkProps> = ({
-  className = "",
+/**
+ * The site's link. Internal paths use the Next.js Link (no full page reload);
+ * other hrefs (http, mailto, tel) render a plain anchor.
+ */
+export default function Link({
   href,
+  tone = "default",
+  onDark = false,
+  external = false,
+  scroll,
+  className,
   children,
-  variant = LinkVariants.DEFAULT,
-  linkType = "external",
+  ref,
   ...rest
-}) => {
-  // A caller using a link utility (link, link-on-dark, link-footer) gets its
-  // colours from that utility; the variant's hover colour would otherwise
-  // override it, since both sit at the same specificity.
-  const usesLinkUtility = /(^|\s)link(-on-dark|-footer)?(\s|$)/.test(className);
-  // cn() so a colour passed by the caller replaces the variant colour instead
-  // of both landing on the element and the stylesheet order picking one.
-  const classes = cn(usesLinkUtility ? "" : variantClasses[variant], "transition-colors", className);
+}: LinkProps) {
+  const classes = cn(onDark ? TONE[tone].dark : TONE[tone].light, className);
+  const newTab = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
-  if (variant === LinkVariants.FOOTER_ANIMATED) {
-    const iconName = linkTypeIcons[linkType];
+  if (href.startsWith("/") && !external) {
     return (
-      <NextLink className={classes} href={href} {...rest}>
-        <span className="link">{children}</span>
-        {iconName && (
-          <Icon
-            name={iconName}
-            className="opacity-0 translate-y-1 transition-all duration-base group-hover:opacity-100 group-hover:translate-y-0"
-          />
-        )}
+      <NextLink ref={ref} href={href} scroll={scroll} className={classes} {...rest}>
+        {children}
       </NextLink>
     );
   }
-
   return (
-    <NextLink className={classes} href={href} {...rest}>
+    <a ref={ref} href={href} className={classes} {...newTab} {...rest}>
       {children}
-    </NextLink>
+    </a>
   );
-};
+}
 
-export default Link;
+export { Link };

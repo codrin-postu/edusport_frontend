@@ -75,7 +75,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
 /** The one article that gets an image, in the left column when there is no event. */
 function FeaturedArticle({ article: featured }: { article: LatestArticleData }) {
   return (
-    <Link href={`/noutati/${featured.slug}`} className="group block">
+    <Link href={`/noutati/${featured.slug}`} tone="plain" className="group block">
       <div className="relative w-full aspect-[16/9] overflow-hidden bg-surface-subtle border-retro border-line">
         {featured.image && (
           <Image
@@ -121,7 +121,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
       <ul>
         {list.map((a, i) => (
           <li key={a.slug + i} className="border-t border-line-subtle first:border-t-0">
-            <Link href={`/noutati/${a.slug}`} className="group block py-4">
+            <Link href={`/noutati/${a.slug}`} tone="plain" className="group block py-4">
               <p className="text-title text-primary">{a.title}</p>
               {/* One muted line, as drawn: "Competitii, 4 septembrie". */}
               <p className="text-caption text-secondary mt-1">
@@ -134,7 +134,7 @@ function NewsList({ articles }: { articles: LatestArticleData[] }) {
 
       <Link
         href="/noutati"
-        className="text-body-sm link inline-block mt-4 text-primary"
+        className="text-body-sm inline-block mt-4"
       >
         Toate noutățile
       </Link>

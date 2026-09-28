@@ -7,7 +7,7 @@ import { WarmStripe } from "@/components/ui/warm-stripe";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 import { mapsHref } from "@/lib/mapsLink";
 import { cn } from "@/utils/cn";
-import { BRAND_NAME, LinkVariants } from "@/utils/constants";
+import { BRAND_NAME } from "@/utils/constants";
 import React from "react";
 import { WhatsAppQR } from "./WhatsAppQR";
 
@@ -110,7 +110,7 @@ const FooterBrandName: React.FC = () => {
   );
 };
 
-const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = ({ retro, ...item }) => {
+const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = (item) => {
   if (item.type === "text") {
     return <Text className="text-primary-on-dark">{item.label}</Text>;
   }
@@ -124,35 +124,8 @@ const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = ({ retro, ...
     item.type === "social" ||
     (item.type === "link" && item.external === true);
 
-  const linkType = (
-    item.type === "phone" ? "phone" :
-    item.type === "email" ? "email" :
-    "external"
-  ) as "phone" | "email" | "external";
-
-  // Landing (retro): no arrow icon, a mustard underline that grows in on hover.
-  if (retro) {
-    return (
-      <Link
-        href={href}
-        className="font-base link-footer"
-        variant={LinkVariants.DEFAULT}
-        linkType={linkType}
-        {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      >
-        {item.label}
-      </Link>
-    );
-  }
-
   return (
-    <Link
-      href={href}
-      className="text-body font-base"
-      variant={LinkVariants.FOOTER_ANIMATED}
-      linkType={linkType}
-      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-    >
+    <Link href={href} tone="footer" external={isExternal} className="font-base">
       {item.label}
     </Link>
   );
@@ -253,16 +226,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
           </p>
           <div className="flex items-center gap-2">
             {!retro && <Icon name="whatsapp" className="text-primary-on-dark" />}
-            <Link
-              href={waUrl}
-              variant={retro ? LinkVariants.DEFAULT : LinkVariants.FOOTER_ANIMATED}
-              linkType="external"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={retro
-                ? "text-sm link-footer"
-                : "text-sm"}
-            >
+            <Link href={waUrl} tone="footer" external className="text-sm">
               Intră în canal
             </Link>
           </div>
@@ -281,16 +245,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
             <div className="w-px h-[72px] bg-surface-subtle-on-dark shrink-0" />
             <div className="flex items-center gap-2">
               {!retro && <Icon name="whatsapp" className="text-primary-on-dark" />}
-              <Link
-                href={waUrl}
-                variant={retro ? LinkVariants.DEFAULT : LinkVariants.FOOTER_ANIMATED}
-                linkType="external"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={retro
-                  ? "text-sm link-footer"
-                  : "text-sm"}
-              >
+              <Link href={waUrl} tone="footer" external className="text-sm">
                 Intră în canal
               </Link>
             </div>

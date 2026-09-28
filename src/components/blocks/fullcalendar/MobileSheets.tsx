@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { CursEventInfo } from "./types";
 import IconButton from "@/components/ui/icon-button";
+import Link from "@/components/ui/link";
 import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
 
 // An event has a detail view if it has a description OR is a curs/next type
@@ -54,13 +55,9 @@ export const MobileDetailSheet: React.FC<{
               <span className="fc-curs-tooltip-hours">{renderMarkdown(body)}</span>
             )}
             {showRegulament && (
-              <a
-                href="/cursuri/regulament"
-                className="fc-curs-tooltip-link"
-                onClick={(e) => e.stopPropagation()}
-              >
+              <Link href="/cursuri/regulament" onClick={(e) => e.stopPropagation()}>
                 Vezi regulamentul
-              </a>
+              </Link>
             )}
           </div>
         </div>

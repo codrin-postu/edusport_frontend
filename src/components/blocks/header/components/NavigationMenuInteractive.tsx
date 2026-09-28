@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "@/components/ui/link";
-import { LinkVariants } from "@/utils/constants";
 import Icon from "@/components/ui/icon";
 import { AnimatePresence, motion } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
@@ -99,7 +98,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
           <Link
             key={item.label}
             href={item.href || "#"}
-            variant={LinkVariants.HEADER}
+            tone="plain"
             className="text-body-sm text-primary hover:text-secondary transition-colors"
             // An item without a dropdown still has to close an open one.
             // onMouseLeave on the row only fires when the pointer leaves the
@@ -164,7 +163,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                         <Link
                           key={dropdownItem.href}
                           href={dropdownItem.href}
-                          variant={LinkVariants.HEADER}
+                          tone="plain"
                           className="group flex items-center gap-3 px-3 py-3 hover:bg-surface-subtle transition-colors"
                           onClick={close}
                           data-umami-event="nav"

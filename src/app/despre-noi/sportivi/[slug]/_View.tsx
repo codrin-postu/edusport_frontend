@@ -1,8 +1,8 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { Icon } from "@/components/ui/icon";
+import Breadcrumb from "@/components/ui/breadcrumb";
 import {
   computeStats,
   pickNotableResults,
@@ -151,18 +151,13 @@ const SportspersonView: React.FC<Props> = ({
           pt-8). Without this the bar tucks behind the nav. */}
       <div className="bg-surface-dark pt-8">
         <div className="mx-auto w-full max-w-content gutter py-4">
-          <nav className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
-            <Link
-              href="/despre-noi/sportivi"
-              className="text-primary-on-dark transition-colors hover:text-medal-gold"
-            >
-              Sportivi
-            </Link>
-            <Icon name="chevron-right" />
-            <span className="truncate text-primary-on-dark sm:max-w-none max-w-[200px]">
-              {sportsperson.name}
-            </span>
-          </nav>
+          <Breadcrumb
+            onDark
+            items={[
+              { label: "Sportivi", href: "/despre-noi/sportivi" },
+              { label: sportsperson.name },
+            ]}
+          />
         </div>
       </div>
 

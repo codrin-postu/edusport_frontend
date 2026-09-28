@@ -438,17 +438,6 @@
 .fc-curs-tooltip-hours a { color: var(--color-rust); text-decoration: underline; text-underline-offset: 2px; pointer-events: auto; }
 .fc-curs-tooltip-hours a:hover { text-decoration: none; }
 
-.fc-curs-tooltip-link {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--color-rust);
-  text-decoration: none;
-  margin-top: 6px;
-}
-.fc-curs-tooltip-link:hover { text-decoration: underline; text-underline-offset: 2px; }
-
 /* ── timeGrid (weekly) view ────────────────────────────────────────────────────── */
 .fc .fc-timegrid-slot {
   height: 44px;
@@ -749,11 +738,6 @@
   line-height: 1.55;
   color: rgb(14 26 60 / 0.72);
   margin-top: 0;
-}
-.fc-mobile-detail-body .fc-curs-tooltip-link {
-  display: inline-block;
-  font-size: 0.78rem;
-  margin-top: 12px;
 }
 
 /* ── Hover target = the whole event card ──────────────────────────────────────

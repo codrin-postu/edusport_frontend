@@ -1,12 +1,12 @@
 import { cn } from "@/utils/cn";
 import type { BlockNode, CategoryKey } from "@/lib/strapi-article";
 import React from "react";
-import Link from "next/link";
 import Icon from "@/components/ui/icon";
 import { notFound } from "next/navigation";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
+import Breadcrumb from "@/components/ui/breadcrumb";
 import { EventJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 
@@ -79,22 +79,26 @@ const EventDetailPage: React.FC<Props> = ({ event }) => {
           { name: event.title, url: `${siteUrl}/cursuri/evenimente/${event.slug}` },
         ]}
       />
-      {/* Top bar - breadcrumb */}
-      <div className="bg-surface border-b-retro border-line pt-8">
-        <div className="w-full max-w-content mx-auto gutter py-4">
-          <nav className="text-label flex items-center gap-2 uppercase text-secondary">
-            <Link href="/cursuri" className="text-primary hover:text-accent transition-colors">Cursuri</Link>
-            <Icon name="chevron-right" />
-            <Link href="/cursuri/evenimente" className="text-primary hover:text-accent transition-colors">Evenimente</Link>
-            <Icon name="chevron-right" />
-            <span className="text-primary truncate max-w-[200px] sm:max-w-none">{event.title}</span>
-          </nav>
-        </div>
-      </div>
-
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-retro border-line bg-surface-subtle">
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden border-b-retro border-line bg-surface-subtle">
         <ArticleImage src={event.coverImage} alt={event.title} iconClassName="w-14 h-14" />
+        <div
+          aria-hidden
+          className="absolute inset-0 z-raised pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, var(--color-surface-dark) 0%, var(--color-overlay) 35%, transparent 65%)" }}
+        />
+        <div className="absolute inset-x-0 top-0 z-raised">
+          <div className="w-full max-w-content mx-auto gutter pt-8">
+            <Breadcrumb
+              onDark
+              items={[
+                { label: "Cursuri", href: "/cursuri" },
+                { label: "Evenimente", href: "/cursuri/evenimente" },
+                { label: event.title },
+              ]}
+            />
+          </div>
+        </div>
         <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-raised" />
       </div>
 

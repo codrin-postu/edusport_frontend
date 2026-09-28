@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/components";
-import { LinkVariants } from "@/utils/constants";
 import * as CC from "vanilla-cookieconsent";
 
 /**
@@ -19,16 +18,12 @@ export default function CookiePreferencesLink({ className }: { className?: strin
   return (
     <Link
       href="#"
-      variant={LinkVariants.DEFAULT}
-      linkType="internal"
+      tone="footer"
       onClick={(e) => {
         e.preventDefault();
         CC.showPreferences();
       }}
-      className={
-        className ??
-        "font-base link-footer"
-      }
+      className={className ?? "font-base"}
     >
       Preferințe cookies
     </Link>

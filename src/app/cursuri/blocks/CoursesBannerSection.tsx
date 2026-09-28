@@ -1,6 +1,7 @@
 import Button from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import Icon from "@/components/ui/icon";
+import Link from "@/components/ui/link";
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
@@ -55,15 +56,10 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
           <Icon name="clock" className="text-primary-on-dark" />
           {scheduleTimes}
         </span>
-        <a
-          href={locationUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 transition-colors hover:text-accent-on-dark"
-        >
+        <Link href={locationUrl} tone="quiet" onDark external className="flex items-center gap-2">
           <Icon name="map-pin" className="text-primary-on-dark" />
           {locationName}
-        </a>
+        </Link>
       </div>
 
       {isRegistrationOpen && (

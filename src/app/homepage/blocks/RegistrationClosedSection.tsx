@@ -80,7 +80,9 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
               {/* Contact link */}
               <Link
                 href={contactUrl}
-                className="text-body-sm group relative inline-flex items-center gap-1 text-muted-on-dark hover:text-secondary-on-dark transition-colors after:absolute after:left-0 after:bottom-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-base hover:after:scale-x-100 hover:after:origin-left w-fit"
+                tone="default"
+                onDark
+                className="text-body-sm inline-flex items-center gap-1 w-fit"
               >
                 Mai multe informații
                 <Icon name="arrow-up-right" />

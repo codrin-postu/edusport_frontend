@@ -62,7 +62,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
           <Link
             href="/cursuri/program"
-            className="text-label w-fit link uppercase text-primary"
+            className="text-label w-fit uppercase"
           >
             Vezi programul complet
           </Link>

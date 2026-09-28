@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
+import Link from "@/components/ui/link";
 import type { TooltipPos } from "./types";
 import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
 
@@ -85,13 +86,9 @@ const DesktopTooltip: React.FC<{
           <span className="fc-curs-tooltip-hours">{renderMarkdown(body)}</span>
         )}
         {showRegulamentLink && (
-          <a
-            href="/cursuri/regulament"
-            className="fc-curs-tooltip-link"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <Link href="/cursuri/regulament" onClick={(e) => e.stopPropagation()}>
             Vezi regulamentul
-          </a>
+          </Link>
         )}
       </span>
     </span>,

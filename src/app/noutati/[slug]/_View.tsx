@@ -10,12 +10,12 @@ import {
   strapiMediaUrl,
 } from "@/lib/strapi-article";
 import React from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
+import Breadcrumb from "@/components/ui/breadcrumb";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
@@ -137,20 +137,25 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
           { name: article.title, url: `${siteUrl}/noutati/${article.slug}` },
         ]}
       />
-      {/* Top bar - breadcrumb */}
-      <div className="bg-surface border-b-retro border-line pt-8">
-        <div className="w-full max-w-content mx-auto gutter py-4 flex items-center justify-between">
-          <nav className="text-label flex items-center gap-2 uppercase text-secondary">
-            <Link href="/noutati" className="text-primary hover:text-accent transition-colors">Noutăți</Link>
-            <Icon name="chevron-right" />
-            <span className="text-primary truncate max-w-[200px] sm:max-w-none">{article.title}</span>
-          </nav>
-        </div>
-      </div>
-
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[400px] overflow-hidden border-b-retro border-line bg-surface-subtle">
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden border-b-retro border-line bg-surface-subtle">
         <ArticleImage src={article.coverImage} alt={article.title} iconClassName="w-14 h-14" />
+        <div
+          aria-hidden
+          className="absolute inset-0 z-raised pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, var(--color-surface-dark) 0%, var(--color-overlay) 35%, transparent 65%)" }}
+        />
+        <div className="absolute inset-x-0 top-0 z-raised">
+          <div className="w-full max-w-content mx-auto gutter pt-8">
+            <Breadcrumb
+              onDark
+              items={[
+                { label: "Noutăți", href: "/noutati" },
+                { label: article.title },
+              ]}
+            />
+          </div>
+        </div>
         <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-raised" />
       </div>
 

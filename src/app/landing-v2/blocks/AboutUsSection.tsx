@@ -206,7 +206,7 @@ const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent =
     <p className="text-body-sm text-secondary max-w-[440px] mb-6">{panel.body}</p>
     <Link
       href={panel.ctaUrl}
-      className="text-label link inline-block w-fit uppercase text-primary"
+      className="text-label inline-block w-fit uppercase"
     >
       {panel.ctaLabel}
     </Link>

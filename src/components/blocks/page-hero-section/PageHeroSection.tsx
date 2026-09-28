@@ -1,11 +1,6 @@
 import React from "react";
-import Icon from "@/components/ui/icon";
+import Breadcrumb, { type BreadcrumbItem } from "@/components/ui/breadcrumb";
 import { WarmStripe } from "@/components/ui/warm-stripe";
-
-interface BreadcrumbItem {
-  label: string;
-  href?: string;
-}
 
 interface PageHeroSectionProps {
   children: React.ReactNode;
@@ -41,20 +36,11 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
 
         <div className="relative w-full max-w-content mx-auto gutter py-16 flex items-start">
           <div className="flex flex-col gap-6 max-w-narrow">
-            <div className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
-              {breadcrumb ? breadcrumb.map((item, i) => (
-                <React.Fragment key={item.label}>
-                  {i > 0 && <Icon name="chevron-right" />}
-                  {item.href ? (
-                    <a href={item.href} className="transition-colors hover:text-accent">
-                      {item.label}
-                    </a>
-                  ) : (
-                    <span className="text-primary-on-dark">{item.label}</span>
-                  )}
-                </React.Fragment>
-              )) : <span>&nbsp;</span>}
-            </div>
+            {breadcrumb ? (
+              <Breadcrumb items={breadcrumb} onDark />
+            ) : (
+              <span>&nbsp;</span>
+            )}
             {children}
           </div>
         </div>
