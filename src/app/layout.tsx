@@ -154,7 +154,7 @@ export default async function RootLayout({
           // globals.css) so page content, and any sticky PageHeroSection
           // inside it, starts exactly under the header with zero gap or
           // overlap at any scroll position.
-          className="relative z-raised pt-[calc(var(--header-h)-1rem)] bg-surface lg:overflow-clip"
+          className="relative z-raised pt-[calc(var(--header-h)_-_1rem)] bg-surface lg:overflow-clip"
           style={{ marginBottom: "var(--footer-height, 0px)" }}
         >
           {children}
