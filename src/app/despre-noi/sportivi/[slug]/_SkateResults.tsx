@@ -110,20 +110,18 @@ function Row({
   muted?: boolean;
   title?: string;
 }) {
+  // Three levels: the segment total (label and score bold), the two scores
+  // that add up to it (semibold), and the program components (regular).
+  const weight = strong ? "font-bold" : muted ? "font-normal" : "font-semibold";
   return (
     <div className="text-caption flex items-baseline justify-between gap-4">
       <dt
-        className={cn("min-w-0", muted ? "text-muted" : "text-secondary")}
+        className={cn("min-w-0", weight, strong ? "text-primary" : "text-secondary")}
         title={title}
       >
         {k}
       </dt>
-      <dd
-        className={cn(
-          "shrink-0 tabular-nums text-primary",
-          strong ? "font-bold" : "font-medium",
-        )}
-      >
+      <dd className={cn("shrink-0 tabular-nums text-primary", weight)}>
         {v}
       </dd>
     </div>
