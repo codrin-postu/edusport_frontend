@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
 import Link from "next/link";
-import { X } from "lucide-react";
+import IconButton from "@/components/ui/icon-button";
 
 import type { Announcement } from "@/lib/strapi-announcement";
 import { renderMarkdown } from "@/utils/markdown";
@@ -43,14 +43,12 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
             ) : (
               <span aria-hidden="true" />
             )}
-            <button
-              type="button"
+            <IconButton
+              icon="close"
               onClick={dismiss}
-              aria-label="Închide anunțul"
-              className="-mt-2 -mr-2 shrink-0 size-10 inline-flex items-center justify-center text-secondary hover:text-primary transition-colors"
-            >
-              <X className="size-6" aria-hidden="true" />
-            </button>
+              label="Închide anunțul"
+              className="-mt-2 -mr-2 text-secondary hover:text-primary"
+            />
           </div>
 
           <h2 className="text-title text-primary mt-2 mb-2">

@@ -1,8 +1,8 @@
 "use client";
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronDown } from "lucide-react";
 import React, { useState } from "react";
+import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
 export interface SelectItemOption {
@@ -77,9 +77,10 @@ export const Select: React.FC<SelectProps> = ({
             <span className="truncate flex-1">
               {selected?.label ?? placeholder}
             </span>
-            <ChevronDown
+            <Icon
+              name="chevron-down"
               className={cn(
-                "size-4 text-secondary shrink-0 transition-transform duration-fast",
+                "text-secondary transition-transform duration-fast",
                 open && "rotate-180 text-accent",
               )}
             />
@@ -116,7 +117,7 @@ export const Select: React.FC<SelectProps> = ({
                 >
                   <span className="flex-1 truncate">{opt.label}</span>
                   <DropdownMenu.ItemIndicator>
-                    <Check className="size-4 shrink-0" />
+                    <Icon name="check" />
                   </DropdownMenu.ItemIndicator>
                 </DropdownMenu.RadioItem>
               ))}

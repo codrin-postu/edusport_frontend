@@ -1,5 +1,5 @@
-import { Image as ImageIcon } from "lucide-react";
 import React from "react";
+import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
 /** Retro placeholder shown when an article/event has no cover image. */
@@ -14,7 +14,7 @@ export const NoImage: React.FC<{ className?: string; iconClassName?: string }> =
     )}
     aria-hidden
   >
-    <ImageIcon className={cn("text-line-subtle", iconClassName ?? "w-8 h-8")} strokeWidth={1.5} />
+    <Icon name="image" size="md" className={cn("text-line-subtle", iconClassName)} />
   </div>
 );
 

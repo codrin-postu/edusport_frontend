@@ -2,7 +2,7 @@
 
 import Link from "@/components/ui/link";
 import { LinkVariants } from "@/utils/constants";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import Icon from "@/components/ui/icon";
 import { AnimatePresence, motion } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
 import React, { useEffect, useRef, useState } from "react";
@@ -87,8 +87,9 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
               onClick={() => (itemIsOpen ? close() : open(index))}
             >
               {item.label}
-              <ChevronDown
-                className={`size-4 transition-transform duration-fast ${itemIsOpen ? "rotate-180" : ""}`}
+              <Icon
+                name="chevron-down"
+                className={`transition-transform duration-fast ${itemIsOpen ? "rotate-180" : ""}`}
               />
             </button>
           );
@@ -169,7 +170,7 @@ const NavigationMenuInteractive: React.FC<NavigationMenuInteractiveProps> = ({
                           data-umami-event="nav"
                           data-umami-event-url={dropdownItem.href}
                         >
-                          <ChevronRight className="size-4 text-line-subtle group-hover:text-accent transition-colors shrink-0" />
+                          <Icon name="chevron-right" className="text-line-subtle group-hover:text-accent transition-colors" />
                           <div>
                             <span className="text-body-sm text-primary group-hover:text-accent transition-colors">
                               {dropdownItem.label}

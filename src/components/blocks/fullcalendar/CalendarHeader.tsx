@@ -1,4 +1,5 @@
 import React from "react";
+import IconButton from "@/components/ui/icon-button";
 
 interface CalendarHeaderProps {
   title: string;
@@ -37,22 +38,18 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           <span className="fc-custom-today-badge">{todayNum}</span>
           <span className="fc-custom-today-label">Azi</span>
         </button>
-        <button
-          className="fc-custom-nav-btn"
+        <IconButton
+          icon="chevron-left"
           onClick={onPrev}
           disabled={!canPrev}
-          aria-label="Luna anterioară"
-        >
-          ‹
-        </button>
-        <button
-          className="fc-custom-nav-btn"
+          label="Luna anterioară"
+        />
+        <IconButton
+          icon="chevron-right"
           onClick={onNext}
           disabled={!canNext}
-          aria-label="Luna următoare"
-        >
-          ›
-        </button>
+          label="Luna următoare"
+        />
       </div>
     </div>
   </div>

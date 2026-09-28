@@ -1,5 +1,5 @@
-import { ChevronRight } from "lucide-react";
 import React from "react";
+import Icon from "@/components/ui/icon";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 
 interface BreadcrumbItem {
@@ -44,7 +44,7 @@ const PageHeroSection: React.FC<PageHeroSectionProps> = ({ children, title, brea
             <div className="text-label flex items-center gap-2 uppercase text-secondary-on-dark">
               {breadcrumb ? breadcrumb.map((item, i) => (
                 <React.Fragment key={item.label}>
-                  {i > 0 && <ChevronRight className="size-4 shrink-0" />}
+                  {i > 0 && <Icon name="chevron-right" />}
                   {item.href ? (
                     <a href={item.href} className="transition-colors hover:text-accent">
                       {item.label}

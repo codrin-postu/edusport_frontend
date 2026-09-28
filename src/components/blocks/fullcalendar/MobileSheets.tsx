@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { CursEventInfo } from "./types";
+import IconButton from "@/components/ui/icon-button";
 import { renderMarkdown, extractFirstImage, resolveAssetUrl } from "@/utils/markdown";
 
 // An event has a detail view if it has a description OR is a curs/next type
@@ -31,9 +32,7 @@ export const MobileDetailSheet: React.FC<{
             <button className="fc-mobile-band-back" onClick={onBack}>
               Înapoi
             </button>
-            <button className="fc-mobile-band-close" onClick={onClose} aria-label="Închide">
-              ✕
-            </button>
+            <IconButton icon="close" onClick={onClose} label="Închide" onDark className="-my-2 -mr-2" />
           </div>
           <span className="fc-mobile-band-title">{event.title}</span>
           {event.dateLabel && (
@@ -112,9 +111,7 @@ export const MobileListSheet: React.FC<{
         <div className="fc-mobile-grip" />
         <div className="fc-mobile-modal-header">
           <span className="fc-mobile-modal-date">{dateLabel}</span>
-          <button className="fc-mobile-modal-close" onClick={onClose} aria-label="Închide">
-            ✕
-          </button>
+          <IconButton icon="close" onClick={onClose} label="Închide" className="-my-2" />
         </div>
         <div className="fc-mobile-modal-list">
           {events.map((event, i) => (

@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Award,
-  BookOpen,
-  CalendarDays,
-  ExternalLink,
-  Info,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import Icon, { type IconName } from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 import { FieldLabel, inputBaseOnCard, inputOnNavy } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
@@ -34,13 +26,13 @@ export type CustomVariant = "card" | "navy";
  * Icon vocabulary, mirroring CARD_ICONS in the backend registry. The CMS stores
  * a name; an unknown one simply renders no icon rather than breaking the card.
  */
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  book: BookOpen,
-  shield: ShieldCheck,
-  calendar: CalendarDays,
-  info: Info,
-  award: Award,
-  users: Users,
+const ICONS: Record<string, IconName> = {
+  book: "book-open",
+  shield: "shield-check",
+  calendar: "calendar-days",
+  info: "info",
+  award: "award",
+  users: "users",
 };
 
 /** A question renders as a card once the CMS gives it a title or an icon. */
@@ -131,21 +123,21 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
         const raw = values[key];
         const strValue = typeof raw === "string" ? raw : "";
 
-        const Icon = q.icon ? ICONS[q.icon] : undefined;
+        const iconName = q.icon ? ICONS[q.icon] : undefined;
 
         // Link card: an `info` question carrying a title/icon. The whole card
         // is the link, and it holds no answer.
         if (q.type === "info" && isCard(q)) {
           const body = (
             <>
-              {Icon && (
+              {iconName && (
                 <span
                   className={cn(
                     "w-10 h-10 border-retro flex items-center justify-center shrink-0",
                     v.cardIcon,
                   )}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon name={iconName} size="md" />
                 </span>
               )}
               <span className="flex-1 min-w-0">
@@ -173,8 +165,9 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               )}
             >
               {body}
-              <ExternalLink
-                className={cn("w-4 h-4 shrink-0 transition-colors", v.cardExternal)}
+              <Icon
+                name="external-link"
+                className={cn("transition-colors", v.cardExternal)}
               />
             </a>
           ) : (
@@ -200,14 +193,14 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
               )}
             >
               <div className="flex items-start gap-4">
-                {Icon && (
+                {iconName && (
                   <div
                     className={cn(
                       "w-10 h-10 border-retro flex items-center justify-center shrink-0",
                       v.cardIcon,
                     )}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon name={iconName} size="md" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -229,7 +222,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                       className={v.cardLink}
                     >
                       {q.linkLabel || "Detalii"}
-                      <ExternalLink className="size-4" />
+                      <Icon name="external-link" />
                     </a>
                   )}
                   <label className="flex items-center gap-2 cursor-pointer mt-3">

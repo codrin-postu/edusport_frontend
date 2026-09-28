@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import IconButton from "@/components/ui/icon-button";
 import { motion, AnimatePresence } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
 
@@ -117,22 +117,18 @@ export function GalleryCarousel({
             )}
             {total > DESKTOP_PER_PAGE && (
               <div className="hidden md:flex items-center gap-2">
-                <button
+                <IconButton
+                  icon="chevron-left"
                   onClick={prevDesktop}
                   disabled={desktopStart === 0}
-                  aria-label="Imaginile anterioare"
-                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
+                  label="Imaginile anterioare"
+                />
+                <IconButton
+                  icon="chevron-right"
                   onClick={nextDesktop}
                   disabled={desktopStart === maxStart}
-                  aria-label="Imaginile următoare"
-                  className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
+                  label="Imaginile următoare"
+                />
               </div>
             )}
           </div>
@@ -143,22 +139,18 @@ export function GalleryCarousel({
           carousel when the page didn't render its own header. */}
       {!hasHeader && total > DESKTOP_PER_PAGE && (
         <div className="hidden md:flex items-center justify-end gap-2 mb-3">
-          <button
+          <IconButton
+            icon="chevron-left"
             onClick={prevDesktop}
             disabled={desktopStart === 0}
-            aria-label="Imaginile anterioare"
-            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
+            label="Imaginile anterioare"
+          />
+          <IconButton
+            icon="chevron-right"
             onClick={nextDesktop}
             disabled={desktopStart === maxStart}
-            aria-label="Imaginile următoare"
-            className="w-10 h-10 border-retro border-line flex items-center justify-center text-primary hover:bg-surface-dark hover:text-primary-on-dark transition-colors disabled:text-disabled disabled:border-line-subtle disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-disabled"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+            label="Imaginile următoare"
+          />
         </div>
       )}
 
@@ -271,13 +263,7 @@ export function GalleryCarousel({
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-4">
-          <button
-            onClick={prev}
-            aria-label="Imaginea anterioară"
-            className="size-10 flex items-center justify-center text-primary hover:text-accent transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
+          <IconButton icon="chevron-left" onClick={prev} label="Imaginea anterioară" />
           {showMobileDots ? (
             <div className="flex items-center gap-2">
               {images.map((_, i) => (
@@ -302,13 +288,7 @@ export function GalleryCarousel({
               {current + 1} / {total}
             </span>
           )}
-          <button
-            onClick={next}
-            aria-label="Imaginea următoare"
-            className="size-10 flex items-center justify-center text-primary hover:text-accent transition-colors"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+          <IconButton icon="chevron-right" onClick={next} label="Imaginea următoare" />
         </div>
       </div>
 
@@ -363,38 +343,35 @@ function Lightbox({
           transition={{ duration: DURATION.fast }}
           onClick={onClose}
         >
-          <button
-            type="button"
+          <IconButton
+            icon="close"
             onClick={onClose}
-            aria-label="Închide"
-            className="absolute top-4 right-4 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            label="Închide"
+            onDark
+            className="absolute top-4 right-4"
+          />
 
-          <button
-            type="button"
+          <IconButton
+            icon="chevron-left"
             onClick={(e) => {
               e.stopPropagation();
               onChange((index - 1 + images.length) % images.length);
             }}
-            aria-label="Imaginea anterioară"
-            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+            label="Imaginea anterioară"
+            onDark
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2"
+          />
 
-          <button
-            type="button"
+          <IconButton
+            icon="chevron-right"
             onClick={(e) => {
               e.stopPropagation();
               onChange((index + 1) % images.length);
             }}
-            aria-label="Imaginea următoare"
-            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-surface-subtle-on-dark hover-layer-on-dark text-primary-on-dark items-center justify-center transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+            label="Imaginea următoare"
+            onDark
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2"
+          />
 
           <motion.div
             key={index}

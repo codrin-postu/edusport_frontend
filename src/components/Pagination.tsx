@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import IconButton from "@/components/ui/icon-button";
 import { cn } from "@/utils/cn";
 
 /**
@@ -65,29 +65,17 @@ export function Pagination({
     return `${basePath}${qs ? `?${qs}` : ""}${hash}`;
   };
 
-  const arrowClass =
-    "flex size-10 items-center justify-center border-retro border-line text-primary transition-colors hover:bg-surface-dark hover:text-primary-on-dark";
-  const arrowDisabled = cn(arrowClass, "pointer-events-none text-disabled border-line-subtle");
-
   return (
     <nav
       aria-label={ariaLabel ?? "Paginare"}
       className="flex items-center justify-center gap-2 pt-12"
     >
-      {currentPage > 1 ? (
-        <Link
-          href={href(currentPage - 1)}
-          aria-label="Pagina anterioară"
-          scroll={scrollToAnchor}
-          className={arrowClass}
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Link>
-      ) : (
-        <span aria-hidden className={arrowDisabled}>
-          <ChevronLeft className="h-4 w-4" />
-        </span>
-      )}
+      <IconButton
+        icon="chevron-left"
+        href={currentPage > 1 ? href(currentPage - 1) : undefined}
+        disabled={currentPage <= 1}
+        label="Pagina anterioară"
+      />
 
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
         <Link
@@ -106,20 +94,12 @@ export function Pagination({
         </Link>
       ))}
 
-      {currentPage < totalPages ? (
-        <Link
-          href={href(currentPage + 1)}
-          aria-label="Pagina următoare"
-          scroll={scrollToAnchor}
-          className={arrowClass}
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Link>
-      ) : (
-        <span aria-hidden className={arrowDisabled}>
-          <ChevronRight className="h-4 w-4" />
-        </span>
-      )}
+      <IconButton
+        icon="chevron-right"
+        href={currentPage < totalPages ? href(currentPage + 1) : undefined}
+        disabled={currentPage >= totalPages}
+        label="Pagina următoare"
+      />
     </nav>
   );
 }

@@ -18,8 +18,8 @@ import {
   Label,
   Popover,
 } from "react-aria-components";
-import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { CalendarDate, parseDate } from "@internationalized/date";
+import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
 /**
@@ -200,7 +200,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
               v.trigger,
             )}
           >
-            <CalendarDays className="size-6" aria-hidden />
+            <Icon name="calendar-days" size="md" />
           </Button>
         </Group>
 
@@ -223,9 +223,9 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   {showYears
                     ? `${yearPage} - ${yearPage + YEARS_PER_PAGE - 1}`
                     : formatMonthYear(visible)}
-                  <ChevronDown
-                    className={cn("size-4 text-muted transition-transform", showYears && "rotate-180")}
-                    aria-hidden
+                  <Icon
+                    name="chevron-down"
+                    className={cn("text-muted transition-transform", showYears && "rotate-180")}
                   />
                 </Button>
                 {/* Borderless navigation: no box, no hover fill, the chevron
@@ -234,10 +234,10 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   {showYears ? (
                     <>
                       <NavButton label="Anii anteriori" tone={v.nav} onPress={() => setYearPage((y) => y - YEARS_PER_PAGE)}>
-                        <ChevronLeft className="size-6" aria-hidden />
+                        <Icon name="chevron-left" size="md" />
                       </NavButton>
                       <NavButton label="Anii următori" tone={v.nav} onPress={() => setYearPage((y) => y + YEARS_PER_PAGE)}>
-                        <ChevronRight className="size-6" aria-hidden />
+                        <Icon name="chevron-right" size="md" />
                       </NavButton>
                     </>
                   ) : (
@@ -250,7 +250,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                           v.nav,
                         )}
                       >
-                        <ChevronLeft className="size-6" aria-hidden />
+                        <Icon name="chevron-left" size="md" />
                       </Button>
                       <Button
                         slot="next"
@@ -260,7 +260,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                           v.nav,
                         )}
                       >
-                        <ChevronRight className="size-6" aria-hidden />
+                        <Icon name="chevron-right" size="md" />
                       </Button>
                     </>
                   )}

@@ -3,7 +3,8 @@
 import { cn } from "@/utils/cn";
 import ConsentGate from "@/components/blocks/cookie-consent/ConsentGate";
 import { COOKIE_CATEGORIES } from "@/components/blocks/cookie-consent/config";
-import { ArrowUpRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import Icon from "@/components/ui/icon";
+import IconButton from "@/components/ui/icon-button";
 import { motion, AnimatePresence } from "motion/react";
 import { DURATION } from "@/lib/motion";
 import { useState, useEffect, useRef, useCallback, useImperativeHandle, forwardRef, memo } from "react";
@@ -171,9 +172,9 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
           >
             <div className="flex items-center justify-center w-16 h-16 bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
               {playing ? (
-                <Pause className="w-6 h-6 text-primary-on-dark fill-white" />
+                <Icon name="pause" size="md" className="text-primary-on-dark fill-white" />
               ) : (
-                <Play className="w-6 h-6 text-primary-on-dark fill-white translate-x-0.5" />
+                <Icon name="play" size="md" className="text-primary-on-dark fill-white translate-x-0.5" />
               )}
             </div>
           </motion.div>
@@ -193,17 +194,12 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
           <span />
         )}
         <div className="flex items-center gap-3">
-          <button
+          <IconButton
+            icon={muted ? "volume-x" : "volume-2"}
             onClick={toggleMute}
-            className="size-10 flex items-center justify-center bg-surface-subtle-on-dark border border-line-subtle-on-dark backdrop-blur-sm text-primary-on-dark hover-layer-on-dark transition-colors"
-            aria-label={muted ? "Activează sunetul" : "Dezactivează sunetul"}
-          >
-            {muted ? (
-              <VolumeX className="size-6" />
-            ) : (
-              <Volume2 className="size-6" />
-            )}
-          </button>
+            onDark
+            label={muted ? "Activează sunetul" : "Dezactivează sunetul"}
+          />
           <a
             href={url}
             target="_blank"
@@ -211,7 +207,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             className="text-caption inline-flex items-center gap-1 text-secondary-on-dark hover:text-primary-on-dark transition-colors"
           >
             YouTube
-            <ArrowUpRight className="size-4" />
+            <Icon name="arrow-up-right" />
           </a>
         </div>
       </div>

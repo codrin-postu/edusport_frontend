@@ -9,6 +9,7 @@ import HeaderTop from "./components/HeaderTop";
 import NavigationMenuInteractive from "./components/NavigationMenuInteractive";
 import { navItems as staticNavItems, type NavItem } from "./navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
+import { ENROL_CTA, ENROL_CTA_CLOSED, ENROL_HREF } from "@/lib/cta";
 
 // Layers button (same hover fan as the CTA), square, matched to the CTA
 // height, with a hamburger face.
@@ -73,8 +74,8 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const pathname = usePathname();
-  const ctaHref = registrationOpen !== false ? "/inscrieri" : "/cursuri";
-  const ctaLabel = registrationOpen !== false ? "Înscrie-te la cursuri" : "Cursuri";
+  const ctaHref = registrationOpen !== false ? ENROL_HREF : "/cursuri";
+  const ctaLabel = registrationOpen !== false ? ENROL_CTA : ENROL_CTA_CLOSED;
   // Desktop nav excludes "Acasa" (no need for a home link in the top bar)
   const desktopNavItems = React.useMemo(
     () => navItems.filter((item) => item.key !== "acasa"),

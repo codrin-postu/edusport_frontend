@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { loadDraft } from "@/app/inscrieri/_draft";
+import IconButton from "@/components/ui/icon-button";
 
 /**
  * Offers the way back into a registration that is already under way.
@@ -73,14 +74,13 @@ const ResumeRegistration: React.FC = () => {
         >
           Continuă înscrierea
         </Link>
-        <button
-          type="button"
+        <IconButton
+          icon="close"
           onClick={dismiss}
-          aria-label="Închide"
-          className="text-body -mt-2 -mr-2 size-10 inline-flex items-center justify-center text-secondary-on-dark transition-colors hover:text-primary-on-dark md:mt-0"
-        >
-          ✕
-        </button>
+          label="Închide"
+          onDark
+          className="-mt-2 -mr-2 md:mt-0"
+        />
       </div>
       <Link
         href={FORM_PATH}

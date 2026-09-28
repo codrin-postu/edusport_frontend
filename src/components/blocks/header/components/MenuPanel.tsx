@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { useEffect, useCallback } from "react";
 import { navItems as staticNavItems, type NavItem } from "../navItems";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
+import { ENROL_CTA, ENROL_CTA_CLOSED, ENROL_HREF } from "@/lib/cta";
 
 interface MenuPanelProps {
   isOpen: boolean;
@@ -45,8 +46,8 @@ const MenuPanel: React.FC<MenuPanelProps> = ({ isOpen, onClose, buttonRef, navIt
     };
   }, [isOpen, handleEscapeKey]);
 
-  const ctaHref = registrationOpen !== false ? "/inscrieri" : "/cursuri";
-  const ctaLabel = registrationOpen !== false ? "Înscrie-te la cursuri" : "Cursuri";
+  const ctaHref = registrationOpen !== false ? ENROL_HREF : "/cursuri";
+  const ctaLabel = registrationOpen !== false ? ENROL_CTA : ENROL_CTA_CLOSED;
 
   return (
     <RetroPanel

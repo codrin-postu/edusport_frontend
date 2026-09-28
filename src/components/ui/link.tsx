@@ -1,7 +1,7 @@
 import { LinkVariants } from "@/utils/constants";
-import { ArrowUpRight, Mail, Phone } from "lucide-react";
 import NextLink from "next/link";
 import React from "react";
+import Icon, { type IconName } from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
 type LinkType = "internal" | "external" | "phone" | "email";
@@ -21,11 +21,11 @@ const variantClasses: Record<LinkVariants, string> = {
   default: "text-primary",
 };
 
-const linkTypeIcons: Record<LinkType, React.FC<{ className?: string }> | null> = {
+const linkTypeIcons: Record<LinkType, IconName | null> = {
   internal: null,
-  external: ArrowUpRight,
-  phone: Phone,
-  email: Mail,
+  external: "arrow-up-right",
+  phone: "phone",
+  email: "mail",
 };
 
 const Link: React.FC<LinkProps> = ({
@@ -45,12 +45,15 @@ const Link: React.FC<LinkProps> = ({
   const classes = cn(usesLinkUtility ? "" : variantClasses[variant], "transition-colors", className);
 
   if (variant === LinkVariants.FOOTER_ANIMATED) {
-    const Icon = linkTypeIcons[linkType];
+    const iconName = linkTypeIcons[linkType];
     return (
       <NextLink className={classes} href={href} {...rest}>
         <span className="link">{children}</span>
-        {Icon && (
-          <Icon className="size-4 shrink-0 opacity-0 translate-y-1 transition-all duration-base group-hover:opacity-100 group-hover:translate-y-0" />
+        {iconName && (
+          <Icon
+            name={iconName}
+            className="opacity-0 translate-y-1 transition-all duration-base group-hover:opacity-100 group-hover:translate-y-0"
+          />
         )}
       </NextLink>
     );
