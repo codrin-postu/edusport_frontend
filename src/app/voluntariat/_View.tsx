@@ -79,7 +79,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       {/* ─── CUM POȚI AJUTA (split panel) ─── */}
       <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
-          <Card as="div" padding="none" className="grid md:grid-cols-[1fr_1.3fr]">
+          <Card as="div" padding="none" className="grid md:grid-cols-[1fr_1.3fr] bg-transparent">
             {/* Left — navy intro */}
             <div className="bg-surface-dark p-8 text-primary-on-dark md:p-12">
               <p className="text-label uppercase text-mustard">

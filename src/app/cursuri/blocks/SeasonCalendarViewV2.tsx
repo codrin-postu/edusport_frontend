@@ -482,7 +482,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           <Card
             shadow="none"
             padding="none"
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle bg-transparent"
           >
             {groupedWeekends.map((group) => (
               <MonthColumn
