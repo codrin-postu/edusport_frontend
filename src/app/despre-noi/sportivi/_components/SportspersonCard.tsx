@@ -59,6 +59,9 @@ interface Props {
    * skin, so the legacy card can use the new medal placement too.
    */
   medalsInStats?: boolean;
+  /** next/image `sizes` for the photo, for a host whose column width differs
+   *  from the default grid guess. */
+  imageSizes?: string;
 }
 
 /** Derive tier (gold/silver/bronze/neutral) + display label from bestPlacement. */
@@ -108,6 +111,7 @@ export function SportspersonCard({
   restingOffsetY = 0,
   retro = false,
   medalsInStats = false,
+  imageSizes,
 }: Props) {
   // Medals shown in the bottom bar (instead of the top corner) whenever the
   // retro skin is on OR the caller opts in explicitly.
@@ -258,9 +262,10 @@ export function SportspersonCard({
               alt={sportsperson.photo.alternativeText ?? sportsperson.name}
               fill
               sizes={
-                isSpotlight
+                imageSizes ??
+                (isSpotlight
                   ? "260px"
-                  : "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                  : "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw")
               }
               className="object-cover"
             />

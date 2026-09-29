@@ -28,6 +28,9 @@ interface Props {
   /** Anchor id on the host page so the URL hash lands the viewport on
    *  the grid after the soft navigation. */
   scrollAnchor?: string;
+  /** Extra query params kept across a search push (e.g. the roster
+   *  `view`). Empty values are skipped. */
+  extraQuery?: Record<string, string>;
 }
 
 /** Time to wait after the last keystroke before pushing the value into
@@ -37,7 +40,7 @@ interface Props {
  *  unresponsive when you've finished typing. */
 const DEBOUNCE_MS = 350;
 
-export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
+export function SearchBar({ initialValue = "", scrollAnchor, extraQuery }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [value, setValue] = useState(initialValue);
@@ -54,13 +57,18 @@ export function SearchBar({ initialValue = "", scrollAnchor }: Props) {
       const trimmed = value.trim();
       const params = new URLSearchParams();
       if (trimmed) params.set("search", trimmed);
+      if (extraQuery) {
+        for (const [k, v] of Object.entries(extraQuery)) {
+          if (v) params.set(k, v);
+        }
+      }
       const qs = params.toString();
       const hash = scrollAnchor ? `#${scrollAnchor}` : "";
       const url = `${pathname}${qs ? `?${qs}` : ""}${hash}`;
       startTransition(() => router.push(url, { scroll: false }));
     }, DEBOUNCE_MS);
     return () => clearTimeout(handle);
-  }, [value, pathname, router, scrollAnchor]);
+  }, [value, pathname, router, scrollAnchor, extraQuery]);
 
   // Keep input synced with URL when the user navigates back/forward
   // (e.g. browser history) — without this the input would lag behind

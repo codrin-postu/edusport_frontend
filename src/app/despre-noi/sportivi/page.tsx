@@ -16,13 +16,21 @@ import {
 import { Pagination } from "@/components/Pagination";
 import { SearchBar } from "./_components/SearchBar";
 import { Spotlight } from "./_components/Spotlight";
+import { SportspersonCard } from "./_components/SportspersonCard";
+import { ViewToggle, type RosterView } from "./_components/ViewToggle";
 
-// Reads `searchParams.page` + `searchParams.search`, so the page must be
+// Reads `searchParams.page`, `.search` and `.view`, so the page must be
 // rendered dynamically per request — can't be statically pre-rendered.
 export const dynamic = "force-dynamic";
 
-/** Rows shown per page. Spotlight is bonus on page 1; not counted here. */
-const PAGE_SIZE = 10;
+/** Athletes shown per page, per view. Spotlight is bonus; not counted here. */
+const PAGE_SIZE: Record<RosterView, number> = { carduri: 12, lista: 10 };
+
+/** next/image `sizes` for a card in the roster grid: 1 / 2 / 3 / 4 columns,
+ *  capped at the max-w-content column width (1280px minus gutters and gaps).
+ *  Phones cap the single card at 260px so it stays portrait. */
+const GRID_CARD_SIZES =
+  "(min-width: 1280px) 272px, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 260px";
 const BASE_PATH = "/despre-noi/sportivi";
 
 export const metadata: Metadata = {
@@ -33,11 +41,14 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: Promise<{ page?: string; search?: string }>;
+  searchParams: Promise<{ page?: string; search?: string; view?: string }>;
 }
 
 export default async function SportiviIndexPage({ searchParams }: Props) {
-  const { page: pageParam, search: searchParam } = await searchParams;
+  const { page: pageParam, search: searchParam, view: viewParam } = await searchParams;
+  // `?view=lista` picks the ranked list; anything else (or absent) is cards.
+  const view: RosterView = viewParam === "lista" ? "lista" : "carduri";
+  const pageSize = PAGE_SIZE[view];
   const requestedPage = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
   const search = (searchParam ?? "").trim();
   // When searching, the spotlight band becomes a distraction (it's a
@@ -60,7 +71,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
     }
     const gridPage = await fetchPublicSportspeoplePage({
       page: requestedPage,
-      pageSize: PAGE_SIZE,
+      pageSize,
       search,
     });
     gridData = gridPage.data;
@@ -178,93 +189,133 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               </div>
             </div>
 
-            <SearchBar initialValue={search} scrollAnchor="sportivi-grid" />
+            <SearchBar
+              initialValue={search}
+              scrollAnchor="sportivi-grid"
+              extraQuery={view === "lista" ? { view } : undefined}
+            />
 
-            {gridData.length === 0 ? (
-              <div className="mx-auto mt-12 max-w-md py-12 text-center">
-                <p className="text-body text-secondary">
-                  Niciun sportiv găsit.
-                </p>
-                {isSearching && (
-                  <p className="text-body-sm mt-2 text-secondary">
-                    Încearcă alt nume sau șterge filtrul.
+            <div className="mx-auto mt-12 max-w-content">
+              {/* View picker: right-aligned on desktop, centred under the
+                  centred header on phones. */}
+              <div className="flex justify-center sm:justify-end">
+                <ViewToggle view={view} search={search || undefined} />
+              </div>
+
+              {gridData.length === 0 ? (
+                <div className="mx-auto mt-12 max-w-md py-12 text-center">
+                  <p className="text-body text-secondary">
+                    Niciun sportiv găsit.
                   </p>
-                )}
-              </div>
-            ) : (
-              <div className="mx-auto mt-12 max-w-prose border-y-retro border-line text-left">
-                {gridData.map((sp, i) => {
-                  const st = statsByAthlete.get(sp.documentId)!;
-                  const medalTotal =
-                    st.goldCount + st.silverCount + st.bronzeCount;
-                  const rank = (currentPage - 1) * PAGE_SIZE + i + 1;
-                  return (
-                    <Link
+                  {isSearching && (
+                    <p className="text-body-sm mt-2 text-secondary">
+                      Încearcă alt nume sau șterge filtrul.
+                    </p>
+                  )}
+                </div>
+              ) : view === "carduri" ? (
+                /* CARD VIEW: the same trading card as the landing and the
+                   spotlight, flat at rest (restingRotation 0) but keeping the
+                   pointer-follow 3D tilt on hover. */
+                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8">
+                  {gridData.map((sp) => (
+                    <div
                       key={sp.documentId}
-                      href={`/despre-noi/sportivi/${sp.slug}`}
-                      className="group relative flex items-center gap-4 sm:gap-6 px-3 sm:px-4 py-4 border-b border-line-subtle last:border-b-0 transition-colors hover-layer"
+                      className="mx-auto w-full max-w-[260px] sm:max-w-none"
                     >
-                      <span
-                        aria-hidden
-                        className="absolute left-0 top-0 bottom-0 w-1 bg-rust opacity-0 group-hover:opacity-100 transition-opacity"
+                      <SportspersonCard
+                        sportsperson={sp}
+                        stats={statsByAthlete.get(sp.documentId)!}
+                        restingRotation={0}
+                        retro
+                        imageSizes={GRID_CARD_SIZES}
                       />
-                      <span
-                        aria-hidden
-                        className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-muted group-hover:text-accent transition-colors"
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* LIST VIEW: ranked rows, full content width. Below lg the
+                   stats stack under the name; from lg they sit in fixed-width
+                   right-aligned columns on the row. */
+                <div className="mt-6 border-y-retro border-line text-left">
+                  {gridData.map((sp, i) => {
+                    const st = statsByAthlete.get(sp.documentId)!;
+                    const medalTotal =
+                      st.goldCount + st.silverCount + st.bronzeCount;
+                    const rank = (currentPage - 1) * pageSize + i + 1;
+                    return (
+                      <Link
+                        key={sp.documentId}
+                        href={`/despre-noi/sportivi/${sp.slug}`}
+                        className="group relative flex items-center gap-4 sm:gap-6 px-3 sm:px-4 py-4 border-b border-line-subtle last:border-b-0 transition-colors hover-layer"
                       >
-                        {String(rank).padStart(2, "0")}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="text-body text-primary group-hover:text-accent transition-colors truncate">
-                          {sp.name}
-                        </div>
-                        {sp.activeSince && (
-                          <div className="text-label mt-0.5 uppercase text-secondary">
-                            Membru din {sp.activeSince.slice(0, 4)}
+                        <span
+                          aria-hidden
+                          className="absolute left-0 top-0 bottom-0 w-1 bg-rust opacity-0 group-hover:opacity-100 transition-opacity"
+                        />
+                        <span
+                          aria-hidden
+                          className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-muted group-hover:text-accent transition-colors"
+                        >
+                          {String(rank).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0 flex-1 lg:flex lg:items-center lg:gap-6">
+                          <div className="min-w-0 lg:flex-1">
+                            <div className="text-body text-primary group-hover:text-accent transition-colors truncate">
+                              {sp.name}
+                            </div>
+                            {sp.activeSince && (
+                              <div className="text-label mt-0.5 uppercase text-secondary">
+                                Membru din {sp.activeSince.slice(0, 4)}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                      <div className="ml-auto flex items-center gap-4 sm:gap-6">
-                        <Stat
-                          size="sm"
-                          layout="stack"
-                          value={String(st.totalCompetitions).padStart(2, "0")}
-                          label="Comp."
-                          accent
-                          className="items-end shrink-0 w-12"
-                        />
-                        <Stat
-                          size="sm"
-                          layout="stack"
-                          value={String(medalTotal).padStart(2, "0")}
-                          label="Medalii"
-                          className="items-end shrink-0 w-12"
-                        />
-                        <Stat
-                          size="sm"
-                          layout="stack"
-                          value={
-                            st.bestScore !== null
-                              ? st.bestScore.toFixed(2)
-                              : "—"
-                          }
-                          label="Best"
-                          className="items-end shrink-0 hidden sm:flex w-14"
-                        />
-                        <Icon name="chevron-right" className="text-secondary group-hover:text-accent transition-colors" />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+                          <div className="mt-3 flex gap-6 lg:mt-0 lg:shrink-0">
+                            <Stat
+                              size="sm"
+                              layout="stack"
+                              value={String(st.totalCompetitions).padStart(2, "0")}
+                              label="Competiții"
+                              accent
+                              labelClassName="whitespace-nowrap"
+                              className="shrink-0 w-28 lg:items-end"
+                            />
+                            <Stat
+                              size="sm"
+                              layout="stack"
+                              value={String(medalTotal).padStart(2, "0")}
+                              label="Medalii"
+                              labelClassName="whitespace-nowrap"
+                              className="shrink-0 w-20 lg:items-end"
+                            />
+                            <Stat
+                              size="sm"
+                              layout="stack"
+                              value={
+                                st.bestScore !== null
+                                  ? st.bestScore.toFixed(2)
+                                  : "—"
+                              }
+                              label="Cel mai bun scor"
+                              labelClassName="whitespace-nowrap"
+                              className="shrink-0 hidden sm:flex w-40 lg:items-end"
+                            />
+                          </div>
+                        </div>
+                        <Icon name="chevron-right" className="shrink-0 text-secondary group-hover:text-accent transition-colors" />
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               basePath={BASE_PATH}
               scrollAnchor="sportivi-grid"
-              extraQuery={search ? { search } : undefined}
+              extraQuery={{ search, view: view === "lista" ? view : "" }}
             />
           </section>
         </div>
