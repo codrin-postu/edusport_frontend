@@ -477,6 +477,8 @@ h1.text-branding-font {
   font-family: var(--font-display); font-weight: 900; font-size: 8.75rem; line-height: 0.82; letter-spacing: -0.05em;
   @media (width >= 48rem) { font-size: 13.75rem; }
 }
+/* Named exception: prices in the Cursuri pricing table, Inter 700 18px. */
+@utility text-price { font-weight: 700; font-size: 1.125rem; line-height: 1.2; letter-spacing: 0; }
 @utility text-athlete-stat { font-family: var(--font-display); font-weight: 900; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; }
 /* Named exception: the header logo wordmark (Climate Crisis, 22px, the
    0.05em letter spacing it had before SP1). */
