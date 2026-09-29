@@ -10,6 +10,8 @@ export interface HomepageRegistration {
   scheduleDays?: string | null;
   scheduleTimes?: string | null;
   locationName?: string | null;
+  /** Opens in a new tab; falls back to a Google Maps search built from locationName. */
+  locationHref?: string | null;
   ctaPrimaryLabel?: string | null;
   ctaPrimaryUrl?: string | null;
   ctaSecondaryLabel?: string | null;

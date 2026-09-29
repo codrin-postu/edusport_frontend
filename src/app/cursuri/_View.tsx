@@ -15,6 +15,9 @@ interface CoursesPageProps {
   currentSeason: string;
   isRegistrationOpen: boolean;
   cursuriPageData: CoursePageContent;
+  /** Rink address (site-settings contact data), shared by the banner and about bullet. */
+  locationDisplay: string;
+  locationHref?: string;
 }
 
 const CoursesPage: React.FC<CoursesPageProps> = ({
@@ -23,17 +26,25 @@ const CoursesPage: React.FC<CoursesPageProps> = ({
   currentSeason,
   isRegistrationOpen,
   cursuriPageData,
+  locationDisplay,
+  locationHref,
 }) => {
   return (
     <div className={cn("min-h-screen", "bg-surface-raised")}>
       <CoursesBannerSection
         currentSeason={currentSeason}
         isRegistrationOpen={isRegistrationOpen}
+        locationDisplay={locationDisplay}
+        locationHref={locationHref}
         {...cursuriPageData.banner}
       />
 
       <div className="relative z-raised bg-surface-raised">
-        <AboutSection {...cursuriPageData.aboutSection} />
+        <AboutSection
+          locationDisplay={locationDisplay}
+          locationHref={locationHref}
+          {...cursuriPageData.aboutSection}
+        />
 
         <PricingSection
           pricingData={pricingData}

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { getSiteSettings } from "@/lib/site-settings";
+import { mapsHref } from "@/lib/mapsLink";
+import { FALLBACK_ADDRESS_DISPLAY, FALLBACK_ADDRESS_MAPS_URL } from "@/lib/location";
 import { fetchArticlesPaginated, strapiMediaUrl, fetchNextEvent } from "@/lib/strapi-article";
 import type { StrapiMediaImage } from "@/lib/strapi-article";
 import {
@@ -36,11 +39,6 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 3600; // 1 hour — editor changes are pushed via /api/revalidate webhook
-
-interface SiteSettingsCms {
-  registration?: { open?: boolean; currentSeason?: string } | null;
-  contact?: { addressDisplay?: string | null; whatsappChannelUrl?: string | null } | null;
-}
 
 /** First value that is a non-blank string, else undefined. */
 function firstFilled(...values: (string | null | undefined)[]): string | undefined {
@@ -94,7 +92,7 @@ export default async function Page() {
     athletesTotalResult,
     clubFiguresResult,
   ] = await Promise.allSettled([
-    fetchStrapi<SiteSettingsCms>("site-settings"),
+    getSiteSettings(),
     fetchStrapi<HomepageCms>("homepage", "populate=competitionGallery"),
     fetchArticlesPaginated({ page: 1, pageSize: 5 }),
     fetchPublicSportspeople(),
@@ -108,13 +106,13 @@ export default async function Page() {
   const athletesTotal =
     athletesTotalResult.status === "fulfilled" ? athletesTotalResult.value : null;
 
-  if (settingsResult.status === "fulfilled" && settingsResult.value?.registration) {
-    if (settingsResult.value.registration.open !== undefined) {
-      registrationOpen = settingsResult.value.registration.open;
+  if (settingsResult.status === "fulfilled") {
+    if (settingsResult.value.registrationOpen !== undefined) {
+      registrationOpen = settingsResult.value.registrationOpen;
     }
-    currentSeason = settingsResult.value.registration.currentSeason;
+    currentSeason = settingsResult.value.currentSeason;
   }
-  const contact = settingsResult.status === "fulfilled" ? settingsResult.value?.contact : undefined;
+  const contact = settingsResult.status === "fulfilled" ? settingsResult.value.contact : undefined;
   if (homepageResult.status === "fulfilled" && homepageResult.value) {
     cms = homepageResult.value;
   }
@@ -123,9 +121,16 @@ export default async function Page() {
   // homepage keeps its own field only when an editor deliberately overrode it,
   // so an empty field here means "use the setting", not "show nothing". That is
   // what left the WhatsApp button without an address.
+  const registrationLocationName = firstFilled(
+    cms.registration?.locationName,
+    contact?.addressDisplay,
+    FALLBACK_ADDRESS_DISPLAY,
+  );
   const registrationCms: HomepageCms["registration"] = {
     ...(cms.registration ?? {}),
-    locationName: firstFilled(cms.registration?.locationName, contact?.addressDisplay),
+    locationName: registrationLocationName,
+    locationHref:
+      mapsHref(registrationLocationName, contact?.addressMapsUrl) ?? FALLBACK_ADDRESS_MAPS_URL,
   };
   const registrationClosedCms: HomepageCms["registrationClosed"] = {
     ...(cms.registrationClosed ?? {}),

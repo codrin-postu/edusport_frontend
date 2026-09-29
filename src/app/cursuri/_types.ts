@@ -22,14 +22,11 @@ export interface CoursePageContent {
     title: string;
     scheduleDays: string;
     scheduleTimes: string;
-    locationName: string;
-    locationUrl: string;
   };
   aboutSection: {
     eyebrow: string;
     heading: string;
     content: string;
-    locationBullet: string;
     levelsBullet: string;
     coachesBullet: string;
     videoUrl: string;

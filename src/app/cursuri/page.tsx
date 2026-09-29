@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { getSiteSettings } from "@/lib/site-settings";
+import { mapsHref } from "@/lib/mapsLink";
+import { FALLBACK_ADDRESS_DISPLAY, FALLBACK_ADDRESS_MAPS_URL } from "@/lib/location";
 import CoursesPage from "./_View";
 import type { CoursePricingData, CoursePageContent } from "./_types";
 import { CURSURI_PAGE_DATA, CURRENT_SEASON, IS_REGISTRATION_OPEN } from "./_data";
@@ -28,13 +31,13 @@ export default async function Page() {
   let currentSeason = CURRENT_SEASON;
   let isRegistrationOpen = IS_REGISTRATION_OPEN;
   let cursuriPageData = CURSURI_PAGE_DATA;
+  let locationDisplay = FALLBACK_ADDRESS_DISPLAY;
+  let locationHref: string | undefined = FALLBACK_ADDRESS_MAPS_URL;
 
   const [pricingResult, settingsResult, cursuriPageResult] = await Promise.allSettled([
-    // All three single-types are 100% JSON custom-fields — no populate needed.
+    // Both single-types are 100% JSON custom-fields — no populate needed.
     fetchStrapi<CoursePricingData>("pricing"),
-    fetchStrapi<{
-      registration?: { currentSeason?: string; open?: boolean };
-    }>("site-settings"),
+    getSiteSettings(),
     fetchStrapi<CoursePageContent>("cursuri-page"),
   ]);
 
@@ -71,10 +74,15 @@ export default async function Page() {
 
   if (settingsResult.status === "fulfilled") {
     const settings = settingsResult.value;
-    if (settings?.registration?.currentSeason)
-      currentSeason = settings.registration.currentSeason;
-    if (settings?.registration?.open !== undefined)
-      isRegistrationOpen = settings.registration.open;
+    if (settings.currentSeason) currentSeason = settings.currentSeason;
+    if (settings.registrationOpen !== undefined)
+      isRegistrationOpen = settings.registrationOpen;
+    if (settings.contact.addressDisplay) {
+      locationDisplay = settings.contact.addressDisplay;
+      locationHref =
+        mapsHref(settings.contact.addressDisplay, settings.contact.addressMapsUrl) ??
+        FALLBACK_ADDRESS_MAPS_URL;
+    }
   }
 
   if (cursuriPageResult.status === "fulfilled" && cursuriPageResult.value) {
@@ -94,6 +102,8 @@ export default async function Page() {
       currentSeason={currentSeason}
       isRegistrationOpen={isRegistrationOpen}
       cursuriPageData={cursuriPageData}
+      locationDisplay={locationDisplay}
+      locationHref={locationHref}
     />
   );
 }

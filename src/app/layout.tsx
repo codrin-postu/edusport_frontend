@@ -6,7 +6,7 @@ import "./globals.css";
 import { Footer, Header } from "../components/blocks";
 import ResumeRegistration from "@/components/blocks/resume-registration";
 import NavigationProgress from "../components/NavigationProgress";
-import { fetchStrapi } from "@/lib/strapi";
+import { getSiteSettings } from "@/lib/site-settings";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
 import { fetchNavPromoOverrides } from "@/lib/strapi-navigation";
 import { mergeNavOverrides } from "@/components/blocks/header/mergeNavOverrides";
@@ -74,19 +74,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let contactInfo: SiteContactInfo = {};
-  let registrationOpen: boolean | undefined;
-  try {
-    // Both fields are JSON custom-fields, returned by default — no populate.
-    const settings = await fetchStrapi<{
-      contact?: SiteContactInfo;
-      registration?: { open?: boolean };
-    }>("site-settings");
-    contactInfo = settings?.contact ?? {};
-    registrationOpen = settings?.registration?.open;
-  } catch {
-    // Fall through with empty - footer uses hardcoded defaults
-  }
+  const siteSettings = await getSiteSettings();
+  const contactInfo: SiteContactInfo = siteSettings.contact;
+  const registrationOpen: boolean | undefined = siteSettings.registrationOpen;
 
   const announcement = await fetchAnnouncement();
 

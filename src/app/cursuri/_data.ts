@@ -5,6 +5,11 @@
 import type { CoursePageContent } from "./_types";
 export type { PriceItem, PricingTier } from "./_types_pricing";
 
+// The rink location (banner + about bullet) is not part of this fallback: it
+// comes from the site-settings contact data (see src/lib/site-settings.ts),
+// with its own fallback in src/lib/location.ts, so every page shows the same
+// address instead of each page hardcoding its own text.
+
 export const CURRENT_SEASON = "Octombrie 2025 - Mai 2026";
 
 export const IS_REGISTRATION_OPEN = true;
@@ -14,15 +19,12 @@ export const CURSURI_PAGE_DATA: CoursePageContent = {
     title: "Școala de Patinaj",
     scheduleDays: "Sâmbătă & Duminică",
     scheduleTimes: "10:00–10:50 & 11:00–11:50",
-    locationName: "AFI Palace Cotroceni",
-    locationUrl: "https://maps.app.goo.gl/gmrERwQePvxYY6zx6",
   },
   aboutSection: {
     eyebrow: "Școala de Patinaj",
     heading: "Patinaj pentru toți, ghidați de campioni",
     content:
       "Organizată anual în perioada octombrie – mai de foști sportivi de performanță, Școala de Patinaj EduSport oferă cursuri structurate pe mai multe niveluri - de la primii pași până la avansați.\n\nCei mai talentați cursanți pot fi selectați pentru spectacole și demonstrații de patinaj artistic sau pentru a continua pregătirea în cadrul Clubului Sportiv EduSport.",
-    locationBullet: "Patinoarul Cotroceni On Ice, AFI Palace Cotroceni",
     levelsBullet:
       "Grupe pentru toate nivelurile: primii pași, începători, intermediari, avansați",
     coachesBullet:

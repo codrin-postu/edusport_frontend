@@ -27,6 +27,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
   const scheduleDays = cms?.scheduleDays ?? "Sâmbătă & Duminică";
   const scheduleTimes = cms?.scheduleTimes ?? "10:00–10:50 & 11:00–11:50";
   const locationName = cms?.locationName ?? "AFI Cotroceni";
+  const locationHref = cms?.locationHref ?? undefined;
   const ctaPrimaryLabel = cms?.ctaPrimaryLabel ?? ENROL_CTA;
   const ctaPrimaryUrl = cms?.ctaPrimaryUrl ?? "/inscrieri";
   const ctaSecondaryLabel = cms?.ctaSecondaryLabel ?? "Află mai mult";
@@ -67,7 +68,13 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
             </span>
             <span className="flex items-center gap-2">
               <Icon name="map-pin" />
-              {locationName}
+              {locationHref ? (
+                <Link href={locationHref} tone="quiet" external>
+                  {locationName}
+                </Link>
+              ) : (
+                locationName
+              )}
             </span>
           </div>
 

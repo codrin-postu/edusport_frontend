@@ -1,6 +1,6 @@
 import Link from "@/components/ui/link";
 import Section from "@/components/ui/section";
-import Icon, { type IconName } from "@/components/ui/icon";
+import MetaList, { type MetaListItem } from "@/components/ui/meta-list";
 import YoutubeEmbed from "@/components/blocks/youtube-embed/YoutubeEmbed";
 import Card from "@/components/ui/card";
 import SectionHeader from "@/components/ui/section-header";
@@ -10,7 +10,10 @@ interface AboutSectionProps {
   eyebrow: string;
   heading: string;
   content?: string;
-  locationBullet: string;
+  /** Rink address (site-settings contact data). Renders as a quiet link, like the banner. */
+  locationDisplay: string;
+  /** Opens in a new tab; falls back to a Google Maps search built from the address. */
+  locationHref?: string;
   levelsBullet: string;
   coachesBullet: string;
   videoUrl: string;
@@ -21,15 +24,16 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   eyebrow,
   heading,
   content,
-  locationBullet,
+  locationDisplay,
+  locationHref,
   levelsBullet,
   coachesBullet,
   videoUrl,
   videoLabel,
 }) => {
   const paragraphs = (content ?? "").split("\n\n").filter(Boolean);
-  const bullets: { icon: IconName; text: string }[] = [
-    { icon: "map-pin", text: locationBullet },
+  const bullets: MetaListItem[] = [
+    { icon: "map-pin", text: locationDisplay, href: locationHref, external: true },
     { icon: "users", text: levelsBullet },
     { icon: "award", text: coachesBullet },
   ];
@@ -46,14 +50,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
             ))}
           </div>
 
-          <div className="flex flex-col gap-3">
-            {bullets.map(({ icon, text }, i) => (
-              <div key={i} className="text-body-sm flex items-center gap-3 text-primary">
-                <Icon name={icon} className="text-accent" />
-                {text}
-              </div>
-            ))}
-          </div>
+          <MetaList layout="stack" items={bullets} />
 
           <Link
             href="/cursuri/program"

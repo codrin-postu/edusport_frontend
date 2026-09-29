@@ -11,8 +11,10 @@ interface CoursesBannerSectionProps {
   title: string;
   scheduleDays: string;
   scheduleTimes: string;
-  locationName: string;
-  locationUrl: string;
+  /** Rink address (site-settings contact data). */
+  locationDisplay: string;
+  /** Opens in a new tab; falls back to a Google Maps search built from the address. */
+  locationHref?: string;
 }
 
 const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
@@ -21,8 +23,8 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
   title,
   scheduleDays,
   scheduleTimes,
-  locationName,
-  locationUrl,
+  locationDisplay,
+  locationHref,
 }) => {
   return (
     <PageHeroSection
@@ -53,7 +55,7 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
         items={[
           { icon: "calendar", text: scheduleDays },
           { icon: "clock", text: scheduleTimes },
-          { icon: "map-pin", text: locationName, href: locationUrl, external: true },
+          { icon: "map-pin", text: locationDisplay, href: locationHref, external: true },
         ]}
       />
 
