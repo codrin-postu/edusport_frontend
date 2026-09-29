@@ -208,7 +208,7 @@ export default AboutUsSection;
 
 const Content: React.FC<{ panel: Panel; accent?: boolean }> = ({ panel, accent = false }) => (
   <>
-    <div className="text-label uppercase text-primary mb-3">
+    <div className="text-label uppercase text-accent mb-3">
       {panel.eyebrow}
     </div>
     <h2

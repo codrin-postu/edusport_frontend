@@ -26,6 +26,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import SectionHeader from "@/components/ui/section-header";
+import { roCount } from "@/lib/ro-plural";
 
 /**
  * Sportsperson profile — retro editorial layout.
@@ -108,6 +109,7 @@ const SportspersonView: React.FC<Props> = ({
   const hasScrapedResults =
     !!sportsperson.skateResultsSlug && (skateResults?.length ?? 0) > 0;
   const stats = computeStats(competitions, sportsperson.activeSince);
+  const podiumCount = stats.goldCount + stats.silverCount + stats.bronzeCount;
   const notableResults = pickNotableResults(competitions, 2);
   const tier = topTier(stats);
   const category = mostRecentCategory(competitions);
@@ -335,8 +337,10 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface-dark section text-primary-on-dark">
           <SectionWatermark tone="gold">PERFORMANȚE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-medal-gold">
-              Cele mai notabile rezultate
+            <div className="text-label uppercase text-accent-on-dark">
+              {podiumCount > 0
+                ? roCount(podiumCount, "podium", "podiumuri")
+                : "Cele mai bune rezultate"}
             </div>
             <h2 className="text-heading mt-2 text-primary-on-dark">
               Performanțe de vârf
@@ -419,7 +423,10 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>REZULTATE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <SectionHeader eyebrow="Rezultate competiții" title="Toate competițiile" />
+            <SectionHeader
+              eyebrow={roCount((skateResults ?? []).length, "competiție", "competiții")}
+              title="Toate competițiile"
+            />
             <SkateResults results={skateResults ?? []} />
           </div>
         </section>
@@ -433,7 +440,10 @@ const SportspersonView: React.FC<Props> = ({
         >
           <SectionWatermark>ISTORIC</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <SectionHeader eyebrow="Istoric competițional" title="Toate competițiile" />
+            <SectionHeader
+              eyebrow={roCount(historyRows.length, "competiție", "competiții")}
+              title="Toate competițiile"
+            />
             <MedalTotals {...historyMedalTotals} className="mt-8" />
             <div className="mt-8 flex flex-col">
               {visibleHistoryRows.map(({ comp, row, key }, idx) => {

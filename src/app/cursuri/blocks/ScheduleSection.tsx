@@ -27,7 +27,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
     <Section className={cn("pt-12 md:pt-16 pb-24 md:pb-24 bg-surface", "overflow-hidden")}>
         <div className="max-w-content mx-auto mb-12 md:mb-12">
           <span className="text-label uppercase text-accent">
-            Orarul Cursurilor
+            Sâmbătă &amp; Duminică
           </span>
           <h2 className="text-heading text-primary mt-2">
             Program Școala de Patinaj

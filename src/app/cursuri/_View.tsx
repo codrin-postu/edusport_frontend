@@ -49,6 +49,7 @@ const CoursesPage: React.FC<CoursesPageProps> = ({
         <PricingSection
           pricingData={pricingData}
           footerNotes={footerNotes}
+          currentSeason={currentSeason}
           {...cursuriPageData.promoCard}
         />
         <InfoSection {...cursuriPageData.infoSection} />

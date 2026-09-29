@@ -6,8 +6,15 @@ import Card from "@/components/ui/card";
 import RegistrationForm from "./_RegistrationForm";
 import type { FormConfig } from "@/lib/strapi-forms";
 
-const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
+interface InscrieriViewProps {
+  formConfig?: FormConfig | null;
+  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
+  currentSeason: string;
+}
+
+const InscrieriView: React.FC<InscrieriViewProps> = ({
   formConfig = null,
+  currentSeason,
 }) => {
   return (
     <div className="min-h-screen bg-surface">
@@ -26,7 +33,7 @@ const InscrieriView: React.FC<{ formConfig?: FormConfig | null }> = ({
           <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">
               <p className="text-label uppercase text-accent">
-                Formular de înscriere
+                {currentSeason}
               </p>
               <h2 className="text-heading text-primary">
                 Înscrie-ți copilul

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import InscrieriView from "./_View";
 import { fetchFormConfig } from "@/lib/strapi-forms";
+import { getSiteSettings } from "@/lib/site-settings";
+import { CURRENT_SEASON } from "../cursuri/_data";
 
 export const metadata: Metadata = {
   title: "Înscrieri",
@@ -23,6 +25,10 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function Page() {
-  const formConfig = await fetchFormConfig("inscriere");
-  return <InscrieriView formConfig={formConfig} />;
+  const [formConfig, settings] = await Promise.all([
+    fetchFormConfig("inscriere"),
+    getSiteSettings(),
+  ]);
+  const currentSeason = settings.currentSeason ?? CURRENT_SEASON;
+  return <InscrieriView formConfig={formConfig} currentSeason={currentSeason} />;
 }

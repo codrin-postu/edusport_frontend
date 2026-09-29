@@ -39,7 +39,7 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
     <RegistrationScrollFrameV2>
       <div className="w-full max-w-content mx-auto gutter">
         <div className="relative z-raised flex flex-col gap-8 max-w-2xl md:max-w-[52%]">
-          <p className="text-label uppercase text-primary">
+          <p className="text-label uppercase text-accent">
             {seasonLabel}
           </p>
 

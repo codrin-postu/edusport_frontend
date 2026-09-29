@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
+import { getSiteSettings } from "@/lib/site-settings";
+import { CURRENT_SEASON } from "../_data";
 import RegulamentPage from "./_View";
 import type { CourseRegulationsData, RegulationCategory } from "./_types";
 
@@ -22,6 +24,7 @@ export const revalidate = 86400; // 24h - regulations rarely change
 
 export default async function Page() {
   let categories: RegulationCategory[] = [];
+  let currentSeason = CURRENT_SEASON;
 
   try {
     const data = await fetchStrapi<CourseRegulationsData>(
@@ -33,5 +36,8 @@ export default async function Page() {
     // Fall through with empty array - _View renders an empty state
   }
 
-  return <RegulamentPage categories={categories} />;
+  const settings = await getSiteSettings();
+  if (settings.currentSeason) currentSeason = settings.currentSeason;
+
+  return <RegulamentPage categories={categories} currentSeason={currentSeason} />;
 }

@@ -7,6 +7,7 @@ import SectionHeader from "@/components/ui/section-header";
 import BulletList from "@/components/ui/bullet-list";
 import SeasonResults from "./_SeasonResults";
 import type { GalleryImage, Season, SeasonIndexEntry } from "./_data";
+import { roCount } from "@/lib/ro-plural";
 
 // ---------------------------------------------------------------------------
 // Page
@@ -57,7 +58,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
             <p className="text-label uppercase text-accent">
-              Palmares
+              {roCount(notableAchievements.length, "realizare", "realizări")}
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <h2 className="text-heading text-primary max-w-lg">
@@ -77,12 +78,16 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
           {/* Image carousel */}
           <GalleryCarousel
             images={galleryImages}
-            eyebrow="Galerie"
+            eyebrow={roCount(galleryImages.length, "fotografie", "fotografii")}
             title="Imagini de la competiții"
           />
 
           {/* Results, one season at a time */}
-          <SectionHeader eyebrow="Rezultate" title="Competiții pe sezoane" className="mb-8" />
+          <SectionHeader
+            eyebrow={roCount(seasonIndex.length, "sezon", "sezoane")}
+            title="Competiții pe sezoane"
+            className="mb-8"
+          />
 
           <SeasonResults seasonIndex={seasonIndex} seasons={seasons} initialSeasonId={initialSeasonId} />
         </div>

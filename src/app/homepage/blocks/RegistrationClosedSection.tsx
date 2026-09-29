@@ -41,7 +41,7 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
             <div className="relative flex flex-col gap-8 max-w-2xl">
               {/* Label + status pill */}
               <div className="flex items-center gap-3">
-                <p className="text-label uppercase text-muted-on-dark">
+                <p className="text-label uppercase text-accent-on-dark">
                   {seasonLabel}
                 </p>
                 <span className="text-caption inline-flex items-center gap-2 px-3 py-1 bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">

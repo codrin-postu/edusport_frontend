@@ -44,7 +44,7 @@ export default function EventsNewsSection({ event, articles }: EventsNewsSection
     <section className="bg-surface section-feature">
       <div className="max-w-content mx-auto gutter">
         {/* Header */}
-        <p className="text-label uppercase text-primary mb-2">
+        <p className="text-label uppercase text-accent mb-2">
           Actualitate
         </p>
         <h2 className="text-heading text-primary mb-12 md:mb-16">

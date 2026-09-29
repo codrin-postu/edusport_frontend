@@ -93,6 +93,8 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
 interface PricingSectionProps {
   pricingData: PricingTier[] | null;
   footerNotes?: string[] | null;
+  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
+  currentSeason: string;
   eyebrow: string;
   title: string;
   description: string;
@@ -103,6 +105,7 @@ interface PricingSectionProps {
 const PricingSection: React.FC<PricingSectionProps> = ({
   pricingData,
   footerNotes,
+  currentSeason,
   eyebrow,
   title,
   description,
@@ -114,7 +117,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <Section id="preturi" className="section bg-surface">
       <div className="flex flex-col gap-12">
-        <SectionHeader eyebrow="Tarife" title="Prețuri cursuri grup" />
+        <SectionHeader eyebrow={currentSeason} title="Prețuri cursuri grup" />
 
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Promo card — plain navy. Card always draws a border-retro edge;
@@ -124,7 +127,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             padding="none"
             className="relative overflow-hidden p-8 md:p-12 flex flex-col gap-6 min-h-[520px] border-none"
           >
-            <span className="text-label uppercase text-secondary-on-dark">
+            <span className="text-label uppercase text-accent-on-dark">
               {eyebrow}
             </span>
             <h3 className="text-subtitle text-primary-on-dark">
