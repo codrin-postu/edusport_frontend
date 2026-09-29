@@ -1,12 +1,17 @@
 import ArticleCard from "@/components/blocks/article-card";
 import { Pagination } from "@/components/Pagination";
 import { fetchArticlesPaginated } from "@/lib/strapi-article";
-import { CATEGORY_LABELS, type CategoryKey } from "./_data";
+import {
+  CATEGORY_LABELS,
+  EVENTS_FILTER,
+  EVENTS_FILTER_CATEGORIES,
+  type CategoryFilter,
+} from "./_data";
 import { PAGE_SIZE, formatDate, mapStrapiArticle } from "./_helpers";
 
 interface ArticleListAsyncProps {
   page: number;
-  category: CategoryKey | "toate";
+  category: CategoryFilter;
   search: string;
 }
 
@@ -25,7 +30,7 @@ export default async function ArticleListAsync({
     const result = await fetchArticlesPaginated({
       page,
       pageSize: PAGE_SIZE,
-      category,
+      category: category === EVENTS_FILTER ? EVENTS_FILTER_CATEGORIES : category,
       search,
     });
     articles = result.articles.map(mapStrapiArticle);

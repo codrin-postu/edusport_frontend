@@ -30,7 +30,6 @@ const DEFAULT_PATHS = [
   "/cursuri",
   "/cursuri/program",
   "/cursuri/regulament",
-  "/cursuri/evenimente",
   "/despre-noi",
   "/despre-noi/echipa",
   "/despre-noi/realizari",
@@ -48,7 +47,6 @@ const DEFAULT_PATHS = [
  */
 const DEFAULT_DYNAMIC_ROUTES = [
   "/noutati/[slug]",
-  "/cursuri/evenimente/[slug]",
   "/despre-noi/sportivi/[slug]",
 ];
 

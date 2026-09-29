@@ -1,3 +1,5 @@
+import { NOUTATI_EVENTS_HREF } from "@/app/noutati/_data";
+
 export interface DropdownItem {
   label: string;
   href: string;
@@ -86,7 +88,7 @@ export const navItems: NavItem[] = [
       },
       {
         label: "Evenimente și competiții",
-        href: "/cursuri/evenimente",
+        href: NOUTATI_EVENTS_HREF,
         description:
           "Informații despre spectacole, competiții sau alte evenimente",
       },

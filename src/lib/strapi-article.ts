@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // Strapi Article types & fetch helpers
-// Used by both /noutati and /cursuri/evenimente
+// Used by /noutati and the homepage
 // ---------------------------------------------------------------------------
 
 import { fetchStrapi, fetchStrapiPaginated } from "./strapi";
@@ -163,8 +163,8 @@ export async function fetchArticles(category?: CategoryKey): Promise<StrapiArtic
  * `eventLocation` and `eventAdmissionInfo` fields. `eventDate` wins over `date`
  * because `date` is the publish date of the write-up, not when it happens.
  *
- * Shared by the homepage hero and /cursuri/evenimente so the two can never
- * disagree about which event is next.
+ * Shared by the homepage hero and the homepage event card so the two can
+ * never disagree about which event is next.
  */
 export interface NextEvent {
   slug: string;
@@ -201,7 +201,8 @@ export async function fetchNextEvent(): Promise<NextEvent | null> {
 export async function fetchArticlesPaginated(opts: {
   page?: number;
   pageSize?: number;
-  category?: CategoryKey | "toate";
+  /** One category, several (matched with $in), or "toate" for no filter. */
+  category?: CategoryKey | readonly CategoryKey[] | "toate";
   search?: string;
 }): Promise<{ articles: StrapiArticle[]; total: number; pageCount: number }> {
   const { page = 1, pageSize = 6, category, search } = opts;
@@ -221,8 +222,10 @@ export async function fetchArticlesPaginated(opts: {
     "pagination[pageSize]": String(pageSize),
   });
 
-  if (category && category !== "toate") {
-    params.set("filters[category][$eq]", category);
+  if (Array.isArray(category)) {
+    category.forEach((c, i) => params.set(`filters[category][$in][${i}]`, c));
+  } else if (category && category !== "toate") {
+    params.set("filters[category][$eq]", category as CategoryKey);
   }
   if (search && search.trim()) {
     params.set("filters[title][$containsi]", search.trim());

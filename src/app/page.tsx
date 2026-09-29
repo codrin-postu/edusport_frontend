@@ -203,7 +203,7 @@ export default async function Page() {
         title: nextEvent.title,
         dateLabel: new Date(nextEvent.date).toLocaleDateString("ro-RO", { day: "numeric", month: "long" }),
         location: nextEvent.location,
-        href: `/cursuri/evenimente/${nextEvent.slug}`,
+        href: `/noutati/${nextEvent.slug}`,
       }
     : null;
 

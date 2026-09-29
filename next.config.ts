@@ -67,6 +67,23 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
 
+  // The events page merged into Noutăți: the list is Noutăți filtered to
+  // events and competitions, and every event is an article there by slug.
+  async redirects() {
+    return [
+      {
+        source: "/cursuri/evenimente",
+        destination: "/noutati?category=evenimente-competitii",
+        permanent: true,
+      },
+      {
+        source: "/cursuri/evenimente/:slug",
+        destination: "/noutati/:slug",
+        permanent: true,
+      },
+    ];
+  },
+
   // Icons (public/icons) never change under the same URL: <Icon> adds a
   // content hash as ?v=, so they can be cached for a year.
   async headers() {

@@ -11,7 +11,6 @@ export const ROUTES = [
   "/cursuri",
   "/cursuri/program",
   "/cursuri/regulament",
-  "/cursuri/evenimente",
   "/noutati",
   "/contact",
   "/parteneri",
@@ -28,7 +27,6 @@ export async function discoverSlugs(page: Page, base: string): Promise<string[]>
   for (const [list, prefix] of [
     ["/despre-noi/sportivi", "/despre-noi/sportivi/"],
     ["/noutati", "/noutati/"],
-    ["/cursuri/evenimente", "/cursuri/evenimente/"],
   ] as const) {
     await page.goto(new URL(list, base).toString());
     const href = await page

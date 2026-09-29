@@ -4,7 +4,7 @@ import Card, { CardTitle } from "@/components/ui/card";
 import Chip from "@/components/ui/chip";
 import { CATEGORY_LABELS } from "@/app/noutati/_data";
 import { SHIMMER_DATA_URL } from "@/lib/blurDataUrl";
-import type { Event } from "../../cursuri/evenimente/_data";
+import type { Event } from "../_types";
 import type { LatestArticleData } from "../../homepage/blocks/LatestArticleSection";
 import { EventCard } from "./EventResultsSection";
 

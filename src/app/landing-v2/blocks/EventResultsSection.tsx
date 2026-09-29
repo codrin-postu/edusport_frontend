@@ -3,7 +3,7 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import Icon from "@/components/ui/icon";
-import type { Event } from "../../cursuri/evenimente/_data";
+import type { Event } from "../_types";
 
 // Helpers module (the standalone EventResults section was merged into
 // EventsNewsSection). Exposes the event card + medal marker-tag helpers +
@@ -85,7 +85,7 @@ export function EventCard({ event }: { event: Event }) {
         )}
         <Button
           face="cream"
-          href={`/cursuri/evenimente/${event.slug}`}
+          href={`/noutati/${event.slug}`}
           className="self-start"
           umamiEvent="home.event_details"
         >

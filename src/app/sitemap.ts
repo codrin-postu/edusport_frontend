@@ -12,7 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/cursuri`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${siteUrl}/cursuri/program`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/cursuri/regulament`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${siteUrl}/cursuri/evenimente`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/inscrieri`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${siteUrl}/noutati`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
     { url: `${siteUrl}/despre-noi/echipa`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
@@ -31,9 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const articles = await fetchArticles();
     articleRoutes = articles.map((article) => ({
-      url: article.category === "evenimente"
-        ? `${siteUrl}/cursuri/evenimente/${article.slug}`
-        : `${siteUrl}/noutati/${article.slug}`,
+      url: `${siteUrl}/noutati/${article.slug}`,
       lastModified: new Date(article.date),
       changeFrequency: "weekly" as const,
       priority: 0.7,

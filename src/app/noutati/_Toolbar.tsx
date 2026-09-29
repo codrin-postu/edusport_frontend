@@ -6,10 +6,10 @@ import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/form-field";
 import { Icon } from "@/components/ui/icon";
 import { CATEGORIES, buildUrl } from "./_helpers";
-import type { CategoryKey } from "./_data";
+import type { CategoryFilter } from "./_data";
 
 interface ToolbarProps {
-  currentCategory: CategoryKey | "toate";
+  currentCategory: CategoryFilter;
   currentSearch: string;
 }
 
@@ -40,7 +40,7 @@ export default function Toolbar({
             navigate(
               buildUrl({
                 page: 1,
-                category: value as CategoryKey | "toate",
+                category: value as CategoryFilter,
                 search: currentSearch,
               }),
             )

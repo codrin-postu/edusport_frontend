@@ -13,9 +13,7 @@ export const dynamicParams = true;
 export async function generateStaticParams() {
   try {
     const articles = await fetchArticles();
-    return articles
-      .filter((a) => a.category !== "evenimente")
-      .map((a) => ({ slug: a.slug }));
+    return articles.map((a) => ({ slug: a.slug }));
   } catch {
     return [];
   }

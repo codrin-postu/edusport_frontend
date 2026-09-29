@@ -9,7 +9,7 @@ import type {
   SportspersonStats,
 } from "@/lib/strapi-sportsperson";
 import type { StrapiMediaImage } from "@/lib/strapi-article";
-import type { Event } from "../cursuri/evenimente/_data";
+import type { Event } from "./_types";
 import type { LatestArticleData } from "../homepage/blocks/LatestArticleSection";
 
 import AthletesSpotlight from "./blocks/AthletesSpotlight";

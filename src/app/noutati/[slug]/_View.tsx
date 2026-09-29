@@ -16,7 +16,7 @@ import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import Breadcrumb from "@/components/ui/breadcrumb";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { ArticleJsonLd, BreadcrumbJsonLd, EventJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import Card from "@/components/ui/card";
@@ -131,6 +131,18 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         image={article.coverImage}
         url={`${siteUrl}/noutati/${article.slug}`}
       />
+      {/* Event pages used to live at /cursuri/evenimente/[slug] with their own
+          SportsEvent data; it moved here with them. */}
+      {isEventLike && article.eventDate && (
+        <EventJsonLd
+          name={article.title}
+          description={article.description}
+          startDate={article.eventDate}
+          location={article.eventLocation}
+          image={article.coverImage}
+          url={`${siteUrl}/noutati/${article.slug}`}
+        />
+      )}
       <BreadcrumbJsonLd
         items={[
           { name: "Acasă", url: siteUrl },

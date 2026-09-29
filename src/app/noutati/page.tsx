@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Section from "@/components/ui/section";
-import type { CategoryKey } from "./_data";
+import { parseCategoryFilter } from "./_data";
 import FeaturedAsync from "./_FeaturedAsync";
 import ArticleListAsync from "./_ArticleListAsync";
 import Toolbar from "./_Toolbar";
@@ -51,7 +51,7 @@ export default async function Page({
     search: searchParam,
   } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
-  const category = (categoryParam ?? "toate") as CategoryKey | "toate";
+  const category = parseCategoryFilter(categoryParam);
   const search = searchParam ?? "";
 
   return (

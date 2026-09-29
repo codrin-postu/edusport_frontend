@@ -1,14 +1,15 @@
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import type { StrapiArticle } from "@/lib/strapi-article";
-import type { ArticleCardData, CategoryKey } from "./_data";
+import { EVENTS_FILTER, type ArticleCardData, type CategoryFilter } from "./_data";
 
 export interface CategoryOption {
-  key: CategoryKey | "toate";
+  key: CategoryFilter;
   label: string;
 }
 
 export const CATEGORIES: CategoryOption[] = [
   { key: "toate", label: "Toate" },
+  { key: EVENTS_FILTER, label: "Evenimente și competiții" },
   { key: "evenimente", label: "Evenimente" },
   { key: "anunturi", label: "Anunțuri" },
   { key: "general", label: "General" },
