@@ -4,7 +4,7 @@ import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
 import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import { FooterReveal, Header } from "../components/blocks";
+import { Footer, Header } from "../components/blocks";
 import ResumeRegistration from "@/components/blocks/resume-registration";
 import NavigationProgress from "../components/NavigationProgress";
 import { fetchStrapi } from "@/lib/strapi";
@@ -159,7 +159,7 @@ export default async function RootLayout({
         >
           {children}
         </main>
-        <FooterReveal contactInfo={contactInfo} registrationOpen={registrationOpen} />
+        <Footer contactInfo={contactInfo} registrationOpen={registrationOpen} />
         {/* Offers the way back into a form already begun, on whatever page
             they wandered to. Renders nothing without a saved draft. */}
         <ResumeRegistration />

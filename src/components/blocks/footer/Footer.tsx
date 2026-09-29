@@ -1,5 +1,4 @@
 import { Link } from "@/components";
-import CookiePreferencesLink from "@/components/blocks/cookie-consent/CookiePreferencesLink";
 import Button from "@/components/ui/button";
 import Icon, { type IconName } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
@@ -9,6 +8,7 @@ import { mapsHref } from "@/lib/mapsLink";
 import { cn } from "@/utils/cn";
 import { BRAND_NAME } from "@/utils/constants";
 import React from "react";
+import FooterHeightEffect from "./FooterHeightEffect";
 import { WhatsAppQR } from "./WhatsAppQR";
 
 export interface SiteContactInfo {
@@ -65,36 +65,6 @@ const footerLeftSections = [
   },
 ];
 
-function buildContactItems(info: SiteContactInfo): FooterItemData[] {
-  const items: FooterItemData[] = [];
-
-  // The address leads the contact list because it is what people come to the
-  // footer for. It links to the map rather than being text they have to retype:
-  // an exact link if one is set in the admin, otherwise a search built from the
-  // address itself, so it works without anyone configuring anything.
-  const maps = mapsHref(info.addressDisplay, info.addressMapsUrl);
-  if (info.addressDisplay) {
-    items.push(
-      maps
-        ? { type: "link", label: info.addressDisplay, href: maps, external: true }
-        : { type: "text", label: info.addressDisplay },
-    );
-  }
-  if (info.phone) {
-    items.push({ type: "phone", label: info.phone });
-  }
-  if (info.email) {
-    items.push({ type: "email", label: info.email });
-  }
-  if (info.facebookUrl1) {
-    items.push({ type: "social", label: "Facebook", href: info.facebookUrl1, icon: "facebook" });
-  }
-  if (info.instagramUrl) {
-    items.push({ type: "social", label: "Instagram", href: info.instagramUrl, icon: "instagram" });
-  }
-  return items;
-}
-
 const FooterBrandName: React.FC = () => {
   return (
     <div
@@ -110,7 +80,7 @@ const FooterBrandName: React.FC = () => {
   );
 };
 
-const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = (item) => {
+const FooterItem: React.FC<FooterItemData> = (item) => {
   if (item.type === "text") {
     return <Text className="text-primary-on-dark">{item.label}</Text>;
   }
@@ -131,8 +101,7 @@ const FooterItem: React.FC<FooterItemData & { retro?: boolean }> = (item) => {
   );
 };
 
-const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }> = ({ contactInfo, retro }) => {
-  const contactItems = buildContactItems(contactInfo ?? {});
+const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInfo }) => {
   const waUrl = contactInfo?.whatsappChannelUrl;
   // Landing footer: social shown as compact icons instead of text links. Each
   // icon renders only when the BE provides its URL (mirrors HeaderTop).
@@ -152,10 +121,7 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
           </Text>
           <div className="flex flex-col gap-3">
             {section.items.map((item, itemIndex) =>
-              <FooterItem key={itemIndex} {...item} retro={retro} />,
-            )}
-            {section.title === "Informații legale" && (
-              <CookiePreferencesLink />
+              <FooterItem key={itemIndex} {...item} />,
             )}
           </div>
         </div>
@@ -166,50 +132,41 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
         <Text variant="heading" className="text-primary-on-dark">
           Contactează-ne
         </Text>
-        {retro ? (
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-3">
-              {/* Address first: it is what people open the footer for, and it
-                  links to the map instead of being text to retype. */}
-              {contactInfo?.addressDisplay &&
-                (mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl) ? (
-                  <FooterItem
-                    type="link"
-                    label={contactInfo.addressDisplay}
-                    href={mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl)!}
-                    external
-                    retro
-                  />
-                ) : (
-                  <FooterItem type="text" label={contactInfo.addressDisplay} retro />
-                ))}
-              {contactInfo?.phone && <FooterItem type="phone" label={contactInfo.phone} retro />}
-              {contactInfo?.email && <FooterItem type="email" label={contactInfo.email} retro />}
+            {/* Address first: it is what people open the footer for, and it
+                links to the map instead of being text to retype. */}
+            {contactInfo?.addressDisplay &&
+              (mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl) ? (
+                <FooterItem
+                  type="link"
+                  label={contactInfo.addressDisplay}
+                  href={mapsHref(contactInfo.addressDisplay, contactInfo.addressMapsUrl)!}
+                  external
+                />
+              ) : (
+                <FooterItem type="text" label={contactInfo.addressDisplay} />
+              ))}
+            {contactInfo?.phone && <FooterItem type="phone" label={contactInfo.phone} />}
+            {contactInfo?.email && <FooterItem type="email" label={contactInfo.email} />}
+          </div>
+          {socialIcons.length > 0 && (
+            <div className="flex items-center gap-4 mt-1">
+              {socialIcons.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="-my-3 size-10 inline-flex items-center justify-center text-primary-on-dark transition-colors"
+                >
+                  <Icon name={s.icon} size="md" />
+                </a>
+              ))}
             </div>
-            {socialIcons.length > 0 && (
-              <div className="flex items-center gap-4 mt-1">
-                {socialIcons.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    aria-label={s.label}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="-my-3 size-10 inline-flex items-center justify-center text-primary-on-dark transition-colors"
-                  >
-                    <Icon name={s.icon} size="md" />
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {contactItems.map((item, itemIndex) =>
-              <FooterItem key={itemIndex} {...item} />,
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* WhatsApp - 4th column (only when the BE provides a channel URL) */}
@@ -225,7 +182,6 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
             Intră pentru a primi ultimele informații
           </p>
           <div className="flex items-center gap-2">
-            {!retro && <Icon name="whatsapp" className="text-primary-on-dark" />}
             <Link href={waUrl} tone="footer" external className="text-sm">
               Intră în canal
             </Link>
@@ -244,7 +200,6 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo; retro?: boolean }
             <WhatsAppQR size={72} url={waUrl} />
             <div className="w-px h-[72px] bg-surface-subtle-on-dark shrink-0" />
             <div className="flex items-center gap-2">
-              {!retro && <Icon name="whatsapp" className="text-primary-on-dark" />}
               <Link href={waUrl} tone="footer" external className="text-sm">
                 Intră în canal
               </Link>
@@ -288,28 +243,29 @@ const RegisterBand: React.FC = () => (
 
 interface FooterProps {
   contactInfo?: SiteContactInfo;
-  /** landing-v2 retro treatment: social as icons + phone/email placeholders. */
-  retro?: boolean;
-  /** When open (and retro), the register band shows as the footer top band. */
+  /** When open, the register band shows as the footer top band. */
   registrationOpen?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ contactInfo, retro, registrationOpen }) => {
+const Footer: React.FC<FooterProps> = ({ contactInfo, registrationOpen }) => {
   return (
-    <footer
-      className={cn(
-        "relative",
-        "overflow-hidden",
-        "bg-surface-dark",
-        "w-full",
-        "min-h-[250px]",
-        "pb-[10vw] 2xl:pb-[9.5em]",
-      )}
-    >
-      {retro && registrationOpen !== false && <RegisterBand />}
-      <FooterContent contactInfo={contactInfo} retro={retro} />
-      <FooterBrandName />
-    </footer>
+    <div className="relative">
+      <FooterHeightEffect />
+      <footer
+        className={cn(
+          "relative",
+          "overflow-hidden",
+          "bg-surface-dark",
+          "w-full",
+          "min-h-[250px]",
+          "pb-[10vw] 2xl:pb-[9.5em]",
+        )}
+      >
+        {registrationOpen !== false && <RegisterBand />}
+        <FooterContent contactInfo={contactInfo} />
+        <FooterBrandName />
+      </footer>
+    </div>
   );
 };
 
