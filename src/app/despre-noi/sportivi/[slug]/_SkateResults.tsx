@@ -223,7 +223,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
   );
 
   return (
-    <div className="mt-8 flex flex-col">
+    <div id="rezultate-competitii" className="mt-8 flex flex-col scroll-mt-24">
       <MedalTotals {...medalTotals} className="mb-6" />
 
       {/* Column header, sm+ only: on mobile the columns stack, so each score
@@ -368,6 +368,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
         currentPage={safePage + 1}
         totalPages={totalPages}
         ariaLabel="Paginare competiții"
+        scrollTargetId="rezultate-competitii"
         onPageChange={(p) => changePage(p - 1)}
       />
     </div>

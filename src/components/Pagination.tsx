@@ -1,35 +1,74 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import IconButton from "@/components/ui/icon-button";
 import { cn } from "@/utils/cn";
 
 /**
- * Server-rendered pagination control. No client JS — each control is a
- * plain `<Link>` that re-renders the page with a new query param.
+ * Pagination control. Each control is either a `<Link>` (re-renders the
+ * page with a new query param) or, in `onPageChange` mode, a plain button
+ * that updates client-side state.
  *
  * `basePath` is the canonical pathname (e.g. "/despre-noi/sportivi"); we
  * omit the page query on page 1 so the canonical URL stays clean.
  *
  * Scroll behaviour:
- * - With a `scrollAnchor`, the URL includes a `#<id>` hash; default Next
- *   `<Link>` scroll lets the browser focus that anchor on navigation.
- * - Without a `scrollAnchor`, scrolling is suppressed (`scroll={false}`)
- *   so the user keeps their current viewport position — preferred for
- *   long lists where the pagination control already sits below the
- *   visible cards.
+ * - Navigation never lets the browser jump the viewport on its own — Link
+ *   mode always passes `scroll={false}`.
+ * - When `scrollTargetId` is given, a page change (link navigation or
+ *   `onPageChange`) smooth-scrolls that element into view afterwards, but
+ *   only when it's the user clicking a control here — never on first load
+ *   or a direct link to e.g. `?page=3`, and never when the target is
+ *   already visible (the user hasn't scrolled past it).
+ * - With a `scrollAnchor`, the URL also carries a `#<id>` hash (kept for
+ *   shareable/no-JS links); it no longer drives the actual scroll.
  *
  * `onPageChange` mode: pass a callback instead of navigating via href, for a
  * host that keeps its own page state client-side (no URL involved). When
  * set, `basePath`/`scrollAnchor`/`extraQuery`/`paramName` are ignored.
  */
 
+// Set right before a page-change is kicked off (click handler), consumed by
+// the next Pagination mount/update's effect. Module-scoped rather than
+// component state because some hosts (e.g. a Suspense boundary keyed on the
+// page) remount the control on every page change, which would otherwise
+// wipe out any "was this user-initiated" bookkeeping kept in local state.
+let pendingScrollTargetId: string | null = null;
+
+function scrollToTargetIfPending(currentTargetId: string | undefined) {
+  if (!pendingScrollTargetId || pendingScrollTargetId !== currentTargetId) return;
+  pendingScrollTargetId = null;
+
+  const target = document.getElementById(currentTargetId!);
+  if (!target) return;
+
+  // Only move the viewport when the target has scrolled above it — if it's
+  // still visible (or below), the user hasn't scrolled past it.
+  const rect = target.getBoundingClientRect();
+  if (rect.top >= 0) return;
+
+  const reduceMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  target.scrollIntoView({
+    behavior: reduceMotion ? "auto" : "smooth",
+    block: "start",
+  });
+}
+
 interface Props {
   currentPage: number;
   totalPages: number;
   basePath?: string;
-  /** Optional anchor appended to every page URL. The host page renders an
-   *  element with this id so the browser scrolls to it on navigation. */
+  /** Optional anchor appended to every page URL. Kept for shareable links;
+   *  see `scrollTargetId` for the actual (smooth) scroll behaviour. */
   scrollAnchor?: string;
+  /** Id of the list's top element. When set, a user-initiated page change
+   *  (Link click or `onPageChange`) smooth-scrolls that element into view
+   *  — never on first load or a direct link to a given page. */
+  scrollTargetId?: string;
   /** Extra query params to carry across page navigation (e.g. an active
    *  `search` or `category` value so pagination inside a filtered list
    *  still works). Empty/falsy values are skipped. */
@@ -50,16 +89,31 @@ export function Pagination({
   totalPages,
   basePath,
   scrollAnchor,
+  scrollTargetId,
   extraQuery,
   paramName,
   ariaLabel,
   onPageChange,
 }: Props) {
+  const scrollTargetIdRef = useRef(scrollTargetId);
+  scrollTargetIdRef.current = scrollTargetId;
+
+  // Runs after every render where `currentPage` changed, including a fresh
+  // mount caused by a host remounting the list (e.g. a keyed Suspense
+  // boundary) — `pendingScrollTargetId` is what tells it apart from a first
+  // load / direct link, which never sets that flag.
+  useEffect(() => {
+    scrollToTargetIfPending(scrollTargetIdRef.current);
+  }, [currentPage]);
+
   if (totalPages <= 1) return null;
+
+  const requestScroll = () => {
+    if (scrollTargetId) pendingScrollTargetId = scrollTargetId;
+  };
 
   const hash = scrollAnchor ? `#${scrollAnchor}` : "";
   const pageKey = paramName ?? "page";
-  const scrollToAnchor = Boolean(scrollAnchor);
 
   const href = (p: number) => {
     const params = new URLSearchParams();
@@ -89,7 +143,10 @@ export function Pagination({
       {onPageChange ? (
         <IconButton
           icon="chevron-left"
-          onClick={() => onPageChange(currentPage - 1)}
+          onClick={() => {
+            requestScroll();
+            onPageChange(currentPage - 1);
+          }}
           disabled={currentPage <= 1}
           label="Pagina anterioară"
         />
@@ -98,7 +155,8 @@ export function Pagination({
           icon="chevron-left"
           href={currentPage > 1 ? href(currentPage - 1) : undefined}
           disabled={currentPage <= 1}
-          scroll={scrollToAnchor}
+          scroll={false}
+          onClick={requestScroll}
           label="Pagina anterioară"
         />
       )}
@@ -109,7 +167,10 @@ export function Pagination({
             key={p}
             type="button"
             aria-current={p === currentPage ? "page" : undefined}
-            onClick={() => onPageChange(p)}
+            onClick={() => {
+              requestScroll();
+              onPageChange(p);
+            }}
             className={pageClassName(p)}
           >
             {p}
@@ -119,7 +180,8 @@ export function Pagination({
             key={p}
             href={href(p)}
             aria-current={p === currentPage ? "page" : undefined}
-            scroll={scrollToAnchor}
+            scroll={false}
+            onClick={requestScroll}
             className={pageClassName(p)}
           >
             {p}
@@ -130,7 +192,10 @@ export function Pagination({
       {onPageChange ? (
         <IconButton
           icon="chevron-right"
-          onClick={() => onPageChange(currentPage + 1)}
+          onClick={() => {
+            requestScroll();
+            onPageChange(currentPage + 1);
+          }}
           disabled={currentPage >= totalPages}
           label="Pagina următoare"
         />
@@ -139,7 +204,8 @@ export function Pagination({
           icon="chevron-right"
           href={currentPage < totalPages ? href(currentPage + 1) : undefined}
           disabled={currentPage >= totalPages}
-          scroll={scrollToAnchor}
+          scroll={false}
+          onClick={requestScroll}
           label="Pagina următoare"
         />
       )}

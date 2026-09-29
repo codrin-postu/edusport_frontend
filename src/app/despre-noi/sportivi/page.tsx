@@ -315,6 +315,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               totalPages={totalPages}
               basePath={BASE_PATH}
               scrollAnchor="sportivi-grid"
+              scrollTargetId="sportivi-grid"
               extraQuery={{ search, view: view === "lista" ? view : "" }}
             />
           </section>

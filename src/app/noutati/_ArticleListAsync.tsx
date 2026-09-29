@@ -44,7 +44,10 @@ export default async function ArticleListAsync({
 
   return (
     <>
-      <p className="text-label uppercase text-secondary mb-8">
+      <p
+        id="lista-noutati"
+        className="scroll-mt-24 text-label uppercase text-secondary mb-8"
+      >
         {total} {total === 1 ? "articol" : "articole"} găsite
       </p>
 
@@ -79,6 +82,7 @@ export default async function ArticleListAsync({
         totalPages={pageCount}
         basePath="/noutati"
         ariaLabel="Paginare articole"
+        scrollTargetId="lista-noutati"
         extraQuery={{
           ...(category !== "toate" ? { category } : {}),
           ...(search ? { search } : {}),
