@@ -126,7 +126,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             <span className="text-label uppercase text-secondary-on-dark">
               {eyebrow}
             </span>
-            <h3 className="text-title text-primary-on-dark">
+            <h3 className="text-subtitle text-primary-on-dark">
               {title}
             </h3>
             <p className="text-body-sm text-secondary-on-dark">
