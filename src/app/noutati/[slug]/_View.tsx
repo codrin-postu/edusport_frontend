@@ -150,7 +150,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         ]}
       />
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden border-b-retro border-line bg-surface-dark">
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden bg-surface-dark">
         {/* The image never stretches past the page width: on wider screens it
             sits centred and both sides fade into the navy band. */}
         <div className="absolute inset-y-0 left-1/2 w-full max-w-(--max-content-width) -translate-x-1/2">
