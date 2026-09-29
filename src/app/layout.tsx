@@ -130,8 +130,7 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var v=sessionStorage.getItem('esNavY:'+location.pathname);" +
-              "if(v===null||parseFloat(v)<=400)" +
+              "try{if(sessionStorage.getItem('esNavClosed')!==location.pathname)" +
               "document.documentElement.classList.add('nav-strip-open')}" +
               "catch(e){document.documentElement.classList.add('nav-strip-open')}",
           }}

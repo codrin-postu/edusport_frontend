@@ -60,6 +60,7 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuButtonRef = React.useRef<HTMLElement>(null);
 
+  const lastAtTop = React.useRef<boolean | null>(null);
   const handleScroll = useCallback(() => {
     const y = window.scrollY;
     const atTop = y <= 400;
@@ -68,15 +69,31 @@ const Header: React.FC<HeaderProps> = ({
     // total height), so anything sitting flush under the fixed header
     // stays in sync with the strip without any extra bookkeeping here.
     document.documentElement.classList.toggle("nav-strip-open", atTop);
-    // Remembered so the inline script in layout.tsx can get the very first
-    // painted frame right if this page is reloaded from here. Keyed per path,
-    // since scroll position is per page, and session-scoped so it dies with
-    // the tab.
+    // One session entry, written only when the strip changes state: the path
+    // whose strip was last closed. The inline script in layout.tsx reads it
+    // so a reload of that page paints the strip closed from the first frame.
+    if (atTop !== lastAtTop.current) {
+      lastAtTop.current = atTop;
+      try {
+        if (atTop) sessionStorage.removeItem("esNavClosed");
+        else sessionStorage.setItem("esNavClosed", window.location.pathname);
+      } catch {
+        // Private mode or full quota. The strip still works, it just cannot
+        // survive a reload in the right state.
+      }
+    }
+  }, []);
+
+  // Clears the per-page esNavY:* entries an older version wrote on every
+  // scroll. Safe to delete once old sessions are gone.
+  useEffect(() => {
     try {
-      sessionStorage.setItem(`esNavY:${window.location.pathname}`, String(y));
+      for (let i = sessionStorage.length - 1; i >= 0; i--) {
+        const key = sessionStorage.key(i);
+        if (key?.startsWith("esNavY:")) sessionStorage.removeItem(key);
+      }
     } catch {
-      // Private mode or full quota. The strip still works, it just cannot
-      // survive a reload in the right state.
+      // Storage unavailable: nothing to clean.
     }
   }, []);
 
