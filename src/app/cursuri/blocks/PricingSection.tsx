@@ -3,6 +3,7 @@
 import Section from "@/components/ui/section";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import BulletList from "@/components/ui/bullet-list";
 import SectionHeader from "@/components/ui/section-header";
 import {
   Tooltip,
@@ -181,18 +182,11 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="text-caption flex flex-col gap-2 text-secondary max-w-prose">
+          <div className="flex flex-col gap-2 max-w-prose">
             <p className="text-label uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>
-            <ul className="flex flex-col gap-2">
-              {footerNotes.map((text, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="mt-0.5 shrink-0">·</span>
-                  <span>{text}</span>
-                </li>
-              ))}
-            </ul>
+            <BulletList items={footerNotes} />
           </div>
         )}
       </div>
