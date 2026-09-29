@@ -5,7 +5,7 @@
 html {
   font-family: var(--font-inter), system-ui, sans-serif;
   scrollbar-gutter: stable;
-  scrollbar-color: var(--color-line) transparent;
+  scrollbar-color: var(--color-line-subtle) transparent;
   /* Kill the browser's rubber-band / overscroll bounce at the page edges. */
   overscroll-behavior: none;
   /* header 80px plus the 32px contact strip */
