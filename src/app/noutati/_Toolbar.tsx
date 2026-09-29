@@ -46,8 +46,7 @@ export default function Toolbar({
             )
           }
           options={CATEGORIES.map((c) => ({ value: c.key, label: c.label }))}
-          size="compact"
-          className="min-w-[180px]"
+          className="min-w-[220px]"
         />
 
         {isFiltered && (
@@ -61,7 +60,8 @@ export default function Toolbar({
                 }),
               )
             }
-            className="text-label link uppercase text-secondary transition-colors"
+            type="button"
+            className="text-label link uppercase text-secondary transition-colors whitespace-nowrap shrink-0"
           >
             Resetează
           </button>
