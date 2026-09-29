@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 import IconButton from "@/components/ui/icon-button";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { motion, AnimatePresence } from "motion/react";
 import { DURATION, EASE } from "@/lib/motion";
 
@@ -167,7 +167,7 @@ export function GalleryCarousel({
               type="button"
               onClick={() => setLightboxIndex(i)}
               aria-label={`Deschide imaginea: ${img.alt}`}
-              className="group relative aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle shrink-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
+              className="group relative aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle shrink-0 cursor-zoom-in outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
               style={{ width: "calc((100% - 1.5rem) / 3)" }}
             >
               <Image
@@ -192,9 +192,11 @@ export function GalleryCarousel({
               Array.from({ length: maxStart + 1 }).map((_, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setDesktopStart(i)}
                   aria-label={`Mergi la grupul ${i + 1}`}
-                  className="size-10 flex items-center justify-center"
+                  aria-current={i === desktopStart ? "true" : undefined}
+                  className="size-10 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
                 >
                   <span
                     aria-hidden
@@ -216,14 +218,10 @@ export function GalleryCarousel({
 
       {/* Mobile: single image carousel */}
       <div className="md:hidden">
-        <div
-          className="relative w-full aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle select-none cursor-zoom-in"
+        <button
+          type="button"
+          className="relative w-full aspect-[4/3] overflow-hidden border-retro border-line bg-surface-subtle select-none cursor-zoom-in outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
           onClick={() => setLightboxIndex(current)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setLightboxIndex(current);
-          }}
           aria-label={`Deschide imaginea: ${images[current].alt}`}
         >
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -260,7 +258,7 @@ export function GalleryCarousel({
               <p className="text-body-sm text-primary-on-dark">{images[current].alt}</p>
             </div>
           )}
-        </div>
+        </button>
 
         <div className="flex items-center justify-center gap-3 mt-4">
           <IconButton icon="chevron-left" onClick={prev} label="Imaginea anterioară" />
@@ -269,9 +267,11 @@ export function GalleryCarousel({
               {images.map((_, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => go(i)}
                   aria-label={`Mergi la imaginea ${i + 1}`}
-                  className="size-10 flex items-center justify-center"
+                  aria-current={i === current ? "true" : undefined}
+                  className="size-10 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
                 >
                   <span
                     aria-hidden
@@ -313,123 +313,133 @@ function Lightbox({
   onClose: () => void;
   onChange: (i: number) => void;
 }) {
+  // Escape-to-close, the focus trap, and the scroll lock all come from
+  // Dialog.Root/Content below (Radix's modal behaviour). Arrow-key
+  // navigation still needs its own listener since Radix doesn't handle it.
   useEffect(() => {
     if (index === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") onChange((index + 1) % images.length);
+      if (e.key === "ArrowRight") onChange((index + 1) % images.length);
       else if (e.key === "ArrowLeft")
         onChange((index - 1 + images.length) % images.length);
     };
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [index, images.length, onChange, onClose]);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [index, images.length, onChange]);
 
-  if (typeof document === "undefined") return null;
+  return (
+    <DialogPrimitive.Root
+      open={index !== null}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
+      <AnimatePresence>
+        {index !== null && (
+          // forceMount on Portal/Content: Radix always renders them while
+          // AnimatePresence owns the actual mount/unmount, so the exit
+          // animation plays exactly as it did before Radix was introduced.
+          <DialogPrimitive.Portal forceMount>
+            <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
+              <motion.div
+                className="fixed inset-0 z-dialog bg-overlay backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8 outline-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: DURATION.fast }}
+                onClick={onClose}
+              >
+                <DialogPrimitive.Title className="sr-only">Galerie foto</DialogPrimitive.Title>
 
-  return createPortal(
-    <AnimatePresence>
-      {index !== null && (
-        <motion.div
-          className="fixed inset-0 z-dialog bg-overlay backdrop-blur-sm flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: DURATION.fast }}
-          onClick={onClose}
-        >
-          <IconButton
-            icon="close"
-            onClick={onClose}
-            label="Închide"
-            onDark
-            className="absolute top-4 right-4"
-          />
+                <IconButton
+                  icon="close"
+                  onClick={onClose}
+                  label="Închide"
+                  onDark
+                  className="absolute top-4 right-4"
+                />
 
-          <IconButton
-            icon="chevron-left"
-            onClick={(e) => {
-              e.stopPropagation();
-              onChange((index - 1 + images.length) % images.length);
-            }}
-            label="Imaginea anterioară"
-            onDark
-            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2"
-          />
+                <IconButton
+                  icon="chevron-left"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange((index - 1 + images.length) % images.length);
+                  }}
+                  label="Imaginea anterioară"
+                  onDark
+                  className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2"
+                />
 
-          <IconButton
-            icon="chevron-right"
-            onClick={(e) => {
-              e.stopPropagation();
-              onChange((index + 1) % images.length);
-            }}
-            label="Imaginea următoare"
-            onDark
-            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2"
-          />
+                <IconButton
+                  icon="chevron-right"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange((index + 1) % images.length);
+                  }}
+                  label="Imaginea următoare"
+                  onDark
+                  className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2"
+                />
 
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: DURATION.fast }}
-            // No fixed aspect — let the image's natural dimensions drive the
-            // wrapper size, capped at 95vw / 90vh. This way portraits get the
-            // full vertical viewport instead of being letterboxed inside a
-            // 4:3 box. Switched away from next/image's `fill` mode because
-            // `fill` requires a sized parent; sizing the parent to image-
-            // natural would need width/height plumbed through every caller.
-            // The lightbox is one image at a time, opened on user intent —
-            // skipping next/image's optimization here is a fair trade for
-            // the simpler "show this image as big as possible" behavior.
-            className="relative max-w-[95vw] max-h-[90vh] touch-pan-y flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.18}
-            onDragEnd={(_e, { offset }) => {
-              if (images.length < 2) return;
-              if (offset.x < -SWIPE_THRESHOLD) {
-                onChange((index + 1) % images.length);
-              } else if (offset.x > SWIPE_THRESHOLD) {
-                onChange((index - 1 + images.length) % images.length);
-              }
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={images[index].src}
-              alt={images[index].alt}
-              className="max-w-full max-h-[90vh] w-auto h-auto object-contain pointer-events-none select-none"
-              draggable={false}
-            />
-            {images[index].alt && (
-              <p className="text-body-sm text-center text-primary-on-dark mt-3 max-w-full pointer-events-none">
-                {images[index].alt}
-              </p>
-            )}
-          </motion.div>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: DURATION.fast }}
+                  // No fixed aspect — let the image's natural dimensions drive the
+                  // wrapper size, capped at 95vw / 90vh. This way portraits get the
+                  // full vertical viewport instead of being letterboxed inside a
+                  // 4:3 box. Switched away from next/image's `fill` mode because
+                  // `fill` requires a sized parent; sizing the parent to image-
+                  // natural would need width/height plumbed through every caller.
+                  // The lightbox is one image at a time, opened on user intent —
+                  // skipping next/image's optimization here is a fair trade for
+                  // the simpler "show this image as big as possible" behavior.
+                  className="relative max-w-[95vw] max-h-[90vh] touch-pan-y flex flex-col items-center"
+                  onClick={(e) => e.stopPropagation()}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.18}
+                  onDragEnd={(_e, { offset }) => {
+                    if (images.length < 2) return;
+                    if (offset.x < -SWIPE_THRESHOLD) {
+                      onChange((index + 1) % images.length);
+                    } else if (offset.x > SWIPE_THRESHOLD) {
+                      onChange((index - 1 + images.length) % images.length);
+                    }
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={images[index].src}
+                    alt={images[index].alt}
+                    className="max-w-full max-h-[90vh] w-auto h-auto object-contain pointer-events-none select-none"
+                    draggable={false}
+                  />
+                  {images[index].alt && (
+                    <p className="text-body-sm text-center text-primary-on-dark mt-3 max-w-full pointer-events-none">
+                      {images[index].alt}
+                    </p>
+                  )}
+                </motion.div>
 
-          {/* Mobile: swipe-only — show just a centered counter beneath the
-              image. The swipe gesture on the image itself handles nav. */}
-          <div
-            className="flex sm:hidden items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <span className="text-caption text-secondary-on-dark tabular-nums">
-              {index + 1} / {images.length}
-            </span>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>,
-    document.body,
+                {/* Mobile: swipe-only — show just a centered counter beneath the
+                    image. The swipe gesture on the image itself handles nav. */}
+                <div
+                  className="flex sm:hidden items-center justify-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="text-caption text-secondary-on-dark tabular-nums">
+                    {index + 1} / {images.length}
+                  </span>
+                </div>
+              </motion.div>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   );
 }
 

@@ -99,87 +99,93 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
   return (
     <div
       className={cn(
-        "relative overflow-hidden shadow-lg cursor-pointer",
+        "relative overflow-hidden shadow-lg",
         cover ? "absolute inset-0" : "w-full aspect-video",
         className,
       )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={togglePlay}
     >
-      {/* Nothing reaches Google until the functional category is accepted. */}
-      <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
-      <iframe
-        ref={iframeRef}
-        src={embedUrl}
-        title={title}
-        allow="autoplay; encrypted-media"
-        className="absolute pointer-events-none"
-        style={cover ? {
-          border: 0,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "max(177.78vh, 100%)",
-          height: "max(56.25vw, 100%)",
-          minWidth: "100%",
-          minHeight: "100%",
-        } : {
-          border: 0,
-          top: "-60px",
-          left: "-40px",
-          width: "calc(100% + 80px)",
-          height: "calc(100% + 120px)",
-        }}
-      />
-      </ConsentGate>
+      <button
+        type="button"
+        onClick={togglePlay}
+        aria-label={`Redă videoclipul: ${title}`}
+        className="absolute inset-0 w-full h-full cursor-pointer outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-on-dark"
+      >
+        {/* Nothing reaches Google until the functional category is accepted. */}
+        <ConsentGate category={COOKIE_CATEGORIES.functionality} label="YouTube">
+        <iframe
+          ref={iframeRef}
+          src={embedUrl}
+          title={title}
+          allow="autoplay; encrypted-media"
+          className="absolute pointer-events-none"
+          style={cover ? {
+            border: 0,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "max(177.78vh, 100%)",
+            height: "max(56.25vw, 100%)",
+            minWidth: "100%",
+            minHeight: "100%",
+          } : {
+            border: 0,
+            top: "-60px",
+            left: "-40px",
+            width: "calc(100% + 80px)",
+            height: "calc(100% + 120px)",
+          }}
+        />
+        </ConsentGate>
 
-      {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
-      <AnimatePresence>
-        {!playing && (
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              transition: { duration: DURATION.base, delay: 0.3 },
-            }}
-            transition={{ duration: DURATION.base }}
-            style={{
-              backgroundImage: `url(${thumbnail})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(4px) brightness(0.5)",
-              transform: "scale(1.05)",
-            }}
-          />
-        )}
-      </AnimatePresence>
+        {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
+        <AnimatePresence>
+          {!playing && (
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                opacity: 0,
+                transition: { duration: DURATION.base, delay: 0.3 },
+              }}
+              transition={{ duration: DURATION.base }}
+              style={{
+                backgroundImage: `url(${thumbnail})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "blur(4px) brightness(0.5)",
+                transform: "scale(1.05)",
+              }}
+            />
+          )}
+        </AnimatePresence>
 
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
 
-      {/* Play/Pause button - visible only on hover */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: DURATION.fast }}
-          >
-            <div className="flex items-center justify-center w-16 h-16 bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
-              {playing ? (
-                <Icon name="pause" size="md" className="text-primary-on-dark fill-white" />
-              ) : (
-                <Icon name="play" size="md" className="text-primary-on-dark fill-white translate-x-0.5" />
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Play/Pause button - visible only on hover */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: DURATION.fast }}
+            >
+              <div className="flex items-center justify-center w-16 h-16 bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
+                {playing ? (
+                  <Icon name="pause" size="md" className="text-primary-on-dark fill-white" />
+                ) : (
+                  <Icon name="play" size="md" className="text-primary-on-dark fill-white translate-x-0.5" />
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </button>
 
       {/* Bottom bar */}
       <div
