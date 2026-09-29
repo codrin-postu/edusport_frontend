@@ -14,7 +14,6 @@ import { notFound } from "next/navigation";
 import MetaList from "@/components/ui/meta-list";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
-import { WarmStripe } from "@/components/ui/warm-stripe";
 import Breadcrumb from "@/components/ui/breadcrumb";
 import { ArticleJsonLd, BreadcrumbJsonLd, EventJsonLd } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
@@ -151,8 +150,17 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
         ]}
       />
       {/* Cover image */}
-      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden border-b-retro border-line bg-surface-subtle">
-        <ArticleImage src={article.coverImage} alt={article.title} iconClassName="w-14 h-14" />
+      <div className="relative w-full aspect-[16/9] md:aspect-auto md:h-[330px] overflow-hidden border-b-retro border-line bg-surface-dark">
+        {/* The image never stretches past the page width: on wider screens it
+            sits centred and both sides fade into the navy band. */}
+        <div className="absolute inset-y-0 left-1/2 w-full max-w-(--max-content-width) -translate-x-1/2">
+          <ArticleImage src={article.coverImage} alt={article.title} iconClassName="w-14 h-14" />
+          <div
+            aria-hidden
+            className="absolute inset-0 z-raised pointer-events-none hidden min-[80rem]:block"
+            style={{ background: "linear-gradient(to right, var(--color-surface-dark) 0%, transparent 18%, transparent 82%, var(--color-surface-dark) 100%)" }}
+          />
+        </div>
         <div
           aria-hidden
           className="absolute inset-0 z-raised pointer-events-none"
@@ -169,7 +177,6 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             />
           </div>
         </div>
-        <WarmStripe className="absolute inset-x-0 bottom-0 h-1.5 z-raised" />
       </div>
 
       {/* Article body */}
