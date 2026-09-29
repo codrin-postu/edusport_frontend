@@ -63,7 +63,14 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
     track("parteneri.start");
   };
 
+  // Scroll to the form only when the step changes, never on first load
+  // (a page visit lands at the top; /...#formular jumps to the form).
+  const firstStepRender = useRef(true);
   useEffect(() => {
+    if (firstStepRender.current) {
+      firstStepRender.current = false;
+      return;
+    }
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
@@ -137,7 +144,7 @@ const PartnerForm: React.FC<{ config?: FormConfig | null }> = ({
   const labels = steps.map((s) => s.title || "");
 
   return (
-    <div ref={formRef}>
+    <div ref={formRef} id="formular" className="scroll-mt-[calc(var(--header-h)_+_1rem)]">
       <motion.div
         key={step}
         initial={{ opacity: 0, y: 16 }}

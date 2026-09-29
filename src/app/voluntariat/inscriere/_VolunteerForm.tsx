@@ -137,7 +137,14 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
     track("voluntariat.start");
   };
 
+  // Scroll to the form only when the step changes, never on first load
+  // (a page visit lands at the top; /...#formular jumps to the form).
+  const firstStepRender = useRef(true);
   useEffect(() => {
+    if (firstStepRender.current) {
+      firstStepRender.current = false;
+      return;
+    }
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
@@ -216,7 +223,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
     underage && (current.questions ?? []).some((q) => q.key === "birthDate");
 
   return (
-    <div ref={formRef}>
+    <div ref={formRef} id="formular" className="scroll-mt-[calc(var(--header-h)_+_1rem)]">
       {/* No notice on other pages for this form, by decision: only the
           registration advertises its draft. This is just the returning
           visitor's explanation of why the fields are already filled. */}
