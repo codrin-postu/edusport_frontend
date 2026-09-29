@@ -21,7 +21,7 @@ export const CalendarViewModeSelect: React.FC<{
     value={value}
     onValueChange={(v) => onChange(v as CalendarMode)}
     options={OPTIONS}
-    size="compact"
+    size="sm"
     className="w-auto min-w-[150px]"
   />
 );

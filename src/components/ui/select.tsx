@@ -19,7 +19,7 @@ interface SelectProps {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-  size?: "default" | "compact";
+  size?: "default" | "compact" | "sm";
   /** The trigger sits on a dark (navy) panel. */
   onDark?: boolean;
   className?: string;
@@ -53,9 +53,10 @@ export const Select: React.FC<SelectProps> = ({
   const selected = items.find((o) => o.value === value);
   const triggerSizeClasses = cn(
     onDark ? "bg-surface-subtle-on-dark" : "bg-surface",
-    // compact: calendar toolbars, same 36px height and label type as the
-    // buttons beside it.
-    size === "compact" ? "h-9 px-3 text-label" : "h-12 px-4 text-body-sm",
+    // default 48px (forms, page toolbars next to an Input); compact 40px
+    // (filter rows); sm 36px in label type (the calendar header, next to
+    // its 36px buttons).
+    size === "sm" ? "h-9 px-3 text-label" : size === "compact" ? "min-h-10 px-3 text-body-sm" : "h-12 px-4 text-body-sm",
   );
 
   return (
