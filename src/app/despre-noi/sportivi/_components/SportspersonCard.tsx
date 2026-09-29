@@ -182,11 +182,6 @@ export function SportspersonCard({
         ? "var(--color-orange)"
         : tier.color;
   const isSpotlight = size === "spotlight";
-  const initials = sportsperson.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
 
   return (
     <div
@@ -256,7 +251,7 @@ export function SportspersonCard({
               "relative h-full w-full overflow-hidden",
             )}
           >
-          {/* Photo or initials fallback */}
+          {/* Photo, or a plain gradient when there is none */}
           {sportsperson.photo?.url ? (
             <Image
               src={strapiMediaUrl(sportsperson.photo.url)}
@@ -271,15 +266,12 @@ export function SportspersonCard({
             />
           ) : (
             <div
-              className="absolute inset-0 flex items-center justify-center"
+              aria-hidden
+              className="absolute inset-0"
               style={{
                 background: `linear-gradient(140deg, ${pickFallbackGradient(sportsperson.slug).from} 0%, ${pickFallbackGradient(sportsperson.slug).to} 100%)`,
               }}
-            >
-              <span className="text-body select-none text-line-subtle-on-dark">
-                {initials}
-              </span>
-            </div>
+            />
           )}
 
           {/* Slanted-line ribbon — same SVG accent as the podium result
