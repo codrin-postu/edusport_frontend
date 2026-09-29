@@ -20,6 +20,7 @@ import {
   isCustomFilled,
   isHidden,
   isRequired,
+  scrollToFirstInvalidField,
   selectOptions,
   validateValueByType,
   CONTACT_BUILTIN_KEYS,
@@ -196,7 +197,10 @@ const ContactForm: React.FC<{ config?: FormConfig | null }> = ({
     const phoneErr = validateField("phone");
     setFieldErrors({ email: emailErr, phone: phoneErr });
     const customsOk = validateCustoms();
-    if (emailErr || phoneErr || !customsOk) return;
+    if (emailErr || phoneErr || !customsOk) {
+      requestAnimationFrame(() => scrollToFirstInvalidField());
+      return;
+    }
 
     setStatus("sending");
     setErrorMessage("");

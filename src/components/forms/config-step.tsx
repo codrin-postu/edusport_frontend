@@ -6,6 +6,7 @@ import CustomQuestions, { type CustomVariant } from "@/components/ui/custom-ques
 import {
   customFormatError,
   isCustomFilled,
+  scrollToFirstInvalidField,
   type CustomAnswer,
   type FormQuestion,
   type FormStepConfig,
@@ -113,7 +114,11 @@ const ConfigStep: React.FC<ConfigStepProps> = ({
       }
     }
     setErrors(next);
-    if (ok) onNext();
+    if (ok) {
+      onNext();
+    } else {
+      requestAnimationFrame(() => scrollToFirstInvalidField());
+    }
   };
 
   return (

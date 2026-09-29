@@ -441,3 +441,29 @@ export function buildCustomPayload(
   }
   return extra;
 }
+
+/**
+ * After a failed submit or failed step validation, scroll the first invalid
+ * field into view and focus it. Looks for the first `aria-invalid="true"`
+ * element (set by `Field`, see form-field.tsx) within `container`.
+ *
+ * Called on the next animation frame by every caller, since it runs right
+ * after a `setState` that renders the `aria-invalid` attributes; querying the
+ * DOM synchronously would still see the previous, valid markup.
+ */
+export function scrollToFirstInvalidField(
+  container: ParentNode = document,
+): void {
+  const invalid = container.querySelector<HTMLElement>(
+    '[aria-invalid="true"]',
+  );
+  if (!invalid) return;
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  invalid.scrollIntoView({
+    behavior: reduceMotion ? "auto" : "smooth",
+    block: "center",
+  });
+  invalid.focus({ preventScroll: true });
+}
