@@ -21,7 +21,7 @@ export const RegistrationScrollFrameV2: React.FC<RegistrationScrollFrameV2Props>
   return (
     <div
       ref={sectionRef}
-      className="relative min-h-screen md:[min-height:min(90vh,860px)] flex flex-col justify-start md:justify-center pt-24 pb-16 md:pb-24 bg-pastel overflow-x-clip"
+      className="relative md:[min-height:min(90vh,860px)] flex flex-col justify-start md:justify-center pt-24 pb-16 md:pb-24 bg-pastel overflow-x-clip"
     >
       {/* Wave divider — crisp-left → defocused-right seam bleeding up into the hero. */}
       <RegistrationWaveDivider />
