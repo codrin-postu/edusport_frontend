@@ -7,8 +7,9 @@ export type { IconName };
 interface IconProps {
   /** A file in public/icons. The list is generated, so a typo fails to compile. */
   name: IconName;
-  /** sm = 16px (next to text), md = 24px (standalone). */
-  size?: "sm" | "md";
+  /** sm = 16px (next to text), md = 24px (standalone), lg = 48px (media
+   *  controls over a video or image). */
+  size?: "sm" | "md" | "lg";
   /** Announces the icon to screen readers. Without it the icon is decorative. */
   label?: string;
   className?: string;
@@ -20,10 +21,12 @@ interface IconProps {
  * on its own (see the /icons headers in next.config.ts). Single-colour icons
  * follow the text colour.
  */
+const SIZE = { sm: "size-4", md: "size-6", lg: "size-12" } as const;
+
 export default function Icon({ name, size = "sm", label, className }: IconProps) {
   return (
     <svg
-      className={cn(size === "sm" ? "size-4" : "size-6", "shrink-0", className)}
+      className={cn(SIZE[size], "shrink-0", className)}
       aria-hidden={label ? undefined : true}
       aria-label={label}
       role={label ? "img" : undefined}

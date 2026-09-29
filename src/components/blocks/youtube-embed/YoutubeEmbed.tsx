@@ -178,11 +178,13 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
               exit={{ opacity: 0 }}
               transition={{ duration: DURATION.fast }}
             >
-              <div className="flex items-center justify-center w-16 h-16">
+              {/* Cream icon, accent when the pointer is on it. Clicks still
+                  reach the surrounding button. */}
+              <div className="pointer-events-auto flex size-20 items-center justify-center text-primary-on-dark transition-colors hover:text-accent-on-dark">
                 {playing ? (
-                  <Icon name="pause" size="md" className="text-primary-on-dark fill-white" />
+                  <Icon name="pause" size="lg" className="fill-current" />
                 ) : (
-                  <Icon name="play" size="md" className="text-primary-on-dark fill-white translate-x-0.5" />
+                  <Icon name="play" size="lg" className="fill-current translate-x-1" />
                 )}
               </div>
             </motion.div>
