@@ -8,6 +8,7 @@ import {
 import { getSkaterResults } from "@/lib/skate-results";
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import SportspersonView from "./_View";
+import { isPageEnabled, requireEnabled } from "@/lib/strapi-navigation";
 
 // The page reads `searchParams.compPage` for the istoric pagination, so
 // it cannot be statically pre-rendered. `force-dynamic` keeps the page
@@ -21,6 +22,9 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Switched off in the CMS: the page is a 404, so do not fetch or expose the
+  // entry's title and description. Never throws.
+  if (!(await isPageEnabled("sportivi"))) return {};
   const { slug } = await params;
   let title = "Sportiv";
   let description = "";
@@ -52,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params, searchParams }: Props) {
+  await requireEnabled("sportivi");
   const { slug } = await params;
   const { compPage } = await searchParams;
   const compPageNum = Math.max(1, Number(compPage) || 1);

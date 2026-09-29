@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import HistoryPage from "./_View";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Istoric",
@@ -35,6 +36,7 @@ interface StrapiMilestone {
 export const revalidate = 3600;
 
 export default async function Page() {
+  await requireEnabled("istoric");
   const [cms, rawMilestones] = await Promise.all([
     fetchStrapi<HistoricPageCms>("historic-page").catch(() => ({} as HistoricPageCms)),
     fetchStrapi<StrapiMilestone[]>("history-milestones", "sort=year:asc").catch(() => []),

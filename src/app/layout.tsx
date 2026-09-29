@@ -8,7 +8,8 @@ import ResumeRegistration from "@/components/blocks/resume-registration";
 import NavigationProgress from "../components/NavigationProgress";
 import { getSiteSettings } from "@/lib/site-settings";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
-import { fetchNavPromoOverrides } from "@/lib/strapi-navigation";
+import { fetchDisabledPages, fetchNavPromoOverrides } from "@/lib/strapi-navigation";
+import { filterNavItems } from "@/lib/pages";
 import { mergeNavOverrides } from "@/components/blocks/header/mergeNavOverrides";
 import { navItems as staticNavItems } from "@/components/blocks/header/navItems";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
@@ -85,9 +86,17 @@ export default async function RootLayout({
   // has to happen here. fetchNavPromoOverrides never throws and returns [] on
   // any failure, which makes the merge a no-op, so a Strapi outage leaves the
   // navigation exactly as the static file defines it.
-  const navigationItems = mergeNavOverrides(
-    staticNavItems,
-    await fetchNavPromoOverrides(),
+  //
+  // Pages switched off in the CMS then drop out of the menu (desktop and
+  // mobile both render this list) and the footer. fetchDisabledPages also
+  // never throws: on any failure it returns an empty set and nothing is hidden.
+  const [navOverrides, disabledPages] = await Promise.all([
+    fetchNavPromoOverrides(),
+    fetchDisabledPages(),
+  ]);
+  const navigationItems = filterNavItems(
+    mergeNavOverrides(staticNavItems, navOverrides),
+    disabledPages,
   );
 
   // Social profile URLs -> schema.org `sameAs` (helps entity/knowledge-graph).
@@ -148,7 +157,11 @@ export default async function RootLayout({
         >
           {children}
         </main>
-        <Footer contactInfo={contactInfo} registrationOpen={registrationOpen} />
+        <Footer
+          contactInfo={contactInfo}
+          registrationOpen={registrationOpen}
+          disabledPages={disabledPages}
+        />
         {/* Offers the way back into a form already begun, on whatever page
             they wandered to. Renders nothing without a saved draft. */}
         <ResumeRegistration />

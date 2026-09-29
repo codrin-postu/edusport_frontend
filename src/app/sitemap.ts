@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { fetchArticles } from "@/lib/strapi-article";
 import { fetchPublicSportspeoplePage } from "@/lib/strapi-sportsperson";
 import { SITE_URL } from "@/lib/site";
+import { isHrefEnabled } from "@/lib/pages";
+import { fetchDisabledPages } from "@/lib/strapi-navigation";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = SITE_URL;
@@ -53,5 +55,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Strapi unavailable — skip profile routes
   }
 
-  return [...staticRoutes, ...articleRoutes, ...sportivaRoutes];
+  // Pages switched off in the CMS are left out, detail URLs included (they
+  // share their list page's key). fetchDisabledPages never throws; on any
+  // failure it returns an empty set and nothing is left out.
+  const disabledPages = await fetchDisabledPages();
+  return [...staticRoutes, ...articleRoutes, ...sportivaRoutes].filter((route) =>
+    isHrefEnabled(new URL(route.url).pathname, disabledPages),
+  );
 }

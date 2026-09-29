@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import VolunteerView from "./_View";
 import { fetchVolunteerPage } from "@/lib/strapi-volunteer";
 import { HELP_WAYS, VOLUNTEER_PHOTOS, VOLUNTEER_COPY } from "./_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 // CMS-managed with static fallback: if Strapi is down or the volunteer-page is
 // empty, fall back to the placeholders so the page always renders.
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function VoluntariatPage() {
+  await requireEnabled("voluntariat");
   let cms: Awaited<ReturnType<typeof fetchVolunteerPage>> = null;
   try {
     cms = await fetchVolunteerPage();

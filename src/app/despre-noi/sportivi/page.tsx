@@ -18,6 +18,7 @@ import { SearchBar } from "./_components/SearchBar";
 import { Spotlight } from "./_components/Spotlight";
 import { SportspersonCard } from "./_components/SportspersonCard";
 import { ViewToggle, type RosterView } from "./_components/ViewToggle";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 // Reads `searchParams.page`, `.search` and `.view`, so the page must be
 // rendered dynamically per request — can't be statically pre-rendered.
@@ -45,6 +46,7 @@ interface Props {
 }
 
 export default async function SportiviIndexPage({ searchParams }: Props) {
+  await requireEnabled("sportivi");
   const { page: pageParam, search: searchParam, view: viewParam } = await searchParams;
   // `?view=lista` picks the ranked list; anything else (or absent) is cards.
   const view: RosterView = viewParam === "lista" ? "lista" : "carduri";

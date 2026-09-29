@@ -4,6 +4,7 @@ import { resolveAssetUrl } from "@/utils/markdown";
 import { getSkaterResults, seasonKey, levelOf } from "@/lib/skate-results";
 import AccomplishmentsPage from "./_View";
 import { buildSeasonIndex, type Season, type GalleryImage } from "./_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -133,6 +134,7 @@ async function buildSeasonsFromSkate(): Promise<Season[]> {
 export const revalidate = 3600;
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
+  await requireEnabled("realizari");
   const [cms, seasons, params] = await Promise.all([
     fetchStrapi<RealizariPageCms>("realizari-page", "populate=galleryImages").catch(
       () => ({} as RealizariPageCms),

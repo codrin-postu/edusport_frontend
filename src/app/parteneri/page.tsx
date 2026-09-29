@@ -7,6 +7,7 @@ import {
 } from "@/lib/strapi-partners";
 import { fetchFormConfig } from "@/lib/strapi-forms";
 import { PARTNERS_COPY } from "./_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 // Content is CMS-managed; fall back to the static placeholders when Strapi is
 // unavailable or the collections are empty, so the page always renders.
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ParteneriPage() {
+  await requireEnabled("parteneri");
   const [sp, ev, pc, fc] = await Promise.allSettled([
     fetchSponsors(),
     fetchCollaborationEvents(),

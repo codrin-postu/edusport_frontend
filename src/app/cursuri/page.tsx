@@ -7,6 +7,7 @@ import CoursesPage from "./_View";
 import type { CoursePricingData, CoursePageContent } from "./_types";
 import { CURSURI_PAGE_DATA, CURRENT_SEASON, IS_REGISTRATION_OPEN } from "./_data";
 import type { PricingTier } from "./_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Cursuri de Patinaj",
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
 export const revalidate = 300; // 5 min
 
 export default async function Page() {
+  await requireEnabled("scoala");
   let pricingData: PricingTier[] | null = null;
   let footerNotes: string[] | null = null;
   let currentSeason = CURRENT_SEASON;

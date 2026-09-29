@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { resolveAssetUrl } from "@/utils/markdown";
 import TeamPage from "./_View";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Echipa Noastră",
@@ -39,6 +40,7 @@ interface TeamPageCms {
 export const revalidate = 3600;
 
 export default async function Page() {
+  await requireEnabled("echipa");
   const [cms, rawMembers] = await Promise.all([
     fetchStrapi<TeamPageCms>("team-page").catch(() => ({} as TeamPageCms)),
     fetchStrapi<StrapiTeamMember[]>("team-members", "sort=order:asc&populate=photo").catch(() => []),

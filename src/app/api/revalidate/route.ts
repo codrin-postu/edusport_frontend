@@ -1,5 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
+import { NAVIGATION_TAG } from "@/lib/strapi-navigation";
 
 /**
  * On-demand revalidation endpoint for Strapi webhooks.
@@ -15,8 +16,11 @@ import { type NextRequest, NextResponse } from "next/server";
  * revalidated so the next visit fetches fresh data.
  *
  * Known tags:
- *   navigation  the menu's CMS promo overrides, cached for a day because the
- *               menu renders on every page (see src/lib/strapi-navigation.ts).
+ *   navigation  the "Meniu site" single type: the menu's promo overrides and
+ *               the pages switched on/off (`pages`). Cached for a day because
+ *               the menu renders on every page (see src/lib/strapi-navigation.ts).
+ *               Also purged by the no-params call, so a plain webhook applies a
+ *               page switch everywhere (menu, footer, 404s, sitemap).
  */
 /**
  * Every statically-rendered public route. Kept in step with src/app: a page
@@ -81,9 +85,10 @@ export async function POST(req: NextRequest) {
     }
     for (const p of DEFAULT_PATHS) revalidatePath(p);
     for (const r of DEFAULT_DYNAMIC_ROUTES) revalidatePath(r, "page");
+    revalidateTag(NAVIGATION_TAG);
     return NextResponse.json({
       ok: true,
-      revalidated: [...DEFAULT_PATHS, ...DEFAULT_DYNAMIC_ROUTES],
+      revalidated: [...DEFAULT_PATHS, ...DEFAULT_DYNAMIC_ROUTES, `tag:${NAVIGATION_TAG}`],
     });
   } catch (err) {
     return NextResponse.json(

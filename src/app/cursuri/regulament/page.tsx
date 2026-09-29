@@ -4,6 +4,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 import { CURRENT_SEASON } from "../_data";
 import RegulamentPage from "./_View";
 import type { CourseRegulationsData, RegulationCategory } from "./_types";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Regulament Cursuri",
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 export const revalidate = 86400; // 24h - regulations rarely change
 
 export default async function Page() {
+  await requireEnabled("regulament");
   let categories: RegulationCategory[] = [];
   let currentSeason = CURRENT_SEASON;
 

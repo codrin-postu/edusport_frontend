@@ -10,6 +10,7 @@ import {
   ArticleListSkeleton,
   FeaturedSectionSkeleton,
 } from "./_skeletons";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Noutăți",
@@ -45,6 +46,7 @@ export default async function Page({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
+  await requireEnabled("noutati");
   const {
     page: pageParam,
     category: categoryParam,

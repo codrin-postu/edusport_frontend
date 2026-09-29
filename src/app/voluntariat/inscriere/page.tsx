@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import VolunteerInscriereView from "./_View";
 import { fetchFormConfig } from "@/lib/strapi-forms";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Înscriere Voluntariat",
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function Page() {
+  await requireEnabled("voluntariat");
   const formConfig = await fetchFormConfig("voluntariat");
   return <VolunteerInscriereView formConfig={formConfig} />;
 }

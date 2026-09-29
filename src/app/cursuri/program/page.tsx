@@ -5,6 +5,7 @@ import { occurrencesToCalendarEvents, withScoalaTiles } from "@/utils/occurrence
 import ProgramPage from "./_View";
 import type { ProgramPageData, ScheduleGroup, CalendarEvent } from "./_types";
 import { PROGRAM_PAGE_DATA } from "./_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Program Cursuri",
@@ -99,6 +100,7 @@ function seasonBoundsFromSiteSettings(
 }
 
 export default async function Page() {
+  await requireEnabled("program");
   let data: ProgramPageData = PROGRAM_PAGE_DATA;
 
   // program-page still owns the banner / disclaimers; the new `program` single

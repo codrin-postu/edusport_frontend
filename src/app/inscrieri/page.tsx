@@ -3,6 +3,7 @@ import InscrieriView from "./_View";
 import { fetchFormConfig } from "@/lib/strapi-forms";
 import { getSiteSettings } from "@/lib/site-settings";
 import { CURRENT_SEASON } from "../cursuri/_data";
+import { requireEnabled } from "@/lib/strapi-navigation";
 
 export const metadata: Metadata = {
   title: "Înscrieri",
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function Page() {
+  await requireEnabled("inscrieri");
   const [formConfig, settings] = await Promise.all([
     fetchFormConfig("inscriere"),
     getSiteSettings(),

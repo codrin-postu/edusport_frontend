@@ -6,6 +6,7 @@ import {
   strapiMediaUrl,
 } from "@/lib/strapi-article";
 import ArticleDetailPage from "./_View";
+import { isPageEnabled, requireEnabled } from "@/lib/strapi-navigation";
 
 export const revalidate = 300;
 export const dynamicParams = true;
@@ -24,6 +25,9 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Switched off in the CMS: the page is a 404, so do not fetch or expose the
+  // entry's title and description. Never throws.
+  if (!(await isPageEnabled("noutati"))) return {};
   const { slug } = await params;
   let title = "Articol";
   let description = "";
@@ -62,6 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  await requireEnabled("noutati");
   const { slug } = await params;
 
   let strapiArticle = null;

@@ -4,6 +4,7 @@ import Icon, { type IconName } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { WarmStripe } from "@/components/ui/warm-stripe";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
+import { isHrefEnabled, type PageKey } from "@/lib/pages";
 import { mapsHref } from "@/lib/mapsLink";
 import { cn } from "@/utils/cn";
 import { BRAND_NAME } from "@/utils/constants";
@@ -101,7 +102,14 @@ const FooterItem: React.FC<FooterItemData> = (item) => {
   );
 };
 
-const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInfo }) => {
+type FooterLinkItem = Extract<FooterItemData, { type: "link" }>;
+
+const NO_DISABLED_PAGES: ReadonlySet<PageKey> = new Set();
+
+const FooterContent: React.FC<{
+  contactInfo?: SiteContactInfo;
+  disabledPages: ReadonlySet<PageKey>;
+}> = ({ contactInfo, disabledPages }) => {
   const waUrl = contactInfo?.whatsappChannelUrl;
   // Landing footer: social shown as compact icons instead of text links. Each
   // icon renders only when the BE provides its URL (mirrors HeaderTop).
@@ -111,10 +119,22 @@ const FooterContent: React.FC<{ contactInfo?: SiteContactInfo }> = ({ contactInf
     waUrl && { label: "WhatsApp", href: waUrl, icon: "whatsapp" as IconName },
   ].filter(Boolean) as { label: string; href: string; icon: IconName }[];
 
+  // Links to pages switched off in the CMS are left out, and a section left
+  // with no links goes too. External and always-on addresses never match a
+  // page key, so they always stay.
+  const leftSections = footerLeftSections
+    .map((section) => ({
+      title: section.title,
+      items: (section.items as FooterLinkItem[]).filter((item) =>
+        isHrefEnabled(item.href, disabledPages),
+      ),
+    }))
+    .filter((section) => section.items.length > 0);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row max-w-content lg:justify-between gap-8 md:gap-12 lg:gap-12 gutter py-12 mx-auto">
       {/* Meniu + Informații legale */}
-      {footerLeftSections.map((section, index) => (
+      {leftSections.map((section, index) => (
         <div key={index} className="flex flex-col gap-3">
           <Text variant="heading" className="text-primary-on-dark">
             {section.title}
@@ -245,9 +265,15 @@ interface FooterProps {
   contactInfo?: SiteContactInfo;
   /** When open, the register band shows as the footer top band. */
   registrationOpen?: boolean;
+  /** Pages switched off in the CMS; their links are left out. Default: none. */
+  disabledPages?: ReadonlySet<PageKey>;
 }
 
-const Footer: React.FC<FooterProps> = ({ contactInfo, registrationOpen }) => {
+const Footer: React.FC<FooterProps> = ({
+  contactInfo,
+  registrationOpen,
+  disabledPages = NO_DISABLED_PAGES,
+}) => {
   return (
     <div className="relative">
       <FooterHeightEffect />
@@ -262,7 +288,7 @@ const Footer: React.FC<FooterProps> = ({ contactInfo, registrationOpen }) => {
         )}
       >
         {registrationOpen !== false && <RegisterBand />}
-        <FooterContent contactInfo={contactInfo} />
+        <FooterContent contactInfo={contactInfo} disabledPages={disabledPages} />
         <FooterBrandName />
       </footer>
     </div>

@@ -7,7 +7,10 @@
 // mergeNavOverrides()'s job.
 // ---------------------------------------------------------------------------
 
+import { notFound } from "next/navigation";
+import { cache } from "react";
 import type { NavPromoOverride } from "@/components/blocks/header/mergeNavOverrides";
+import { parseDisabledPages, type PageKey } from "./pages";
 import { fetchStrapi } from "./strapi";
 import { strapiMediaUrl } from "./strapi-article";
 
@@ -66,4 +69,49 @@ export async function fetchNavPromoOverrides(): Promise<NavPromoOverride[]> {
   } catch {
     return [];
   }
+}
+
+/** Raw payload shape of GET /api/navigation?populate[pages]=true. */
+interface NavigationPagesResponse {
+  pages?: unknown;
+}
+
+/**
+ * The pages switched off in the CMS ("Meniu site" -> pages), as a set of keys.
+ *
+ * Its own request, separate from the promo overrides: until the backend ships
+ * the `pages` field, Strapi rejects `populate[pages]` with a 400, and keeping
+ * the two apart means that rejection cannot take the promo cards down with it.
+ * Same cache tag, so one POST /api/revalidate?tag=navigation purges both.
+ *
+ * NON-NEGOTIABLE: a failure never hides a page. Field missing, endpoint down,
+ * malformed payload, unknown key: every one of them resolves to an empty set,
+ * which means every page is on.
+ */
+export const fetchDisabledPages = cache(async(): Promise<Set<PageKey>> => {
+  try {
+    const data = await fetchStrapi<NavigationPagesResponse | null>(
+      "navigation",
+      "populate[pages]=true",
+      REVALIDATE_SECONDS,
+      [NAVIGATION_TAG],
+    );
+    return parseDisabledPages(data?.pages);
+  } catch {
+    return new Set();
+  }
+});
+
+/** False only when the CMS explicitly switched this page off. */
+export async function isPageEnabled(key: PageKey): Promise<boolean> {
+  return !(await fetchDisabledPages()).has(key);
+}
+
+/**
+ * Call at the top of a switchable page (and its detail routes): renders the
+ * normal 404 when the page is switched off, does nothing otherwise.
+ * Not for generateMetadata, which should use isPageEnabled() and never throw.
+ */
+export async function requireEnabled(key: PageKey): Promise<void> {
+  if (!(await isPageEnabled(key))) notFound();
 }
