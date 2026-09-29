@@ -139,10 +139,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         />
         </ConsentGate>
 
-        {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI.
-            On resume it stays up for 1.5s: YouTube flashes its own
-            play / previous / next overlay for about a second after play
-            starts, even with controls=0, and the cover hides that flash. */}
+        {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
         <AnimatePresence>
           {!playing && (
             <motion.div
@@ -151,7 +148,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
               animate={{ opacity: 1 }}
               exit={{
                 opacity: 0,
-                transition: { duration: DURATION.base, delay: 1.5 },
+                transition: { duration: DURATION.base, delay: 0.3 },
               }}
               transition={{ duration: DURATION.base }}
               style={{
