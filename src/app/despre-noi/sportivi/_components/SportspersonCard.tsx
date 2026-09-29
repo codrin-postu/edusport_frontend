@@ -351,7 +351,7 @@ export function SportspersonCard({
             <div className="flex gap-3 border-t border-line-subtle-on-dark pt-2">
               <div>
                 <div
-                  className="text-body"
+                  className="text-body-lg font-extrabold leading-none tabular-nums"
                   style={{ color: tier.color }}
                 >
                   {String(stats.totalCompetitions).padStart(2, "0")}
@@ -363,7 +363,7 @@ export function SportspersonCard({
               {bottomMedals && (
                 <div>
                   <div
-                    className="text-body"
+                    className="text-body-lg font-extrabold leading-none tabular-nums"
                     style={{ color: medalColor }}
                   >
                     {String(medalTotal).padStart(2, "0")}
@@ -374,7 +374,7 @@ export function SportspersonCard({
                 </div>
               )}
               <div>
-                <div className="text-body text-primary-on-dark">
+                <div className="text-body-lg font-extrabold leading-none tabular-nums text-primary-on-dark">
                   {stats.bestScore !== null
                     ? stats.bestScore.toFixed(2)
                     : "—"}
