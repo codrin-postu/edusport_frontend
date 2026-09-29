@@ -11,7 +11,7 @@ interface InfoSectionProps {
 const InfoSection: React.FC<InfoSectionProps> = ({ sectionLabel, tips, closingLine }) => {
   return (
     <Section className="section-compact bg-surface">
-      <div className="max-w-prose mx-auto flex flex-col gap-4">
+      <div className="max-w-prose flex flex-col gap-4">
         <p className="text-label uppercase text-accent">{sectionLabel}</p>
         <BulletList items={tips} />
         <p className="text-caption text-secondary italic pt-1">{closingLine}</p>
