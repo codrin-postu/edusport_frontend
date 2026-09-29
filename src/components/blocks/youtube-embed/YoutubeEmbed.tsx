@@ -37,7 +37,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
 }, ref) => {
   const videoId = extractVideoId(url);
   const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&disablekb=1&iv_load_policy=3&fs=0`;
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [hovered, setHovered] = useState(false);
@@ -139,7 +139,10 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
         />
         </ConsentGate>
 
-        {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI */}
+        {/* Pause cover - thumbnail + blur blocks YouTube's related videos UI.
+            On resume it stays up for 1.5s: YouTube flashes its own
+            play / previous / next overlay for about a second after play
+            starts, even with controls=0, and the cover hides that flash. */}
         <AnimatePresence>
           {!playing && (
             <motion.div
@@ -148,7 +151,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
               animate={{ opacity: 1 }}
               exit={{
                 opacity: 0,
-                transition: { duration: DURATION.base, delay: 0.3 },
+                transition: { duration: DURATION.base, delay: 1.5 },
               }}
               transition={{ duration: DURATION.base }}
               style={{
