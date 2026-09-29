@@ -4,6 +4,7 @@ import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import SectionHeader from "@/components/ui/section-header";
+import BulletList from "@/components/ui/bullet-list";
 import SeasonResults from "./_SeasonResults";
 import type { GalleryImage, Season, SeasonIndexEntry } from "./_data";
 
@@ -70,16 +71,7 @@ const AccomplishmentsPage: React.FC<AccomplishmentsPageProps> = ({
 
           {/* Notable achievements list — rust chevron markers */}
           {notableAchievements.length > 0 && (
-            <ul className="flex flex-col gap-3 mb-24">
-              {notableAchievements.map((achievement, i) => (
-                <li
-                  key={i}
-                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
-                >
-                  {achievement}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={notableAchievements} className="mb-24" />
           )}
 
           {/* Image carousel */}

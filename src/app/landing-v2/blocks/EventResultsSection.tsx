@@ -2,7 +2,7 @@ import Image from "next/image";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import { WarmStripe } from "@/components/ui/warm-stripe";
-import Icon from "@/components/ui/icon";
+import MetaList from "@/components/ui/meta-list";
 import type { Event } from "../_types";
 
 // Helpers module (the standalone EventResults section was merged into
@@ -67,18 +67,14 @@ export function EventCard({ event }: { event: Event }) {
         <h3 className="text-heading text-primary mb-4">
           {event.title}
         </h3>
-        <div className="text-body-sm flex flex-wrap items-center gap-x-6 gap-y-2 text-secondary mb-4">
-          <span className="inline-flex items-center gap-2">
-            <Icon name="calendar" className="text-accent" />
-            {formatRoDate(event.date)}
-          </span>
-          {event.location && (
-            <span className="inline-flex items-center gap-2">
-              <Icon name="map-pin" className="text-accent" />
-              {event.location}
-            </span>
-          )}
-        </div>
+        <MetaList
+          layout="inline"
+          className="mb-4"
+          items={[
+            { icon: "calendar", text: formatRoDate(event.date) },
+            ...(event.location ? [{ icon: "map-pin" as const, text: event.location }] : []),
+          ]}
+        />
         <p className="text-body-sm text-secondary mb-6 max-w-narrow">{event.excerpt}</p>
         {event.admissionInfo && (
           <p className="text-body-sm text-secondary italic mb-6">{event.admissionInfo}</p>

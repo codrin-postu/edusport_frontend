@@ -3,6 +3,7 @@ import { cn } from "@/utils/cn";
 import Image from "next/image";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import Card from "@/components/ui/card";
+import BulletList from "@/components/ui/bullet-list";
 
 interface Trainer {
   name: string;
@@ -140,16 +141,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                           <p className="text-label uppercase text-secondary mb-1">
                             Predă la
                           </p>
-                          <ul className="flex flex-col gap-0.5">
-                            {trainer.teaches.map((group) => (
-                              <li
-                                key={group}
-                                className="text-caption relative pl-4 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
-                              >
-                                {group}
-                              </li>
-                            ))}
-                          </ul>
+                          <BulletList items={trainer.teaches} className="gap-0.5" />
                         </div>
                       )}
                     </div>

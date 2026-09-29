@@ -11,7 +11,7 @@ import {
 } from "@/lib/strapi-article";
 import React from "react";
 import { notFound } from "next/navigation";
-import { Icon } from "@/components/ui/icon";
+import MetaList from "@/components/ui/meta-list";
 import StrapiBlocks from "@/components/blocks/strapi-blocks/StrapiBlocks";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
 import { WarmStripe } from "@/components/ui/warm-stripe";
@@ -194,10 +194,11 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
               </h1>
 
               {/* Mobile-only date - sidebar is hidden on mobile */}
-              <div className="flex items-center gap-2 mb-8 lg:hidden">
-                <Icon name="calendar-days" className="text-accent" />
-                <span className="text-body-sm text-secondary">{formatDate(article.date)}</span>
-              </div>
+              <MetaList
+                layout="inline"
+                className="mb-8 lg:hidden"
+                items={[{ icon: "calendar-days", text: formatDate(article.date) }]}
+              />
 
               {/* Article-level video (separate field from body) — placed
                   above body so editors can lead with a feature clip. */}
@@ -242,41 +243,37 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
                 <p className="text-label uppercase text-accent">
                   {SIDEBAR_HEADER[article.category] ?? "Detalii articol"}
                 </p>
-                <div className="text-body-sm flex flex-col gap-3 text-secondary">
-                  <span className="flex items-start gap-3">
-                    <Icon name="calendar-days" className="text-accent mt-0.5" />
-                    {formatDate(
-                      isEventLike && article.eventDate
-                        ? article.eventDate
-                        : article.date,
-                    )}
-                  </span>
-                  {isEventLike && article.eventDate && (
-                    <span className="flex items-start gap-3">
-                      <Icon name="clock" className="text-accent mt-0.5" />
-                      {new Date(article.eventDate).toLocaleTimeString("ro-RO", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  )}
-                  {isEventLike && article.eventLocation && (
-                    <span className="flex items-start gap-3">
-                      <Icon name="map-pin" className="text-accent mt-0.5" />
-                      {article.eventLocation}
-                    </span>
-                  )}
-                  {isEventLike && article.eventAdmissionInfo && (
-                    <span className="flex items-start gap-3">
-                      <Icon name="ticket" className="text-accent mt-0.5" />
-                      {article.eventAdmissionInfo}
-                    </span>
-                  )}
-                  <span className="flex items-start gap-3">
-                    <Icon name="tag" className="text-accent mt-0.5" />
-                    {CATEGORY_LABELS[article.category]}
-                  </span>
-                </div>
+                <MetaList
+                  layout="stack"
+                  items={[
+                    {
+                      icon: "calendar-days",
+                      text: formatDate(
+                        isEventLike && article.eventDate
+                          ? article.eventDate
+                          : article.date,
+                      ),
+                    },
+                    ...(isEventLike && article.eventDate
+                      ? [
+                          {
+                            icon: "clock" as const,
+                            text: new Date(article.eventDate).toLocaleTimeString("ro-RO", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }),
+                          },
+                        ]
+                      : []),
+                    ...(isEventLike && article.eventLocation
+                      ? [{ icon: "map-pin" as const, text: article.eventLocation }]
+                      : []),
+                    ...(isEventLike && article.eventAdmissionInfo
+                      ? [{ icon: "ticket" as const, text: article.eventAdmissionInfo }]
+                      : []),
+                    { icon: "tag", text: CATEGORY_LABELS[article.category] },
+                  ]}
+                />
               </Card>
             </aside>
           </div>

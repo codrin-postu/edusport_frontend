@@ -3,6 +3,7 @@ import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { Icon } from "@/components/ui/icon";
 import Breadcrumb from "@/components/ui/breadcrumb";
+import NameStack from "@/components/ui/name-stack";
 import { Stat } from "@/components/ui/stat";
 import { Chip } from "@/components/ui/chip";
 import {
@@ -192,7 +193,7 @@ const SportspersonView: React.FC<Props> = ({
                 {category}
               </div>
               <h1 className="text-athlete-name">
-                <NameStack name={sportsperson.name} />
+                <NameStack name={sportsperson.name} onDark />
               </h1>
             </div>
 
@@ -551,34 +552,6 @@ function sortSeasonsDesc(
   seasons: SportspersonSeason[],
 ): SportspersonSeason[] {
   return [...seasons].sort((a, b) => b.season.localeCompare(a.season));
-}
-
-/**
- * Two-line filled+stroked name treatment. First word is filled cream,
- * everything after is stroked (outlined cream). The Spotlight component
- * on the index page uses the identical structure — keeping it in sync
- * here preserves the editorial signature across both surfaces.
- */
-function NameStack({ name }: { name: string }) {
-  const parts = name.trim().split(/\s+/);
-  const first = parts[0]?.toUpperCase() ?? "";
-  const rest = parts.slice(1).join(" ").toUpperCase();
-  return (
-    <>
-      <span className="block text-primary-on-dark">{first}</span>
-      {rest && (
-        <span
-          className="block"
-          style={{
-            color: "transparent",
-            WebkitTextStroke: "1.5px var(--color-retro-cream)",
-          }}
-        >
-          {rest}
-        </span>
-      )}
-    </>
-  );
 }
 
 /**

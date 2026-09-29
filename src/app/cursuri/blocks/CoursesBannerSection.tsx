@@ -1,7 +1,6 @@
 import Button from "@/components/ui/button";
 import Chip from "@/components/ui/chip";
-import Icon from "@/components/ui/icon";
-import Link from "@/components/ui/link";
+import MetaList from "@/components/ui/meta-list";
 import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
@@ -48,20 +47,15 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
         {title}
       </h1>
 
-      <div className="text-body-sm flex flex-wrap gap-x-6 gap-y-2 text-secondary-on-dark">
-        <span className="flex items-center gap-2">
-          <Icon name="calendar" className="text-primary-on-dark" />
-          {scheduleDays}
-        </span>
-        <span className="flex items-center gap-2">
-          <Icon name="clock" className="text-primary-on-dark" />
-          {scheduleTimes}
-        </span>
-        <Link href={locationUrl} tone="quiet" onDark external className="flex items-center gap-2">
-          <Icon name="map-pin" className="text-primary-on-dark" />
-          {locationName}
-        </Link>
-      </div>
+      <MetaList
+        layout="inline"
+        onDark
+        items={[
+          { icon: "calendar", text: scheduleDays },
+          { icon: "clock", text: scheduleTimes },
+          { icon: "map-pin", text: locationName, href: locationUrl, external: true },
+        ]}
+      />
 
       {isRegistrationOpen && (
         <div className="flex flex-col sm:flex-row gap-3 sm:items-start pt-1">

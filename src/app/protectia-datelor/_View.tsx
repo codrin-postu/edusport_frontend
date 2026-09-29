@@ -2,6 +2,8 @@ import React from "react";
 import PageHeroSection from "@/components/blocks/page-hero-section";
 import { Icon } from "@/components/ui/icon";
 import Card from "@/components/ui/card";
+import { bulletListProse } from "@/components/ui/bullet-list";
+import { cn } from "@/utils/cn";
 
 // ---------------------------------------------------------------------------
 // Section data
@@ -422,7 +424,12 @@ const ProtectiaDatelor: React.FC = () => {
                   </span>
                   {section.title}
                 </h3>
-                <div className="text-body-sm text-secondary [&_p]:leading-relaxed [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:relative [&_li]:pl-6 [&_li]:before:absolute [&_li]:before:left-0.5 [&_li]:before:content-['›'] [&_li]:before:font-extrabold [&_li]:before:text-accent [&_strong]:font-bold [&_strong]:text-primary">
+                <div
+                  className={cn(
+                    "text-body-sm text-secondary [&_p]:leading-relaxed [&_strong]:font-bold [&_strong]:text-primary",
+                    bulletListProse,
+                  )}
+                >
                   {section.content}
                 </div>
               </div>

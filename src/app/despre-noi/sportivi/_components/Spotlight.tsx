@@ -4,6 +4,7 @@ import type {
   SportspersonStats,
 } from "@/lib/strapi-sportsperson";
 import { Stat } from "@/components/ui/stat";
+import NameStack from "@/components/ui/name-stack";
 import { SportspersonCard } from "./SportspersonCard";
 
 /**
@@ -75,30 +76,6 @@ export function Spotlight({ sportsperson, stats }: Props) {
         </div>
       </div>
     </section>
-  );
-}
-
-/** Render an athlete's name as two stacked words — first filled white,
- *  second outlined. The editorial signature treatment on a blue ground. */
-function NameStack({ name }: { name: string }) {
-  const parts = name.trim().split(/\s+/);
-  const first = parts[0]?.toUpperCase() ?? "";
-  const rest = parts.slice(1).join(" ").toUpperCase();
-  return (
-    <>
-      <span className="block text-primary">{first}</span>
-      {rest && (
-        <span
-          className="block"
-          style={{
-            color: "transparent",
-            WebkitTextStroke: "1.5px var(--color-navy)",
-          }}
-        >
-          {rest}
-        </span>
-      )}
-    </>
   );
 }
 

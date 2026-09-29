@@ -3,6 +3,7 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 import Card from "@/components/ui/card";
 import { Stat } from "@/components/ui/stat";
 import SectionHeader from "@/components/ui/section-header";
+import BulletList from "@/components/ui/bullet-list";
 
 // ---------------------------------------------------------------------------
 // Fallback data (used when CMS fields are empty)
@@ -188,16 +189,7 @@ const HistoryPage: React.FC<Props> = ({
           {/* Events organized */}
           <div className="mt-24">
             <SectionHeader eyebrow="Evenimente" title="Organizate de ACS EduSport" className="mb-8" />
-            <ul className="flex flex-col gap-3 max-w-prose">
-              {resolvedEventsOrganized.map((event, i) => (
-                <li
-                  key={i}
-                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
-                >
-                  {event}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={resolvedEventsOrganized} className="max-w-prose" />
           </div>
 
           {/* Events participated */}
@@ -207,16 +199,7 @@ const HistoryPage: React.FC<Props> = ({
                 Participări ale sportivilor EduSport
               </h2>
             </div>
-            <ul className="flex flex-col gap-3 max-w-prose">
-              {resolvedEventsParticipated.map((event, i) => (
-                <li
-                  key={i}
-                  className="text-body-sm relative pl-6 text-secondary before:absolute before:left-0.5 before:content-['›'] before:font-extrabold before:text-accent"
-                >
-                  {event}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={resolvedEventsParticipated} className="max-w-prose" />
           </div>
 
         </div>

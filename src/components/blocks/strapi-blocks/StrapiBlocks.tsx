@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import { ArticleImage } from "@/components/blocks/article-card/ArticleImage";
+import { bulletListProse } from "@/components/ui/bullet-list";
+import { cn } from "@/utils/cn";
 import type {
   BlockNode,
   TextNode,
@@ -100,7 +102,7 @@ function RenderBlock({ node }: { node: BlockNode }) {
       return l.format === "ordered" ? (
         <ol className="list-decimal list-outside marker:text-accent marker:font-bold ml-6 mb-4 space-y-2">{items}</ol>
       ) : (
-        <ul className="mb-4 space-y-2 [&>li]:relative [&>li]:pl-6 [&>li]:before:absolute [&>li]:before:left-0.5 [&>li]:before:content-['›'] [&>li]:before:font-extrabold [&>li]:before:text-accent">{items}</ul>
+        <ul className={cn("mb-4 space-y-2", bulletListProse)}>{items}</ul>
       );
     }
 

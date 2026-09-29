@@ -1,4 +1,5 @@
 import Section from "@/components/ui/section";
+import BulletList from "@/components/ui/bullet-list";
 import React from "react";
 
 interface InfoSectionProps {
@@ -12,14 +13,7 @@ const InfoSection: React.FC<InfoSectionProps> = ({ sectionLabel, tips, closingLi
     <Section className="section-compact bg-surface">
       <div className="max-w-prose mx-auto flex flex-col gap-4">
         <p className="text-label uppercase text-accent">{sectionLabel}</p>
-        <ul className="flex flex-col gap-3">
-          {tips.map((tip, index) => (
-            <li key={index} className="text-body-sm flex items-start gap-3 text-primary">
-              <span className="shrink-0 font-extrabold text-accent">›</span>
-              {tip}
-            </li>
-          ))}
-        </ul>
+        <BulletList items={tips} />
         <p className="text-caption text-secondary italic pt-1">{closingLine}</p>
       </div>
     </Section>

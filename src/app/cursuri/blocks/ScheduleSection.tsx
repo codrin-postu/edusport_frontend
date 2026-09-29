@@ -2,6 +2,7 @@ import Section from "@/components/ui/section";
 import { WeekendNote } from "@/components/ui/weekend-note";
 import { cn } from "@/utils/cn";
 import Icon from "@/components/ui/icon";
+import BulletList from "@/components/ui/bullet-list";
 import Image from "next/image";
 import React from "react";
 
@@ -188,17 +189,7 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
                 Informații importante
               </p>
             </div>
-            <ul className="space-y-3">
-              {(disclaimers ?? []).map((text, i) => (
-                <li
-                  key={i}
-                  className="text-body-sm flex gap-3 text-primary-on-dark"
-                >
-                  <span className="shrink-0 font-extrabold text-mustard">›</span>
-                  {text}
-                </li>
-              ))}
-            </ul>
+            <BulletList items={disclaimers ?? []} onDark />
           </div>
         </div>
       </section>
