@@ -455,7 +455,7 @@ export function scrollToFirstInvalidField(
   container: ParentNode = document,
 ): void {
   const invalid = container.querySelector<HTMLElement>(
-    '[aria-invalid="true"]',
+    "[aria-invalid='true']",
   );
   if (!invalid) return;
   const reduceMotion =
