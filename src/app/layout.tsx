@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
 import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -174,7 +173,6 @@ export default async function RootLayout({
             strategy="afterInteractive"
           />
         )}
-        <CookieConsent />
       </body>
     </html>
   );

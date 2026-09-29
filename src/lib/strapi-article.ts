@@ -306,13 +306,13 @@ export function resolveVideoEmbed(url: string): { provider: "youtube" | "vimeo";
 
   if (host === "youtu.be") {
     const id = parsed.pathname.replace(/^\//, "").split("/")[0];
-    if (id) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${id}` };
+    if (id) return { provider: "youtube", embedUrl: `https://www.youtube-nocookie.com/embed/${id}` };
   }
   if (host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")) {
     const v = parsed.searchParams.get("v");
-    if (v) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${v}` };
+    if (v) return { provider: "youtube", embedUrl: `https://www.youtube-nocookie.com/embed/${v}` };
     const m = parsed.pathname.match(/^\/(embed|shorts)\/([\w-]+)/);
-    if (m) return { provider: "youtube", embedUrl: `https://www.youtube.com/embed/${m[2]}` };
+    if (m) return { provider: "youtube", embedUrl: `https://www.youtube-nocookie.com/embed/${m[2]}` };
   }
   if (host === "vimeo.com" || host === "www.vimeo.com") {
     const id = parsed.pathname.replace(/^\//, "").split("/")[0];
