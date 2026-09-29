@@ -44,7 +44,6 @@ export const twMergeConfig = {
         "text-header-logo",
         "text-athlete-watermark",
         "text-athlete-stat",
-        "text-price",
         "text-branding-xl",
       ],
       // The brand wordmark font class (a plain class in globals.css). Its

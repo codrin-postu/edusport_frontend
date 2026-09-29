@@ -72,7 +72,7 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
               <span className="text-caption text-secondary">{item.note}</span>
             )}
           </div>
-          <span className="text-price text-primary tabular-nums whitespace-nowrap shrink-0">
+          <span className="text-body-lg font-extrabold text-primary tabular-nums whitespace-nowrap shrink-0">
             {item.price}
           </span>
         </div>

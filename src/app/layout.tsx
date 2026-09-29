@@ -23,7 +23,8 @@ const inter = Inter({
   // font-bold buttons that must render pixel-identical to the pre-redesign
   // snapshot, and dropping 700 renders them with the 600 weight's thinner
   // strokes instead (a real glyph difference, not synthetic bolding).
-  weight: ["400", "600", "700"],
+  // 800: the Cursuri pricing table prices (text-body-lg font-extrabold).
+  weight: ["400", "600", "700", "800"],
   variable: "--font-inter",
   display: "swap",
 });
