@@ -175,7 +175,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
               exit={{ opacity: 0 }}
               transition={{ duration: DURATION.fast }}
             >
-              <div className="flex items-center justify-center w-16 h-16 bg-surface-subtle-on-dark border border-line-on-dark backdrop-blur-sm">
+              <div className="flex items-center justify-center w-16 h-16">
                 {playing ? (
                   <Icon name="pause" size="md" className="text-primary-on-dark fill-white" />
                 ) : (
@@ -210,7 +210,7 @@ const YoutubeEmbed = forwardRef<YoutubeEmbedHandle, YoutubeEmbedProps>(({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-caption inline-flex items-center gap-1 text-secondary-on-dark hover:text-primary-on-dark transition-colors"
+            className="text-caption inline-flex items-center gap-1 text-secondary-on-dark hover:text-accent-on-dark transition-colors"
           >
             YouTube
             <Icon name="arrow-up-right" />
