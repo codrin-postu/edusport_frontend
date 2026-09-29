@@ -182,7 +182,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         </div>
 
         {footerNotes && footerNotes.length > 0 && (
-          <div className="flex flex-col gap-2 max-w-prose">
+          <div className="flex flex-col gap-2">
             <p className="text-label uppercase text-secondary mb-1">
               Taxe &amp; Prețuri
             </p>
