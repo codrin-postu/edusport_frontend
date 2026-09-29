@@ -6,7 +6,10 @@ import {
 export default function Loading() {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      <HeroSkeleton title={["PROTECTIA", "DATELOR"]} />
+      <HeroSkeleton
+        title={["GDPR"]}
+        breadcrumb={[{ label: "Protecția datelor" }]}
+      />
       <div className="relative z-raised bg-surface flex-1">
         <LongformSkeleton />
       </div>
