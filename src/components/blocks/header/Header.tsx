@@ -60,7 +60,6 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuButtonRef = React.useRef<HTMLElement>(null);
 
-  const lastAtTop = React.useRef<boolean | null>(null);
   const handleScroll = useCallback(() => {
     const y = window.scrollY;
     const atTop = y <= 400;
@@ -69,19 +68,22 @@ const Header: React.FC<HeaderProps> = ({
     // total height), so anything sitting flush under the fixed header
     // stays in sync with the strip without any extra bookkeeping here.
     document.documentElement.classList.toggle("nav-strip-open", atTop);
-    // One session entry, written only when the strip changes state: the path
-    // whose strip was last closed. The inline script in layout.tsx reads it
-    // so a reload of that page paints the strip closed from the first frame.
-    if (atTop !== lastAtTop.current) {
-      lastAtTop.current = atTop;
+  }, []);
+
+  // The strip state is saved once, when the page is left or reloaded
+  // (pagehide), never while scrolling: the inline script in layout.tsx reads
+  // it so a reload paints the strip in the right state from the first frame.
+  useEffect(() => {
+    const save = () => {
       try {
-        if (atTop) sessionStorage.removeItem("esNavClosed");
-        else sessionStorage.setItem("esNavClosed", window.location.pathname);
+        if (window.scrollY > 400) sessionStorage.setItem("esNavClosed", window.location.pathname);
+        else sessionStorage.removeItem("esNavClosed");
       } catch {
-        // Private mode or full quota. The strip still works, it just cannot
-        // survive a reload in the right state.
+        // Private mode or full quota: the strip just starts open on reload.
       }
-    }
+    };
+    window.addEventListener("pagehide", save);
+    return () => window.removeEventListener("pagehide", save);
   }, []);
 
   // Clears the per-page esNavY:* entries an older version wrote on every
