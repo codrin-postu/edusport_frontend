@@ -2,23 +2,27 @@
 // src/lib/pages.ts has no imports, which is what makes this possible.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import {
+
+// CI runs Node 20, which cannot import .ts files: skip there instead of failing.
+const canStripTypes = Boolean(process.features?.typescript);
+const {
   PAGE_KEYS,
   PAGE_ROUTES,
   filterNavItems,
   isHrefEnabled,
   pageKeyForPath,
   parseDisabledPages,
-} from "../../src/lib/pages.ts";
+} = canStripTypes ? await import("../../src/lib/pages.ts") : {};
+const it = canStripTypes ? test : (name) => test.skip(name);
 
-test("every key has exactly one route", () => {
+it("every key has exactly one route", () => {
   assert.deepEqual(
     [...PAGE_ROUTES.map((r) => r.key)].sort(),
     [...PAGE_KEYS].sort(),
   );
 });
 
-test("pageKeyForPath maps each switchable address", () => {
+it("pageKeyForPath maps each switchable address", () => {
   const cases = {
     "/despre-noi": "istoric",
     "/despre-noi/echipa": "echipa",
@@ -44,7 +48,7 @@ test("pageKeyForPath maps each switchable address", () => {
   }
 });
 
-test("always-on, external and unknown addresses have no key", () => {
+it("always-on, external and unknown addresses have no key", () => {
   for (const href of [
     "/",
     "/contact",
@@ -61,7 +65,7 @@ test("always-on, external and unknown addresses have no key", () => {
   }
 });
 
-test("parseDisabledPages only switches off explicit false on known keys", () => {
+it("parseDisabledPages only switches off explicit false on known keys", () => {
   assert.deepEqual(parseDisabledPages(undefined), new Set());
   assert.deepEqual(parseDisabledPages(null), new Set());
   assert.deepEqual(parseDisabledPages({}), new Set());
@@ -81,7 +85,7 @@ test("parseDisabledPages only switches off explicit false on known keys", () => 
   );
 });
 
-test("isHrefEnabled", () => {
+it("isHrefEnabled", () => {
   const off = new Set(["noutati"]);
   assert.equal(isHrefEnabled("/noutati?category=evenimente", off), false);
   assert.equal(isHrefEnabled("/noutati/x", off), false);
@@ -113,11 +117,11 @@ const menu = [
   { key: "contact", label: "Contact", href: "/contact" },
 ];
 
-test("filterNavItems with nothing off returns the same list", () => {
+it("filterNavItems with nothing off returns the same list", () => {
   assert.equal(filterNavItems(menu, new Set()), menu);
 });
 
-test("filterNavItems drops links and dropdown children, keeps promo while a child stays", () => {
+it("filterNavItems drops links and dropdown children, keeps promo while a child stays", () => {
   const out = filterNavItems(menu, new Set(["noutati", "istoric"]));
   assert.deepEqual(
     out.map((i) => i.key),
@@ -132,12 +136,12 @@ test("filterNavItems drops links and dropdown children, keeps promo while a chil
   assert.equal(menu[1].dropdown.length, 2);
 });
 
-test("filterNavItems removes a dropdown whose children are all off", () => {
+it("filterNavItems removes a dropdown whose children are all off", () => {
   const out = filterNavItems(menu, new Set(["istoric", "echipa"]));
   assert.equal(out.find((i) => i.key === "despre-noi"), undefined);
 });
 
-test("filterNavItems keeps an untouched dropdown by identity", () => {
+it("filterNavItems keeps an untouched dropdown by identity", () => {
   const out = filterNavItems(menu, new Set(["parteneri"]));
   assert.equal(out[1], menu[1]);
 });
