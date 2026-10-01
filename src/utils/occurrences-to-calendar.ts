@@ -188,28 +188,3 @@ export function occurrencesToCalendarEvents(
 
   return events;
 }
-
-/**
- * Legacy fallback data (no occurrences endpoint) carries only the weekend model.
- * Give its weekends the same per-day Școala tiles the occurrence path produces,
- * so the grids look the same either way.
- */
-export function withScoalaTiles(events: CalendarEvent[]): CalendarEvent[] {
-  if (events.some((e) => e.type === "scoala")) return events;
-  const tiles: CalendarEvent[] = [];
-  for (const e of events) {
-    if (e.type !== "curs" && e.type !== "liber" && e.type !== "anulat") continue;
-    const end = parseYMD(e.endDate);
-    for (let d = parseYMD(e.startDate); d <= end; d.setDate(d.getDate() + 1)) {
-      tiles.push({
-        type: "scoala",
-        state: e.type,
-        startDate: ymd(d),
-        endDate: ymd(d),
-        title: null,
-        description: e.description ?? null,
-      });
-    }
-  }
-  return [...events, ...tiles];
-}

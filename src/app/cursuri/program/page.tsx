@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchSeasonOccurrences } from "@/lib/strapi-calendar";
-import { occurrencesToCalendarEvents, withScoalaTiles } from "@/utils/occurrences-to-calendar";
+import { occurrencesToCalendarEvents } from "@/utils/occurrences-to-calendar";
 import ProgramPage from "./_View";
 import type { ProgramPageData, ScheduleGroup, CalendarEvent } from "./_types";
 import { PROGRAM_PAGE_DATA } from "./_data";
@@ -31,8 +31,6 @@ type CmsShape = {
   pageInfo?: {
     scheduleSubtitle?: string;
   } | null;
-  scheduleGroups?: ScheduleGroup[];
-  calendarEvents?: CalendarEvent[];
   disclaimers?: { id: number; text: string }[];
 };
 
@@ -77,16 +75,6 @@ function padSeasonBounds(
   };
 }
 
-function deriveSeasonBounds(events: CalendarEvent[]): { seasonStart: string; seasonEnd: string } | null {
-  if (!events.length) return null;
-  const dates = events.flatMap((e) => [e.startDate, e.endDate]);
-  const sorted = dates.filter(Boolean).sort();
-  return {
-    seasonStart: sorted[0].slice(0, 7),               // "YYYY-MM"
-    seasonEnd: sorted[sorted.length - 1].slice(0, 7), // "YYYY-MM"
-  };
-}
-
 // Site-settings now owns the canonical season window. Convert the registration
 // ISO dates ("YYYY-MM-DD") to "YYYY-MM" for the calendar's valid range.
 function seasonBoundsFromSiteSettings(
@@ -101,7 +89,6 @@ function seasonBoundsFromSiteSettings(
 
 export default async function Page() {
   await requireEnabled("program");
-  let data: ProgramPageData = PROGRAM_PAGE_DATA;
 
   // program-page still owns the banner / disclaimers; the new `program` single
   // type owns the schedule series; site-settings owns the season window.
@@ -122,44 +109,38 @@ export default async function Page() {
     siteSettingsResult.status === "fulfilled" ? siteSettingsResult.value : null;
   const reg = settings?.registration;
 
-  // Season window: prefer site-settings' explicit dates, else derive from the
-  // legacy seed so the occurrence fetch always has a range.
-  const legacyEvents = cms?.calendarEvents?.length
-    ? cms.calendarEvents
-    : PROGRAM_PAGE_DATA.calendarEvents;
+  // Season window: prefer site-settings' explicit dates, else the default
+  // season bounds so the occurrence fetch always has a range to query.
   const rawBounds =
     seasonBoundsFromSiteSettings(reg?.seasonStartDate, reg?.seasonEndDate)
-    ?? deriveSeasonBounds(legacyEvents);
+    ?? (PROGRAM_PAGE_DATA.seasonStart && PROGRAM_PAGE_DATA.seasonEnd
+      ? { seasonStart: PROGRAM_PAGE_DATA.seasonStart, seasonEnd: PROGRAM_PAGE_DATA.seasonEnd }
+      : null);
 
   // Pad the window (2 months before start, 3 after end) so the calendar and its
   // navigation range include the shoulder months, even when they are empty.
   const bounds = padSeasonBounds(rawBounds);
 
-  // The calendar-event collection (via /api/calendar/occurrences) is the source
-  // of truth for the calendar. Școala de patinaj dates become tiles and also feed
-  // the weekend list (per-date curs/liber/anulat). Fall back to the legacy weekend
-  // model only if the endpoint returns nothing. Fetch the padded window so the
-  // shoulder months are covered too.
+  // The calendar-event collection (via /api/calendar/occurrences) is the only
+  // source of the season calendar now. When it returns nothing, the page
+  // renders with an empty calendar (see SeasonCalendarViewV2's empty state)
+  // rather than falling back to any seed/legacy data.
   const rangeFrom = bounds ? `${bounds.seasonStart}-01` : null;
   const rangeTo = bounds ? lastDayOfMonth(bounds.seasonEnd) : null;
-  let calendarEvents = withScoalaTiles(legacyEvents);
+  let calendarEvents: CalendarEvent[] = [];
   if (rangeFrom && rangeTo) {
     const { occurrences } = await fetchSeasonOccurrences(rangeFrom, rangeTo);
     if (occurrences.length) calendarEvents = occurrencesToCalendarEvents(occurrences);
   }
 
-  data = {
+  const data: ProgramPageData = {
     seasonLabel: reg?.currentSeason ?? PROGRAM_PAGE_DATA.seasonLabel,
     seasonStart: bounds?.seasonStart ?? PROGRAM_PAGE_DATA.seasonStart,
     seasonEnd: bounds?.seasonEnd ?? PROGRAM_PAGE_DATA.seasonEnd,
     bannerTitle: cms?.banner?.title ?? PROGRAM_PAGE_DATA.bannerTitle,
     bannerSubtitle: cms?.banner?.subtitle ?? PROGRAM_PAGE_DATA.bannerSubtitle,
     scheduleSubtitle: cms?.pageInfo?.scheduleSubtitle ?? PROGRAM_PAGE_DATA.scheduleSubtitle,
-    scheduleGroups: program?.scheduleGroups?.length
-      ? program.scheduleGroups
-      : cms?.scheduleGroups?.length
-        ? cms.scheduleGroups
-        : PROGRAM_PAGE_DATA.scheduleGroups,
+    scheduleGroups: program?.scheduleGroups?.length ? program.scheduleGroups : [],
     calendarEvents,
     disclaimers: cms?.disclaimers?.length
       ? cms.disclaimers.map((d) => d.text)

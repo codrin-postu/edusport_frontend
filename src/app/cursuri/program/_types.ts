@@ -45,3 +45,12 @@ export interface ProgramPageData {
   calendarEvents: CalendarEvent[];
   disclaimers: string[];
 }
+
+/**
+ * Static text defaults (banner, disclaimers, season label/bounds) used when
+ * the CMS fetch itself fails. The schedule series and season calendar have no
+ * static default anymore: when `program` / the calendar-event occurrences are
+ * empty, the page renders with an empty calendar and schedule (see
+ * SeasonCalendarViewV2 and ScheduleSection's empty states).
+ */
+export type ProgramPageDefaults = Omit<ProgramPageData, "scheduleGroups" | "calendarEvents">;

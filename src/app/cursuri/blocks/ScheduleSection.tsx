@@ -83,30 +83,36 @@ const ScheduleSection: React.FC<ScheduleSectionProps> = ({
               <div aria-hidden style={{ height: "32px" }} />
 
               {/* Two-column layout on wide screens */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-line-subtle">
-                {scheduleGroups.map((group, groupIndex) => (
-                  <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
-                    {/* Time slot line */}
-                    <p
-                      className="text-body font-semibold text-primary"
-                      style={{ lineHeight: "32px", margin: 0 }}
-                    >
-                      {group.timeSlot}
-                    </p>
-
-                    {/* Course names - each on its own ruled line */}
-                    {group.courses.map((course, courseIndex) => (
+              {scheduleGroups.length ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-line-subtle">
+                  {scheduleGroups.map((group, groupIndex) => (
+                    <div key={groupIndex} className={groupIndex === 1 ? "sm:pl-6" : "sm:pr-6"}>
+                      {/* Time slot line */}
                       <p
-                        key={courseIndex}
-                        className="text-body-sm text-secondary"
-                        style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
+                        className="text-body font-semibold text-primary"
+                        style={{ lineHeight: "32px", margin: 0 }}
                       >
-                        - {course}
+                        {group.timeSlot}
                       </p>
-                    ))}
-                  </div>
-                ))}
-              </div>
+
+                      {/* Course names - each on its own ruled line */}
+                      {group.courses.map((course, courseIndex) => (
+                        <p
+                          key={courseIndex}
+                          className="text-body-sm text-secondary"
+                          style={{ lineHeight: "32px", margin: 0, paddingLeft: "1.25rem" }}
+                        >
+                          - {course}
+                        </p>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-body-sm text-secondary" style={{ lineHeight: "32px", margin: 0 }}>
+                  Programul sezonului va fi publicat în curând.
+                </p>
+              )}
             </div>
             {/* Handwritten note */}
             <WeekendNote

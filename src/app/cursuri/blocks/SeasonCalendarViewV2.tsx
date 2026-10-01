@@ -273,6 +273,10 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   const { allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, tileEvents } =
     useSeasonCalendar(seasonCalendar);
 
+  // No occurrences at all (program not published yet): skip the calendar/
+  // weekend UI entirely and show a short note instead of an empty-looking grid.
+  const hasEvents = seasonCalendar.length > 0;
+
   const [activeView, setActiveView] = useState<"calendar" | "weekends">(
     "calendar",
   );
@@ -426,6 +430,12 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
           </p>
         </div>
 
+        {!hasEvents ? (
+          <p className="mt-6 text-body-sm text-secondary">
+            Programul sezonului va fi publicat în curând.
+          </p>
+        ) : (
+        <>
         {/* View toggle */}
         <div className="mt-6 mb-8">
           <ToggleGroup
@@ -511,6 +521,8 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
               />
             ))}
           </div>
+        )}
+        </>
         )}
       </div>
     </section>
