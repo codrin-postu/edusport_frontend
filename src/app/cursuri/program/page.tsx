@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { fetchSeasonOccurrences } from "@/lib/strapi-calendar";
+import { fetchPublicClubInfo } from "@/lib/club-public-fetch";
+import { seasonMonthBounds } from "@/lib/club-public";
 import { occurrencesToCalendarEvents } from "@/utils/occurrences-to-calendar";
 import ProgramPage from "./_View";
 import type { ProgramPageData, ScheduleGroup, CalendarEvent } from "./_types";
@@ -32,14 +34,6 @@ type CmsShape = {
     scheduleSubtitle?: string;
   } | null;
   disclaimers?: { id: number; text: string }[];
-};
-
-type SiteSettingsShape = {
-  registration?: {
-    currentSeason?: string;
-    seasonStartDate?: string; // "YYYY-MM-DD"
-    seasonEndDate?: string;   // "YYYY-MM-DD"
-  };
 };
 
 // The new unified `program` single type owns the schedule series.
@@ -75,24 +69,12 @@ function padSeasonBounds(
   };
 }
 
-// Site-settings now owns the canonical season window. Convert the registration
-// ISO dates ("YYYY-MM-DD") to "YYYY-MM" for the calendar's valid range.
-function seasonBoundsFromSiteSettings(
-  start: string | undefined,
-  end: string | undefined,
-): { seasonStart: string; seasonEnd: string } | null {
-  const isoMonth = /^\d{4}-\d{2}/;
-  if (!start || !end) return null;
-  if (!isoMonth.test(start) || !isoMonth.test(end)) return null;
-  return { seasonStart: start.slice(0, 7), seasonEnd: end.slice(0, 7) };
-}
-
 export default async function Page() {
   await requireEnabled("program");
 
   // program-page still owns the banner / disclaimers; the new `program` single
-  // type owns the schedule series; site-settings owns the season window.
-  const [cmsResult, programResult, siteSettingsResult] = await Promise.allSettled([
+  // type owns the schedule series; the current Sezon owns the season window.
+  const [cmsResult, programResult, clubResult] = await Promise.allSettled([
     fetchStrapi<CmsShape>(
       "program-page",
       // Only `disclaimers` is a real component; the rest are JSON custom-fields.
@@ -100,19 +82,17 @@ export default async function Page() {
       false,
     ),
     fetchStrapi<ProgramShape>("program"),
-    fetchStrapi<SiteSettingsShape>("site-settings"),
+    fetchPublicClubInfo(),
   ]);
 
   const cms = cmsResult.status === "fulfilled" ? cmsResult.value : null;
   const program = programResult.status === "fulfilled" ? programResult.value : null;
-  const settings =
-    siteSettingsResult.status === "fulfilled" ? siteSettingsResult.value : null;
-  const reg = settings?.registration;
+  const season = clubResult.status === "fulfilled" ? clubResult.value?.season ?? null : null;
 
-  // Season window: prefer site-settings' explicit dates, else the default
+  // Season window: the current Sezon's start and end month, else the default
   // season bounds so the occurrence fetch always has a range to query.
   const rawBounds =
-    seasonBoundsFromSiteSettings(reg?.seasonStartDate, reg?.seasonEndDate)
+    seasonMonthBounds(season)
     ?? (PROGRAM_PAGE_DATA.seasonStart && PROGRAM_PAGE_DATA.seasonEnd
       ? { seasonStart: PROGRAM_PAGE_DATA.seasonStart, seasonEnd: PROGRAM_PAGE_DATA.seasonEnd }
       : null);
@@ -134,7 +114,7 @@ export default async function Page() {
   }
 
   const data: ProgramPageData = {
-    seasonLabel: reg?.currentSeason ?? PROGRAM_PAGE_DATA.seasonLabel,
+    seasonLabel: season?.label ?? null,
     seasonStart: bounds?.seasonStart ?? PROGRAM_PAGE_DATA.seasonStart,
     seasonEnd: bounds?.seasonEnd ?? PROGRAM_PAGE_DATA.seasonEnd,
     bannerTitle: cms?.banner?.title ?? PROGRAM_PAGE_DATA.bannerTitle,

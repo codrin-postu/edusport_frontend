@@ -6,7 +6,8 @@ import PageHeroSection from "@/components/blocks/page-hero-section";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
 
 interface CoursesBannerSectionProps {
-  currentSeason: string;
+  /** Null when no Sezon is current: no label. */
+  currentSeason: string | null;
   isRegistrationOpen: boolean;
   title: string;
   scheduleDays: string;
@@ -33,9 +34,11 @@ const CoursesBannerSection: React.FC<CoursesBannerSectionProps> = ({
       variant={isRegistrationOpen ? "blue" : "dark"}
     >
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-label uppercase text-primary-on-dark">
-          Sezonul {currentSeason}
-        </span>
+        {currentSeason && (
+          <span className="text-label uppercase text-primary-on-dark">
+            Sezonul {currentSeason}
+          </span>
+        )}
         {isRegistrationOpen ? (
           <Chip tone="highlight" size="md" shape="slanted">
             Înscrieri deschise

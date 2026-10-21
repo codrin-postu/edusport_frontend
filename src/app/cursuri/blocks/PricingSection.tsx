@@ -35,19 +35,14 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
             i < tier.priceItems.length - 1 && "border-b border-line-subtle",
           )}
         >
-          <div className="flex flex-col gap-0.5">
-            <span className="text-body-sm text-secondary">
-              {item.label}
-              {item.tooltip && (
-                <span className="inline-flex items-center ml-1 translate-y-[2px]">
-                  <ItemTooltip text={item.tooltip} />
-                </span>
-              )}
-            </span>
-            {item.note && (
-              <span className="text-caption text-secondary">{item.note}</span>
+          <span className="text-body-sm text-secondary">
+            {item.label}
+            {item.tooltip && (
+              <span className="inline-flex items-center ml-1 translate-y-[2px]">
+                <ItemTooltip text={item.tooltip} />
+              </span>
             )}
-          </div>
+          </span>
           <span className="text-body-lg font-extrabold text-primary tabular-nums whitespace-nowrap shrink-0">
             {item.price}
           </span>
@@ -68,8 +63,8 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
 interface PricingSectionProps {
   pricingData: PricingTier[] | null;
   footerNotes?: string[] | null;
-  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
-  currentSeason: string;
+  /** Current Sezon label (GET /api/club/public); null when none is current. */
+  currentSeason: string | null;
   eyebrow: string;
   title: string;
   description: string;
@@ -92,7 +87,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <Section id="preturi" className="section bg-surface">
       <div className="flex flex-col gap-12">
-        <SectionHeader eyebrow={currentSeason} title="Prețuri cursuri grup" />
+        <SectionHeader eyebrow={currentSeason ?? undefined} title="Prețuri cursuri grup" />
 
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Promo card — plain navy. Card always draws a border-retro edge;

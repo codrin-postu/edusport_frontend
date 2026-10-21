@@ -29,7 +29,8 @@ const CALENDAR_VIEW_OPTIONS = [
 
 interface SeasonCalendarViewV2Props {
   seasonCalendar: CalendarEvent[];
-  seasonLabel?: string;
+  /** Current Sezon label; no heading when null. */
+  seasonLabel?: string | null;
   /** "YYYY-MM" - first month of the season */
   seasonStart?: string | null;
   /** "YYYY-MM" - last month of the season (inclusive) */
@@ -157,7 +158,7 @@ const MonthColumn: React.FC<{
 
 const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
   seasonCalendar,
-  seasonLabel = "2025–2026",
+  seasonLabel = null,
   seasonStart,
   seasonEnd,
 }) => {
@@ -312,9 +313,11 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
             <span className="text-label uppercase text-accent">
               Calendar sezon
             </span>
-            <h2 className="text-heading text-primary mt-2">
-              Sezonul {seasonLabel}
-            </h2>
+            {seasonLabel && (
+              <h2 className="text-heading text-primary mt-2">
+                Sezonul {seasonLabel}
+              </h2>
+            )}
           </div>
           <p className="text-body-sm text-secondary sm:text-right sm:max-w-aside">
             Datele în care se desfășoară cursurile și weekend-urile libere.
