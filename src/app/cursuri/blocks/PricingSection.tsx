@@ -5,36 +5,11 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import BulletList from "@/components/ui/bullet-list";
 import SectionHeader from "@/components/ui/section-header";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/utils/cn";
-import IconButton from "@/components/ui/icon-button";
-import React, { useState } from "react";
+import React from "react";
 import type { PricingTier } from "../_types_pricing";
+import ItemTooltip from "./ItemTooltip";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
-
-const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger asChild>
-        <IconButton
-          icon="info"
-          label="Detalii"
-          size="sm"
-          onClick={() => setOpen((v) => !v)}
-          className="-my-3 -mx-3 text-secondary"
-        />
-      </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-60">
-        {text}
-      </TooltipContent>
-    </Tooltip>
-  );
-};
 
 const CARD = "relative flex flex-col overflow-hidden min-h-[520px]";
 
