@@ -575,8 +575,8 @@ const REVALIDATE_SECONDS = 60;
 /**
  * GET /api/club/public: current season, membership fee and the public prices.
  * Null when the backend is unreachable or the body is unusable, so each page
- * keeps its own fallback (the "Prețurile nu sunt disponibile" card, the
- * fallback season label). React `cache` shares one call per request.
+ * keeps its own fallback (the "Prețurile nu sunt disponibile" card, no season
+ * label). React `cache` shares one call per request.
  */
 export const fetchPublicClubInfo = cache(async(): Promise<PublicClubInfo | null> => {
   try {
@@ -617,7 +617,7 @@ git commit -m "feat(club): read season, fee and prices from the public club endp
 - Consumes: Task 1 `fetchPublicClubInfo`, `websitePriceTiers`, `registrationsOpen`, `seasonMonthBounds`; Task 3 `ItemTooltip` (already imported by `PricingSection` after Task 3).
 - Produces: `PriceItem` loses `note`; `CURRENT_SEASON` is no longer used by Cursuri and Regulament (Task 6 deletes it with the old Înscrieri page, its last user); the season label props become `string | null` (`CoursesPage.currentSeason`, `CoursesBannerSection.currentSeason`, `PricingSection.currentSeason`, Regulament `currentSeason`, `ProgramPageData.seasonLabel`, `SeasonCalendarViewV2.seasonLabel`); `ProgramPageDefaults` no longer has `seasonLabel`.
 
-Same look as today, except the rulings: "Pentru Neafiliați" (Task 1), and with no current Sezon no season label and registrations shown as closed. `/cursuri` is the Școala de patinaj page, so it shows the first school of the public read (2A returns only `kind = 'school'` sections, sorted by section order). Tooltips stay; the note line is gone (its text is now the tooltip of "1 ședință grup", 2A copy script). Footer notes are the school's `priceNotes`. "Înscrieri deschise" still comes from Setări site, combined with the current Sezon by `registrationsOpen` on /cursuri and the homepage. `site-settings.ts` keeps `currentSeason` until Task 6, because the Înscrieri page still reads it. The header and footer buttons (layout) still follow the switch alone (see "Needs user decision").
+Same look as today, except the rulings: "Pentru Neafiliați" (Task 1), and with no current Sezon no season label and registrations shown as closed. `/cursuri` is the Școala de patinaj page, so it shows the first school of the public read (2A returns only `kind = 'school'` sections, sorted by section order). Tooltips stay; the note line is gone (its text is now the tooltip of "1 ședință grup", 2A copy script). Footer notes are the school's `priceNotes`. "Înscrieri deschise" still comes from Setări site, combined with the current Sezon by `registrationsOpen` on /cursuri and the homepage. `site-settings.ts` keeps `currentSeason` until Task 6, because the Înscrieri page still reads it. The header and footer buttons (layout) follow the switch alone (accepted, 2026-10-21): with no current Sezon they lead to /inscrieri, which shows closed.
 
 - [ ] **Step 1: Cursuri page**
 
@@ -3866,16 +3866,14 @@ The visual suite (`npm run test:visual`) renders /, /cursuri, /cursuri/program, 
 
 One window for both repos (ruling 2026-10-21): switch "Înscrieri deschise" off in Setări site, deploy the backend (2A and the rest of phase 2, with its backup and copy script), deploy this frontend, check /inscrieri, /cursuri and a test registration against the new backend outside production data, then switch "Înscrieri deschise" on. While the switch is off the site shows registrations closed, so neither the old form against the new backend nor the new form against the old backend is ever used.
 
-## Needs user decision
-
-1. **Header and footer buttons without a current Sezon.** The layout (header "Înscrie-te" button, footer band) still follows only "Înscrieri deschise", so with the switch on and no current Sezon they keep pointing to /inscrieri, which then shows "Înscrierile sunt închise.". The homepage panel and /cursuri already show closed. Options: (a) accept (the switch is normally off between seasons); (b) the layout also reads the public read (one cached request per page, 60 s) and uses `registrationsOpen`; (c) the backend sets "Înscrieri deschise" off when no Sezon is current.
-
 ## Self-review
 
 - Spec 3.1: Cursuri (Task 2 Steps 1-3), homepage (Step 4), Regulament (Step 5), Program (Step 6), Înscrieri (Task 6) read `/api/club/public`; "Înscrieri deschise" stays in Setări site; tooltips stay, the note line is gone, footer notes from `priceNotes`, per-audience columns via `offeredItems` (Task 1).
 - Spec 3.2: 3 steps with the script form's questions, order, options and wording (`FALLBACK_CONFIG` = 2A registry, checked by `config.test.mjs` and `check:inscriere-config`); follow-ups (Task 4 `prepareStep`/`applyAnswer`); next month's school dates from the site calendar (Task 4 `_schedule.ts`, Task 6 page); Da/Nu; price box per audience plus the annual fee in the member box (Task 1 `priceBox`); upsell with savings from the prices (Task 1 `upsell`); options per membership (Task 1 `subscriptionOptions`); honeypot kept (Task 6); old-only fields gone (config test).
 - Spec 3.3: `?scoala=`, chooser only with 2+ schools, pinned school with "Schimbă" (Task 4 `_school.ts`, Task 5 `_SchoolPicker.tsx`); only school sections come from 2A, and the schedule is one calendar while there is one school (rulings 2026-10-21).
 - Spec 3.4: number, plural/singular sentence, PDF buttons from `downloadToken` + `documents`, WhatsApp from config (Task 4, Task 5 `_Success.tsx`); 24-hour expiry is the backend's (2D); the expired link lands on `/inscrieri/link-expirat` (Task 7, with its test).
+- Header and footer buttons follow only "Înscrieri deschise" (accepted 2026-10-21); with no current Sezon /inscrieri shows closed (Task 6 view).
+- Success intro for an Acord-only registration, "Puteți descărca de mai jos formularul completat de dvs.", accepted (M8; follows the singular-wording decision); "documentele completate" with two documents (Task 5 `_Success.tsx`).
 - Rulings 2026-10-21: base branch (Global Constraints, before Task 1); "Pentru Neafiliați" (Task 1 test, Task 7 e2e); no current Sezon = closed and no label (Task 1 `registrationsOpen` test; Task 2 removes every fallback label; Task 6 view); deploy note ("Deploy").
 - Spec 5 "a browser test of the 3-step form": Task 7.
 - Placeholders: none; every code step carries the code. Type names match across tasks (`PublicClubInfo`, `ScheduleWeekend`, `SubmitSuccess`, `inscriereStepComplete`, `registrationsOpen`); `registrationClosed` no longer exists anywhere.
