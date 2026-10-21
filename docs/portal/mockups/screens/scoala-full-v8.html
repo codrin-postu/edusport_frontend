@@ -1,0 +1,290 @@
+<style>:root{color-scheme:light;--bg-primary:#f5f5f7!important;--bg-secondary:#fff!important;--bg-tertiary:#e5e5e7!important;--border:#d1d1d6!important;--text-primary:#1d1d1f!important;--text-secondary:#86868b!important;--text-tertiary:#aeaeb2!important;--accent:#0071e3!important;--accent-hover:#0077ed!important;--selected-bg:#e8f4fd!important;--selected-border:#0071e3!important}.brand-logo{filter:invert(1)!important}</style><style>
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800&family=Inter:wght@400;600;700;800&display=swap');
+.cf{--n:#0e1a3c;--r:#be3330;--m:#efb22b;--c:#fbf8f1;--w:#fff;--s:#ece8e0;--h:#f9edd1;--bd:#d9d3c7;--mu:#6b6f7d;--ok:#2f7a4a;--okb:#e3f1e8;
+ font:13px/1.45 Inter,system-ui,sans-serif;color:var(--n)}
+.cf *{box-sizing:border-box}
+.cf h2,.cf .disp{font-family:"League Spartan",Inter,sans-serif;font-weight:800;letter-spacing:-.02em}
+.cf .sect{margin:26px 0 8px;padding-top:14px;border-top:2px solid var(--n)}
+.cf .eyb{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--r)}
+.cf .row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.cf .ph{width:280px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16);display:flex;flex-direction:column;min-height:560px}
+.cf .cap{font-weight:700;margin:0 0 6px;font-size:12px;color:var(--mu)}
+.cf .top{background:var(--n);color:var(--c);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.cf .top b{font-family:"League Spartan",Inter,sans-serif;font-size:16px;flex:1}
+.cf .top small{color:var(--m);font-weight:700}
+.cf .pad{padding:12px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cf .card{background:var(--w);border:1.5px solid var(--n);padding:10px 12px}
+.cf .card .t{font-weight:800}
+.cf .card .m{color:var(--mu);font-size:12px}
+.cf .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;background:var(--s)}
+.cf .chip.r{background:var(--r);color:var(--c)}.cf .chip.m{background:var(--m);color:var(--n)}.cf .chip.ok{background:var(--okb);color:var(--ok)}
+.cf .btn{display:flex;align-items:center;justify-content:center;height:40px;background:var(--n);color:var(--c);font-weight:700;border:1.5px solid var(--n)}
+.cf .btn.o{background:var(--w);color:var(--n)}
+.cf .btn.sm{height:30px;padding:0 10px;font-size:12px;display:inline-flex}
+.cf .kid{display:flex;align-items:center;gap:8px;background:var(--w);border:1px solid var(--bd);padding:7px 8px}
+.cf .kid .nm{flex:1;font-weight:600;min-width:0}
+.cf .kid .nm small{display:block;color:var(--mu);font-weight:400;font-size:11px}
+.cf .tg{display:flex}
+.cf .tg span{width:30px;height:30px;display:grid;place-items:center;border:1.5px solid var(--n);margin-left:-1.5px;font-weight:800;background:var(--w);color:var(--n)}
+.cf .tg .on{background:var(--n);color:var(--m)}
+.cf .ck{width:18px;height:18px;border:1.5px solid var(--n);background:var(--w);flex-shrink:0;display:grid;place-items:center;font-weight:800;font-size:12px}
+.cf .ck.on{background:var(--n);color:var(--m)}
+.cf .absent{opacity:.55}
+.cf .bar{display:flex;gap:6px;align-items:center;background:var(--n);color:var(--c);padding:8px 10px;font-weight:700}
+.cf .bar span.sp{flex:1}
+.cf .f{display:flex;flex-direction:column;gap:3px}
+.cf .f>span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.cf .in{height:36px;border:1.5px solid var(--n);background:var(--w);padding:0 10px;display:flex;align-items:center;color:var(--n)}
+.cf .in.ph2{color:#9a9ca6}
+.cf .note{font-size:12px;color:var(--mu)}
+.cf .bal{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--n);background:var(--w)}
+.cf .bal div{padding:8px;text-align:center;border-right:1px solid var(--bd)}
+.cf .bal div:last-child{border-right:0}
+.cf .bal b{display:block;font-family:"League Spartan",Inter,sans-serif;font-size:22px;line-height:1}
+.cf .bal small{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+.cf .neg{color:var(--r)}
+.cf .hist div{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)}
+.cf .tbl{overflow-x:auto;border:1.5px solid var(--n);background:var(--w)}
+.cf table{border-collapse:collapse;font-size:12px;width:100%}
+.cf th,.cf td{border:1px solid var(--bd);padding:5px 6px;text-align:center;white-space:nowrap}
+.cf th{background:var(--n);color:var(--c);font-weight:700;font-size:11px}
+.cf th.g{background:#26304e}
+.cf td.l{text-align:left;font-weight:600}
+.cf td.x{background:var(--h)}
+.cf .desk{flex:1;min-width:640px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16)}
+.cf .side{width:170px;background:var(--n);color:var(--c);padding:12px;display:flex;flex-direction:column;gap:4px}
+.cf .side div{padding:6px 8px;font-weight:600}
+.cf .side .on{background:#26304e;border-left:3px solid var(--m)}
+.cf .side small{color:var(--m);font-weight:700;letter-spacing:.08em;font-size:10px;margin-top:8px}
+.cf .names{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.cf .names .option{min-width:150px}
+.cf .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin:4px 0 10px}
+.cf .legend b{color:var(--n)}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+.cf .ph{width:300px;min-height:600px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16);display:flex;flex-direction:column}
+.cf .hdr{background:var(--n);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.cf .logo{font-family:"Climate Crisis",Inter,sans-serif;color:var(--c);font-size:17px;letter-spacing:.04em;line-height:1}
+.cf .hdr .sp{flex:1}
+.cf .ava{width:26px;height:26px;background:var(--m);color:var(--n);display:grid;place-items:center;font-weight:800;font-size:11px}
+.cf .ttl{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--bd);background:var(--c)}
+.cf .ttl b{font-family:"League Spartan",Inter,sans-serif;font-size:18px;flex:1;line-height:1.1}
+.cf .ttl small{font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--r)}
+.cf .bk{font-size:18px;font-weight:800}
+.cf .pad{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cf .tabs4{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bd);background:var(--w);margin-top:auto}
+.cf .tabs4 span{padding:7px 0 6px;text-align:center;font-size:10px;font-weight:700;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
+.cf .tabs4 span.on{color:var(--n);box-shadow:inset 0 2px 0 var(--n)}
+.cf .tabs4 svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.cf .lst{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .ar{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--bd)}
+.cf .ar:last-child{border-bottom:0}
+.cf .ar.done{background:var(--s)}
+.cf .ar.mut{color:var(--mu)}
+.cf .at{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:17px;line-height:1;min-width:40px}
+.cf .at small{display:block;font-family:Inter;font-size:10px;color:var(--mu);font-weight:700;margin-top:2px}
+.cf .an{font-weight:700;line-height:1.25}
+.cf .as{font-size:11px;color:var(--mu);margin-top:2px}
+.cf .ae{display:flex;align-items:center;gap:6px}
+.cf .cmp{font-size:12px;font-weight:700;color:var(--ok)}
+.cf .arw{font-size:20px;font-weight:800;color:var(--n)}
+.cf .tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--s);padding:2px 5px;margin-left:4px}
+.cf .eyb{margin-top:4px}
+.cf .f{display:flex;flex-direction:column;gap:3px}
+.cf .f>span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.cf .in{height:38px;border:1.5px solid var(--n);background:var(--w);padding:0 10px;display:flex;align-items:center;justify-content:space-between}
+.cf .in.ph2{color:#9a9ca6}
+.cf .chev{width:20px;height:20px;fill:none;stroke:var(--n);stroke-width:2.2;flex-shrink:0}
+.cf .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cf .lnk{font-size:12px;font-weight:700;text-decoration:underline}
+.cf .hint{font-size:11px;color:var(--mu)}
+.cf .btn{display:flex;align-items:center;justify-content:center;height:42px;background:var(--n);color:var(--c);font-weight:700;border:1.5px solid var(--n)}
+.cf .btn.o{background:var(--w);color:var(--n)}
+.cf .grid3{display:grid;grid-template-columns:1fr 52px 52px;align-items:center}
+.cf .gh{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);padding:0 12px}
+.cf .gh span:not(:first-child){text-align:center}
+.cf .gr{padding:9px 12px;border-bottom:1px solid var(--bd);font-weight:600;font-size:12px}
+.cf .gr:last-child{border-bottom:0}
+.cf .ck{width:22px;height:22px;border:1.5px solid var(--n);background:var(--w);display:grid;place-items:center;font-weight:800;font-size:12px;margin:0 auto}
+.cf .ck.on{background:var(--n);color:var(--c)}
+.cf .ban{background:var(--h);border-left:4px solid var(--n);padding:8px 10px;font-weight:700;font-size:12px}
+.cf .ban small{display:block;font-weight:400;color:var(--mu)}
+.cf .inf{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--bd);font-size:12px}
+.cf .inf:last-child{border-bottom:0}
+.cf .inf b{font-weight:700;text-align:right}
+.cf .tp{border:1.5px solid var(--n);background:var(--w);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .tpc{display:grid;grid-template-columns:1fr 1fr}
+.cf .tc{border-right:1px solid var(--bd)}.cf .tc:last-child{border-right:0}
+.cf .tch{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding:6px 10px;border-bottom:1px solid var(--bd)}
+.cf .tv{padding:6px 10px;font-weight:600;text-align:center}.cf .tv.on{background:var(--n);color:var(--c)}
+.cf .tpf{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-top:1px solid var(--bd);font-weight:700}
+.cf .tpf .btn{height:30px;padding:0 12px}
+.cf .num{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 4px;background:var(--r);color:var(--c);font-weight:800;font-size:11px;margin-right:6px}
+.cf .grp{margin:24px 0 8px;padding-top:12px;border-top:2px solid var(--n)}
+.cf .menu .inf{padding:12px}
+.cf .dchip{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--n);background:var(--w);padding:4px 6px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--n)}
+.cf .dchip svg{width:14px;height:14px;fill:none;stroke:var(--n);stroke-width:2}
+.cf .cal{border:1.5px solid var(--n);background:var(--w);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:8px}
+.cf .calh{display:flex;justify-content:space-between;align-items:center;font-weight:800;padding:2px 2px 8px}
+.cf .calg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px}
+.cf .calg b{font-size:10px;color:var(--mu);padding:3px 0}
+.cf .calg span{height:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:600;position:relative}
+.cf .calg span.out{color:var(--bd)}
+.cf .calg span.has::after{content:"";position:absolute;bottom:3px;width:12px;height:2px;background:var(--n)}
+.cf .calg span.sel{background:var(--r);color:var(--c);font-weight:800}
+.cf .calg span.sel::after{background:var(--c)}
+.cf .calg span.today{box-shadow:inset 0 0 0 1.5px var(--n)}
+.cf .legend2{display:flex;gap:12px;font-size:11px;color:var(--mu);margin-top:6px;align-items:center}
+.cf .legend2 i{display:inline-block;width:12px;height:2px;background:var(--n);vertical-align:middle;margin-right:4px}
+.cf .warn{background:var(--w);border:1.5px solid var(--r);box-shadow:4px 4px 0 rgba(190,51,48,.18);padding:10px 12px}
+.cf .warn b{display:block;color:var(--r);margin-bottom:3px}
+.cf .warn .btns{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+
+</style><style>
+.cf .big{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:34px;line-height:1}
+.cf .due{background:var(--w);border:1.5px solid var(--r);box-shadow:4px 4px 0 rgba(190,51,48,.18);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.cf .due .big{color:var(--r)}
+.cf .ok2{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:12px 14px}
+.cf .ok2 .big{color:var(--ok)}
+.cf .sum{display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--bd);font-size:13px}
+.cf .sum:last-child{border-bottom:0}
+.cf .sum.tot{font-weight:800;font-size:14px;border-top:1.5px solid var(--n)}
+.cf .prog{height:8px;background:var(--s);border:1px solid var(--n);position:relative;margin:6px 0}
+.cf .prog i{position:absolute;left:0;top:0;bottom:0;background:var(--n)}
+.cf .st{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.cf .st.ok{color:var(--ok)}.cf .st.no{color:var(--r)}
+.cf .kidc{display:flex;align-items:center;gap:10px}
+.cf .kidc .ava{width:36px;height:36px;font-size:13px}
+.cf .proc{background:var(--s);border:1.5px solid var(--bd);padding:10px;display:flex;flex-direction:column;gap:8px}
+.cf .seg{display:flex;border:1.5px solid var(--n);height:40px}
+.cf .seg span{flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;background:var(--w)}
+.cf .seg span.on{background:var(--n);color:var(--c)}
+</style><style>
+.cf .tk{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);position:relative;overflow:hidden}
+.cf .tkb{padding:12px 14px 14px}
+.cf .tkt{display:flex;align-items:flex-end;gap:8px}
+.cf .tkn{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:46px;line-height:.85}
+.cf .tkl{font-family:"League Spartan",Inter,sans-serif;font-weight:800;letter-spacing:.08em;font-size:14px}
+.cf .slants{display:flex;gap:3px;margin-bottom:4px}.cf .slants i{width:14px;height:12px;transform:skewX(-20deg);display:block}
+.cf .tkg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.cf .tks{height:44px;border:1.5px solid var(--n);position:relative;padding:3px 5px;font-size:10px;font-weight:700}
+.cf .tks .d{position:absolute;bottom:3px;left:5px;right:5px;font-size:10px;font-weight:700;color:var(--n)}
+.cf .tks.on{background:var(--n);color:var(--c)}.cf .tks.on .d{color:var(--m)}
+
+.cf .bands{display:flex;flex-direction:column;gap:2px}.cf .bands i{height:5px;display:block}
+.cf .mini{display:flex;gap:2px}.cf .mini i{width:7px;height:9px;border:1px solid var(--n);display:block}.cf .mini i.on{background:var(--n)}
+.cf .w{color:var(--r)}.cf .wo{color:#b05a18}
+.cf .opt3{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cf .opt3 div{background:var(--w);border:1.5px solid var(--n);padding:12px;text-align:center}
+.cf .opt3 div.on{background:var(--n);color:var(--c)}
+.cf .opt3 b{display:block;font-family:"League Spartan",Inter,sans-serif;font-size:28px;line-height:1}
+.cf .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.cf .rules .bx{background:var(--w);border:1.5px solid var(--n);padding:10px 12px}
+.cf .rules .bx b{display:block;margin-bottom:3px}
+.cf .rules .bx small{color:var(--mu);font-size:12px}
+.cf .qs .option{margin:0}
+.cf .rtag{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--c);background:var(--r);padding:2px 6px}
+</style><style>.cf .pl{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px}
+.cf .plh{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1.5px solid var(--n)}
+.cf .plh b{font-family:"League Spartan",Inter,sans-serif;font-size:18px}
+.cf .grpset{max-width:900px;margin-top:16px}</style><style>.cf .dates3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.cf .dates3 span{height:40px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--n);background:var(--w);font-weight:700;font-size:12px}.cf .dates3 span.on{background:var(--n);color:var(--c)}.cf .tkname{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--r);margin-bottom:6px}.cf .ovl{background:rgba(14,26,60,.35);padding:30px;display:flex;justify-content:center;max-width:900px;border:1.5px solid var(--n)}.cf .dlg{width:420px;background:var(--c);border:1.5px solid var(--n);box-shadow:8px 8px 0 rgba(14,26,60,.25)}.cf .dlgh{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd)}.cf .dlgh b{font-family:"League Spartan",Inter,sans-serif;font-size:19px;flex:1}.cf .dlgb{padding:14px 16px;display:flex;flex-direction:column;gap:10px}.cf .dlgf{display:flex;justify-content:flex-end;gap:8px;padding:10px 16px;border-top:1px solid var(--bd)}.cf .dlgf .btn{height:40px;padding:0 16px}</style><style>
+.cf .opts4{display:flex!important;flex-direction:row!important;gap:18px;flex-wrap:wrap!important;align-items:flex-start}
+.cf .opts4 .option{display:block!important;width:auto!important;padding:10px;border-radius:0!important}
+.cf .cardw{width:300px}
+/* A */
+.cf .ca{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:14px}
+.cf .ca .tophd{display:flex;justify-content:space-between;align-items:flex-start}
+.cf .ca .k{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--r)}
+.cf .ca .nm{font-weight:700;margin-top:2px}
+.cf .ca .cnt{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:30px;line-height:1;text-align:right}
+.cf .ca .cnt small{display:block;font-family:Inter;font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.04em}
+.cf .ga{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.cf .sa{height:52px;border:1.5px solid var(--bd);display:flex;flex-direction:column;justify-content:space-between;padding:5px 6px;font-size:11px;font-weight:700;color:var(--mu)}
+.cf .sa.u{background:var(--n);border-color:var(--n);color:var(--c)}
+.cf .sa.u .dd{color:var(--c);opacity:.8;font-weight:600}
+.cf .sa.nx{border-color:var(--r);color:var(--r)}
+.cf .sa .dd{font-size:10px}
+.cf .ca .ft{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);font-size:12px}
+/* B */
+.cf .cb{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .cb .hd{padding:14px;border-bottom:1px solid var(--bd)}
+.cf .bar8{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-top:10px}
+.cf .bar8 i{height:8px;background:var(--s);display:block}.cf .bar8 i.u{background:var(--n)}
+.cf .cb .rw{display:grid;grid-template-columns:28px 1fr auto;gap:8px;padding:8px 14px;border-bottom:1px solid var(--bd);font-size:12px;align-items:center}
+.cf .cb .rw:last-child{border-bottom:0}
+.cf .cb .rw b{font-family:"League Spartan",Inter,sans-serif;font-size:15px}
+.cf .cb .rw.f{color:var(--mu)}
+/* C */
+.cf .cc{background:var(--n);color:var(--c);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.25);display:grid;grid-template-columns:86px 1fr}
+.cf .cc .l{border-right:1.5px solid rgba(251,248,241,.25);padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cf .cc .l b{font-family:"League Spartan",Inter,sans-serif;font-size:44px;line-height:.9}
+.cf .cc .l small{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m);margin-top:4px}
+.cf .cc .r{padding:12px}
+.cf .cc .k{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--m)}
+.cf .gc{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:10px}
+.cf .sc{height:40px;border:1px solid rgba(251,248,241,.35);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(251,248,241,.6)}
+.cf .sc.u{background:var(--c);color:var(--n);border-color:var(--c)}
+.cf .cc .ft{font-size:11px;margin-top:10px;color:rgba(251,248,241,.8)}
+</style><style>
+.cf .opts4{display:flex!important;flex-direction:row!important;gap:18px;flex-wrap:wrap!important;align-items:flex-start}
+.cf .opts4 .option{display:block!important;width:auto!important;padding:10px;border-radius:0!important}
+.cf .cardw{width:300px}
+/* A */
+.cf .ca{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:14px}
+.cf .ca .tophd{display:flex;justify-content:space-between;align-items:flex-start}
+.cf .ca .k{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--r)}
+.cf .ca .nm{font-weight:700;margin-top:2px}
+.cf .ca .cnt{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:30px;line-height:1;text-align:right}
+.cf .ca .cnt small{display:block;font-family:Inter;font-size:10px;font-weight:700;color:var(--mu);letter-spacing:.04em}
+.cf .ga{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.cf .sa{height:52px;border:1.5px solid var(--bd);display:flex;flex-direction:column;justify-content:space-between;padding:5px 6px;font-size:11px;font-weight:700;color:var(--mu)}
+.cf .sa.u{background:var(--n);border-color:var(--n);color:var(--c)}
+.cf .sa.u .dd{color:var(--c);opacity:.8;font-weight:600}
+.cf .sa.nx{border-color:var(--r);color:var(--r)}
+.cf .sa .dd{font-size:10px}
+.cf .ca .ft{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);font-size:12px}
+/* B */
+.cf .cb{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .cb .hd{padding:14px;border-bottom:1px solid var(--bd)}
+.cf .bar8{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-top:10px}
+.cf .bar8 i{height:8px;background:var(--s);display:block}.cf .bar8 i.u{background:var(--n)}
+.cf .cb .rw{display:grid;grid-template-columns:28px 1fr auto;gap:8px;padding:8px 14px;border-bottom:1px solid var(--bd);font-size:12px;align-items:center}
+.cf .cb .rw:last-child{border-bottom:0}
+.cf .cb .rw b{font-family:"League Spartan",Inter,sans-serif;font-size:15px}
+.cf .cb .rw.f{color:var(--mu)}
+/* C */
+.cf .cc{background:var(--n);color:var(--c);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.25);display:grid;grid-template-columns:86px 1fr}
+.cf .cc .l{border-right:1.5px solid rgba(251,248,241,.25);padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cf .cc .l b{font-family:"League Spartan",Inter,sans-serif;font-size:44px;line-height:.9}
+.cf .cc .l small{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m);margin-top:4px}
+.cf .cc .r{padding:12px}
+.cf .cc .k{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--m)}
+.cf .gc{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:10px}
+.cf .sc{height:40px;border:1px solid rgba(251,248,241,.35);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(251,248,241,.6)}
+.cf .sc.u{background:var(--c);color:var(--n);border-color:var(--c)}
+.cf .cc .ft{font-size:11px;margin-top:10px;color:rgba(251,248,241,.8)}
+</style><style>
+.cf .opts4{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:16px;align-items:flex-start}
+.cf .opts4 .option{display:block!important;width:auto!important;padding:10px;border-radius:0!important}
+.cf .srch{height:40px;border:1.5px solid var(--n);background:var(--w);display:flex;align-items:center;padding:0 10px;color:#9a9ca6;font-size:13px}
+.cf .tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cf .tl{background:var(--w);border:1.5px solid var(--bd);padding:8px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:12px;min-height:46px}
+.cf .tl .in2{width:28px;height:28px;display:grid;place-items:center;background:var(--s);font-size:11px;font-weight:800;flex-shrink:0}
+.cf .tl.on{border-color:var(--n);background:var(--n);color:var(--c)}
+.cf .tl.on .in2{background:var(--c);color:var(--n)}
+.cf .tl.no{border-color:var(--r)}
+.cf .tl small{display:block;font-weight:600;font-size:10px;opacity:.8}
+.cf .stick{display:flex;gap:8px;align-items:center;margin-top:auto}
+.cf .stick .cnt2{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:22px;white-space:nowrap}
+.cf .stick .btn{flex:1}
+.cf .qr{height:230px;background:#1b1f2a;display:grid;place-items:center;position:relative}
+.cf .qr .fr{width:150px;height:150px;border:3px solid var(--c)}
+.cf .scanok{background:var(--okb);border:1.5px solid var(--ok);padding:10px;font-weight:700;color:var(--ok)}
+.cf .scanno{background:#f8e5e4;border:1.5px solid var(--r);padding:10px;font-weight:700;color:var(--r)}
+.cf .qrc{width:150px;height:150px;margin:6px auto;background:repeating-linear-gradient(90deg,var(--n) 0 6px,var(--w) 6px 12px),repeating-linear-gradient(0deg,var(--n) 0 6px,var(--w) 6px 12px);background-blend-mode:multiply;border:6px solid var(--w);outline:1.5px solid var(--n)}
+</style><div class="cf"><h2>Școala de patinaj: fluxul complet</h2><p class="subtitle">Biletul de hârtie devine abonament digital. Prețurile vin din lista de prețuri a grupei. Sume exemplu. Numele sunt inventate.</p><div class="rules">
+<div class="bx"><b>Abonament</b><small>6 sau 8 ședințe, plătit înainte, 4 weekenduri de la prima ședință. Cu 6 poți lipsi un weekend. La final, ședințele rămase se pierd.</small></div>
+<div class="bx"><b>Weekend liber</b><small>Un weekend marcat Liber în calendar nu se numără: valabilitatea se prelungește singură cu un weekend.</small></div>
+<div class="bx"><b>Prezența</b><small>Antrenorul bifează; bifa consumă o căsuță. Ce era pe biletul fizic e acum pe telefonul părintelui.</small></div>
+</div><div class="grp"><div class="eyb">Antrenor (telefon)</div></div><div class="row"><div><p class="cap"><span class="num">1</span>Azi, sâmbătă</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">AP</span></div><div class="ttl"><b>Bună, Andrei</b><small>SÂ 10 OCT</small></div><div class="pad"><div class="eyb">Școala de patinaj</div><div class="lst"><div class="ar done"><div class="at">10:00</div><div><div class="an">Primii Pași</div><div class="as">școală · 12 copii · 50 min</div></div><div class="ae"><span class=cmp>Completat</span><span class=arw>&rsaquo;</span></div></div><div class="ar"><div class="at">11:00</div><div><div class="an">Intermediari Silver</div><div class="as">școală · 10 copii · 50 min</div></div><div class="ae"><span class=arw>&rsaquo;</span></div></div><div class="ar"><div class="at">12:00</div><div><div class="an">Avansați Silver</div><div class="as">școală · 9 copii · 50 min</div></div><div class="ae"><span class=arw>&rsaquo;</span></div></div></div></div><div class="tabs4"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>Azi</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Grupe</span><span class=""><svg viewBox="0 0 24 24"><path d="M12 7v5l3 2M4 12a8 8 0 1 0 16 0 8 8 0 0 0-16 0"/></svg>Istoric</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 20v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>Profil</span></div></div></div><div><p class="cap"><span class="num">2</span>Prezența la Școală</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">AP</span></div><div class="ttl"><span class=bk>&lsaquo;</span><b>Intermediari Silver</b><small>SÂ 10 OCT</small></div><div class="pad"><div class="f"><span>Antrenor</span><div class="in">Andrei Popa (tu)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div><div class="lnk">+ Adaugă alți antrenori</div></div><div class="srch">Caută…</div><div class="lst"><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Ana Bălan</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span><small style="font-size:11px">5/8</small></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Luca Stoica</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><small style="font-size:11px">6/6</small></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Radu Vasile</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><small style="font-size:11px">8/8</small></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Irina Nistor</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span><small style="font-size:11px">3/6</small></span></span><span class="ck"></span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Mara Toma</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="rtag">Fără abonament</span></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Sara Ilie</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span><small style="font-size:11px">2/8</small></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Tudor Marin</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span><small style="font-size:11px">4/8</small></span></span><span class="ck on">&#x2713;</span></div><div class="grid3 gr" style="grid-template-columns:1fr 50px"><span><b>Eva Dinu</b><span style="display:flex;gap:6px;align-items:center;margin-top:4px"><span class="mini"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span><small style="font-size:11px">1/6</small></span></span><span class="ck"></span></div></div><div class="stick"><span class="cnt2">6/20</span><span class="btn">Salvează</span></div></div></div></div></div><div class="grp"><div class="eyb">Părinte (telefon)</div></div><div class="row"><div><p class="cap"><span class="num">3</span>Biletul digital</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">MD</span></div><div class="ttl"><b>Andrei Dumitrescu</b></div><div class="pad"><div class="ca"><div class="tophd"><div><div class="k">Abonament Școala de patinaj</div><div class="nm">Andrei Dumitrescu</div><div class="hint">Primii Pași</div></div><div class="cnt">5/8<small>FOLOSITE</small></div></div><div class="ga"><div class="sa u"><span>1</span><span class="dd">3 oct</span></div><div class="sa u"><span>2</span><span class="dd">4 oct</span></div><div class="sa u"><span>3</span><span class="dd">10 oct</span></div><div class="sa u"><span>4</span><span class="dd">11 oct</span></div><div class="sa u"><span>5</span><span class="dd">17 oct</span></div><div class="sa nx"><span>6</span><span class="dd">următoarea</span></div><div class="sa"><span>7</span><span class="dd"></span></div><div class="sa"><span>8</span><span class="dd"></span></div></div><div class="ft"><span>Valabil până la 7 nov</span><b>3 rămase</b></div></div><div class="lst"><div class="sum "><span>Prima ședință</span><b>Sâ 3 oct</b></div><div class="sum "><span>Valabil până la</span><b>7 nov</b></div></div><div class="hint">Data se poate prelungi dacă școala are un weekend liber.</div><div class="btn">Cumpără abonamentul următor</div></div><div class="tabs4"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>Acasă</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>Prezență</span><span class=""><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3zM3 11h18"/></svg>Plăți</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 20v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>Profil</span></div></div></div><div><p class="cap"><span class="num">4</span>Cumpără (grupă standard)</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">MD</span></div><div class="ttl"><span class=bk>&lsaquo;</span><b>Abonament nou</b></div><div class="pad"><div class="opt3"><div class="on"><small style="letter-spacing:.06em;font-weight:800;text-transform:uppercase;font-size:9px">Abonament Școala de patinaj</small><b style="margin-top:4px">8</b>ședințe<br><small>4 weekenduri</small><br><b style="font-size:18px;margin-top:6px">400 lei</b></div><div class=""><small style="letter-spacing:.06em;font-weight:800;text-transform:uppercase;font-size:9px">Abonament Școala de patinaj</small><b style="margin-top:4px">6</b>ședințe<br><small>4 weekenduri</small><br><b style="font-size:18px;margin-top:6px">330 lei</b></div></div><div class="f"><span>Prima ședință</span><div class="dates3"><span class="on">Sâ 8 nov</span><span>Du 9 nov</span><span>Sâ 15 nov</span></div><div class="hint">Cele 4 weekenduri încep de la prima ședință.</div></div><div class="btn" style="margin-top:auto">Plătește 400 lei cu cardul</div><div class="hint" style="text-align:center">Poți plăti și numerar, la club.</div></div></div></div><div><p class="cap"><span class="num">5</span>Cumpără (Avansați Gold)</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">MT</span></div><div class="ttl"><span class=bk>&lsaquo;</span><b>Abonament nou</b></div><div class="pad"><div class="opt3" style="grid-template-columns:1fr"><div class="on"><small style="letter-spacing:.06em;font-weight:800;text-transform:uppercase;font-size:9px">Abonament Avansați Gold</small><b style="margin-top:4px">8</b>ședințe<br><small>4 weekenduri</small><br><b style="font-size:18px;margin-top:6px">520 lei</b></div></div><div class="f"><span>Prima ședință</span><div class="dates3"><span class="on">Sâ 8 nov</span><span>Du 9 nov</span><span>Sâ 15 nov</span></div><div class="hint">Cele 4 weekenduri încep de la prima ședință.</div></div><div class="btn" style="margin-top:auto">Plătește 520 lei cu cardul</div><div class="hint" style="text-align:center">Poți plăti și numerar, la club.</div></div></div></div><div><p class="cap"><span class="num">6</span>După plată</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">MD</span></div><div class="ttl"><b>Plată</b></div><div class="pad"><div class="res"><div class="eyb" style="margin:0;color:var(--ok)">Plată reușită</div><div class="big" style="color:var(--ok)">400 lei</div><div class="hint">Factura fiscală a fost trimisă pe email.</div></div><div class="lst"><div class="sum "><span>Abonament Școala de patinaj · 8 ședințe</span><b></b></div><div class="sum "><span>Prima ședință</span><b>Sâ 8 nov</b></div><div class="sum "><span>Valabil până la</span><b>6 dec</b></div></div><div class="btn o">Descarcă factura (PDF)</div><div class="btn" style="margin-top:auto">Vezi biletul</div></div><div class="tabs4"><span class=""><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>Acasă</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>Prezență</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3zM3 11h18"/></svg>Plăți</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 20v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>Profil</span></div></div></div><div><p class="cap"><span class="num">7</span>Istoric plăți</p><div class="ph"><div class="hdr"><span class="logo">EDUSPORT</span><span class="sp"></span><span class="ava">MD</span></div><div class="ttl"><b>Plăți</b></div><div class="pad"><div class="eyb">Plăți</div><div class="lst"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">400 lei</div><div class="as">7 oct · card · Abonament Școala de patinaj · 8 ședințe</div></div><div class="ae"><span class="st ok">plătit</span><span class="arw">&rsaquo;</span></div></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">400 lei</div><div class="as">3 oct · numerar · Abonament Școala de patinaj · 8 ședințe</div></div><div class="ae"><span class="st ok">plătit</span><span class="arw">&rsaquo;</span></div></div></div></div><div class="tabs4"><span class=""><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg>Acasă</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>Prezență</span><span class="on"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3zM3 11h18"/></svg>Plăți</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 20v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg>Profil</span></div></div></div></div><div class="grp"><div class="eyb">Admin (CMS)</div></div><div class="label">Abonamentele grupei</div><div class="lst" style="max-width:820px"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an" style="font-family:League Spartan;font-size:20px">Intermediari Silver · abonamente</div><div class="as">Sâ, Du 11:00 · Andrei Popa, Bianca Ene</div></div><span class="btn" style="height:40px;padding:0 16px">+ Abonament (numerar)</span></div><div class="ar" style="grid-template-columns:200px 120px 1fr 140px auto"><div class="an">Ana Bălan</div><div class="as">8 ședințe</div><div style="display:flex;gap:6px;align-items:center"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span><span class="as">5 / 8</span></div><div class="as ">până 7 nov</div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:200px 120px 1fr 140px auto"><div class="an">Luca Stoica</div><div class="as">6 ședințe</div><div style="display:flex;gap:6px;align-items:center"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="as">6 / 6</span></div><div class="as w">terminat</div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:200px 120px 1fr 140px auto"><div class="an">Radu Vasile</div><div class="as">8 ședințe</div><div style="display:flex;gap:6px;align-items:center"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="as">8 / 8</span></div><div class="as w">terminat</div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:200px 120px 1fr 140px auto"><div class="an">Irina Nistor</div><div class="as">6 ședințe</div><div style="display:flex;gap:6px;align-items:center"><span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span><span class="as">3 / 6</span></div><div class="as ">până 31 oct</div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:200px 1fr auto"><div class="an">Mara Toma</div><div class="as w">fără abonament · 1 ședință de plătit (10 oct)</div><span class="arw">&rsaquo;</span></div></div><div class="label" style="margin-top:16px">Vânzare la club (numerar)</div><div class="ovl"><div class="dlg"><div class="dlgh"><b>Abonament nou (numerar)</b><span class="arw">&#x2715;</span></div><div class="dlgb"><div class="f"><span>Sportiv</span><div class="in">Mara Toma<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div class="f"><span>Abonament</span><div class="in">Abonament Școala de patinaj · 8 ședințe · 400 lei<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div class="two"><div class="f"><span>Început</span><div class="in">10 oct</div></div><div class="f"><span>Sfârșit (calculat)</span><div class="in">6 nov</div></div></div><div class="hint">Lista de abonamente vine din lista de prețuri a grupei.</div><div class="lst"><div class="sum "><span>Ședință de plătit din 10 oct</span><b>se acoperă cu acest abonament</b></div></div></div><div class="dlgf"><span class="btn o">Anulează</span><span class="btn">Încasează 400 lei</span></div></div></div><div class="label" style="margin-top:16px">Liste de prețuri</div><div class="pl"><div class="lst"><div class="plh"><b>Standard</b><span class="lnk">Editează</span></div><div class="sum "><span>Abonament Școala de patinaj · 8 ședințe</span><b>400 lei</b></div><div class="sum "><span>Abonament Școala de patinaj · 6 ședințe</span><b>330 lei</b></div><div class="sum "><span>Ședință fără abonament</span><b>60 lei</b></div><div class="sum"><span class="hint">Folosită de: Primii Pași, Intermediari Silver, Avansați Silver, +2</span></div></div><div class="lst"><div class="plh"><b>Avansați Gold</b><span class="lnk">Editează</span></div><div class="sum "><span>Abonament Avansați Gold · 8 ședințe</span><b>520 lei</b></div><div class="sum"><span class="hint">Fără abonament de 6 în lista asta</span><span class="lnk">+ Adaugă</span></div><div class="sum "><span>Ședință fără abonament</span><b>80 lei</b></div><div class="sum"><span class="hint">Folosită de: Avansați Gold</span></div></div></div><div class="label" style="margin-top:16px">Setările grupei</div><div class="lst grpset"><div class="plh"><b>Grupa Avansați Gold · setări</b></div><div class="sum"><span>Tip</span><b>Școala de patinaj (abonament)</b></div><div class="sum"><span>Antrenori</span><b>Bianca Ene, Cristi Vlad</b></div><div class="sum"><span>Program</span><b>Sâ, Du 12:00 · 50 min</b></div><div class="sum"><span>Listă de prețuri</span><b>Avansați Gold &#x25BE;</b></div></div></div>
