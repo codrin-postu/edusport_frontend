@@ -11,12 +11,11 @@ import type { HomepageRegistrationClosed } from "../_types";
 
 interface RegistrationClosedSectionProps {
   cms?: HomepageRegistrationClosed | null;
-  /** Canonical season from site-settings.registration.currentSeason (e.g. "2025-2026"). */
+  /** Current Sezon label from GET /api/club/public (e.g. "2026-2027"). */
   season?: string;
 }
 
 const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ cms, season }) => {
-  const seasonLabel = season ? `Sezonul ${season}` : "Sezonul curent";
   const heading = cms?.heading ?? "Ne vedem în următorul sezon!";
   const body = cms?.body ?? "Înscrierile pentru sezonul curent sunt închise. Urmărește-ne pentru vești despre sezonul următor - anunțurile despre deschiderea înscrierilor apar primele pe canalul nostru de WhatsApp și pe rețelele sociale.";
   const whatsappLabel = cms?.whatsappLabel ?? "Alătură-te pe WhatsApp";
@@ -41,9 +40,11 @@ const RegistrationClosedSection: React.FC<RegistrationClosedSectionProps> = ({ c
             <div className="relative flex flex-col gap-8 max-w-2xl">
               {/* Label + status pill */}
               <div className="flex items-center gap-3">
-                <p className="text-label uppercase text-accent-on-dark">
-                  {seasonLabel}
-                </p>
+                {season && (
+                  <p className="text-label uppercase text-accent-on-dark">
+                    Sezonul {season}
+                  </p>
+                )}
                 <span className="text-caption inline-flex items-center gap-2 px-3 py-1 bg-surface-subtle-on-dark border border-line-subtle-on-dark text-secondary-on-dark">
                   <span className="w-1.5 h-1.5 bg-line-subtle-on-dark" />
                   Înscrieri închise

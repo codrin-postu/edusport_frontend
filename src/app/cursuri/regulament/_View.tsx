@@ -15,8 +15,8 @@ type RuleCategory = RegulationCategory;
 
 interface Props {
   categories: RuleCategory[];
-  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
-  currentSeason: string;
+  /** Current Sezon label (GET /api/club/public); null when none is current. */
+  currentSeason: string | null;
 }
 
 const ICON_MAP: Record<string, IconName> = {
@@ -44,7 +44,7 @@ const RegulamentPage: React.FC<Props> = ({ categories, currentSeason }) => {
       <section className="relative z-raised bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
           <div className="flex flex-col gap-3 mb-16">
-            <span className="text-label uppercase text-accent">{currentSeason}</span>
+            {currentSeason && <span className="text-label uppercase text-accent">{currentSeason}</span>}
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <h2 className="text-heading text-primary max-w-narrow">
                 Regulament Școala de Patinaj EduSport

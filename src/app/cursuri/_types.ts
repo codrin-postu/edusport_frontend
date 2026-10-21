@@ -1,22 +1,3 @@
-export interface PricingTierItem {
-  label: string;
-  price: string;
-  tooltip?: string;
-  note?: string;
-}
-
-export interface PricingTiersJson {
-  memberTiers: PricingTierItem[];
-  nonMemberTiers: PricingTierItem[];
-  memberFeeLabel?: string;
-  memberFeePrice?: string;
-}
-
-export interface CoursePricingData {
-  tiers: PricingTiersJson;
-  footerNotes: string[];
-}
-
 export interface CoursePageContent {
   banner: {
     title: string;

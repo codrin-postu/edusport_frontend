@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { getSiteSettings } from "@/lib/site-settings";
+import { fetchPublicClubInfo } from "@/lib/club-public-fetch";
+import { registrationsOpen } from "@/lib/club-public";
 import { mapsHref } from "@/lib/mapsLink";
 import { FALLBACK_ADDRESS_DISPLAY, FALLBACK_ADDRESS_MAPS_URL } from "@/lib/location";
 import { fetchArticlesPaginated, strapiMediaUrl, fetchNextEvent } from "@/lib/strapi-article";
@@ -78,7 +80,6 @@ const PLACEHOLDER_ARTICLES: LatestArticleData[] = [
 export default async function Page() {
   const heroVariant: HeroVariant = "B"; // retro hero locked to the cream layout
   let registrationOpen = true;
-  let currentSeason: string | undefined;
   let cms: HomepageCms = {};
   let latestArticles: LatestArticleData[] | undefined;
 
@@ -91,6 +92,7 @@ export default async function Page() {
     nextEventResult,
     athletesTotalResult,
     clubFiguresResult,
+    clubResult,
   ] = await Promise.allSettled([
     getSiteSettings(),
     fetchStrapi<HomepageCms>("homepage", "populate=competitionGallery"),
@@ -100,6 +102,7 @@ export default async function Page() {
     fetchNextEvent(),
     fetchPublicSportspeopleTotal(),
     fetchStrapi<ClubFiguresCms>("club-figures"),
+    fetchPublicClubInfo(),
   ]);
 
   const nextEvent = nextEventResult.status === "fulfilled" ? nextEventResult.value : null;
@@ -110,8 +113,12 @@ export default async function Page() {
     if (settingsResult.value.registrationOpen !== undefined) {
       registrationOpen = settingsResult.value.registrationOpen;
     }
-    currentSeason = settingsResult.value.currentSeason;
   }
+  // The current Sezon (admin Sezoane); "Înscrieri deschise" stays in Setări site.
+  // No current Sezon: no season label, and the closed panel.
+  const club = clubResult.status === "fulfilled" ? clubResult.value : null;
+  const currentSeason = club?.season?.label;
+  registrationOpen = registrationsOpen(registrationOpen, club);
   const contact = settingsResult.status === "fulfilled" ? settingsResult.value.contact : undefined;
   if (homepageResult.status === "fulfilled" && homepageResult.value) {
     cms = homepageResult.value;
