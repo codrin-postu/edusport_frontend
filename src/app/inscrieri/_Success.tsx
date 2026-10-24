@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { DOWNLOAD_LABELS, documentUrl, signingSentence, type DocumentKind } from "./_rules";
@@ -20,6 +20,9 @@ const SuccessScreen: React.FC<{
   whatsappUrl?: string;
   onRestart: () => void;
 }> = ({ registrationNumber, downloadToken, documents, expectedCount, apiBase, whatsappUrl, onRestart }) => {
+  // The submit button is gone, so focus would fall to the page: announce the result instead.
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => headingRef.current?.focus(), []);
   const downloads = downloadToken ? documents : [];
   const count = downloads.length || expectedCount;
   const intro =
@@ -31,7 +34,9 @@ const SuccessScreen: React.FC<{
       <div className="w-16 h-16 bg-surface-dark flex items-center justify-center">
         <Icon name="circle-check" size="md" className="text-mustard" />
       </div>
-      <h3 className="text-title text-primary">Înscriere trimisă!</h3>
+      <h3 ref={headingRef} tabIndex={-1} className="text-title text-primary">
+        Înscriere trimisă!
+      </h3>
       <p className="text-body-sm text-secondary max-w-sm">
         Nr. înscriere <b className="text-primary">{registrationNumber}</b>.{" "}
         {downloads.length > 0 && `${intro} `}

@@ -27,6 +27,8 @@ import {
 
 export interface InscriereStepProps {
   step: FormStepConfig;
+  /** The step title and "Pasul X din Y"; the form moves focus here on a step change. */
+  headingRef?: React.Ref<HTMLDivElement>;
   stepLabels: string[];
   index: number;
   answers: Record<string, CustomAnswer>;
@@ -61,6 +63,7 @@ export function inscriereStepComplete(
 
 const InscriereStep: React.FC<InscriereStepProps> = ({
   step,
+  headingRef,
   stepLabels,
   index,
   answers,
@@ -93,7 +96,9 @@ const InscriereStep: React.FC<InscriereStepProps> = ({
 
   return (
     <div>
-      <StepIndicator current={index} labels={stepLabels} variant="card" />
+      <div ref={headingRef} tabIndex={-1}>
+        <StepIndicator current={index} labels={stepLabels} variant="card" />
+      </div>
 
       <motion.div
         className="flex flex-col gap-6"

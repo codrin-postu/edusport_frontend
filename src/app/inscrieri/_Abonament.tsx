@@ -84,7 +84,10 @@ export const UpsellBox: React.FC<{ upsell: Upsell; onBecomeMember: () => void }>
       <div key={row.label} className="flex items-start justify-between gap-3 py-1 text-body-sm text-primary">
         <span>{row.label}</span>
         <span className="whitespace-nowrap">
-          <s className="text-secondary">{row.nonMemberPrice}</s> <b>{formatRon(row.memberPrice)}</b>
+          <s className="text-secondary">
+            {row.nonMemberPrice}
+            <span className="sr-only"> RON</span>
+          </s> <b>{formatRon(row.memberPrice)}</b>
         </span>
       </div>
     ))}

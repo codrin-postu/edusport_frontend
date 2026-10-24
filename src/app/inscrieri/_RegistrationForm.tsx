@@ -128,6 +128,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // into view: the first render and a draft restored on load would otherwise
   // yank a returning user down the page before they have read anything.
   const navigatedRef = useRef(false);
+  const stepHeadingRef = useRef<HTMLDivElement>(null);
 
   const resolution = resolveSchool(club.schools, wantedSlug(chosenSlug, slugParam, picking));
   const school = resolution.state === "chosen" ? resolution.school : null;
@@ -168,6 +169,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     if (!navigatedRef.current) return;
     navigatedRef.current = false;
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    stepHeadingRef.current?.focus({ preventScroll: true });
   }, [step]);
 
   const goToStep = (next: number) => {
@@ -313,6 +315,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
       >
         <InscriereStep
           step={current}
+          headingRef={stepHeadingRef}
           stepLabels={steps.map((s) => s.title || "")}
           index={index}
           answers={answers}
@@ -334,7 +337,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
-                  <p className="text-caption text-accent mb-4">
+                  <p role="alert" className="text-caption text-accent mb-4">
                     {submitError ?? "Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou."}
                   </p>
                 )}

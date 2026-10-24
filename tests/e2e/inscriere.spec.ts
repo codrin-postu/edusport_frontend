@@ -63,6 +63,7 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
 
   // Step 2: Abonament.
   await expect(page.getByText("Pasul 2 din 3")).toBeVisible();
+  await expect(page.locator(":focus")).toContainText("Pasul 2 din 3");
   await expect(page.getByText("Programul pe următoarea lună")).toBeVisible();
   await expect(page.getByText("Curs", { exact: true }).first()).toBeVisible();
   await expect(page.locator("#subscriptionChoice")).toHaveText("Alegeți mai întâi opțiunea de membru...");
@@ -73,6 +74,7 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
   await expect(page.getByText(
     "Economisești 120 RON la fiecare abonament de 8 ședințe. Taxa de membru (270 RON pe sezon) se recuperează de la al treilea abonament. Doar membrii au acces la Avansați Gold.",
   )).toBeVisible();
+  await expect(page.locator("s")).toHaveText(["890 RON", "790 RON"]);
   expect(await optionsOf(page, "subscriptionChoice")).toEqual([
     "1 ședință grup",
     "Abonament 6 ședințe grup",
@@ -126,7 +128,7 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
   expect(JSON.stringify(body)).not.toContain("\"price\"");
 
   // Success screen.
-  await expect(page.getByText("Înscriere trimisă!")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Înscriere trimisă!" })).toBeFocused();
   await expect(page.getByText("2026-0142")).toBeVisible();
   await expect(page.getByText("Documentele vor fi semnate la prima ședință de curs.", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: "Descarcă formularul (PDF)" })).toHaveAttribute(
@@ -205,6 +207,28 @@ test("Alege școala moves with the arrow keys", async({ page }) => {
     await expect(other).toHaveAttribute("aria-checked", "false");
     await expect(other).toHaveAttribute("tabindex", "-1");
   }
+});
+
+test("a refused submit is announced", async({ page }) => {
+  await page.route("**/api/forms/inscriere?*", (route) => route.request().method() !== "POST"
+    ? route.fallback()
+    : route.fulfill({
+      status: 400,
+      headers: { "access-control-allow-origin": "*" },
+      contentType: "application/json",
+      body: JSON.stringify({ ok: false, code: "invalid", error: "Abonamentul ales nu este disponibil." }),
+    }));
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await saveDraft(page, 2, {
+    email: "ana.pop@example.com", parentName: "Ana Pop", relationship: "parinte", phone: "0712345678",
+    childName: "Maria Pop", childBirthDate: "14.03.2016", childHeight: "132", shirtSize: "S",
+    lastSeason: "Nu a participat", priorExperience: "Nu este cazul", expectations: "Să patineze",
+    membershipAnswer: "nu", subscriptionChoice: "Abonament 8 ședințe grup",
+    source: "Facebook", gdprConsent: true, regulationsConsent: true,
+  });
+  await page.reload();
+  await page.getByRole("button", { name: "Trimite înscrierea" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Abonamentul ales nu este disponibil." })).toBeVisible();
 });
 
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {
