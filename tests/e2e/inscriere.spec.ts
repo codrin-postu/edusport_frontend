@@ -260,6 +260,24 @@ test("a refused submit is announced; a retry sends the draft's key again, a chan
   expect(await savedSubmissionKey(page)).toBe(sentKeys[2]);
 });
 
+test("changing the school (Schimbă) also gets a new submissionKey", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await expect(page.getByText("Pasul 1 din 3")).toBeVisible();
+  // A draft is only persisted once it holds an answer; seed one so there is a
+  // submissionKey on disk to compare against.
+  await saveDraft(page, 0, { source: "Facebook" }, DRAFT_SUBMISSION_KEY);
+  await page.reload();
+  await expect(page.getByText("Pasul 1 din 3")).toBeVisible();
+  expect(await savedSubmissionKey(page)).toBe(DRAFT_SUBMISSION_KEY);
+
+  await page.getByRole("button", { name: "Schimbă" }).click();
+  await page.getByRole("radio", { name: "Școala de Patinaj - Patinoar 2" }).click();
+  await page.getByRole("button", { name: "Continuă" }).click();
+
+  await expect.poll(() => savedSubmissionKey(page)).not.toBe(DRAFT_SUBMISSION_KEY);
+  expect(await savedSubmissionKey(page)).toMatch(UUID_V4);
+});
+
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {
   await page.goto("/inscrieri/link-expirat");
   await expect(page.getByRole("heading", { level: 1, name: "Linkul a expirat" })).toBeVisible();

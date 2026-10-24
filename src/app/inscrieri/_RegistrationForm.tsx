@@ -167,10 +167,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     readyRef.current = true;
   }, []);
 
+  // chosenSlug is a dependency only to flush the submissionKey that `choose`
+  // below regenerates on a school change, the same way any answer change does.
   useEffect(() => {
     if (!readyRef.current) return;
     saveDraft(step, answers, submissionKeyRef.current);
-  }, [step, answers]);
+  }, [step, answers, chosenSlug]);
 
   useEffect(() => {
     if (!navigatedRef.current) return;
@@ -239,6 +241,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   if (slugParam === undefined && club.schools.length > 1) return null;
   if (resolution.state === "choose") {
     const choose = (slug: string) => {
+      submissionKeyRef.current = newSubmissionKey();
       setChosenSlug(slug);
       setPicking(false);
     };
