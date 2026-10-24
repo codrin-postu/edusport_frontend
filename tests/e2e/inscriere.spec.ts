@@ -189,6 +189,24 @@ test("Schimbă opens Alege școala even when the link named a school", async({ p
   await expect(page.getByText("Școala de Patinaj - Patinoar 2")).toBeVisible();
 });
 
+test("Alege școala moves with the arrow keys", async({ page }) => {
+  await page.goto("/inscrieri");
+  const afi = page.getByRole("radio", { name: "Școala de Patinaj - AFI Cotroceni" });
+  const two = page.getByRole("radio", { name: "Școala de Patinaj - Patinoar 2" });
+  await expect(afi).toHaveAttribute("tabindex", "0");
+  await expect(two).toHaveAttribute("tabindex", "-1");
+  await afi.focus();
+  const moves = [["ArrowDown", two, afi], ["ArrowRight", afi, two], ["ArrowUp", two, afi], ["ArrowLeft", afi, two]] as const;
+  for (const [key, target, other] of moves) {
+    await page.keyboard.press(key);
+    await expect(target).toBeFocused();
+    await expect(target).toHaveAttribute("aria-checked", "true");
+    await expect(target).toHaveAttribute("tabindex", "0");
+    await expect(other).toHaveAttribute("aria-checked", "false");
+    await expect(other).toHaveAttribute("tabindex", "-1");
+  }
+});
+
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {
   await page.goto("/inscrieri/link-expirat");
   await expect(page.getByRole("heading", { level: 1, name: "Linkul a expirat" })).toBeVisible();
