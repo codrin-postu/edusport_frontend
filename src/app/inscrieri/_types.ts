@@ -1,238 +1,153 @@
 // ---------------------------------------------------------------------------
-// Form state for the EduSport registration form. Submits to the in-house
-// backend endpoint /api/forms/inscriere.
+// The registration form's offline config and presentation constants.
+//
+// No runtime imports on purpose: scripts/inscrieri/config.test.mjs loads this
+// file with node's type stripping.
 // ---------------------------------------------------------------------------
 
-import type { CustomAnswer, FormConfig } from "@/lib/strapi-forms";
-
-export interface FormState {
-  email: string;
-  phone: string;
-  childName: string;
-  childBirthDate: string; // free text, e.g. "25 decembrie 2018"
-  parentName: string;
-  howHeard: string;
-  level: string;          // one of LEVEL_OPTIONS values (exact backend string)
-  priorExperience: string;
-  expectations: string;
-  shirtSize: string;
-  clubInterest: string;   // "Da" | "Nu"
-  website: string;        // honeypot - must stay empty
-}
+import type { FormConfig } from "@/lib/strapi-forms";
 
 export type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
-export const INITIAL_FORM: FormState = {
-  email: "",
-  phone: "",
-  childName: "",
-  childBirthDate: "",
-  parentName: "",
-  howHeard: "",
-  level: "",
-  priorExperience: "",
-  expectations: "",
-  shirtSize: "",
-  clubInterest: "",
-  website: "",
-};
-
 // ---------------------------------------------------------------------------
-// Select options - `value` is the exact string the backend expects, `label`
-// is the text shown to the user (kept identical to the original form copy).
+// Offline fallback. The CMS is the source of truth for the form
+// (GET /api/forms/inscriere/config); this exists only so an outage of the
+// config endpoint does not take registrations offline. It is the public model
+// of the backend registry `inscriere` (src/api/form-config/registry.ts, plan 2A
+// Task 2) with no admin overlay: same steps, keys, order, types, labels, help,
+// required flags, options and consent links. Keep the two in step.
 // ---------------------------------------------------------------------------
 
-export const LEVEL_OPTIONS = [
-  { value: "", label: "Selectează nivelul..." },
-  { value: "Nu a mai patinat", label: "Nu a mai patinat niciodata" },
-  {
-    value: "A mai patinat in alta parte",
-    label: "Vin pentru prima oara la cursuri, dar a mai patinat in alta parte.",
-  },
-  { value: "Incepatori", label: "Incepatori" },
-  { value: "Intermediari", label: "Intermediari" },
-  { value: "Avansati", label: "Avansati" },
-  { value: "Performanta", label: "Performanta" },
-];
+const same = (values: string[]) => values.map((v) => ({ value: v, label: v, enabled: true }));
 
-export const CLUB_OPTIONS = [
-  { value: "", label: "Selectează răspunsul..." },
-  { value: "Da", label: "Da" },
-  { value: "Nu", label: "Nu" },
-];
-
-// ---------------------------------------------------------------------------
-// Backend submission — POSTs JSON to the in-house endpoint and drives the
-// success / error states from the { ok, error } response.
-// ---------------------------------------------------------------------------
-
-// Public url on purpose: this request is made from the browser.
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
-
-/**
- * Built-in keys that map to real columns on the submission. Anything else in
- * the config is an admin-added question and travels in `extra`.
- */
-const BUILTIN_STRING_KEYS = [
-  "email",
-  "phone",
-  "childName",
-  "childBirthDate",
-  "parentName",
-  "shirtSize",
-  "howHeard",
-  "level",
-  "priorExperience",
-  "expectations",
-] as const;
-
-const BUILTIN_BOOL_KEYS = [
-  "clubInterest",
-  "regulationsAgreement",
-  "privacyConsent",
-] as const;
-
-const BUILTIN_KEYS = new Set<string>([
-  ...BUILTIN_STRING_KEYS,
-  ...BUILTIN_BOOL_KEYS,
-]);
-
-const asString = (v: CustomAnswer | undefined): string =>
-  typeof v === "string" ? v : v === true ? "Da" : v === false ? "Nu" : "";
-
-/** Checkbox answers arrive as booleans; older select-style ones as "Da"/"Nu". */
-const asBool = (v: CustomAnswer | undefined): boolean =>
-  v === true || v === "Da";
-
-/**
- * Submit the collected answers.
- *
- * Answers are held in one flat map keyed by question key, because the form is
- * rendered from the CMS config and does not know in advance which questions
- * exist. The split into real columns versus the `extra` object happens here,
- * driven by `BUILTIN_KEYS`: any question the CMS added that is not a built-in
- * is sent under `extra`, which is exactly what the backend expects.
- */
-export async function submitRegistration(
-  config: { steps?: { questions?: { key: string; type?: string }[] }[] },
-  answers: Record<string, CustomAnswer>,
-  website: string,
-): Promise<void> {
-  const extra: Record<string, CustomAnswer> = {};
-  for (const step of config.steps ?? []) {
-    for (const q of step.questions ?? []) {
-      if (!q?.key || BUILTIN_KEYS.has(q.key) || q.type === "info") continue;
-      const v = answers[q.key];
-      if (typeof v === "boolean") extra[q.key] = v;
-      else if (typeof v === "string" && v.trim() !== "") extra[q.key] = v;
-    }
-  }
-
-  const payload: Record<string, unknown> = {
-    ...Object.fromEntries(
-      BUILTIN_STRING_KEYS.map((k) => [k, asString(answers[k])]),
-    ),
-    ...Object.fromEntries(BUILTIN_BOOL_KEYS.map((k) => [k, asBool(answers[k])])),
-    website,
-    ...(Object.keys(extra).length ? { extra } : {}),
-  };
-
-  const res = await fetch(`${STRAPI_URL}/api/forms/inscriere`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  const data = (await res.json().catch(() => null)) as
-    | { ok?: boolean; error?: string }
-    | null;
-
-  if (!res.ok || !data || data.ok !== true) {
-    throw new Error(data?.error ?? "Înscrierea nu a putut fi trimisă.");
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Offline fallback. The CMS is the source of truth for the form; this exists
-// only so a transient outage of the config endpoint does not take registrations
-// offline. Keep it in step with the backend registry.
-// ---------------------------------------------------------------------------
-
-export const FALLBACK_CONFIG = {
+export const FALLBACK_CONFIG: FormConfig = {
   type: "inscriere",
   steps: [
     {
-      key: "personal",
-      title: "Date personale",
+      key: "date",
+      title: "Date înscriere",
       questions: [
-        { key: "childName", type: "text", label: "Nume complet copil", required: true },
-        { key: "childBirthDate", type: "text", label: "Data nașterii copilului", required: true },
-        { key: "shirtSize", type: "text", label: "Mărime tricou & înălțime", required: true },
-        { key: "parentName", type: "text", label: "Nume complet părinte", required: true },
-        { key: "phone", type: "tel", label: "Telefon", required: true },
-        { key: "email", type: "email", label: "Email", required: true },
-      ],
-    },
-    {
-      key: "experienta",
-      title: "Experiență",
-      questions: [
+        { key: "email", type: "email", label: "Adresă de e-mail", help: "", required: true, hidden: false },
+        { key: "parentName", type: "text", label: "Numele și prenumele persoanei care completează formularul", help: "", required: true, hidden: false },
         {
-          key: "level",
+          key: "relationship",
           type: "select",
-          label:
-            "Sezonul trecut, fiul/fiica dvs. a participat la cursurile noastre, la grupa",
+          label: "Calitatea față de sportiv:",
+          help: "",
           required: true,
-          options: LEVEL_OPTIONS.filter((o) => o.value !== "").map((o) => ({
-            value: o.value,
-            label: o.label,
-            enabled: true,
-          })),
+          hidden: false,
+          options: [
+            { value: "parinte", label: "Părinte", enabled: true },
+            { value: "tutore", label: "Tutore Legal", enabled: true },
+            { value: "alta", label: "Alta (Vă rugăm specificați)", enabled: true },
+          ],
+        },
+        { key: "relationshipOther", type: "text", label: "Specificați calitatea (ex: Bunic, Frate):", help: "", required: false, hidden: false },
+        { key: "phone", type: "tel", label: "Telefon de contact", help: "", required: true, hidden: false },
+        { key: "childName", type: "text", label: "Numele și prenumele copilului", help: "", required: true, hidden: false },
+        { key: "childBirthDate", type: "text", label: "Data nașterii copilului", help: "", required: true, hidden: false },
+        { key: "childHeight", type: "text", label: "Înălțimea copilului (cm)", help: "", required: true, hidden: false },
+        { key: "shirtSize", type: "text", label: "Măsura bluză", help: "", required: true, hidden: false },
+        {
+          key: "lastSeason",
+          type: "select",
+          label: "Sezonul trecut fiul/fiica dvs. a participat la cursurile ACS EduSport?",
+          help: "",
+          required: true,
+          hidden: false,
+          options: same(["Nu a participat", "Începători", "Intermediari", "Avansați"]),
         },
         {
           key: "priorExperience",
           type: "longtext",
-          label: "Pentru o încadrare cât mai corectă în grupe",
+          label: "Nivel de experiență / Elemente cunoscute",
+          help: "Dacă este prima participare, menționați dacă a mai luat lecții. Dacă a mai fost înscris la ACS EduSport, completați cu 'Nu este cazul'.",
           required: true,
+          hidden: false,
         },
-        {
-          key: "expectations",
-          type: "longtext",
-          label: "Care sunt așteptările dvs. de la cursurile de patinaj?",
-          required: true,
-        },
-        {
-          key: "howHeard",
-          type: "text",
-          label: "De unde ați aflat de cursurile oferite de Școala de Patinaj",
-          required: true,
-        },
+        { key: "expectations", type: "longtext", label: "Așteptări de la cursurile de patinaj", help: "", required: true, hidden: false },
       ],
     },
     {
-      key: "confirmare",
-      title: "Confirmare",
+      key: "abonament",
+      title: "Abonament",
       questions: [
         {
-          key: "clubInterest",
-          type: "checkbox",
-          label: "Doriți ca fiul/fiica dvs. să devină membru A.C.S. EduSport?",
+          key: "membershipAnswer",
+          type: "select",
+          label: "Doriți înscrierea ca membru A.C.S. EduSport pentru tarife preferențiale?",
+          help: "",
           required: true,
+          hidden: false,
+          options: [
+            { value: "da", label: "Da, doresc să devin membru", enabled: true },
+            { value: "nu", label: "Nu, optez pentru tarife neafiliați", enabled: true },
+          ],
+        },
+        { key: "subscriptionChoice", type: "select", label: "La primul modul doriți să achiziționați:", help: "", required: true, hidden: false, options: [] },
+      ],
+    },
+    {
+      key: "finalizare",
+      title: "Finalizare înscriere",
+      questions: [
+        {
+          key: "source",
+          type: "select",
+          label: "De unde ați aflat de cursurile noastre?",
+          help: "",
+          required: true,
+          hidden: false,
+          options: same(["Facebook", "Instagram", "Recomandare", "Căutare Google", "Altele"]),
+        },
+        { key: "sourceOther", type: "text", label: "Vă rugăm să specificați de unde ați aflat de noi:", help: "", required: false, hidden: false },
+        {
+          key: "gdprConsent",
+          type: "checkbox",
+          label: "Confirm citirea documentului Politica de Confidențialitate și sunt de acord cu prelucrarea datelor.",
+          help: "",
+          required: true,
+          hidden: false,
+          title: "Consimțământ GDPR",
+          icon: "",
+          linkUrl: "/protectia-datelor",
+          linkLabel: "Politica de Confidențialitate",
         },
         {
-          key: "regulationsAgreement",
+          key: "regulationsConsent",
           type: "checkbox",
-          label: "Sunt de acord cu regulamentul",
+          label: "Confirm că am citit, înțeles și acceptat condițiile prezentate în Regulamentul Școlii de Patinaj.",
+          help: "",
           required: true,
-        },
-        {
-          key: "privacyConsent",
-          type: "checkbox",
-          label: "Sunt de acord cu politica de confidențialitate",
-          required: true,
+          hidden: false,
+          title: "Acord Regulament",
+          icon: "",
+          linkUrl: "/cursuri/regulament",
+          linkLabel: "Regulamentul Școlii de Patinaj",
         },
       ],
     },
   ],
-} as const satisfies FormConfig;
+};
+
+/** Keys rendered as the script form's consent lines ("Titlu: text with link"). */
+export const CONSENT_KEYS = ["gdprConsent", "regulationsConsent"] as const;
+
+/**
+ * Placeholders. The CMS has no placeholder concept; these stay presentation.
+ * Select placeholders are the script form's "Alegeți...".
+ */
+export const PLACEHOLDERS: Record<string, string> = {
+  email: "adresa@exemplu.ro",
+  phone: "+40 7xx xxx xxx",
+  relationship: "Alegeți...",
+  lastSeason: "Alegeți...",
+  membershipAnswer: "Alegeți...",
+  source: "Alegeți...",
+};
+
+/** The abonament select before and after the membership answer, as in the script form. */
+export const SUBSCRIPTION_PLACEHOLDER = {
+  waiting: "Alegeți mai întâi opțiunea de membru...",
+  ready: "Alegeți opțiunea dorită...",
+} as const;

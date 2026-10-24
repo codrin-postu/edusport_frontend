@@ -10,8 +10,6 @@ export type { PriceItem, PricingTier } from "./_types_pricing";
 // with its own fallback in src/lib/location.ts, so every page shows the same
 // address instead of each page hardcoding its own text.
 
-export const CURRENT_SEASON = "Octombrie 2025 - Mai 2026";
-
 export const IS_REGISTRATION_OPEN = true;
 
 export const CURSURI_PAGE_DATA: CoursePageContent = {

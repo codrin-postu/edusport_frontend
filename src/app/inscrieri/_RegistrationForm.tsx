@@ -2,41 +2,118 @@
 
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import ConfigStep, { stepComplete } from "./_ConfigStep";
-import { FALLBACK_CONFIG, submitRegistration, type SubmitStatus } from "./_types";
 import { track } from "@/lib/analytics";
 import { DURATION, EASE } from "@/lib/motion";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import { Dialog, DialogActions } from "@/components/ui/dialog";
-import { Icon } from "@/components/ui/icon";
-import { type CustomAnswer, type FormConfig } from "@/lib/strapi-forms";
+import type { CustomAnswer, FormConfig } from "@/lib/strapi-forms";
+import {
+  audienceFor,
+  priceBox,
+  subscriptionOptions,
+  upsell,
+  type PublicClubInfo,
+  type PublicSchool,
+} from "@/lib/club-public";
 import LeaveNotice from "./_LeaveNotice";
-import { clearDraft, loadDraft, saveDraft } from "./_draft";
+import InscriereStep, { inscriereStepComplete } from "./_Step";
+import ConsentCheckbox from "./_Consent";
+import SuccessScreen from "./_Success";
+import { PinnedSchool, SchoolPicker } from "./_SchoolPicker";
+import { PriceBoxView, ScheduleBox, UpsellBox } from "./_Abonament";
+import { clearDraft, clearLegacyDraft, loadDraft, saveDraft } from "./_draft";
+import { PUBLIC_STRAPI_URL, submitRegistration } from "./_submit";
+import { resolveSchool, showsPinnedSchool } from "./_school";
+import type { ScheduleWeekend } from "./_schedule";
+import {
+  CONSENT_KEYS,
+  FALLBACK_CONFIG,
+  PLACEHOLDERS,
+  SUBSCRIPTION_PLACEHOLDER,
+  type SubmitStatus,
+} from "./_types";
+import {
+  MEMBERSHIP_YES,
+  applyAnswer,
+  childHeightError,
+  expectedDocuments,
+  prepareStep,
+  type SubmitSuccess,
+} from "./_rules";
 
 /**
- * Registration form, driven entirely by the CMS config.
- *
- * The steps, their titles, which questions each contains, their order and their
- * types all come from `/api/forms/inscriere/config`. Previously this rendered
- * three hardcoded step components whose field lists were written out by hand,
- * so custom steps, reordering and admin-added questions had no effect on the
- * site. Answers are held in one flat map keyed by question key; the split
- * between built-in columns and the `extra` object happens only at submit time.
+ * The registration form: the club's script form in the 3 approved steps
+ * (DECISIONS 2026-10-05, form-3steps-v1 option B). Labels, help, required
+ * flags and options come from the CMS config (GET /api/forms/inscriere/config);
+ * season, fee and prices from GET /api/club/public; the schedule from the site
+ * calendar. Answers live in one flat map keyed by question key.
  */
 
-const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
-  config = null,
-}) => {
+interface RegistrationFormProps {
+  config?: FormConfig | null;
+  club: PublicClubInfo;
+  weekends: ScheduleWeekend[];
+  whatsappUrl?: string;
+}
+
+const HONEYPOT_STYLE: React.CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
+
+/** `?scoala=` from the address; undefined until read after mount (the page itself is static). */
+function useSchoolParam(): string | null | undefined {
+  const [slug, setSlug] = useState<string | null | undefined>(undefined);
+  useEffect(() => {
+    setSlug(new URLSearchParams(window.location.search).get("scoala"));
+  }, []);
+  return slug;
+}
+
+/** Blocks of the Abonament step around the membership question. */
+function abonamentSlots(
+  school: PublicSchool,
+  club: PublicClubInfo,
+  weekends: ScheduleWeekend[],
+  membershipAnswer: CustomAnswer | undefined,
+  onBecomeMember: () => void,
+) {
+  const audience = audienceFor(typeof membershipAnswer === "string" ? membershipAnswer : "");
+  const offer = audience === "nonMember" ? upsell(school, club.membershipFee) : null;
+  return {
+    before: { membershipAnswer: <ScheduleBox weekends={weekends} /> },
+    after: {
+      membershipAnswer: audience && (
+        <>
+          <PriceBoxView box={priceBox(school, audience, club.membershipFee)} />
+          {offer && <UpsellBox upsell={offer} onBecomeMember={onBecomeMember} />}
+        </>
+      ),
+    },
+  };
+}
+
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club, weekends, whatsappUrl }) => {
   // The CMS is the source of truth. The bundled fallback exists only so a
   // transient CMS outage does not take registrations offline entirely.
   const activeConfig = config?.steps?.length ? config : FALLBACK_CONFIG;
-  const steps = activeConfig.steps ?? [];
 
+  const slugParam = useSchoolParam();
+  const [chosenSlug, setChosenSlug] = useState<string | null>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, CustomAnswer>>({});
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [result, setResult] = useState<(SubmitSuccess & { expectedCount: number }) | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const startedRef = useRef(false);
   // Set when answers came back from a previous visit, so the notice above the
@@ -47,8 +124,17 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   // initial state would overwrite the saved answers on first render.
   const readyRef = useRef(false);
 
-  // Fire once, when the user first interacts — lets us measure start→submit
-  // drop-off (form abandonment) against `inscriere.submit_success`.
+  const resolution = resolveSchool(club.schools, chosenSlug ?? slugParam ?? null);
+  const school = resolution.state === "chosen" ? resolution.school : null;
+  const offeredFor = (membership: string) =>
+    school ? subscriptionOptions(school, audienceFor(membership)).map((o) => o.value) : [];
+  const membership = typeof answers.membershipAnswer === "string" ? answers.membershipAnswer : "";
+  const audience = audienceFor(membership);
+  const steps = (activeConfig.steps ?? []).map((s) =>
+    prepareStep(s, answers, school ? subscriptionOptions(school, audience) : []),
+  );
+
+  // Fire once, when the user first interacts: start -> submit drop-off.
   const markStarted = () => {
     if (startedRef.current) return;
     startedRef.current = true;
@@ -56,6 +142,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
   };
 
   useEffect(() => {
+    clearLegacyDraft();
     const draft = loadDraft();
     if (draft) {
       setAnswers(draft.answers);
@@ -81,58 +168,58 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
 
   const handleAnswerChange = (key: string, value: CustomAnswer) => {
     markStarted();
-    setAnswers((prev) => ({ ...prev, [key]: value }));
+    setAnswers((prev) => applyAnswer(prev, key, value, offeredFor));
+  };
+
+  const restart = () => {
+    clearDraft();
+    setRestored(false);
+    setAnswers({});
+    setWebsite("");
+    setSubmitError(null);
+    setResult(null);
+    setStatus("idle");
+    setStep(0);
   };
 
   const handleSubmit = async() => {
+    if (!school) return;
     setStatus("sending");
-    try {
-      await submitRegistration(activeConfig, answers, website);
-      track("inscriere.submit_success");
-      // The answers are with us now; leaving them on the device would show a
-      // stranger's registration to the next person on a shared phone.
-      clearDraft();
-      setStatus("sent");
-    } catch {
+    setSubmitError(null);
+    const res = await submitRegistration(answers, website, school.slug);
+    if (!res.ok) {
+      setSubmitError(res.error);
       setStatus("error");
+      return;
     }
+    track("inscriere.submit_success");
+    // The answers are with us now; leaving them on the device would show a
+    // stranger's registration to the next person on a shared phone.
+    clearDraft();
+    setResult({ ...res, expectedCount: expectedDocuments(answers.membershipAnswer).length });
+    setStatus("sent");
   };
 
-  const nextStep = () => {
-    track("inscriere.step_next", { step: step + 1 });
-    setStep((s) => Math.min(s + 1, steps.length - 1));
-  };
-  const prevStep = () => setStep((s) => Math.max(s - 1, 0));
-
-  if (status === "sent") {
+  if (status === "sent" && result) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 px-8 text-center gap-4">
-        <div className="w-16 h-16 bg-surface-dark flex items-center justify-center">
-          <Icon name="circle-check" size="md" className="text-mustard" />
-        </div>
-        <h3 className="text-title text-primary">Înscriere trimisă!</h3>
-        <p className="text-body-sm text-secondary max-w-sm">
-          Mulțumim pentru înscriere. Te vom contacta în cel mai scurt timp
-          pentru confirmare și detalii suplimentare.
-        </p>
-        <button
-          onClick={() => {
-            clearDraft();
-            setRestored(false);
-            setAnswers({});
-            setWebsite("");
-            setStatus("idle");
-            setStep(0);
-          }}
-          className="text-body-sm mt-2 link text-accent"
-        >
-          Trimite o altă înscriere
-        </button>
-      </div>
+      <SuccessScreen
+        registrationNumber={result.registrationNumber}
+        downloadToken={result.downloadToken}
+        documents={result.documents}
+        expectedCount={result.expectedCount}
+        apiBase={PUBLIC_STRAPI_URL}
+        whatsappUrl={whatsappUrl}
+        onRestart={restart}
+      />
     );
   }
 
-  if (!steps.length) {
+  // Wait for `?scoala=` before choosing for the parent; with one school there is nothing to wait for.
+  if (slugParam === undefined && club.schools.length > 1) return null;
+  if (resolution.state === "choose") {
+    return <SchoolPicker schools={resolution.schools} unknownSlug={resolution.unknownSlug} onChoose={setChosenSlug} />;
+  }
+  if (!school || !steps.length) {
     return (
       <div className="py-16 px-8 text-center">
         <p className="text-body-sm text-secondary">
@@ -143,9 +230,24 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
     );
   }
 
-  const current = steps[Math.min(step, steps.length - 1)]!;
-  const isLast = step === steps.length - 1;
-  const labels = steps.map((s) => s.title || "");
+  const index = Math.min(step, steps.length - 1);
+  const current = steps[index]!;
+  const isLast = index === steps.length - 1;
+  const slots = abonamentSlots(school, club, weekends, answers.membershipAnswer, () =>
+    handleAnswerChange("membershipAnswer", MEMBERSHIP_YES),
+  );
+  const consentSlots = Object.fromEntries(
+    current.questions
+      .filter((q) => (CONSENT_KEYS as readonly string[]).includes(q.key))
+      .map((q) => [
+        q.key,
+        <ConsentCheckbox key={q.key} question={q} checked={answers[q.key] === true} onChange={(v) => handleAnswerChange(q.key, v)} />,
+      ]),
+  );
+  const extraError = (key: string, value: CustomAnswer | undefined) =>
+    key === "childHeight" ? childHeightError(value) : undefined;
+  // A restored draft can land on the last step; every step must still be complete.
+  const allStepsComplete = steps.every((s) => inscriereStepComplete(s, answers, extraError));
 
   return (
     <div ref={formRef}>
@@ -153,14 +255,14 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
           navigating on purpose, and is left alone. */}
       <LeaveNotice scope={formRef} />
 
+      {showsPinnedSchool(club.schools.length) && (
+        <PinnedSchool name={school.name} onChange={() => setChosenSlug(null)} />
+      )}
+
       {restored && (
         <Card as="div" surface="raised" shadow="none" padding="none" className="mb-6 px-4 py-3">
           <p className="text-body-sm text-primary">Formular salvat.</p>
-          <button
-            type="button"
-            onClick={() => setConfirmReset(true)}
-            className="text-caption link mt-1 text-accent"
-          >
+          <button type="button" onClick={() => setConfirmReset(true)} className="text-caption link mt-1 text-accent">
             Începe de la capăt
           </button>
         </Card>
@@ -181,10 +283,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             variant="primary"
             face="black"
             onClick={() => {
-              clearDraft();
-              setAnswers({});
-              setStep(0);
-              setRestored(false);
+              restart();
               setConfirmReset(false);
             }}
           >
@@ -194,31 +293,42 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
       </Dialog>
 
       <motion.div
-        key={step}
+        key={index}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: DURATION.slow, ease: EASE.out }}
       >
-        <ConfigStep
+        <InscriereStep
           step={current}
-          stepLabels={labels}
-          index={step}
+          stepLabels={steps.map((s) => s.title || "")}
+          index={index}
           answers={answers}
           onAnswerChange={handleAnswerChange}
-          onNext={nextStep}
-          onBack={prevStep}
+          onNext={() => {
+            track("inscriere.step_next", { step: index + 1 });
+            setStep(Math.min(index + 1, steps.length - 1));
+          }}
+          onBack={() => setStep(Math.max(index - 1, 0))}
+          placeholders={{
+            ...PLACEHOLDERS,
+            subscriptionChoice: audience ? SUBSCRIPTION_PLACEHOLDER.ready : SUBSCRIPTION_PLACEHOLDER.waiting,
+          }}
+          before={slots.before}
+          after={slots.after}
+          replace={consentSlots}
+          extraError={extraError}
           footer={
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
                   <p className="text-caption text-accent mb-4">
-                    Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou.
+                    {submitError ?? "Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou."}
                   </p>
                 )}
                 <div className="flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={prevStep}
+                    onClick={() => setStep(Math.max(index - 1, 0))}
                     className="text-body-sm text-secondary hover:text-accent transition-colors"
                   >
                     Înapoi
@@ -227,7 +337,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
                     face="black"
                     type="button"
                     onClick={handleSubmit}
-                    disabled={status === "sending" || !stepComplete(current, answers)}
+                    disabled={status === "sending" || !allStepsComplete}
                   >
                     {status === "sending" ? "Se trimite..." : "Trimite înscrierea"}
                   </Button>
@@ -236,22 +346,9 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
             ) : undefined
           }
         >
-          {step === 0 && (
-            // Honeypot — hidden from users, catches bots. Must stay empty.
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                width: 1,
-                height: 1,
-                padding: 0,
-                margin: -1,
-                overflow: "hidden",
-                clip: "rect(0 0 0 0)",
-                whiteSpace: "nowrap",
-                border: 0,
-              }}
-            >
+          {index === 0 && (
+            // Honeypot: hidden from users, catches bots. Must stay empty.
+            <div aria-hidden="true" style={HONEYPOT_STYLE}>
               <label htmlFor="website">Website</label>
               <input
                 id="website"
@@ -264,7 +361,7 @@ const RegistrationForm: React.FC<{ config?: FormConfig | null }> = ({
               />
             </div>
           )}
-        </ConfigStep>
+        </InscriereStep>
       </motion.div>
     </div>
   );
