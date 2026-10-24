@@ -25,9 +25,17 @@ async function optionsOf(page: Page, key: string): Promise<string[]> {
 const continueButton = (page: Page) => page.getByRole("button", { name: "Continuă" });
 
 const DRAFT_KEY = "edusport.inscrieri.draft.v2";
+const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
-async function saveDraft(page: Page, step: number, answers: Record<string, string | boolean>) {
-  await page.evaluate(([key, value]) => localStorage.setItem(key, value), [DRAFT_KEY, JSON.stringify({ step, savedAt: Date.now(), answers })]);
+async function saveDraft(page: Page, step: number, answers: Record<string, string | boolean>, submissionKey?: string) {
+  const draft = JSON.stringify({ step, savedAt: Date.now(), answers, submissionKey });
+  await page.evaluate(([key, value]) => localStorage.setItem(key, value), [DRAFT_KEY, draft]);
+}
+
+const DRAFT_SUBMISSION_KEY = "0b6f3c1e-2a4d-4c8e-9f10-123456789abc";
+
+async function savedSubmissionKey(page: Page): Promise<string | undefined> {
+  return page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "{}").submissionKey, DRAFT_KEY);
 }
 
 /** Waits past hydration and any smooth scroll, then reads the scroll position. */
@@ -126,6 +134,7 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
     website: "",
   });
   expect(JSON.stringify(body)).not.toContain("\"price\"");
+  expect(body.submissionKey).toMatch(UUID_V4);
 
   // Success screen.
   await expect(page.getByRole("heading", { name: "Înscriere trimisă!" })).toBeFocused();
@@ -140,6 +149,12 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
     /kind=adeziune$/,
   );
   await expect(page.getByRole("link", { name: "Canalul WhatsApp" })).toHaveAttribute("href", "https://example.com/canal-whatsapp");
+
+  // A new registration gets a new key.
+  await page.getByRole("button", { name: "Fă o altă înscriere" }).click();
+  await page.locator("#email").fill("ion.pop@example.com");
+  await expect.poll(() => savedSubmissionKey(page)).toMatch(UUID_V4);
+  expect(await savedSubmissionKey(page)).not.toBe(body.submissionKey);
 });
 
 test("an unknown ?scoala is not mapped to the school", async({ page }) => {
@@ -209,15 +224,18 @@ test("Alege școala moves with the arrow keys", async({ page }) => {
   }
 });
 
-test("a refused submit is announced", async({ page }) => {
-  await page.route("**/api/forms/inscriere?*", (route) => route.request().method() !== "POST"
-    ? route.fallback()
-    : route.fulfill({
+test("a refused submit is announced; a retry sends the draft's key again, a changed answer a new one", async({ page }) => {
+  const sentKeys: string[] = [];
+  await page.route("**/api/forms/inscriere?*", (route) => {
+    if (route.request().method() !== "POST") return route.fallback();
+    sentKeys.push(route.request().postDataJSON().submissionKey);
+    return route.fulfill({
       status: 400,
       headers: { "access-control-allow-origin": "*" },
       contentType: "application/json",
       body: JSON.stringify({ ok: false, code: "invalid", error: "Abonamentul ales nu este disponibil." }),
-    }));
+    });
+  });
   await page.goto("/inscrieri?scoala=afi-cotroceni");
   await saveDraft(page, 2, {
     email: "ana.pop@example.com", parentName: "Ana Pop", relationship: "parinte", phone: "0712345678",
@@ -225,10 +243,21 @@ test("a refused submit is announced", async({ page }) => {
     lastSeason: "Nu a participat", priorExperience: "Nu este cazul", expectations: "Să patineze",
     membershipAnswer: "nu", subscriptionChoice: "Abonament 8 ședințe grup",
     source: "Facebook", gdprConsent: true, regulationsConsent: true,
-  });
+  }, DRAFT_SUBMISSION_KEY);
   await page.reload();
-  await page.getByRole("button", { name: "Trimite înscrierea" }).click();
+  const submit = page.getByRole("button", { name: "Trimite înscrierea" });
+  await submit.click();
   await expect(page.getByRole("alert").filter({ hasText: "Abonamentul ales nu este disponibil." })).toBeVisible();
+  await submit.click();
+  await expect.poll(() => sentKeys.length).toBe(2);
+  expect(sentKeys).toEqual([DRAFT_SUBMISSION_KEY, DRAFT_SUBMISSION_KEY]);
+
+  await choose(page, "source", "Instagram");
+  await submit.click();
+  await expect.poll(() => sentKeys.length).toBe(3);
+  expect(sentKeys[2]).toMatch(UUID_V4);
+  expect(sentKeys[2]).not.toBe(DRAFT_SUBMISSION_KEY);
+  expect(await savedSubmissionKey(page)).toBe(sentKeys[2]);
 });
 
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {

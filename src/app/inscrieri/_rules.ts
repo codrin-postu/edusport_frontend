@@ -99,11 +99,36 @@ const TEXT_KEYS = [
 
 const str = (v: CustomAnswer | undefined): string => (typeof v === "string" ? v.trim() : "");
 
+const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+/** A saved `submissionKey` is reused only when it is a UUID v4. */
+export function isSubmissionKey(value: unknown): value is string {
+  return typeof value === "string" && UUID_V4.test(value);
+}
+
+/**
+ * One key per draft, a UUID v4: the backend answers a repeated submit with
+ * the first registration. `randomUUID` exists only on https and localhost, so
+ * a plain-http origin builds the same format from `getRandomValues`.
+ */
+export function newSubmissionKey(): string {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
 /**
  * The POST /api/forms/inscriere body (backend `readRegistrationInput`). Only the
  * item name of the abonament is sent: the server sets the price and membership.
  */
-export function buildPayload(answers: Record<string, CustomAnswer>, website: string): Record<string, unknown> {
+export function buildPayload(
+  answers: Record<string, CustomAnswer>,
+  website: string,
+  submissionKey: string,
+): Record<string, unknown> {
   const payload: Record<string, unknown> = Object.fromEntries(TEXT_KEYS.map((k) => [k, str(answers[k])]));
   if (isFollowUpShown("relationshipOther", answers)) payload.relationshipOther = str(answers.relationshipOther);
   if (isFollowUpShown("sourceOther", answers)) payload.sourceOther = str(answers.sourceOther);
@@ -111,6 +136,7 @@ export function buildPayload(answers: Record<string, CustomAnswer>, website: str
   payload.gdprConsent = answers.gdprConsent === true;
   payload.regulationsConsent = answers.regulationsConsent === true;
   payload.website = website;
+  payload.submissionKey = submissionKey;
   return payload;
 }
 

@@ -38,6 +38,8 @@ import {
   applyAnswer,
   childHeightError,
   expectedDocuments,
+  isSubmissionKey,
+  newSubmissionKey,
   prepareStep,
   type SubmitSuccess,
 } from "./_rules";
@@ -129,6 +131,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // yank a returning user down the page before they have read anything.
   const navigatedRef = useRef(false);
   const stepHeadingRef = useRef<HTMLDivElement>(null);
+  // A reload or a retry of the same answers sends the same key; any changed
+  // answer gets a new one, since the backend matches a repeat by the key alone.
+  const submissionKeyRef = useRef("");
 
   const resolution = resolveSchool(club.schools, wantedSlug(chosenSlug, slugParam, picking));
   const school = resolution.state === "chosen" ? resolution.school : null;
@@ -150,6 +155,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   useEffect(() => {
     clearLegacyDraft();
     const draft = loadDraft();
+    const savedKey = draft?.submissionKey;
+    submissionKeyRef.current = isSubmissionKey(savedKey) ? savedKey : newSubmissionKey();
     if (draft) {
       setAnswers(draft.answers);
       setStep(draft.step);
@@ -162,7 +169,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
 
   useEffect(() => {
     if (!readyRef.current) return;
-    saveDraft(step, answers);
+    saveDraft(step, answers, submissionKeyRef.current);
   }, [step, answers]);
 
   useEffect(() => {
@@ -179,11 +186,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
 
   const handleAnswerChange = (key: string, value: CustomAnswer) => {
     markStarted();
+    submissionKeyRef.current = newSubmissionKey();
     setAnswers((prev) => applyAnswer(prev, key, value, offeredFor));
   };
 
   const restart = () => {
     clearDraft();
+    submissionKeyRef.current = newSubmissionKey();
     setRestored(false);
     setAnswers({});
     setWebsite("");
@@ -197,7 +206,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     if (!school) return;
     setStatus("sending");
     setSubmitError(null);
-    const res = await submitRegistration(answers, website, school.slug);
+    const res = await submitRegistration(answers, website, school.slug, submissionKeyRef.current);
     if (!res.ok) {
       setSubmitError(res.error);
       setStatus("error");
@@ -207,6 +216,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     // The answers are with us now; leaving them on the device would show a
     // stranger's registration to the next person on a shared phone.
     clearDraft();
+    submissionKeyRef.current = newSubmissionKey();
     setResult({ ...res, expectedCount: expectedDocuments(answers.membershipAnswer).length });
     setStatus("sent");
   };
