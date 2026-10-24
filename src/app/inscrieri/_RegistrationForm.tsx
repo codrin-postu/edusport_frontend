@@ -24,7 +24,7 @@ import { PinnedSchool, SchoolPicker } from "./_SchoolPicker";
 import { PriceBoxView, ScheduleBox, UpsellBox } from "./_Abonament";
 import { clearDraft, clearLegacyDraft, loadDraft, saveDraft } from "./_draft";
 import { PUBLIC_STRAPI_URL, submitRegistration } from "./_submit";
-import { resolveSchool, showsPinnedSchool } from "./_school";
+import { resolveSchool, showsPinnedSchool, wantedSlug } from "./_school";
 import type { ScheduleWeekend } from "./_schedule";
 import {
   CONSENT_KEYS,
@@ -108,6 +108,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
 
   const slugParam = useSchoolParam();
   const [chosenSlug, setChosenSlug] = useState<string | null>(null);
+  const [picking, setPicking] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, CustomAnswer>>({});
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
@@ -128,7 +129,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // yank a returning user down the page before they have read anything.
   const navigatedRef = useRef(false);
 
-  const resolution = resolveSchool(club.schools, chosenSlug ?? slugParam ?? null);
+  const resolution = resolveSchool(club.schools, wantedSlug(chosenSlug, slugParam, picking));
   const school = resolution.state === "chosen" ? resolution.school : null;
   const offeredFor = (membership: string) =>
     school ? subscriptionOptions(school, audienceFor(membership)).map((o) => o.value) : [];
@@ -225,7 +226,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // Wait for `?scoala=` before choosing for the parent; with one school there is nothing to wait for.
   if (slugParam === undefined && club.schools.length > 1) return null;
   if (resolution.state === "choose") {
-    return <SchoolPicker schools={resolution.schools} unknownSlug={resolution.unknownSlug} onChoose={setChosenSlug} />;
+    const choose = (slug: string) => {
+      setChosenSlug(slug);
+      setPicking(false);
+    };
+    return <SchoolPicker schools={resolution.schools} unknownSlug={resolution.unknownSlug} onChoose={choose} />;
   }
   if (!school || !steps.length) {
     return (
@@ -264,7 +269,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
       <LeaveNotice scope={formRef} />
 
       {showsPinnedSchool(club.schools.length) && (
-        <PinnedSchool name={school.name} onChange={() => setChosenSlug(null)} />
+        <PinnedSchool name={school.name} onChange={() => setPicking(true)} />
       )}
 
       {restored && (

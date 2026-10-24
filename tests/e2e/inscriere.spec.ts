@@ -1,7 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
 
 // The 3-step registration form against tests/e2e/mock-strapi.mjs:
-// one school, Standard + Avansați Gold lists, fee 270, every weekend a Curs.
+// two schools (the flow registers at AFI Cotroceni: Standard + Avansați Gold
+// lists), fee 270, every weekend a Curs.
 
 // The Select is a Radix dropdown menu: wait for it to open and to close, so a
 // click never lands on a menu that is still animating.
@@ -148,7 +149,7 @@ test("an unknown ?scoala is not mapped to the school", async({ page }) => {
 });
 
 test("an old-form draft is dropped and an incomplete draft cannot submit", async({ page }) => {
-  await page.goto("/inscrieri");
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
   await page.evaluate(() => {
     const savedAt = Date.now();
     localStorage.setItem("edusport.inscrieri.draft.v1", JSON.stringify({ step: 2, savedAt, answers: { level: "Incepatori", email: "a@b.ro" } }));
@@ -174,6 +175,18 @@ test("a fresh load and a restored draft leave the page at the top", async({ page
   await page.reload();
   await expect(page.getByText("Pasul 2 din 3")).toBeVisible();
   expect(await settledScrollY(page)).toBe(0);
+});
+
+test("Schimbă opens Alege școala even when the link named a school", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await expect(page.getByText("Școala de Patinaj - AFI Cotroceni")).toBeVisible();
+  await page.getByRole("button", { name: "Schimbă" }).click();
+  await expect(page.getByRole("heading", { name: "Alege școala" })).toBeVisible();
+  await expect(page.getByText("Școala nu a fost găsită.")).toHaveCount(0);
+  await page.getByRole("radio", { name: "Școala de Patinaj - Patinoar 2" }).click();
+  await continueButton(page).click();
+  await expect(page.getByText("Pasul 1 din 3")).toBeVisible();
+  await expect(page.getByText("Școala de Patinaj - Patinoar 2")).toBeVisible();
 });
 
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {

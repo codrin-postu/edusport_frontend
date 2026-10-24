@@ -24,6 +24,16 @@ export function resolveSchool<T extends { slug: string }>(schools: T[], slug: st
   return { state: "choose", schools, unknownSlug: false };
 }
 
+/**
+ * The slug to resolve: the parent's pick, else `?scoala=`. While the parent is
+ * choosing again ("Schimbă") neither counts, so "Alege școala" shows even when
+ * the address names a school.
+ */
+export function wantedSlug(picked: string | null, fromUrl: string | null | undefined, picking: boolean): string | null {
+  if (picking) return null;
+  return picked ?? fromUrl ?? null;
+}
+
 /** The chosen school stays at the top of every step only when there was a choice. */
 export function showsPinnedSchool(schoolCount: number): boolean {
   return schoolCount >= 2;
