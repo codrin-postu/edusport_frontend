@@ -123,6 +123,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // Nothing is written until the draft has been read, otherwise the empty
   // initial state would overwrite the saved answers on first render.
   const readyRef = useRef(false);
+  // Set by the parent's own moves between steps. Only those scroll the form
+  // into view: the first render and a draft restored on load would otherwise
+  // yank a returning user down the page before they have read anything.
+  const navigatedRef = useRef(false);
 
   const resolution = resolveSchool(club.schools, chosenSlug ?? slugParam ?? null);
   const school = resolution.state === "chosen" ? resolution.school : null;
@@ -160,11 +164,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   }, [step, answers]);
 
   useEffect(() => {
-    // Skip the scroll on the very first render, which would otherwise yank a
-    // returning user down the page before they have read anything.
-    if (!readyRef.current) return;
+    if (!navigatedRef.current) return;
+    navigatedRef.current = false;
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
+
+  const goToStep = (next: number) => {
+    navigatedRef.current = true;
+    setStep(next);
+  };
 
   const handleAnswerChange = (key: string, value: CustomAnswer) => {
     markStarted();
@@ -179,7 +187,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     setSubmitError(null);
     setResult(null);
     setStatus("idle");
-    setStep(0);
+    goToStep(0);
   };
 
   const handleSubmit = async() => {
@@ -306,9 +314,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
           onAnswerChange={handleAnswerChange}
           onNext={() => {
             track("inscriere.step_next", { step: index + 1 });
-            setStep(Math.min(index + 1, steps.length - 1));
+            goToStep(Math.min(index + 1, steps.length - 1));
           }}
-          onBack={() => setStep(Math.max(index - 1, 0))}
+          onBack={() => goToStep(Math.max(index - 1, 0))}
           placeholders={{
             ...PLACEHOLDERS,
             subscriptionChoice: audience ? SUBSCRIPTION_PLACEHOLDER.ready : SUBSCRIPTION_PLACEHOLDER.waiting,
@@ -328,7 +336,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
                 <div className="flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setStep(Math.max(index - 1, 0))}
+                    onClick={() => goToStep(Math.max(index - 1, 0))}
                     className="text-body-sm text-secondary hover:text-accent transition-colors"
                   >
                     Înapoi

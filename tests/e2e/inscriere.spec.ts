@@ -23,6 +23,19 @@ async function optionsOf(page: Page, key: string): Promise<string[]> {
 
 const continueButton = (page: Page) => page.getByRole("button", { name: "Continuă" });
 
+const DRAFT_KEY = "edusport.inscrieri.draft.v2";
+
+async function saveDraft(page: Page, step: number, answers: Record<string, string | boolean>) {
+  await page.evaluate(([key, value]) => localStorage.setItem(key, value), [DRAFT_KEY, JSON.stringify({ step, savedAt: Date.now(), answers })]);
+}
+
+/** Waits past hydration and any smooth scroll, then reads the scroll position. */
+async function settledScrollY(page: Page): Promise<number> {
+  await page.waitForLoadState("load");
+  await page.waitForTimeout(1500);
+  return page.evaluate(() => window.scrollY);
+}
+
 test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsApp link", async({ page }) => {
   await page.goto("/inscrieri?scoala=afi-cotroceni");
   await expect(page.getByText("2026-2027", { exact: true })).toBeVisible();
@@ -150,6 +163,17 @@ test("an old-form draft is dropped and an incomplete draft cannot submit", async
   // Step 3 is complete, steps 1 and 2 are not: no submit.
   await expect(page.getByRole("button", { name: "Trimite înscrierea" })).toBeDisabled();
   expect(await page.evaluate(() => localStorage.getItem("edusport.inscrieri.draft.v1"))).toBeNull();
+});
+
+test("a fresh load and a restored draft leave the page at the top", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await expect(page.getByText("Pasul 1 din 3")).toBeVisible();
+  expect(await settledScrollY(page)).toBe(0);
+
+  await saveDraft(page, 1, { email: "a@b.ro" });
+  await page.reload();
+  await expect(page.getByText("Pasul 2 din 3")).toBeVisible();
+  expect(await settledScrollY(page)).toBe(0);
 });
 
 test("an expired PDF link lands on a page that is not indexed", async({ page }) => {
