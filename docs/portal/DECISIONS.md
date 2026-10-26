@@ -295,3 +295,43 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   - Q32 diagrams 03a (one name, statuses) and 02e (add, merge, delete, inactive) updated with 3B.
   - Q33 the idempotent athlete migration re-runs at the 3A+3B deploy, so every public profile (also drafts) has an athlete, marked "Date incomplete".
 - phase3b-important (2026-10-26, user): s1 the new athlete list takes the "Sportivi" menu entry and the whole current profile editor moves into the record's "Profil public" tab; s2 the profile name always follows the athlete name, the web address never changes after creation; s3 record opens as a full page (prototype); s4 prototype columns without "Abonament" until phase 5, Grupa = main group of the season, Membru A.C.S. with three states; s5 Secțiune from the athlete's groups in the selected season, else from registrations, "Fără secțiune" otherwise; the season selector only changes the Grupa and A.C.S. columns, everyone listed; s6 "Marchează inactiv" on the record + Status filter; at deploy "Activ" only if registered this season or with a public page, others "Inactiv"; s7 review of "nou" athletes built with phase 6; s8 NO automatic merge at deploy: possible duplicates are flagged for the admin to merge by hand (merge from the record, field-by-field choice, everything moves; merge screen shown before build); s9 deleting an athlete is always allowed: registrations unlinked, groups and A.C.S. removed, public profile deleted too; s10 "Adaugă sportiv": search first, "Sportiv nou" form only if not found, created "Activ"; s11 Documente tab: only the registrations' PDFs in 3B, uploads with phase 8; s12 new menu section "Club și școală" now with Sportivi, the dashboard tile counts active athletes.
+- phase3ab spec gaps, decided by Claude (low impact, 2026-10-26; user may overrule any line; numbers = spec section 13):
+  - 1 no middle dots: group options and search rows use two lines (name, then details) or commas; record sub-line "<data nașterii>, <grupa principală>"; Date tab missing field shows "lipsește" after the label on its own line.
+  - 2 empty values are left blank (no em dash).
+  - 3 history lines neutral: "Înscriere confirmată: <nr>, grupa <grupă>", "Fișă creată din profilul public existent".
+  - 4 history lines: "Confirmare anulată", "Înscriere ștearsă: <nr>", "Mutată la <școală>", "Fișă creată din înscrierile anterioare", "Membru A.C.S. <sezon>: <vechi> -> <nou>", "Adăugat în grupa <grupă>", "Reactivat", "Status: <vechi> -> <nou>", "Profil public creat", "Unit cu <nume>", "Sportiv șters: <nume>".
+  - 5 card line without group "Ultima înscriere: <sezon>"; "În formular: nu a participat sezonul trecut." also shows in the panel card.
+  - 6 "Grupă principală acum: <grupă> (<secțiune>)" as in the chosen mock.
+  - 7 A.C.S. line shows "Nu -> În așteptare" style as in the chosen mock; wish line "Dorește să fie membru (formular): Da".
+  - 8 panel "..." menu holds "Anulează confirmarea" (asks to confirm), "Mută la altă școală", "Șterge înscrierea"; school move also in bulk actions with a school picker; record header "..." menu holds "Marchează inactiv"/"Marchează activ", "Unește cu alt sportiv", "Șterge sportivul"; delete confirmation: "„<nume>” se șterge definitiv, împreună cu profilul public, rezultatele și sezoanele. Înscrierile rămân, fără legătură. Acțiunea nu poate fi anulată."
+  - 9 Sportivi search placeholder "Caută după nume, părinte, telefon, e-mail sau nr. înscriere..."
+  - 10 singular: "1 sportiv are date incomplete.", "Arată 1 sportiv".
+  - 11 Date tab "Membru A.C.S. <sezon>: <stare>"; block "Înscrieri" with rows "<nr>, <sezon>, <status>"; Documente rows "Acord <sezon> (înscrierea <nr>)" and "Cerere de adeziune <sezon> (înscrierea <nr>)" with "Vezi" and "Descarcă".
+  - 13 "Probabil" = same birth date + same phone or e-mail + at least one name word in common after normalising.
+  - 14 phone: digits only, +40 / 0040 become 0; e-mail trimmed and lower case.
+  - 15 several candidates: the highest level, then the most recently updated; the others appear in "Caută alt sportiv".
+  - 16 the "Sportiv existent" line and filter apply only to unconfirmed registrations.
+  - 18 "registered this season" = a current-season registration linked or matched "Sigur".
+  - 20 status menu keeps Nou, Contactat, Respins; "Confirmă înscrierea" hidden for Respins and archived; "Contactat" button hidden when already Contactat.
+  - 21 "Șterge înscrierea" moves to the panel "..." menu.
+  - 22 Înscrieri keeps its current toolbar, the "Sportiv existent: Da / Nu" filter is added to it (no filters-v3 redesign there).
+  - 23 "Vârstă" also in the full table; blank when the date is missing or unreadable.
+  - 24 readable old dates: ZZ.LL.AAAA, Z.L.AAAA, ZZ/LL/AAAA, ZZ-LL-AAAA, AAAA-LL-ZZ, "14 martie 2016"; Editează uses the zi / lună / an picker.
+  - 25 the wish is edited in the Date tab Editează form, last, under "Abonament".
+  - 26 edits to a registration after confirmation are not copied to the athlete.
+  - 27 a school move keeps the frozen subscription choice (it is the parent's wish).
+  - 28 group picker: no suggestion, no schedule text; groups listed under the section name (school first, then Club), in the groups' own order.
+  - 29 group membership "from" = confirmation date, or the season start if confirmed before it.
+  - 30 wish "Nu" writes nothing; an existing A.C.S. status for the season is never lowered by confirmation.
+  - 31 a registration without season reference uses its season text; if none matches, it is treated like an ended season (link only).
+  - 32 undo reverts everything confirmation wrote (incl. athlete field updates and reactivation); status returns to what it was; a newly created athlete is removed if it has nothing else (no other registration, group or A.C.S.); toast 8 seconds with "Anulează" only.
+  - 33 record links open the record page in the same tab.
+  - 34 record opens on Date.
+  - 35 Secțiune: groups of the selected season, else registrations of the selected season, else "Fără secțiune".
+  - 36 "Marchează activ" on inactive records; "Marchează inactiv" asks to confirm.
+  - 37 phone card: name, age, main group, "Date incomplete" marker.
+  - 38 Profil public keeps today's editor controls (incl. its visibility control); the name shows read-only with "Numele se schimbă în Date."; a name change updates the profile name directly, without touching other unpublished draft changes.
+  - 40 history entries of a deleted athlete are kept for audit (not shown anywhere in 3B); competition participations of its profile are deleted with it (as today's text says).
+  - 41 "Adaugă sportiv" form: Nume complet and Data nașterii required; Persoana de contact, Telefon, E-mail optional (record marked "Date incomplete" without them).
+  - 42 the old editor route redirects to the athlete record; "Club și școală" sits above "Sportivi și echipă".
+  - 43 website birth date: three selects zi / lună / an, years from 25 years ago to 2 years ago, stored as ZZ.LL.AAAA; error "Alegeți data nașterii."
