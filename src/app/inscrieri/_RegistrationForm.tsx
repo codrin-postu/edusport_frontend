@@ -19,6 +19,7 @@ import {
 import LeaveNotice from "./_LeaveNotice";
 import InscriereStep, { inscriereStepComplete } from "./_Step";
 import ConsentCheckbox from "./_Consent";
+import BirthDateFields from "./_BirthDateFields";
 import SuccessScreen from "./_Success";
 import { PinnedSchool, SchoolPicker } from "./_SchoolPicker";
 import { PriceBoxView, ScheduleBox, UpsellBox } from "./_Abonament";
@@ -36,6 +37,7 @@ import {
 import {
   MEMBERSHIP_YES,
   applyAnswer,
+  childBirthDateError,
   childHeightError,
   expectedDocuments,
   isSubmissionKey,
@@ -279,10 +281,29 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
         ),
       ]),
   );
-  const extraError = (key: string, value: CustomAnswer | undefined) =>
-    key === "childHeight" ? childHeightError(value) : undefined;
+  const extraError = (key: string, value: CustomAnswer | undefined) => {
+    if (key === "childHeight") return childHeightError(value);
+    if (key === "childBirthDate") return childBirthDateError(value);
+    return undefined;
+  };
   // A restored draft can land on the last step; every step must still be complete.
   const allStepsComplete = steps.every((s) => inscriereStepComplete(s, answers, extraError));
+  const birthDateQuestion = current.questions.find((q) => q.key === "childBirthDate");
+  const replaceSlots = {
+    ...consentSlots,
+    ...(birthDateQuestion && {
+      childBirthDate: (error: string | undefined, onBlur: () => void) => (
+        <BirthDateFields
+          value={answers.childBirthDate}
+          onChange={(v) => handleAnswerChange("childBirthDate", v)}
+          onBlur={onBlur}
+          label={`${birthDateQuestion.label ?? "Data nașterii copilului"}${birthDateQuestion.required ? " *" : ""}`}
+          required={birthDateQuestion.required === true}
+          error={error}
+        />
+      ),
+    }),
+  };
 
   return (
     <div ref={formRef}>
@@ -351,7 +372,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
           }}
           before={slots.before}
           after={slots.after}
-          replace={consentSlots}
+          replace={replaceSlots}
           extraError={extraError}
           footer={
             isLast ? (
