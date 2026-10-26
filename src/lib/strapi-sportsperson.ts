@@ -318,6 +318,7 @@ export async function fetchSportspersonBySlug(
   // record remembers it in previousSlugs [DEC 2026-10-26 d39].
   const redirectParams = new URLSearchParams({
     "filters[previousSlugs][$contains]": slug,
+    "filters[showPublicPage][$eq]": "true",
     ...DETAIL_POPULATE_PARAMS,
   });
   const redirected = await fetchStrapi<StrapiSportsperson[]>(
@@ -325,7 +326,9 @@ export async function fetchSportspersonBySlug(
     redirectParams.toString(),
     300,
   );
-  return redirected?.[0] ?? null;
+  // The backend matches the old slug exactly (previousSlugOwner) and keeps
+  // previousSlugs private; here we only refuse a hidden profile again.
+  return redirected?.find((p) => p.showPublicPage) ?? null;
 }
 
 interface RawParticipantJSON {
