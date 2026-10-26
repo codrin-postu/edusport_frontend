@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   fetchSportspersonBySlug,
   fetchCompetitionsForSportsperson,
@@ -70,8 +70,18 @@ export default async function Page({ params, searchParams }: Props) {
 
   // Critical guard: even if the slug resolves, refuse to render when the
   // editor has unticked the public toggle. This is what makes showPublicPage
-  // an access-control flag, not just a listing filter.
+  // an access-control flag, not just a listing filter. Runs before the
+  // merged-slug redirect below so the website never 308s to a hidden
+  // profile, even if the backend ever answered one for an old slug.
   if (!sp || !sp.showPublicPage) notFound();
+
+  // The requested slug may be an old address a 3B merge retired; the
+  // surviving profile remembers it in previousSlugs and is returned with
+  // its own (different) slug. Redirect to the current address — permanent,
+  // since the merge is permanent too.
+  if (sp.slug !== slug) {
+    permanentRedirect(`/despre-noi/sportivi/${sp.slug}`);
+  }
 
   // Competitions come from skate-results when the athlete is linked, and from
   // the Strapi collection otherwise. Same helper as the listing and homepage,

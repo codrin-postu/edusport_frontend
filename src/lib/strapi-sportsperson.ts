@@ -48,6 +48,10 @@ export interface StrapiSportsperson {
    *  their scraped competition history. Set via the CMS "Rezultate" linker;
    *  a scalar, so it returns on the default detail fetch. */
   skateResultsSlug?: string | null;
+  /** Former slugs that now redirect here, set when a 3B merge deletes the
+   *  other profile [DEC 2026-10-26 d39]. Empty/absent for a profile that was
+   *  never the kept side of a merge. */
+  previousSlugs?: string[] | null;
 }
 
 export interface StrapiDiscipline {
@@ -308,7 +312,20 @@ export async function fetchSportspersonBySlug(
     params.toString(),
     300,
   );
-  return data?.[0] ?? null;
+  if (data?.[0]) return data[0];
+
+  // The slug may belong to a profile a 3B merge deleted; the surviving
+  // record remembers it in previousSlugs [DEC 2026-10-26 d39].
+  const redirectParams = new URLSearchParams({
+    "filters[previousSlugs][$contains]": slug,
+    ...DETAIL_POPULATE_PARAMS,
+  });
+  const redirected = await fetchStrapi<StrapiSportsperson[]>(
+    "sportspeople",
+    redirectParams.toString(),
+    300,
+  );
+  return redirected?.[0] ?? null;
 }
 
 interface RawParticipantJSON {
