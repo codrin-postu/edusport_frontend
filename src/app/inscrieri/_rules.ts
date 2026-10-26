@@ -81,6 +81,83 @@ export function childHeightError(value: CustomAnswer | undefined): string | unde
   return cm >= 50 && cm <= 230 ? undefined : CHILD_HEIGHT_ERROR;
 }
 
+export const BIRTH_DATE_ERROR = "Alegeți data nașterii.";
+
+const BIRTH_DATE_RE = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+
+const pad2 = (n: number): string => String(n).padStart(2, "0");
+
+/** "Zi" options, 01 to 31. Not filtered by the chosen month: an impossible
+ * combination (31 April) is caught by childBirthDateError once composed. */
+export const BIRTH_DAY_OPTIONS = Array.from({ length: 31 }, (_, i) => {
+  const v = pad2(i + 1);
+  return { value: v, label: v };
+});
+
+const BIRTH_MONTH_NAMES = [
+  "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
+  "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie",
+] as const;
+
+/** "Lună" options; value is zero-padded so it composes straight into ZZ.LL.AAAA. */
+export const BIRTH_MONTH_OPTIONS = BIRTH_MONTH_NAMES.map((label, i) => ({ value: pad2(i + 1), label }));
+
+/** 25 years ago to 2 years ago, by the calendar year at `now` [SPEC 9]. */
+export function birthYearRange(now: Date = new Date()): { minYear: number; maxYear: number } {
+  const year = now.getFullYear();
+  return { minYear: year - 25, maxYear: year - 2 };
+}
+
+/** "An" options from birthYearRange, oldest first. */
+export function birthYearOptions(now: Date = new Date()): { value: string; label: string }[] {
+  const { minYear, maxYear } = birthYearRange(now);
+  const out: { value: string; label: string }[] = [];
+  for (let y = minYear; y <= maxYear; y++) out.push({ value: String(y), label: String(y) });
+  return out;
+}
+
+export interface BirthDateParts {
+  day: string;
+  month: string;
+  year: string;
+}
+
+export const EMPTY_BIRTH_DATE_PARTS: BirthDateParts = { day: "", month: "", year: "" };
+
+/**
+ * Splits a stored "ZZ.LL.AAAA" answer into the three selects' values. Anything
+ * else — empty, or an old free-text answer from before this picker existed —
+ * comes back blank, so the selects render unset instead of crashing on it.
+ */
+export function parseBirthDate(value: CustomAnswer | undefined): BirthDateParts {
+  const m = typeof value === "string" ? BIRTH_DATE_RE.exec(value.trim()) : null;
+  return m ? { day: m[1]!, month: m[2]!, year: m[3]! } : EMPTY_BIRTH_DATE_PARTS;
+}
+
+/** Joins the three selects back into "ZZ.LL.AAAA", or "" until all three are picked. */
+export function composeBirthDate(parts: BirthDateParts): string {
+  return parts.day && parts.month && parts.year ? `${parts.day}.${parts.month}.${parts.year}` : "";
+}
+
+/**
+ * The stored answer must be a real calendar date within the offered year
+ * range [SPEC 9]. Empty passes here (required-ness is gated separately, same
+ * convention as childHeightError).
+ */
+export function childBirthDateError(value: CustomAnswer | undefined, now: Date = new Date()): string | undefined {
+  if (typeof value !== "string" || value.trim() === "") return undefined;
+  const m = BIRTH_DATE_RE.exec(value.trim());
+  if (!m) return BIRTH_DATE_ERROR;
+  const day = Number(m[1]);
+  const month = Number(m[2]);
+  const year = Number(m[3]);
+  const { minYear, maxYear } = birthYearRange(now);
+  if (year < minYear || year > maxYear) return BIRTH_DATE_ERROR;
+  const asDate = new Date(year, month - 1, day);
+  const real = asDate.getFullYear() === year && asDate.getMonth() === month - 1 && asDate.getDate() === day;
+  return real ? undefined : BIRTH_DATE_ERROR;
+}
+
 const TEXT_KEYS = [
   "email",
   "parentName",
