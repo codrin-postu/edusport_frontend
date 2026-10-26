@@ -22,6 +22,12 @@ async function optionsOf(page: Page, key: string): Promise<string[]> {
   return names.map((n) => n.trim());
 }
 
+async function fillBirthDate(page: Page, day: string, month: string, year: string) {
+  await choose(page, "childBirthDateDay", day);
+  await choose(page, "childBirthDateMonth", month);
+  await choose(page, "childBirthDateYear", year);
+}
+
 const continueButton = (page: Page) => page.getByRole("button", { name: "Continuă" });
 
 const DRAFT_KEY = "edusport.inscrieri.draft.v2";
@@ -59,7 +65,7 @@ test("a parent registers in 3 steps and gets the number, the PDFs and the WhatsA
   await page.locator("#relationshipOther").fill("Bunic");
   await page.locator("#phone").fill("0712345678");
   await page.locator("#childName").fill("Maria Pop");
-  await page.locator("#childBirthDate").fill("14.03.2016");
+  await fillBirthDate(page, "14", "martie", String(new Date().getFullYear() - 10));
   await page.locator("#childHeight").fill("13");
   await page.locator("#shirtSize").fill("S");
   await choose(page, "lastSeason", "Nu a participat");
@@ -297,4 +303,88 @@ test("the Cursuri prices come from the public read", async({ page }) => {
   await expect(prices.getByText("Taxa de membru se achită o singură dată pe sezon.")).toBeVisible();
   // The old note line is gone; its text is the tooltip of "1 ședință grup".
   await expect(prices.getByText("Disponibil doar pentru prima ședință")).toHaveCount(0);
+});
+
+test("Data nașterii copilului offers years 25 to 2 years ago and blocks an impossible calendar date", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  const now = new Date();
+  const minYear = String(now.getFullYear() - 25);
+  const maxYear = String(now.getFullYear() - 2);
+
+  await expect(page.locator("#childBirthDate")).toHaveCount(0);
+  const years = await optionsOf(page, "childBirthDateYear");
+  expect(years[0]).toBe(minYear);
+  expect(years.at(-1)).toBe(maxYear);
+
+  await choose(page, "childBirthDateDay", "31");
+  await choose(page, "childBirthDateMonth", "februarie");
+  await choose(page, "childBirthDateYear", maxYear);
+  await expect(page.getByText("Alegeți data nașterii.")).toBeVisible();
+  await expect(continueButton(page)).toBeDisabled();
+
+  await choose(page, "childBirthDateDay", "14");
+  await choose(page, "childBirthDateMonth", "martie");
+  await expect(page.getByText("Alegeți data nașterii.")).toHaveCount(0);
+});
+
+test("the birth date error shows right after picking an impossible date, not one interaction later", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  const year = String(new Date().getFullYear() - 10);
+  await fillBirthDate(page, "30", "ianuarie", year);
+  await expect(page.getByText("Alegeți data nașterii.")).toHaveCount(0);
+
+  await choose(page, "childBirthDateDay", "31");
+  await choose(page, "childBirthDateMonth", "februarie");
+  await expect(page.getByText("Alegeți data nașterii.")).toBeVisible();
+});
+
+test("restarting the form clears a partial birth date pick", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await saveDraft(page, 0, { source: "Facebook" });
+  await page.reload();
+  await expect(page.getByText("Formular salvat.")).toBeVisible();
+
+  await choose(page, "childBirthDateDay", "14");
+
+  await page.getByRole("button", { name: "Începe de la capăt" }).click();
+  await page.getByRole("button", { name: "Șterge" }).click();
+
+  await expect(page.locator("#childBirthDateDay")).toContainText("Zi");
+  await expect(page.locator("#childBirthDateMonth")).toContainText("Lună");
+  await expect(page.locator("#childBirthDateYear")).toContainText("An");
+
+  // Picking month and year alone, without re-picking the day, must not
+  // silently pair them with the leftover stale day from before the reset.
+  await choose(page, "childBirthDateMonth", "martie");
+  await choose(page, "childBirthDateYear", String(new Date().getFullYear() - 10));
+  await expect(page.locator("#childBirthDateDay")).toContainText("Zi");
+  await expect(continueButton(page)).toBeDisabled();
+});
+
+test("an old free-text birth date draft restores with blank selects and blocks Continuă until re-picked", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await saveDraft(page, 0, {
+    email: "ana.pop@example.com", parentName: "Ana Pop", relationship: "parinte", phone: "0712345678",
+    childName: "Maria Pop", childBirthDate: "14 martie 2016", childHeight: "132", shirtSize: "S",
+    lastSeason: "Nu a participat", priorExperience: "Nu este cazul", expectations: "Să patineze",
+  });
+  await page.reload();
+  await expect(page.getByText("Formular salvat.")).toBeVisible();
+  await expect(page.locator("#childBirthDateDay")).toContainText("Zi");
+  await expect(page.locator("#childBirthDateMonth")).toContainText("Lună");
+  await expect(page.locator("#childBirthDateYear")).toContainText("An");
+  await expect(continueButton(page)).toBeDisabled();
+
+  await fillBirthDate(page, "14", "martie", String(new Date().getFullYear() - 10));
+  await expect(continueButton(page)).toBeEnabled();
+});
+
+test("a valid zi/lună/an draft restores into the same selects", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  const year = String(new Date().getFullYear() - 10);
+  await saveDraft(page, 0, { childBirthDate: `05.11.${year}` });
+  await page.reload();
+  await expect(page.locator("#childBirthDateDay")).toContainText("05");
+  await expect(page.locator("#childBirthDateMonth")).toContainText("noiembrie");
+  await expect(page.locator("#childBirthDateYear")).toContainText(year);
 });

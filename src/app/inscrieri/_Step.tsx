@@ -80,19 +80,28 @@ const InscriereStep: React.FC<InscriereStepProps> = ({
   children,
   footer,
 }) => {
-  const [errors, setErrors] = React.useState<Record<string, string | undefined>>({});
+  // `touched` only records which fields have been visited; the error text
+  // itself is derived below from the current `answers` on every render, so a
+  // blur fired synchronously right after an onChange (as the birth date
+  // picker does) never reads a stale answer captured in an earlier render's
+  // closure.
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({});
   const questions = visible(step);
+  const errors: Record<string, string | undefined> = {};
+  for (const q of questions) {
+    if (touched[q.key]) errors[q.key] = errorFor(q, answers[q.key], extraError);
+  }
 
   const handleBlur = (key: string) => {
-    const q = questions.find((item) => item.key === key);
-    if (q) setErrors((prev) => ({ ...prev, [key]: errorFor(q, answers[key], extraError) }));
+    setTouched((prev) => (prev[key] ? prev : { ...prev, [key]: true }));
   };
 
   const handleNext = () => {
-    const next: Record<string, string | undefined> = {};
-    for (const q of questions) next[q.key] = errorFor(q, answers[q.key], extraError);
-    setErrors(next);
-    if (Object.values(next).some(Boolean)) requestAnimationFrame(() => scrollToFirstInvalidField());
+    const allTouched: Record<string, boolean> = {};
+    for (const q of questions) allTouched[q.key] = true;
+    setTouched(allTouched);
+    const hasError = questions.some((q) => errorFor(q, answers[q.key], extraError));
+    if (hasError) requestAnimationFrame(() => scrollToFirstInvalidField());
     else onNext();
   };
 
