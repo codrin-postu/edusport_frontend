@@ -259,3 +259,11 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - phase2 success screen, phone (update 2026-10-24): button font size stays the same as all buttons; a long label may wrap to a second line (replaces the 12px choice).
 - phase2-q11 (2026-10-26): success screen as built "Looks right"; no focus outline on the step header and the success heading (keyboard), buttons/fields keep theirs.
 - phase3-q0 (2026-10-26): admin stat tiles keep the coloured left band (A).
+- phase3a-r1 (2026-10-26):
+  - q10: create athlete records from past registrations at deploy (marked "Date incomplete"); no past groups exist, the card shows the last season registered.
+  - q6: matching runs at submit, is saved, refreshed when the registration is edited or an athlete is created/changed; past registrations matched once at deploy.
+  - q7: Sigur and Probabil show "Sportiv existent"; Alt copil (sibling) shows nothing.
+  - q1: membership STATUS for the season and the form's WISH to be a member are two different things (user); exact display pending (round 1b).
+  - q28: show each mockup-vs-decision conflict side by side before choosing.
+  - q29: build all shared admin pieces in 3A, including the admin-wide custom Select rewrite.
+  - q7b (typos): pending, user asked for context.
