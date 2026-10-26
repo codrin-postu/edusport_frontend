@@ -327,6 +327,17 @@ test("Data nașterii copilului offers years 25 to 2 years ago and blocks an impo
   await expect(page.getByText("Alegeți data nașterii.")).toHaveCount(0);
 });
 
+test("the birth date error shows right after picking an impossible date, not one interaction later", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  const year = String(new Date().getFullYear() - 10);
+  await fillBirthDate(page, "30", "ianuarie", year);
+  await expect(page.getByText("Alegeți data nașterii.")).toHaveCount(0);
+
+  await choose(page, "childBirthDateDay", "31");
+  await choose(page, "childBirthDateMonth", "februarie");
+  await expect(page.getByText("Alegeți data nașterii.")).toBeVisible();
+});
+
 test("an old free-text birth date draft restores with blank selects and blocks Continuă until re-picked", async({ page }) => {
   await page.goto("/inscrieri?scoala=afi-cotroceni");
   await saveDraft(page, 0, {
