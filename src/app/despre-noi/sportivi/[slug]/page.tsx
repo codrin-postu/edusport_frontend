@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   fetchSportspersonBySlug,
   fetchCompetitionsForSportsperson,
@@ -66,6 +66,17 @@ export default async function Page({ params, searchParams }: Props) {
     sp = await fetchSportspersonBySlug(slug);
   } catch {
     notFound();
+  }
+
+  // The requested slug may be an old address a 3B merge retired; the
+  // surviving profile remembers it in previousSlugs and is returned with
+  // its own (different) slug. Redirect to the current address — permanent,
+  // since the merge is permanent too. Placed before the showPublicPage
+  // guard so a merge into a profile that is itself private still 404s
+  // rather than redirecting into a private page — the existing guard runs
+  // next and handles that.
+  if (sp && sp.slug !== slug) {
+    permanentRedirect(`/despre-noi/sportivi/${sp.slug}`);
   }
 
   // Critical guard: even if the slug resolves, refuse to render when the
