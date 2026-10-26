@@ -1,0 +1,192 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700;800&family=Inter:wght@400;600;700;800&display=swap');
+.cf{--n:#0e1a3c;--r:#be3330;--m:#efb22b;--c:#fbf8f1;--w:#fff;--s:#ece8e0;--h:#f9edd1;--bd:#d9d3c7;--mu:#6b6f7d;--ok:#2f7a4a;--okb:#e3f1e8;
+ font:13px/1.45 Inter,system-ui,sans-serif;color:var(--n)}
+.cf *{box-sizing:border-box}
+.cf h2,.cf .disp{font-family:"League Spartan",Inter,sans-serif;font-weight:800;letter-spacing:-.02em}
+.cf .sect{margin:26px 0 8px;padding-top:14px;border-top:2px solid var(--n)}
+.cf .eyb{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--r)}
+.cf .row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.cf .ph{width:280px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16);display:flex;flex-direction:column;min-height:560px}
+.cf .cap{font-weight:700;margin:0 0 6px;font-size:12px;color:var(--mu)}
+.cf .top{background:var(--n);color:var(--c);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.cf .top b{font-family:"League Spartan",Inter,sans-serif;font-size:16px;flex:1}
+.cf .top small{color:var(--m);font-weight:700}
+.cf .pad{padding:12px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cf .card{background:var(--w);border:1.5px solid var(--n);padding:10px 12px}
+.cf .card .t{font-weight:800}
+.cf .card .m{color:var(--mu);font-size:12px}
+.cf .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;background:var(--s)}
+.cf .chip.r{background:var(--r);color:var(--c)}.cf .chip.m{background:var(--m);color:var(--n)}.cf .chip.ok{background:var(--okb);color:var(--ok)}
+.cf .btn{display:flex;align-items:center;justify-content:center;height:40px;background:var(--n);color:var(--c);font-weight:700;border:1.5px solid var(--n)}
+.cf .btn.o{background:var(--w);color:var(--n)}
+.cf .btn.sm{height:30px;padding:0 10px;font-size:12px;display:inline-flex}
+.cf .kid{display:flex;align-items:center;gap:8px;background:var(--w);border:1px solid var(--bd);padding:7px 8px}
+.cf .kid .nm{flex:1;font-weight:600;min-width:0}
+.cf .kid .nm small{display:block;color:var(--mu);font-weight:400;font-size:11px}
+.cf .tg{display:flex}
+.cf .tg span{width:30px;height:30px;display:grid;place-items:center;border:1.5px solid var(--n);margin-left:-1.5px;font-weight:800;background:var(--w);color:var(--n)}
+.cf .tg .on{background:var(--n);color:var(--m)}
+.cf .ck{width:18px;height:18px;border:1.5px solid var(--n);background:var(--w);flex-shrink:0;display:grid;place-items:center;font-weight:800;font-size:12px}
+.cf .ck.on{background:var(--n);color:var(--m)}
+.cf .absent{opacity:.55}
+.cf .bar{display:flex;gap:6px;align-items:center;background:var(--n);color:var(--c);padding:8px 10px;font-weight:700}
+.cf .bar span.sp{flex:1}
+.cf .f{display:flex;flex-direction:column;gap:3px}
+.cf .f>span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.cf .in{height:36px;border:1.5px solid var(--n);background:var(--w);padding:0 10px;display:flex;align-items:center;color:var(--n)}
+.cf .in.ph2{color:#9a9ca6}
+.cf .note{font-size:12px;color:var(--mu)}
+.cf .bal{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--n);background:var(--w)}
+.cf .bal div{padding:8px;text-align:center;border-right:1px solid var(--bd)}
+.cf .bal div:last-child{border-right:0}
+.cf .bal b{display:block;font-family:"League Spartan",Inter,sans-serif;font-size:22px;line-height:1}
+.cf .bal small{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+.cf .neg{color:var(--r)}
+.cf .hist div{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)}
+.cf .tbl{overflow-x:auto;border:1.5px solid var(--n);background:var(--w)}
+.cf table{border-collapse:collapse;font-size:12px;width:100%}
+.cf th,.cf td{border:1px solid var(--bd);padding:5px 6px;text-align:center;white-space:nowrap}
+.cf th{background:var(--n);color:var(--c);font-weight:700;font-size:11px}
+.cf th.g{background:#26304e}
+.cf td.l{text-align:left;font-weight:600}
+.cf td.x{background:var(--h)}
+.cf .desk{flex:1;min-width:640px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16)}
+.cf .side{width:170px;background:var(--n);color:var(--c);padding:12px;display:flex;flex-direction:column;gap:4px}
+.cf .side div{padding:6px 8px;font-weight:600}
+.cf .side .on{background:#26304e;border-left:3px solid var(--m)}
+.cf .side small{color:var(--m);font-weight:700;letter-spacing:.08em;font-size:10px;margin-top:8px}
+.cf .names{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.cf .names .option{min-width:150px}
+.cf .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin:4px 0 10px}
+.cf .legend b{color:var(--n)}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+.cf .ph{width:300px;min-height:600px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16);display:flex;flex-direction:column}
+.cf .hdr{background:var(--n);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.cf .logo{font-family:"Climate Crisis",Inter,sans-serif;color:var(--c);font-size:17px;letter-spacing:.04em;line-height:1}
+.cf .hdr .sp{flex:1}
+.cf .ava{width:26px;height:26px;background:var(--m);color:var(--n);display:grid;place-items:center;font-weight:800;font-size:11px}
+.cf .ttl{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--bd);background:var(--c)}
+.cf .ttl b{font-family:"League Spartan",Inter,sans-serif;font-size:18px;flex:1;line-height:1.1}
+.cf .ttl small{font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--r)}
+.cf .bk{font-size:18px;font-weight:800}
+.cf .pad{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cf .tabs4{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bd);background:var(--w);margin-top:auto}
+.cf .tabs4 span{padding:7px 0 6px;text-align:center;font-size:10px;font-weight:700;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
+.cf .tabs4 span.on{color:var(--n);box-shadow:inset 0 2px 0 var(--n)}
+.cf .tabs4 svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.cf .lst{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .ar{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--bd)}
+.cf .ar:last-child{border-bottom:0}
+.cf .ar.done{background:var(--s)}
+.cf .ar.mut{color:var(--mu)}
+.cf .at{font-family:"League Spartan",Inter,sans-serif;font-weight:800;font-size:17px;line-height:1;min-width:40px}
+.cf .at small{display:block;font-family:Inter;font-size:10px;color:var(--mu);font-weight:700;margin-top:2px}
+.cf .an{font-weight:700;line-height:1.25}
+.cf .as{font-size:11px;color:var(--mu);margin-top:2px}
+.cf .ae{display:flex;align-items:center;gap:6px}
+.cf .cmp{font-size:12px;font-weight:700;color:var(--ok)}
+.cf .arw{font-size:20px;font-weight:800;color:var(--n)}
+.cf .tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--s);padding:2px 5px;margin-left:4px}
+.cf .eyb{margin-top:4px}
+.cf .f{display:flex;flex-direction:column;gap:3px}
+.cf .f>span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.cf .in{height:38px;border:1.5px solid var(--n);background:var(--w);padding:0 10px;display:flex;align-items:center;justify-content:space-between}
+.cf .in.ph2{color:#9a9ca6}
+.cf .chev{width:20px;height:20px;fill:none;stroke:var(--n);stroke-width:2.2;flex-shrink:0}
+.cf .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cf .lnk{font-size:12px;font-weight:700;text-decoration:underline}
+.cf .hint{font-size:11px;color:var(--mu)}
+.cf .btn{display:flex;align-items:center;justify-content:center;height:42px;background:var(--n);color:var(--c);font-weight:700;border:1.5px solid var(--n)}
+.cf .btn.o{background:var(--w);color:var(--n)}
+.cf .grid3{display:grid;grid-template-columns:1fr 52px 52px;align-items:center}
+.cf .gh{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);padding:0 12px}
+.cf .gh span:not(:first-child){text-align:center}
+.cf .gr{padding:9px 12px;border-bottom:1px solid var(--bd);font-weight:600;font-size:12px}
+.cf .gr:last-child{border-bottom:0}
+.cf .ck{width:22px;height:22px;border:1.5px solid var(--n);background:var(--w);display:grid;place-items:center;font-weight:800;font-size:12px;margin:0 auto}
+.cf .ck.on{background:var(--n);color:var(--c)}
+.cf .ban{background:var(--h);border-left:4px solid var(--n);padding:8px 10px;font-weight:700;font-size:12px}
+.cf .ban small{display:block;font-weight:400;color:var(--mu)}
+.cf .inf{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--bd);font-size:12px}
+.cf .inf:last-child{border-bottom:0}
+.cf .inf b{font-weight:700;text-align:right}
+.cf .tp{border:1.5px solid var(--n);background:var(--w);box-shadow:4px 4px 0 rgba(14,26,60,.16)}
+.cf .tpc{display:grid;grid-template-columns:1fr 1fr}
+.cf .tc{border-right:1px solid var(--bd)}.cf .tc:last-child{border-right:0}
+.cf .tch{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding:6px 10px;border-bottom:1px solid var(--bd)}
+.cf .tv{padding:6px 10px;font-weight:600;text-align:center}.cf .tv.on{background:var(--n);color:var(--c)}
+.cf .tpf{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-top:1px solid var(--bd);font-weight:700}
+.cf .tpf .btn{height:30px;padding:0 12px}
+.cf .num{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 4px;background:var(--r);color:var(--c);font-weight:800;font-size:11px;margin-right:6px}
+.cf .grp{margin:24px 0 8px;padding-top:12px;border-top:2px solid var(--n)}
+.cf .menu .inf{padding:12px}
+.cf .dchip{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--n);background:var(--w);padding:4px 6px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--n)}
+.cf .dchip svg{width:14px;height:14px;fill:none;stroke:var(--n);stroke-width:2}
+.cf .cal{border:1.5px solid var(--n);background:var(--w);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:8px}
+.cf .calh{display:flex;justify-content:space-between;align-items:center;font-weight:800;padding:2px 2px 8px}
+.cf .calg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px}
+.cf .calg b{font-size:10px;color:var(--mu);padding:3px 0}
+.cf .calg span{height:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:600;position:relative}
+.cf .calg span.out{color:var(--bd)}
+.cf .calg span.has::after{content:"";position:absolute;bottom:3px;width:12px;height:2px;background:var(--n)}
+.cf .calg span.sel{background:var(--r);color:var(--c);font-weight:800}
+.cf .calg span.sel::after{background:var(--c)}
+.cf .calg span.today{box-shadow:inset 0 0 0 1.5px var(--n)}
+.cf .legend2{display:flex;gap:12px;font-size:11px;color:var(--mu);margin-top:6px;align-items:center}
+.cf .legend2 i{display:inline-block;width:12px;height:2px;background:var(--n);vertical-align:middle;margin-right:4px}
+.cf .warn{background:var(--w);border:1.5px solid var(--r);box-shadow:4px 4px 0 rgba(190,51,48,.18);padding:10px 12px}
+.cf .warn b{display:block;color:var(--r);margin-bottom:3px}
+.cf .warn .btns{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+
+</style><style>
+.cf .dk{width:1180px;border:1.5px solid var(--n);background:var(--c);box-shadow:6px 6px 0 rgba(14,26,60,.16);position:relative;overflow:hidden}
+.cf .dbar{background:var(--n);display:flex;align-items:center;gap:28px;padding:0 24px;height:60px}
+.cf .dbar .logo{font-size:20px}
+.cf .dnav{display:flex;gap:4px;height:100%}
+.cf .dnav span{display:flex;align-items:center;padding:0 14px;color:#b9bfd0;font-weight:700;font-size:13px}
+.cf .dnav span.on{color:var(--c);box-shadow:inset 0 -3px 0 var(--c)}
+.cf .duser{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--c);font-weight:700;font-size:13px}
+.cf .dbody{padding:22px 24px;display:grid;gap:20px;min-height:560px}
+.cf .dbody.md{grid-template-columns:380px 1fr}
+.cf .dtitle{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.cf .dtitle b{font-family:"League Spartan",Inter,sans-serif;font-size:26px;line-height:1}
+.cf .dtitle .sp{flex:1}
+.cf .ar.sel{box-shadow:inset 4px 0 0 var(--r);background:var(--h)}
+.cf .panel{background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.cf .tbl{width:100%;border-collapse:collapse;font-size:13px}
+.cf .tbl th{text-align:left;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding:8px 10px;border-bottom:1.5px solid var(--n)}
+.cf .tbl td{padding:10px;border-bottom:1px solid var(--bd)}
+.cf .tbl tr:last-child td{border-bottom:0}
+.cf .tbl td.c,.cf .tbl th.c{text-align:center}
+.cf .row2{display:flex;gap:12px;align-items:flex-end}
+.cf .row2>*{flex:1}
+.cf .btn.w{width:auto;padding:0 20px;display:inline-flex}
+.cf .ov{position:absolute;inset:60px 0 0 0;background:rgba(14,26,60,.35);display:flex;align-items:flex-start;justify-content:center;padding-top:50px}
+.cf .dlg{width:460px;background:var(--c);border:1.5px solid var(--n);box-shadow:8px 8px 0 rgba(14,26,60,.25)}
+.cf .dlgh{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--bd)}
+.cf .dlgh b{font-family:"League Spartan",Inter,sans-serif;font-size:20px;flex:1}
+.cf .dlgb{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.cf .dlgf{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--bd)}
+.cf .seg{display:inline-flex;border:1.5px solid var(--n)}
+.cf .seg span{padding:6px 14px;font-weight:700;font-size:12px;background:var(--w)}
+.cf .seg span.on{background:var(--n);color:var(--c)}
+.cf .menu2{position:absolute;right:16px;top:58px;width:220px;background:var(--w);border:1.5px solid var(--n);box-shadow:4px 4px 0 rgba(14,26,60,.16);z-index:3}
+.cf .menu2 div{padding:11px 14px;border-bottom:1px solid var(--bd);font-weight:600;font-size:13px}
+.cf .menu2 div:last-child{border-bottom:0;color:var(--r)}
+.cf .dcap{margin:26px 0 8px;font-weight:800}
+.cf .tbl th{background:none!important;color:var(--mu)!important;border:0!important;border-bottom:1.5px solid var(--n)!important;text-align:left!important;white-space:nowrap}
+.cf .tbl td{border:0!important;border-bottom:1px solid var(--bd)!important;text-align:left!important;background:none!important}
+.cf .tbl tr:last-child td{border-bottom:0!important}
+.cf .tbl td.c,.cf .tbl th.c{text-align:center!important}
+.cf .dtitle .btn,.cf .dtitle .seg{height:40px;box-sizing:border-box}
+.cf .dtitle .seg span{height:100%;display:flex;align-items:center;box-sizing:border-box}
+.cf .dtitle .btn{padding:0 16px}
+.cf .dlgf .btn{height:40px}
+.cf .tbl{border:0!important;box-shadow:none!important;background:none!important}
+.cf .dbody .eyb{margin-top:14px;margin-bottom:6px}
+.cf .dbody{min-height:660px}
+
+</style><div class="cf"><h2>Portal antrenor: desktop</h2><p class="subtitle">Aceleași pagini ca pe telefon. Bara de jos devine meniu sus (Azi, Grupe, Istoric); Profil intră în meniul de lângă nume. Pe ecran lat, lista și detaliul stau unul lângă altul.</p><div class="dcap">D1. Azi: lista în stânga, prezența în dreapta</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="on">Azi</span><span class="">Grupe</span><span class="">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="dbody md"><div><div class="dtitle"><b>Bună, Andrei</b><span class="sp"></span><span class="hint">Marți, 6 octombrie</span></div><div class="eyb">Grupe</div><div class="lst"><div class="ar done"><div class="at">10:00</div><div><div class="an">Primii Pași</div><div class="as">grup · 12 copii</div></div><div class="ae"><span class=cmp>Completat</span><span class="arw">&rsaquo;</span></div></div><div class="ar sel"><div class="at">18:15</div><div><div class="an">Avansați</div><div class="as">grup · 9 copii</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div></div><div class="eyb">Lecții individuale</div><div class="lst"><div class="ar"><div class="at">16:00</div><div><div class="an">Maria Dumitrescu</div><div class="as">individuală · 50 min</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div><div class="ar done"><div class="at">17:00</div><div><div class="an">Ioana Marinescu</div><div class="as">individuală · 50 min</div></div><div class="ae"><span class=cmp>Completat</span><span class="arw">&rsaquo;</span></div></div></div><div class="btn o">+ Lecție individuală</div><div class="eyb">De făcut</div><div class="lst"><div class="ar"><div class="at">Mi 30</div><div><div class="an">Avansați</div><div class="as">grup · 30 sep</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div></div></div><div class="panel"><div class="dtitle"><b>Avansați</b><span class="dchip"><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>MA 6 OCT<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span><span class="sp"></span><span class="hint">18:15 - 19:15</span></div><div class="row2"><div class="f"><span>Antrenor</span><div class="in">Andrei Popa (tu)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div style="flex:0 0 auto;padding-bottom:10px"><span class="lnk">+ Adaugă alți antrenori</span></div></div><table class="tbl"><tr><th>Sportiv</th><th>Vârstă</th><th class="c">Grup</th><th class="c">Uscat</th></tr><tr><td><b>Ioana Marinescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck on">&#x2713;</span></td></tr><tr><td><b>Maria Dumitrescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Elena Radu</b></td><td class="hint">11 ani</td><td class="c"><span class="ck"></span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Sofia Tudor</b></td><td class="hint">10 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck on">&#x2713;</span></td></tr><tr><td><b>Alexia Petrescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Daria Constantin</b></td><td class="hint">11 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr></table><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span class="hint">5 prezenți la grup · 2 la uscat</span><span class="btn w">Salvează prezența</span></div></div></div></div><div class="dcap">D2. Grupe: lista în stânga, grupa în dreapta</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="">Azi</span><span class="on">Grupe</span><span class="">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="dbody md"><div><div class="dtitle"><b>Grupe</b></div><div class="eyb">Grupele mele</div><div class="lst"><div class="ar sel" style="grid-template-columns:1fr auto"><div><div class="an">Avansați</div><div class="as">Ma, Mi 18:15 · 9 copii</div></div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Uscat Juniori</div><div class="as">Jo 17:00 · 7 copii</div></div><span class="arw">&rsaquo;</span></div></div><div class="eyb">Alte grupe &#x25BE;</div><div class="lst"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Intermediari Silver</div><div class="as">Antrenor: Bianca Ene</div></div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Primii Pași</div><div class="as">Antrenor: Cristi Vlad</div></div><span class="arw">&rsaquo;</span></div></div></div><div class="panel"><div class="dtitle"><b>Avansați</b><span class="sp"></span><span class="btn o w">+ Adaugă sportiv</span><span class="btn w">Fă prezența</span></div><div class="hint">Ma, Mi 18:15 - 19:15 · Antrenori: Andrei Popa, Bianca Ene</div><table class="tbl"><tr><th>Sportiv</th><th>Vârstă</th><th>Și în</th><th class="c">Prezență oct.</th><th></th></tr><tr><td><b>Ioana Marinescu</b></td><td class="hint">12 ani</td><td class="hint"></td><td class="c">92%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Maria Dumitrescu</b></td><td class="hint">12 ani</td><td class="hint">Uscat Juniori</td><td class="c">83%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Elena Radu</b></td><td class="hint">11 ani</td><td class="hint"></td><td class="c">58%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Sofia Tudor <span class="tag">nou</span></b></td><td class="hint">10 ani</td><td class="hint"></td><td class="c">100%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Alexia Petrescu</b></td><td class="hint">12 ani</td><td class="hint"></td><td class="c">88%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr></table></div></div></div><div class="dcap">D3. Adaugă sportiv: fereastră peste grupă</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="">Azi</span><span class="on">Grupe</span><span class="">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="dbody md"><div><div class="dtitle"><b>Grupe</b></div><div class="eyb">Grupele mele</div><div class="lst"><div class="ar sel" style="grid-template-columns:1fr auto"><div><div class="an">Avansați</div><div class="as">Ma, Mi 18:15 · 9 copii</div></div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Uscat Juniori</div><div class="as">Jo 17:00 · 7 copii</div></div><span class="arw">&rsaquo;</span></div></div><div class="eyb">Alte grupe &#x25BE;</div><div class="lst"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Intermediari Silver</div><div class="as">Antrenor: Bianca Ene</div></div><span class="arw">&rsaquo;</span></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Primii Pași</div><div class="as">Antrenor: Cristi Vlad</div></div><span class="arw">&rsaquo;</span></div></div></div><div class="panel"><div class="dtitle"><b>Avansați</b><span class="sp"></span><span class="btn o w">+ Adaugă sportiv</span><span class="btn w">Fă prezența</span></div><div class="hint">Ma, Mi 18:15 - 19:15 · Antrenori: Andrei Popa, Bianca Ene</div><table class="tbl"><tr><th>Sportiv</th><th>Vârstă</th><th>Și în</th><th class="c">Prezență oct.</th><th></th></tr><tr><td><b>Ioana Marinescu</b></td><td class="hint">12 ani</td><td class="hint"></td><td class="c">92%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Maria Dumitrescu</b></td><td class="hint">12 ani</td><td class="hint">Uscat Juniori</td><td class="c">83%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Elena Radu</b></td><td class="hint">11 ani</td><td class="hint"></td><td class="c">58%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Sofia Tudor <span class="tag">nou</span></b></td><td class="hint">10 ani</td><td class="hint"></td><td class="c">100%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Alexia Petrescu</b></td><td class="hint">12 ani</td><td class="hint"></td><td class="c">88%</td><td class="c"><span class="arw">&rsaquo;</span></td></tr></table></div></div><div class="ov"><div class="dlg"><div class="dlgh"><b>Adaugă în Avansați</b><span class="arw">&#x2715;</span></div><div class="dlgb"><div class="in">Ana|</div><div class="eyb">În club</div><div class="lst"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Ana Bălan</div><div class="as">9 ani · Primii Pași</div></div><div class="ae"><span class="arw" style="font-size:18px">+</span></div></div><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Ana-Maria Cristea</div><div class="as">11 ani · Uscat Juniori</div></div><div class="ae"><span class="cmp" style="font-size:16px">&#x2713;</span></div></div><div class="ar mut" style="grid-template-columns:1fr auto"><div><div class="an">Ana Pavel</div><div class="as">deja în Avansați</div></div><div class="ae"></div></div></div><div class="eyb">Înscrieri noi</div><div class="lst"><div class="ar" style="grid-template-columns:1fr auto"><div><div class="an">Ana Dobre</div><div class="as">8 ani · înscrisă 28 sep</div></div><div class="ae"><span class="arw" style="font-size:18px">+</span></div></div></div><span class="lnk">Nu e în listă: sportiv nou</span></div><div class="dlgf"><span class="btn o w">Anulează</span><span class="btn w">Adaugă 1 sportiv</span></div></div></div></div><div class="dcap">D4. Lecție individuală: fereastră peste Azi</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="on">Azi</span><span class="">Grupe</span><span class="">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="dbody md"><div><div class="dtitle"><b>Bună, Andrei</b></div><div class="eyb">Grupe</div><div class="lst"><div class="ar done"><div class="at">10:00</div><div><div class="an">Primii Pași</div><div class="as">grup · 12 copii</div></div><div class="ae"><span class=cmp>Completat</span><span class="arw">&rsaquo;</span></div></div><div class="ar sel"><div class="at">18:15</div><div><div class="an">Avansați</div><div class="as">grup · 9 copii</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div></div><div class="eyb">Lecții individuale</div><div class="lst"><div class="ar"><div class="at">16:00</div><div><div class="an">Maria Dumitrescu</div><div class="as">individuală · 50 min</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div><div class="ar done"><div class="at">17:00</div><div><div class="an">Ioana Marinescu</div><div class="as">individuală · 50 min</div></div><div class="ae"><span class=cmp>Completat</span><span class="arw">&rsaquo;</span></div></div></div><div class="btn o">+ Lecție individuală</div><div class="eyb">De făcut</div><div class="lst"><div class="ar"><div class="at">Mi 30</div><div><div class="an">Avansați</div><div class="as">grup · 30 sep</div></div><div class="ae"><span class="arw">&rsaquo;</span></div></div></div></div><div class="panel"><div class="dtitle"><b>Avansați</b><span class="dchip"><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg>MA 6 OCT<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span><span class="sp"></span><span class="hint">18:15 - 19:15</span></div><div class="row2"><div class="f"><span>Antrenor</span><div class="in">Andrei Popa (tu)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div style="flex:0 0 auto;padding-bottom:10px"><span class="lnk">+ Adaugă alți antrenori</span></div></div><table class="tbl"><tr><th>Sportiv</th><th>Vârstă</th><th class="c">Grup</th><th class="c">Uscat</th></tr><tr><td><b>Ioana Marinescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck on">&#x2713;</span></td></tr><tr><td><b>Maria Dumitrescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Elena Radu</b></td><td class="hint">11 ani</td><td class="c"><span class="ck"></span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Sofia Tudor</b></td><td class="hint">10 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck on">&#x2713;</span></td></tr><tr><td><b>Alexia Petrescu</b></td><td class="hint">12 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr><tr><td><b>Daria Constantin</b></td><td class="hint">11 ani</td><td class="c"><span class="ck on">&#x2713;</span></td><td class="c"><span class="ck"></span></td></tr></table><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span class="hint">5 prezenți la grup · 2 la uscat</span><span class="btn w">Salvează prezența</span></div></div></div><div class="ov"><div class="dlg"><div class="dlgh"><b>Lecție individuală</b><span class="arw">&#x2715;</span></div><div class="dlgb"><div class="f"><span>Sportiv</span><div class="in">Maria Dumitrescu<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div class="two"><div class="f"><span>Data</span><div class="in">06.10.2026</div></div><div class="f"><span>Ora</span><div class="in">16:00</div></div></div><div class="f"><span>Durată</span><div class="in">50 min<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><div class="f"><span>Antrenor</span><div class="in">Andrei Popa (tu)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div></div><span class="lnk">+ Adaugă alți antrenori</span></div><div class="dlgf"><span class="btn o w">Anulează</span><span class="btn w">Salvează lecția</span></div></div></div></div><div class="dcap">D5. Istoric: tabel</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="">Azi</span><span class="">Grupe</span><span class="on">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="dbody "><div><div class="dtitle"><b>Istoric</b><span class="sp"></span><span class="seg"><span class="on">Toate</span><span>Grupe</span><span>Individuale</span></span><span class="btn o w">&lsaquo; Octombrie 2026 &rsaquo;</span></div><div class="panel" style="padding:4px 8px"><table class="tbl"><tr><th>Data</th><th>Ce</th><th>Tip</th><th class="c">Prezenți</th><th>Antrenori</th><th></th></tr><tr><td><b>Mi 7 oct</b></td><td><b>Avansați</b></td><td class="hint">grup</td><td class="c">8</td><td class="hint">Andrei Popa</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Mi 7 oct</b></td><td><b>Maria Dumitrescu</b></td><td class="hint">individuală · 50 min</td><td class="c">1</td><td class="hint">Andrei Popa</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Ma 6 oct</b></td><td><b>Avansați</b></td><td class="hint">grup</td><td class="c">9</td><td class="hint">Andrei Popa, Bianca Ene</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Sâ 4 oct</b></td><td><b>Intermediari Silver</b></td><td class="hint">grup · înlocuitor</td><td class="c">10</td><td class="hint">Andrei Popa</td><td class="c"><span class="arw">&rsaquo;</span></td></tr><tr><td><b>Jo 1 oct</b></td><td><b>Uscat Juniori</b></td><td class="hint">grup</td><td class="c">6</td><td class="hint">Andrei Popa</td><td class="c"><span class="arw">&rsaquo;</span></td></tr></table></div></div></div></div><div class="dcap">D6. Setări cont (din meniul de lângă nume)</div><div class="dk"><div class="dbar"><span class="logo">EDUSPORT</span><div class="dnav"><span class="">Azi</span><span class="">Grupe</span><span class="">Istoric</span></div><div class="duser">Andrei Popa<span class="ava">AP</span></div></div><div class="menu2"><div>Setări cont</div><div>Adaugă pe ecranul principal</div><div>Ieși din cont</div></div><div class="dbody "><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px"><div class="panel"><div class="eyb">Date</div><div class="f"><span>Nume</span><div class="in">Andrei Popa</div></div><div class="f"><span>Email</span><div class="in">andrei@exemplu.ro</div></div><div class="f"><span>Telefon</span><div class="in">07xx xxx xxx</div></div><span class="btn w" style="align-self:flex-start">Salvează</span></div><div class="panel"><div class="eyb">Schimbă parola</div><div class="f"><span>Parola actuală</span><div class="in">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;<svg class="chev" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></div></div><div class="f"><span>Parola nouă</span><div class="in">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;<svg class="chev" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></div></div><span class="btn w" style="align-self:flex-start">Schimbă parola</span></div></div></div></div></div>

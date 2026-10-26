@@ -33,7 +33,8 @@ export interface ScheduleGroup {
 }
 
 export interface ProgramPageData {
-  seasonLabel: string;
+  /** Current Sezon label; null when none is current (no label shown). */
+  seasonLabel: string | null;
   /** "YYYY-MM" - first month of the season, inclusive */
   seasonStart?: string | null;
   /** "YYYY-MM" - last month of the season, inclusive */
@@ -47,10 +48,10 @@ export interface ProgramPageData {
 }
 
 /**
- * Static text defaults (banner, disclaimers, season label/bounds) used when
+ * Static text defaults (banner, disclaimers, season bounds) used when
  * the CMS fetch itself fails. The schedule series and season calendar have no
  * static default anymore: when `program` / the calendar-event occurrences are
  * empty, the page renders with an empty calendar and schedule (see
  * SeasonCalendarViewV2 and ScheduleSection's empty states).
  */
-export type ProgramPageDefaults = Omit<ProgramPageData, "scheduleGroups" | "calendarEvents">;
+export type ProgramPageDefaults = Omit<ProgramPageData, "scheduleGroups" | "calendarEvents" | "seasonLabel">;

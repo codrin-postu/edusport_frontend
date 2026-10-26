@@ -5,36 +5,11 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import BulletList from "@/components/ui/bullet-list";
 import SectionHeader from "@/components/ui/section-header";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/utils/cn";
-import IconButton from "@/components/ui/icon-button";
-import React, { useState } from "react";
+import React from "react";
 import type { PricingTier } from "../_types_pricing";
+import ItemTooltip from "./ItemTooltip";
 import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
-
-const ItemTooltip: React.FC<{ text: string }> = ({ text }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger asChild>
-        <IconButton
-          icon="info"
-          label="Detalii"
-          size="sm"
-          onClick={() => setOpen((v) => !v)}
-          className="-my-3 -mx-3 text-secondary"
-        />
-      </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-60">
-        {text}
-      </TooltipContent>
-    </Tooltip>
-  );
-};
 
 const CARD = "relative flex flex-col overflow-hidden min-h-[520px]";
 
@@ -60,19 +35,14 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
             i < tier.priceItems.length - 1 && "border-b border-line-subtle",
           )}
         >
-          <div className="flex flex-col gap-0.5">
-            <span className="text-body-sm text-secondary">
-              {item.label}
-              {item.tooltip && (
-                <span className="inline-flex items-center ml-1 translate-y-[2px]">
-                  <ItemTooltip text={item.tooltip} />
-                </span>
-              )}
-            </span>
-            {item.note && (
-              <span className="text-caption text-secondary">{item.note}</span>
+          <span className="text-body-sm text-secondary">
+            {item.label}
+            {item.tooltip && (
+              <span className="inline-flex items-center ml-1 translate-y-[2px]">
+                <ItemTooltip text={item.tooltip} />
+              </span>
             )}
-          </div>
+          </span>
           <span className="text-body-lg font-extrabold text-primary tabular-nums whitespace-nowrap shrink-0">
             {item.price}
           </span>
@@ -93,8 +63,8 @@ const PriceCard: React.FC<{ tier: PricingTier; headerClass: string }> = ({
 interface PricingSectionProps {
   pricingData: PricingTier[] | null;
   footerNotes?: string[] | null;
-  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
-  currentSeason: string;
+  /** Current Sezon label (GET /api/club/public); null when none is current. */
+  currentSeason: string | null;
   eyebrow: string;
   title: string;
   description: string;
@@ -117,7 +87,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   return (
     <Section id="preturi" className="section bg-surface">
       <div className="flex flex-col gap-12">
-        <SectionHeader eyebrow={currentSeason} title="Prețuri cursuri grup" />
+        <SectionHeader eyebrow={currentSeason ?? undefined} title="Prețuri cursuri grup" />
 
         <div className="grid lg:grid-cols-3 gap-6 items-stretch">
           {/* Promo card — plain navy. Card always draws a border-retro edge;

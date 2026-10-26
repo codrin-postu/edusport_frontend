@@ -4,6 +4,8 @@ const PORT = 3100;
 
 export default defineConfig({
   testDir: "tests",
+  // Flow tests run against a mock Strapi with their own config (playwright.e2e.config.ts).
+  testIgnore: ["e2e/**"],
   snapshotPathTemplate: "tests/visual/__snapshots__/{projectName}/{arg}{ext}",
   fullyParallel: false,
   workers: 2,

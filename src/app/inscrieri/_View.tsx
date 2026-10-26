@@ -5,17 +5,44 @@ import React from "react";
 import Card from "@/components/ui/card";
 import RegistrationForm from "./_RegistrationForm";
 import type { FormConfig } from "@/lib/strapi-forms";
+import { registrationsOpen, type PublicClubInfo } from "@/lib/club-public";
+import type { ScheduleWeekend } from "./_schedule";
 
 interface InscrieriViewProps {
   formConfig?: FormConfig | null;
-  /** Canonical season label (site-settings, falls back to CURRENT_SEASON). */
-  currentSeason: string;
+  /** GET /api/club/public; null when the backend could not be read. */
+  club: PublicClubInfo | null;
+  /** "Înscrieri deschise" (Setări site). */
+  registrationOpen: boolean;
+  weekends: ScheduleWeekend[];
+  /** Setări site, contact: the WhatsApp channel shown after submit. */
+  whatsappUrl?: string;
 }
+
+const Message: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="py-16 px-8 text-center">
+    <p className="text-body-sm text-secondary">{children}</p>
+  </div>
+);
 
 const InscrieriView: React.FC<InscrieriViewProps> = ({
   formConfig = null,
-  currentSeason,
+  club,
+  registrationOpen,
+  weekends,
+  whatsappUrl,
 }) => {
+  const body = !club ? (
+    <Message>
+      Formularul de înscriere nu este disponibil momentan. Te rugăm să încerci din nou mai
+      târziu sau să ne contactezi direct.
+    </Message>
+  ) : !registrationsOpen(registrationOpen, club) ? (
+    <Message>Înscrierile sunt închise.</Message>
+  ) : (
+    <RegistrationForm config={formConfig} club={club} weekends={weekends} whatsappUrl={whatsappUrl} />
+  );
+
   return (
     <div className="min-h-screen bg-surface">
       <PageHeroSection title={["ÎNSCRIERI"]} backgroundImage="/images/courses.png">
@@ -32,9 +59,11 @@ const InscrieriView: React.FC<InscrieriViewProps> = ({
         <div className="max-w-content mx-auto gutter section">
           <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">
-              <p className="text-label uppercase text-accent">
-                {currentSeason}
-              </p>
+              {club?.season && (
+                <p className="text-label uppercase text-accent">
+                  {club.season.label}
+                </p>
+              )}
               <h2 className="text-heading text-primary">
                 Înscrie-ți copilul
               </h2>
@@ -45,7 +74,7 @@ const InscrieriView: React.FC<InscrieriViewProps> = ({
             </div>
 
             <Card as="div" padding="md" className="mt-12 min-h-[480px] md:p-8">
-              <RegistrationForm config={formConfig} />
+              {body}
             </Card>
           </div>
         </div>

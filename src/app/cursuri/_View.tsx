@@ -12,7 +12,8 @@ const PricingSection = dynamic(() => import("./blocks/PricingSection"), { ssr: t
 interface CoursesPageProps {
   pricingData: PricingTier[] | null;
   footerNotes: string[] | null;
-  currentSeason: string;
+  /** Current Sezon label; null when no Sezon is current (no label shown). */
+  currentSeason: string | null;
   isRegistrationOpen: boolean;
   cursuriPageData: CoursePageContent;
   /** Rink address (site-settings contact data), shared by the banner and about bullet. */

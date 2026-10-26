@@ -1,0 +1,34 @@
+import sys,os
+OUTSH2=sys.argv[1]; HERE=os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.argv=[os.path.join(HERE,'gen_sheet.py'), HERE+'/throw/sh2.html']
+exec(open(sys.argv[0]).read())
+rc='''<style>.A .rich{position:absolute;z-index:6;background:#fff;border:1px solid var(--ln);border-radius:8px;box-shadow:0 18px 40px rgba(14,26,60,.16),0 2px 6px rgba(14,26,60,.06)}
+.A .rich:before{content:"";position:absolute;top:-7px;left:34px;width:12px;height:12px;background:#fff;border-left:1px solid var(--ln);border-top:1px solid var(--ln);transform:rotate(45deg)}
+.A .rich .rh{display:flex;align-items:center;gap:10px;padding:14px 16px 10px}.A .rich .rh b{font-size:15px;flex:1}.A .rich .live{font-size:12px;color:var(--p);font-weight:700;background:#ecf0f7;padding:3px 8px;border-radius:3px}
+.A .rich .cols{display:grid;grid-template-columns:1.1fr 1.25fr 1fr;gap:0;border-top:1px solid var(--ln)}.A .rich .col{padding:12px 16px;border-right:1px solid var(--ln)}.A .rich .col:last-child{border-right:0}
+.A .rich .ct{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;display:flex;justify-content:space-between}
+.A .rich .opt2{white-space:nowrap;display:flex;align-items:center;gap:8px;padding:6px 6px;border-radius:4px;cursor:pointer}.A .rich .opt2:hover{background:#f3f5fa}.A .rich .opt2 .n{margin-left:auto;font-size:11.5px;color:var(--mu);font-weight:600}.A .rich .opt2.on{background:#f3f5fa}
+.A .rich .mini-s{display:flex;align-items:center;gap:6px;height:30px;border:1px solid var(--ln2);border-radius:4px;padding:0 8px;color:var(--mu);font-size:12px;margin-bottom:6px}.A .rich .mini-s .ic{width:13px;height:13px}
+.A .rich .pills{display:flex;gap:6px;flex-wrap:wrap}.A .rich .pq{height:30px;padding:0 10px;border:1px solid var(--ln2);border-radius:4px;display:inline-flex;align-items:center;font-size:12.5px;font-weight:600}.A .rich .pq.on{border-color:var(--p);background:#ecf0f7;color:var(--p)}
+.A .rich .rf{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--ln);background:#fafbfd;border-radius:0 0 8px 8px}
+.A .rich .bar3{height:5px;background:#eef0f4;border-radius:3px;margin-top:3px;overflow:hidden}.A .rich .bar3 i{display:block;height:100%;background:var(--p);opacity:.35}
+.A .rich2 .two{display:grid;grid-template-columns:170px 1fr;border-top:1px solid var(--ln);min-height:230px}.A .rich2 .nav{border-right:1px solid var(--ln);padding:8px;background:#fafbfd;border-radius:0 0 0 8px}.A .rich2 .nav div{display:flex;justify-content:space-between;padding:8px 10px;border-radius:4px;font-weight:600;color:var(--t2)}.A .rich2 .nav div.on{background:#fff;color:var(--p);box-shadow:inset 3px 0 0 var(--p)}.A .rich2 .nav small{color:var(--p);font-weight:700}</style>'''
+def o2(lbl,n,on=False,w=60):return f'<div class="opt2{" on" if on else ""}"><label class="ccb"><input type="checkbox" {"checked" if on else ""}></label><span>{lbl}</span><span class="n">{n}</span></div>'
+richA=('<div class="rich" style="top:168px;left:478px;width:640px"><div class="rh"><b>Filtre</b><span class="live">218 documente</span><span class="lnk">Șterge tot</span></div><div class="cols">'
+ '<div class="col"><div class="ct">Tip document</div><div class="mini-s">'+ic('search')+'Caută tip...</div>'+o2('Acord',218,True)+o2('Cerere de adeziune',61)+o2('Adeverință medicală',27)+o2('Acord competiție',6)+'</div>'
+ '<div class="col"><div class="ct">Sursă</div>'+o2('Generat',279)+o2('Încărcat',33)+'<div class="ct" style="margin-top:14px">Grupa sportivului</div>'+o2('Primii Pași',64)+o2('Intermediari Bronze',52)+'<span class="lnk" style="font-size:12px;margin-left:6px">+4 grupe</span></div>'
+ '<div class="col"><div class="ct">Actualizat</div><div class="pills"><span class="pq">Azi</span><span class="pq on">Ultimele 7 zile</span><span class="pq">Luna asta</span><span class="pq">Alege...</span></div><div class="ct" style="margin-top:14px">Semnat pe hârtie</div><div class="pills"><span class="pq">Toate</span><span class="pq">Da</span><span class="pq">Nu</span></div></div>'
+ '</div><div class="rf"><span class="hint">Se aplică pe loc; lista se actualizează în spate.</span><span style="flex:1"></span><span class="btn sm pr">Gata</span></div></div>')
+richB=('<div class="rich rich2" style="top:168px;left:478px;width:560px"><div class="rh"><b>Filtre</b><span class="live">218 documente</span><span class="lnk">Șterge tot</span></div><div class="two">'
+ '<div class="nav"><div class="on">Tip document <small>1</small></div><div>Sursă</div><div>Grupa</div><div>Actualizat <small>1</small></div><div>Semnat</div></div>'
+ '<div style="padding:12px 16px"><div class="mini-s">'+ic('search')+'Caută tip...</div>'+o2('Acord',218,True)+o2('Cerere de adeziune',61)+o2('Adeverință medicală',27)+o2('Acord competiție',6)+'</div></div>'
+ '<div class="rf"><span class="hint">Se aplică pe loc.</span><span style="flex:1"></span><span class="btn sm pr">Gata</span></div></div>')
+deskA2=screen('documente',desk('').replace('<span class="fbtn act">Tip document <b>1</b>','<span class="fbtn act" style="box-shadow:0 0 0 3px #dfe6f3">Filtre <b>2</b>')+richA)
+deskB2=screen('documente',desk('').replace('<span class="fbtn act">Tip document <b>1</b>','<span class="fbtn act" style="box-shadow:0 0 0 3px #dfe6f3">Filtre <b>2</b>')+richB)
+html=(css+ecss+tcss+ccss+mcss+'<style>'+PCSS+'</style>'+xc+qc+x3+oc+dcss+xc2+mc+mc2+mc3+mc4+bc+sc2+rc+'<div class="A"><h2>Același conținut: panou jos pe telefon, dropdown bogat pe calculator</h2><p class="note">Pe calculator nu e fereastră și nu are fundal gri: se deschide sub buton, ca un dropdown mare, iar lista rămâne vizibilă și se actualizează pe loc. Pe telefon e panoul de jos. Date inventate.</p>'
+ '<div class="wcol"><div><p class="cap2">Telefon: panoul de jos</p>'+PH+'</div></div>'
+ '<div class="sec">Calculator: dropdown bogat sub "Filtre"</div><div class="options wcol" style="flex-direction:column!important">'
+ +O('A','columns','Toate secțiunile pe coloane (recomandat)',deskA2,'Vezi tot dintr-o privire: căutare în tipuri, numărul pentru fiecare opțiune, perioade rapide, numărul de rezultate live sus.')
+ +O('B','nav','Secțiuni în stânga, opțiunile în dreapta',deskB2,'Mai compact, bun când sunt multe secțiuni; un click în plus.')+'</div>'
+ '<div class="sec">Componenta, actualizat</div><ul class="note" style="padding-left:18px"><li>Un singur component pentru conținut: pe telefon <b>panou de jos</b> (mâner, colțuri rotunjite, butoane fixe jos); pe calculator <b>panou ancorat sub buton</b>, fără fundal gri, cu săgeată spre buton, umbră moale, colțuri 8px.</li><li>Filtrele se aplică pe loc; numărul de rezultate se vede sus ("218 documente"). "Gata" doar închide.</li><li>Se închide cu click în afară, Escape sau "Gata"; focusul revine pe buton.</li><li>Fereastra din mijloc (Modal) rămâne doar pentru confirmări și formulare care cer atenție.</li></ul></div>')
+open(OUTSH2,'w').write(html)

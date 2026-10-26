@@ -14,13 +14,11 @@ import { ENROL_CTA } from "@/lib/cta";
 
 interface RegistrationSectionV2Props {
   cms?: HomepageRegistration | null;
-  /** Canonical season from site-settings.registration.currentSeason. */
+  /** Current Sezon label from GET /api/club/public. */
   season?: string;
 }
 
 const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, season }) => {
-  // Same source as the closed variant, so the two branches cannot disagree.
-  const seasonLabel = season ? `Sezonul ${season}` : "Sezonul curent";
   const heading = cms?.heading ?? "Sezonul a început!";
   const body = cms?.body ?? "Visezi să aluneci grațios pe gheață? La Școala de Patinaj EduSport te așteptăm într-un mediu prietenos și plin de energie, indiferent dacă ești la primii pași sau vrei să îți perfecționezi tehnica.";
   const bodySecondary = cms?.bodySecondary ?? "Cursurile sunt deschise pentru toate nivelurile - începători, intermediari și avansați - cu antrenori foști sportivi de performanță. Ne vedem sâmbăta și duminica, 4 octombrie 2025, la patinoarul Cotroceni On Ice din AFI Cotroceni.";
@@ -39,9 +37,11 @@ const RegistrationSectionV2: React.FC<RegistrationSectionV2Props> = ({ cms, seas
     <RegistrationScrollFrameV2>
       <div className="w-full max-w-content mx-auto gutter">
         <div className="relative z-raised flex flex-col gap-8 max-w-2xl md:max-w-[52%]">
-          <p className="text-label uppercase text-accent">
-            {seasonLabel}
-          </p>
+          {season && (
+            <p className="text-label uppercase text-accent">
+              Sezonul {season}
+            </p>
+          )}
 
           <div className="flex flex-col gap-4">
             <h2 className="text-display text-primary">

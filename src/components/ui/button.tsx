@@ -30,6 +30,8 @@ interface ButtonProps {
   disabled?: boolean;
   /** Umami event name, set as `data-umami-event` so clicks are tracked. */
   umamiEvent?: string;
+  /** Primary only: extra classes for the inner face span (height/padding overrides a caller cannot reach via `className`, which targets the outer wrapper). */
+  faceClassName?: string;
 }
 
 const FACE: Record<ButtonFace, string> = {
@@ -72,6 +74,7 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   disabled,
   umamiEvent,
+  faceClassName,
 }) => {
   let classes: string;
   let content: React.ReactNode;
@@ -103,6 +106,7 @@ const Button: React.FC<ButtonProps> = ({
             "lcta-face h-12 px-6 inline-flex items-center justify-center gap-2 text-button",
             FACE[face],
             FACE_DISABLED[face],
+            faceClassName,
           )}
         >
           {children}

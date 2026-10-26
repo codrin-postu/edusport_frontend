@@ -6,12 +6,11 @@ import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
 export interface SiteSettingsData {
   contact: SiteContactInfo;
   registrationOpen?: boolean;
-  currentSeason?: string;
 }
 
 /**
  * The CMS `site-settings` single type: contact info (phone, address, socials)
- * plus the registration open/season flags. This is the one place that fetches
+ * plus the "Înscrieri deschise" flag. This is the one place that fetches
  * it, so the layout, the footer/header contact strip and any page that needs
  * the same address or map link all read from a single source instead of each
  * repeating the fetch and its own empty/error fallback.
@@ -26,12 +25,11 @@ export const getSiteSettings = cache(async(): Promise<SiteSettingsData> => {
     // Both fields are JSON custom-fields, returned by default — no populate.
     const settings = await fetchStrapi<{
       contact?: SiteContactInfo;
-      registration?: { open?: boolean; currentSeason?: string };
+      registration?: { open?: boolean };
     }>("site-settings");
     return {
       contact: settings?.contact ?? {},
       registrationOpen: settings?.registration?.open,
-      currentSeason: settings?.registration?.currentSeason,
     };
   } catch {
     // Fall through with empty contact info - callers fall back to their own

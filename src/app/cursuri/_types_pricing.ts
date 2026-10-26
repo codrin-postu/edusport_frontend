@@ -2,7 +2,6 @@ export interface PriceItem {
   label: string;
   price: string;
   tooltip?: string;
-  note?: string;
 }
 
 export interface PricingTier {
