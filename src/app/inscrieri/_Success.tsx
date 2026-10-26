@@ -45,7 +45,7 @@ const SuccessScreen: React.FC<{
         <div className="w-16 h-16 bg-surface-dark flex items-center justify-center">
           <Icon name="circle-check" size="md" className="text-mustard" />
         </div>
-        <h3 ref={headingRef} tabIndex={-1} className="text-title text-primary">
+        <h3 ref={headingRef} tabIndex={-1} className="text-title text-primary outline-none">
           Înscriere trimisă!
         </h3>
         <p className="text-body-sm text-secondary max-w-sm">

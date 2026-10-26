@@ -96,7 +96,7 @@ const InscriereStep: React.FC<InscriereStepProps> = ({
 
   return (
     <div>
-      <div ref={headingRef} tabIndex={-1}>
+      <div ref={headingRef} tabIndex={-1} className="outline-none">
         <StepIndicator current={index} labels={stepLabels} variant="card" />
       </div>
 
