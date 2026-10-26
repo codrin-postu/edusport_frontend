@@ -80,8 +80,34 @@ const ANSWERS = {
   level: "câmp vechi din draft",
 };
 
+const KEY = "0b6f3c1e-2a4d-4c8e-9f10-123456789abc";
+
+it("newSubmissionKey makes a fresh UUID v4 each time, with or without randomUUID", () => {
+  const first = rules.newSubmissionKey();
+  assert.equal(first.length, 36);
+  assert.ok(rules.isSubmissionKey(first));
+  assert.notEqual(rules.newSubmissionKey(), first);
+  Object.defineProperty(crypto, "randomUUID", { value: undefined, configurable: true });
+  try {
+    const fallback = rules.newSubmissionKey();
+    assert.ok(rules.isSubmissionKey(fallback));
+    assert.notEqual(rules.newSubmissionKey(), fallback);
+  } finally {
+    delete crypto.randomUUID;
+  }
+  assert.ok(rules.isSubmissionKey(rules.newSubmissionKey()));
+});
+
+it("isSubmissionKey keeps only a UUID v4 from a saved draft", () => {
+  assert.ok(rules.isSubmissionKey(KEY));
+  assert.equal(rules.isSubmissionKey(undefined), false);
+  assert.equal(rules.isSubmissionKey(""), false);
+  assert.equal(rules.isSubmissionKey("0b6f3c1e-2a4d-1c8e-9f10-123456789abc"), false);
+  assert.equal(rules.isSubmissionKey(`${KEY} `), false);
+});
+
 it("buildPayload sends the script form answers and only the abonament name", () => {
-  assert.deepEqual(rules.buildPayload(ANSWERS, ""), {
+  assert.deepEqual(rules.buildPayload(ANSWERS, "", KEY), {
     email: "ana.pop@example.com",
     parentName: "Ana Pop",
     relationship: "parinte",
@@ -100,11 +126,12 @@ it("buildPayload sends the script form answers and only the abonament name", () 
     gdprConsent: true,
     regulationsConsent: true,
     website: "",
+    submissionKey: KEY,
   });
 });
 
 it("buildPayload keeps the honeypot and unticked consents as they are", () => {
-  const out = rules.buildPayload({ gdprConsent: "true" }, "spam");
+  const out = rules.buildPayload({ gdprConsent: "true" }, "spam", KEY);
   assert.equal(out.website, "spam");
   assert.equal(out.gdprConsent, false);
   assert.equal(out.regulationsConsent, false);

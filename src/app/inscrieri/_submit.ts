@@ -13,12 +13,13 @@ export async function submitRegistration(
   answers: Record<string, CustomAnswer>,
   website: string,
   schoolSlug: string,
+  submissionKey: string,
 ): Promise<SubmitSuccess | SubmitFailure> {
   try {
     const res = await fetch(`${PUBLIC_STRAPI_URL}/api/forms/inscriere?scoala=${encodeURIComponent(schoolSlug)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(buildPayload(answers, website)),
+      body: JSON.stringify(buildPayload(answers, website, submissionKey)),
     });
     const data = (await res.json().catch(() => null)) as unknown;
     return parseSubmitResponse(data, res.ok);

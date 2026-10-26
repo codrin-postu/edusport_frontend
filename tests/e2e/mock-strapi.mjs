@@ -29,6 +29,12 @@ export const CLUB = {
         { name: "Avansați Gold", items: [item("Abonament Avansați Gold 8 ședințe", "subscription", 8, 1080, null)] },
       ],
     },
+    {
+      name: "Școala de Patinaj - Patinoar 2",
+      slug: "patinoar-2",
+      priceNotes: [],
+      priceLists: [{ name: "Standard", items: [item("Abonament 8 ședințe grup", "subscription", 8, 700, 820)] }],
+    },
   ],
 };
 

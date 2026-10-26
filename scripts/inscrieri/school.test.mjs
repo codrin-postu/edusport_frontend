@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 // CI runs Node 20, which cannot import .ts files: skip there instead of failing.
 const canStripTypes = Boolean(process.features?.typescript);
-const { resolveSchool, showsPinnedSchool } = canStripTypes ? await import("../../src/app/inscrieri/_school.ts") : {};
+const { resolveSchool, showsPinnedSchool, wantedSlug } = canStripTypes ? await import("../../src/app/inscrieri/_school.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const afi = { name: "Școala de Patinaj - AFI Cotroceni", slug: "afi-cotroceni" };
@@ -27,6 +27,15 @@ it("2+ schools and no ?scoala: Alege școala, pinned afterwards", () => {
 it("an unknown ?scoala is never mapped to another school", () => {
   assert.deepEqual(resolveSchool([afi], "club"), { state: "choose", schools: [afi], unknownSlug: true });
   assert.deepEqual(resolveSchool([afi, two], "nu-exista"), { state: "choose", schools: [afi, two], unknownSlug: true });
+});
+
+it("the parent's pick wins over ?scoala; Schimbă shows the list even with ?scoala", () => {
+  assert.equal(wantedSlug(null, "afi-cotroceni", false), "afi-cotroceni");
+  assert.equal(wantedSlug("patinoar-2", "afi-cotroceni", false), "patinoar-2");
+  assert.equal(wantedSlug(null, undefined, false), null);
+  assert.equal(wantedSlug(null, "afi-cotroceni", true), null);
+  assert.equal(wantedSlug("patinoar-2", "afi-cotroceni", true), null);
+  assert.deepEqual(resolveSchool([afi, two], wantedSlug(null, "afi-cotroceni", true)), { state: "choose", schools: [afi, two], unknownSlug: false });
 });
 
 it("no school: nothing to register for", () => {

@@ -24,7 +24,7 @@ import { PinnedSchool, SchoolPicker } from "./_SchoolPicker";
 import { PriceBoxView, ScheduleBox, UpsellBox } from "./_Abonament";
 import { clearDraft, clearLegacyDraft, loadDraft, saveDraft } from "./_draft";
 import { PUBLIC_STRAPI_URL, submitRegistration } from "./_submit";
-import { resolveSchool, showsPinnedSchool } from "./_school";
+import { resolveSchool, showsPinnedSchool, wantedSlug } from "./_school";
 import type { ScheduleWeekend } from "./_schedule";
 import {
   CONSENT_KEYS,
@@ -38,6 +38,8 @@ import {
   applyAnswer,
   childHeightError,
   expectedDocuments,
+  isSubmissionKey,
+  newSubmissionKey,
   prepareStep,
   type SubmitSuccess,
 } from "./_rules";
@@ -108,6 +110,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
 
   const slugParam = useSchoolParam();
   const [chosenSlug, setChosenSlug] = useState<string | null>(null);
+  const [picking, setPicking] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, CustomAnswer>>({});
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
@@ -123,8 +126,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // Nothing is written until the draft has been read, otherwise the empty
   // initial state would overwrite the saved answers on first render.
   const readyRef = useRef(false);
+  // Set by the parent's own moves between steps. Only those scroll the form
+  // into view: the first render and a draft restored on load would otherwise
+  // yank a returning user down the page before they have read anything.
+  const navigatedRef = useRef(false);
+  const stepHeadingRef = useRef<HTMLDivElement>(null);
+  // A reload or a retry of the same answers sends the same key; any changed
+  // answer gets a new one, since the backend matches a repeat by the key alone.
+  const submissionKeyRef = useRef("");
 
-  const resolution = resolveSchool(club.schools, chosenSlug ?? slugParam ?? null);
+  const resolution = resolveSchool(club.schools, wantedSlug(chosenSlug, slugParam, picking));
   const school = resolution.state === "chosen" ? resolution.school : null;
   const offeredFor = (membership: string) =>
     school ? subscriptionOptions(school, audienceFor(membership)).map((o) => o.value) : [];
@@ -144,6 +155,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   useEffect(() => {
     clearLegacyDraft();
     const draft = loadDraft();
+    const savedKey = draft?.submissionKey;
+    submissionKeyRef.current = isSubmissionKey(savedKey) ? savedKey : newSubmissionKey();
     if (draft) {
       setAnswers(draft.answers);
       setStep(draft.step);
@@ -154,39 +167,48 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     readyRef.current = true;
   }, []);
 
+  // chosenSlug is a dependency only to flush the submissionKey that `choose`
+  // below regenerates on a school change, the same way any answer change does.
   useEffect(() => {
     if (!readyRef.current) return;
-    saveDraft(step, answers);
-  }, [step, answers]);
+    saveDraft(step, answers, submissionKeyRef.current);
+  }, [step, answers, chosenSlug]);
 
   useEffect(() => {
-    // Skip the scroll on the very first render, which would otherwise yank a
-    // returning user down the page before they have read anything.
-    if (!readyRef.current) return;
+    if (!navigatedRef.current) return;
+    navigatedRef.current = false;
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    stepHeadingRef.current?.focus({ preventScroll: true });
   }, [step]);
+
+  const goToStep = (next: number) => {
+    navigatedRef.current = true;
+    setStep(next);
+  };
 
   const handleAnswerChange = (key: string, value: CustomAnswer) => {
     markStarted();
+    submissionKeyRef.current = newSubmissionKey();
     setAnswers((prev) => applyAnswer(prev, key, value, offeredFor));
   };
 
   const restart = () => {
     clearDraft();
+    submissionKeyRef.current = newSubmissionKey();
     setRestored(false);
     setAnswers({});
     setWebsite("");
     setSubmitError(null);
     setResult(null);
     setStatus("idle");
-    setStep(0);
+    goToStep(0);
   };
 
   const handleSubmit = async() => {
     if (!school) return;
     setStatus("sending");
     setSubmitError(null);
-    const res = await submitRegistration(answers, website, school.slug);
+    const res = await submitRegistration(answers, website, school.slug, submissionKeyRef.current);
     if (!res.ok) {
       setSubmitError(res.error);
       setStatus("error");
@@ -196,6 +218,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     // The answers are with us now; leaving them on the device would show a
     // stranger's registration to the next person on a shared phone.
     clearDraft();
+    submissionKeyRef.current = newSubmissionKey();
     setResult({ ...res, expectedCount: expectedDocuments(answers.membershipAnswer).length });
     setStatus("sent");
   };
@@ -217,7 +240,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // Wait for `?scoala=` before choosing for the parent; with one school there is nothing to wait for.
   if (slugParam === undefined && club.schools.length > 1) return null;
   if (resolution.state === "choose") {
-    return <SchoolPicker schools={resolution.schools} unknownSlug={resolution.unknownSlug} onChoose={setChosenSlug} />;
+    const choose = (slug: string) => {
+      submissionKeyRef.current = newSubmissionKey();
+      setChosenSlug(slug);
+      setPicking(false);
+    };
+    return <SchoolPicker schools={resolution.schools} unknownSlug={resolution.unknownSlug} onChoose={choose} />;
   }
   if (!school || !steps.length) {
     return (
@@ -256,7 +284,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
       <LeaveNotice scope={formRef} />
 
       {showsPinnedSchool(club.schools.length) && (
-        <PinnedSchool name={school.name} onChange={() => setChosenSlug(null)} />
+        <PinnedSchool name={school.name} onChange={() => setPicking(true)} />
       )}
 
       {restored && (
@@ -300,15 +328,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
       >
         <InscriereStep
           step={current}
+          headingRef={stepHeadingRef}
           stepLabels={steps.map((s) => s.title || "")}
           index={index}
           answers={answers}
           onAnswerChange={handleAnswerChange}
           onNext={() => {
             track("inscriere.step_next", { step: index + 1 });
-            setStep(Math.min(index + 1, steps.length - 1));
+            goToStep(Math.min(index + 1, steps.length - 1));
           }}
-          onBack={() => setStep(Math.max(index - 1, 0))}
+          onBack={() => goToStep(Math.max(index - 1, 0))}
           placeholders={{
             ...PLACEHOLDERS,
             subscriptionChoice: audience ? SUBSCRIPTION_PLACEHOLDER.ready : SUBSCRIPTION_PLACEHOLDER.waiting,
@@ -321,14 +350,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
             isLast ? (
               <div className="mt-8 pt-6 border-t-retro border-line-subtle">
                 {status === "error" && (
-                  <p className="text-caption text-accent mb-4">
+                  <p role="alert" className="text-caption text-accent mb-4">
                     {submitError ?? "Înscrierea nu a putut fi trimisă. Te rugăm să încerci din nou."}
                   </p>
                 )}
                 <div className="flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => setStep(Math.max(index - 1, 0))}
+                    onClick={() => goToStep(Math.max(index - 1, 0))}
                     className="text-body-sm text-secondary hover:text-accent transition-colors"
                   >
                     Înapoi
