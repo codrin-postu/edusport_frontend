@@ -68,21 +68,20 @@ export default async function Page({ params, searchParams }: Props) {
     notFound();
   }
 
+  // Critical guard: even if the slug resolves, refuse to render when the
+  // editor has unticked the public toggle. This is what makes showPublicPage
+  // an access-control flag, not just a listing filter. Runs before the
+  // merged-slug redirect below so the website never 308s to a hidden
+  // profile, even if the backend ever answered one for an old slug.
+  if (!sp || !sp.showPublicPage) notFound();
+
   // The requested slug may be an old address a 3B merge retired; the
   // surviving profile remembers it in previousSlugs and is returned with
   // its own (different) slug. Redirect to the current address — permanent,
-  // since the merge is permanent too. Placed before the showPublicPage
-  // guard so a merge into a profile that is itself private still 404s
-  // rather than redirecting into a private page — the existing guard runs
-  // next and handles that.
-  if (sp && sp.slug !== slug) {
+  // since the merge is permanent too.
+  if (sp.slug !== slug) {
     permanentRedirect(`/despre-noi/sportivi/${sp.slug}`);
   }
-
-  // Critical guard: even if the slug resolves, refuse to render when the
-  // editor has unticked the public toggle. This is what makes showPublicPage
-  // an access-control flag, not just a listing filter.
-  if (!sp || !sp.showPublicPage) notFound();
 
   // Competitions come from skate-results when the athlete is linked, and from
   // the Strapi collection otherwise. Same helper as the listing and homepage,
