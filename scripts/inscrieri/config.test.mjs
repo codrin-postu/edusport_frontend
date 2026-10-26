@@ -52,6 +52,13 @@ it("drops the questions only the old website form had", () => {
   for (const key of ["level", "howHeard", "clubInterest", "privacyConsent", "regulationsAgreement"]) assert.equal(q()[key], undefined, key);
 });
 
+it("keeps childBirthDate a plain text answer key; the zi/lună/an UI is a replace slot keyed on childBirthDate, not a config type", () => {
+  assert.equal(q().childBirthDate.type, "text");
+  assert.equal(q().childBirthDate.required, true);
+  assert.equal(q().childBirthDate.label, "Data nașterii copilului");
+  assert.equal(t.PLACEHOLDERS.childBirthDate, undefined, "the free-text placeholder stays removed");
+});
+
 it("uses comma-below ș and ț, never the cedilla", () => {
   assert.doesNotMatch(JSON.stringify([t.FALLBACK_CONFIG, t.PLACEHOLDERS, t.SUBSCRIPTION_PLACEHOLDER]), /[şţŞŢ]/);
 });
