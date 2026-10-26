@@ -36,21 +36,22 @@ const BirthDateFields: React.FC<BirthDateFieldsProps> = ({
   onBlur,
 }) => {
   // A day or month picked alone composes to "" (composeBirthDate needs all
-  // three), so the parent echoes the same "" answer back and a `parts`
-  // derived fresh from `value` on every render would forget that pick on the
-  // very next render. Local state carries the three picks across that gap;
-  // it resyncs from the external answer only when that answer actually
-  // changes (a draft restored after mount, or a restart clearing it), not on
-  // every render echoing back the same value. "undefined" (no answer yet) and
-  // "" (an incomplete composed answer) both mean "nothing typed", so they are
-  // normalized to the same string before comparing — otherwise the very
-  // first pick's undefined -> "" echo reads as a real external change and
-  // wipes the pick that just happened.
+  // three), so the parent echoes that same "" (or any other in-progress
+  // composed value) answer straight back. Local state carries the three
+  // picks across that round trip; it resyncs from the external answer only
+  // when that answer is NOT the one we just told the parent to expect (a
+  // draft restored after mount, or a restart clearing it) — never on the
+  // render that simply echoes our own last `onChange` back, however
+  // incomplete that composed value is. Comparing against the raw previous
+  // `value` instead (as opposed to what we expect our own echo to be) would
+  // misfire whenever the starting value is a non-empty old-format draft: the
+  // first pick's "" echo would then read as a real external change and wipe
+  // the pick that just happened.
   const normalized = typeof value === "string" ? value : "";
   const [parts, setParts] = React.useState<BirthDateParts>(() => parseBirthDate(normalized));
-  const lastValue = React.useRef(normalized);
-  if (lastValue.current !== normalized) {
-    lastValue.current = normalized;
+  const expected = React.useRef(normalized);
+  if (expected.current !== normalized) {
+    expected.current = normalized;
     setParts(parseBirthDate(normalized));
   }
   const years = birthYearOptions();
@@ -59,6 +60,7 @@ const BirthDateFields: React.FC<BirthDateFieldsProps> = ({
     const merged = { ...parts, [key]: next };
     setParts(merged);
     const composed = composeBirthDate(merged);
+    expected.current = composed;
     onChange(composed);
     // The three selects never get a native blur worth listening to (Radix
     // closes the menu and returns focus to the trigger); report once the
