@@ -243,3 +243,18 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Visitors at another group's session (make-up), prices per group, one payment covering all groups.
 - Payment processor (Netopia, Stripe, other), receipt vs invoice, unused Școala sessions after 30 days.
 - Are portal children the same records as the website "Sportivi"? Proposal (screen portal-add-child): a new PRIVATE "club member" list (not in the public API), optional link to the public Sportivi profile; a confirmed Înscriere becomes a member automatically. "Adaugă sportiv" always searches first (club members + new registrations), "Sportiv nou" only if not found.
+
+## 2026-10-24 phase2-pdf-check
+- PDFs (Acord, Cerere de adeziune) and the registration e-mail (desktop, phone) approved as rendered: "Looks right".
+- phase2-q7 (2026-10-24): r1 limit = server limit with today's generic error (C, last click; B clicked first); d2 = recognise repeat within 10 min (A); p4 = yellow warning "Salvat. Documentul PDF nu a putut fi refăcut." (A); q5 = hide "Adaugă întrebare" on Înscriere (A); e3 pending, needs real panel visuals.
+- phase2-q8b e-mail status wording (2026-10-24), same words in the admin panel and the Sheet E-mail column:
+  - no e-mail: "Niciun e-mail trimis" (Sheet too)
+  - waiting, also while retrying: "Urmează să fie trimis"
+  - sent: "Trimis 24.10.2026, 11:31" (same format both places)
+  - gave up after 5 tries: "Netrimis"; panel line "Apasă Retrimite sau verifică adresa."; technical error only in logs
+  - status not loaded (panel): "Starea nu s-a încărcat." with "Reîncarcă" instead of "Retrimite e-mailul" until it loads (settles e3)
+  - after Retrimite: "E-mail trimis." / "Nu s-a putut trimite." / "Urmează să fie trimis."
+- phase2 success screen, phone (2026-10-24): every button full width on phone; WhatsApp button without icon; smaller card padding on phone so buttons are wider. Text size (12px one line vs normal with wrap) pending.
+- phase2 success screen, phone: text size A, 12px one line (2026-10-24); buttons keep h-12 so black and secondary match.
+- phase2 success screen, phone (update 2026-10-24): button font size stays the same as all buttons; a long label may wrap to a second line (replaces the 12px choice).
+- phase2-q11 (2026-10-26): success screen as built "Looks right"; no focus outline on the step header and the success heading (keyboard), buttons/fields keep theirs.
