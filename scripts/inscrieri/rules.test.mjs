@@ -58,6 +58,40 @@ it("childHeightError follows the backend rule", () => {
   for (const bad of ["49", "231", "13a", "1.32", "1320", "1,32 m"]) assert.equal(rules.childHeightError(bad), rules.CHILD_HEIGHT_ERROR, bad);
 });
 
+it("birthYearOptions spans 25 to 2 years ago, oldest first, inclusive of both ends", () => {
+  const now = new Date("2026-06-15T00:00:00Z");
+  const years = rules.birthYearOptions(now);
+  assert.equal(years.length, 24);
+  assert.deepEqual(years[0], { value: "2001", label: "2001" });
+  assert.deepEqual(years.at(-1), { value: "2024", label: "2024" });
+});
+
+it("parseBirthDate reads ZZ.LL.AAAA and blanks anything else without throwing", () => {
+  assert.deepEqual(rules.parseBirthDate("14.03.2016"), { day: "14", month: "03", year: "2016" });
+  assert.deepEqual(rules.parseBirthDate("14 martie 2016"), rules.EMPTY_BIRTH_DATE_PARTS);
+  assert.deepEqual(rules.parseBirthDate(""), rules.EMPTY_BIRTH_DATE_PARTS);
+  assert.deepEqual(rules.parseBirthDate(undefined), rules.EMPTY_BIRTH_DATE_PARTS);
+  assert.deepEqual(rules.parseBirthDate(true), rules.EMPTY_BIRTH_DATE_PARTS);
+});
+
+it("composeBirthDate joins only once all three parts are picked", () => {
+  assert.equal(rules.composeBirthDate({ day: "14", month: "03", year: "2016" }), "14.03.2016");
+  assert.equal(rules.composeBirthDate({ day: "14", month: "03", year: "" }), "");
+  assert.equal(rules.composeBirthDate(rules.EMPTY_BIRTH_DATE_PARTS), "");
+});
+
+it("childBirthDateError enforces the picker's range and rejects impossible calendar dates", () => {
+  const now = new Date("2026-06-15T00:00:00Z");
+  for (const ok of ["14.03.2016", "01.01.2001", "28.02.2024", undefined, ""]) {
+    assert.equal(rules.childBirthDateError(ok, now), undefined, String(ok));
+  }
+  assert.equal(rules.childBirthDateError("30.02.2016", now), rules.BIRTH_DATE_ERROR, "30 February does not exist");
+  assert.equal(rules.childBirthDateError("31.04.2016", now), rules.BIRTH_DATE_ERROR, "31 April does not exist");
+  assert.equal(rules.childBirthDateError("14.03.2000", now), rules.BIRTH_DATE_ERROR, "older than 25 years");
+  assert.equal(rules.childBirthDateError("14.03.2025", now), rules.BIRTH_DATE_ERROR, "younger than 2 years");
+  assert.equal(rules.childBirthDateError("14 martie 2016", now), rules.BIRTH_DATE_ERROR, "old free-text format");
+});
+
 const ANSWERS = {
   email: " ana.pop@example.com ",
   parentName: "Ana Pop",
