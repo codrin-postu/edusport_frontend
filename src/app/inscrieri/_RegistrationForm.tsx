@@ -125,6 +125,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   // form is shown only to someone who actually left and returned.
   const [restored, setRestored] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  // Bumped on every restart() so BirthDateFields remounts and drops any
+  // in-progress partial pick: its own resync guard only catches an external
+  // answer change, and a partial pick already composes to the same "" that
+  // a reset lands on, so the guard alone cannot tell the two apart.
+  const [resetToken, setResetToken] = useState(0);
   // Nothing is written until the draft has been read, otherwise the empty
   // initial state would overwrite the saved answers on first render.
   const readyRef = useRef(false);
@@ -199,6 +204,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     submissionKeyRef.current = newSubmissionKey();
     setRestored(false);
     setAnswers({});
+    setResetToken((t) => t + 1);
     setWebsite("");
     setSubmitError(null);
     setResult(null);
@@ -294,6 +300,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
     ...(birthDateQuestion && {
       childBirthDate: (error: string | undefined, onBlur: () => void) => (
         <BirthDateFields
+          key={resetToken}
           value={answers.childBirthDate}
           onChange={(v) => handleAnswerChange("childBirthDate", v)}
           onBlur={onBlur}

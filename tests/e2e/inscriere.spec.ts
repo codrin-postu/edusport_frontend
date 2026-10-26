@@ -338,6 +338,29 @@ test("the birth date error shows right after picking an impossible date, not one
   await expect(page.getByText("Alegeți data nașterii.")).toBeVisible();
 });
 
+test("restarting the form clears a partial birth date pick", async({ page }) => {
+  await page.goto("/inscrieri?scoala=afi-cotroceni");
+  await saveDraft(page, 0, { source: "Facebook" });
+  await page.reload();
+  await expect(page.getByText("Formular salvat.")).toBeVisible();
+
+  await choose(page, "childBirthDateDay", "14");
+
+  await page.getByRole("button", { name: "Începe de la capăt" }).click();
+  await page.getByRole("button", { name: "Șterge" }).click();
+
+  await expect(page.locator("#childBirthDateDay")).toContainText("Zi");
+  await expect(page.locator("#childBirthDateMonth")).toContainText("Lună");
+  await expect(page.locator("#childBirthDateYear")).toContainText("An");
+
+  // Picking month and year alone, without re-picking the day, must not
+  // silently pair them with the leftover stale day from before the reset.
+  await choose(page, "childBirthDateMonth", "martie");
+  await choose(page, "childBirthDateYear", String(new Date().getFullYear() - 10));
+  await expect(page.locator("#childBirthDateDay")).toContainText("Zi");
+  await expect(continueButton(page)).toBeDisabled();
+});
+
 test("an old free-text birth date draft restores with blank selects and blocks Continuă until re-picked", async({ page }) => {
   await page.goto("/inscrieri?scoala=afi-cotroceni");
   await saveDraft(page, 0, {
