@@ -258,3 +258,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - phase2 success screen, phone: text size A, 12px one line (2026-10-24); buttons keep h-12 so black and secondary match.
 - phase2 success screen, phone (update 2026-10-24): button font size stays the same as all buttons; a long label may wrap to a second line (replaces the 12px choice).
 - phase2-q11 (2026-10-26): success screen as built "Looks right"; no focus outline on the step header and the success heading (keyboard), buttons/fields keep theirs.
+- phase3-q0 (2026-10-26): admin stat tiles keep the coloured left band (A).
