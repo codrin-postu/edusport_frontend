@@ -269,7 +269,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
       .filter((q) => (CONSENT_KEYS as readonly string[]).includes(q.key))
       .map((q) => [
         q.key,
-        <ConsentCheckbox key={q.key} question={q} checked={answers[q.key] === true} onChange={(v) => handleAnswerChange(q.key, v)} />,
+        () => (
+          <ConsentCheckbox
+            key={q.key}
+            question={q}
+            checked={answers[q.key] === true}
+            onChange={(v) => handleAnswerChange(q.key, v)}
+          />
+        ),
       ]),
   );
   const extraError = (key: string, value: CustomAnswer | undefined) =>

@@ -19,7 +19,9 @@ import {
  * the script form needs and ConfigStep has no place for:
  * - `before` / `after`: blocks placed around a question (the schedule before
  *   the membership question, the price box and the upsell after it);
- * - `replace`: a question drawn by the parent (the consent lines);
+ * - `replace`: a question drawn by the parent (the consent lines, the birth
+ *   date picker), given this question's current error and an onBlur to
+ *   report back into this step's own `errors` state;
  * - `extraError`: a check the CMS config cannot express (the child's height).
  * The step passed in is already prepared (follow-ups and abonament options,
  * see `prepareStep` in _rules.ts), so `stepComplete` sees what the parent sees.
@@ -38,7 +40,7 @@ export interface InscriereStepProps {
   placeholders?: Record<string, string>;
   before?: Record<string, React.ReactNode>;
   after?: Record<string, React.ReactNode>;
-  replace?: Record<string, React.ReactNode>;
+  replace?: Record<string, (error: string | undefined, onBlur: () => void) => React.ReactNode>;
   extraError?: (key: string, value: CustomAnswer | undefined) => string | undefined;
   /** Rendered after the questions: the honeypot on the first step. */
   children?: React.ReactNode;
@@ -109,17 +111,19 @@ const InscriereStep: React.FC<InscriereStepProps> = ({
         {questions.map((q) => (
           <React.Fragment key={q.key}>
             {before[q.key]}
-            {replace[q.key] ?? (
-              <CustomQuestions
-                questions={[q]}
-                values={answers}
-                errors={errors}
-                onChange={onAnswerChange}
-                onBlur={handleBlur}
-                variant="card"
-                placeholders={placeholders}
-              />
-            )}
+            {replace[q.key]
+              ? replace[q.key]!(errors[q.key], () => handleBlur(q.key))
+              : (
+                <CustomQuestions
+                  questions={[q]}
+                  values={answers}
+                  errors={errors}
+                  onChange={onAnswerChange}
+                  onBlur={handleBlur}
+                  variant="card"
+                  placeholders={placeholders}
+                />
+              )}
             {after[q.key]}
           </React.Fragment>
         ))}
