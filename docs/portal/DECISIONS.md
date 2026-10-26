@@ -267,3 +267,5 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   - q28: show each mockup-vs-decision conflict side by side before choosing.
   - q29: build all shared admin pieces in 3A, including the admin-wide custom Select rewrite.
   - q7b (typos): pending, user asked for context.
+  - q7b: allow one wrong letter per name word in matching.
+  - q1b: show status ("Membru A.C.S. 2026-2027") and wish ("Dorește să fie membru (formular)") separately; confirming with wish Da sets status "În așteptare" until the fee is paid.
