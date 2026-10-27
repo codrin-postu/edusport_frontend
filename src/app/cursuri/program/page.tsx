@@ -3,6 +3,8 @@ import { fetchStrapi } from "@/lib/strapi";
 import { fetchSeasonOccurrences } from "@/lib/strapi-calendar";
 import { fetchPublicClubInfo } from "@/lib/club-public-fetch";
 import { seasonMonthBounds } from "@/lib/club-public";
+import { fetchClubSchedule } from "@/lib/club-schedule-fetch";
+import { notebookGroups } from "@/lib/club-schedule";
 import { occurrencesToCalendarEvents } from "@/utils/occurrences-to-calendar";
 import ProgramPage from "./_View";
 import type { ProgramPageData, ScheduleGroup, CalendarEvent } from "./_types";
@@ -36,7 +38,8 @@ type CmsShape = {
   disclaimers?: { id: number; text: string }[];
 };
 
-// The new unified `program` single type owns the schedule series.
+// The CMS series of the `program` single type: the fallback of the Școala notebook
+// when the groups' schedule is empty (spec 9.1).
 type ProgramShape = {
   scheduleGroups?: ScheduleGroup[];
 };
@@ -73,8 +76,9 @@ export default async function Page() {
   await requireEnabled("program");
 
   // program-page still owns the banner / disclaimers; the new `program` single
-  // type owns the schedule series; the current Sezon owns the season window.
-  const [cmsResult, programResult, clubResult] = await Promise.allSettled([
+  // type holds the fallback series; the groups' schedule feeds the notebook; the
+  // current Sezon owns the season window.
+  const [cmsResult, programResult, clubResult, scheduleResult] = await Promise.allSettled([
     fetchStrapi<CmsShape>(
       "program-page",
       // Only `disclaimers` is a real component; the rest are JSON custom-fields.
@@ -83,10 +87,12 @@ export default async function Page() {
     ),
     fetchStrapi<ProgramShape>("program"),
     fetchPublicClubInfo(),
+    fetchClubSchedule(),
   ]);
 
   const cms = cmsResult.status === "fulfilled" ? cmsResult.value : null;
   const program = programResult.status === "fulfilled" ? programResult.value : null;
+  const schedule = scheduleResult.status === "fulfilled" ? scheduleResult.value : [];
   const season = clubResult.status === "fulfilled" ? clubResult.value?.season ?? null : null;
 
   // Season window: the current Sezon's start and end month, else the default
@@ -120,7 +126,7 @@ export default async function Page() {
     bannerTitle: cms?.banner?.title ?? PROGRAM_PAGE_DATA.bannerTitle,
     bannerSubtitle: cms?.banner?.subtitle ?? PROGRAM_PAGE_DATA.bannerSubtitle,
     scheduleSubtitle: cms?.pageInfo?.scheduleSubtitle ?? PROGRAM_PAGE_DATA.scheduleSubtitle,
-    scheduleGroups: program?.scheduleGroups?.length ? program.scheduleGroups : [],
+    scheduleGroups: notebookGroups(schedule, program?.scheduleGroups ?? []),
     calendarEvents,
     disclaimers: cms?.disclaimers?.length
       ? cms.disclaimers.map((d) => d.text)

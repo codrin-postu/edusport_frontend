@@ -40,6 +40,15 @@ export const CLUB = {
 
 const SETTINGS = { contact: { whatsappChannelUrl: "https://example.com/canal-whatsapp" }, registration: { open: true } };
 
+const SCHEDULE = [{
+  section: { name: "Școala de Patinaj - AFI Cotroceni", slug: "afi-cotroceni" },
+  slots: [
+    { start: "09:00", end: "09:50", groups: ["Avansați Gold"] },
+    { start: "10:00", end: "10:50", groups: ["Primii Pași", "Intermediari Silver", "Avansați Silver"] },
+    { start: "11:00", end: "11:50", groups: ["Începători", "Intermediari Bronze", "Avansați Bronze"] },
+  ],
+}];
+
 const CORS = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, OPTIONS",
@@ -54,13 +63,34 @@ function json(res, status, body) {
 const pad = (n) => String(n).padStart(2, "0");
 const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-/** Every Saturday and Sunday in [from, to] as a scheduled Școala date. */
+/** The Sunday of the week (Monday to Sunday) that holds the 1st of the month of `now`: the week the calendar opens on. */
+function doubledSunday(now) {
+  const first = new Date(now.getFullYear(), now.getMonth(), 1);
+  return ymd(new Date(first.getFullYear(), first.getMonth(), 1 + ((7 - first.getDay()) % 7)));
+}
+
+/**
+ * Every Saturday and Sunday in [from, to] as a scheduled Școala date, one occurrence per group
+ * (phase 4): the Sunday in the opening week has a second group, and the 1st of the month holds a
+ * Club date named after its group.
+ */
 function weekendOccurrences(from, to) {
   const out = [];
+  const now = new Date();
+  const doubled = doubledSunday(now);
+  const clubDate = ymd(new Date(now.getFullYear(), now.getMonth(), 1));
   const [y, m, d] = from.split("-").map(Number);
   for (let day = new Date(y, m - 1, d); ymd(day) <= to; day.setDate(day.getDate() + 1)) {
-    if (day.getDay() !== 0 && day.getDay() !== 6) continue;
-    out.push({ eventId: 1, title: "Școala de patinaj", type: "scoala", label: null, color: null, order: 0, date: ymd(day), startTime: "10:00", endTime: "10:50", status: "scheduled", cancelReason: null, state: "curs" });
+    const date = ymd(day);
+    if (day.getDay() === 0 || day.getDay() === 6) {
+      out.push({ eventId: 1, title: "Școala de patinaj", type: "scoala", label: null, color: null, order: 0, date, startTime: "10:00", endTime: "10:50", status: "scheduled", cancelReason: null, state: "curs", groupName: "Primii Pași" });
+      if (date === doubled) {
+        out.push({ eventId: 2, title: "Școala de patinaj", type: "scoala", label: null, color: null, order: 0, date, startTime: "09:00", endTime: "09:50", status: "scheduled", cancelReason: null, state: "curs", groupName: "Avansați Gold" });
+      }
+    }
+    if (date === clubDate) {
+      out.push({ eventId: 3, title: "Antrenament", type: "antrenament", label: null, color: null, order: 1, date, startTime: "18:00", endTime: "19:00", status: "scheduled", cancelReason: null, groupName: "Grupa Club Alfa" });
+    }
   }
   return out;
 }
@@ -70,6 +100,8 @@ createServer((req, res) => {
   if (req.method === "OPTIONS") return json(res, 204, {});
   if (url.pathname === "/api/club/public") return json(res, 200, { data: CLUB });
   if (url.pathname === "/api/site-settings") return json(res, 200, { data: SETTINGS });
+  if (url.pathname === "/api/club/schedule") return json(res, 200, { data: SCHEDULE });
+  if (url.pathname === "/api/program") return json(res, 200, { data: { scheduleGroups: [{ timeSlot: "10:00 - 10:50", courses: ["Primii Paşi"] }] } });
   if (url.pathname === "/api/calendar/occurrences") {
     return json(res, 200, { data: weekendOccurrences(url.searchParams.get("from"), url.searchParams.get("to")), blackouts: [] });
   }
