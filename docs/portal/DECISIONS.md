@@ -359,3 +359,17 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Înscrieri and Sportivi desktop layout (user, 2026-10-27, companion): the page fits the window; title, toolbar, filters and school tabs stay; only the list scrolls in its box with sticky column headers; the registration panel keeps its header, tabs and footer buttons in view and scrolls inside; pages of rows stay; phone unchanged; below a small window height the page scrolls normally.
 - Înscrieri Documente (user, 2026-10-27, companion): each PDF as a row with "Vezi" (opens in a new tab) and "Descarcă", same as the Sportivi record.
 - desktop list layout, short windows, decided by Claude (low impact, 2026-10-27): when the window is too short for the panel's fixed parts, the Înscrieri panel scrolls as a whole with its header and its footer buttons sticky, so "Confirmă înscrierea" stays visible on small laptops.
+- phase 3 polish (user, 2026-10-27, companion phase3-open-questions):
+  1. phone sheet grab handle: square bar (no rounded pill);
+  2. merge: switching which record stays restarts the field picks from the new kept record (as built);
+  3. quotes: "..." everywhere (the merge confirmation changes from „...” to "...");
+  4. phone search placeholder: keep the full text, cut with ...;
+  5. phone athlete cards: marker "Date incomplete" (desktop rows keep "date lipsă");
+  6. read-only profile address (slug): no hint;
+  7. school picker in move (bulk and single): placeholder "Alege școala";
+  8. school column with the panel open: keep the full name; the last columns scroll inside the list;
+  9. "Activ din" on the public profile: add an empty choice to clear it;
+  10. Istoric when a confirmation makes a group the main one: "Grupa principală schimbată: <veche> → <nouă>";
+  11. Istoric on a registration unlinked by deleting its athlete: "Legătură ștearsă: sportivul <nume> a fost șters";
+  12. add an athlete-row lock so two confirmations of the same child, or a merge overlapping a confirm, run one after the other;
+  13. Sportivi chip line "N sportivi corespund" and full-width Nume complet / Data nașterii in the add form: approved.
