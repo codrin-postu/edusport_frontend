@@ -6,6 +6,7 @@ import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
 import type { CalendarEvent } from "@/app/cursuri/program/_types";
 import { buildCalendarEvents, occurrencesToEvents } from "@/utils/fullcalendar-helpers";
 import { fetchCalendarOccurrences } from "@/lib/strapi-calendar";
+import { mergeScoalaDays } from "@/utils/scoala-days";
 import type { EventInput } from "@fullcalendar/core";
 import { WeekendDate, isWeekendInPast } from "@/utils/date";
 import WeekendRow, { type WeekendCardData } from "./WeekendRow";
@@ -259,7 +260,11 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
       `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
     let cancelled = false;
     fetchCalendarOccurrences(ymd(monday), ymd(sunday)).then((res) => {
-      if (!cancelled) setHourlyEvents(occurrencesToEvents(res.occurrences));
+      if (!cancelled) {
+        // One Școala tile per school day, like the month grid.
+        const scoala = mergeScoalaDays(res.occurrences.filter((o) => o.type === "scoala"));
+        setHourlyEvents(occurrencesToEvents([...scoala, ...res.occurrences.filter((o) => o.type !== "scoala")]));
+      }
     });
     return () => {
       cancelled = true;

@@ -1,5 +1,6 @@
 import type { CalendarEvent, CalendarEventType } from "@/app/cursuri/program/_types";
 import type { CalendarOccurrence } from "@/lib/strapi-calendar";
+import { mergeScoalaDays } from "@/utils/scoala-days";
 import { groupForOccurrence } from "@/components/blocks/fullcalendar/calendar-colors";
 
 /**
@@ -85,7 +86,7 @@ function specialType(t: string): CalendarEventType {
 export function occurrencesToCalendarEvents(
   occurrences: CalendarOccurrence[],
 ): CalendarEvent[] {
-  const scoala = occurrences.filter((o) => o.type === "scoala");
+  const scoala = mergeScoalaDays(occurrences.filter((o) => o.type === "scoala"));
   const others = occurrences.filter(
     (o) => o.type !== "scoala" && o.status !== "cancelled",
   );
@@ -159,7 +160,7 @@ export function occurrencesToCalendarEvents(
         type: specialType(first.type),
         startDate: first.date,
         endDate: last.date,
-        title: occurrenceTitle(first),
+        title: first.groupName ?? occurrenceTitle(first),
         description: first.description ?? first.note ?? null,
         timeSlot: occurrenceTimeSlot(first),
       });
