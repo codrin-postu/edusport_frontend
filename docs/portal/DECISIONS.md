@@ -4,6 +4,99 @@ Feature: attendance, groups, payments for the club, replacing the coaches' Googl
 Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/content/`
 (club-flows, club-flows-v2, presence-types, admin-group, multi-group, absent-options, portal-coach).
 
+## Current decisions by topic (index, 2026-10-27)
+
+The rule in force per topic, with the date of the log entry it comes from. The full log below is the source: if a line here and an entry differ, the entry wins, and a later dated entry wins over an earlier one, over prototype v5 and over older mockups (2026-10-26 3b Q31). Add a line here when a new entry changes a current rule.
+
+### Registrations (website form, documents, e-mail)
+- Form mirrors her script form in 3 steps: Date înscriere / Abonament / Finalizare înscriere (2026-10-05 form-3steps-v1).
+- Birth date is three selects zi / lună / an, years 25 to 2 years ago, stored ZZ.LL.AAAA (2026-10-26 r5 m3, gaps 43).
+- Nr. înscriere `<season start year>-<4 digits>`, assigned by the server, never edited or reissued, one numbering across schools (2026-10-03; 2026-10-19 multi-school, build-q3).
+- Season, period, fee and prices come from Sezoane and Liste de prețuri; every price list of the school is shown, items per audience (2026-10-19 phase2-q2; 2026-10-20 phase2-q4-gold).
+- Acord always, Cerere de adeziune only when the membership answer is Da; pdfkit, private folder, opened only through the admin; no CNP stored (2026-10-05; 2026-10-19 phase2-q1).
+- Registration e-mail E1 via Brevo with the PDFs; editing never sends an e-mail, only "Retrimite e-mailul" does; status wording as phase2-q8b (2026-10-05; 2026-10-24).
+- One "Înscrieri deschise" switch in Setări site; forwarding to her Apps Script waits until the script can be edited (2026-10-19).
+
+### Înscrieri admin
+- List columns as prototype v5 with "Nume sportiv" and "Vârstă"; "Sportiv existent" line and filter only on unconfirmed registrations (2026-10-26 r2 l1; gaps 16).
+- Panel tabs Date / Abonament / Documente / Istoric; all answers edited through "Editează" on Date; each edit in Istoric old -> new, PDF rebuilt, no e-mail (2026-10-05; 2026-10-26 r2b l4, r2 l5).
+- The form answer is "Dorește să fie membru"; "Membru A.C.S." is only the real season status (2026-10-26 r2b l2).
+- Status menu Nou / Contactat / Respins; "Confirmat" only through "Confirmă înscrierea"; a linked registration's status changes only by "Anulează confirmarea" (2026-10-26 gaps 20; registration status).
+- "..." menu: Anulează confirmarea, Mută la altă școală (2+ schools, before confirmation), Șterge înscrierea (2026-10-26 gaps 8; r4 e12).
+- Documente tab: one row per PDF with "Vezi" and "Descarcă" (2026-10-27).
+- Desktop: the page fits the window, only the list scrolls, sticky headers, panel parts stay in view (2026-10-27).
+
+### Sportivi admin
+- One record per athlete with ONE full-name field; the public profile is a part of it, edited in the "Profil public" tab; the profile name follows the athlete, the address never changes (2026-10-11 athlete-model-v1; 2026-10-26 r3 c4, s1, s2).
+- Statuses Nou / Activ / Inactiv, plus Anonimizat shown only with the status filter (2026-10-26 Q14; 2026-10-27 3C 7).
+- Filters in the filters-v3 layout: Secțiune, Grupa, Membru A.C.S., Profil public, Date complete / incomplete, Fără grupă, Posibile dubluri, Status (2026-10-26 Q9, d12).
+- "Date complete" = name, birth date, contact person, phone and e-mail (2026-10-06 Q6).
+- "Adaugă sportiv": search first, "Sportiv nou" row always under the results, created "Activ" (2026-10-26 s10; plan 3-5).
+- Search: name, parent, phone, e-mail, nr. înscriere; one typo only in words of 4+ letters (2026-10-26 Q29; typo tolerance).
+- Phone: cards, 30 at a time, marker "Date incomplete" (2026-10-26 Q30; 2026-10-27 polish 5).
+
+### Matching and confirmation
+- "Sigur" = exact normalized name + same birth date; a typo match is at most "Probabil"; "Alt copil" shows nothing (2026-10-26 matching; r1 q7).
+- Matching runs at submit and on edits; never an automatic merge (2026-10-26 r1 q6; s8).
+- The confirm window preselects "Sportiv existent" only for "Sigur"; "Compară și actualizează" ticks differing fields except name and birth date (2026-10-26 r3 c1, c5; 2026-10-06 Q1).
+- Group is optional; "Grupă principală" tick when the athlete already has a group; after the season end only the athlete is linked (2026-10-26 r3b c8, c9).
+- All or nothing; a second confirm is refused; undo by the 8 s toast or "Anulează confirmarea" (2026-10-26 r4 e1, e8, e9; gaps 32).
+- Wish Da sets A.C.S. "În așteptare"; confirmation never lowers a status; no e-mail at confirmation (2026-10-26 r1 q1b, gaps 30; 2026-10-06 Q3).
+
+### Merge and delete
+- Possible duplicates are flagged with "Unește" / "Nu e același copil"; a dismissed pair is never flagged again (2026-10-26 d12; "Nu e același copil").
+- Merge: the admin picks the kept record and each differing field; the other profile is deleted and its address redirects (client redirect) (2026-10-26 d39; merged profile old address).
+- After a merge no confirmation of either record can be undone (2026-10-26 merge and undo).
+- Delete is always allowed: registrations unlinked with "Legătură ștearsă: sportivul <nume> a fost șters", groups and A.C.S. removed, profile deleted (2026-10-26 s9; 2026-10-27 polish 11).
+- Two confirmations of one child, or a merge overlapping a confirm, run one after the other (row locks) (2026-10-27 polish 12).
+
+### Personal data (3C)
+- "Exportă datele" (any admin): ZIP with a summary PDF plus the Acord and Cerere; it never names another child (2026-10-27 3C 1, 6; 3C final review fixes).
+- "Anonimizează" (Super Admin only, no undo): removes everything personal, keeps groups, A.C.S., counts and payment totals; the athlete stays as "Sportiv anonimizat" (2026-10-27 3C 2, 6, 7).
+- Never deleted automatically; "Ani până la anonimizare" in Setări site, default 5; filter "Inactivi de peste N ani" with bulk anonymize and a dashboard notice (2026-10-27 3C retention).
+- Profile photos are deleted only when nothing else references them; in doubt the file is kept (2026-10-27 3C photos; safety rule).
+- A registration of an anonymized athlete shows read-only (2026-10-27 3C copy).
+
+### Groups and schedules (phase 4)
+- Phase 4 is admin only; coaches edit their Club groups' schedules in phase 6 (2026-10-27 phase 4 scope).
+- A child can be on several groups, exactly one is the main group per season; "Mută" changes the main, "Adaugă și în grupă" adds (2026-10-10 main-group-v1).
+- No capacity; each group shows its count, totals count distinct athletes (2026-10-06 groups-v2; 2026-10-10).
+- "Fără grupă" orange button with "Alocă" / "Alocă toți în grupele propuse"; proposed group = last season's main group for now (2026-10-10; 2026-10-27 phase 4 spec review).
+- Group page A with tabs Sportivi / Program / Istoric; the move window picks the new group ("În"); roster column "Principală" plus "Alte grupe" (2026-10-27 phase 4 mockups 2-4).
+- Groups own their program; "Program public" per group; "Pauze" in "Calendar și serii"; the old Școala series editor goes after migration (2026-10-27 phase 4 mockups 5-9; phase 4 design).
+- Parent e-mail for a cancelled or moved class only when ticked per change, off by default (2026-10-19 notif-q1-emails; 2026-10-27 phase 4 spec review).
+- Groups on the same price list share the abonament; only Avansați Gold adds a line in the move window (2026-10-10).
+
+### New season
+- "Începe sezonul <next>" on Sezoane opens one window that makes the season current and prepares the groups; any admin (2026-10-27 phase 4 new season 1; details W22-W33).
+- Defaults: "Copiază sportivii" off for Școala, on for Club; "Copiază programul" on; inactive children never copied (2026-10-27 phase 4 new season 2, 3).
+- Children not copied become "Fără grupă" with "Din <sezon>"; A.C.S. starts at "Nu" (2026-10-27 phase 4 new season 4).
+- Preview of counts, one transaction, toast with "Anulează" for 8 s (2026-10-27 phase 4 new season 5; details).
+- An empty Sportivi or Program tab offers a copy from the previous season; Pauze are not copied (2026-10-27 phase 4 new season 6).
+
+### Website
+- /cursuri/program: the notebook built from the groups, recurring schedule only for Școala de patinaj groups; calendar keeps one tile per school day (2026-10-27 phase 4 mockups 8, 10).
+- Prețuri and the other pages read the Sezoane and Liste de prețuri data (2026-10-19 phase2-q3).
+- Success screen approved as built; phone buttons full width, labels may wrap (2026-10-26 phase2-q11; 2026-10-24).
+- Expired PDF link opens "Linkul a expirat. ..." with "Înapoi la site" (2026-10-21 phase2-q5).
+- A merged profile's old address redirects to the kept profile (2026-10-26 merged profile old address).
+
+### Copy and visual rules
+- Romanian UI copy, terse; no em dash, no middle dot (use rows or commas), straight quotes "..." (2026-10-26 gaps 1; 2026-10-27 polish 3).
+- Empty values blank; singular and "de" forms ("1 sportiv", "20 de sportivi") (2026-10-26 gaps 2, 10; plan 3-5).
+- Admin screens and mockups use the real admin components and CSS (2026-10-10).
+- Selected state = solid primary fill; phone sheet grab handle square, no pills (2026-10-06 selected-state-v2; 2026-10-27 polish 1).
+- Filters: filters-v3 dropdown on desktop, BottomSheet on phones (2026-10-06).
+- Admin stat tiles keep the coloured left band (2026-10-26 phase3-q0).
+- Build first, the user reviews renders after implementation (2026-10-26 phase3ab).
+
+### Security
+- One admin role; every club admin route needs an admin login; anonymize and hiding the yearly review need Super Admin (2026-10-19 admin-q1-roles; 2026-10-27 3C 6).
+- PDFs only through the admin; the success-screen download is a 24-hour secret link (2026-10-19 phase2-q1, design sections 1-4).
+- E-mails outside production go to one test address (2026-10-19 design sections 1-4).
+- Personal data is never deleted automatically (2026-10-19 admin-q2-data; 2026-10-27 3C retention).
+- Portal (phase 6): Google or e-mail + password, optional two-factor, sliding 7-day session with a 30-day maximum (2026-10-18).
+
 ## Status snapshot (2026-10-06) — CMS admin registration flow: design in progress, RESUME HERE
 - Full resume point, open questions, companion state and screen index: `docs/portal/RESUME.md`.
 - Clickable prototype: `mockups/screens/prototype-registrations-v5.html`; generators `mockups/gen_*.py` + `proto_js.js`.
