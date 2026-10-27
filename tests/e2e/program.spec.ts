@@ -31,7 +31,7 @@ test("the month view shows one Școala tile on a two-group day and the Club tile
   await expect(clubDay.getByText("Antrenament")).toHaveCount(0);
 });
 
-test("the week view shows one Școala tile on a two-group day", async({ page }) => {
+test("the week view shows one Școala tile on a two-group day and the Club tile under its group name", async({ page }) => {
   await page.goto("/cursuri/program");
   await expect(page.locator(`td[data-date="${DOUBLED}"]`)).toBeVisible();
   await page.getByRole("button", { name: "Lunar" }).click();
@@ -40,4 +40,7 @@ test("the week view shows one Școala tile on a two-group day", async({ page }) 
   await expect(doubled).toBeVisible();
   await expect(doubled.getByText("Școala de patinaj", { exact: true })).toHaveCount(1);
   await expect(doubled.getByText("Avansați Gold")).toHaveCount(0);
+  const clubDay = page.locator(`.fc-timegrid-col[data-date="${CLUB_DAY}"]`);
+  await expect(clubDay.getByText("Grupa Club Alfa", { exact: true })).toHaveCount(1);
+  await expect(clubDay.getByText("Antrenament")).toHaveCount(0);
 });

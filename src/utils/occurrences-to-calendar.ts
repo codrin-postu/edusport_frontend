@@ -56,6 +56,8 @@ export function occurrenceTimeSlot(o: CalendarOccurrence): string | null {
  * "Grupa A · Grupa A" and "Școala · Școala de patinaj").
  */
 export function occurrenceTitle(o: CalendarOccurrence): string {
+  // A group date (Club) is named after its group, in the month and the week view alike.
+  if (o.groupName) return o.groupName;
   return o.label && !o.title.toLowerCase().includes(o.label.toLowerCase())
     ? `${o.label} · ${o.title}`
     : o.title;
@@ -160,7 +162,7 @@ export function occurrencesToCalendarEvents(
         type: specialType(first.type),
         startDate: first.date,
         endDate: last.date,
-        title: first.groupName ?? occurrenceTitle(first),
+        title: occurrenceTitle(first),
         description: first.description ?? first.note ?? null,
         timeSlot: occurrenceTimeSlot(first),
       });
