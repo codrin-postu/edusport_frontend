@@ -373,3 +373,13 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   11. Istoric on a registration unlinked by deleting its athlete: "Legătură ștearsă: sportivul <nume> a fost șters";
   12. add an athlete-row lock so two confirmations of the same child, or a merge overlapping a confirm, run one after the other;
   13. Sportivi chip line "N sportivi corespund" and full-width Nume complet / Data nașterii in the add form: approved.
+- desktop layout result (user, 2026-10-27): approved as shown on TEST.
+- phase 3C personal data (user, 2026-10-27, companion phase3c-q1):
+  1. "Exportă datele": a ZIP with a readable summary PDF (child and contact data, groups per season, A.C.S., registrations, consents, history of changes) plus the Acord and Cerere PDFs;
+  2. "Anonimizează" removes everything personal about the child: athlete name, birth date, contact, phone, e-mail, notes; its registrations' names, parent, phone, e-mail, birth date, height and free texts; the Acord/Cerere PDFs; e-mail queue addresses; old values in Istoric; the public profile. Kept: groups per season, A.C.S. states, counts, payment totals;
+  3. "inactive for N years": no group, no registration and (later) no attendance or payment in the last N seasons, counted from the last season with any activity;
+  4. N is a number in Setări site, default 3;
+  5. the yearly list is a Sportivi filter "Inactivi de peste N ani" with select several + "Anonimizează"; a dashboard note when the list is not empty;
+  6. export: any admin; anonymize: only Super Admin;
+  7. an anonymized athlete stays as "Sportiv anonimizat", hidden from the list, shown only with the status filter "Anonimizat"; counts per group and season stay correct.
+  Decided by Claude (low impact): no undo for "Anonimizează", the confirmation lists what is removed; both actions in the record "..." menu; every export and anonymization written in Istoric without the removed data.
