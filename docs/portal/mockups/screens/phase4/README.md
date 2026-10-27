@@ -1,0 +1,25 @@
+# Phase 4 mockups: groups and schedules (admin-only)
+
+Built 2026-10-27 for the companion. Admin screens use the real admin CSS (tokensCss, UI_CSS, SHELL_CSS, SPORTIVI_CSS, CAL_CSS) extracted from edusport_backend worktree p3be, and the markup of the real components (PageHeader, Tabs, Select, SearchableSelect, Popover, Modal, Drawer, BottomSheet, Toast with "Anulează", MenuButton "...", calendar Listă / Lună). Each HTML is standalone and responsive: above 640px the desktop admin, at 390px the phone admin. Child names are synthetic.
+
+Screenshots: `<name>-desktop.png` (1440 wide, full page) and `<name>-phone.png` (390 wide, full page).
+
+Regenerate the admin files: `python3 gen_phase4.py <dir with tokens.css ui.css shell.css sportivi.css cal.css>`. program-site.html is a static capture of the running website (localhost:3010, TEST data) with the schedule part replaced.
+
+## Files
+
+| File | Shows | Open questions |
+|---|---|---|
+| grupe-list.html | Grupe page: tabs Școala de patinaj / Club, season select, columns Grupă / Program / Antrenori / Sportivi, distinct-count line, "+ Grupă nouă", orange "Fără grupă (3)" with the allocation dropdown (aloca-v2), group list with section hint, toast with "Anulează". Phone: cards, allocation in a bottom sheet. | Orange count uses the admin "eveniment" orange tokens (dark orange with light number): ok? Groups without a coach show "Fără antrenor": ok? |
+| grupa-a.html | Group page option A, record style: header (name, section, coach, price list, count), tabs Sportivi / Program / Istoric; row "..." (Mută / Adaugă și în grupă / Scoate din grupă); the move window; Program with "+ Adaugă program" (Se repetă, Cât de des, Zile, De la, Durată, Se aplică din), single class, per date Ține / Anulează / Mută with reason and "Anunță părinții pe e-mail", toast; Istoric. Phone: full-height sheet like the athlete record. | A or B? Main group shown as a "Principală Da / Nu" column plus "Alte grupe": ok? "În" is picked inside the move window (SearchableSelect), since the row "..." has no group choice: ok? |
+| grupa-b.html | Group page option B: one page, roster left, program right as a one-week calendar row; same move window and date panel. Phone: program first, then roster. | Istoric only from the header "..." menu in B: ok? |
+| pauze-a.html | Breaks (calendar-blackout: Nume, De la, Până la) as a "Pauze" section at the top of "Calendar și serii"; month calendar shows break days as "Pauză"; window "Pauză nouă"; effect on a group's Program (dates struck, grey, with the break name). | A (section) or B (own page)? Break dates on a group's Program: one struck row per date (shown) or one line per break? The old "Serii de cursuri" section is removed once groups own their schedules: ok? |
+| pauze-b.html | Breaks as their own page "Pauze" under "Program și calendar", season select, same window and same effect. | See pauze-a. |
+| program-site.html | Website /cursuri/program: Before (today's notebook with the production series text), A same notebook built from the groups (Școala by time, plus a Club notebook), B one retro card per group (Școala and Club). Calendar, hero and disclaimers unchanged. | A or B? Show the Club groups' schedule on the public site at all? Calendar tiles after phase 4: one per school day (as today) or one per group? |
+| migrare-grupe.html | Table "Text vechi -> Grupă": every legacy group name found, where it appears, proposed group, "?" where unsure. Warning that production may hold more names. | The "?" rows: "Curs Avansati" (Berceni Arena special) -> Club Avansați? Demo seed names (Avansați, Intermediari, Grup Performanță) and TEST-only names: skip? Read production (read-only) now? |
+
+## Notes
+
+- Copy rules: no middle dot, no em dash, straight quotes in all new copy. The website captures keep two existing texts that contain a middle dot (the CMS notebook subtitle and the TEST calendar tile "Weekend curs"); changing them is a separate copy decision.
+- TEST database (read-only, default_transaction_read_only): `programs` and `team_members` are empty; `calendar_events` has one Școala event "Weekend curs"; `club_groups` holds the canonical groups plus "Performanță" (Club) and "Grupa Mică" / "Grupa Mare" (second test school). Legacy names therefore come from data/seed/content.json, backups/program-page-pre-legacy-cleanup-2026-09-17.json, scripts/seed-content.js, scripts/seed-calendar-sample.js and the live-site read of 19 oct (data-q1-groups). Nothing was written to any database.
+- Club schedule times (Profesioniști, Avansați) are examples.
