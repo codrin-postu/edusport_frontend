@@ -38,6 +38,10 @@ export interface CalendarOccurrence {
   imageUrl?: string | null;
   linkUrl?: string | null;
   linkLabel?: string | null;
+  /** Phase 4: the group of a group date (public groups only), and where a moved date came from. */
+  groupName?: string | null;
+  originalDate?: string | null;
+  originalStartTime?: string | null;
 }
 
 export interface CalendarBlackout {
