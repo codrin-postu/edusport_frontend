@@ -385,3 +385,16 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   Decided by Claude (low impact): no undo for "Anonimizează", the confirmation lists what is removed; both actions in the record "..." menu; every export and anonymization written in Istoric without the removed data.
 - phase 3C retention (user, 2026-10-27): "Ani până la anonimizare" defaults to 5 (was 3); never removed automatically; the dashboard shows a notification while athletes are past the period. Spec 2026-10-27-personal-data-design.md approved.
 - phase 4 scope (user, 2026-10-27): phase 4 is admin-only (groups, group page, schedules linked to groups, holiday breaks, website program on real groups); coaches editing their Club groups' schedules moves to phase 6 with coach login.
+- phase 4 mockups (user, 2026-10-27, companion phase4-mockups):
+  1. Grupe page as drawn (grupe-list);
+  2. group page: A, record with tabs Sportivi / Program / Istoric (Prezență joins in phase 5);
+  3. moving a child: the new group is picked inside the move window ("În");
+  4. roster: column "Principală" plus "Alte grupe";
+  5. holiday breaks: a "Pauze" section in "Calendar și serii";
+  6. a break on a group's Program: one struck, grey row per date with the break name;
+  7. the old "Serii de cursuri Școala de Patinaj" editor is removed after its data moves to the groups;
+  8. website /cursuri/program: same notebook look built from the groups, and the recurring schedule is shown only for Școala de patinaj groups; other groups' recurrence is not listed there (they use the calendar or, later, their own portal page);
+  9. each group has a setting for whether its schedule is public on the website (calendar);
+  10. website calendar: one tile per school day, as today;
+  11. old group names: proposals approved, "Curs Avansati" (Berceni Arena, 18 May 2026) = Club Avansați, demo and TEST-only names skipped;
+  12. read the production group names now, read-only.
