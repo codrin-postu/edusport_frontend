@@ -398,3 +398,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   10. website calendar: one tile per school day, as today;
   11. old group names: proposals approved, "Curs Avansati" (Berceni Arena, 18 May 2026) = Club Avansați, demo and TEST-only names skipped;
   12. read the production group names now, read-only.
+- phase 4 design (user, 2026-10-27, companion phase4-design-q): the 7-point design is approved (groups own their program; "Program public" per group; Grupe page; group page tabs; Fără grupă and moves; Pauze section in "Calendar și serii"; website notebook from the groups, Școala only, calendar shows public groups). Production calendar entries "Titlu" and "Eveniment" are left alone (the user deletes them if needed). The three "Vacanta scolara" entries stay calendar entries; a Pauză is added separately when classes really stop.
