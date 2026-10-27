@@ -383,3 +383,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
   6. export: any admin; anonymize: only Super Admin;
   7. an anonymized athlete stays as "Sportiv anonimizat", hidden from the list, shown only with the status filter "Anonimizat"; counts per group and season stay correct.
   Decided by Claude (low impact): no undo for "Anonimizează", the confirmation lists what is removed; both actions in the record "..." menu; every export and anonymization written in Istoric without the removed data.
+- phase 3C retention (user, 2026-10-27): "Ani până la anonimizare" defaults to 5 (was 3); never removed automatically; the dashboard shows a notification while athletes are past the period. Spec 2026-10-27-personal-data-design.md approved.
