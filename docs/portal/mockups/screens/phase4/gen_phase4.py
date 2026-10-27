@@ -565,4 +565,7 @@ def build_migrare():
     p = f'<div class="p4-frame ph" style="min-height:0"><div class="ui-root ui-page ui-stack">{win(ph("Migrare grupe", "Text vechi -> Grupă") + body)}</div></div>'
     write('migrare-grupe.html', doc('Phase 4: group migration', intro, [state('Table', d, p)]))
 
+exec(open(os.path.join(HERE, 'gen_sezon_nou.py')).read())
+
 build_grupe(); build_grupa_a(); build_grupa_b(); build_pauze(); build_migrare()
+build_sezon_nou()
