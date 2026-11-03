@@ -515,3 +515,8 @@ The rule in force per topic, with the date of the log entry it comes from. The f
 - Money and Prezență filters stay in the one "Filtre" panel used by Sportivi and Înscrieri.
 - Abonamente rows get the used/total bar and state badge of the approved mockup.
 - Native date inputs keep the browser's date format.
+
+## 2026-11-03 phase 5 review answers (user)
+1. "De încasat" keeps an expired, unpaid abonament at full price until paid (as spec 4.14).
+2. When a correction lowers what is owed below what was paid: "Rămas: 0 RON" and a line "Avans: <sumă> RON".
+3. A payment can never be larger than what is still owed for its "Pentru" (user: "a person should not be able to pay more than owed really ever"). The server refuses it inside the payment transaction; "Altceva" has no limit. Error text "Suma depășește restul de plată: <sumă> RON." decided by Claude (low impact).
