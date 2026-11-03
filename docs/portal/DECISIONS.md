@@ -520,3 +520,4 @@ The rule in force per topic, with the date of the log entry it comes from. The f
 1. "De încasat" keeps an expired, unpaid abonament at full price until paid (as spec 4.14).
 2. When a correction lowers what is owed below what was paid: "Rămas: 0 RON" and a line "Avans: <sumă> RON".
 3. A payment can never be larger than what is still owed for its "Pentru" (user: "a person should not be able to pay more than owed really ever"). The server refuses it inside the payment transaction; "Altceva" has no limit. Error text "Suma depășește restul de plată: <sumă> RON." decided by Claude (low impact).
+4. A lesson's price counts once: a "Lecție" payment lowers what its Club month owes, and a "Lecție" payment is limited by what that month still owes (decided by Claude, follows 3).
