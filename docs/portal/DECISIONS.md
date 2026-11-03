@@ -509,3 +509,9 @@ The rule in force per topic, with the date of the log entry it comes from. The f
 - phase 4 deploy and rules (user, 2026-10-27): ONE deploy window for phases 2, 3 and 4 (overrides the 2026-10-26 d19 "2 + 3 window" plan: phase 4 migration runs the same night, runbook 14); a season name cannot change once the season has groups or children, a changed period moves every group program of that season in the same save; "Șterge grupa" only for a group that never had a child or a class (a used group is made inactive); "Anulează confirmarea" keeps a group row that a later "Mută" ended, as history; "Sportiv șters" and "Grupa unui eveniment se schimbă din pagina grupei." kept.
 - tracking (user, 2026-10-28): the club pays for no ads now; keep Umami as the only analytics; phase 9 (after phase 8) adds Umami events on the registration steps, a funnel report and UTM codes; ad pixels only if paid ads start, behind a consent banner, one conversion event with no personal data, never on admin pages.
 - admin trim (user, 2026-10-28): phase 10 (after phase 9) removes unused Strapi pieces per the audit (telemetry off, NPS and enterprise promos off, cloud and old responsive plugins removed, Articole to the custom page) and adds a "Staff club" admin role that only sees the custom pages; finer roles are phase 6.
+
+## 2026-11-03 phase 5 click-through (decided by Claude, low impact)
+- Session panel stays a right Drawer, as decided 2026-10-11 (the mockup card showed the Drawer content).
+- Money and Prezență filters stay in the one "Filtre" panel used by Sportivi and Înscrieri.
+- Abonamente rows get the used/total bar and state badge of the approved mockup.
+- Native date inputs keep the browser's date format.
