@@ -521,3 +521,17 @@ The rule in force per topic, with the date of the log entry it comes from. The f
 2. When a correction lowers what is owed below what was paid: "Rămas: 0 RON" and a line "Avans: <sumă> RON".
 3. A payment can never be larger than what is still owed for its "Pentru" (user: "a person should not be able to pay more than owed really ever"). The server refuses it inside the payment transaction; "Altceva" has no limit. Error text "Suma depășește restul de plată: <sumă> RON." decided by Claude (low impact).
 4. A lesson's price counts once: a "Lecție" payment lowers what its Club month owes, and a "Lecție" payment is limited by what that month still owes (decided by Claude, follows 3).
+
+## 2026-11-04 phase 6 answers (user)
+Companion screens 4-6 (p6-4 to p6-6), answers in edusport_backend/.superpowers/phase6/answers.md; spec edusport_backend docs/superpowers/specs/2026-11-04-coach-portal-design.md.
+- q22: a coach may correct a saved session (and lesson) for 7 days after its date (Europe/Bucharest); admin any time. Supersedes "until the end of the month" (2026-10-11 prezenta-questions-v1 (3)).
+- q11: after the 7 days the session opens read only with "Arhivată. Nu mai poate fi modificată." (copy decided by Claude, low impact); no request flow.
+- q12: within the 7 days any coach listed on the session or a coach of its group may correct it.
+- q13: "Sportiv nou" in the coach app: only the name is required; birth date, parent name, phone and e-mail optional; group preselected; saved as "nou" for the admin to confirm.
+- q21: a coach may add a new child to any group, also another coach's; contacts stay visible only in own groups.
+- q14: a coach's Club schedule change writes a history line "Antrenor <nume>" plus the optional "Anunță părinții" tick; no admin e-mail.
+- q15: a coach changes dates from today on; past dates and Pauză dates are read only.
+- q16: B, the coach may also switch "Program public" on his Club groups; name, coaches and price list stay admin only.
+- q17: many devices at once; Securitate lists them with "Deconectează" each; e-mail on a new device.
+- q18: 5 wrong passwords per e-mail in 15 minutes = 15 minute pause with a mail to the owner, plus a per-IP limit; reset and code mails max 5 per hour per e-mail; identical answers for unknown e-mails.
+- q19: hosts antrenor.scoaladepatinaj.com and sportiv.scoaladepatinaj.com; local antrenor.localhost; portal hosts noindex.
