@@ -44,3 +44,18 @@ it("decodes percent-encoded paths before routing", () => {
   assert.deepEqual(routeRequest("antrenor", "/%61ntrenor/grupe"), { action: "notFound" });
   assert.deepEqual(routeRequest("site", "/%E0%A4%A"), { action: "next" });
 });
+
+it("answers 404 for encoded separators and dot segments", () => {
+  const { routeRequest } = lib;
+  const gone = { action: "notFound" };
+  for (const p of ["/..%2Fnoutati%2Fx", "/%2E%2E%2Fnoutati", "/..%5Cnoutati", "/%2e%2e/noutati", "/a%252F..%252Fnoutati", "/a/%2E/b", "/a\\b"]) {
+    assert.deepEqual(routeRequest("antrenor", p), gone, p);
+    assert.deepEqual(routeRequest("site", p), gone, p);
+  }
+  assert.deepEqual(routeRequest("site", "/x%2F..%2Fantrenor%2Fgrupe"), gone);
+});
+
+it("rewrites the coach host with the raw path", () => {
+  const { routeRequest } = lib;
+  assert.deepEqual(routeRequest("antrenor", "/grupe/a%20b"), { action: "rewrite", pathname: "/antrenor/grupe/a%20b" });
+});

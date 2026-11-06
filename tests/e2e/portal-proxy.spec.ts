@@ -76,6 +76,14 @@ test("routes outside the allow-list never reach Strapi", async({ request }) => {
   expect(await coachCalls()).toHaveLength(0);
 });
 
+test("encoded traversal in the proxy path never reaches Strapi", async({ request }) => {
+  for (const p of ["/api/portal/coach/%2E%2E%2F%2E%2E%2Fclub%2Fathletes", "/api/portal/coach/groups/a%2Fb/program"]) {
+    const res = await request.get(`${RAW}${p}`, { headers: AS_COACH });
+    expect(res.status(), p).toBe(404);
+  }
+  expect(await coachCalls()).toHaveLength(0);
+});
+
 test("a foreign Origin is refused before any call", async({ request }) => {
   const res = await request.put(`${RAW}/api/portal/coach/me`, { data: {}, headers: { ...AS_COACH, origin: "https://evil.example" } });
   expect(res.status()).toBe(403);

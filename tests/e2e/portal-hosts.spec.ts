@@ -23,6 +23,12 @@ test.describe("coach host", () => {
     expect((await request.get("http://localhost:3200/sitemap.xml", AS_COACH)).status()).toBe(404);
     expect((await request.get("http://localhost:3200/cursuri", AS_COACH)).status()).toBe(404);
   });
+
+  test("encoded traversal into the main site answers 404", async({ request }) => {
+    for (const p of ["/..%2Fnoutati%2Fx", "/%2E%2E%2Fnoutati", "/..%5Cnoutati", "/..%252Fnoutati"]) {
+      expect((await request.get(`http://localhost:3200${p}`, AS_COACH)).status(), p).toBe(404);
+    }
+  });
 });
 
 test.describe("main host", () => {
