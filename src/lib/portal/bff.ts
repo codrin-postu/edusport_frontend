@@ -107,7 +107,7 @@ export async function coachCall(ctx: BffContext, method: string, path: string, b
   if (!ctx.refresh) return ended(ctx);
   let access = ctx.access;
   let cookies: CookieSpec[] = [];
-  const renew = async (): Promise<boolean> => {
+  const renew = async(): Promise<boolean> => {
     const r = await refreshOnce(ctx);
     if (!r.ok) return false;
     access = r.session.accessToken;
