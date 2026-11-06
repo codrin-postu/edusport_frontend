@@ -70,6 +70,6 @@ export function buildWorld(today) {
     { id: "dev1", key: SEED_DEVICE_KEY, label: "Chrome pe Windows", lastSeenAt: new Date().toISOString() },
     { id: "dev2", key: OTHER_DEVICE_KEY, label: "Safari pe iPhone", lastSeenAt: new Date(Date.now() - 5 * 86_400_000).toISOString() },
   ];
-  const pool = [person("apool1", "Teodora Anghel", 9), person("apool2", "Rareș Cojocaru", 11), person("apool3", "Irina Munteanu", 8)];
+  const pool = [person("apool1", "Teodora Anghel", 9), person("apool2", "Rareș Cojocaru", 11), person("apool3", "Irina Munteanu", 8), person("apool4", "Ana Bălan", 9), person("apool5", "Diana Ilie", 10)];
   return { accounts, groups, members, inactive, saved, lessons, devices, pool, coachOptions: COACH_OPTIONS, counters: { athlete: 0, lesson: 0, event: 0 } };
 }
