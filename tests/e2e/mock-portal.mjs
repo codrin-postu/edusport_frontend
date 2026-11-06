@@ -474,7 +474,6 @@ function searchAthletes({ res, query }) {
 function newAthlete({ body, res }) {
   const g = groupOf(body.groupId);
   if (!g) return club(res, 400, MSG.invalid);
-  if (!g.own) return club(res, 403, MSG.noAccess);
   if (typeof body.name !== "string" || !body.name.trim()) return club(res, 400, MSG.invalid);
   const athleteId = `anew${++world.counters.athlete}`;
   world.members[g.id].push({ athleteId, name: body.name.trim(), age: null, isNew: true, alsoIn: [], inactive: false });

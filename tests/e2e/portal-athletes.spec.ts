@@ -70,3 +70,13 @@ test("a double tap on Adaugă creates one athlete only", async({ page }) => {
   const posts = (await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/coach/athletes"));
   expect(posts).toHaveLength(1);
 });
+
+test("a coach adds a new athlete to another coach's group", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gsilver/sportiv-nou");
+  await page.getByLabel("Nume și prenume").fill("Zoe Pavel");
+  await page.getByRole("button", { name: "Adaugă în Intermediari Silver" }).click();
+  await expect(page).toHaveURL(/\/grupe\/gsilver$/);
+  const post = (await mockLog()).find((c) => c.method === "POST" && c.path.endsWith("/coach/athletes"));
+  expect(post?.body).toEqual({ groupId: "gsilver", name: "Zoe Pavel" });
+});
