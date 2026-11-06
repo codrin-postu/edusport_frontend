@@ -6,7 +6,7 @@
 // is captured and nothing throws. Server env vars are read at runtime, which
 // keeps the same build image promotable across environments.
 import * as Sentry from "@sentry/nextjs";
-import { scrubBreadcrumb, scrubEvent } from "@/lib/portal/sentry-scrub";
+import { scrubBreadcrumb, scrubEvent, scrubSpan } from "@/lib/portal/sentry-scrub";
 
 const dsn = process.env.SENTRY_DSN ?? process.env.NEXT_PUBLIC_SENTRY_DSN;
 
@@ -21,6 +21,8 @@ if (dsn) {
     debug: false,
     // Invite secrets and credentials never leave the process unmasked.
     beforeSend: (event) => scrubEvent(event),
+    beforeSendTransaction: (event) => scrubEvent(event),
+    beforeSendSpan: (span) => scrubSpan(span),
     beforeBreadcrumb: (crumb) => scrubBreadcrumb(crumb),
   });
 }
