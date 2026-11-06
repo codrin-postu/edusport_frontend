@@ -89,7 +89,7 @@ export const PRESENCE = {
   coach: "Antrenor",
   coachSelf: (name: string) => `${name} (tu)`,
   addCoaches: "+ Adaugă alți antrenori",
-  removeCoach: "Golește selecția",
+  removeCoach: (name: string) => `Scoate ${name}`,
   athlete: "Sportiv",
   grup: "Grup",
   uscat: "Uscat",

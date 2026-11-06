@@ -29,7 +29,7 @@ export function CoachPicker({ me, options, value, onChange, locked }: CoachPicke
           <li key={id} className="flex items-center justify-between gap-4 pl-4 min-h-12">
             <span className="text-body text-primary">{id === me ? PRESENCE.coachSelf(name(id)) : name(id)}</span>
             {id !== me && !locked && (
-              <IconButton icon="close" label={PRESENCE.removeCoach} onClick={() => onChange(value.filter((v) => v !== id))} />
+              <IconButton icon="close" label={PRESENCE.removeCoach(name(id))} onClick={() => onChange(value.filter((v) => v !== id))} />
             )}
           </li>
         ))}

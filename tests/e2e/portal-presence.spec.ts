@@ -31,12 +31,12 @@ test("the own coach row cannot be removed, others can", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gavansati", FREE_DAY));
   await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Golește selecția" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^Scoate / })).toHaveCount(0);
   await page.getByRole("button", { name: "+ Adaugă alți antrenori" }).click();
   await tick(page, "Bianca Ene");
   await page.getByRole("button", { name: "OK" }).click();
-  await expect(page.getByRole("button", { name: "Golește selecția" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Golește selecția" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Scoate Bianca Ene" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Scoate / })).toHaveCount(1);
 });
 
 test("an archived session is read only", async({ page }) => {
