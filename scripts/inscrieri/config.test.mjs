@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 
 // CI runs Node 20, which cannot import .ts files: skip there instead of failing.
 const canStripTypes = Boolean(process.features?.typescript);
-const t = canStripTypes ? await import("../../src/app/inscrieri/_types.ts") : {};
+const t = canStripTypes ? await import("../../src/app/(site)/inscrieri/_types.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const q = () => Object.fromEntries(t.FALLBACK_CONFIG.steps.flatMap((s) => s.questions).map((x) => [x.key, x]));

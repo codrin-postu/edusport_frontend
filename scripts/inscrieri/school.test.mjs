@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 // CI runs Node 20, which cannot import .ts files: skip there instead of failing.
 const canStripTypes = Boolean(process.features?.typescript);
-const { resolveSchool, showsPinnedSchool, wantedSlug } = canStripTypes ? await import("../../src/app/inscrieri/_school.ts") : {};
+const { resolveSchool, showsPinnedSchool, wantedSlug } = canStripTypes ? await import("../../src/app/(site)/inscrieri/_school.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const afi = { name: "Școala de Patinaj - AFI Cotroceni", slug: "afi-cotroceni" };

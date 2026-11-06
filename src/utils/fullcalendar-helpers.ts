@@ -1,5 +1,5 @@
 import type { EventInput } from "@fullcalendar/core";
-import type { CalendarEvent, CalendarEventType } from "@/app/cursuri/program/_types";
+import type { CalendarEvent, CalendarEventType } from "@/app/(site)/cursuri/program/_types";
 import type { CalendarOccurrence } from "@/lib/strapi-calendar";
 import {
   type CalendarGroup,

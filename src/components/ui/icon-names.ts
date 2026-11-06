@@ -15,6 +15,8 @@ export const ICON_VERSION = {
   "clock": "75f598cf",
   "close": "2ed4f7f2",
   "external-link": "041e0d26",
+  "eye": "26de904a",
+  "eye-off": "7a729e79",
   "facebook": "19b651fc",
   "image": "c5c8737e",
   "info": "1c1dc801",

@@ -13,7 +13,7 @@
 // file directly with node's type stripping. Type-only imports are erased.
 // ---------------------------------------------------------------------------
 
-import type { PricingTier } from "@/app/cursuri/_types_pricing";
+import type { PricingTier } from "@/app/(site)/cursuri/_types_pricing";
 
 export type PriceItemKind = "subscription" | "session" | "individual";
 export type Audience = "member" | "nonMember";

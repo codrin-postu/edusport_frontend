@@ -6,7 +6,7 @@
 // loads this file with node's type stripping.
 // ---------------------------------------------------------------------------
 
-import type { ScheduleGroup } from "@/app/cursuri/program/_types";
+import type { ScheduleGroup } from "@/app/(site)/cursuri/program/_types";
 
 export type ScheduleSlot = { start: string; end: string; groups: string[] };
 export type SchoolSchedule = { section: { name: string; slug: string }; slots: ScheduleSlot[] };

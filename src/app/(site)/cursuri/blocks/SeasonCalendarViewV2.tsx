@@ -1,0 +1,431 @@
+"use client";
+
+import { cn } from "@/utils/cn";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
+import type { CalendarEvent } from "@/app/(site)/cursuri/program/_types";
+import { buildCalendarEvents, occurrencesToEvents } from "@/utils/fullcalendar-helpers";
+import { fetchCalendarOccurrences } from "@/lib/strapi-calendar";
+import { mergeScoalaDays } from "@/utils/scoala-days";
+import type { EventInput } from "@fullcalendar/core";
+import { WeekendDate, isWeekendInPast } from "@/utils/date";
+import WeekendRow, { type WeekendCardData } from "./WeekendRow";
+import FullCalendarClient from "@/components/blocks/fullcalendar/FullCalendarClient";
+import WeekGridClient from "@/components/blocks/fullcalendar/WeekGridClient";
+import type { CalendarMode } from "@/components/blocks/fullcalendar/types";
+import {
+  CALENDAR_GROUPS,
+  type CalendarGroup,
+} from "@/components/blocks/fullcalendar/calendar-colors";
+import { CalendarViewModeSelect } from "@/components/blocks/fullcalendar/CalendarViewModeSelect";
+import ToggleGroup from "@/components/ui/toggle-group";
+import { format } from "date-fns";
+import { ro } from "date-fns/locale";
+
+// Stable reference - avoids re-creating the array on every render of the toggle
+const CALENDAR_VIEW_OPTIONS = [
+  { value: "calendar" as const, label: "Calendar complet" },
+  { value: "weekends" as const, label: "Weekenduri Școala Patinaj" },
+];
+
+interface SeasonCalendarViewV2Props {
+  seasonCalendar: CalendarEvent[];
+  /** Current Sezon label; no heading when null. */
+  seasonLabel?: string | null;
+  /** "YYYY-MM" - first month of the season */
+  seasonStart?: string | null;
+  /** "YYYY-MM" - last month of the season (inclusive) */
+  seasonEnd?: string | null;
+}
+
+// ─── Weekend card data ────────────────────────────────────────────────────────
+
+interface MonthGroup {
+  label: string; // e.g. "Octombrie 2025"
+  cards: WeekendCardData[];
+}
+
+/**
+ * First day of the month a date falls in, as "YYYY-MM-01" (local components, so
+ * no timezone drift).
+ */
+function monthStart(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
+}
+
+/**
+ * Month range actually covered by the Școala de patinaj weekends, as
+ * [inclusive start, exclusive end) "YYYY-MM-01" strings.
+ *
+ * The curs / liber / anulat weekends are produced only from the `scoala`
+ * occurrences (see occurrencesToCalendarEvents), so their earliest and latest
+ * dates are the real school season. Returns null when there are no school
+ * weekends at all, leaving the caller to fall back to the padded site-settings
+ * window.
+ */
+function deriveWeekendMonthRange(
+  ...weekendGroups: WeekendDate[][]
+): { start: string; end: string } | null {
+  let min: Date | null = null;
+  let max: Date | null = null;
+  for (const group of weekendGroups) {
+    for (const w of group) {
+      if (!min || w.startDate < min) min = w.startDate;
+      if (!max || w.startDate > max) max = w.startDate;
+    }
+  }
+  if (!min || !max) return null;
+  const endExclusive = new Date(max.getFullYear(), max.getMonth() + 1, 1);
+  return { start: monthStart(min), end: monthStart(endExclusive) };
+}
+
+function buildGroupedWeekends(
+  activeWeekends: WeekendDate[],
+  offWeekends: WeekendDate[],
+  cancelledWeekends: WeekendDate[],
+  seasonStart: string, // "YYYY-MM-DD" inclusive start
+  seasonEnd: string,   // "YYYY-MM-DD" exclusive end
+): MonthGroup[] {
+  // Pre-seed all months in the season range so empty months still get a column
+  const groups: MonthGroup[] = [];
+  const cursor = new Date(seasonStart);
+  const end = new Date(seasonEnd);
+  while (cursor < end) {
+    groups.push({
+      label: format(cursor, "LLLL yyyy", { locale: ro }),
+      cards: [],
+    });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+
+  const merged: WeekendCardData[] = [
+    ...activeWeekends.map((w) => ({ weekend: w, type: "curs" as const })),
+    ...offWeekends.map((w) => ({ weekend: w, type: "liber" as const })),
+    ...cancelledWeekends.map((w) => ({ weekend: w, type: "anulat" as const })),
+  ].sort(
+    (a, b) => a.weekend.startDate.getTime() - b.weekend.startDate.getTime(),
+  );
+
+  for (const card of merged) {
+    const label = format(card.weekend.startDate, "LLLL yyyy", { locale: ro });
+    const group = groups.find((g) => g.label === label);
+    if (group) {
+      group.cards.push(card);
+    }
+  }
+  return groups;
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+const MonthColumn: React.FC<{
+  group: MonthGroup;
+  nextActiveWeekend: WeekendDate | null;
+}> = ({ group, nextActiveWeekend }) => {
+  const allPast = group.cards.every((c) => isWeekendInPast(c.weekend));
+  const [collapsed, setCollapsed] = useState(allPast);
+
+  return (
+    <div className="overflow-hidden">
+      {/* Month label - acts as table header */}
+      <div
+        className={cn(
+          "px-4 py-3 border-b-retro border-line flex items-center justify-between",
+          allPast && "sm:cursor-default cursor-pointer select-none",
+        )}
+        onClick={allPast ? () => setCollapsed((v) => !v) : undefined}
+      >
+        <span className="text-label uppercase text-primary capitalize">
+          {group.label}
+        </span>
+        {allPast && (
+          <span className="text-caption sm:hidden text-secondary">
+            {collapsed ? "▸" : "▾"}
+          </span>
+        )}
+      </div>
+
+      {/* Weekend rows */}
+      <div className={cn(collapsed && "hidden sm:block")}>
+        {group.cards.map((card, i) => (
+          <WeekendRow key={i} card={card} nextActiveWeekend={nextActiveWeekend} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
+  seasonCalendar,
+  seasonLabel = null,
+  seasonStart,
+  seasonEnd,
+}) => {
+  const { allActiveWeekends, allOffWeekends, allCancelledWeekends, nextActiveWeekend, tileEvents } =
+    useSeasonCalendar(seasonCalendar);
+
+  // No occurrences at all (program not published yet): skip the calendar/
+  // weekend UI entirely and show a short note instead of an empty-looking grid.
+  const hasEvents = seasonCalendar.length > 0;
+
+  const [activeView, setActiveView] = useState<"calendar" | "weekends">(
+    "calendar",
+  );
+
+  // /cursuri/program#weekends opens the weekend list directly, so the view can
+  // be linked to from anywhere. Read after mount rather than in the initial
+  // state: the server has no hash, and seeding it here would make the first
+  // client render disagree with the server's HTML.
+  useEffect(() => {
+    const fromHash = () => {
+      const h = window.location.hash.replace("#", "").toLowerCase();
+      if (h === "weekends" || h === "weekenduri") setActiveView("weekends");
+      else if (h === "calendar") setActiveView("calendar");
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+  const [calendarMode, setCalendarMode] = useState<CalendarMode>("month");
+
+  // Defer FullCalendar bundle until the container scrolls near the viewport.
+  // Saves ~50 to 80 KB of initial JS on /cursuri/program.
+  const calendarContainerRef = useRef<HTMLDivElement>(null);
+  const [shouldMountCalendar, setShouldMountCalendar] = useState(false);
+
+  useEffect(() => {
+    if (shouldMountCalendar) return;
+    const node = calendarContainerRef.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldMountCalendar(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShouldMountCalendar(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [shouldMountCalendar]);
+
+  // Derive FC valid range from seasonStart/seasonEnd ("YYYY-MM")
+  // validRangeEnd is exclusive in FullCalendar → add 1 month past seasonEnd
+  const fcValidStart = seasonStart ? `${seasonStart}-01` : "2025-10-01";
+  const fcValidEnd = useMemo(() => {
+    const end = seasonEnd ?? "2026-05";
+    const [y, m] = end.split("-").map(Number);
+    const next = m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, "0")}`;
+    return `${next}-01`;
+  }, [seasonEnd]);
+
+  // Open at the current month, clamped to the season bounds
+  const calendarInitialDate = useMemo(() => {
+    const start = new Date(fcValidStart);
+    const end = new Date(fcValidEnd);
+    const today = new Date();
+    const clamped = today < start ? start : today >= end ? new Date(end.getFullYear(), end.getMonth() - 1, 1) : today;
+    return `${clamped.getFullYear()}-${String(clamped.getMonth() + 1).padStart(2, "0")}-01`;
+  }, [fcValidStart, fcValidEnd]);
+
+  // Shared focus date so switching Lunar <-> Săptămânal keeps roughly the same period.
+  const [focusDate, setFocusDate] = useState<string>(calendarInitialDate);
+
+  // Timed hourly sessions for the WEEK grid only. Fetched per visible week from
+  // the backend expansion endpoint: a full season exceeds its 92-day cap, so we
+  // request just the focused week and refetch as you navigate.
+  const [hourlyEvents, setHourlyEvents] = useState<EventInput[]>([]);
+  useEffect(() => {
+    if (calendarMode !== "week") return;
+    const d = new Date(focusDate);
+    if (Number.isNaN(d.getTime())) return;
+    const dow = (d.getDay() + 6) % 7; // Monday = 0
+    const monday = new Date(d);
+    monday.setDate(d.getDate() - dow);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    const ymd = (x: Date) =>
+      `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+    let cancelled = false;
+    fetchCalendarOccurrences(ymd(monday), ymd(sunday)).then((res) => {
+      if (!cancelled) {
+        // One Școala tile per school day, like the month grid.
+        const scoala = mergeScoalaDays(res.occurrences.filter((o) => o.type === "scoala"));
+        setHourlyEvents(occurrencesToEvents([...scoala, ...res.occurrences.filter((o) => o.type !== "scoala")]));
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [calendarMode, focusDate]);
+
+  const calendarEvents = useMemo(() => buildCalendarEvents(tileEvents), [tileEvents]);
+
+  // Legend: only the groups the loaded season actually uses, in map order.
+  const legendGroups = useMemo(() => {
+    const present = new Set(
+      calendarEvents.map((e) => e.extendedProps?.group as CalendarGroup | undefined),
+    );
+    const shown = CALENDAR_GROUPS.filter((g) => present.has(g.id));
+    return shown.length ? shown : CALENDAR_GROUPS;
+  }, [calendarEvents]);
+
+  // Filter weekends to the season bounds before building the list view
+  const { filteredActive, filteredOff, filteredCancelled } = useMemo(() => {
+    const start = new Date(fcValidStart);
+    const end = new Date(fcValidEnd); // exclusive
+    const inRange = (w: WeekendDate) => w.startDate >= start && w.startDate < end;
+    return {
+      filteredActive: allActiveWeekends.filter(inRange),
+      filteredOff: allOffWeekends.filter(inRange),
+      filteredCancelled: allCancelledWeekends.filter(inRange),
+    };
+  }, [allActiveWeekends, allOffWeekends, allCancelledWeekends, fcValidStart, fcValidEnd]);
+
+  // The weekend view spans exactly the Școala de patinaj season, derived from the
+  // weekends themselves, so the padded shoulder months (which the calendar view
+  // and the occurrence fetch still need) do not show up here as empty columns.
+  const weekendRange = useMemo(
+    () =>
+      deriveWeekendMonthRange(filteredActive, filteredOff, filteredCancelled)
+      ?? { start: fcValidStart, end: fcValidEnd },
+    [filteredActive, filteredOff, filteredCancelled, fcValidStart, fcValidEnd],
+  );
+
+  const groupedWeekends = useMemo(
+    () => buildGroupedWeekends(filteredActive, filteredOff, filteredCancelled, weekendRange.start, weekendRange.end),
+    [filteredActive, filteredOff, filteredCancelled, weekendRange],
+  );
+
+  return (
+    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-surface">
+      <div className="w-full max-w-content mx-auto gutter">
+        {/* Header: eyebrow + title left, description right */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
+          <div>
+            <span className="text-label uppercase text-accent">
+              Calendar sezon
+            </span>
+            {seasonLabel && (
+              <h2 className="text-heading text-primary mt-2">
+                Sezonul {seasonLabel}
+              </h2>
+            )}
+          </div>
+          <p className="text-body-sm text-secondary sm:text-right sm:max-w-aside">
+            Datele în care se desfășoară cursurile și weekend-urile libere.
+          </p>
+        </div>
+
+        {!hasEvents ? (
+          <p className="mt-6 text-body-sm text-secondary">
+            Programul sezonului va fi publicat în curând.
+          </p>
+        ) : (
+        <>
+        {/* View toggle */}
+        <div className="mt-6 mb-8">
+          <ToggleGroup
+            aria-label="Mod de afișare"
+            options={CALENDAR_VIEW_OPTIONS}
+            value={activeView}
+            onChange={(v) => {
+              setActiveView(v);
+              // replaceState, not a hash assignment: setting location.hash
+              // would jump the page to the anchor.
+              window.history.replaceState(null, "", v === "weekends" ? "#weekends" : " ");
+            }}
+            disabled={!shouldMountCalendar && activeView === "calendar"}
+          />
+        </div>
+
+        {/* Calendar view: Lunar (month grid) / Săptămânal (rolling timeline) */}
+        {activeView === "calendar" && (
+          <>
+            {/* Shared card chrome (border + offset shadow) for both modes */}
+            <div
+              ref={calendarContainerRef}
+              className="bg-surface border-retro border-line shadow-retro"
+            >
+              {calendarMode === "month" ? (
+                shouldMountCalendar ? (
+                  <FullCalendarClient
+                    events={calendarEvents}
+                    initialDate={focusDate}
+                    validRangeStart={fcValidStart}
+                    validRangeEnd={fcValidEnd}
+                    onDatesChange={setFocusDate}
+                    viewModeControl={
+                      <CalendarViewModeSelect value={calendarMode} onChange={setCalendarMode} />
+                    }
+                  />
+                ) : (
+                  <div
+                    className="flex items-center justify-center bg-surface-subtle"
+                    style={{ minHeight: 600 }}
+                    aria-hidden="true"
+                  />
+                )
+              ) : (
+                <WeekGridClient
+                  // Week grid uses ONLY the per-week hourly occurrences. They already
+                  // cover every event in the week (Școala as timed sessions, plus
+                  // non-Școala events); merging the all-day weekend tiles from
+                  // calendarEvents here would double the Școala weekend as both an
+                  // all-day "Curs" and its timed blocks.
+                  events={hourlyEvents}
+                  initialDate={focusDate}
+                  validRangeStart={fcValidStart}
+                  validRangeEnd={fcValidEnd}
+                  onDatesChange={setFocusDate}
+                  viewModeControl={
+                    <CalendarViewModeSelect value={calendarMode} onChange={setCalendarMode} />
+                  }
+                />
+              )}
+            </div>
+
+            {/* Legend */}
+            <div className="text-caption mt-4 flex flex-wrap gap-x-6 gap-y-2 text-secondary">
+              {legendGroups.map((g) => (
+                <span key={g.id} className="inline-flex items-center gap-2">
+                  <i className="w-3.5 h-2.5" style={{ backgroundColor: g.bg }} />
+                  {g.label}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Weekend view - month columns */}
+        {activeView === "weekends" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-line-subtle border-retro border-line">
+            {groupedWeekends.map((group) => (
+              <MonthColumn
+                key={group.label}
+                group={group}
+                nextActiveWeekend={nextActiveWeekend}
+              />
+            ))}
+          </div>
+        )}
+        </>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default SeasonCalendarViewV2;
