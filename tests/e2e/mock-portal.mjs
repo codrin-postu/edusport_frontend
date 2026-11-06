@@ -65,8 +65,8 @@ function issue(email, deviceKey, userAgent) {
   if (known) {
     sess.deviceId = known.id;
   } else {
-    newKey = `dev-key-${auth.seq}`;
-    const device = { id: `dev-new-${auth.seq}`, key: newKey, label: userAgent ? "Chrome pe Mac" : "Browser", lastSeenAt: new Date().toISOString() };
+    newKey = `devkey${auth.seq}`;
+    const device = { id: `devnew${auth.seq}`, key: newKey, label: userAgent ? "Chrome pe Mac" : "Browser", lastSeenAt: new Date().toISOString() };
     world.devices.push(device);
     sess.deviceId = device.id;
   }
@@ -219,7 +219,7 @@ function todayData(date) {
     date, today,
     groups: isToday ? own.map((g) => classRow(g, date)) : [],
     lessons: Object.values(world.lessons).filter((l) => l.date === date).map(lessonRow),
-    todo: isToday ? [classRow(world.groups["g-avansati"], addDays(today, -6), false)] : [],
+    todo: isToday ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [],
   };
 }
 
@@ -307,7 +307,7 @@ function lessonWrite({ body, res, params, method }) {
   if (method === "POST") {
     const athlete = Object.values(world.members).flat().find((m) => m.athleteId === body.athleteId);
     if (!athlete) return club(res, 400, MSG.invalid);
-    const lessonId = `l-new-${++world.counters.lesson}`;
+    const lessonId = `lnew${++world.counters.lesson}`;
     world.lessons[lessonId] = { lessonId, athleteId: athlete.athleteId, athleteName: athlete.name, date: body.date, startTime: body.startTime, durationMin: body.durationMin, coachIds: body.coachIds, state: "planned", present: null };
     return ok(res, { lessonId, changed: true, toast: MSG.saved });
   }
@@ -328,7 +328,7 @@ function historyData(month) {
     rows: [
       { kind: "grup", date: `${m}-05`, name: "Avansați", present: 8, durationMin: 60, sessionId: "s-today", lessonId: null },
       { kind: "inlocuitor", date: `${m}-04`, name: "Intermediari Silver", present: 10, durationMin: 60, sessionId: "s-standin", lessonId: null },
-      { kind: "individuala", date: `${m}-03`, name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "l-done" },
+      { kind: "individuala", date: `${m}-03`, name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "ldone" },
     ],
   };
 }
@@ -404,7 +404,7 @@ const withGroup = (fn) => (ctx) => {
   return g ? fn(ctx, g) : notFound(ctx.res);
 };
 const ownOnly = (fn) => withGroup((ctx, g) => (g.own ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
-const eventGuard = (fn) => (ctx) => (/^ev-(silver|uscat)/.test(ctx.params[0]) ? club(ctx.res, 403, MSG.noAccess) : fn(ctx));
+const eventGuard = (fn) => (ctx) => (/^ev(silver|uscat)/.test(ctx.params[0]) ? club(ctx.res, 403, MSG.noAccess) : fn(ctx));
 
 function savedDays({ res, query }, g) {
   const month = query.get("month") ?? "";
@@ -426,7 +426,7 @@ function newAthlete({ body, res }) {
   if (!g) return club(res, 400, MSG.invalid);
   if (!g.own) return club(res, 403, MSG.noAccess);
   if (typeof body.name !== "string" || !body.name.trim()) return club(res, 400, MSG.invalid);
-  const athleteId = `a-new-${++world.counters.athlete}`;
+  const athleteId = `anew${++world.counters.athlete}`;
   world.members[g.id].push({ athleteId, name: body.name.trim(), age: null, isNew: true, alsoIn: [], inactive: false });
   ok(res, { athleteId, toast: MSG.saved });
 }
@@ -472,7 +472,7 @@ const coachRoutes = [
   ["POST", /^\/groups\/([^/]+)\/members$/, ownOnly(addMembers)],
   ["GET", /^\/history$/, ({ res, query }) => ok(res, historyData(query.get("month")))],
   ["GET", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
-  ["POST", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, body }) => ok(res, { eventId: `ev-new-${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],
+  ["POST", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, body }) => ok(res, { eventId: `evnew${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],
   ["PUT", /^\/groups\/([^/]+)\/program-public$/, ownOnly(({ res, body }, g) => { g.programPublic = Boolean(body.value); ok(res, { toast: MSG.saved }); })],
   ["PUT", /^\/program\/([^/]+)$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
   ["POST", /^\/program\/([^/]+)\/end$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
