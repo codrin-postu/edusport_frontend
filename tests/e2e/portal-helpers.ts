@@ -20,6 +20,7 @@ export type MockState = {
   googleClientId?: string | null;
   emptyToday?: boolean;
   refreshStatus?: number;
+  refuseSecret?: boolean;
 };
 
 /** Logs in through the BFF from the page, so the session cookies land in the browser context. */

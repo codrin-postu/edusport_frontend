@@ -1,7 +1,7 @@
 // A stand-in for the Strapi portal routes (auth and coach), for the coach app e2e.
 // Synthetic data only (tests/e2e/portal-fixtures.mjs). Plain Node http, as mock-strapi.mjs.
 // Usage: node tests/e2e/mock-portal.mjs <port>
-//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus? }
+//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret? }
 //   GET  /__mock/log    { calls: [{ method, path, headers, body }], refreshes: number }
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
@@ -31,7 +31,7 @@ let auth;
 function reset() {
   today = ymd(new Date());
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0 };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -46,7 +46,7 @@ const send = (res, status, body) => {
 const ok = (res, data) => send(res, 200, { data });
 const club = (res, status, message, details) =>
   send(res, status, { data: null, error: { status, name: "ClubAdminError", message, ...(details ? { details } : {}) } });
-const policy403 = (res) => send(res, 403, { data: null, error: { status: 403, name: "ForbiddenError", message: "Policy Failed", details: {} } });
+const policy403 = (res) => send(res, 403, { data: null, error: { status: 403, name: "ForbiddenError", message: "Forbidden", details: {} } });
 const unauthorized = (res) => send(res, 401, { data: null, error: { status: 401, name: "UnauthorizedError", message: "Missing or invalid credentials", details: {} } });
 
 async function readBody(req) {
@@ -516,7 +516,7 @@ function handleMock(req, res, url, body) {
 }
 
 function handlePortal(req, res, url, body) {
-  const wanted = req.headers["x-portal-secret"] === SECRET;
+  const wanted = !state.refuseSecret && req.headers["x-portal-secret"] === SECRET;
   const isCoach = url.pathname.startsWith(`${PREFIX}/`);
   const route = isCoach ? find(coachRoutes, req.method, url.pathname.slice(PREFIX.length)) : find(authRoutes, req.method, url.pathname);
   if (!route) return send(res, 404, { data: null, error: { status: 404, name: "NotFoundError", message: "Not Found" } });

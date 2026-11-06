@@ -59,6 +59,26 @@ test("a cut account answers 401 SessionEnded and clears the session cookies", as
   expect(await cookieNamed(page, "es_rt")).toBeFalsy();
 });
 
+test("a refused BFF secret on a coach call answers 503 and keeps the cookies", async({ page }) => {
+  await loginAs(page);
+  await mockState({ refuseSecret: true });
+  const r = await api(page, "GET", "/today");
+  expect(r.status).toBe(503);
+  expect(await cookieNamed(page, "es_at")).toBeTruthy();
+  expect(await cookieNamed(page, "es_rt")).toBeTruthy();
+});
+
+test("a refresh answered 400 ends the session", async({ page }) => {
+  await mockState({ accessTtlSec: 1 });
+  await loginAs(page);
+  await page.waitForTimeout(1500);
+  await mockState({ refreshStatus: 400 });
+  const r = await api(page, "GET", "/today");
+  expect(r.status).toBe(401);
+  expect(r.json.error?.name).toBe("SessionEnded");
+  expect(await cookieNamed(page, "es_rt")).toBeFalsy();
+});
+
 test("a ClubAdminError 403 shows its message and keeps the cookies", async({ page }) => {
   await loginAs(page);
   const r = await api(page, "PUT", "/groups/gsilver/program-public", { value: true });

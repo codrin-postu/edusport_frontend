@@ -54,8 +54,8 @@ export function maskSecrets(text: string): string {
     .replace(new RegExp(`"(${SECRET_KEYS})"\\s*:\\s*"[^"]*"`, "g"), "\"$1\":\"***\"");
 }
 
-/** What a failed auth/refresh means: null ends the session (backend 401), a number is the status to answer. */
+/** What a failed auth/refresh means: null ends the session (backend 401 or 400, a garbage token), a number is the status to answer. */
 export function refreshFailure(status: number): number | null {
-  if (status === 401) return null;
+  if (status === 401 || status === 400) return null;
   return status === 403 || status === 503 ? 503 : 502;
 }

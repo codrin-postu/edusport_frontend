@@ -54,6 +54,7 @@ it("forwards only a real client IP", async() => {
 it("only a backend 401 ends the session on refresh", () => {
   const { refreshFailure } = u;
   assert.equal(refreshFailure(401), null);
+  assert.equal(refreshFailure(400), null);
   assert.equal(refreshFailure(502), 502);
   assert.equal(refreshFailure(503), 503);
   assert.equal(refreshFailure(403), 503);

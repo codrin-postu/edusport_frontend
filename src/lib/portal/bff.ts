@@ -99,6 +99,16 @@ const ended = (ctx: BffContext): CoachAnswer => ({
   status: 401, body: { data: null, error: { status: 401, name: "SessionEnded", message: "" } }, cookies: clearSessionCookies(ctx.secure),
 });
 
+// The backend answers a refused BFF secret and a cut coach account the same way (403 ForbiddenError
+// "Forbidden", both thrown by global::is-coach), so the coach answer cannot tell them apart. A BFF-only
+// route that needs no session says which one it is: it answers 403 only for a refused secret.
+// An outage during the probe also keeps the session: a cut is never assumed from silence.
+async function secretRefused(ctx: BffContext): Promise<boolean> {
+  const probe = await callStrapi("auth/google/config", { method: "GET" }, ctx);
+  if (probe.status === 403) console.error("portal-bff: secret refused");
+  return probe.status === 403 || probe.status >= 500;
+}
+
 function coachInit(method: string, path: string, body: unknown, access: string, ctx: BffContext): StrapiInit {
   const device = method === "GET" && path.startsWith("/me/devices") ? ctx.device : null;
   return { method, body: method === "GET" ? undefined : body, access, device };
@@ -130,7 +140,7 @@ export async function coachCall(ctx: BffContext, method: string, path: string, b
     outcome = classifyCoach(res.status, res.body);
     if (outcome === "refresh") return ended(ctx);
   }
-  if (outcome === "cut") return ended(ctx);
+  if (outcome === "cut") return (await secretRefused(ctx)) ? { status: 503, body: refusal(503, STATES.loadFailed), cookies } : ended(ctx);
   return { status: res.status, body: res.body, cookies };
 }
 
