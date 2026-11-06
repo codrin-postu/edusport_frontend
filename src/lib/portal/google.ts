@@ -40,3 +40,16 @@ export function decodeGoogleCookie(raw: string | null, nowMs: number): GoogleCoo
     return null;
   }
 }
+
+const CALLBACK_PATH = "/api/portal/google/callback";
+
+/**
+ * The redirect URI Google gets, from the PORTAL_HOST_ANTRENOR setting, never from the request's Host header.
+ * Without the setting only the local dev host antrenor.localhost is accepted; anything else answers null.
+ */
+export function googleRedirectUri(configuredHost: string | undefined, requestHost: string | null, secure: boolean): string | null {
+  const configured = configuredHost?.trim();
+  if (configured) return `https://${configured}${CALLBACK_PATH}`;
+  if (requestHost && /^antrenor\.localhost(:\d+)?$/i.test(requestHost)) return `${secure ? "https" : "http"}://${requestHost}${CALLBACK_PATH}`;
+  return null;
+}

@@ -34,3 +34,10 @@ it("round-trips the cookie and rejects expired or malformed ones", () => {
   assert.equal(g.decodeGoogleCookie("%%%", 0), null);
   assert.equal(g.decodeGoogleCookie(null, 0), null);
 });
+
+it("builds the redirect URI from the setting, not the Host header", () => {
+  assert.equal(g.googleRedirectUri("antrenor.example.ro", "evil.example", true), "https://antrenor.example.ro/api/portal/google/callback");
+  assert.equal(g.googleRedirectUri(undefined, "antrenor.localhost:3200", false), "http://antrenor.localhost:3200/api/portal/google/callback");
+  assert.equal(g.googleRedirectUri(undefined, "evil.example", true), null);
+  assert.equal(g.googleRedirectUri("  ", null, true), null);
+});

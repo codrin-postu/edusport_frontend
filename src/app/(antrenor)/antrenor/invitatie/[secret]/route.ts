@@ -16,9 +16,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ secr
     status: 303,
     headers: { Location: "/invitatie", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" },
   });
-  if (!SECRET.test(secret)) return res;
   const ctx = bffContext(req);
-  const c = shortCookie(ctx.names.invite, secret, INVITE_MAX_AGE, ctx.secure);
+  // A malformed secret also drops an older invite cookie, so a stale invite cannot linger behind a bad link.
+  const valid = SECRET.test(secret);
+  const c = valid ? shortCookie(ctx.names.invite, secret, INVITE_MAX_AGE, ctx.secure) : shortCookie(ctx.names.invite, "", 0, ctx.secure);
   res.cookies.set({ name: c.name, value: c.value, maxAge: c.maxAge, httpOnly: c.httpOnly, secure: c.secure, sameSite: c.sameSite, path: c.path });
   return res;
 }

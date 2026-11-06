@@ -110,3 +110,10 @@ test("an oversized body is refused with 413, declared or chunked", async({ reque
   expect(declared.status()).toBe(413);
   expect((await mockLog()).filter((c) => c.path === "/api/portal/auth/login")).toHaveLength(0);
 });
+
+test("a malformed invite secret drops an older invite cookie", async({ page }) => {
+  await page.goto(`${COACH_BASE}/invitatie/${INVITE}`);
+  expect(await cookieNamed(page, "es_inv")).toBeTruthy();
+  await page.goto(`${COACH_BASE}/invitatie/short`);
+  expect(await cookieNamed(page, "es_inv")).toBeFalsy();
+});

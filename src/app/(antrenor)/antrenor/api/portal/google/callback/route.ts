@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { bffContext, callStrapi } from "@/lib/portal/bff";
 import { STATES } from "@/lib/portal/copy";
 import { sessionCookies, shortCookie, type CookieSpec } from "@/lib/portal/cookies";
-import { decodeGoogleCookie } from "@/lib/portal/google";
+import { decodeGoogleCookie, googleRedirectUri } from "@/lib/portal/google";
 import { readSession } from "@/lib/portal/upstream";
 
 export const runtime = "nodejs";
@@ -37,7 +37,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const back = saved?.invite ? "/invitatie" : "/intrare";
   if (!saved || !state || state !== saved.state || q.has("error") || !code) return go(back, [clearGoogle]);
   const invite = saved.invite ? req.cookies.get(ctx.names.invite)?.value : undefined;
-  const redirectUri = `${ctx.secure ? "https" : "http"}://${ctx.host ?? ""}/api/portal/google/callback`;
+  const redirectUri = googleRedirectUri(process.env.PORTAL_HOST_ANTRENOR, ctx.host, ctx.secure);
+  if (!redirectUri) return go(back, [clearGoogle]);
   const res = await callStrapi(
     "auth/google",
     { method: "POST", body: { host: "antrenor", code, codeVerifier: saved.verifier, redirectUri, nonce: saved.nonce, ...(invite ? { invite } : {}), ...(ctx.device ? { deviceKey: ctx.device } : {}) }, userAgent: true },
