@@ -535,3 +535,7 @@ Companion screens 4-6 (p6-4 to p6-6), answers in edusport_backend/.superpowers/p
 - q17: many devices at once; Securitate lists them with "Deconectează" each; e-mail on a new device.
 - q18: 5 wrong passwords per e-mail in 15 minutes = 15 minute pause with a mail to the owner, plus a per-IP limit; reset and code mails max 5 per hour per e-mail; identical answers for unknown e-mails.
 - q19: hosts antrenor.scoaladepatinaj.com and sportiv.scoaladepatinaj.com; local antrenor.localhost; portal hosts noindex.
+
+## 2026-11-06 phase 6 account answers (user)
+- q26: a deleted coach keeps a disabled portal account; a new invite to the same e-mail reuses it, linked to the new team member. Retention of that data follows the club retention rule (open club item).
+- q27: an admin e-mail change logs the coach out on every device and unlinks Google.
