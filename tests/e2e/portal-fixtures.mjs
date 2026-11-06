@@ -63,6 +63,7 @@ export function buildWorld(today) {
   };
   const lessons = {
     "ldone": { lessonId: "ldone", athleteId: "amatei", athleteName: "Matei Radu", date: today, startTime: "15:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
+    "larchived": { lessonId: "larchived", athleteId: "aana", athleteName: "Ana Stoica", date: addDays(today, -9), startTime: "16:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
     "lplan": { lessonId: "lplan", athleteId: "aana", athleteName: "Ana Stoica", date: today, startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null },
   };
   const devices = [
