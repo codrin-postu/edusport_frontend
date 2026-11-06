@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
-import "./globals.css";
-import { Footer, Header } from "../components/blocks";
+import "../globals.css";
+import { Footer, Header } from "@/components/blocks";
 import ResumeRegistration from "@/components/blocks/resume-registration";
-import NavigationProgress from "../components/NavigationProgress";
+import NavigationProgress from "@/components/NavigationProgress";
 import { getSiteSettings } from "@/lib/site-settings";
 import { fetchAnnouncement } from "@/lib/strapi-announcement";
 import { fetchDisabledPages, fetchNavPromoOverrides } from "@/lib/strapi-navigation";
@@ -38,7 +38,7 @@ const leagueSpartan = League_Spartan({
 });
 
 const climateCrisis = localFont({
-  src: "../../public/fonts/ClimateCrisis-1979.woff2",
+  src: "../../../public/fonts/ClimateCrisis-1979.woff2",
   variable: "--font-climate-crisis",
   display: "swap",
 });

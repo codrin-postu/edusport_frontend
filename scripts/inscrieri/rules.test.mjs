@@ -1,11 +1,11 @@
 // Loads the TypeScript source directly (node >= 22.18 strips types natively).
-// src/app/inscrieri/_rules.ts has only type imports, which is what makes this possible.
+// src/app/(site)/inscrieri/_rules.ts has only type imports, which is what makes this possible.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
 // CI runs Node 20, which cannot import .ts files: skip there instead of failing.
 const canStripTypes = Boolean(process.features?.typescript);
-const rules = canStripTypes ? await import("../../src/app/inscrieri/_rules.ts") : {};
+const rules = canStripTypes ? await import("../../src/app/(site)/inscrieri/_rules.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const STEP = {

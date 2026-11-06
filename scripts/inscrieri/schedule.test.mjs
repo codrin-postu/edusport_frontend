@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 // CI runs Node 20, which cannot import .ts files: skip there instead of failing.
 const canStripTypes = Boolean(process.features?.typescript);
-const s = canStripTypes ? await import("../../src/app/inscrieri/_schedule.ts") : {};
+const s = canStripTypes ? await import("../../src/app/(site)/inscrieri/_schedule.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 it("nextMonthWindow runs to the same day next month", () => {

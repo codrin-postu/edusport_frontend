@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSeasonCalendar } from "@/hooks/useSeasonCalendar";
-import type { CalendarEvent } from "@/app/cursuri/program/_types";
+import type { CalendarEvent } from "@/app/(site)/cursuri/program/_types";
 import { buildCalendarEvents, occurrencesToEvents } from "@/utils/fullcalendar-helpers";
 import { fetchCalendarOccurrences } from "@/lib/strapi-calendar";
 import { mergeScoalaDays } from "@/utils/scoala-days";

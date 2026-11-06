@@ -18,7 +18,7 @@ import {
 import { strapiMediaUrl } from "@/lib/strapi-article";
 import type { SkateResult } from "@/lib/skate-results";
 import SkateResults from "./_SkateResults";
-import { getPlacementInfo, type PlacementInfo } from "@/app/despre-noi/realizari/_data";
+import { getPlacementInfo, type PlacementInfo } from "@/app/(site)/despre-noi/realizari/_data";
 import { MedalTotals } from "@/components/ui/medal";
 import { GalleryCarousel } from "@/components/blocks/gallery-carousel";
 import { Pagination } from "@/components/Pagination";

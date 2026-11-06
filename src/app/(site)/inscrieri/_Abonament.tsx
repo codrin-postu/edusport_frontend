@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 import Button from "@/components/ui/button";
 import { formatRon, type PriceBox, type Upsell } from "@/lib/club-public";
-import ItemTooltip from "@/app/cursuri/blocks/ItemTooltip";
-import WeekendRow from "@/app/cursuri/blocks/WeekendRow";
+import ItemTooltip from "@/app/(site)/cursuri/blocks/ItemTooltip";
+import WeekendRow from "@/app/(site)/cursuri/blocks/WeekendRow";
 import { getNextActiveWeekend, type WeekendDate } from "@/utils/date";
 import { groupByMonth, type ScheduleWeekend } from "./_schedule";
 

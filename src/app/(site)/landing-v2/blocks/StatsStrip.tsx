@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "motion/react";
 import Stat from "@/components/ui/stat";
-import type { HomepageStatItem } from "@/app/homepage/_types";
+import type { HomepageStatItem } from "@/app/(site)/homepage/_types";
 
 // Mirrors the 4 evergreen numbers surfaced on /despre-noi.
 // Split into value + suffix so the number can count up on scroll.

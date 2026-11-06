@@ -1,4 +1,4 @@
-// Compares the form's offline config (src/app/inscrieri/_types.ts) with the
+// Compares the form's offline config (src/app/(site)/inscrieri/_types.ts) with the
 // live public config of a running backend: GET <STRAPI>/api/forms/inscriere/config.
 // Usage: STRAPI_URL=http://localhost:1338 npm run check:inscriere-config
 // The live config includes admin overlay edits (renamed labels), so run it
@@ -6,7 +6,7 @@
 import assert from "node:assert/strict";
 
 const base = process.env.STRAPI_URL ?? "http://localhost:1337";
-const { FALLBACK_CONFIG } = await import("../../src/app/inscrieri/_types.ts");
+const { FALLBACK_CONFIG } = await import("../../src/app/(site)/inscrieri/_types.ts");
 
 // `display` is backend-only (the frontend draws consents its own way).
 const strip = (config) => ({

@@ -1,4 +1,4 @@
-import { type CategoryKey } from "@/app/noutati/_data";
+import { type CategoryKey } from "@/app/(site)/noutati/_data";
 
 // The section component that lived here was replaced by the landing page's
 // EventsNewsSection. Only the article shape stays, shared by the home page
