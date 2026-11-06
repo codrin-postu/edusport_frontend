@@ -1,7 +1,7 @@
 // A stand-in for the Strapi portal routes (auth and coach), for the coach app e2e.
 // Synthetic data only (tests/e2e/portal-fixtures.mjs). Plain Node http, as mock-strapi.mjs.
 // Usage: node tests/e2e/mock-portal.mjs <port>
-//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday? }
+//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus? }
 //   GET  /__mock/log    { calls: [{ method, path, headers, body }], refreshes: number }
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
@@ -31,9 +31,10 @@ let auth;
 function reset() {
   today = ymd(new Date());
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0 };
   calls = [];
-  auth = { seq: 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
+  // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
+  auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
 }
 reset();
 
@@ -173,6 +174,7 @@ const authRoutes = [
   ["POST", /^\/api\/portal\/auth\/google$/, google],
   ["GET", /^\/api\/portal\/auth\/google\/config$/, ({ res }) => ok(res, { clientId: state.googleClientId })],
   ["POST", /^\/api\/portal\/auth\/refresh$/, ({ body, res }) => {
+    if (state.refreshStatus) return club(res, state.refreshStatus, "");
     const out = refresh(body.refreshToken);
     return out ? ok(res, out) : club(res, 401, "");
   }],
