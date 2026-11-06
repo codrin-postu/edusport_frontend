@@ -6,7 +6,7 @@
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
 import {
-  INVITE_OLD, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf, ymd,
+  FROZEN_TODAY, INVITE_OLD, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
 } from "./portal-fixtures.mjs";
 
 const PORT = Number(process.argv[2] ?? 18891);
@@ -29,7 +29,7 @@ let calls;
 let auth;
 
 function reset() {
-  today = ymd(new Date());
+  today = FROZEN_TODAY;
   world = buildWorld(today);
   state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false };
   calls = [];

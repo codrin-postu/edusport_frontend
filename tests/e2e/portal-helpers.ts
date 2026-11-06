@@ -23,8 +23,22 @@ export type MockState = {
   refuseSecret?: boolean;
 };
 
+/** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */
+export const TODAY = "2026-11-05";
+
+/**
+ * Per-test isolation: the BFF limits auth calls per client address (30 per 15 minutes), so every test
+ * sends its own x-real-ip, and the browser clock stands on the mock's "today".
+ */
+export async function isolate(page: Page): Promise<void> {
+  const octet = (): number => 1 + Math.floor(Math.random() * 254);
+  await page.context().setExtraHTTPHeaders({ "x-real-ip": `10.${octet()}.${octet()}.${octet()}` });
+  await page.clock.setFixedTime(new Date(`${TODAY}T12:00:00Z`));
+}
+
 /** Logs in through the BFF from the page, so the session cookies land in the browser context. */
 export async function loginAs(page: Page, email: string = COACH_EMAIL, password: string = COACH_PASSWORD): Promise<void> {
+  await isolate(page);
   await page.goto(`${COACH_BASE}/robots.txt`);
   const status = await page.evaluate(async({ email: e, password: p }) => {
     const res = await fetch("/api/portal/auth/login", {

@@ -4,24 +4,18 @@ import { COACH_BASE, loginAs, mockReset, mockState } from "./portal-helpers";
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
 
-const WD = ["DU", "LU", "MA", "MI", "JO", "VI", "SÂ"];
-const MON = ["IAN", "FEB", "MAR", "APR", "MAI", "IUN", "IUL", "AUG", "SEP", "OCT", "NOI", "DEC"];
-const SHORT = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"];
-
 test("Azi: greeting, day tile, groups, lessons and the todo row", async({ page }) => {
   await loginAs(page);
   await page.goto("/");
-  const now = new Date();
   await expect(page.getByRole("heading", { name: "Bună, Andrei" })).toBeVisible();
-  await expect(page.getByText(`${WD[now.getDay()]} ${now.getDate()} ${MON[now.getMonth()]}`)).toBeVisible();
+  await expect(page.getByText("JO 5 NOI")).toBeVisible();
   await expect(page.getByText("grup, 9 copii")).toBeVisible();
   const saved = page.getByRole("link").filter({ hasText: "grup, 9 copii" });
   await expect(saved.getByText("Completat")).toBeVisible();
   await expect(saved).toHaveAttribute("href", /\/prezenta\?id=s-today$/);
   await expect(page.getByText("Lecții individuale")).toBeVisible();
   await expect(page.getByRole("link", { name: "+ Lecție individuală" })).toHaveAttribute("href", "/lectie/noua");
-  const six = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
-  await expect(page.getByText(`grup, ${six.getDate()} ${SHORT[six.getMonth()]}`)).toBeVisible();
+  await expect(page.getByText("grup, 30 oct")).toBeVisible();
   await expect(page.getByText("De făcut")).toBeVisible();
 });
 
@@ -67,18 +61,20 @@ test("other group: banner, stand-in today, no roster", async({ page }) => {
   await page.goto("/grupe/guscat");
   await expect(page.getByText("Grupa altui antrenor")).toBeVisible();
   await expect(page.getByText("Program: Lu, Jo 17:00")).toBeVisible();
-  // The mock gives Uscat Juniori a class only on Monday and Thursday; on other days the stand-in sheet lists its recent slots.
-  if ([1, 4].includes(new Date().getDay())) {
-    await expect(page.getByRole("link", { name: "Înlocuiesc azi" })).toBeVisible();
-  } else {
-    await page.getByRole("button", { name: "Fă prezența ca înlocuitor" }).click();
-    await expect(page.getByRole("dialog").getByRole("link")).toHaveCount(2);
-    await expect(page.getByRole("dialog").getByRole("link").first()).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Aguscat%3A/);
-    await page.keyboard.press("Escape");
-  }
+  await expect(page.getByRole("link", { name: "Înlocuiesc azi" })).toBeVisible();
   await expect(page.getByText("Sportivi (")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Sportivi" })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "+ Adaugă sportiv" })).toHaveAttribute("href", "/grupe/guscat/sportiv-nou");
+});
+
+test("other group without a class today: the stand-in sheet lists the recent slots", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gsilver");
+  await expect(page.getByRole("link", { name: "Înlocuiesc azi" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Fă prezența ca înlocuitor" }).click();
+  const rows = page.getByRole("dialog").getByRole("link");
+  await expect(rows).toHaveCount(2);
+  await expect(rows.first()).toHaveAttribute("href", "/prezenta?occurrence=occ%3Agsilver%3A2026-11-05");
 });
 
 test("desktop: the list stays beside the group page", async({ page }) => {

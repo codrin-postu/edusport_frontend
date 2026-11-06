@@ -5,6 +5,9 @@ export const SEED_DEVICE_KEY = "seed-device-key-current";
 export const OTHER_DEVICE_KEY = "seed-device-key-phone";
 export const INVITE_VALID = "inv-valid-0000000000000000000000";
 export const INVITE_OLD = "inv-old-00000000000000000000000000";
+// The mock's "today": a Thursday, so Uscat Juniori (Mon, Thu) has a class today and Intermediari Silver (Sat, Sun) has none.
+// The browser clock is frozen to the same day (portal-helpers freezeToday).
+export const FROZEN_TODAY = "2026-11-05";
 export const RESET_CODE = "123456";
 export const COACH_PASSWORD = "Throwaway-Coach-1";
 

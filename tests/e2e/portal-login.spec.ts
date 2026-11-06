@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, mockReset, mockState } from "./portal-helpers";
+import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, isolate, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
-test.beforeEach(async() => { await mockReset(); });
+test.beforeEach(async({ page }) => {
+  await mockReset();
+  await isolate(page);
+});
 
 const INVITE_OLD = "inv-old-00000000000000000000000000";
 const INVITE_VALID = "inv-valid-0000000000000000000000";
