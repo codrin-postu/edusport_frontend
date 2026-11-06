@@ -475,6 +475,8 @@ function newAthlete({ body, res }) {
   const g = groupOf(body.groupId);
   if (!g) return club(res, 400, MSG.invalid);
   if (typeof body.name !== "string" || !body.name.trim()) return club(res, 400, MSG.invalid);
+  // Real backend: a birth date is accepted as ZZ.LL.AAAA only (readPickedDate).
+  if (body.birthDate !== undefined && !/^\d{2}\.\d{2}\.\d{4}$/.test(String(body.birthDate))) return club(res, 400, "Alegeți data nașterii.");
   const athleteId = `anew${++world.counters.athlete}`;
   world.members[g.id].push({ athleteId, name: body.name.trim(), age: null, isNew: true, alsoIn: [], inactive: false });
   ok(res, { athleteId, toast: MSG.saved });

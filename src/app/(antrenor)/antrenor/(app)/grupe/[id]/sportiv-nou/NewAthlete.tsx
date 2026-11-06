@@ -49,7 +49,8 @@ export function NewAthlete({ id }: { id: string }) {
     setBusy(true);
     setMessage(null);
     const body: CoachNewAthleteBody = { groupId: id, name: name.trim() };
-    if (birthDate) body.birthDate = birthDate;
+    // The backend reads the picked birth date as ZZ.LL.AAAA only; the picker holds YYYY-MM-DD.
+    if (birthDate) body.birthDate = birthDate.split("-").reverse().join(".");
     if (parent.trim()) body.contactName = parent.trim();
     if (phone.trim()) body.phone = phone.trim();
     if (email.trim()) body.email = email.trim();

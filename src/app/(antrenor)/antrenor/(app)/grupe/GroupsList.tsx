@@ -42,7 +42,7 @@ export function GroupsList({ selected }: { selected: string | null }) {
             <ListCard>
               {others.map((g) => (
                 <div key={g.groupId} className={mark(g.groupId)}>
-                  <Row href={`/grupe/${encodeURIComponent(g.groupId)}`} title={g.name} sub={GRUPE.coaches(g.coaches.join(", "))} />
+                  <Row href={`/grupe/${encodeURIComponent(g.groupId)}`} title={g.name} sub={g.coaches.length > 0 ? GRUPE.coaches(g.coaches.join(", ")) : undefined} />
                 </div>
               ))}
             </ListCard>

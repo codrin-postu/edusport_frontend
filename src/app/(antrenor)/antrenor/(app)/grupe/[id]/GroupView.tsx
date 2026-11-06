@@ -65,7 +65,7 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
       />
       {tab === "members" ? (
         <div className="mt-6">
-          <p className="text-body-sm text-secondary mb-4">{GROUP.coaches(page.coaches.join(", "))}</p>
+          {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-4">{GROUP.coaches(page.coaches.join(", "))}</p>}
           <Button href={presence} className="w-full">{GROUP.doPresence}</Button>
           <h2 className="text-label text-secondary mt-6 mb-2">{GROUP.membersCount(members.length)}</h2>
           <ListCard>
@@ -93,7 +93,7 @@ function OtherGroup({ page }: { page: CoachGroupPage }) {
         <p className="text-label text-primary">{GROUP.otherCoach}</p>
       </Card>
       <p className="text-body-sm text-secondary">{GROUP.programLine(page.program.join(", "))}</p>
-      <p className="text-body-sm text-secondary mb-6">{GROUP.coaches(page.coaches.join(", "))}</p>
+      {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-6">{GROUP.coaches(page.coaches.join(", "))}</p>}
       <div className="flex flex-col gap-4">
         {page.todayKey ? (
           <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}`} className="w-full">{GROUP.standIn}</Button>
