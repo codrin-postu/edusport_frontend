@@ -9,8 +9,8 @@ function errorMessage(body: unknown): string {
   return typeof error?.message === "string" && error.message !== "" ? error.message : STATES.loadFailed;
 }
 
-/** Calls the BFF (`/api/portal/<path>`). A 401 means the session ended: the browser goes to the login screen. */
-export async function portalApi<T>(method: Method, path: string, body?: unknown): Promise<ApiResult<T>> {
+/** Calls the BFF (`/api/portal/<path>`). A 401 means the session ended: the browser goes to the login screen (`stay401` for the login forms, where a 401 is a wrong password). */
+export async function portalApi<T>(method: Method, path: string, body?: unknown, opts?: { stay401?: boolean }): Promise<ApiResult<T>> {
   let res: Response;
   try {
     res = await fetch(`/api/portal/${path}`, {
@@ -27,7 +27,7 @@ export async function portalApi<T>(method: Method, path: string, body?: unknown)
   } catch {
     json = null;
   }
-  if (res.status === 401) {
+  if (res.status === 401 && !opts?.stay401) {
     window.location.assign("/intrare");
     return { ok: false, status: 401, message: errorMessage(json), body: json };
   }
