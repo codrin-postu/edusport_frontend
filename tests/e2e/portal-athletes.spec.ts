@@ -59,3 +59,14 @@ test("the card of a stand-in child has no contact", async({ page }) => {
   await expect(page.getByText("Contact")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Sună" })).toHaveCount(0);
 });
+
+test("a double tap on Adaugă creates one athlete only", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/sportiv-nou");
+  await page.getByLabel("Nume și prenume").fill("Zoe Pavel");
+  const submit = page.getByRole("button", { name: "Adaugă în Avansați" });
+  await submit.dblclick();
+  await expect(page).toHaveURL(/\/grupe\/gavansati$/);
+  const posts = (await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/coach/athletes"));
+  expect(posts).toHaveLength(1);
+});

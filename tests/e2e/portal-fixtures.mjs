@@ -60,6 +60,7 @@ export function buildWorld(today) {
     [`occ:gavansati:${today}`]: { sessionId: "s-today", groupId: "gavansati", date: today, startTime: "18:15", durationMin: 60, ticks: ["amaria", "aluca", "aana", "amatei", "aelena", "adavid", "asofia"], coachIds: ["tm-andrei"] },
     [`occ:gavansati:${addDays(today, -9)}`]: { sessionId: "s-archived", groupId: "gavansati", date: addDays(today, -9), startTime: "18:15", durationMin: 60, ticks: ["amaria", "aluca"], coachIds: ["tm-andrei"] },
     [`occ:gsilver:${standIn3}`]: { sessionId: "s-standin", groupId: "gsilver", date: standIn3, startTime: "10:00", durationMin: 50, ticks: ["adara"], coachIds: ["tm-andrei"] },
+    [`occ:gsilver:${today}`]: { sessionId: "s-other", groupId: "gsilver", date: today, startTime: "10:00", durationMin: 50, ticks: ["avlad"], coachIds: ["tm-bianca"] },
   };
   const lessons = {
     "ldone": { lessonId: "ldone", athleteId: "amatei", athleteName: "Matei Radu", date: today, startTime: "15:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },

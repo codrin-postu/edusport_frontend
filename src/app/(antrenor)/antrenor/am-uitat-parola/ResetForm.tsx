@@ -1,21 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
+import type { CoachMe } from "@/lib/portal/api-types";
 import { RESET } from "@/lib/portal/copy";
 import { portalApi } from "../_lib/api";
 import { AuthFrame } from "../_ui/AuthFrame";
 import { AlertLine, BackLink } from "../_ui/AuthBits";
 import { PasswordField } from "../_ui/PasswordField";
 
-export function ResetForm() {
+export function ResetForm({ signedIn }: { signedIn: boolean }) {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [sent, setSent] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [known, setKnown] = useState(false);
+
+  useEffect(() => {
+    if (!signedIn) return;
+    let cancelled = false;
+    void portalApi<CoachMe>("GET", "coach/me", undefined, { stay401: true }).then((r) => {
+      if (!cancelled && r.ok) {
+        setEmail(r.data.email);
+        setKnown(true);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [signedIn]);
 
   async function request(e: React.FormEvent) {
     e.preventDefault();
@@ -47,14 +63,22 @@ export function ResetForm() {
     <AuthFrame title={RESET.title}>
       {sent === null ? (
         <form onSubmit={(e) => void request(e)} className="flex flex-col gap-4">
-          <Field label={RESET.email}>
-            <Input type="email" name="email" value={email} autoComplete="email" autoCapitalize="none" spellCheck={false} onChange={(e) => setEmail(e.target.value)} />
-          </Field>
+          {known ? (
+            <div>
+              <p className="text-label text-secondary mb-2">{RESET.email}</p>
+              <p className="text-body text-primary">{email}</p>
+            </div>
+          ) : (
+            <Field label={RESET.email}>
+              <Input type="email" name="email" value={email} autoComplete="email" autoCapitalize="none" spellCheck={false} onChange={(e) => setEmail(e.target.value)} />
+            </Field>
+          )}
           <AlertLine message={message} />
           <Button type="submit" disabled={busy || !email} className="w-full">{RESET.sendCode}</Button>
         </form>
       ) : (
         <form onSubmit={(e) => void confirm(e)} className="flex flex-col gap-4">
+          <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
           <p className="text-body-sm text-secondary">{sent}</p>
           <Field label={RESET.code}>
             <Input name="code" value={code} autoComplete="one-time-code" inputMode="numeric" onChange={(e) => setCode(e.target.value)} />
@@ -64,7 +88,7 @@ export function ResetForm() {
           <Button type="submit" disabled={busy || !code || !password} className="w-full">{RESET.save}</Button>
         </form>
       )}
-      <p className="mt-4 text-center"><BackLink href="/intrare">{RESET.back}</BackLink></p>
+      <p className="mt-4 text-center">{signedIn ? <BackLink href="/profil/setari">{RESET.backSigned}</BackLink> : <BackLink href="/intrare">{RESET.back}</BackLink>}</p>
     </AuthFrame>
   );
 }

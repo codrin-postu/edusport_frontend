@@ -20,7 +20,9 @@ type CoachPickerProps = {
 export function CoachPicker({ me, options, value, onChange, locked }: CoachPickerProps) {
   const [open, setOpen] = useState(false);
   const name = (id: string): string => options.find((o) => o.id === id)?.name ?? "";
-  const ids = value.includes(me) ? [me, ...value.filter((id) => id !== me)] : [me, ...value];
+  const known = (id: string): boolean => id === me || options.some((o) => o.id === id);
+  // Nothing is listed until the coach is known; an id with no name is not shown.
+  const ids = me === "" ? [] : (value.includes(me) ? [me, ...value.filter((id) => id !== me)] : [me, ...value]).filter(known);
   return (
     <div>
       <p className="text-label text-secondary mb-2">{PRESENCE.coach}</p>

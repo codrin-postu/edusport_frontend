@@ -126,3 +126,29 @@ test("with Google configured the login shows the link before the form", async({ 
   await page.goto("/intrare");
   await expect(page.getByRole("link", { name: "Continuă cu Google" })).toHaveAttribute("href", "/api/portal/google/start");
 });
+
+test("a signed in Google only coach sets a password: e-mail prefilled, code logs in", async({ page, request }) => {
+  await isolate(page);
+  const raw = "http://localhost:3200";
+  const host = { host: "antrenor.localhost:3200" };
+  const cookiesOf = (res: Awaited<ReturnType<typeof request.get>>): string[] =>
+    res.headersArray().filter((h) => h.name.toLowerCase() === "set-cookie").map((h) => h.value.split(";")[0]);
+  const start = await request.get(`${raw}/api/portal/google/start`, { headers: host, maxRedirects: 0 });
+  const state = new URL(start.headers().location).searchParams.get("state") ?? "";
+  const jar = cookiesOf(start).join("; ");
+  const cb = await request.get(`${raw}/api/portal/google/callback?code=ok:antrenor3@example.invalid&state=${state}`, { headers: { ...host, cookie: jar }, maxRedirects: 0 });
+  const session = cookiesOf(cb).map((c) => ({ name: c.slice(0, c.indexOf("=")), value: c.slice(c.indexOf("=") + 1) })).filter((c) => c.value !== "");
+  await page.context().addCookies(session.map((c) => ({ ...c, url: COACH_BASE })));
+  await page.goto("/profil/setari");
+  await page.getByRole("link", { name: "Setează o parolă" }).click();
+  await expect(page).toHaveURL(/\/am-uitat-parola$/);
+  await expect(page.getByText("antrenor3@example.invalid")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Înapoi", exact: true })).toHaveAttribute("href", "/profil/setari");
+  await page.getByRole("button", { name: "Trimite codul" }).click();
+  await page.getByLabel("Cod din e-mail").fill("123456");
+  await page.getByLabel("Parolă nouă").fill("Alta-Parola-12345");
+  await page.getByRole("button", { name: "Salvează parola" }).click();
+  await expect(page).toHaveURL(/localhost:3200\/$/);
+  await page.goto("/profil/setari");
+  await expect(page.getByLabel("Parola actuală")).toBeVisible();
+});

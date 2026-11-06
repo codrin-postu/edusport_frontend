@@ -32,6 +32,7 @@ export function InviteForm({ email, google }: { email: string; google: boolean }
     <AuthFrame title={INVITE.title}>
       <p className="text-body text-primary mb-4">{INVITE.account(email)}</p>
       <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-4">
+        <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
         <PasswordField label={INVITE.newPassword} value={password} onChange={setPassword} autoComplete="new-password" />
         <AlertLine message={message} />
         <Button type="submit" disabled={busy || !password} className="w-full">{INVITE.save}</Button>

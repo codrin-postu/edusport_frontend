@@ -29,7 +29,9 @@ function PhoneForm({ phone }: { phone: string | null }) {
   const [value, setValue] = useState(phone ?? "");
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  async function save() {
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMessage(null);
     const trimmed = value.trim();
@@ -39,24 +41,26 @@ function PhoneForm({ phone }: { phone: string | null }) {
     else toast.show(r.data.toast);
   }
   return (
-    <div className="flex flex-col gap-4">
+    <form onSubmit={(e) => void save(e)} className="flex flex-col gap-4">
       <div>
         <label htmlFor={id} className="text-label text-secondary block mb-2">{SETTINGS.phone}</label>
-        <Input id={id} type="tel" inputMode="tel" value={value} onChange={(e) => setValue(e.target.value)} surface="card" />
+        <Input id={id} type="tel" inputMode="tel" autoComplete="tel" value={value} onChange={(e) => setValue(e.target.value)} surface="card" />
       </div>
       <p role="alert" className="text-body-sm text-accent empty:hidden">{message}</p>
-      <Button onClick={() => void save()} disabled={busy} className="w-full">{SETTINGS.save}</Button>
-    </div>
+      <Button type="submit" disabled={busy} className="w-full">{SETTINGS.save}</Button>
+    </form>
   );
 }
 
-function PasswordForm() {
+function PasswordForm({ email }: { email: string }) {
   const toast = useToast();
   const [current, setCurrent] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  async function save() {
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMessage(null);
     const r = await portalApi<{ toast: string }>("POST", "coach/me/password", { current, password });
@@ -70,12 +74,13 @@ function PasswordForm() {
     toast.show(r.data.toast);
   }
   return (
-    <div className="flex flex-col gap-4">
+    <form onSubmit={(e) => void save(e)} className="flex flex-col gap-4">
+      <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
       <PasswordField label={SETTINGS.currentPassword} value={current} onChange={setCurrent} autoComplete="current-password" />
       <PasswordField label={SETTINGS.newPassword} value={password} onChange={setPassword} autoComplete="new-password" />
       <p role="alert" className="text-body-sm text-accent empty:hidden">{message}</p>
-      <Button onClick={() => void save()} disabled={busy || current === "" || password === ""} className="w-full">{SETTINGS.save}</Button>
-    </div>
+      <Button type="submit" disabled={busy || current === "" || password === ""} className="w-full">{SETTINGS.save}</Button>
+    </form>
   );
 }
 
@@ -91,7 +96,7 @@ export function SettingsView() {
       <p className="text-body-sm text-secondary">{SETTINGS.adminNote}</p>
       <PhoneForm phone={me.data.phone} />
       <h2 className="text-subtitle text-primary">{SETTINGS.changePassword}</h2>
-      {me.data.hasPassword ? <PasswordForm /> : <Link href="/am-uitat-parola" className="text-body-sm">{SETTINGS.setPassword}</Link>}
+      {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/am-uitat-parola" className="text-body-sm">{SETTINGS.setPassword}</Link>}
     </div>
   );
 }

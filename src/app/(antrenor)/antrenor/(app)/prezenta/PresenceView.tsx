@@ -92,18 +92,21 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
     setTicks((prev) => new Map(prev).set(athleteId, { ...(prev.get(athleteId) ?? { grup: false, uscat: false }), [k]: value }));
 
   async function save(reactivate: string[], keep: string[]) {
+    if (busy) return;
     setBusy(true);
     setMessage(null);
     const ids = meId && !coachIds.includes(meId) ? [meId, ...coachIds] : coachIds;
     const r = await portalApi<SessionSaved>("PUT", "coach/session", saveBody(session, ticks, ids, reactivate, keep));
-    setBusy(false);
     if (r.ok) {
       toast.show(r.data.toast);
       const next = new URLSearchParams({ id: r.data.sessionId }).toString();
-      if (next === query) reload();
-      else router.replace(`/prezenta?${next}`);
+      if (next === query) {
+        setBusy(false);
+        reload();
+      } else router.replace(`/prezenta?${next}`); // busy stays true until the route changes
       return;
     }
+    setBusy(false);
     const inactive = inactiveOf(r);
     if (inactive.length > 0) {
       setAnswers({ reactivate: [], keep: [] });
@@ -145,7 +148,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
         </div>
         {session.savedLine && <p className="text-body-sm text-secondary mt-2">{session.savedLine}</p>}
         {session.outsideSchedule && <p className="text-body-sm text-secondary mt-2">{PRESENCE.outside}</p>}
-        {readOnly && <p className="text-body-sm text-secondary mt-2">{PRESENCE.archived}</p>}
+        {session.archived && <p className="text-body-sm text-secondary mt-2">{PRESENCE.archived}</p>}
       </div>
       <CoachPicker me={meId} options={session.coachOptions} value={coachIds} onChange={setCoachIds} locked={readOnly} />
       {session.standIn && <p className="text-body-sm text-secondary">{PRESENCE.willAppear}</p>}

@@ -274,7 +274,7 @@ function checkSession({ groupId, date, startTime }) {
   const existing = Object.values(world.saved).filter((r) => r.groupId === groupId && r.date === date);
   const g = groupOf(groupId);
   if (existing.length) {
-    const saved = existing.map((r) => ({ sessionId: r.sessionId, startTime: r.startTime, present: r.ticks.length, listed: childrenOf(groupId), savedBy: "Andrei Popa" }));
+    const saved = existing.map((r) => ({ sessionId: r.sessionId, startTime: r.startTime, present: r.ticks.length, listed: r.coachIds.includes("tm-andrei"), savedBy: "Andrei Popa" }));
     return { kind: "existing", sameTime: existing.some((r) => r.startTime === startTime), saved };
   }
   if (g && startTime === g.start && hasClass(g, date)) return { kind: "occurrence", occurrenceKey: keyOf(groupId, date) };

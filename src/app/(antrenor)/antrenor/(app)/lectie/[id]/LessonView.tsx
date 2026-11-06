@@ -95,7 +95,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
           <p className="text-label text-primary border-retro border-line px-3 h-10 flex items-center shrink-0">{dayTile(lesson.date)}</p>
         </div>
         {lesson.savedLine && <p className="text-body-sm text-secondary mt-2">{lesson.savedLine}</p>}
-        {readOnly && <p className="text-body-sm text-secondary mt-2">{PRESENCE.archived}</p>}
+        {lesson.archived && <p className="text-body-sm text-secondary mt-2">{PRESENCE.archived}</p>}
       </div>
       <CoachPicker me={me?.coachId ?? ""} options={lesson.coachOptions} value={coachIds} onChange={setCoachIds} locked={readOnly} />
       <div className="border-retro border-line bg-surface-raised">

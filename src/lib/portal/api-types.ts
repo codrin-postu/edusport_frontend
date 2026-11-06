@@ -4,7 +4,7 @@
  * src/api/calendar-event/services/expand.ts (Occurrence),
  * src/club/groups/{program-read,api-types,types,series}.ts (GroupProgram, ProgramRow, SeasonRef, JoinResult, DayKey, WeekOfMonth, RepeatFreq),
  * src/club/groups/program-dates.ts (DateAnswer),
- * src/club/presence/attendance/api-types.ts (AddedSession, SectionKind, SessionCheck, SavedOnDay, SessionSaveBody, Tick, SessionSaved, LessonBody, LessonPatch, LessonSaved),
+ * src/club/presence/attendance/api-types.ts (AddedSession, SectionKind, SessionCheck, SavedOnDay (listed boolean, see CoachSavedOnDay), SessionSaveBody, Tick, SessionSaved, LessonBody, LessonPatch, LessonSaved),
  * src/club/presence/types.ts (LessonState),
  * and src/club/portal/auth/issue.ts (PortalSession).
  * The four program body types are written from the readers in src/club/groups/program-plan.ts.
@@ -65,7 +65,8 @@ export interface Occurrence {
 }
 
 export type AddedSession = { groupId: string; date: string; startTime: string; durationMin: number };
-export type SavedOnDay = { sessionId: string; startTime: string; present: number; listed: number; savedBy: string };
+/** `listed`: the calling coach is in that session's coaches (backend CoachSavedOnDay; the phase 5 roster count is not sent to coaches). */
+export type SavedOnDay = { sessionId: string; startTime: string; present: number; listed: boolean; savedBy: string };
 export type SessionCheck =
   | { kind: "existing"; sameTime: boolean; saved: SavedOnDay[] }
   | { kind: "occurrence"; occurrenceKey: string }

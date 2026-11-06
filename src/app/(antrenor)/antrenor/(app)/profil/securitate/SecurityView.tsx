@@ -26,6 +26,7 @@ export function SecurityView() {
     if (!r.ok) {
       setBusy(false);
       setFailed(r.message);
+      devices.reload();
       return;
     }
     if (r.data.revokedCurrent) {
@@ -50,7 +51,7 @@ export function SecurityView() {
           </div>
           <ListCard>
             {devices.data.map((d) => (
-              <div key={d.id} role="group" aria-label={d.label} className="p-4 flex flex-col gap-3">
+              <div key={d.id} role="group" aria-label={d.label.trim() === "" ? SECURITY.unknown : d.label} className="p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-4">
                   <span className="min-w-0 flex-1 flex flex-wrap items-center gap-2">
                     <span className="text-body font-semibold text-primary">{d.label.trim() === "" ? SECURITY.unknown : d.label}</span>

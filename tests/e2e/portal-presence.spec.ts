@@ -108,3 +108,24 @@ test("an inactive athlete asks before the save goes on", async({ page }) => {
   await page.getByRole("button", { name: "Reactivează și salvează" }).click();
   await expect(page).toHaveURL(/\/prezenta\?id=s-new/);
 });
+
+test("a stand-in sees no add button, and Deschide only on a session that lists them", async({ page }) => {
+  await loginAs(page);
+  await page.goto(occ("gsilver", TODAY));
+  await page.getByRole("button", { name: /^JO 5 NOI/ }).click();
+  await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
+  await page.getByRole("button", { name: "Alege joi 5 noi" }).click();
+  await expect(page.getByText("Există deja o ședință salvată")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Adaugă încă o ședință în ziua asta" })).toHaveCount(0);
+});
+
+test("an own group still offers the add button, and Deschide where the coach is listed", async({ page }) => {
+  await loginAs(page);
+  await page.goto(occ("gavansati", FREE_DAY));
+  await page.getByRole("button", { name: "MA 3 NOI" }).click();
+  await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
+  await page.getByRole("button", { name: "Alege joi 5 noi" }).click();
+  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Adaugă încă o ședință în ziua asta" })).toBeVisible();
+});

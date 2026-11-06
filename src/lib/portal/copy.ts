@@ -45,6 +45,7 @@ export const RESET = {
   newPassword: "Parolă nouă",
   save: "Salvează parola",
   back: "Înapoi la intrare",
+  backSigned: "Înapoi",
 } as const;
 
 export const NAV = { today: "Azi", groups: "Grupe", history: "Istoric", profile: "Profil" } as const;

@@ -60,3 +60,15 @@ test("an archived lesson is read only", async({ page }) => {
   await expect(page.getByRole("button", { name: "Salvează prezența" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Șterge lecția" })).toHaveCount(0);
 });
+
+test("a double tap on Salvează lecția creates one lesson only", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/lectie/noua");
+  await page.getByLabel("Caută după nume").fill("Maria");
+  await page.getByRole("button", { name: /Maria Ionescu/ }).click();
+  await page.getByLabel("Ora").fill("16:00");
+  await page.getByRole("button", { name: "Salvează lecția" }).dblclick();
+  await expect(page).toHaveURL(/\/lectie\/lnew1$/);
+  const posts = (await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/coach/lessons"));
+  expect(posts).toHaveLength(1);
+});

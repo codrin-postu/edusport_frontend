@@ -34,17 +34,18 @@ export default function NewLessonPage() {
   const ready = athlete !== null && date !== "" && time !== "" && !busy;
 
   async function save() {
-    if (!athlete || !me) return;
+    if (!athlete || !me || busy) return;
     setBusy(true);
     setMessage(null);
     const r = await portalApi<LessonSaved>("POST", "coach/lessons", {
       athleteId: athlete.athleteId, date, startTime: time, durationMin: duration, coachIds: ids.includes(me.coachId) ? ids : [me.coachId, ...ids],
     });
-    setBusy(false);
     if (!r.ok) {
+      setBusy(false);
       setMessage(r.message);
       return;
     }
+    // busy stays true on success: the button must not come back before the route changes.
     toast.show(r.data.toast);
     router.replace(`/lectie/${encodeURIComponent(r.data.lessonId)}`);
   }

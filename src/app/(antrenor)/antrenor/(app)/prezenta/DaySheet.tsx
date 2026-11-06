@@ -104,6 +104,7 @@ export function DaySheet({ open, onOpenChange, session, allowed }: DaySheetProps
         open={existing !== null}
         onOpenChange={(o) => { if (!o) setExisting(null); }}
         saved={existing?.saved ?? []}
+        standIn={session.standIn}
         openHref={(id) => `/prezenta?${new URLSearchParams({ id }).toString()}`}
         addHref={`/prezenta?${qs({ time: session.startTime, duration: String(session.durationMin) })}`}
       />

@@ -45,6 +45,7 @@ export function NewAthlete({ id }: { id: string }) {
   const back = `/grupe/${encodeURIComponent(id)}`;
 
   async function submit() {
+    if (busy) return;
     setBusy(true);
     setMessage(null);
     const body: CoachNewAthleteBody = { groupId: id, name: name.trim() };
@@ -53,12 +54,16 @@ export function NewAthlete({ id }: { id: string }) {
     if (phone.trim()) body.phone = phone.trim();
     if (email.trim()) body.email = email.trim();
     const r = await portalApi<{ athleteId: string; toast: string }>("POST", "coach/athletes", body);
-    setBusy(false);
-    if (noAccess(r)) return;
+    if (noAccess(r)) {
+      setBusy(false);
+      return;
+    }
     if (!r.ok) {
+      setBusy(false);
       setMessage(r.message);
       return;
     }
+    // busy stays true on success: the button must not come back before the route changes.
     toast.show(r.data.toast);
     router.push(back);
   }
