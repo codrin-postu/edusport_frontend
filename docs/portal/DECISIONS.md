@@ -539,3 +539,4 @@ Companion screens 4-6 (p6-4 to p6-6), answers in edusport_backend/.superpowers/p
 ## 2026-11-06 phase 6 account answers (user)
 - q26: a deleted coach keeps a disabled portal account; a new invite to the same e-mail reuses it, linked to the new team member. Retention of that data follows the club retention rule (open club item).
 - q27: an admin e-mail change logs the coach out on every device and unlinks Google.
+- 2026-11-06 phase 6 copy round (user): all coach-app texts as listed approved (q28 A); disable confirmation "Dezactivezi contul lui <nume>? Toate dispozitivele vor fi deconectate." (q29 A, wording made gender-neutral by Claude); re-link Istoric line "Cont refolosit pentru <nume>" (q30 A).
