@@ -90,11 +90,9 @@ test("the stand-in session says the coach will appear", async({ page }) => {
   await expect(page.getByText("Vei apărea ca antrenor la această ședință.")).toBeVisible();
 });
 
-test("a save refused with no access lands on Grupe with that toast", async({ page }) => {
+test("a stand-in read refused with no access lands on Grupe with that toast", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gsilver", "2026-11-06"));
-  await tick(page, "Dara Constantin, Grup");
-  await page.getByRole("button", { name: "Salvează", exact: true }).click();
   await expect(page).toHaveURL(/\/grupe$/);
   await expect(page.getByText("Nu mai ai acces la această grupă.")).toBeVisible();
 });
@@ -113,10 +111,10 @@ test("a stand-in sees no add button, and Deschide only on a session that lists t
   await loginAs(page);
   await page.goto(occ("gsilver", TODAY));
   await page.getByRole("button", { name: /^JO 5 NOI/ }).click();
-  await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
-  await page.getByRole("button", { name: "Alege joi 5 noi" }).click();
+  await page.getByRole("button", { name: /, 2 noiembrie/ }).click();
+  await page.getByRole("button", { name: "Alege luni 2 noi" }).click();
   await expect(page.getByText("Există deja o ședință salvată")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Adaugă încă o ședință în ziua asta" })).toHaveCount(0);
 });
 

@@ -196,7 +196,29 @@ const parseKey = (key) => {
 };
 const childrenOf = (id) => (world.members[id] ?? []).length;
 const hasClass = (g, date) => g.days.includes(weekdayOf(date)) || (g.own && date === today);
+// Another coach's group also counts the stand-in slots of its page (today and today - 3) as scheduled classes.
+const scheduled = (g, date) => hasClass(g, date) || (!g.own && (date === today || date === addDays(today, -3)));
 const archivedDate = (date) => date < addDays(today, -ARCHIVE_DAYS);
+const ME = "tm-andrei";
+
+/** Backend presenceRight (src/club/portal/coach/rules.ts): what the coach may do with the session of a date. */
+function presenceRight(g, date, rec, added) {
+  const nothing = { read: false, write: false, archived: false, mustIncludeMe: false };
+  const saved = Boolean(rec);
+  const correctable = !archivedDate(date);
+  const open = date <= today;
+  const archived = saved && !correctable;
+  if (g.own) return { read: true, write: open && (!saved || correctable), archived, mustIncludeMe: false };
+  const listed = saved && rec.coachIds.includes(ME);
+  if (added && !listed) return nothing;
+  const inWindow = scheduled(g, date) && !added && date >= addDays(today, -ARCHIVE_DAYS) && open;
+  return {
+    read: listed || (!saved && inWindow),
+    write: open && ((!saved && inWindow) || (saved && listed && correctable)),
+    archived, mustIncludeMe: true,
+  };
+}
+const refusalOf = (res, right) => club(res, 403, right.archived ? MSG.archived : MSG.noAccess);
 const MONTHS = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"];
 // Backend copy: shortDay "27 oct", longDate "27 oct 2026" (src/club/presence/copy/attendance.ts, dates.ts).
 const shortDay = (date) => `${Number(date.slice(8))} ${MONTHS[Number(date.slice(5, 7)) - 1]}`;
@@ -254,6 +276,19 @@ function buildSession({ groupId, date, startTime, durationMin, key, rec, free })
   };
 }
 
+/** The group, date, saved record and "added" flag a session query points at. */
+function sessionRef(q) {
+  if (q.get("occurrence")) {
+    const { groupId, date } = parseKey(q.get("occurrence"));
+    return { g: groupOf(groupId), date, rec: world.saved[q.get("occurrence")], added: false };
+  }
+  if (q.get("id")) {
+    const rec = Object.values(world.saved).find((r) => r.sessionId === q.get("id"));
+    return rec ? { g: groupOf(rec.groupId), date: rec.date, rec, added: false } : null;
+  }
+  return { g: groupOf(q.get("group")), date: q.get("date"), rec: null, added: true };
+}
+
 function sessionFromQuery(q) {
   if (q.get("occurrence")) {
     const { groupId, date } = parseKey(q.get("occurrence"));
@@ -286,8 +321,10 @@ function saveSession({ body, res }) {
   const ref = found ? { groupId: found[1].groupId, date: found[1].date } : body.added ?? parseKey(body.occurrence);
   const g = groupOf(ref.groupId);
   if (!g) return notFound(res);
-  if (archivedDate(ref.date)) return club(res, 403, MSG.archived);
-  if (!g.own && !inStandInWindow(ref.groupId, ref.date)) return club(res, 403, MSG.noAccess);
+  const prior0 = found?.[1] ?? world.saved[body.occurrence ?? keyOf(ref.groupId, ref.date)];
+  const right = presenceRight(g, ref.date, body.added ? null : prior0, Boolean(body.added));
+  if (!right.write) return refusalOf(res, right);
+  if (right.mustIncludeMe && !(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
   const asked = (body.ticks ?? []).filter((t) => t.grup || t.uscat).map((t) => t.athleteId);
   const inactive = (world.inactive[ref.groupId] ?? []).filter((m) => asked.includes(m.athleteId) && !(body.reactivate ?? []).includes(m.athleteId) && !(body.keepInactive ?? []).includes(m.athleteId));
   if (inactive.length) return club(res, 409, "Sportiv inactiv", { inactive: inactive.map((m) => ({ id: m.athleteId, name: m.name })) });
@@ -298,8 +335,6 @@ function saveSession({ body, res }) {
   ok(res, { sessionId, toast: `Prezență salvată: ${g.name}, ${shortDay(ref.date)}.` });
 }
 
-const inStandInWindow = (groupId, date) => date <= today && date >= addDays(today, -ARCHIVE_DAYS) && !groupOf(groupId).own;
-
 function lessonView(l) {
   const archived = archivedDate(l.date);
   return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived };
@@ -307,6 +342,8 @@ function lessonView(l) {
 
 function lessonWrite({ body, res, params, method }) {
   if (method === "POST") {
+    if (!(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
+    if (archivedDate(body.date)) return club(res, 403, MSG.archived);
     const athlete = Object.values(world.members).flat().find((m) => m.athleteId === body.athleteId);
     if (!athlete) return club(res, 400, MSG.invalid);
     const lessonId = `lnew${++world.counters.lesson}`;
@@ -314,7 +351,10 @@ function lessonWrite({ body, res, params, method }) {
     return ok(res, { lessonId, changed: true, toast: MSG.saved });
   }
   const l = world.lessons[params[0]];
-  if (!l) return notFound(res);
+  if (!l || !l.coachIds.includes(ME)) return notFound(res);
+  if (l.state === "saved" && archivedDate(l.date)) return club(res, 403, MSG.archived);
+  if (method === "PUT" && l.date > today) return club(res, 403, MSG.noAccess);
+  if (method === "PUT" && !(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
   if (method === "DELETE") {
     delete world.lessons[l.lessonId];
     return ok(res, { deleted: true, toast: "Lecție ștearsă." });
@@ -373,7 +413,9 @@ function athleteCard(id) {
   const all = Object.entries(world.members).flatMap(([gid, list]) => list.map((m) => ({ ...m, gid })));
   const m = all.find((x) => x.athleteId === id);
   if (!m) return null;
-  const own = isOwn(m.gid);
+  const own = all.some((x) => x.athleteId === id && isOwn(x.gid));
+  const onListed = Object.values(world.saved).some((r) => r.ticks.includes(id) && r.date <= today && r.date >= addDays(today, -ARCHIVE_DAYS) && r.coachIds.includes(ME));
+  if (!own && !onListed) return "none";
   const groups = all.filter((x) => x.athleteId === id).map((x) => groupOf(x.gid).name);
   return { athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null };
 }
@@ -405,8 +447,14 @@ const withGroup = (fn) => (ctx) => {
   const g = groupOf(ctx.params[0]);
   return g ? fn(ctx, g) : notFound(ctx.res);
 };
+const ownClub = (fn) => withGroup((ctx, g) => (g.own && g.kind === "club" ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
 const ownOnly = (fn) => withGroup((ctx, g) => (g.own ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
-const eventGuard = (fn) => (ctx) => (/^ev(silver|uscat)/.test(ctx.params[0]) ? club(ctx.res, 403, MSG.noAccess) : fn(ctx));
+// Backend writeRight: the event's group must be an own Club group; an unknown event is 404.
+const eventGuard = (fn) => (ctx) => {
+  const g = Object.values(world.groups).find((x) => x.eventId === ctx.params[0]);
+  if (!g) return fn(ctx);
+  return g.own && g.kind === "club" ? fn(ctx) : club(ctx.res, 403, MSG.noAccess);
+};
 
 function savedDays({ res, query }, g) {
   const month = query.get("month") ?? "";
@@ -417,7 +465,7 @@ function savedDays({ res, query }, g) {
 
 function searchAthletes({ res, query }) {
   const q = lower(query.get("q") ?? "");
-  const inGroup = new Set((world.members[query.get("group")] ?? []).map((m) => m.athleteId));
+  const inGroup = new Set((groupOf(query.get("group"))?.own ? world.members[query.get("group")] ?? [] : []).map((m) => m.athleteId));
   const all = [...world.pool, ...Object.values(world.members).flat()];
   const rows = all.filter((m) => !inGroup.has(m.athleteId) && lower(m.name).includes(q)).map((m) => ({ athleteId: m.athleteId, name: m.name, age: m.age }));
   ok(res, [...new Map(rows.map((r) => [r.athleteId, r])).values()]);
@@ -461,21 +509,32 @@ const coachRoutes = [
   }],
   ["GET", /^\/groups\/([^/]+)$/, withGroup(({ res }, g) => ok(res, groupPage(g)))],
   ["GET", /^\/groups\/([^/]+)\/saved-days$/, withGroup(savedDays)],
-  ["GET", /^\/session$/, ({ res, query }) => { const s = sessionFromQuery(query); return s ? ok(res, s) : notFound(res); }],
-  ["POST", /^\/session\/check$/, ({ res, body }) => ok(res, checkSession(body))],
+  ["GET", /^\/session$/, ({ res, query }) => {
+    const s = sessionFromQuery(query);
+    if (!s) return notFound(res);
+    const ref = sessionRef(query);
+    const right = presenceRight(ref.g, ref.date, ref.rec, ref.added);
+    return right.read ? ok(res, s) : club(res, 403, MSG.noAccess);
+  }],
+  ["POST", /^\/session\/check$/, ({ res, body }) => {
+    const g = groupOf(body.groupId);
+    // Backend checkCoachSession: own group, or a scheduled class of another group in today - 7 .. today; anything else 403.
+    const standIn = g && !g.own && scheduled(g, body.date) && body.date <= today && body.date >= addDays(today, -ARCHIVE_DAYS);
+    return g && (g.own || standIn) ? ok(res, checkSession(body)) : club(res, 403, MSG.noAccess);
+  }],
   ["PUT", /^\/session$/, saveSession],
-  ["GET", /^\/lessons\/([^/]+)$/, ({ res, params }) => { const l = world.lessons[params[0]]; return l ? ok(res, lessonView(l)) : notFound(res); }],
+  ["GET", /^\/lessons\/([^/]+)$/, ({ res, params }) => { const l = world.lessons[params[0]]; return l && l.coachIds.includes(ME) ? ok(res, lessonView(l)) : notFound(res); }],
   ["POST", /^\/lessons$/, lessonWrite],
   ["PUT", /^\/lessons\/([^/]+)$/, lessonWrite],
   ["DELETE", /^\/lessons\/([^/]+)$/, lessonWrite],
   ["GET", /^\/athletes\/search$/, searchAthletes],
   ["POST", /^\/athletes$/, newAthlete],
-  ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c ? ok(res, c) : notFound(res); }],
+  ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c === "none" ? club(res, 403, MSG.noAccess) : c ? ok(res, c) : notFound(res); }],
   ["POST", /^\/groups\/([^/]+)\/members$/, ownOnly(addMembers)],
   ["GET", /^\/history$/, ({ res, query }) => ok(res, historyData(query.get("month")))],
   ["GET", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
-  ["POST", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, body }) => ok(res, { eventId: `evnew${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],
-  ["PUT", /^\/groups\/([^/]+)\/program-public$/, ownOnly(({ res, body }, g) => { g.programPublic = Boolean(body.value); ok(res, { toast: MSG.saved }); })],
+  ["POST", /^\/groups\/([^/]+)\/program$/, ownClub(({ res, body }) => ok(res, { eventId: `evnew${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],
+  ["PUT", /^\/groups\/([^/]+)\/program-public$/, ownClub(({ res, body }, g) => { g.programPublic = Boolean(body.value); ok(res, { toast: MSG.saved }); })],
   ["PUT", /^\/program\/([^/]+)$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
   ["POST", /^\/program\/([^/]+)\/end$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
   ["DELETE", /^\/program\/([^/]+)$/, eventGuard(({ res }) => ok(res, { date: today }))],
