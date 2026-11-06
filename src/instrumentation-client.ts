@@ -17,6 +17,7 @@ if (dsn) {
     debug: false,
     // Invite secrets and credentials never leave the process unmasked.
     beforeSend: (event) => scrubEvent(event),
+    beforeSendTransaction: (event) => scrubEvent(event),
     beforeBreadcrumb: (crumb) => scrubBreadcrumb(crumb),
   });
 }

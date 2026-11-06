@@ -272,7 +272,7 @@ function buildSession({ groupId, date, startTime, durationMin, key, rec, free })
     sessionId: rec?.sessionId ?? null, occurrenceKey: free ? null : key, added: free ? { groupId, date, startTime, durationMin } : null,
     groupId, groupName: g.name, kind: g.kind, date, startTime, durationMin, outsideSchedule: Boolean(free),
     coachIds: rec?.coachIds ?? ["tm-andrei"], coachOptions: world.coachOptions, rows: sessionRows(g, rec),
-    savedLine: rec ? `Salvată de Andrei Popa, ${longDay(rec.date)} 18:40` : null, editable: !archivedDate(date), archived: archivedDate(date), standIn: !g.own,
+    savedLine: rec ? `Salvată de Antrenor Andrei Popa, ${longDay(rec.date)} 18:40` : null, editable: !archivedDate(date), archived: archivedDate(date), standIn: !g.own,
   };
 }
 
@@ -337,7 +337,7 @@ function saveSession({ body, res }) {
 
 function lessonView(l) {
   const archived = archivedDate(l.date);
-  return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived };
+  return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Antrenor Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived };
 }
 
 function lessonWrite({ body, res, params, method }) {
@@ -359,6 +359,9 @@ function lessonWrite({ body, res, params, method }) {
     delete world.lessons[l.lessonId];
     return ok(res, { deleted: true, toast: "Lecție ștearsă." });
   }
+  const unchanged = l.state === "saved" && l.present === body.present && l.durationMin === body.durationMin
+    && JSON.stringify([...l.coachIds].sort()) === JSON.stringify([...(body.coachIds ?? [])].sort());
+  if (unchanged) return ok(res, { lessonId: l.lessonId, changed: false, toast: "Nicio modificare." });
   Object.assign(l, { present: body.present, durationMin: body.durationMin, coachIds: body.coachIds, state: "saved" });
   ok(res, { lessonId: l.lessonId, changed: true, toast: MSG.saved });
 }

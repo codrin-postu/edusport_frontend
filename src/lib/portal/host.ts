@@ -13,7 +13,8 @@ export function siteForHost(host: string | null, antrenorHost: string | undefine
   if (!host) return "site";
   const name = host.toLowerCase().replace(/:\d+$/, "");
   const wanted = antrenorHost?.toLowerCase().replace(/:\d+$/, "");
-  if (name === "antrenor.localhost" || (wanted && name === wanted)) return "antrenor";
+  const devHost = process.env.NODE_ENV !== "production" && name === "antrenor.localhost";
+  if (devHost || (wanted && name === wanted)) return "antrenor";
   if (name.split(".")[0] === "sportiv") return "reserved";
   return "site";
 }

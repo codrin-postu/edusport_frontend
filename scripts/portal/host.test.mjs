@@ -15,6 +15,18 @@ it("routes hosts", () => {
   assert.equal(siteForHost(null, undefined), "site");
 });
 
+it("accepts antrenor.localhost only outside production", () => {
+  const { siteForHost } = lib;
+  const prev = process.env.NODE_ENV;
+  try {
+    process.env.NODE_ENV = "production";
+    assert.equal(siteForHost("antrenor.localhost:3200", undefined), "site");
+    assert.equal(siteForHost("antrenor.localhost", "antrenor.localhost"), "antrenor");
+  } finally {
+    process.env.NODE_ENV = prev;
+  }
+});
+
 it("keeps each host to its pages", () => {
   const { routeRequest } = lib;
   assert.deepEqual(routeRequest("site", "/antrenor/grupe"), { action: "notFound" });

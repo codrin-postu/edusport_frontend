@@ -19,6 +19,13 @@ test.describe("coach host", () => {
     await expect(page.locator("meta[name=\"robots\"][content*=\"noindex\"]")).toHaveCount(1);
   });
 
+  test("an unknown URL shows the coach 404, not the site one", async({ page }) => {
+    const res = await page.goto("/xyz/abc");
+    expect(res?.status()).toBe(404);
+    await expect(page.getByText("Pagina nu există.")).toBeVisible();
+    await expect(page.getByRole("banner")).toHaveCount(0);
+  });
+
   test("site pages and sitemap answer 404", async({ request }) => {
     expect((await request.get("http://localhost:3200/sitemap.xml", AS_COACH)).status()).toBe(404);
     expect((await request.get("http://localhost:3200/cursuri", AS_COACH)).status()).toBe(404);
@@ -32,6 +39,19 @@ test.describe("coach host", () => {
 });
 
 test.describe("main host", () => {
+  test("an unknown URL shows the styled site 404 with the header", async({ page }) => {
+    const res = await page.goto("/pagina-care-nu-exista");
+    expect(res?.status()).toBe(404);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("404");
+    await expect(page.getByRole("banner")).toBeVisible();
+    await expect(page.getByText("This page could not be found")).toHaveCount(0);
+  });
+
+  test("sitemap and robots still answer", async({ request }) => {
+    expect((await request.get("/sitemap.xml")).status()).toBe(200);
+    expect((await request.get("/robots.txt")).status()).toBe(200);
+  });
+
   test("coach paths answer 404", async({ request }) => {
     expect((await request.get("/antrenor")).status()).toBe(404);
     expect((await request.post("/api/portal/auth/login", { data: {} })).status()).toBe(404);

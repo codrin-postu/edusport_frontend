@@ -39,6 +39,13 @@ test("the lesson page saves the presence", async({ page }) => {
   expect(put?.body).toMatchObject({ present: true, durationMin: 60 });
 });
 
+test("saving a lesson without a change says Nicio modificare.", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/lectie/ldone");
+  await page.getByRole("button", { name: "Salvează prezența" }).click();
+  await expect(page.getByText("Nicio modificare.")).toBeVisible();
+});
+
 test("a planned lesson can be deleted after a confirmation", async({ page }) => {
   await loginAs(page);
   await page.goto("/lectie/lplan");

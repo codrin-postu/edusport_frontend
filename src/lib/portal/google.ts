@@ -50,6 +50,6 @@ const CALLBACK_PATH = "/api/portal/google/callback";
 export function googleRedirectUri(configuredHost: string | undefined, requestHost: string | null, secure: boolean): string | null {
   const configured = configuredHost?.trim();
   if (configured) return `https://${configured}${CALLBACK_PATH}`;
-  if (requestHost && /^antrenor\.localhost(:\d+)?$/i.test(requestHost)) return `${secure ? "https" : "http"}://${requestHost}${CALLBACK_PATH}`;
+  if (process.env.NODE_ENV !== "production" && requestHost && /^antrenor\.localhost(:\d+)?$/i.test(requestHost)) return `${secure ? "https" : "http"}://${requestHost}${CALLBACK_PATH}`;
   return null;
 }

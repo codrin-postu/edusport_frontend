@@ -40,6 +40,8 @@ export default defineConfig({
         NEXT_PUBLIC_STRAPI_URL: MOCK_URL,
         PORTAL_BFF_SECRET: "test-bff-secret-000000000000000000",
         PORTAL_STRAPI_URL: PORTAL_URL,
+        // The production build accepts antrenor.localhost only through this setting.
+        PORTAL_HOST_ANTRENOR: "antrenor.localhost:3200",
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: "e2e-umami",
       },
       reuseExistingServer: false,

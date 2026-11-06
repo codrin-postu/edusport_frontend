@@ -94,6 +94,14 @@ test("an old invite shows the expired text and no secret stays in the URL", asyn
   await expect(page.getByRole("link", { name: "Înapoi la intrare" })).toBeVisible();
 });
 
+test("a failed invite read shows the load error, not the expired text", async({ page }) => {
+  await mockState({ refuseSecret: true });
+  await page.goto(`/invitatie/${INVITE_VALID}`);
+  await expect(page.getByText("Nu am putut încărca datele.")).toBeVisible();
+  await expect(page.getByText("Invitația a expirat.")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Înapoi la intrare" })).toBeVisible();
+});
+
 test("no invite cookie shows the expired text", async({ page }) => {
   await page.goto("/invitatie");
   await expect(page.getByText("Invitația a expirat. Cere administratorului una nouă.")).toBeVisible();

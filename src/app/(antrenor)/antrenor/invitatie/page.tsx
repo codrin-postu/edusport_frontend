@@ -1,5 +1,5 @@
 import { googleEnabled } from "@/lib/portal/google-config";
-import { INVITE, RESET } from "@/lib/portal/copy";
+import { INVITE, RESET, STATES } from "@/lib/portal/copy";
 import { readInviteState } from "@/lib/portal/invite";
 import { AuthFrame } from "../_ui/AuthFrame";
 import { BackLink } from "../_ui/AuthBits";
@@ -12,7 +12,7 @@ export default async function InvitePage() {
   if (invite.state !== "valid") {
     return (
       <AuthFrame title={INVITE.title}>
-        <p className="text-body text-primary mb-6">{INVITE.expired}</p>
+        <p className="text-body text-primary mb-6">{invite.state === "failed" ? STATES.loadFailed : INVITE.expired}</p>
         <BackLink href="/intrare">{RESET.back}</BackLink>
       </AuthFrame>
     );

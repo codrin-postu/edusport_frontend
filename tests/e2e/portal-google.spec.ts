@@ -19,7 +19,7 @@ async function begin(request: APIRequestContext): Promise<{ state: string; jar: 
   expect(start.status).toBe(303);
   const url = new URL(start.location);
   expect(url.origin).toBe("https://accounts.google.com");
-  expect(url.searchParams.get("redirect_uri")).toBe("http://antrenor.localhost:3200/api/portal/google/callback");
+  expect(url.searchParams.get("redirect_uri")).toBe("https://antrenor.localhost:3200/api/portal/google/callback");
   const line = start.cookies.find((c) => c.startsWith("es_g="));
   expect(line).toContain("HttpOnly");
   return { state: url.searchParams.get("state") ?? "", jar: line?.split(";")[0] ?? "" };
