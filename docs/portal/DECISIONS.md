@@ -540,3 +540,13 @@ Companion screens 4-6 (p6-4 to p6-6), answers in edusport_backend/.superpowers/p
 - q26: a deleted coach keeps a disabled portal account; a new invite to the same e-mail reuses it, linked to the new team member. Retention of that data follows the club retention rule (open club item).
 - q27: an admin e-mail change logs the coach out on every device and unlinks Google.
 - 2026-11-06 phase 6 copy round (user): all coach-app texts as listed approved (q28 A); disable confirmation "Dezactivezi contul lui <nume>? Toate dispozitivele vor fi deconectate." (q29 A, wording made gender-neutral by Claude); re-link Istoric line "Cont refolosit pentru <nume>" (q30 A).
+
+## 2026-11-07 phase 6 website (decided by Claude, low impact)
+- Mock texts must match the backend copy modules; "Sportiv adăugat." and "Salvat." toasts are frontend copy, checked in the final copy pass.
+- Refresh cache keyed by sha256(refresh + device cookie), 10 s window, in-flight dedup only without a device cookie; only a backend 401 ends the session; only real static files pass through on the coach host.
+- Paths with an encoded / \ or dot segment answer 404; the rewrite starts from the raw path. Server and edge Sentry scrub transactions and spans; a backend secret refusal answers 503 and keeps the cookies; logout always clears the BFF cookies.
+- Coach secret refusal and coach cut are the same backend 403; the BFF probes auth/google/config to tell them apart (accepted, cleaner backend split later). The Google redirect URI comes from PORTAL_HOST_ANTRENOR.
+- Remove-coach control uses the phase 5 admin string; saved-day legend "are prezență salvată"; back link copy "Înapoi".
+- A signed-in coach may open the reset flow from Setări cont, e-mail prefilled.
+- A stand-in coach may check a scheduled class of another group inside the 7-day window; saved rows carry a `listed` flag, Adaugă is hidden for a stand-in and Deschide only where the coach is listed.
+- Final review: main-site 404 restored with catch-all routes, `antrenor.localhost` accepted only outside production, client Sentry scrubs transactions, a failed invite read shows "Nu am putut încărca datele.", "Salvată de Antrenor <nume>" in the mock.
