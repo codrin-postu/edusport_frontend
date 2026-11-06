@@ -125,4 +125,9 @@ export const ALLOWLIST = [
     id: "radius",
     reason: "the loading spinner in the submit button is a spinning ring; a square would wobble.",
   },
+  {
+    file: "src/app/(antrenor)/antrenor/_ui/Spinner.tsx",
+    id: "radius",
+    reason: "the coach app spinner is the only round element (portal spec 9.11); a square would wobble.",
+  },
 ];
