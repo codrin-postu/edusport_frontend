@@ -1,12 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 const COACH_BASE = "http://antrenor.localhost:3200";
+// Node does not resolve *.localhost, so API requests reach the server on localhost with the coach Host header.
+const AS_COACH = { headers: { host: "antrenor.localhost:3200" } };
 
 test.describe("coach host", () => {
   test.use({ baseURL: COACH_BASE });
 
   test("robots.txt disallows everything", async({ request }) => {
-    const res = await request.get("/robots.txt");
+    const res = await request.get("http://localhost:3200/robots.txt", AS_COACH);
     expect(await res.text()).toContain("Disallow: /");
   });
 
@@ -18,8 +20,8 @@ test.describe("coach host", () => {
   });
 
   test("site pages and sitemap answer 404", async({ request }) => {
-    expect((await request.get("/sitemap.xml")).status()).toBe(404);
-    expect((await request.get("/cursuri")).status()).toBe(404);
+    expect((await request.get("http://localhost:3200/sitemap.xml", AS_COACH)).status()).toBe(404);
+    expect((await request.get("http://localhost:3200/cursuri", AS_COACH)).status()).toBe(404);
   });
 });
 
