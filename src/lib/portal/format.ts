@@ -38,6 +38,11 @@ export function dayMonth(date: string): string {
   return `${p.day} ${MONTH_LONG[p.month - 1]}`;
 }
 
+/** "2026-10" -> "OCTOMBRIE" */
+export function monthName(month: string): string {
+  return MONTH_LONG[parts(`${month.slice(0, 7)}-01`).month - 1].toUpperCase();
+}
+
 /** "2026-10-16" -> "vineri 16 oct" */
 export function pickLabel(date: string): string {
   return `${WEEKDAY_FULL[parts(date).weekday]} ${shortDate(date)}`;
