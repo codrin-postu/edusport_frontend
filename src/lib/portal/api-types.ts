@@ -1,5 +1,5 @@
 /**
- * Coach API types. Copied from the backend repo (edusport_backend, p3be feat/athletes, commit 0474a2f):
+ * Coach API types. Copied from the backend repo (edusport_backend, p3be feat/athletes, commit 0474a2f; CoachMe.coachId, coachOptions and CoachSavedDays from b220199):
  * src/club/portal/coach/api-types.ts with its imports inlined from
  * src/api/calendar-event/services/expand.ts (Occurrence),
  * src/club/groups/{program-read,api-types,types,series}.ts (GroupProgram, ProgramRow, SeasonRef, JoinResult, DayKey, WeekOfMonth, RepeatFreq),
@@ -80,7 +80,14 @@ export type LessonPatch = { present: boolean; durationMin: number; coachIds: str
 export type LessonSaved = { lessonId: string; changed: boolean; toast: string };
 
 /** JSON shapes of the coach routes. Only what the coach screens show: no price, amount, birth date, note, address or registration. */
-export type CoachMe = { name: string; firstName: string; initials: string; email: string; phone: string | null; hasPassword: boolean; google: boolean };
+export type CoachMe = { name: string; firstName: string; initials: string; email: string; phone: string | null; hasPassword: boolean; google: boolean;
+  /** The coach's own team member documentId (a lesson's `coachIds` must contain it). */
+  coachId: string;
+  /** Team members who coach any group: id and name only, for choosing a lesson's coaches. */
+  coachOptions: { id: string; name: string }[];
+};
+/** Dates of one month (`YYYY-MM-DD`, ascending) that have a saved session the coach may read. */
+export type CoachSavedDays = { month: string; dates: string[] };
 export type CoachDevice = { id: string; label: string; lastSeenAt: string; current: boolean };
 export type CoachClassRow = {
   sessionId: string | null; occurrenceKey: string | null; groupId: string; groupName: string; date: string; startTime: string; children: number; done: boolean; standIn: boolean;

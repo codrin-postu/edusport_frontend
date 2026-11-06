@@ -195,6 +195,10 @@ const parseKey = (key) => {
 const childrenOf = (id) => (world.members[id] ?? []).length;
 const hasClass = (g, date) => g.days.includes(weekdayOf(date)) || (g.own && date === today);
 const archivedDate = (date) => date < addDays(today, -ARCHIVE_DAYS);
+const MONTHS = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"];
+// Backend copy: shortDay "27 oct", longDate "27 oct 2026" (src/club/presence/copy/attendance.ts, dates.ts).
+const shortDay = (date) => `${Number(date.slice(8))} ${MONTHS[Number(date.slice(5, 7)) - 1]}`;
+const longDay = (date) => `${shortDay(date)} ${date.slice(0, 4)}`;
 const notFound = (res) => club(res, 404, MSG.notFound);
 
 function classRow(g, date, done) {
@@ -244,7 +248,7 @@ function buildSession({ groupId, date, startTime, durationMin, key, rec, free })
     sessionId: rec?.sessionId ?? null, occurrenceKey: free ? null : key, added: free ? { groupId, date, startTime, durationMin } : null,
     groupId, groupName: g.name, kind: g.kind, date, startTime, durationMin, outsideSchedule: Boolean(free),
     coachIds: rec?.coachIds ?? ["tm-andrei"], coachOptions: world.coachOptions, rows: sessionRows(g, rec),
-    savedLine: rec ? "Salvată de Andrei Popa, azi 18:40" : null, editable: !archivedDate(date), archived: archivedDate(date), standIn: !g.own,
+    savedLine: rec ? `Salvată de Andrei Popa, ${longDay(rec.date)} 18:40` : null, editable: !archivedDate(date), archived: archivedDate(date), standIn: !g.own,
   };
 }
 
@@ -289,14 +293,14 @@ function saveSession({ body, res }) {
   const prior = world.saved[key];
   const sessionId = prior?.sessionId ?? `s-new-${Object.keys(world.saved).length}`;
   world.saved[key] = { sessionId, groupId: ref.groupId, date: ref.date, startTime: body.added?.startTime ?? prior?.startTime ?? g.start, durationMin: body.added?.durationMin ?? g.dur, ticks: asked, coachIds: body.coachIds ?? ["tm-andrei"] };
-  ok(res, { sessionId, toast: `Prezență salvată: ${g.name}, ${ref.date.slice(8)}.` });
+  ok(res, { sessionId, toast: `Prezență salvată: ${g.name}, ${shortDay(ref.date)}.` });
 }
 
 const inStandInWindow = (groupId, date) => date <= today && date >= addDays(today, -ARCHIVE_DAYS) && !groupOf(groupId).own;
 
 function lessonView(l) {
   const archived = archivedDate(l.date);
-  return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? "Salvată de Andrei Popa, azi 15:55" : null, editable: !archived, archived, deletable: !archived };
+  return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived };
 }
 
 function lessonWrite({ body, res, params, method }) {
@@ -424,7 +428,7 @@ function newAthlete({ body, res }) {
   if (typeof body.name !== "string" || !body.name.trim()) return club(res, 400, MSG.invalid);
   const athleteId = `a-new-${++world.counters.athlete}`;
   world.members[g.id].push({ athleteId, name: body.name.trim(), age: null, isNew: true, alsoIn: [], inactive: false });
-  ok(res, { athleteId, toast: "Sportiv adăugat." });
+  ok(res, { athleteId, toast: MSG.saved });
 }
 
 function addMembers({ body, res }, g) {
