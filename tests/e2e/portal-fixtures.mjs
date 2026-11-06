@@ -54,7 +54,7 @@ export function buildWorld(today) {
     "guscat": [person("aioana", "Ioana Diaconu", 12)],
   };
   // The member list shows the 9 active children; the inactive child only appears on the presence sheet.
-  const inactive = { "gavansati": [person("ainactive", "Robert Toma", 14, { inactive: true })] };
+  const inactive = { "gavansati": [person("ainactive", "Robert Toma", 14, { inactive: true })], "gprimii": [person("ainactive2", "Dan Preda", 7, { inactive: true })] };
   const standIn3 = addDays(today, -3);
   const saved = {
     [`occ:gavansati:${today}`]: { sessionId: "s-today", groupId: "gavansati", date: today, startTime: "18:15", durationMin: 60, ticks: ["amaria", "aluca", "aana", "amatei", "aelena", "adavid", "asofia"], coachIds: ["tm-andrei"] },
