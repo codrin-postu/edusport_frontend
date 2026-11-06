@@ -235,6 +235,7 @@ export const STATES = {
   loadFailed: "Nu am putut încărca datele.",
   noAccess: "Nu mai ai acces la această grupă.",
   invalid: "Cerere invalidă.",
+  tooMany: "Prea multe încercări. Încearcă din nou peste 15 minute.",
 } as const;
 
 export const A11Y = { back: "Înapoi", prevMonth: "Luna anterioară", nextMonth: "Luna următoare", profile: "Profil" } as const;
