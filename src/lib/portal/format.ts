@@ -3,6 +3,7 @@ const WEEKDAY_TILE = ["DU", "LU", "MA", "MI", "JO", "VI", "SÂ"] as const;
 const WEEKDAY_FULL = ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"] as const;
 const MONTH_TILE = ["IAN", "FEB", "MAR", "APR", "MAI", "IUN", "IUL", "AUG", "SEP", "OCT", "NOI", "DEC"] as const;
 const MONTH_SHORT = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"] as const;
+const MONTH_LONG = ["ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"] as const;
 const BUCHAREST = "Europe/Bucharest";
 
 type Parts = { year: number; month: number; day: number; weekday: number };
@@ -29,6 +30,12 @@ export function dateTile(date: string): { day: string; weekday: string } {
 export function shortDate(date: string): string {
   const p = parts(date);
   return `${p.day} ${MONTH_SHORT[p.month - 1]}`;
+}
+
+/** "2026-11-14" -> "14 noiembrie" */
+export function dayMonth(date: string): string {
+  const p = parts(date);
+  return `${p.day} ${MONTH_LONG[p.month - 1]}`;
 }
 
 /** "2026-10-16" -> "vineri 16 oct" */

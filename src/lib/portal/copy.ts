@@ -201,6 +201,18 @@ export const PROGRAM = {
   publicHint: "Programul apare în calendarul de pe site.",
   past: "trecut",
   schoolLocked: "Programul Școlii îl schimbă administratorul.",
+  save: "Salvează",
+  noDays: "Alege cel puțin o zi.",
+  toasts: {
+    programAdded: "Program adăugat.",
+    classAdded: (day: string) => `Ședință adăugată: ${day}.`,
+    programChanged: "Program schimbat.",
+    programEnded: "Program șters.",
+    classDeleted: "Ședință ștearsă.",
+    dateCancelled: (day: string) => `Ședința din ${day} a fost anulată.`,
+    dateMoved: (day: string) => `Ședința din ${day} a fost mutată.`,
+    dateKept: (day: string) => `Ședința din ${day} se ține.`,
+  },
 } as const;
 
 export const HISTORY = {
