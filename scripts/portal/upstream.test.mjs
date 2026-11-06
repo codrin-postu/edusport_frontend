@@ -41,3 +41,21 @@ it("masks secrets", () => {
   assert.equal(u.maskSecrets("{\"secret\":\"abc\",\"email\":\"a@b\"}"), "{\"secret\":\"***\",\"email\":\"a@b\"}");
   assert.equal(u.maskSecrets("{\"refreshToken\":\"r\",\"accessToken\":\"a\",\"password\":\"p\",\"current\":\"c\",\"code\":\"1\"}"), "{\"refreshToken\":\"***\",\"accessToken\":\"***\",\"password\":\"***\",\"current\":\"***\",\"code\":\"***\"}");
 });
+
+it("forwards only a real client IP", async() => {
+  const { cleanIp } = await import("../../src/lib/portal/client-ip.ts");
+  assert.equal(cleanIp(" 203.0.113.9 "), "203.0.113.9");
+  assert.equal(cleanIp("2001:db8::1"), "2001:db8::1");
+  assert.equal(cleanIp("1.1.1.1, 2.2.2.2"), null);
+  assert.equal(cleanIp("evil\nheader"), null);
+  assert.equal(cleanIp(null), null);
+});
+
+it("only a backend 401 ends the session on refresh", () => {
+  const { refreshFailure } = u;
+  assert.equal(refreshFailure(401), null);
+  assert.equal(refreshFailure(502), 502);
+  assert.equal(refreshFailure(503), 503);
+  assert.equal(refreshFailure(403), 503);
+  assert.equal(refreshFailure(429), 502);
+});

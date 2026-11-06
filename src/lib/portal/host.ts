@@ -27,13 +27,14 @@ function routeSite(pathname: string): RouteAction {
   return NEXT;
 }
 
-const PUBLIC_EXTENSIONS = new Set(["txt", "xml", "webmanifest"]);
+// Only real static assets pass through on the coach host: root-level images and fonts,
+// and the public/ asset folders. Any other path (even with a dot) is a coach page or a 404.
+const ROOT_ASSET = /^\/[^/]+\.(ico|png|svg|jpe?g|webp|avif|gif|woff2?)$/i;
+const ASSET_PREFIXES = ["/icons", "/images", "/fonts"];
 
 function isPublicFile(pathname: string): boolean {
-  const last = pathname.split("/").pop() ?? "";
-  const dot = last.lastIndexOf(".");
-  if (dot <= 0) return false;
-  return !PUBLIC_EXTENSIONS.has(last.slice(dot + 1).toLowerCase());
+  if (ROOT_ASSET.test(pathname)) return true;
+  return ASSET_PREFIXES.some((p) => underPrefix(pathname, p)) && !pathname.split("/").includes("..");
 }
 
 function routeAntrenor(pathname: string): RouteAction {
@@ -45,7 +46,17 @@ function routeAntrenor(pathname: string): RouteAction {
   return { action: "rewrite", pathname: pathname === "/" ? "/antrenor" : `/antrenor${pathname}` };
 }
 
-export function routeRequest(site: Site, pathname: string): RouteAction {
+function decoded(pathname: string): string {
+  try {
+    return decodeURIComponent(pathname);
+  } catch {
+    return pathname;
+  }
+}
+
+export function routeRequest(site: Site, rawPathname: string): RouteAction {
+  // Next matches routes on the decoded path, so the rules must too (/%61ntrenor is /antrenor).
+  const pathname = decoded(rawPathname);
   if (site === "site") return routeSite(pathname);
   if (site === "reserved") return pathname === "/api/health" ? NEXT : NOT_FOUND;
   return routeAntrenor(pathname);

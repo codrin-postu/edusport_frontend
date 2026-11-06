@@ -4,20 +4,29 @@
 import { createHash } from "node:crypto";
 import type { PortalSession } from "./api-types";
 
-export type RefreshResult = { ok: true; session: PortalSession } | { ok: false };
+/** `transient` is null when the backend refused the token (the session is over), else the status to answer. */
+export type RefreshResult = { ok: true; session: PortalSession } | { ok: false; transient: number | null };
 
 type Entry = { promise: Promise<RefreshResult>; doneAt: number | null };
 
-const DEFAULT_GRACE_MS = 30_000;
-const FAILED: RefreshResult = { ok: false };
+// The reuse window after a success only covers the Set-Cookie race and a lost response.
+const DEFAULT_GRACE_MS = 10_000;
+const DOWN: RefreshResult = { ok: false, transient: 502 };
 
-const keyOf = (token: string): string => createHash("sha256").update(token).digest("hex");
+const keyOf = (token: string, device: string | null): string =>
+  createHash("sha256").update(`${token}\0${device ?? ""}`).digest("hex");
 
-export function createRefresher(
-  run: (refreshToken: string) => Promise<RefreshResult>,
+/**
+ * The first caller of a key runs `run` with its own ctx. With a device cookie the success is reused
+ * for the grace window, bound to that device so a leaked old token alone gets nothing; without one
+ * only calls in flight are shared. A failure is never cached.
+ * If the backend rotated the token but the answer was lost, a retry with the old token cannot be recovered here.
+ */
+export function createRefresher<C>(
+  run: (refreshToken: string, ctx: C) => Promise<RefreshResult>,
   nowMs: () => number,
   graceMs: number = DEFAULT_GRACE_MS,
-): (refreshToken: string) => Promise<RefreshResult> {
+): (refreshToken: string, device: string | null, ctx: C) => Promise<RefreshResult> {
   const entries = new Map<string, Entry>();
 
   function dropOld(): void {
@@ -25,14 +34,13 @@ export function createRefresher(
     for (const [key, e] of entries) if (e.doneAt !== null && now - e.doneAt > graceMs) entries.delete(key);
   }
 
-  function start(key: string, token: string): Entry {
-    const entry: Entry = { promise: Promise.resolve(FAILED), doneAt: null };
+  function start(key: string, token: string, reuse: boolean, ctx: C): Entry {
+    const entry: Entry = { promise: Promise.resolve(DOWN), doneAt: null };
     entry.promise = Promise.resolve()
-      .then(() => run(token))
-      .catch((): RefreshResult => FAILED)
+      .then(() => run(token, ctx))
+      .catch((): RefreshResult => DOWN)
       .then((result) => {
-        // Only a success is worth reusing; a failure is retried by the next caller.
-        if (result.ok) entry.doneAt = nowMs();
+        if (result.ok && reuse) entry.doneAt = nowMs();
         else if (entries.get(key) === entry) entries.delete(key);
         return result;
       });
@@ -40,9 +48,9 @@ export function createRefresher(
     return entry;
   }
 
-  return (refreshToken) => {
+  return (refreshToken, device, ctx) => {
     dropOld();
-    const key = keyOf(refreshToken);
-    return (entries.get(key) ?? start(key, refreshToken)).promise;
+    const key = keyOf(refreshToken, device);
+    return (entries.get(key) ?? start(key, refreshToken, device !== null, ctx)).promise;
   };
 }

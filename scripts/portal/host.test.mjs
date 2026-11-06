@@ -28,3 +28,19 @@ it("keeps each host to its pages", () => {
   assert.deepEqual(routeRequest("antrenor", "/logo.png"), { action: "next" });
   assert.deepEqual(routeRequest("reserved", "/"), { action: "notFound" });
 });
+
+it("passes only real static files on the coach host", () => {
+  const { routeRequest } = lib;
+  assert.deepEqual(routeRequest("antrenor", "/noutati/a.b"), { action: "rewrite", pathname: "/antrenor/noutati/a.b" });
+  assert.deepEqual(routeRequest("antrenor", "/icons/x.svg"), { action: "next" });
+  assert.deepEqual(routeRequest("antrenor", "/favicon.ico"), { action: "next" });
+  assert.deepEqual(routeRequest("antrenor", "/_next/static/a.js"), { action: "next" });
+});
+
+it("decodes percent-encoded paths before routing", () => {
+  const { routeRequest } = lib;
+  assert.deepEqual(routeRequest("site", "/%61ntrenor/grupe"), { action: "notFound" });
+  assert.deepEqual(routeRequest("site", "/api/%70ortal/auth/login"), { action: "notFound" });
+  assert.deepEqual(routeRequest("antrenor", "/%61ntrenor/grupe"), { action: "notFound" });
+  assert.deepEqual(routeRequest("site", "/%E0%A4%A"), { action: "next" });
+});
