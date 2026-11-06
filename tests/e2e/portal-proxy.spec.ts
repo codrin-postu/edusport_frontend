@@ -96,6 +96,27 @@ test("routes outside the allow-list never reach Strapi", async({ request }) => {
   expect(await coachCalls()).toHaveLength(0);
 });
 
+test("only the query parameters a route reads are forwarded", async({ page }) => {
+  await loginAs(page);
+  const today = await page.evaluate(async() => (await fetch("/api/portal/coach/today?date=2026-11-06&populate=*&filters[a]=1")).status);
+  expect(today).toBe(200);
+  const search = await page.evaluate(async() => (await fetch("/api/portal/coach/athletes/search?q=ana&group=gsilver&populate=deep")).status);
+  expect(search).toBe(200);
+  const calls = await coachCalls();
+  expect(calls.find((c) => c.path.includes("/today"))?.path).toBe("/api/portal/coach/today?date=2026-11-06");
+  expect(calls.find((c) => c.path.includes("/athletes/search"))?.path).toBe("/api/portal/coach/athletes/search?q=ana&group=gsilver");
+});
+
+test("an oversized proxy body answers 413 and never reaches Strapi", async({ page }) => {
+  await loginAs(page);
+  const status = await page.evaluate(async() => {
+    const res = await fetch("/api/portal/coach/me", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ phone: "1".repeat(70 * 1024) }) });
+    return res.status;
+  });
+  expect(status).toBe(413);
+  expect((await coachCalls()).filter((c) => c.path.endsWith("/me"))).toHaveLength(0);
+});
+
 test("encoded traversal in the proxy path never reaches Strapi", async({ request }) => {
   for (const p of ["/api/portal/coach/%2E%2E%2F%2E%2E%2Fclub%2Fathletes", "/api/portal/coach/groups/a%2Fb/program"]) {
     const res = await request.get(`${RAW}${p}`, { headers: AS_COACH });

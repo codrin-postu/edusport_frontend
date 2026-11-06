@@ -18,3 +18,24 @@ const COMPILED = ROUTES.map(([method, pattern]) => ({ method, re: new RegExp(`^$
 export function allowedCoachRoute(method: string, path: string): boolean {
   return COMPILED.some((r) => r.method === method && r.re.test(path));
 }
+
+// The query parameters each GET route reads in the backend's coach controller. Nothing else is forwarded.
+const QUERY: [RegExp, string[]][] = [
+  [/^\/today$/, ["date"]],
+  [new RegExp(`^/groups/${ID}/(program|saved-days)$`), ["month"]],
+  [/^\/history$/, ["month"]],
+  [/^\/athletes\/search$/, ["q", "group"]],
+  [/^\/session$/, ["id", "occurrence", "group", "date", "time", "duration"]],
+];
+
+/** The query string to forward for `path` ("" or "?a=b"): only allowed names, first value of each. */
+export function forwardedQuery(path: string, incoming: URLSearchParams): string {
+  const names = QUERY.find(([re]) => re.test(path))?.[1] ?? [];
+  const out = new URLSearchParams();
+  for (const name of names) {
+    const value = incoming.get(name);
+    if (value !== null) out.set(name, value);
+  }
+  const text = out.toString();
+  return text ? `?${text}` : "";
+}

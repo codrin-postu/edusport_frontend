@@ -3,30 +3,28 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { rateLimit } from "@/lib/rate-limit";
 import type { PortalSession } from "./api-types";
+import { readLimitedText } from "./body-limit";
 import { bffContext, callStrapi, refusal, respond, secretReady, type BffContext } from "./bff";
 import { STATES } from "./copy";
 import { sessionCookies, type CookieSpec } from "./cookies";
 import { originAllowed } from "./origin";
 import { readSession } from "./upstream";
 
-const MAX_BODY = 64 * 1024;
 const RATE = { max: 30, windowMs: 900_000 };
 
 export type Guarded = { ctx: BffContext; body: Record<string, unknown> };
 
 /** Origin, secret, rate limit and body size, in that order. Answers a response or the parsed request. */
-export async function guardPost(req: NextRequest, opts: { limited: boolean; readBody: boolean }): Promise<NextResponse | Guarded> {
+export async function guardPost(req: NextRequest, opts: { limited: boolean; readBody: boolean; needSecret?: boolean }): Promise<NextResponse | Guarded> {
   const ctx = bffContext(req);
   if (!originAllowed(req.method, req.headers.get("origin"), ctx.host, ctx.secure)) return respond(403, refusal(403, STATES.invalid), []);
-  if (!secretReady()) return respond(503, refusal(503, STATES.loadFailed), []);
+  if (opts.needSecret !== false && !secretReady()) return respond(503, refusal(503, STATES.loadFailed), []);
   if (opts.limited && !rateLimit(`portal-auth:${ctx.ip ?? "unknown"}`, RATE).ok) return respond(429, refusal(429, STATES.tooMany), []);
   if (!opts.readBody) return { ctx, body: {} };
-  const declared = Number(req.headers.get("content-length") ?? "0");
-  if (declared > MAX_BODY) return respond(413, refusal(413, STATES.invalid), []);
-  const text = await req.text();
-  if (Buffer.byteLength(text) > MAX_BODY) return respond(413, refusal(413, STATES.invalid), []);
+  const read = await readLimitedText(req);
+  if (!read.ok) return respond(413, refusal(413, STATES.invalid), []);
   try {
-    const parsed: unknown = JSON.parse(text);
+    const parsed: unknown = JSON.parse(read.text);
     if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) return { ctx, body: parsed as Record<string, unknown> };
   } catch {
     // falls through to the invalid answer

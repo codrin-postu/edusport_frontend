@@ -17,3 +17,16 @@ it("allows the coach routes and nothing else", () => {
   assert.equal(r.allowedCoachRoute("POST", "/today"), false);
   assert.equal(r.allowedCoachRoute("GET", `/groups/${"a".repeat(65)}`), false);
 });
+
+it("forwards only the query parameters a route reads", () => {
+  const { forwardedQuery } = r;
+  const q = (s) => new URLSearchParams(s);
+  assert.equal(forwardedQuery("/today", q("date=2026-11-06&populate=*")), "?date=2026-11-06");
+  assert.equal(forwardedQuery("/groups/abc1/saved-days", q("month=2026-11&filters[x]=1")), "?month=2026-11");
+  assert.equal(forwardedQuery("/groups/abc1/program", q("month=2026-11&month=2026-12")), "?month=2026-11");
+  assert.equal(forwardedQuery("/history", q("month=2026-11&x=1")), "?month=2026-11");
+  assert.equal(forwardedQuery("/athletes/search", q("q=ana&group=g1&populate=deep")), "?q=ana&group=g1");
+  assert.equal(forwardedQuery("/session", q("id=s1&x=1")), "?id=s1");
+  assert.equal(forwardedQuery("/me", q("populate=*")), "");
+  assert.equal(forwardedQuery("/groups", q("filters=1")), "");
+});

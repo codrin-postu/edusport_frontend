@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, mockLog, mockReset } from "./portal-helpers";
+import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, mockLog, mockReset, mockState } from "./portal-helpers";
 
 const INVITE = "inv-valid-0000000000000000000000";
 // Node does not resolve *.localhost: raw API calls reach the server on localhost with the coach Host header.
@@ -92,4 +92,21 @@ test("logout clears the session cookies and keeps the device cookie", async({ pa
   const cleared = raw.headersArray().filter((h) => h.name.toLowerCase() === "set-cookie").map((h) => h.value);
   for (const name of ["es_at", "es_rt"]) expect(cleared.find((c) => c.startsWith(`${name}=`))).toMatch(/Max-Age=0/i);
   expect(cleared.some((c) => c.startsWith("es_dev="))).toBe(false);
+});
+
+test("logout clears the session cookies even when the backend call fails", async({ page }) => {
+  const login = await post(page, "/api/portal/auth/login", { email: COACH_EMAIL, password: COACH_PASSWORD }, COACH_BASE);
+  expect(login.status).toBe(200);
+  await mockState({ refuseSecret: true });
+  const out = await post(page, "/api/portal/auth/logout", {}, COACH_BASE);
+  expect(out.status).toBe(200);
+  expect(await cookieNamed(page, "es_at")).toBeFalsy();
+  expect(await cookieNamed(page, "es_rt")).toBeFalsy();
+});
+
+test("an oversized body is refused with 413, declared or chunked", async({ request }) => {
+  const big = JSON.stringify({ email: "a@example.invalid", password: "x".repeat(70 * 1024) });
+  const declared = await request.post(`${RAW}/api/portal/auth/login`, { data: big, headers: { ...AS_COACH, "content-type": "application/json" } });
+  expect(declared.status()).toBe(413);
+  expect((await mockLog()).filter((c) => c.path === "/api/portal/auth/login")).toHaveLength(0);
 });

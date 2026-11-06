@@ -2,7 +2,8 @@
 // refresh handled in coachCall. Strapi set-cookie headers are never forwarded.
 import type { NextRequest, NextResponse } from "next/server";
 import { bffContext, coachCall, refusal, respond, secretReady } from "@/lib/portal/bff";
-import { allowedCoachRoute } from "@/lib/portal/coach-routes";
+import { readLimitedText } from "@/lib/portal/body-limit";
+import { allowedCoachRoute, forwardedQuery } from "@/lib/portal/coach-routes";
 import { STATES } from "@/lib/portal/copy";
 import { clearSessionCookies } from "@/lib/portal/cookies";
 import { originAllowed } from "@/lib/portal/origin";
@@ -10,7 +11,6 @@ import { originAllowed } from "@/lib/portal/origin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_BODY = 64 * 1024;
 const NOT_FOUND = "Nu a fost găsit.";
 
 type Ctx = { params: Promise<{ path: string[] }> };
@@ -24,18 +24,17 @@ async function handle(req: NextRequest, { params }: Ctx): Promise<NextResponse> 
   if (!secretReady()) return respond(503, refusal(503, STATES.loadFailed), []);
   let body: unknown;
   if (req.method !== "GET") {
-    if (Number(req.headers.get("content-length") ?? "0") > MAX_BODY) return respond(413, refusal(413, STATES.invalid), []);
-    const text = await req.text();
-    if (Buffer.byteLength(text) > MAX_BODY) return respond(413, refusal(413, STATES.invalid), []);
-    if (text) {
+    const read = await readLimitedText(req);
+    if (!read.ok) return respond(413, refusal(413, STATES.invalid), []);
+    if (read.text) {
       try {
-        body = JSON.parse(text);
+        body = JSON.parse(read.text);
       } catch {
         return respond(400, refusal(400, STATES.invalid), []);
       }
     }
   }
-  const target = req.method === "GET" ? `${path}${req.nextUrl.search}` : path;
+  const target = req.method === "GET" ? `${path}${forwardedQuery(path, req.nextUrl.searchParams)}` : path;
   const res = await coachCall(ctx, req.method, target, body);
   const data = typeof res.body === "object" && res.body !== null ? (res.body as { data?: unknown }).data : null;
   const revokedCurrent = req.method === "DELETE" && typeof data === "object" && data !== null && (data as { revokedCurrent?: unknown }).revokedCurrent === true;
