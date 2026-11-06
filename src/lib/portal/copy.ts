@@ -242,7 +242,7 @@ export const SETTINGS = {
   setPassword: "Setează o parolă",
 } as const;
 
-export const SECURITY = { device: "Dispozitiv", lastSeen: "Ultima dată", current: "acesta", signOut: "Deconectează" } as const;
+export const SECURITY = { device: "Dispozitiv", lastSeen: "Ultima dată", current: "acesta", signOut: "Deconectează", unknown: "Dispozitiv necunoscut" } as const;
 
 export const STATES = {
   loadFailed: "Nu am putut încărca datele.",
