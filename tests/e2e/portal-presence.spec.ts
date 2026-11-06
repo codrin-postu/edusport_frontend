@@ -31,12 +31,12 @@ test("the own coach row cannot be removed, others can", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gavansati", FREE_DAY));
   await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Șterge/ })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Golește selecția" })).toHaveCount(0);
   await page.getByRole("button", { name: "+ Adaugă alți antrenori" }).click();
   await tick(page, "Bianca Ene");
   await page.getByRole("button", { name: "OK" }).click();
-  await expect(page.getByRole("button", { name: "Șterge Bianca Ene" })).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Șterge/ })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Golește selecția" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Golește selecția" })).toHaveCount(1);
 });
 
 test("an archived session is read only", async({ page }) => {
@@ -65,6 +65,7 @@ test("the day sheet marks saved days, blocks the future and opens the existing d
   await page.getByRole("button", { name: "MA 3 NOI" }).click();
   await expect(page.getByText("Alege ziua pentru care faci prezența.")).toBeVisible();
   await expect(page.locator("td.bg-surface-highlight")).toHaveCount(1);
+  await expect(page.getByText("are prezență salvată")).toBeVisible();
   await expect(page.getByRole("button", { name: /, 6 noiembrie/ })).toBeDisabled();
   await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
   await page.getByRole("button", { name: "Alege joi 5 noi" }).click();

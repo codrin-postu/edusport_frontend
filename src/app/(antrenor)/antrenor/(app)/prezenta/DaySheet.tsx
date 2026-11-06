@@ -93,6 +93,10 @@ export function DaySheet({ open, onOpenChange, session, allowed }: DaySheetProps
           }}
           modifiersClassNames={{ saved: "bg-surface-highlight" }}
         />
+        <p className="flex items-center gap-2 text-body-sm text-secondary mt-2">
+          <span aria-hidden="true" className="size-4 bg-surface-highlight border-retro border-line" />
+          {PRESENCE.hasSaved}
+        </p>
         <p role="alert" className="text-body-sm text-accent min-h-6 mt-2">{failed}</p>
         <Button onClick={() => void choose()} disabled={busy} className="w-full mt-2">{PRESENCE.pick(pickLabel(picked))}</Button>
       </Sheet>
