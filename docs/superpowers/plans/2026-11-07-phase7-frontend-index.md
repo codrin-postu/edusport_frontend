@@ -109,3 +109,7 @@ Log each in DECISIONS.md as "plan 7 frontend, decided by Claude (low impact, 202
 5. Shared parts keep phase 6 class names; the coach screens' visual snapshots must stay unchanged in Task 2 (T2).
 6. One 900 px breakpoint switches phone and desktop layouts, in CSS (media query), not in JS, so there is no layout flash (T6).
 7. The desktop sidebar is navy with an ice active item, as in `DesktopMain.dc.html`; the top area is `--sp-hi` (T6).
+
+## Brand (user, 2026-11-07, binding for both portals)
+
+Both the coach site (antrenor) and the sportiv site use the real EduSport brand, as the public site does: the "EDUSPORT" wordmark in the Climate Crisis font (`public/fonts/ClimateCrisis-1979.woff2`, loaded with `next/font/local` as in `src/app/(site)/layout.tsx`, class `text-branding-font`), League Spartan for headings and Inter for text, and the site tokens from `globals.css`. Task 6 adds a shared `PortalWordmark` used by both portal shells, and the coach shell switches to it in the same task. A brand refinement round on the design canvas (wordmark, header and nav details for both portals) runs in the companion before Task 6 is built.
