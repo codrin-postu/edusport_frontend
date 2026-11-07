@@ -550,3 +550,61 @@ Companion screens 4-6 (p6-4 to p6-6), answers in edusport_backend/.superpowers/p
 - A signed-in coach may open the reset flow from Setări cont, e-mail prefilled.
 - A stand-in coach may check a scheduled class of another group inside the 7-day window; saved rows carry a `listed` flag, Adaugă is hidden for a stand-in and Deschide only where the coach is listed.
 - Final review: main-site 404 restored with catch-all routes, `antrenor.localhost` accepted only outside production, client Sentry scrubs transactions, a failed invite read shows "Nu am putut încărca datele.", "Salvată de Antrenor <nume>" in the mock.
+
+## 2026-11-07 phase 11 answers (user)
+Screens av-1 to av-6, answers in edusport_backend/.superpowers/admin-views/answers.md; spec edusport_backend docs/superpowers/specs/2026-11-07-admin-views-design.md.
+- av-1 states: admin presence words "Completat" / "Necompletat" / "Urmează" replace "salvată" / "nefăcută".
+- av1-q1: no tabs for the period; a dropdown "Zi" / "Săptămână" / "Lună", Săptămână by default.
+- av1-q2: month = the whole month inline, grouped by day, opens at today; calendar view not needed now.
+- av1-q2 addition: a heat grid (group x day, share present) as "Grilă" for Săptămână and Lună.
+- av1-q3: one Prezență page; the period picker replaces the tabs Ședințe / Lecții individuale / Pe antrenori.
+- av1c-q1 A: square picker "Grupe" / "Lecții individuale" / "Antrenori" beside the view dropdown, Grupe default; coach hours under Antrenori.
+- av1c-q2: rest of av-1b approved; day header rows lower and with a slightly smaller font.
+- av2-q1 A: same side panel; every coach, athlete and group in it is a link.
+- av2-q2 A: a coach page with Ore / Ședințe / Lecții individuale behind a small picker, no tabs.
+- av2-q3 C: an athlete name opens the athlete page in a new browser tab.
+- av3-q1: athlete presence history paged like the rest of the admin, 10 per page, newest first.
+- av3-q3: a card above the list "<X> prezențe în sezonul <Y>".
+- av3 type column: only "Grup" or "Individual".
+- av3c-q1 A: Plată column: square "Ședința x/y" with the grey abonament code beside it, else "Plătit" / "Neplătit"; no click detail for abonament rows.
+- av3 abonament code: each abonament gets a short visible code ("A-0123"), a new field.
+- av3-q2: individual lessons in the same history, mixed by date.
+- av4b-q1 A: compact bar plus a collapsible dated list, used sessions only, count "3/8", no "folosite" text; heading "Alte abonamente".
+- av4b-q2 A: tapping a used session opens it in the side panel with the athlete marked.
+- av5-q1: "Tabele" as a tab on Sportivi.
+- av5-q2: ready-made tables by default plus a builder that saves named views.
+- av5-q3 A: group by group, section, month or coach, with subtotals and a grand total.
+- av5-q4 A: saved views shared by all admins, author shown.
+- av5-q5 A: row opens the athlete (new browser tab), header sorts, filters above.
+- av5-q6 A: downloads .xlsx and .csv of exactly what is on screen.
+- av5 copy: the owed column is "Rămas"; ready-made "Restanțe" becomes "Rămas de plată" (decided by Claude, low impact).
+- av6-q1 A: five figure cards with a month switcher.
+- av6-q2 A: table by section and group (Datorat, Încasat, Rămas, %), switch Metodă / Scop.
+- av6-q3 A: accounting view with income by method, payments list with an automatic "Nr. chitanță", "Export contabil" xlsx and csv; placed with the page's picker, no tab.
+- av6-q4 B: a figure links to De încasat, Plăți or Abonamente with the filter set.
+
+## 2026-11-07 phase 6b answers (user)
+Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase6b/answers.md; spec edusport_backend docs/superpowers/specs/2026-11-07-admin-auth-roles-design.md.
+- q1 A: build order admin security first, then portal 2FA, then passkeys, then roles.
+- q2 A: admin 2FA is our own code on the Strapi server; no plugin, no network-only gate.
+- q3 A: our own admin login page on the CMS host; it sets Strapi's admin session and opens /admin.
+- q4 A: Strapi's own login, register, register-admin and reset routes are closed as session issuers; ours replace them.
+- q5 A: a remembered device skips 2FA for 30 days.
+- q6 A: 10 backup codes shown once; generating new ones cancels the old ones.
+- q7 A: lost phone and no backup code: an admin resets 2FA (Super Admin for admins), logged and mailed to the owner.
+- q8 C: 2FA stays optional for admins, no banner.
+- q9 B: no extra password or code check before sensitive changes.
+- q10 B: passkeys live now on codrin.space; everyone enrols again after the move to scoaladepatinaj.com.
+- q11 A: admins may use any passkey, synced or hardware.
+- q12 A: passkey offered once after a password login on a supporting device, dismissible; always available in Securitate.
+- q13 A: admin lockout as the portal: 5 wrong in 15 minutes, one lockout e-mail.
+- q14 A: admin sessions keep Strapi defaults (remember me 14 days idle, 30 max; otherwise 2 hours idle, 1 day).
+- q15 A: admins get the portal's new-device e-mail.
+- q16 A: the first Google login with the same verified e-mail links Google to an existing admin.
+- q17 A: admin roles Super Admin, Administrator club, Editor site.
+- q18 A: one policy with a role map per route; menus hidden from the same map.
+- q19 A: payments, subscriptions, the phase 11 money pages and exports: Super Admin and Administrator club.
+- q20 A: coach accounts (invite, disable, change e-mail, reset 2FA): Super Admin and Administrator club.
+- q21 A: 6b builds roles and menu hiding fully; phase 10 keeps only the trim items ("Staff club" dropped).
+- User note: TOTP secrets encrypted at rest with a server key; backup codes from a CSPRNG, stored only as salted slow hashes or a server-keyed HMAC, single use, constant-time compare, attempt-limited; nothing in a database leak can be turned into usable codes or secrets.
+- User note (copy): say "2FA", never "verificare în doi pași".
