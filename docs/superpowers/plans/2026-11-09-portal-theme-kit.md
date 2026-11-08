@@ -35,7 +35,7 @@ Batch A (Tasks 1 and 2) gets its own review before Task 3 starts, because a mist
 - No component branches on the site: no `site`, `portal`, `theme` prop, no `data-theme` read in any component, no host check. Only `src/app/(antrenor)/layout.tsx` and `src/app/(sportiv)/layout.tsx` write `data-theme="portal"`.
 - Every portal difference is a line in `src/styles/portal-theme.css` with a comment naming the audit row (`/* 14 input */`). Portal-only components use tokens through `(--token)` values (`min-h-(--portal-row-min-h)`), never `[14px]`, never a hex. Spacing utilities stay on the 4px grid the token check enforces; off-grid canvas sizes are tokens.
 - Copy: Romanian, straight quotes, no em or en dash, no middle dot, no emoji. Strings come from `src/lib/portal/copy.ts` and `src/lib/portal/copy-shared.ts`.
-- Shapes: square everywhere; non-zero radius only through `--portal-nav-radius`, `--portal-nav-item-radius`, `--portal-dateblock-radius` and the spinner. No dashed or dotted lines. No red text except the date-block top word (`[data-date-word]`, `text-accent`).
+- Shapes: square everywhere. Named exceptions (user 2026-11-09): the bottom menu and its active item (`--portal-nav-radius` 18px, `--portal-nav-item-radius` 13px), the date and place blocks (`--portal-dateblock-radius` 6px, attribute `data-date-block`) and the spinner. No dashed or dotted lines. No red text except the date-block top word (`[data-date-word]`, `text-accent`).
 - `prefers-reduced-motion: reduce` turns off every portal animation.
 - Synthetic data only (`@example.invalid`). e2e ports as `playwright.e2e.config.ts` (3200, 18890, 18891); only one e2e run at a time on this machine.
 
@@ -232,7 +232,7 @@ export function ListRow(p: { href?: string; onClick?: () => void; lead?: React.R
 // whole row one link (Next Link) or button; min-h --portal-row-min-h; inner flex gap --portal-row-gap, pad --portal-row-pad-y/--portal-row-pad-x; title --portal-row-title 700 (muted-on-dark colour #979ba5 = text-muted-on-dark when `dim`);
 // sub --portal-row-sub muted; `end` stretches full height on the right; without `end`, a --portal-trail-w column with Icon portal-chevron-right size sm, text-secondary; focus ring inset (-outline-offset-2) colour focus
 export function DateBlock(p: { word?: string; big: string; dim?: boolean }): JSX.Element;
-// w --portal-dateblock-w, h --portal-dateblock-h, bg-ice-light, radius --portal-dateblock-radius; `word` 11px 700 uppercase text-accent with data-date-word; big League Spartan 800 line-height 1,
+// data-date-block; w --portal-dateblock-w (52px), h --portal-dateblock-h (52px), bg-ice-light, radius --portal-dateblock-radius (6px); `word` 11px 700 uppercase text-accent with data-date-word; big League Spartan 800 line-height 1,
 // --portal-dateblock-num with a word, --portal-dateblock-num-solo without; `dim` big text text-muted-on-dark
 export function EndBlock(p: { kind: "todo" | "done" | "lesson" | "group" | "soft"; children: string }): JSX.Element;
 // w --portal-endblock-w, full row height, pad 6px (--portal-endblock-pad), centred, 11px 800 line-height 1.25;
@@ -282,7 +282,7 @@ export function CalendarLegend(): JSX.Element; // three items 12 x 3 bar + 12px 
 export function CompetitionCard(p: { month: string; day: string; name: string; place: string; count: number; countLabel: string; members: { href: string; name: string; category: string; placement: number | null; points: string }[]; defaultOpen?: boolean }): JSX.Element;
 // native <details> (open = defaultOpen) with 1px card line and shadow-retro, white; <summary> min-h 76px: DateBlock(word=month, big=day), name 15px 700, place 13px muted;
 // right block --portal-endblock-w navy: count League Spartan 22px, countLabel 11px 700; members: rows min-h 60px pad 8px/14px border-t line-subtle: PlaceBlock, name 15px 700, category 13px muted, points League Spartan 16px
-export function PlaceBlock(p: { placement: number | null }): JSX.Element; // DateBlock size, bg-ice-light; word "Loc" 10px 700 uppercase tracking 0.06em text-muted (not accent); number League Spartan 22px; null shows only "Loc"
+export function PlaceBlock(p: { placement: number | null }): JSX.Element; // data-date-block; DateBlock size and radius, bg-ice-light; word "Loc" 10px 700 uppercase tracking 0.06em text-muted (not accent); number League Spartan 22px; null shows only "Loc"
 export function PointsCell(p: { points: string }): JSX.Element; // w 84px (--portal-points-w), right aligned, pad-right 14px; value League Spartan 18px; "puncte" 11px muted
 export function GoogleButton(p: { href: string; label: string }): JSX.Element; // min-h 48px, border-control navy, white, 15px 700, gap 10px, 18px multicolour G (the four-path SVG of gen_coach.py `login_body`, inline, it is a brand mark not an icon)
 export function OrLine(p: { text: string }): JSX.Element; // centred text 13px muted, no rules
@@ -353,7 +353,7 @@ export function PortalShell(p: { nav: NavItem[]; account: { label: string; href:
   - card: `border-top-width` `1px`, `border-top-color` `rgb(221, 230, 243)`.
   - dialog open: content `background-color` `rgb(255, 255, 255)`, `padding-left` `20px`; title `font-size` `22px`; overlay `background-color` `rgba(14, 26, 60, 0.45)`.
   - `ListRow`: `min-height` `76px`; title `font-size` `15px`, `font-weight` `700`; sub `font-size` `13px`, `color` `rgb(95, 101, 122)`; the row divider `border-top-color` `rgb(221, 230, 243)`; the chevron column `width` `44px`.
-  - `DateBlock`: `width` `56px`, `height` `52px`, `background-color` `rgb(225, 236, 251)`; `[data-date-word]` `color` `rgb(190, 51, 48)`, `font-size` `11px`, `text-transform` `uppercase`; number `font-size` `22px`, `font-family` contains `League Spartan`.
+  - `DateBlock`: `width` `52px`, `height` `52px`, `border-radius` `6px`, `background-color` `rgb(225, 236, 251)`; `[data-date-word]` `color` `rgb(190, 51, 48)`, `font-size` `11px`, `text-transform` `uppercase`; number `font-size` `22px`, `font-family` contains `League Spartan`.
   - `EndBlock` todo: `width` `96px`, `background-color` `rgb(14, 26, 60)`, `font-size` `11px`, `font-weight` `800`.
   - `StatusBlock`: `width` `64px`, `background-color` `rgb(74, 123, 208)`, `aria-label` `Individual, completat`.
   - `IndividualTag`: `background-color` `rgb(17, 17, 17)`, `font-size` `11px`, `text-transform` `none`.
@@ -365,7 +365,7 @@ export function PortalShell(p: { nav: NavItem[]; account: { label: string; href:
   - `Sheet` open: content `background-color` `rgb(255, 255, 255)`, `padding-left` `20px`, `border-top-width` `1px`; no element `[aria-hidden] .h-1.w-12` handle; at 1280 the content `width` `460px`.
   - at 390: `BottomNav` visible, `background-color` `rgb(14, 26, 60)`, `border-radius` `18px`, five links; the active one `background-color` `rgb(143, 184, 245)`, `border-radius` `13px`; `Sidebar` hidden; `h1` `font-size` `30px`; header band `background-color` `rgba(0, 0, 0, 0)`.
   - at 1280: `Sidebar` visible, `width` `240px`, `background-color` `rgb(14, 26, 60)`, inactive link `color` `rgb(201, 214, 238)`, active link `background-color` `rgb(143, 184, 245)`; `BottomNav` hidden; `h1` `font-size` `40px`; header band `background-color` `rgb(225, 236, 251)`; page body `max-width` `1200px`.
-  - shapes: every element except the bottom nav, its active item and `[data-spinner]` has computed `border-radius` `0px`.
+  - shapes: every element except the bottom nav, its active item, `[data-date-block]` (date and place blocks, 6px) and `[data-spinner]` has computed `border-radius` `0px`; the exceptions have exactly 18px, 13px, 6px.
   - red text: no element with a direct text node has `color` `rgb(190, 51, 48)` outside `[data-date-word]`.
   - `http://localhost:3200/kit-preview` (public host) answers 404. The guard is one exported function `kitPreviewEnabled(env: Record<string, string | undefined>): boolean` (true only when `env.PORTAL_KIT_PREVIEW === "1"`), unit-tested in `scripts/portal/kit-preview.test.mjs`: `{}` -> false, `{ PORTAL_KIT_PREVIEW: "0" }` -> false, `{ PORTAL_KIT_PREVIEW: "1" }` -> true. Deploys never set the flag.
 - [ ] **Step 2: Run** `npm run test:e2e -- tests/e2e/portal-kit.spec.ts` and `node --test scripts/portal/kit-preview.test.mjs`. Expected: FAIL.

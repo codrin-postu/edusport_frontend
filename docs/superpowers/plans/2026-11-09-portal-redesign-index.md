@@ -34,16 +34,20 @@ Model and risk per task are in each plan's table. One e2e run at a time on this 
 - Plan A's kit and `portal-theme.css` bind plan B and phase 7 frontend: neither defines a colour, size or component look of its own; new differences become lines in `portal-theme.css`.
 - Plan B Task 1 adds `weekdayShort`, `monthShort`, `longDay`, `shortWhen`, `dayMonthYear`, `phoneLinks` to `src/lib/portal/format.ts`; phase 7 frontend Task 3 reuses them.
 
+## User answers 2026-11-09
+
+The nine questions raised while planning, answered by the user; the spec and plans carry these values.
+
+1. **Date block:** 52 x 52 with radius 6px on both portals, a named exception to the no-rounded rule, through `--portal-dateblock-w`, `--portal-dateblock-h`, `--portal-dateblock-radius` (the place block shares them).
+2. **End block, status block band and session band:** 96px on both portals (`--portal-endblock-w`).
+3. **Bottom menu:** rounded as on the canvas (18px, active item 13px), a named exception like the spinner. Shape checks in e2e allow exactly these exceptions: bottom menu, its active item, date and place blocks, spinner.
+4. **Mută:** only into the coach's own groups (backend Task 2 refuses others with 403).
+5. **Move or removal from a later date:** the child's row shows "până pe <d mmm>" (for example "până pe 12 noi") until that day; the backend exposes the date on the group member list (`CoachMember.leavesOn`, backend Task 4); plan B Tasks 9 and 10 show it.
+6. **Concursuri "Toți sportivii":** every coach sees all club athletes; "Grupele mele" filters.
+7. **Athlete page, Grupe row:** plain row with a chevron, no level block.
+8. **Athlete page, Prezențe:** no "Istoric ›" link.
+9. **Desktop sidebar:** as the canvas, Profil behind the account button at its foot.
+
 ## Open questions for the user
 
-Each has a default the plans use until answered, chosen so the answer is one token value or one small change.
-
-1. **Date block shape.** Coach canvas: 56 x 52, square corners. Student canvas: 52 x 52, radius 6px. Standardise on one? Default in the plans: coach (56 x 52, square), through `--portal-dateblock-w` and `--portal-dateblock-radius`.
-2. **End block and session band width.** Coach end block 96px, student session band 92px. One width for both? Default: 96px (`--portal-endblock-w`).
-3. **Rounded bottom menu.** The canvas floating menu uses radius 18px and its active item 13px; the standing rule says no rounded shapes (approved for the sportiv app in phase 7, 2026-11-07). Keep the canvas radii for both portals? Default: yes, as the canvas (`--portal-nav-radius`, `--portal-nav-item-radius`).
-4. **Mută to which groups.** May a coach move a child only into another of his own groups, or into any active group of the season? Default: own groups only (backend Task 2 refuses others with 403).
-5. **Future-dated move or removal in the group list.** After "Mută" or "Scoate" from a later date, the child stays in the group until that day. Should the row show that (for example "până pe 12 noi")? Default: the row stays as it is until the date, no note.
-6. **"Toți sportivii" in Concursuri.** Every coach sees the results of every club athlete (results are public on skate-results), or only of his groups? Default: every club athlete, with "Grupele mele" as the filter, as the canvas shows.
-7. **Athlete page, Grupe row end block.** The canvas shows a navy end block "Bronze" on the group row. What should it say (level, section, nothing)? No data field holds it. Default: plain row with a chevron, no end block.
-8. **Athlete page, "Istoric ›" link on Prezențe.** The canvas has the link but no coach screen lists one athlete's presences. Add such a screen, link to the admin, or drop the link? Default: no link.
-9. **Desktop sidebar without Profil.** The canvas desktop sidebar lists Azi, Grupe, Concursuri, Istoric and puts Profil behind the account button at its foot; the phone menu lists all five. Keep it so? Default: as the canvas.
+None.

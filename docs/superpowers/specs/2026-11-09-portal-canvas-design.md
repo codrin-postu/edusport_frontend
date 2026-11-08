@@ -130,10 +130,10 @@ Layout sizes, in `[data-theme="portal"]` (desktop values in the `@media (width >
 | `--portal-row-title` | 15px | 15px | weight 700 (4) |
 | `--portal-row-sub` | 13px | 13px | colour muted (5) |
 | `--portal-trail-w` | 44px | 44px | chevron column (9) |
-| `--portal-dateblock-w` / `-h` | 56px / 52px | same | date and time block (10) |
-| `--portal-dateblock-radius` | 0px | 0px | see open question 1 in the index |
+| `--portal-dateblock-w` / `-h` | 52px / 52px | same | date and time block, also the place block (10; user 2026-11-09: 52 x 52 on both portals) |
+| `--portal-dateblock-radius` | 6px | 6px | named exception to the square rule (user 2026-11-09) |
 | `--portal-dateblock-num` / `-num-solo` / `-word` | 22px / 17px / 11px | same | (10) |
-| `--portal-endblock-w` | 96px | 96px | end block and session band (11), see open question 2 |
+| `--portal-endblock-w` | 96px | 96px | end block, status block band and session band on both portals (11; user 2026-11-09) |
 | `--portal-typeblock-w` / `-icon` | 64px / 26px | same | status block (canvas-only 3) |
 | `--portal-stat-num` | 88px | 88px | stat card number, line-height 0.85 (33) |
 | `--portal-tap` | 44px | 44px | min tap height for links, back link, arrows |
@@ -152,7 +152,7 @@ Layout sizes, in `[data-theme="portal"]` (desktop values in the `@media (width >
 | `--portal-brand-kicker` / `--portal-brand-word` | 12px / 22px | same | phone brand block (23) |
 | `--portal-band-on-dark-line` | rgb(246 249 253 / 0.35) | same | account button border on the sidebar (25) |
 
-Radius: only `--portal-nav-radius`, `--portal-nav-item-radius` and `--portal-dateblock-radius` may be non-zero, and only the kit's `BottomNav` and `DateBlock` read them (spec 6.1 of the sportiv app and the phase 7 index already approved the rounded floating menu; open question 8 asks the user to confirm it once more against the no-rounded rule). The spinner stays the only circle.
+Radius (user 2026-11-09, named exceptions to the no-rounded rule, like the spinner): the floating bottom menu (`--portal-nav-radius` 18px) and its active item (`--portal-nav-item-radius` 13px), and the date and place blocks (`--portal-dateblock-radius` 6px, marked `data-date-block`). Only the kit's `BottomNav`, `DateBlock` and `PlaceBlock` read these tokens. Every other element is square; the spinner stays the only circle. Shape checks in e2e allow exactly these exceptions.
 
 ## 5. Component inventory
 
@@ -171,7 +171,7 @@ Kind: T = token only (no markup change beyond reading the token), V = documented
 | 7 | Card | T | `--color-card-line`, `--card-border-width`; kit callers pass `shadow="md"` (8px) | A2, A3 |
 | 8 | Info card | T | `--color-surface-subtle` | A3 |
 | 9 | List row | P | `ListRow` | A6 |
-| 10 | Date or time block | P | `DateBlock` | A6 |
+| 10 | Date or time block | P | `DateBlock` (52 x 52, radius 6, both portals) | A6 |
 | 11 | End or status block | P | `EndBlock` (todo, done, lesson, group, soft) | A6 |
 | 12 | Individual tag | P | `IndividualTag` | A6 |
 | 13 | Field label | T | `text-field-label`, `--color-label-ink`, `--field-gap` | A2, A3 |
