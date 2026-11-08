@@ -5,6 +5,7 @@ import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
 import { LOGIN } from "@/lib/portal/copy";
 import { portalApi } from "../_lib/api";
+import { playEntryAndGo } from "../_lib/entry-transition";
 import { AuthFrame } from "../_ui/AuthFrame";
 import { AlertLine, GoogleBlock, useFlash } from "../_ui/AuthBits";
 import { PasswordField } from "../_ui/PasswordField";
@@ -23,7 +24,7 @@ export function LoginForm({ google }: { google: boolean }) {
     setMessage(null);
     const r = await portalApi<{ ok: true }>("POST", "auth/login", { email, password }, { stay401: true });
     if (r.ok) {
-      window.location.assign("/");
+      playEntryAndGo("/");
       return;
     }
     setMessage(r.message);

@@ -160,3 +160,122 @@ test("a signed in Google only coach sets a password: e-mail prefilled, code logs
   await page.goto("/profil/setari");
   await expect(page.getByLabel("Parola actuală")).toBeVisible();
 });
+
+const RIBBON = ["rgb(239, 178, 43)", "rgb(234, 114, 51)", "rgb(190, 51, 48)", "rgb(110, 66, 86)"];
+
+test.describe("branded frame", () => {
+  test("desktop: panel with brand and ribbon, form card to its right", async({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/intrare");
+    const frame = page.locator("[data-auth-frame]");
+    await expect(frame.getByText(/^clubul sportiv$/i)).toBeVisible();
+    await expect(frame.getByText("Portal antrenor", { exact: true })).toBeVisible();
+    const word = frame.getByText("EDUSPORT", { exact: true });
+    await expect(word).toBeVisible();
+    const style = await word.evaluate(async(el) => {
+      const cs = getComputedStyle(el);
+      await document.fonts.ready;
+      const loaded = [...document.fonts].some((f) => /climate ?crisis/i.test(f.family) && f.status === "loaded");
+      return { family: cs.fontFamily, size: cs.fontSize, loaded };
+    });
+    expect(style.family).toMatch(/climate ?crisis/i);
+    expect(style.size).toBe("62px");
+    expect(style.loaded).toBe(true);
+    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
+    expect(strokes).toEqual(RIBBON);
+    const brand = await word.boundingBox();
+    const card = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
+    expect(card!.x).toBeGreaterThan(brand!.x + brand!.width);
+  });
+
+  test("phone: 31px wordmark, form below the navy block", async({ page }) => {
+    await page.goto("/intrare");
+    const word = page.locator("[data-auth-frame]").getByText("EDUSPORT", { exact: true });
+    expect(await word.evaluate((el) => getComputedStyle(el).fontSize)).toBe("31px");
+    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
+    expect(strokes).toEqual(RIBBON);
+    const form = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
+    expect(form!.y).toBeGreaterThanOrEqual(330);
+  });
+
+  test("a 320 x 568 phone scrolls to the button and the brand keeps clear of the form", async({ page }) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.goto("/intrare");
+    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
+    const heading = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
+    expect(brand!.y + brand!.height).toBeLessThan(heading!.y);
+    const button = page.getByRole("button", { name: "Intră" });
+    await button.scrollIntoViewIfNeeded();
+    await expect(button).toBeInViewport();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+
+  test("only the spinner may have rounded corners, on every auth screen", async({ page }) => {
+    for (const path of ["/intrare", "/am-uitat-parola", `/invitatie/${INVITE_VALID}`]) {
+      for (const size of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+        await page.setViewportSize(size);
+        await page.goto(path);
+        await expect(page.locator("[data-auth-frame]")).toBeVisible();
+        const rounded = await page.evaluate(() =>
+          [...document.querySelectorAll("body *")].filter((el) => getComputedStyle(el).borderRadius !== "0px" && !el.closest("[role=status]")).map((el) => el.tagName));
+        expect(rounded, `${path} ${size.width}`).toEqual([]);
+      }
+    }
+  });
+});
+
+async function signIn(page: import("@playwright/test").Page, password: string = COACH_PASSWORD): Promise<void> {
+  await page.getByLabel("E-mail").fill(COACH_EMAIL);
+  await page.getByLabel("Parolă", { exact: true }).fill(password);
+  await page.getByRole("button", { name: "Intră" }).click();
+}
+
+test.describe("entry transition", () => {
+  test("a good login plays the exit, the reveal, then leaves nothing behind", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/intrare");
+    await signIn(page);
+    const overlay = page.locator("[data-entry-overlay]");
+    await expect(overlay).toBeAttached();
+    await expect(page.locator("[data-auth-frame]")).toHaveAttribute("data-leaving", "");
+    await expect(overlay).toContainText("EDUSPORT");
+    await expect(overlay).toContainText(/clubul sportiv/i);
+    await expect(overlay).toHaveAttribute("aria-hidden", "true");
+    await expect(page).toHaveURL(/localhost:3200\/$/);
+    await expect(page.locator("[data-entry-reveal]")).toBeAttached();
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0, { timeout: 1500 });
+    expect(await page.evaluate(() => window.sessionStorage.getItem("es-entry"))).toBeNull();
+    await page.getByRole("link", { name: "Grupe" }).first().click();
+    await expect(page).toHaveURL(/\/grupe/);
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
+  });
+
+  test("a wrong password starts no animation and the form stays usable", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/intrare");
+    await signIn(page, "wrong-password-1");
+    await expect(page.getByRole("main").getByRole("alert")).toHaveText("E-mailul sau parola nu sunt corecte.");
+    await expect(page.locator("[data-entry-overlay]")).toHaveCount(0);
+    await expect(page.locator("[data-auth-frame]")).not.toHaveAttribute("data-leaving", "");
+    await page.getByLabel("Parolă", { exact: true }).fill("x");
+    await expect(page.getByRole("button", { name: "Intră" })).toBeEnabled();
+  });
+
+  test("reduced motion navigates at once, with no overlay ever", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.addInitScript(() => {
+      new MutationObserver(() => {
+        if (document.querySelector("[data-entry-overlay], [data-entry-reveal]")) (window as unknown as { __sawOverlay: boolean }).__sawOverlay = true;
+      }).observe(document, { childList: true, subtree: true });
+    });
+    await page.goto("/intrare");
+    await signIn(page);
+    await expect(page).toHaveURL(/localhost:3200\/$/);
+    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    expect(await page.evaluate(() => (window as unknown as { __sawOverlay?: boolean }).__sawOverlay ?? false)).toBe(false);
+  });
+});

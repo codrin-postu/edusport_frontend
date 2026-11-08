@@ -707,3 +707,103 @@ html.nav-strip-open {
 html.nav-anim {
   transition: --header-h 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+
+/* Branded auth frame (coach and student portal login): the brand wordmark, and the entry transition
+   that slides the ribbon out, fades navy in and shows the centred mark. Keyframes only; EntryReveal
+   plays the other half in the app. */
+.auth-wordmark,
+.entry-mark-w {
+  font-family: var(--font-climate-crisis), sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "YEAR" 1979;
+  line-height: 0.9;
+  white-space: nowrap;
+}
+[data-auth-frame][data-leaving] .auth-rib-path {
+  stroke-dasharray: 100 100;
+  animation: auth-rib-out 780ms cubic-bezier(0.55, 0, 0.75, 0.35) both;
+}
+[data-auth-frame][data-leaving] g > .auth-rib-path:nth-child(4) { animation-delay: 0ms; }
+[data-auth-frame][data-leaving] g > .auth-rib-path:nth-child(3) { animation-delay: 50ms; }
+[data-auth-frame][data-leaving] g > .auth-rib-path:nth-child(2) { animation-delay: 100ms; }
+[data-auth-frame][data-leaving] g > .auth-rib-path:nth-child(1) { animation-delay: 150ms; }
+@keyframes auth-rib-out {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+/* Pre-paint cover while the entry flag is set; EntryReveal removes it once its overlay is up. */
+html[data-entry] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147482999;
+  background: #0e1a3c;
+}
+.entry-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  background: #0e1a3c;
+  pointer-events: none;
+}
+.entry-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.entry-mark-k {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8fb8f5;
+}
+.entry-mark-w {
+  margin: 0;
+  font-size: 44px;
+  color: #fff;
+}
+@media (min-width: 900px) {
+  .entry-mark-w { font-size: 84px; }
+}
+/* Outgoing, on the login page: navy 0 to 1 over 400 to 880ms, mark 650 to 1000ms. */
+.entry-overlay[data-entry-overlay] {
+  opacity: 0;
+  animation: entry-navy-in 880ms linear both;
+}
+.entry-overlay[data-entry-overlay] .entry-mark {
+  opacity: 0;
+  animation: entry-mark-in 1000ms linear both;
+}
+@keyframes entry-navy-in {
+  0%, 45.45% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes entry-mark-in {
+  0%, 65% { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* Incoming, in the app: the mark holds 200ms then fades over 400ms, navy fades out 400 to 1000ms. */
+.entry-overlay[data-entry-reveal] {
+  animation: entry-navy-out 1000ms linear both;
+}
+.entry-overlay[data-entry-reveal] .entry-mark {
+  animation: entry-mark-out 600ms linear both;
+}
+@keyframes entry-navy-out {
+  0%, 40% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes entry-mark-out {
+  0%, 33.33% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entry-overlay { display: none; }
+}
