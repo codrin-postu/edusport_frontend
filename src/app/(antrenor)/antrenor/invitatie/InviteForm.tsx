@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "@/components/ui/button";
 import { INVITE } from "@/lib/portal/copy";
 import { portalApi } from "../_lib/api";
+import { playEntryAndGo } from "../_lib/entry-transition";
 import { AuthFrame } from "../_ui/AuthFrame";
 import { AlertLine, GoogleBlock, useFlash } from "../_ui/AuthBits";
 import { PasswordField } from "../_ui/PasswordField";
@@ -20,7 +21,7 @@ export function InviteForm({ email, google }: { email: string; google: boolean }
     setMessage(null);
     const r = await portalApi<{ ok: true }>("POST", "auth/invite/accept", { password }, { stay401: true });
     if (r.ok) {
-      window.location.assign("/");
+      playEntryAndGo("/");
       return;
     }
     setMessage(r.message);

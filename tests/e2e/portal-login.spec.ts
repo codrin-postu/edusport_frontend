@@ -223,3 +223,59 @@ test.describe("branded frame", () => {
     }
   });
 });
+
+async function signIn(page: import("@playwright/test").Page, password: string = COACH_PASSWORD): Promise<void> {
+  await page.getByLabel("E-mail").fill(COACH_EMAIL);
+  await page.getByLabel("Parolă", { exact: true }).fill(password);
+  await page.getByRole("button", { name: "Intră" }).click();
+}
+
+test.describe("entry transition", () => {
+  test("a good login plays the exit, the reveal, then leaves nothing behind", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/intrare");
+    await signIn(page);
+    const overlay = page.locator("[data-entry-overlay]");
+    await expect(overlay).toBeAttached();
+    await expect(page.locator("[data-auth-frame]")).toHaveAttribute("data-leaving", "");
+    await expect(overlay).toContainText("EDUSPORT");
+    await expect(overlay).toContainText(/clubul sportiv/i);
+    await expect(overlay).toHaveAttribute("aria-hidden", "true");
+    await expect(page).toHaveURL(/localhost:3200\/$/);
+    await expect(page.locator("[data-entry-reveal]")).toBeAttached();
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0, { timeout: 1500 });
+    expect(await page.evaluate(() => window.sessionStorage.getItem("es-entry"))).toBeNull();
+    await page.getByRole("link", { name: "Grupe" }).first().click();
+    await expect(page).toHaveURL(/\/grupe/);
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
+  });
+
+  test("a wrong password starts no animation and the form stays usable", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/intrare");
+    await signIn(page, "wrong-password-1");
+    await expect(page.getByRole("main").getByRole("alert")).toHaveText("E-mailul sau parola nu sunt corecte.");
+    await expect(page.locator("[data-entry-overlay]")).toHaveCount(0);
+    await expect(page.locator("[data-auth-frame]")).not.toHaveAttribute("data-leaving", "");
+    await page.getByLabel("Parolă", { exact: true }).fill("x");
+    await expect(page.getByRole("button", { name: "Intră" })).toBeEnabled();
+  });
+
+  test("reduced motion navigates at once, with no overlay ever", async({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.addInitScript(() => {
+      new MutationObserver(() => {
+        if (document.querySelector("[data-entry-overlay], [data-entry-reveal]")) (window as unknown as { __sawOverlay: boolean }).__sawOverlay = true;
+      }).observe(document, { childList: true, subtree: true });
+    });
+    await page.goto("/intrare");
+    await signIn(page);
+    await expect(page).toHaveURL(/localhost:3200\/$/);
+    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    expect(await page.evaluate(() => (window as unknown as { __sawOverlay?: boolean }).__sawOverlay ?? false)).toBe(false);
+  });
+});
