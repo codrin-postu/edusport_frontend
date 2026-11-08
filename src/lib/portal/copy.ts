@@ -15,6 +15,8 @@ function count(n: number, one: string, many: string): string {
 
 const children = (n: number): string => count(n, "copil", "copii");
 
+export const PORTAL_LABEL = { antrenor: "Portal antrenor", sportiv: "Portal sportiv" } as const;
+
 export const LOGIN = {
   title: "Intră în cont",
   google: "Continuă cu Google",

@@ -707,3 +707,12 @@ html.nav-strip-open {
 html.nav-anim {
   transition: --header-h 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+
+/* Branded auth frame (coach and student portal login): the brand wordmark. */
+.auth-wordmark {
+  font-family: var(--font-climate-crisis), sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "YEAR" 1979;
+  line-height: 0.9;
+  white-space: nowrap;
+}
