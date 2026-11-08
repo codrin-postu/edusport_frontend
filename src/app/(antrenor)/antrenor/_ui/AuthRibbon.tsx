@@ -9,16 +9,11 @@ const DESKTOP = [
   "M-40,500 H430 A50,50 0 0 0 480,450 V-40",
 ];
 
-// Phone: pixels measured from the page's right edge and the navy block's bottom (the svg is 240x310,
-// pinned right with its bottom 30px below the block, so the block's edge sits at x=160 and its corner
-// centre at 90,210). Not stretched, so the arcs stay
-// circular at any width; the long lead-in runs off the left edge of any phone or tablet.
-const PHONE = [
-  "M-900,298 H90 A88,88 0 0 0 178,210 V-600",
-  "M-900,286 H90 A76,76 0 0 0 166,210 V-600",
-  "M-900,274 H90 A64,64 0 0 0 154,210 V-600",
-  "M-900,262 H90 A52,52 0 0 0 142,210 V-600",
-];
+// Phone: the landing page's warm wave band (RegistrationWaveDivider) along the bottom edge, gold on
+// top to burgundy, four touching 40-unit stripes in a 390x168 box stretched to the page width and to
+// --auth-band high; the burgundy runs on past the bottom edge.
+const wave = (b: number) => `M-40,${b} C60,${b + 12} 150,${b - 10} 230,${b + 2} C300,${b + 12} 350,${b - 8} 430,${b + 4}`;
+const PHONE = [wave(30), wave(70), wave(110), wave(150)];
 
 function Paths({ d, width }: { d: string[]; width: number }) {
   return (
@@ -37,8 +32,9 @@ export function AuthRibbon() {
       <svg className="absolute inset-0 hidden h-full w-full overflow-visible min-[900px]:block" viewBox="0 0 1000 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
         <Paths d={DESKTOP} width={33} />
       </svg>
-      <svg className="absolute right-0 top-[calc(var(--auth-navy)-280px)] h-[310px] w-[240px] overflow-visible min-[900px]:hidden" fill="none" aria-hidden="true">
-        <Paths d={PHONE} width={12} />
+      <svg className="absolute bottom-0 left-0 h-[var(--auth-band)] w-full min-[900px]:hidden" viewBox="0 0 390 168" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <rect x={-40} y={150} width={470} height={80} fill={COLORS[3]} />
+        <Paths d={PHONE} width={40} />
       </svg>
     </>
   );
