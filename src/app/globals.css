@@ -711,6 +711,8 @@ html.nav-anim {
 /* Branded auth frame (coach and student portal login): the brand wordmark, and the entry transition
    that slides the ribbon out, fades navy in and shows the centred mark. Keyframes only; EntryReveal
    plays the other half in the app. */
+/* Phone navy block: 280px on tall phones, down to 140px on short ones (the form needs about 560px). */
+.auth-frame { --auth-navy: clamp(140px, calc(100svh - 564px), 280px); }
 .auth-wordmark,
 .entry-mark-w {
   font-family: var(--font-climate-crisis), sans-serif;

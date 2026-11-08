@@ -9,14 +9,15 @@ const DESKTOP = [
   "M-40,500 H430 A50,50 0 0 0 480,450 V-40",
 ];
 
-// Phone: pixels measured from the page's right edge (the svg is 240px wide and pinned right, so the
-// navy block's edge sits at x=160 and its corner centre at 90,210). Not stretched, so the arcs stay
+// Phone: pixels measured from the page's right edge and the navy block's bottom (the svg is 240x310,
+// pinned right with its bottom 30px below the block, so the block's edge sits at x=160 and its corner
+// centre at 90,210). Not stretched, so the arcs stay
 // circular at any width; the long lead-in runs off the left edge of any phone or tablet.
 const PHONE = [
-  "M-900,298 H90 A88,88 0 0 0 178,210 V-10",
-  "M-900,286 H90 A76,76 0 0 0 166,210 V-10",
-  "M-900,274 H90 A64,64 0 0 0 154,210 V-10",
-  "M-900,262 H90 A52,52 0 0 0 142,210 V-10",
+  "M-900,298 H90 A88,88 0 0 0 178,210 V-600",
+  "M-900,286 H90 A76,76 0 0 0 166,210 V-600",
+  "M-900,274 H90 A64,64 0 0 0 154,210 V-600",
+  "M-900,262 H90 A52,52 0 0 0 142,210 V-600",
 ];
 
 function Paths({ d, width }: { d: string[]; width: number }) {
@@ -36,7 +37,7 @@ export function AuthRibbon() {
       <svg className="absolute inset-0 hidden h-full w-full overflow-visible min-[900px]:block" viewBox="0 0 1000 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
         <Paths d={DESKTOP} width={33} />
       </svg>
-      <svg className="absolute right-0 top-0 h-[310px] w-[240px] overflow-visible min-[900px]:hidden" fill="none" aria-hidden="true">
+      <svg className="absolute right-0 top-[calc(var(--auth-navy)-280px)] h-[310px] w-[240px] overflow-visible min-[900px]:hidden" fill="none" aria-hidden="true">
         <Paths d={PHONE} width={12} />
       </svg>
     </>
