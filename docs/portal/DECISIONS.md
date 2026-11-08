@@ -612,3 +612,13 @@ Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase
 - User note: TOTP secrets encrypted at rest with a server key; backup codes from a CSPRNG, stored only as salted slow hashes or a server-keyed HMAC, single use, constant-time compare, attempt-limited; nothing in a database leak can be turned into usable codes or secrets.
 - User note (copy): say "2FA", never "verificare în doi pași".
 - Phase 11-3 final review (decided by Claude, low impact): a Club row of the athlete history whose month is missing from the ledger shows "Neplătit" with the detail "Club, <luna>: de plătit 0 RON, plătit 0 RON, rămas 0 RON."; "Abonament curent" is one card, the first started active abonament in the P5 use order, without the price list filter of 4.10 (no group at athlete level).
+
+## 2026-11-09 open decisions answered (user)
+- Excel export: `write-excel-file` (not exceljs).
+- Passkeys: install `@simplewebauthn/server@14.0.3`; build 6b-2 tasks 20 to 22.
+- Admin API tokens (6b B3 M4): option A, the gate closes `POST /admin/admin-tokens` and `/admin-tokens/:id/regenerate` (404); existing tokens revoked at deploy; spec 4.4 lists them.
+- Google linking (6b B4 H1): link only after 2FA. A first link by e-mail on an admin with 2FA opens the pending second step and stores the sub only after a right code; after "Elimină legătura" no automatic relink by e-mail. A sub already linked still skips 2FA.
+- Prezență week arrows: "Săptămâna anterioară" / "Săptămâna următoare".
+- Tabele texts: broken view "Vizualizarea nu mai poate fi deschisă."; operators "este unul din", "este gol", "nu este gol"; dropped "O coloană nu mai există și a fost scoasă.", "Un filtru nu mai există și a fost scos.", "Gruparea nu mai există și a fost scoasă."; missing "Secțiunea nu mai există.", "Grupa nu mai există.", "Sezonul nu mai există."; "Perioada a fost resetată.".
+- Bani, "Plăți pe grupă luna aceasta" with no payments in the month: the card stays and shows "Nicio plată luna aceasta.".
+- Canvas vs code components: decided per element, through one token theme file (portal theme), audit in progress.
