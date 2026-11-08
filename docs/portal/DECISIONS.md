@@ -583,6 +583,9 @@ Screens av-1 to av-6, answers in edusport_backend/.superpowers/admin-views/answe
 - av6-q3 A: accounting view with income by method, payments list with an automatic "Nr. chitanță", "Export contabil" xlsx and csv; placed with the page's picker, no tab.
 - av6-q4 B: a figure links to De încasat, Plăți or Abonamente with the filter set.
 
+## 2026-11-08 phase 11-3 (decided by Claude, low impact)
+- The unique indexes on `club_subscriptions.code` and `club_payments.receipt_no` are created at boot through PRESENCE_INDEXES, because `unique: true` alone creates no index in Strapi 5; only `club_counters.key` relies on `column.unique`.
+
 ## 2026-11-07 phase 6b answers (user)
 Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase6b/answers.md; spec edusport_backend docs/superpowers/specs/2026-11-07-admin-auth-roles-design.md.
 - q1 A: build order admin security first, then portal 2FA, then passkeys, then roles.
@@ -608,3 +611,4 @@ Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase
 - q21 A: 6b builds roles and menu hiding fully; phase 10 keeps only the trim items ("Staff club" dropped).
 - User note: TOTP secrets encrypted at rest with a server key; backup codes from a CSPRNG, stored only as salted slow hashes or a server-keyed HMAC, single use, constant-time compare, attempt-limited; nothing in a database leak can be turned into usable codes or secrets.
 - User note (copy): say "2FA", never "verificare în doi pași".
+- Phase 11-3 final review (decided by Claude, low impact): a Club row of the athlete history whose month is missing from the ledger shows "Neplătit" with the detail "Club, <luna>: de plătit 0 RON, plătit 0 RON, rămas 0 RON."; "Abonament curent" is one card, the first started active abonament in the P5 use order, without the price list filter of 4.10 (no group at athlete level).

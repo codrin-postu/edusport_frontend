@@ -1,0 +1,71 @@
+{
+  "schoolNotFound": "Reșița, Caraș-Severin\n0723.623.712\nCLUBUL SPORTIV\nEDUSPORT\nDESPRE NOI\nCURSURI\nNOUTĂȚI\nPARTENERI\nCONTACT\nÎNSCRIE-TE LA CURSURI\nÎNSCRIERI\n \nÎnscrieri\n\nCompletează formularul de mai jos pentru a înscrie copilul tău la cursurile de patinaj artistic EduSport.\n\n2026-2027\n\nÎnscrie-ți copilul\n\nCompletează pașii de mai jos. Vom confirma înscrierea în cel mai scurt timp.\n\nAlege școala\n\nȘcoala nu a fost găsită.\n\nȘcoala de Patinaj\nCONTINUĂ\nÎncepe aventura pe gheață\n\nCursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.\n\nÎNSCRIE-TE LA CURSURI\nȘCOALA DE PATINAJ\nMeniu\nDespre noi\nCursuri de patinaj\nProgram\nRegulament\nVoluntariat\nParteneri\nInformații legale\nPolitica de confidențialitate\nANPC\nSoluționarea online a litigiilor\nContactează-ne\nReșița, Caraș-Severin\n0723.623.712\nedusporttrophy@gmail.com\nEDUSPORT",
+  "badToken": {
+    "finalUrl": "http://127.0.0.1:3998/inscrieri/link-expirat"
+  },
+  "publicPagesBefore": {
+    "/": {
+      "hasSeason": true
+    },
+    "/cursuri": {
+      "hasSeason": true
+    },
+    "/cursuri/regulament": {
+      "hasSeason": true
+    },
+    "/cursuri/program": {
+      "hasSeason": true
+    }
+  },
+  "memberDesktop": {
+    "registrationNumber": "2026-0001",
+    "downloadHrefs": [
+      "http://127.0.0.1:1343/api/forms/inscriere/documents?token=bWE4Mm8xM2Q3dzdwcmhxaXRvcDg3MWFxLjE3OTI5MjYxNjAyNjA.2Jaf3X83vDrjVdUhaPwGo-7BZzG7ZvKWFSJL3YE7o5M&kind=acord",
+      "http://127.0.0.1:1343/api/forms/inscriere/documents?token=bWE4Mm8xM2Q3dzdwcmhxaXRvcDg3MWFxLjE3OTI5MjYxNjAyNjA.2Jaf3X83vDrjVdUhaPwGo-7BZzG7ZvKWFSJL3YE7o5M&kind=adeziune"
+    ],
+    "bodyText": "Reșița, Caraș-Severin\n0723.623.712\nCLUBUL SPORTIV\nEDUSPORT\nDESPRE NOI\nCURSURI\nNOUTĂȚI\nPARTENERI\nCONTACT\nÎNSCRIE-TE LA CURSURI\nÎNSCRIERI\n \nÎnscrieri\n\nCompletează formularul de mai jos pentru a înscrie copilul tău la cursurile de patinaj artistic EduSport.\n\n2026-2027\n\nÎnscrie-ți copilul\n\nCompletează pașii de mai jos. Vom confirma înscrierea în cel mai scurt timp.\n\nÎnscriere trimisă!\n\nNr. înscriere 2026-0001. Puteți descărca de mai jos documentele completate de dvs. Documentele vor fi semnate la prima ședință de curs.\n\nDESCARCĂ FORMULARUL (PDF)\nDESCARCĂ CEREREA DE ADEZIUNE (PDF)\nFă o altă înscriere\nÎncepe aventura pe gheață\n\nCursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.\n\nÎNSCRIE-TE LA CURSURI\nȘCOALA DE PATINAJ\nMeniu\nDespre noi\nCursuri de patinaj\nProgram\nRegulament\nVoluntariat\nParteneri\nInformații legale\nPolitica de confidențialitate\nANPC\nSoluționarea online a litigiilor\nContactează-ne\nReșița, Caraș-Severin\n0723.623.712\nedusporttrophy@gmail.com\nEDUSPORT",
+    "submitted": true
+  },
+  "memberPhone": {
+    "registrationNumber": null,
+    "downloadHrefs": [],
+    "bodyText": null,
+    "submitted": false
+  },
+  "nonMemberDesktop": {
+    "registrationNumber": "2026-0002",
+    "downloadHrefs": [
+      "http://127.0.0.1:1343/api/forms/inscriere/documents?token=Z3VlNGY0MHdyMGlnOTI1NjNzZDFwcDR6LjE3OTI5MjYxNzY5Njk.n6h2Fx8g6NhOS8JkXp_Cxi3Bk8C7N6X7nzO_9Fz17hk&kind=acord"
+    ],
+    "bodyText": "Reșița, Caraș-Severin\n0723.623.712\nCLUBUL SPORTIV\nEDUSPORT\nDESPRE NOI\nCURSURI\nNOUTĂȚI\nPARTENERI\nCONTACT\nÎNSCRIE-TE LA CURSURI\nÎNSCRIERI\n \nÎnscrieri\n\nCompletează formularul de mai jos pentru a înscrie copilul tău la cursurile de patinaj artistic EduSport.\n\n2026-2027\n\nÎnscrie-ți copilul\n\nCompletează pașii de mai jos. Vom confirma înscrierea în cel mai scurt timp.\n\nÎnscriere trimisă!\n\nNr. înscriere 2026-0002. Puteți descărca de mai jos formularul completat de dvs. Documentul va fi semnat la prima ședință de curs.\n\nDESCARCĂ FORMULARUL (PDF)\nFă o altă înscriere\nÎncepe aventura pe gheață\n\nCursuri pentru toate vârstele și nivelurile, de la primii pași pe gheață până la performanță.\n\nÎNSCRIE-TE LA CURSURI\nȘCOALA DE PATINAJ\nMeniu\nDespre noi\nCursuri de patinaj\nProgram\nRegulament\nVoluntariat\nParteneri\nInformații legale\nPolitica de confidențialitate\nANPC\nSoluționarea online a litigiilor\nContactează-ne\nReșița, Caraș-Severin\n0723.623.712\nedusporttrophy@gmail.com\nEDUSPORT",
+    "submitted": true
+  },
+  "memberPdfs": [
+    {
+      "kind": "acord",
+      "outPath": "/Users/codrin/Documents/Programming/edusport_frontend/docs/portal/mockups/screens/happy-path-v1/member-acord.pdf",
+      "status": 200,
+      "isPdf": true,
+      "size": 45982,
+      "rendered": true
+    },
+    {
+      "kind": "adeziune",
+      "outPath": "/Users/codrin/Documents/Programming/edusport_frontend/docs/portal/mockups/screens/happy-path-v1/member-adeziune.pdf",
+      "status": 200,
+      "isPdf": true,
+      "size": 30971,
+      "rendered": true
+    }
+  ],
+  "nonMemberPdfs": [
+    {
+      "kind": "acord",
+      "outPath": "/Users/codrin/Documents/Programming/edusport_frontend/docs/portal/mockups/screens/happy-path-v1/nonmember-acord.pdf",
+      "status": 200,
+      "isPdf": true,
+      "size": 45975,
+      "rendered": true
+    }
+  ]
+}

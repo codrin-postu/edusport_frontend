@@ -1,0 +1,65 @@
+{
+  "point1": {
+    "buttonInfoDa": [
+      {
+        "text": "DESCARCĂ FORMULARUL (PDF)",
+        "box": {
+          "x": 73,
+          "y": 477.59375,
+          "width": 229,
+          "height": 48
+        },
+        "html": "<a href=\"http://127.0.0.1:1343/api/forms/inscriere/documents?token=cHh4eHBudGMyNXpvMGE4Y2dsb2kyNzl2LjE3OTI5MjcyMTMwNTA.vkeKKbNn9Jb9nnvoExUko8mvp3u7GHjUFVyZxQ7YJq4&amp;kind=acord\" class=\"lcta group select-none outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-p"
+      },
+      {
+        "text": "DESCARCĂ CEREREA DE ADEZIUNE (PDF)",
+        "box": {
+          "x": 73,
+          "y": 541.59375,
+          "width": 229,
+          "height": 48
+        },
+        "html": "<a href=\"http://127.0.0.1:1343/api/forms/inscriere/documents?token=cHh4eHBudGMyNXpvMGE4Y2dsb2kyNzl2LjE3OTI5MjcyMTMwNTA.vkeKKbNn9Jb9nnvoExUko8mvp3u7GHjUFVyZxQ7YJq4&amp;kind=adeziune\" class=\"lcta group select-none outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outlin"
+      }
+    ],
+    "buttonInfoNu": [
+      {
+        "text": "DESCARCĂ FORMULARUL (PDF)",
+        "box": {
+          "x": 73,
+          "y": 592.90625,
+          "width": 229,
+          "height": 48
+        }
+      }
+    ]
+  },
+  "point2": {
+    "desktop": {
+      "scrollYBeforeShot": 589,
+      "headerState": {
+        "navStripOpen": false,
+        "headerH": "5rem",
+        "scrollY": 589
+      },
+      "headerStateAfterFullPage": {
+        "navStripOpen": false,
+        "headerH": "5rem",
+        "scrollY": 589
+      }
+    },
+    "phone": {
+      "scrollYBeforeShot": 560,
+      "headerState": {
+        "navStripOpen": false,
+        "headerH": "5rem",
+        "scrollY": 560
+      },
+      "headerStateAfterFullPage": {
+        "navStripOpen": false,
+        "headerH": "5rem",
+        "scrollY": 560
+      }
+    }
+  }
+}
