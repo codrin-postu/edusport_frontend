@@ -1,0 +1,574 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-07T12:00:00Z"
+ },
+ "title": "Portal sportiv și antrenor EduSport",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 1240,
+   "title": "Acasă",
+   "is_interactive": true
+  },
+  "Istoric.dc.html": {
+   "x": 470,
+   "y": 0,
+   "w": 390,
+   "h": 1240,
+   "title": "Istoric prezență",
+   "is_interactive": true
+  },
+  "Calendar.dc.html": {
+   "x": 940,
+   "y": 0,
+   "w": 390,
+   "h": 1240,
+   "title": "Calendar",
+   "is_interactive": true
+  },
+  "Progres.dc.html": {
+   "x": 1410,
+   "y": 0,
+   "w": 390,
+   "h": 1500,
+   "title": "Parcurs",
+   "is_interactive": true
+  },
+  "Plati.dc.html": {
+   "x": 1880,
+   "y": 0,
+   "w": 390,
+   "h": 1240,
+   "title": "Abonament și plăți",
+   "is_interactive": true
+  },
+  "Setari.dc.html": {
+   "x": 2350,
+   "y": 0,
+   "w": 390,
+   "h": 1240,
+   "title": "Setări",
+   "is_interactive": true
+  },
+  "MainPerf.dc.html": {
+   "x": 0,
+   "y": 2400,
+   "w": 390,
+   "h": 1240,
+   "title": "Acasă, sportiv de performanță",
+   "is_interactive": true
+  },
+  "Concursuri.dc.html": {
+   "x": 470,
+   "y": 2400,
+   "w": 390,
+   "h": 1500,
+   "title": "Concursuri",
+   "is_interactive": true
+  },
+  "ConcursDetaliu.dc.html": {
+   "x": 940,
+   "y": 2400,
+   "w": 390,
+   "h": 1500,
+   "title": "Un concurs în detaliu",
+   "is_interactive": true
+  },
+  "Promovare.dc.html": {
+   "x": 1410,
+   "y": 2400,
+   "w": 390,
+   "h": 844,
+   "title": "Nivel nou (după promovare)",
+   "is_interactive": true
+  },
+  "Cont.dc.html": {
+   "x": 1880,
+   "y": 2400,
+   "w": 390,
+   "h": 844,
+   "title": "Alege sportivul (meniu cont)",
+   "is_interactive": true
+  },
+  "DesktopMain.dc.html": {
+   "x": 0,
+   "y": 4200,
+   "w": 1280,
+   "h": 631,
+   "title": "Acasă, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopIstoric.dc.html": {
+   "x": 1360,
+   "y": 4200,
+   "w": 1280,
+   "h": 852,
+   "title": "Istoric prezență, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopCalendar.dc.html": {
+   "x": 2720,
+   "y": 4200,
+   "w": 1280,
+   "h": 745,
+   "title": "Calendar, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopProgres.dc.html": {
+   "x": 4080,
+   "y": 4200,
+   "w": 1280,
+   "h": 585,
+   "title": "Parcurs, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopPlati.dc.html": {
+   "x": 5440,
+   "y": 4200,
+   "w": 1280,
+   "h": 565,
+   "title": "Abonament și plăți, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopSetari.dc.html": {
+   "x": 0,
+   "y": 5352,
+   "w": 1280,
+   "h": 783,
+   "title": "Setări, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopMainPerf.dc.html": {
+   "x": 1360,
+   "y": 5352,
+   "w": 1280,
+   "h": 565,
+   "title": "Acasă, sportiv de performanță, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopConcursuri.dc.html": {
+   "x": 2720,
+   "y": 5352,
+   "w": 1280,
+   "h": 1033,
+   "title": "Concursuri, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "DesktopConcursDetaliu.dc.html": {
+   "x": 4080,
+   "y": 5352,
+   "w": 1280,
+   "h": 864,
+   "title": "Un concurs în detaliu, desktop",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "AntrenorAzi.dc.html": {
+   "x": 0,
+   "y": 6700,
+   "w": 390,
+   "h": 1021,
+   "title": "Azi",
+   "is_interactive": true
+  },
+  "AntrenorPrezenta.dc.html": {
+   "x": 470,
+   "y": 6700,
+   "w": 390,
+   "h": 1098,
+   "title": "Prezență",
+   "is_interactive": true
+  },
+  "AntrenorGrupe.dc.html": {
+   "x": 940,
+   "y": 6700,
+   "w": 390,
+   "h": 844,
+   "title": "Grupe",
+   "is_interactive": true
+  },
+  "AntrenorGrupa.dc.html": {
+   "x": 1410,
+   "y": 6700,
+   "w": 390,
+   "h": 977,
+   "title": "Grupă",
+   "is_interactive": true
+  },
+  "AntrenorSportiv.dc.html": {
+   "x": 1880,
+   "y": 6700,
+   "w": 390,
+   "h": 1663,
+   "title": "Sportiv",
+   "is_interactive": true
+  },
+  "AntrenorLectie.dc.html": {
+   "x": 2350,
+   "y": 6700,
+   "w": 390,
+   "h": 844,
+   "title": "Lecție individuală",
+   "is_interactive": true
+  },
+  "AntrenorIstoric.dc.html": {
+   "x": 2820,
+   "y": 6700,
+   "w": 390,
+   "h": 937,
+   "title": "Istoric",
+   "is_interactive": true
+  },
+  "AntrenorProfil.dc.html": {
+   "x": 3290,
+   "y": 6700,
+   "w": 390,
+   "h": 844,
+   "title": "Profil",
+   "is_interactive": true
+  },
+  "AntrenorSetari.dc.html": {
+   "x": 3760,
+   "y": 6700,
+   "w": 390,
+   "h": 932,
+   "title": "Setări cont",
+   "is_interactive": true
+  },
+  "AntrenorIntrare.dc.html": {
+   "x": 940,
+   "y": 11133,
+   "w": 390,
+   "h": 844,
+   "title": "Intră în cont, antrenor",
+   "is_interactive": true
+  },
+  "AntrenorDesktopAzi.dc.html": {
+   "x": 0,
+   "y": 8767,
+   "w": 1280,
+   "h": 560,
+   "title": "Azi, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopPrezenta.dc.html": {
+   "x": 1360,
+   "y": 8767,
+   "w": 1280,
+   "h": 1056,
+   "title": "Prezență, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopGrupe.dc.html": {
+   "x": 2720,
+   "y": 8767,
+   "w": 1280,
+   "h": 560,
+   "title": "Grupe, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopGrupa.dc.html": {
+   "x": 4080,
+   "y": 8767,
+   "w": 1280,
+   "h": 688,
+   "title": "Grupă, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopSportiv.dc.html": {
+   "x": 5440,
+   "y": 8767,
+   "w": 1280,
+   "h": 966,
+   "title": "Sportiv, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopLectie.dc.html": {
+   "x": 0,
+   "y": 9973,
+   "w": 1280,
+   "h": 755,
+   "title": "Lecție individuală, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopIstoric.dc.html": {
+   "x": 1360,
+   "y": 9973,
+   "w": 1280,
+   "h": 560,
+   "title": "Istoric, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopProfil.dc.html": {
+   "x": 2720,
+   "y": 9973,
+   "w": 1280,
+   "h": 560,
+   "title": "Profil, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopSetari.dc.html": {
+   "x": 4080,
+   "y": 9973,
+   "w": 1280,
+   "h": 650,
+   "title": "Setări cont, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopIntrare.dc.html": {
+   "x": 0,
+   "y": 13127,
+   "w": 1280,
+   "h": 800,
+   "title": "Intră în cont, antrenor, desktop",
+   "is_interactive": true
+  },
+  "Intrare.dc.html": {
+   "x": 0,
+   "y": 11133,
+   "w": 390,
+   "h": 844,
+   "title": "Intră în cont, sportiv",
+   "is_interactive": true
+  },
+  "Tranzitie.dc.html": {
+   "x": 470,
+   "y": 11133,
+   "w": 390,
+   "h": 844,
+   "title": "Tranziție, sportiv",
+   "is_interactive": true
+  },
+  "AntrenorTranzitie.dc.html": {
+   "x": 1410,
+   "y": 11133,
+   "w": 390,
+   "h": 844,
+   "title": "Tranziție, antrenor",
+   "is_interactive": true
+  },
+  "DesktopIntrare.dc.html": {
+   "x": 0,
+   "y": 12177,
+   "w": 1280,
+   "h": 800,
+   "title": "Intră în cont, sportiv, desktop",
+   "is_interactive": true
+  },
+  "DesktopTranzitie.dc.html": {
+   "x": 1360,
+   "y": 12177,
+   "w": 1280,
+   "h": 800,
+   "title": "Tranziție, sportiv, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopTranzitie.dc.html": {
+   "x": 1360,
+   "y": 13127,
+   "w": 1280,
+   "h": 800,
+   "title": "Tranziție, antrenor, desktop",
+   "is_interactive": true
+  },
+  "AntrenorGrupaModifica.dc.html": {
+   "x": 4700,
+   "y": 6700,
+   "w": 390,
+   "h": 846,
+   "title": "Modifică grupa",
+   "is_interactive": true
+  },
+  "AntrenorGrupaScoate.dc.html": {
+   "x": 5170,
+   "y": 6700,
+   "w": 390,
+   "h": 846,
+   "title": "Scoate din grupă",
+   "is_interactive": true
+  },
+  "AntrenorDesktopGrupaModifica.dc.html": {
+   "x": 6800,
+   "y": 9973,
+   "w": 1280,
+   "h": 666,
+   "title": "Modifică grupa, desktop",
+   "is_interactive": true
+  },
+  "AntrenorDesktopGrupaScoate.dc.html": {
+   "x": 8160,
+   "y": 9973,
+   "w": 1280,
+   "h": 666,
+   "title": "Scoate din grupă, desktop",
+   "is_interactive": true
+  },
+  "AntrenorCalendar.dc.html": {
+   "x": 5640,
+   "y": 6700,
+   "w": 390,
+   "h": 1021,
+   "title": "Calendar",
+   "is_interactive": true
+  },
+  "AntrenorDesktopCalendar.dc.html": {
+   "x": 9520,
+   "y": 9973,
+   "w": 1280,
+   "h": 613,
+   "title": "Calendar, desktop",
+   "is_interactive": true
+  },
+  "AntrenorConcursuri.dc.html": {
+   "x": 6110,
+   "y": 6700,
+   "w": 390,
+   "h": 1003,
+   "title": "Concursuri",
+   "is_interactive": true
+  },
+  "AntrenorDesktopConcursuri.dc.html": {
+   "x": 10880,
+   "y": 9973,
+   "w": 1280,
+   "h": 861,
+   "title": "Concursuri, desktop",
+   "is_interactive": true
+  },
+  "AntrenorGrupaMuta.dc.html": {
+   "x": 6580,
+   "y": 6700,
+   "w": 390,
+   "h": 846,
+   "title": "Mută în altă grupă",
+   "is_interactive": true
+  },
+  "AntrenorDesktopGrupaMuta.dc.html": {
+   "x": 12240,
+   "y": 9973,
+   "w": 1280,
+   "h": 666,
+   "title": "Mută în altă grupă, desktop",
+   "is_interactive": true
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Istoric.dc.html",
+  "Calendar.dc.html",
+  "Progres.dc.html",
+  "Plati.dc.html",
+  "Setari.dc.html",
+  "MainPerf.dc.html",
+  "Concursuri.dc.html",
+  "ConcursDetaliu.dc.html",
+  "Promovare.dc.html",
+  "Cont.dc.html",
+  "DesktopMain.dc.html",
+  "DesktopIstoric.dc.html",
+  "DesktopCalendar.dc.html",
+  "DesktopProgres.dc.html",
+  "DesktopPlati.dc.html",
+  "DesktopSetari.dc.html",
+  "DesktopMainPerf.dc.html",
+  "DesktopConcursuri.dc.html",
+  "DesktopConcursDetaliu.dc.html",
+  "AntrenorAzi.dc.html",
+  "AntrenorPrezenta.dc.html",
+  "AntrenorGrupe.dc.html",
+  "AntrenorGrupa.dc.html",
+  "AntrenorSportiv.dc.html",
+  "AntrenorLectie.dc.html",
+  "AntrenorIstoric.dc.html",
+  "AntrenorProfil.dc.html",
+  "AntrenorSetari.dc.html",
+  "AntrenorIntrare.dc.html",
+  "AntrenorDesktopAzi.dc.html",
+  "AntrenorDesktopPrezenta.dc.html",
+  "AntrenorDesktopGrupe.dc.html",
+  "AntrenorDesktopGrupa.dc.html",
+  "AntrenorDesktopSportiv.dc.html",
+  "AntrenorDesktopLectie.dc.html",
+  "AntrenorDesktopIstoric.dc.html",
+  "AntrenorDesktopProfil.dc.html",
+  "AntrenorDesktopSetari.dc.html",
+  "AntrenorDesktopIntrare.dc.html",
+  "Intrare.dc.html",
+  "Tranzitie.dc.html",
+  "AntrenorTranzitie.dc.html",
+  "DesktopIntrare.dc.html",
+  "DesktopTranzitie.dc.html",
+  "AntrenorDesktopTranzitie.dc.html",
+  "AntrenorGrupaModifica.dc.html",
+  "AntrenorGrupaScoate.dc.html",
+  "AntrenorDesktopGrupaModifica.dc.html",
+  "AntrenorDesktopGrupaScoate.dc.html",
+  "AntrenorCalendar.dc.html",
+  "AntrenorDesktopCalendar.dc.html",
+  "AntrenorConcursuri.dc.html",
+  "AntrenorDesktopConcursuri.dc.html",
+  "AntrenorGrupaMuta.dc.html",
+  "AntrenorDesktopGrupaMuta.dc.html"
+ ],
+ "notes": {
+  "t1": {
+   "x": 0,
+   "y": -260,
+   "text": "Portal sportiv",
+   "kind": "title1",
+   "maxW": 2700
+  },
+  "t2": {
+   "x": 0,
+   "y": 2140,
+   "text": "Performanță și momente",
+   "kind": "title1",
+   "maxW": 2700
+  },
+  "t3": {
+   "x": 0,
+   "y": 3940,
+   "text": "Desktop",
+   "kind": "title1",
+   "maxW": 6000
+  },
+  "t4": {
+   "x": 0,
+   "y": 6440,
+   "text": "Portal antrenor",
+   "kind": "title1",
+   "maxW": 7200
+  },
+  "t5": {
+   "x": 0,
+   "y": 8507,
+   "text": "Portal antrenor, desktop",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "t6": {
+   "x": 0,
+   "y": 10873,
+   "text": "Intrare și tranziția spre aplicație",
+   "kind": "title1",
+   "maxW": 6000
+  }
+ },
+ "designSystems": []
+}
