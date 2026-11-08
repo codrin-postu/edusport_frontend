@@ -711,6 +711,8 @@ html.nav-anim {
 /* Branded auth frame (coach and student portal login): the brand wordmark, and the entry transition
    that slides the ribbon out, fades navy in and shows the centred mark. Keyframes only; EntryReveal
    plays the other half in the app. */
+/* Phone wave band height: 168px on tall phones, down to 96px on short ones so the form still fits. */
+.auth-frame { --auth-band: clamp(96px, calc(100svh - 676px), 168px); }
 .auth-wordmark,
 .entry-mark-w {
   font-family: var(--font-climate-crisis), sans-serif;
