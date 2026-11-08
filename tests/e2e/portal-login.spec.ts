@@ -188,15 +188,27 @@ test.describe("branded frame", () => {
     expect(card!.x).toBeGreaterThan(brand!.x + brand!.width);
   });
 
-  test("phone: 31px wordmark, form below the navy block", async({ page }) => {
+  test("phone: 31px wordmark on white, form below it, wave band on the bottom edge", async({ page }) => {
     await page.goto("/intrare");
     const word = page.locator("[data-auth-frame]").getByText("EDUSPORT", { exact: true });
     expect(await word.evaluate((el) => getComputedStyle(el).fontSize)).toBe("31px");
     const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
     expect(strokes).toEqual(RIBBON);
+    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
     const form = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(form!.y).toBeGreaterThanOrEqual(330);
+    expect(form!.y).toBeGreaterThan(brand!.y + brand!.height);
+    const band = await page.locator("[data-auth-frame] svg[viewBox=\"0 0 390 168\"]").boundingBox();
+    expect(Math.round(band!.y + band!.height)).toBe(844);
   });
+
+  for (const size of [{ width: 390, height: 844 }, { width: 375, height: 667 }]) {
+    test(`a ${size.width} x ${size.height} phone shows the login on one screen`, async({ page }) => {
+      await page.setViewportSize(size);
+      await page.goto("/intrare");
+      expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
+      await expect(page.getByRole("button", { name: "Intră" })).toBeInViewport();
+    });
+  }
 
   test("a 320 x 568 phone scrolls to the button and the brand keeps clear of the form", async({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 });
