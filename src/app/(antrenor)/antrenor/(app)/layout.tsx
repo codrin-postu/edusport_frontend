@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { serverContext } from "@/lib/portal/server-ctx";
+import { COVER_SCRIPT } from "../_lib/entry-transition";
 import { MeProvider } from "../_lib/me-context";
 import { PortalShell } from "../_ui/PortalShell";
 
@@ -10,6 +11,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
   if (!get(ctx.names.refresh)) redirect("/intrare");
   return (
     <MeProvider>
+      <script dangerouslySetInnerHTML={{ __html: COVER_SCRIPT }} />
       <PortalShell>{children}</PortalShell>
     </MeProvider>
   );
