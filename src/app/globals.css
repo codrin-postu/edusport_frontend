@@ -731,6 +731,14 @@ html.nav-anim {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -100; }
 }
+/* Pre-paint cover while the entry flag is set; EntryReveal removes it once its overlay is up. */
+html[data-entry] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147482999;
+  background: #0e1a3c;
+}
 .entry-overlay {
   position: fixed;
   inset: 0;

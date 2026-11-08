@@ -1,6 +1,12 @@
 /** One-shot sessionStorage flag: set by the login page, read once by EntryReveal in the app. */
 export const ENTRY_FLAG = "es-entry";
 
+/** Set on <html> before first paint while the flag is present, so the server-rendered app never shows before the reveal. */
+export const COVER_ATTR = "data-entry";
+
+/** Inline, runs during HTML parse in the app layout. */
+export const COVER_SCRIPT = `try{if(sessionStorage.getItem("${ENTRY_FLAG}")!==null)document.documentElement.setAttribute("${COVER_ATTR}","")}catch(e){}`;
+
 /** The outgoing half is timed in CSS (globals.css); this is when the navy and the mark are fully in. */
 const HOLD_MS = 1700;
 

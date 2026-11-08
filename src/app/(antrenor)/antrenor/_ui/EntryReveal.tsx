@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ENTRY_FLAG } from "../_lib/entry-transition";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { COVER_ATTR, ENTRY_FLAG } from "../_lib/entry-transition";
 
 const REVEAL_MS = 1000;
 
@@ -17,11 +17,19 @@ export function EntryReveal() {
     } catch {
       // Storage blocked: no reveal.
     }
-    if (!flagged) return;
+    if (!flagged) {
+      document.documentElement.removeAttribute(COVER_ATTR);
+      return;
+    }
     setShow(true);
     const t = window.setTimeout(() => setShow(false), REVEAL_MS);
     return () => window.clearTimeout(t);
   }, []);
+
+  // The overlay is painted now: drop the pre-paint cover the layout's inline script put on <html>.
+  useLayoutEffect(() => {
+    if (show) document.documentElement.removeAttribute(COVER_ATTR);
+  }, [show]);
 
   if (!show) return null;
   return (
