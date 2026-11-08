@@ -71,15 +71,16 @@ Public value = today's literal (unchanged look). Portal value = canvas (generato
 | `--color-input-bg` (new) | var(--color-surface) | #ffffff | input fill on a page surface (14) | form-field `surface="page"`, select |
 | `text-input` role (new): `--text-input-size`, `--text-input-leading` | 0.875rem, 1.55 | 15px, 1.3 | input text (14, 15) | form-field, select |
 | `text-field-label` role (new): `--field-label-weight`, `--field-label-size`, `--field-label-tracking`, `--field-label-case`, `--field-label-leading` | 600, 0.75rem, 0.14em, uppercase, 1.1 | 700, 14px, 0, none, 1.3 | field label (13) | Field, FieldLabel |
-| `--color-field-label` (new) | #495269 | #0e1a3c | (13) | Field, FieldLabel |
+| `--color-label-ink` (new) | #495269 | #0e1a3c | (13) | Field, FieldLabel |
 | `text-field-hint` role (new): `--field-hint-size`, `--field-hint-leading` | 0.75rem, 1.4 | 13px, 1.4 | (16) | Field hint |
-| `--color-field-hint` (new) | #495269 | #5f657a | (16) | Field hint |
+| `--color-hint-ink` (new) | #495269 | #5f657a | (16) | Field hint |
 | `--field-gap` (new) | 0.5rem | 6px | label to control gap (13) | Field |
 | `text-button` role: `--text-button-weight`, `--text-button-size`, `--text-button-tracking`, `--text-button-case` | 600, 0.8125rem, 0.06em, uppercase | 700, 15px, 0, none | (19, 20, 27) | Button, every `text-button` |
 | `--color-button-secondary-bg` (new) | transparent | #ffffff | secondary fill on light surfaces (20) | Button `variant="secondary"` without `onDark` |
 | `--button-pad-x` (new) | 1.5rem | 20px | (19, 20) | Button |
 | `--control-border-width` (new) | 1.5px | 2px | secondary button, button face, segmented, Google button (19, 20, 18, 27) | Button, `.lcta-face` |
 | `--color-button-face` (new) | #000000 | #0e1a3c | primary face (19) | Button `face="black"` |
+| `--color-button-face-text` (new) | #fbf8f1 | #ffffff | primary face text (19) | Button `face="black"` |
 | `--button-layers` (new) | block | none | mustard and rust layers (19) | `.lcta-layer` display |
 | `--button-face-shadow` (new) | none | 8px 8px 0 rgb(14 26 60 / 0.16) | primary static shadow (19) | `.lcta-face` |
 | `--button-press-shift` (new) | 4px | 0px | press snap of the face (19, canvas draws no motion) | `.lcta:active .lcta-face` |
@@ -96,6 +97,8 @@ Public value = today's literal (unchanged look). Portal value = canvas (generato
 | `--color-dialog-bg` (new) | #fbf8f1 | #ffffff | (26) | Dialog |
 | `--dialog-pad` (new) | 1.5rem | 20px | (26) | Dialog |
 | `--dialog-max-w` (new) | 28rem | 460px | desktop width (26) | Dialog `width="md"` |
+
+Colour tokens are named so their utilities never collide with a type role (`text-label-ink` is a colour, `text-field-label` a role). A new colour token whose public value points at another token (`--color-input-bg: var(--color-surface)`) resolves on `:root`, so the portal sets its own literal for it instead of relying on the `--color-surface` override.
 
 Unchanged on purpose: `--color-primary`, `--color-secondary`, `--color-muted`, `--color-accent`, `--shadow-retro`, `--color-surface-raised`, `--color-line` (the six "Same" rows of the audit and the navy button border).
 
@@ -171,10 +174,10 @@ Kind: T = token only (no markup change beyond reading the token), V = documented
 | 10 | Date or time block | P | `DateBlock` | A6 |
 | 11 | End or status block | P | `EndBlock` (todo, done, lesson, group, soft) | A6 |
 | 12 | Individual tag | P | `IndividualTag` | A6 |
-| 13 | Field label | T | `text-field-label`, `--color-field-label`, `--field-gap` | A2, A3 |
+| 13 | Field label | T | `text-field-label`, `--color-label-ink`, `--field-gap` | A2, A3 |
 | 14 | Input | T | input tokens | A2, A3 |
 | 15 | Select trigger | T + V | input tokens; variant prop `chevron?: IconName` (default `"chevron-down"`), kit passes `"portal-chevron-down"` | A2, A5 |
-| 16 | Field hint | T | `text-field-hint`, `--color-field-hint` | A2, A3 |
+| 16 | Field hint | T | `text-field-hint`, `--color-hint-ink` | A2, A3 |
 | 17 | Checkbox | T | checkbox tokens (44px box, 2px, navy fill, 20px mark) | A2, A3 |
 | 18 | Segmented control | P | `Segmented` (2px navy outline, no dividers, auto width, h 44, 14px 700) replaces the coach `_ui/Segmented.tsx` | A6 |
 | 19 | Primary button | T | face colour, layers off, static shadow, 2px border, text role, padding, no press shift | A2, A3 |
