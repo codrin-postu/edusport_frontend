@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default function AntrenorRootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${inter.variable} ${climateCrisis.variable}`}>
-      <body className="bg-surface">{children}</body>
+      <body data-theme="portal" className="bg-surface">{children}</body>
     </html>
   );
 }

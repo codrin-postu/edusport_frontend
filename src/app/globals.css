@@ -246,6 +246,8 @@ h1.text-branding-font {
   --dialog-max-w: 28rem;
 }
 
+@import "../styles/portal-theme.css";
+
 @utility border-retro { border-width: 1.5px; }
 @utility border-control { border-width: var(--control-border-width); }
 @utility border-input { border-width: var(--input-border-width); }
@@ -835,7 +837,7 @@ html[data-entry] body::before {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #8fb8f5;
+  color: var(--color-ice);
 }
 .entry-mark-w {
   margin: 0;

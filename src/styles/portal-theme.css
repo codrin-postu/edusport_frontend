@@ -1,0 +1,128 @@
+/* Portal theme: the complete list of differences between the portals (antrenor., sportiv.) and the public site.
+   Public values live in globals.css. Set by <body data-theme="portal"> in the portal root layouts only.
+   Each declaration carries its audit row number (component-audit.md) or "layout". */
+@theme {
+  --color-ice: #8fb8f5;            /* 24 33 nav active, stat number */
+  --color-ice-light: #e1ecfb;      /* 10 11 25 date block, done block, top band */
+  --color-ice-blue: #4a7bd0;       /* 11 individual band, completed status */
+  --color-nav-on-dark: #c9d6ee;    /* 23 25 sidebar links, kicker on navy */
+  --color-tag-ink: #111111;        /* 12 Individual tag */
+  --color-cancelled: #c0c0c4;      /* 33 calendar cancelled bar */
+  --breakpoint-portal: 56.25rem;   /* 34 900 px phone / desktop switch */
+}
+
+[data-theme="portal"] {
+  /* Spec table 4.1: component tokens that exist on both sides */
+  --color-surface: #f6f9fd;        /* 1 page background */
+  --color-surface-subtle: #e1ecfb; /* 8 info card */
+  --color-line-subtle: #dde6f3;    /* 9 30 dividers */
+  --color-overlay: rgb(14 26 60 / 0.45); /* 26 sheet and dialog overlay */
+  --color-card-line: #dde6f3;      /* 7 28 card border colour */
+  --card-border-width: 1px;        /* 7 card border width */
+  --color-input-line: #b9c6da;     /* 14 15 input border colour */
+  --input-border-width: 1px;       /* 14 15 input border width */
+  --input-pad-x: 14px;             /* 14 input side padding */
+  --color-input-bg: #ffffff;       /* 14 input fill, a literal so the surface override is not needed */
+  --text-input-size: 15px;         /* 14 15 input text size */
+  --text-input-leading: 1.3;       /* 14 15 input text leading */
+  --field-label-weight: 700;       /* 13 field label weight */
+  --field-label-size: 14px;        /* 13 field label size */
+  --field-label-tracking: 0;       /* 13 field label tracking */
+  --field-label-case: none;        /* 13 field label case */
+  --field-label-leading: 1.3;      /* 13 field label leading */
+  --color-label-ink: #0e1a3c;      /* 13 field label colour */
+  --field-hint-size: 13px;         /* 16 field hint size */
+  --field-hint-leading: 1.4;       /* 16 field hint leading */
+  --color-hint-ink: #5f657a;       /* 16 field hint colour */
+  --field-gap: 6px;                /* 13 label to control gap */
+  --text-button-weight: 700;       /* 19 20 27 button weight */
+  --text-button-size: 15px;        /* 19 20 27 button size */
+  --text-button-tracking: 0;       /* 19 20 27 button tracking */
+  --text-button-case: none;        /* 19 20 27 button case */
+  --color-button-secondary-bg: #ffffff; /* 20 secondary fill on light surfaces */
+  --button-pad-x: 20px;            /* 19 20 button side padding */
+  --control-border-width: 2px;     /* 19 20 18 27 button, segmented, Google button border */
+  --color-button-face: #0e1a3c;    /* 19 primary face */
+  --color-button-face-text: #ffffff; /* 19 primary face text */
+  --button-layers: none;           /* 19 mustard and rust layers off */
+  --button-face-shadow: 8px 8px 0 rgb(14 26 60 / 0.16); /* 19 primary static shadow */
+  --button-press-shift: 0px;       /* 19 press snap of the face */
+  --checkbox-size: 44px;           /* 17 30 checkbox box */
+  --checkbox-border-width: 2px;    /* 17 checkbox border */
+  --color-checkbox-line: #b9c6da;  /* 17 unchecked border */
+  --color-checkbox-on: #0e1a3c;    /* 17 checked fill and border */
+  --color-checkbox-mark: #ffffff;  /* 17 check mark */
+  --checkbox-mark-size: 20px;      /* 17 check mark size */
+  --color-focus: #4a7bd0;          /* 31 focus ring on light surfaces */
+  --focus-offset: 2px;             /* 31 focus ring offset */
+  --link-weight: 700;              /* 21 link weight */
+  --color-link-bar: transparent;   /* 21 link bar colour */
+  --link-bar-size: 0px;            /* 21 link bar size */
+  --color-link-hover: #0e1a3c;     /* 21 link hover colour */
+  --link-hover-decoration: underline; /* 21 link hover decoration */
+  --link-hover-animation: none;    /* 21 link hover animation */
+  --dialog-title-size: 22px;       /* 26 dialog title size */
+  --dialog-title-leading: 1.2;     /* 26 dialog title leading */
+  --dialog-title-tracking: 0;      /* 26 dialog title tracking */
+  --color-dialog-bg: #ffffff;      /* 26 dialog fill */
+  --dialog-pad: 20px;              /* 26 dialog padding */
+  --dialog-max-w: 460px;           /* 26 dialog width */
+
+  /* Spec table 4.2: portal-only layout sizes, phone column */
+  --portal-h1-size: 30px;          /* 2 page title */
+  --portal-h2-size: 22px;          /* 3 26 section heading, sheet title */
+  --portal-kicker-size: 14px;      /* 6 greeting and sub lines */
+  --portal-sub-size: 13px;         /* 6 sub line under the h1 */
+  --portal-row-min-h: 76px;        /* 9 list row */
+  --portal-row-pad-y: 12px;        /* 9 list row */
+  --portal-row-pad-x: 14px;        /* 9 list row */
+  --portal-row-gap: 14px;          /* 9 list row */
+  --portal-row-title: 15px;        /* 4 row title, weight 700 */
+  --portal-row-sub: 13px;          /* 5 row sub line */
+  --portal-trail-w: 44px;          /* 9 chevron column */
+  --portal-dateblock-w: 52px;      /* 10 date and time block */
+  --portal-dateblock-h: 52px;      /* 10 date and time block */
+  --portal-dateblock-radius: 6px;  /* 10 named round exception */
+  --portal-dateblock-num: 22px;    /* 10 date number */
+  --portal-dateblock-num-solo: 17px; /* 10 date number alone */
+  --portal-dateblock-word: 11px;   /* 10 date word */
+  --portal-endblock-w: 96px;       /* 11 end block, status and session band */
+  --portal-typeblock-w: 64px;      /* layout status block */
+  --portal-typeblock-icon: 26px;   /* layout status block icon */
+  --portal-stat-num: 88px;         /* 33 stat card number */
+  --portal-tap: 44px;              /* layout min tap height */
+  --portal-kv-min-h: 56px;         /* layout key/value row */
+  --portal-card-pad: 16px;         /* layout info card, kv row x padding */
+  --portal-sheet-pad: 20px;        /* 26 sheet card */
+  --portal-login-pad: 24px;        /* 28 login card */
+  --portal-login-title: 28px;      /* 28 login card h1 */
+  --portal-page-x: 20px;           /* 34 page side padding */
+  --portal-section-gap: 26px;      /* 34 gap between sections */
+  --portal-cols-gap: 24px;         /* layout desktop columns */
+  --portal-container: none;        /* 34 content max width */
+  --portal-nav-radius: 18px;       /* 24 floating bottom nav, named round exception */
+  --portal-nav-item-radius: 13px;  /* 24 active nav item, named round exception */
+  --portal-nav-margin: 16px;       /* 24 floating bottom nav */
+  --portal-nav-pad: 6px;           /* 24 floating bottom nav */
+  --portal-nav-item-h: 52px;       /* 24 floating bottom nav */
+  --portal-nav-label: 11px;        /* 24 floating bottom nav */
+  --portal-brand-kicker: 12px;     /* 23 phone brand block */
+  --portal-brand-word: 22px;       /* 23 phone brand block */
+  --portal-brand-kicker-tracking: 0.28em; /* 23 brand kicker tracking */
+  --portal-login-brand: 62px;      /* 23 28 login wordmark on the desktop navy panel */
+  --portal-band-on-dark-line: rgb(246 249 253 / 0.35); /* 25 account button border on the sidebar */
+}
+
+@media (width >= 56.25rem) {
+  [data-theme="portal"] {
+    --portal-h1-size: 40px;        /* 2 page title */
+    --portal-sub-size: 14px;       /* 6 sub line under the h1 */
+    --portal-page-x: 32px;         /* 34 page side padding */
+    --portal-section-gap: 32px;    /* 34 gap between sections */
+    --portal-cols-gap: 32px;       /* layout desktop columns */
+    --portal-container: 1200px;    /* 34 content max width */
+    --portal-sidebar-w: 240px;     /* 25 sidebar */
+    --portal-sidebar-link-h: 48px; /* 25 sidebar link */
+    --portal-sidebar-link-size: 15px; /* 25 sidebar link */
+  }
+}

@@ -1,5 +1,5 @@
 /** Outer to inner, as in the admin login (src/admin/dashboard/loginBranding.ts). */
-const COLORS = ["#efb22b", "#ea7233", "#be3330", "#6e4256"] as const;
+const COLORS = ["var(--color-mustard)", "var(--color-orange)", "var(--color-rust)", "var(--color-burgundy)"] as const;
 
 // Desktop: the admin panel geometry, a 1000x600 box stretched over the page.
 const DESKTOP = [
@@ -29,10 +29,10 @@ function Paths({ d, width }: { d: string[]; width: number }) {
 export function AuthRibbon() {
   return (
     <>
-      <svg className="absolute inset-0 hidden h-full w-full overflow-visible min-[900px]:block" viewBox="0 0 1000 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <svg className="absolute inset-0 hidden h-full w-full overflow-visible portal:block" viewBox="0 0 1000 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
         <Paths d={DESKTOP} width={33} />
       </svg>
-      <svg className="absolute bottom-0 left-0 h-[var(--auth-band)] w-full min-[900px]:hidden" viewBox="0 0 390 168" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <svg className="absolute bottom-0 left-0 h-[var(--auth-band)] w-full portal:hidden" viewBox="0 0 390 168" preserveAspectRatio="none" fill="none" aria-hidden="true">
         <rect x={-40} y={150} width={470} height={80} fill={COLORS[3]} />
         <Paths d={PHONE} width={40} />
       </svg>
