@@ -17,7 +17,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const invite = req.nextUrl.searchParams.get("invite") === "1";
   const redirectUri = googleRedirectUri(process.env.PORTAL_HOST_ANTRENOR, ctx.host, ctx.secure);
   const clientId = redirectUri ? await googleClientId(ctx) : null;
-  if (!redirectUri || !clientId) return go(invite ? "/invitatie" : "/intrare");
+  if (!redirectUri || !clientId) return go(invite ? "/invite" : "/login");
   const state = randomToken(24);
   const nonce = randomToken(24);
   const { verifier, challenge } = pkcePair();

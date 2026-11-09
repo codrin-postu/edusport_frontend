@@ -7,8 +7,8 @@ import IconButton from "@/components/ui/icon-button";
 import { A11Y, CARD, GROUP } from "@/lib/portal/copy";
 import type { CoachAthleteCard } from "@/lib/portal/api-types";
 import { usePortal } from "../../../_lib/use-portal";
-import { LoadError } from "../../../_ui/LoadError";
-import { Spinner } from "../../../_ui/Spinner";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 export function AthleteCard({ id }: { id: string }) {
   const router = useRouter();

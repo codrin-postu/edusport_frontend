@@ -5,7 +5,7 @@ import { PRESENCE, LESSON } from "@/lib/portal/copy";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconButton from "@/components/ui/icon-button";
-import { Sheet } from "../../_ui/Sheet";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 
 type CoachPickerProps = {
   /** The signed in coach's id: always listed, shown as "<name> (tu)", never removable. */

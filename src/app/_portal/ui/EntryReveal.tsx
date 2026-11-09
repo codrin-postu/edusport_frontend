@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useState } from "react";
-import { COVER_ATTR, ENTRY_FLAG } from "../_lib/entry-transition";
+import { COVER_ATTR, ENTRY_FLAG } from "@/app/_portal/lib/entry-transition";
 
 const REVEAL_MS = 1000;
 

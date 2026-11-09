@@ -11,8 +11,8 @@ import { portalApi } from "../../../_lib/api";
 import { useMe } from "../../../_lib/me-context";
 import { bucharestToday } from "../../../_lib/today";
 import { AthleteSearch } from "../../../_ui/AthleteSearch";
-import { Spinner } from "../../../_ui/Spinner";
-import { useToast } from "../../../_ui/Toast";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { CoachPicker } from "../../prezenta/CoachPicker";
 import { DurationPicker } from "../DurationPicker";
 

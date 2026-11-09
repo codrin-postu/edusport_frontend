@@ -48,7 +48,7 @@ export function ProfileMenu() {
   const item = "block w-full text-left px-4 py-3 text-body-sm text-primary outline-none data-[highlighted]:bg-surface-subtle cursor-pointer";
   async function logout() {
     await portalApi("POST", "auth/logout");
-    window.location.assign("/intrare");
+    window.location.assign("/login");
   }
   return (
     <DropdownMenu.Root>

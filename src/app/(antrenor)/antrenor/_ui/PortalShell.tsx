@@ -1,9 +1,9 @@
 "use client";
 
 import { BottomNav } from "./BottomNav";
-import { EntryReveal } from "./EntryReveal";
+import { EntryReveal } from "@/app/_portal/ui/EntryReveal";
 import { PortalHeader } from "./PortalHeader";
-import { ToastProvider } from "./Toast";
+import { ToastProvider } from "@/app/_portal/ui/Toast";
 
 export function PortalShell({ children }: { children: React.ReactNode }) {
   return (

@@ -7,8 +7,8 @@ import { shortDate } from "@/lib/portal/format";
 import type { ProgramRow } from "@/lib/portal/api-types";
 import { portalApi } from "../../../../_lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
-import { Sheet } from "../../../../_ui/Sheet";
-import { useToast } from "../../../../_ui/Toast";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { ProgramFields, changeBody, formOfRow, formReady } from "./ProgramForm";
 
 type Props = { row: ProgramRow; today: string; onClose: () => void; onDone: () => void };

@@ -6,7 +6,7 @@ test.beforeEach(async() => { await mockReset(); });
 
 test("logged out, a coach page lands on the login screen", async({ page }) => {
   await page.goto("/grupe");
-  await expect(page).toHaveURL(/\/intrare$/);
+  await expect(page).toHaveURL(/\/login$/);
 });
 
 test("phone: initials tile and the four bottom items", async({ page }) => {
@@ -34,7 +34,7 @@ test("a cut account ends on the login screen", async({ page }) => {
   await loginAs(page);
   await mockState({ cutAccount: true });
   await page.goto("/");
-  await expect(page).toHaveURL(/\/intrare$/);
+  await expect(page).toHaveURL(/\/login$/);
 });
 
 test("no shell element except the spinner is rounded", async({ page }) => {

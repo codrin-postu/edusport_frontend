@@ -10,9 +10,9 @@ import type { CoachGroupPage, CoachNewAthleteBody } from "@/lib/portal/api-types
 import { portalApi } from "../../../../_lib/api";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { BackHeader } from "../../../../_ui/BackHeader";
-import { LoadError } from "../../../../_ui/LoadError";
-import { Spinner } from "../../../../_ui/Spinner";
-import { useToast } from "../../../../_ui/Toast";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 
 function Field({ label, optional, children }: { label: string; optional?: boolean; children: (id: string) => React.ReactNode }) {
   const id = useId();

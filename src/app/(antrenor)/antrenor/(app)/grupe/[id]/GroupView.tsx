@@ -11,11 +11,11 @@ import { portalApi } from "../../../_lib/api";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { bucharestToday } from "../../../_lib/today";
 import { ListCard } from "../../../_ui/ListCard";
-import { LoadError } from "../../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Row } from "../../../_ui/Row";
 import { Segmented } from "../../../_ui/Segmented";
-import { Sheet } from "../../../_ui/Sheet";
-import { Spinner } from "../../../_ui/Spinner";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 import { ProgramTab } from "./_program/ProgramTab";
 
 type Loaded = { id: string; page: CoachGroupPage | null };

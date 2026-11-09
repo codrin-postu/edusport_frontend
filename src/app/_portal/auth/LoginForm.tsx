@@ -3,15 +3,16 @@
 import { useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
-import { LOGIN } from "@/lib/portal/copy";
-import { portalApi } from "../_lib/api";
-import { playEntryAndGo } from "../_lib/entry-transition";
-import { AuthFrame } from "../_ui/AuthFrame";
-import { AlertLine, GoogleBlock, useFlash } from "../_ui/AuthBits";
-import { PasswordField } from "../_ui/PasswordField";
+import type { AuthCopy } from "@/lib/portal/copy-shared";
+import { portalApi } from "@/app/(antrenor)/antrenor/_lib/api";
+import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
+import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
+import { AlertLine, GoogleBlock, useFlash } from "@/app/_portal/ui/AuthBits";
+import { PasswordField } from "@/app/_portal/ui/PasswordField";
 import Link from "@/components/ui/link";
 
-export function LoginForm({ google }: { google: boolean }) {
+export function LoginForm({ copy, homePath, google }: { copy: AuthCopy; homePath: string; google: boolean }) {
+  const LOGIN = copy.login;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useFlash();
@@ -24,7 +25,7 @@ export function LoginForm({ google }: { google: boolean }) {
     setMessage(null);
     const r = await portalApi<{ ok: true }>("POST", "auth/login", { email, password }, { stay401: true });
     if (r.ok) {
-      playEntryAndGo("/");
+      playEntryAndGo(homePath);
       return;
     }
     setMessage(r.message);
@@ -43,7 +44,7 @@ export function LoginForm({ google }: { google: boolean }) {
         <AlertLine message={message} />
         <Button type="submit" disabled={busy || !email || !password} className="w-full">{LOGIN.submit}</Button>
       </form>
-      <p className="mt-4 text-center"><Link href="/am-uitat-parola" className="text-body-sm">{LOGIN.forgot}</Link></p>
+      <p className="mt-4 text-center"><Link href="/forgot-password" className="text-body-sm">{LOGIN.forgot}</Link></p>
     </AuthFrame>
   );
 }

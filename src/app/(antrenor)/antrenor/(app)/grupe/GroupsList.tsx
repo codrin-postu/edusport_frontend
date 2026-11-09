@@ -6,9 +6,9 @@ import type { CoachGroups } from "@/lib/portal/api-types";
 import Icon from "@/components/ui/icon";
 import { usePortal } from "../../_lib/use-portal";
 import { ListCard } from "../../_ui/ListCard";
-import { LoadError } from "../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Row } from "../../_ui/Row";
-import { Spinner } from "../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 export function GroupsList({ selected }: { selected: string | null }) {
   const groups = usePortal<CoachGroups>("coach/groups");

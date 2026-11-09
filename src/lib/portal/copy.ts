@@ -13,42 +13,14 @@ function count(n: number, one: string, many: string): string {
   return `${n} ${many}`;
 }
 
+export { PORTAL_LABEL, LOGIN, EYE, INVITE, RESET, STATES, A11Y } from "./copy-shared.ts";
+export type { AuthCopy } from "./copy-shared.ts";
+import { LOGIN, RESET, INVITE, type AuthCopy } from "./copy-shared.ts";
+
+/** The coach portal's sign-in copy. */
+export const COACH_AUTH: AuthCopy = { login: LOGIN, reset: RESET, invite: INVITE };
+
 const children = (n: number): string => count(n, "copil", "copii");
-
-export const PORTAL_LABEL = { antrenor: "Portal antrenor", sportiv: "Portal sportiv" } as const;
-
-export const LOGIN = {
-  title: "Intră în cont",
-  google: "Continuă cu Google",
-  or: "sau",
-  email: "E-mail",
-  password: "Parolă",
-  submit: "Intră",
-  forgot: "Am uitat parola",
-} as const;
-
-export const EYE = { show: "Arată parola", hide: "Ascunde parola" } as const;
-
-export const INVITE = {
-  title: "Bun venit",
-  account: (email: string) => `Contul tău: ${email}`,
-  newPassword: "Parolă nouă",
-  save: "Salvează parola",
-  or: "sau",
-  google: "Continuă cu Google",
-  expired: "Invitația a expirat. Cere administratorului una nouă.",
-} as const;
-
-export const RESET = {
-  title: "Am uitat parola",
-  email: "E-mail",
-  sendCode: "Trimite codul",
-  code: "Cod din e-mail",
-  newPassword: "Parolă nouă",
-  save: "Salvează parola",
-  back: "Înapoi la intrare",
-  backSigned: "Înapoi",
-} as const;
 
 export const NAV = { today: "Azi", groups: "Grupe", history: "Istoric", profile: "Profil" } as const;
 
@@ -247,11 +219,3 @@ export const SETTINGS = {
 
 export const SECURITY = { device: "Dispozitiv", lastSeen: "Ultima dată", current: "acesta", signOut: "Deconectează", unknown: "Dispozitiv necunoscut" } as const;
 
-export const STATES = {
-  loadFailed: "Nu am putut încărca datele.",
-  noAccess: "Nu mai ai acces la această grupă.",
-  invalid: "Cerere invalidă.",
-  tooMany: "Prea multe încercări. Încearcă din nou peste 15 minute.",
-} as const;
-
-export const A11Y = { back: "Înapoi", prevMonth: "Luna anterioară", nextMonth: "Luna următoare", profile: "Profil" } as const;

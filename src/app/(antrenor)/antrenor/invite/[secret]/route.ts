@@ -1,5 +1,5 @@
 // Invite bridge: the secret arrives in the path once, moves into an HttpOnly cookie and the
-// browser is sent on to /invitatie, so no later URL, referrer or log line carries it.
+// browser is sent on to /invite, so no later URL, referrer or log line carries it.
 import { NextResponse, type NextRequest } from "next/server";
 import { bffContext } from "@/lib/portal/bff";
 import { shortCookie } from "@/lib/portal/cookies";
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ secr
   const { secret } = await params;
   const res = new NextResponse(null, {
     status: 303,
-    headers: { Location: "/invitatie", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" },
+    headers: { Location: "/invite", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" },
   });
   const ctx = bffContext(req);
   // A malformed secret also drops an older invite cookie, so a stale invite cannot linger behind a bad link.

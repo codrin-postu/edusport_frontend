@@ -9,10 +9,10 @@ import type { CoachMe } from "@/lib/portal/api-types";
 import { portalApi } from "../../../_lib/api";
 import { usePortal } from "../../../_lib/use-portal";
 import { BackHeader } from "../../../_ui/BackHeader";
-import { LoadError } from "../../../_ui/LoadError";
-import { PasswordField } from "../../../_ui/PasswordField";
-import { Spinner } from "../../../_ui/Spinner";
-import { useToast } from "../../../_ui/Toast";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { PasswordField } from "@/app/_portal/ui/PasswordField";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 
 function ReadOnly({ label, value }: { label: string; value: string }) {
   return (
@@ -96,7 +96,7 @@ export function SettingsView() {
       <p className="text-body-sm text-secondary">{SETTINGS.adminNote}</p>
       <PhoneForm phone={me.data.phone} />
       <h2 className="text-subtitle text-primary">{SETTINGS.changePassword}</h2>
-      {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/am-uitat-parola" className="text-body-sm">{SETTINGS.setPassword}</Link>}
+      {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
     </div>
   );
 }

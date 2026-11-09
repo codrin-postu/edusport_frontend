@@ -11,8 +11,8 @@ import { dateKey, eventDocumentId } from "@/lib/portal/program";
 import type { DateAnswer, DateBody, Occurrence } from "@/lib/portal/api-types";
 import { portalApi } from "../../../../_lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
-import { Sheet } from "../../../../_ui/Sheet";
-import { useToast } from "../../../../_ui/Toast";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { useToast } from "@/app/_portal/ui/Toast";
 
 export type DateAction = "cancel" | "move" | "delete";
 type Props = { occurrence: Occurrence; action: DateAction; onClose: () => void; onDone: () => void };

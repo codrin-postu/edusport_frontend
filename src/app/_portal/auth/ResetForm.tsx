@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
 import type { CoachMe } from "@/lib/portal/api-types";
-import { RESET } from "@/lib/portal/copy";
-import { portalApi } from "../_lib/api";
-import { playEntryAndGo } from "../_lib/entry-transition";
-import { AuthFrame } from "../_ui/AuthFrame";
-import { AlertLine, BackLink } from "../_ui/AuthBits";
-import { PasswordField } from "../_ui/PasswordField";
+import type { AuthCopy } from "@/lib/portal/copy-shared";
+import { portalApi } from "@/app/(antrenor)/antrenor/_lib/api";
+import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
+import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
+import { AlertLine, BackLink } from "@/app/_portal/ui/AuthBits";
+import { PasswordField } from "@/app/_portal/ui/PasswordField";
 
-export function ResetForm({ signedIn }: { signedIn: boolean }) {
+export function ResetForm({ copy, homePath, signedIn }: { copy: AuthCopy; homePath: string; signedIn: boolean }) {
+  const RESET = copy.reset;
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
@@ -52,7 +53,7 @@ export function ResetForm({ signedIn }: { signedIn: boolean }) {
     setMessage(null);
     const r = await portalApi<{ ok: true }>("POST", "auth/reset/confirm", { email, code, password }, { stay401: true });
     if (r.ok) {
-      playEntryAndGo("/");
+      playEntryAndGo(homePath);
       return;
     }
     setMessage(r.message);
@@ -89,7 +90,7 @@ export function ResetForm({ signedIn }: { signedIn: boolean }) {
           <Button type="submit" disabled={busy || !code || !password} className="w-full">{RESET.save}</Button>
         </form>
       )}
-      <p className="mt-4 text-center">{signedIn ? <BackLink href="/profil/setari">{RESET.backSigned}</BackLink> : <BackLink href="/intrare">{RESET.back}</BackLink>}</p>
+      <p className="mt-4 text-center">{signedIn ? <BackLink href="/profil/setari">{RESET.backSigned}</BackLink> : <BackLink href="/login">{RESET.back}</BackLink>}</p>
     </AuthFrame>
   );
 }

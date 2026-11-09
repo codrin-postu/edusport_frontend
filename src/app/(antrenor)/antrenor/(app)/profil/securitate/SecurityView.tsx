@@ -10,9 +10,9 @@ import { bucharestToday } from "../../../_lib/today";
 import { usePortal } from "../../../_lib/use-portal";
 import { BackHeader } from "../../../_ui/BackHeader";
 import { ListCard } from "../../../_ui/ListCard";
-import { LoadError } from "../../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { SquareLabel } from "../../../_ui/SquareLabel";
-import { Spinner } from "../../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 export function SecurityView() {
   const devices = usePortal<CoachDevice[]>("coach/me/devices");
@@ -30,7 +30,7 @@ export function SecurityView() {
       return;
     }
     if (r.data.revokedCurrent) {
-      window.location.assign("/intrare");
+      window.location.assign("/login");
       return;
     }
     setBusy(false);

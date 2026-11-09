@@ -6,8 +6,8 @@ import { PROGRAM } from "@/lib/portal/copy";
 import { dayMonth } from "@/lib/portal/format";
 import { portalApi } from "../../../../_lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
-import { Sheet } from "../../../../_ui/Sheet";
-import { useToast } from "../../../../_ui/Toast";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { ProgramFields, addBody, formReady, newForm } from "./ProgramForm";
 import { SquareSwitch } from "./SquareSwitch";
 

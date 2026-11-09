@@ -40,7 +40,7 @@ test("a good callback sets the session and goes home", async({ request }) => {
 test("a wrong state goes back to the login with no Strapi call", async({ request }) => {
   const { jar } = await begin(request);
   const cb = await get(request, "/api/portal/google/callback?code=ok:antrenor1@example.invalid&state=nope", jar);
-  expect(cb.location).toBe("/intrare");
+  expect(cb.location).toBe("/login");
   expect(cb.cookies.some((c) => c.startsWith("es_at="))).toBe(false);
   expect((await mockLog()).some((c) => c.path === "/api/portal/auth/google")).toBe(false);
 });
@@ -48,7 +48,7 @@ test("a wrong state goes back to the login with no Strapi call", async({ request
 test("a refusal leaves the Strapi message in the flash cookie", async({ request }) => {
   const { state, jar } = await begin(request);
   const cb = await get(request, `/api/portal/google/callback?code=ok:nobody@example.invalid&state=${state}`, jar);
-  expect(cb.location).toBe("/intrare");
+  expect(cb.location).toBe("/login");
   const flash = cb.cookies.find((c) => c.startsWith("es_flash="))?.split(";")[0] ?? "";
   const res = await request.get(`${RAW}/api/portal/auth/flash`, { headers: { ...AS_COACH, cookie: flash } });
   expect(await res.json()).toEqual({ data: { message: "Nu am găsit un cont pentru adresa asta." } });
@@ -58,13 +58,13 @@ test("a Strapi failure goes to the login with a flash", async({ request }) => {
   await mockState({ failGoogle: true });
   const { state, jar } = await begin(request);
   const cb = await get(request, `/api/portal/google/callback?code=ok:antrenor1@example.invalid&state=${state}`, jar);
-  expect(cb.location).toBe("/intrare");
+  expect(cb.location).toBe("/login");
   expect(cb.cookies.some((c) => c.startsWith("es_flash="))).toBe(true);
 });
 
 test("no client id means the login page", async({ request }) => {
   await mockState({ googleClientId: null });
   const start = await get(request, "/api/portal/google/start");
-  expect(start.location).toBe("/intrare");
+  expect(start.location).toBe("/login");
   expect(start.cookies.some((c) => c.startsWith("es_g="))).toBe(false);
 });

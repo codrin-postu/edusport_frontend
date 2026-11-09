@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Spinner } from "../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 import { PresenceView } from "./PresenceView";
 
 export default function PresencePage() {

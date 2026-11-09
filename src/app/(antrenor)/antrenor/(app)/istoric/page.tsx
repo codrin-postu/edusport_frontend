@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Spinner } from "../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 import { HistoryView } from "./HistoryView";
 
 export default function HistoryPage() {

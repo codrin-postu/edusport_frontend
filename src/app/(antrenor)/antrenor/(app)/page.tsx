@@ -7,9 +7,9 @@ import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
 import { usePortal } from "../_lib/use-portal";
 import { useMe } from "../_lib/me-context";
 import { ListCard } from "../_ui/ListCard";
-import { LoadError } from "../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Row } from "../_ui/Row";
-import { Spinner } from "../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 const classHref = (c: CoachClassRow): string =>
   c.sessionId ? `/prezenta?id=${encodeURIComponent(c.sessionId)}` : `/prezenta?occurrence=${encodeURIComponent(c.occurrenceKey ?? "")}`;

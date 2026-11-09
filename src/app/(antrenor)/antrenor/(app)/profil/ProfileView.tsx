@@ -6,13 +6,13 @@ import { portalApi } from "../../_lib/api";
 import { useMe } from "../../_lib/me-context";
 import { ListCard } from "../../_ui/ListCard";
 import { Row } from "../../_ui/Row";
-import { Spinner } from "../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 export function ProfileView() {
   const me = useMe();
   async function logout() {
     await portalApi("POST", "auth/logout");
-    window.location.assign("/intrare");
+    window.location.assign("/login");
   }
   if (me === null) return <div className="py-6 flex justify-center"><Spinner /></div>;
   return (

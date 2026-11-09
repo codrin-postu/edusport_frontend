@@ -1,7 +1,7 @@
 // Masks invite secrets and credentials in what Sentry is about to send. Pure.
 // Events, transactions and spans all pass through here: a transaction name, a span
 // description and a request URL carry the path, and the path can hold an invite secret
-// (/invitatie/<secret>) or a Google code and state in the query.
+// (/invite/<secret>) or a Google code and state in the query.
 import { maskSecrets } from "./upstream.ts";
 
 const mask = (v: unknown): unknown => {

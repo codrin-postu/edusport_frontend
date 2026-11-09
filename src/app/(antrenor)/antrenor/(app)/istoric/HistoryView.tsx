@@ -8,9 +8,9 @@ import type { CoachHistory, CoachHistoryRow } from "@/lib/portal/api-types";
 import { bucharestToday } from "../../_lib/today";
 import { usePortal } from "../../_lib/use-portal";
 import { ListCard } from "../../_ui/ListCard";
-import { LoadError } from "../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Row } from "../../_ui/Row";
-import { Spinner } from "../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 function sub(r: CoachHistoryRow): string {
   if (r.kind === "individuala") return HISTORY.lesson(durationText(r.durationMin ?? 0));

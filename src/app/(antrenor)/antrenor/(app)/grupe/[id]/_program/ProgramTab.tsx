@@ -11,10 +11,10 @@ import type { CoachProgram, DateAnswer, Occurrence, ProgramRow } from "@/lib/por
 import { portalApi } from "../../../../_lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
-import { LoadError } from "../../../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Segmented } from "../../../../_ui/Segmented";
-import { Spinner } from "../../../../_ui/Spinner";
-import { useToast } from "../../../../_ui/Toast";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { AddProgramSheet } from "./AddProgramSheet";
 import { ChangeSheet } from "./ChangeSheet";
 import { DateSheet, type DateAction } from "./DateSheet";

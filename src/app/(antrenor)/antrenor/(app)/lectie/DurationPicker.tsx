@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import Button from "@/components/ui/button";
 import { LESSON } from "@/lib/portal/copy";
 import { durationText } from "@/lib/portal/format";
-import { Sheet } from "../../_ui/Sheet";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 
 const HOURS = [0, 1, 2, 3];
 const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5);

@@ -58,7 +58,7 @@ Review batches: A = T1, T4, T5; B = T6, T11, T12.
 ## Review Focus
 
 - **Two athletes in one account, two tabs**: tab 1 on Ana, tab 2 switches to Matei; tab 1 still shows and loads Ana (the id is in the URL, never in a cookie). Pinned by Task 6 e2e.
-- **Access removed while the app is open**: the next load answers the `ClubAdminError` 403; the app lands on `/` with "Nu mai ai acces la acest sportiv." and the athlete is gone from the menu; a policy 403 lands on `/intrare`. Pinned by Task 4 (`classifySportiv`) and Task 6 e2e.
+- **Access removed while the app is open**: the next load answers the `ClubAdminError` 403; the app lands on `/` with "Nu mai ai acces la acest sportiv." and the athlete is gone from the menu; a policy 403 lands on `/login`. Pinned by Task 4 (`classifySportiv`) and Task 6 e2e.
 - **A coach cookie on the sportiv host** (same browser, coach logged in on `antrenor.localhost`): `sportiv.localhost` shows its login page; no request carries the coach cookie. Pinned by Task 4 and Task 1.
 - **Promotion on a slow phone with reduced motion**: the dialog shows the new level at once, focus is inside, Escape and "Mai departe" both post `promotion/seen` once. Pinned by Task 7.
 - **Competitions unavailable**: Concursuri, its detail and the Acasă card show "Rezultatele nu sunt disponibile acum."; the rest of Acasă renders. Pinned by Task 11 and Task 7.
@@ -74,7 +74,7 @@ src/lib/portal/sportiv-types.ts           backend api-types copied verbatim (T3)
 src/lib/portal/sportiv-format.ts          dates, money, counts, bars (T3)
 src/lib/portal/sportiv-routes.ts          allowedSportivRoute, sportivQuery (T4)
 src/lib/portal/site.ts                    PortalSite, siteOf(host) (T4)
-src/app/(sportiv)/layout.tsx, sportiv/{intrare,am-uitat-parola,invitatie,robots.txt,not-found,[...missing]} (T5)
+src/app/(sportiv)/layout.tsx, sportiv/{login,forgot-password,invite,robots.txt,not-found,[...missing]} (T5)
 src/app/(sportiv)/sportiv/api/portal/{auth,google,sportiv/[...path]} (T4, T5)
 src/app/(sportiv)/sportiv/(app)/layout.tsx (kit PortalShell), page.tsx (picker), _ui/AccountSheet.tsx, _lib/{api,use-athlete}.ts (T6)
 src/app/(sportiv)/sportiv/(app)/[athleteId]/{page,istoric,calendar,parcurs,concursuri,concursuri/[resultId],plati}/ (T7 to T12)
@@ -93,7 +93,7 @@ Browser to BFF on `sportiv.<domain>` (this plan, same body and `data` shapes as 
 |---|---|---|
 | `POST /api/portal/auth/login` `{ email, password }` | Strapi `auth/login` with `host: 'sportiv'`, device cookie | sets `es_at`, `es_rt`, `es_dev` (host-only) |
 | `POST /api/portal/auth/reset/request`, `reset/confirm` | as phase 6 with `host: 'sportiv'` | |
-| `GET /invitatie/<secret>` -> 303 `/invitatie`; `POST /api/portal/auth/invite/read`, `invite/accept` | as phase 6; `{ session: null, host }` -> 200 `{ data: { login: true } }`, page shows the login form | |
+| `GET /invite/<secret>` -> 303 `/invite`; `POST /api/portal/auth/invite/read`, `invite/accept` | as phase 6; `{ session: null, host }` -> 200 `{ data: { login: true } }`, page shows the login form | |
 | `GET /api/portal/google/start?invite=`, `GET /api/portal/google/callback` | redirect URI `https://<PORTAL_HOST_SPORTIV>/api/portal/google/callback` | |
 | `POST /api/portal/auth/logout` | as phase 6 | |
 | `GET\|PUT\|POST\|DELETE /api/portal/sportiv/<path>` | forwards only paths of `sportiv-routes.ts` (the backend table) with only the listed query keys | `calendar.ics` and `documents/acord` stream the body with the backend's `Content-Type` and `Content-Disposition` |

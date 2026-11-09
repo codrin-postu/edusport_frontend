@@ -28,7 +28,7 @@ export async function portalApi<T>(method: Method, path: string, body?: unknown,
     json = null;
   }
   if (res.status === 401 && !opts?.stay401) {
-    window.location.assign("/intrare");
+    window.location.assign("/login");
     return { ok: false, status: 401, message: errorMessage(json), body: json };
   }
   if (!res.ok) return { ok: false, status: res.status, message: errorMessage(json), body: json };

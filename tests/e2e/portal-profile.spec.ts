@@ -12,7 +12,7 @@ test("the profile page lists the rows and logs out", async({ page }) => {
   await expect(page.getByRole("link", { name: "Setări cont" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Securitate" }).first()).toBeVisible();
   await page.getByRole("button", { name: "Ieși din cont" }).click();
-  await expect(page).toHaveURL(/\/intrare$/);
+  await expect(page).toHaveURL(/\/login$/);
 });
 
 test("settings: e-mail is read only and the phone is saved", async({ page }) => {
@@ -85,7 +85,7 @@ test("a Google only coach sees Setează o parolă and no current password", asyn
   const session = cookiesOf(cb).map((c) => ({ name: c.slice(0, c.indexOf("=")), value: c.slice(c.indexOf("=") + 1) })).filter((c) => c.value !== "");
   await page.context().addCookies(session.map((c) => ({ ...c, url: COACH_BASE })));
   await page.goto("/profil/setari");
-  await expect(page.getByRole("link", { name: "Setează o parolă" })).toHaveAttribute("href", "/am-uitat-parola");
+  await expect(page.getByRole("link", { name: "Setează o parolă" })).toHaveAttribute("href", "/forgot-password");
   await expect(page.getByLabel("Parola actuală")).toHaveCount(0);
 });
 
@@ -107,7 +107,7 @@ test("signing out the current device lands on the login screen", async({ page })
   await loginAs(page);
   await page.goto("/profil/securitate");
   await page.getByRole("group").filter({ hasText: "acesta" }).getByRole("button", { name: "Deconectează" }).click();
-  await expect(page).toHaveURL(/\/intrare$/);
+  await expect(page).toHaveURL(/\/login$/);
   await page.goto("/");
-  await expect(page).toHaveURL(/\/intrare$/);
+  await expect(page).toHaveURL(/\/login$/);
 });

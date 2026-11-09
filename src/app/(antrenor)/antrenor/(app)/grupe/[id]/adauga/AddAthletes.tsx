@@ -12,9 +12,9 @@ import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { AthleteSearch } from "../../../../_ui/AthleteSearch";
 import { BackHeader } from "../../../../_ui/BackHeader";
 import { ListCard } from "../../../../_ui/ListCard";
-import { LoadError } from "../../../../_ui/LoadError";
+import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Row } from "../../../../_ui/Row";
-import { Spinner } from "../../../../_ui/Spinner";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 
 export function AddAthletes({ id }: { id: string }) {
   const router = useRouter();

@@ -12,7 +12,7 @@ import type { CoachSession, SessionCheck } from "@/lib/portal/api-types";
 import { portalApi } from "../../_lib/api";
 import { bucharestToday } from "../../_lib/today";
 import { usePortal } from "../../_lib/use-portal";
-import { Sheet } from "../../_ui/Sheet";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 import { ExistingDialog } from "./ExistingDialog";
 
 const toKey = (d: Date): string => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

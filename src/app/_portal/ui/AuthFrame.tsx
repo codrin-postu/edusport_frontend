@@ -1,5 +1,5 @@
 import { PORTAL_LABEL } from "@/lib/portal/copy";
-import { AuthRibbon } from "./AuthRibbon";
+import { AuthRibbon } from "@/app/_portal/ui/AuthRibbon";
 
 /**
  * The branded frame shared by the login, reset and invite screens: navy panel with the four-colour

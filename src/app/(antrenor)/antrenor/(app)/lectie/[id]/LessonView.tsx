@@ -11,9 +11,9 @@ import type { CoachLesson, LessonSaved } from "@/lib/portal/api-types";
 import { portalApi } from "../../../_lib/api";
 import { useMe } from "../../../_lib/me-context";
 import { useNoAccess } from "../../../_lib/use-portal";
-import { LoadError } from "../../../_ui/LoadError";
-import { Spinner } from "../../../_ui/Spinner";
-import { useToast } from "../../../_ui/Toast";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { CoachPicker } from "../../prezenta/CoachPicker";
 import { DurationPicker } from "../DurationPicker";
 

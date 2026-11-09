@@ -10,9 +10,9 @@ import type { CoachGroupPage, CoachSession, SessionSaved } from "@/lib/portal/ap
 import { portalApi, type ApiResult } from "../../_lib/api";
 import { useMe } from "../../_lib/me-context";
 import { useNoAccess } from "../../_lib/use-portal";
-import { LoadError } from "../../_ui/LoadError";
-import { Spinner } from "../../_ui/Spinner";
-import { useToast } from "../../_ui/Toast";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useToast } from "@/app/_portal/ui/Toast";
 import { CoachPicker } from "./CoachPicker";
 import { DaySheet } from "./DaySheet";
 import { PresenceTable, type TickMap } from "./PresenceTable";
