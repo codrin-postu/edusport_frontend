@@ -129,6 +129,8 @@
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
   --portal-cell-gap: 5px;          /* layout calendar cell number to marks */
   --portal-cal-head-gap: 6px;      /* layout calendar weekday row gap */
+  --portal-presence-row-h: 68px;   /* layout presence table row */
+  --portal-savebar-safe: 88px;     /* layout phone bottom padding under the fixed save bar */
   --portal-member-min-h: 60px;     /* layout competition member row */
   --portal-narrow-520: 520px;      /* layout narrow body */
   --portal-narrow-560: 560px;      /* layout narrow body */

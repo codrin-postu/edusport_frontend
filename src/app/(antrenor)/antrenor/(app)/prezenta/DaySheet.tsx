@@ -12,6 +12,7 @@ import type { CoachSession, SessionCheck } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../_lib/today";
 import { usePortal } from "../../_lib/use-portal";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { ExistingDialog } from "./ExistingDialog";
 
@@ -63,9 +64,9 @@ export function DaySheet({ open, onOpenChange, session, allowed }: DaySheetProps
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange} title={PRESENCE.pickDay}>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between">
           <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => setMonth(addMonths(month, -1))} />
-          <p className="text-label text-primary">{new Intl.DateTimeFormat("ro", { month: "long", year: "numeric" }).format(toDate(`${month}-01`))}</p>
+          <p className="text-(length:--portal-text-14) font-bold">{new Intl.DateTimeFormat("ro", { month: "long", year: "numeric" }).format(toDate(`${month}-01`))}</p>
           <IconButton icon="chevron-right" label={A11Y.nextMonth} disabled={month >= today.slice(0, 7)} onClick={() => setMonth(addMonths(month, 1))} />
         </div>
         <DayPicker
@@ -83,9 +84,9 @@ export function DaySheet({ open, onOpenChange, session, allowed }: DaySheetProps
             root: "w-full",
             month_caption: "hidden",
             month_grid: "w-full border-collapse",
-            weekday: "text-label text-secondary h-10 font-normal",
+            weekday: "text-(length:--portal-text-12) font-bold text-secondary h-10",
             day: "p-0 text-center",
-            day_button: "size-10 w-full text-body-sm text-primary outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary",
+            day_button: "size-10 w-full text-(length:--portal-text-14) text-primary outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary",
             selected: "bg-surface-dark text-primary-on-dark",
             today: "font-semibold",
             disabled: "text-line-subtle",
@@ -93,12 +94,12 @@ export function DaySheet({ open, onOpenChange, session, allowed }: DaySheetProps
           }}
           modifiersClassNames={{ saved: "bg-surface-highlight" }}
         />
-        <p className="flex items-center gap-2 text-body-sm text-secondary mt-2">
-          <span aria-hidden="true" className="size-4 bg-surface-highlight border-retro border-line" />
+        <p className="flex items-center gap-2 text-(length:--portal-text-13) text-muted">
+          <span aria-hidden="true" className="size-4 bg-surface-highlight border border-line-subtle" />
           {PRESENCE.hasSaved}
         </p>
-        <p role="alert" className="text-body-sm text-accent min-h-6 mt-2">{failed}</p>
-        <Button onClick={() => void choose()} disabled={busy} className="w-full mt-2">{PRESENCE.pick(pickLabel(picked))}</Button>
+        <AlertLine message={failed} />
+        <Button onClick={() => void choose()} disabled={busy} className="w-full">{PRESENCE.pick(pickLabel(picked))}</Button>
       </Sheet>
       <ExistingDialog
         open={existing !== null}

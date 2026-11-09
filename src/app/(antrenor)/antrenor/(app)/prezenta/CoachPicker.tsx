@@ -5,6 +5,7 @@ import { PRESENCE, LESSON } from "@/lib/portal/copy";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconButton from "@/components/ui/icon-button";
+import { PortalLink } from "@/app/_portal/ui/PortalLink";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 
 type CoachPickerProps = {
@@ -24,23 +25,19 @@ export function CoachPicker({ me, options, value, onChange, locked }: CoachPicke
   // Nothing is listed until the coach is known; an id with no name is not shown.
   const ids = me === "" ? [] : (value.includes(me) ? [me, ...value.filter((id) => id !== me)] : [me, ...value]).filter(known);
   return (
-    <div>
-      <p className="text-label text-secondary mb-2">{PRESENCE.coach}</p>
-      <ul className="border-retro border-line bg-surface-raised divide-y divide-line-subtle">
+    <div className="flex flex-col gap-(--portal-gap-6)">
+      <span className="text-(length:--portal-text-14) font-bold">{PRESENCE.coach}</span>
+      <ul className="flex flex-col">
         {ids.map((id) => (
-          <li key={id} className="flex items-center justify-between gap-4 pl-4 min-h-12">
-            <span className="text-body text-primary">{id === me ? PRESENCE.coachSelf(name(id)) : name(id)}</span>
+          <li key={id} className="flex items-center justify-between gap-4">
+            <span className="text-(length:--portal-text-15)">{id === me ? PRESENCE.coachSelf(name(id)) : name(id)}</span>
             {id !== me && !locked && (
               <IconButton icon="close" label={PRESENCE.removeCoach(name(id))} onClick={() => onChange(value.filter((v) => v !== id))} />
             )}
           </li>
         ))}
       </ul>
-      {!locked && (
-        <div className="mt-2">
-          <Button variant="secondary" onClick={() => setOpen(true)}>{PRESENCE.addCoaches}</Button>
-        </div>
-      )}
+      {!locked && <PortalLink onClick={() => setOpen(true)}>{PRESENCE.addCoaches}</PortalLink>}
       <Sheet open={open} onOpenChange={setOpen} title={PRESENCE.coach}>
         <ul className="flex flex-col gap-4 mb-6">
           {options.map((o) => (
