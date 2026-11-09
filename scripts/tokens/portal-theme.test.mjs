@@ -92,6 +92,19 @@ test("component tokens (spec 4.1 portal column)", () => check(scopedBase, COMPON
 test("layout tokens, phone (spec 4.2)", () => check(scopedBase, LAYOUT_PHONE));
 test("layout tokens, desktop (spec 4.2)", () => check(scopedMedia, LAYOUT_DESKTOP));
 
+// Kit sizes added in Tasks 6 to 8.
+const LAYOUT_KIT = [
+  ["--portal-band-pad-y", "28px"], ["--portal-endblock-pad", "6px"], ["--portal-tag-pad-y", "2px"],
+  ["--portal-tag-pad-x", "6px"], ["--portal-savebar-pad-y", "14px"], ["--portal-savebar-pad-x", "20px"],
+  ["--portal-narrow-520", "520px"], ["--portal-narrow-560", "560px"], ["--portal-narrow-640", "640px"],
+  ["--portal-narrow-860", "860px"], ["--portal-basis-280", "280px"], ["--portal-basis-300", "300px"],
+  ["--portal-basis-380", "380px"], ["--portal-basis-420", "420px"], ["--portal-basis-480", "480px"],
+  ["--portal-monthtitle-w", "150px"], ["--portal-points-w", "84px"], ["--portal-sheet-w", "460px"],
+  ["--portal-sheet-gap", "14px"], ["--portal-nowtile-day", "32px"], ["--portal-nowtile-time", "26px"],
+  ["--portal-sidebar-pad-top", "28px"], ["--portal-nav-safe", "84px"],
+];
+test("kit layout tokens", () => check(scopedBase, LAYOUT_KIT));
+
 test("every scoped declaration names its audit row or layout", () => {
   for (const block of [scopedBase, scopedMedia]) {
     for (const [name, { rest }] of Object.entries(decls(block))) {

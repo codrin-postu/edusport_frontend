@@ -13,7 +13,7 @@ function count(n: number, one: string, many: string): string {
   return `${n} ${many}`;
 }
 
-export { PORTAL_LABEL, LOGIN, EYE, INVITE, RESET, STATES, A11Y } from "./copy-shared.ts";
+export { PORTAL_LABEL, LOGIN, EYE, INVITE, RESET, STATES, A11Y, KIT } from "./copy-shared.ts";
 export type { AuthCopy } from "./copy-shared.ts";
 import { LOGIN, RESET, INVITE, type AuthCopy } from "./copy-shared.ts";
 

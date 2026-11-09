@@ -52,3 +52,5 @@ export type AuthCopy = {
   // `account` holds the placeholder {email}: a function cannot cross from a server page to a client form.
   invite: { title: string; account: string; newPassword: string; save: string; or: string; google: string; expired: string };
 };
+
+export const KIT = { completat: "completat", necompletat: "necompletat", individual: "Individual", copied: "Numărul a fost copiat." } as const;

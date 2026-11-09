@@ -111,6 +111,60 @@
   --portal-brand-kicker-tracking: 0.28em; /* 23 brand kicker tracking */
   --portal-login-brand: 62px;      /* 23 28 login wordmark on the desktop navy panel */
   --portal-band-on-dark-line: rgb(246 249 253 / 0.35); /* 25 account button border on the sidebar */
+  /* Kit layout sizes (Tasks 6 to 8) */
+  --portal-band-pad-y: 28px;       /* layout top band block padding */
+  --portal-head-pt: 18px;          /* layout phone header top padding */
+  --portal-head-pb: 6px;           /* layout phone header bottom padding */
+  --portal-head-gap: 18px;         /* layout phone header row gap */
+  --portal-body-pt: 22px;          /* layout page body top padding */
+  --portal-body-pb: 28px;          /* layout page body bottom padding */
+  --portal-actions-gap: 20px;      /* layout header aside and actions gap */
+  --portal-endblock-pad: 6px;      /* layout end block padding */
+  --portal-tag-pad-y: 2px;         /* layout Individual tag */
+  --portal-tag-pad-x: 6px;         /* layout Individual tag */
+  --portal-savebar-pad-y: 14px;    /* layout save bar */
+  --portal-savebar-pad-x: 20px;    /* layout save bar */
+  --portal-contact-pad-x: 10px;    /* layout contact button */
+  --portal-gap-10: 10px;           /* layout month picker and Google button gap */
+  --portal-cell-gap: 5px;          /* layout calendar cell number to marks */
+  --portal-cal-head-gap: 6px;      /* layout calendar weekday row gap */
+  --portal-member-min-h: 60px;     /* layout competition member row */
+  --portal-narrow-520: 520px;      /* layout narrow body */
+  --portal-narrow-560: 560px;      /* layout narrow body */
+  --portal-narrow-640: 640px;      /* layout narrow body */
+  --portal-narrow-860: 860px;      /* layout narrow body */
+  --portal-basis-280: 280px;       /* layout column basis */
+  --portal-basis-300: 300px;       /* layout column basis */
+  --portal-basis-380: 380px;       /* layout column basis */
+  --portal-basis-420: 420px;       /* layout column basis */
+  --portal-basis-480: 480px;       /* layout column basis */
+  --portal-monthtitle-w: 150px;    /* layout month picker title */
+  --portal-points-w: 84px;         /* layout points cell */
+  --portal-sheet-w: 460px;         /* layout sheet width from the desktop breakpoint */
+  --portal-sheet-gap: 14px;        /* layout sheet child gap */
+  --portal-nowtile-day: 32px;      /* layout now tile day */
+  --portal-nowtile-time: 26px;     /* layout now tile time */
+  --portal-sidebar-pad-top: 28px;  /* layout sidebar */
+  --portal-sidebar-pad-x: 14px;    /* layout sidebar link and brand side padding */
+  --portal-gap-6: 6px;             /* layout 6px gap: sidebar links, stat side lines */
+  --portal-nav-safe: 84px;         /* layout phone bottom padding: nav 52 + 2 x 6 + 16 + 4 */
+  --portal-nav-item-gap: 3px;      /* layout bottom nav icon to label */
+  --portal-brand-tracking: 0.18em; /* 23 brand kicker tracking */
+  --portal-brand-word-tracking: 0.05em; /* 23 brand word tracking */
+  --portal-leading-h1: 1.05;       /* layout page title leading */
+  --portal-leading-stat: 0.85;     /* layout stat number leading */
+  --portal-tracking-month: 0.08em; /* layout now tile month */
+  --portal-tracking-place: 0.06em; /* layout place block word */
+  --portal-text-11: 11px;          /* layout type size */
+  --portal-text-12: 12px;          /* layout type size */
+  --portal-text-13: 13px;          /* layout type size */
+  --portal-text-14: 14px;          /* layout type size */
+  --portal-text-15: 15px;          /* layout type size */
+  --portal-text-16: 16px;          /* layout type size */
+  --portal-text-18: 18px;          /* layout type size */
+  --portal-text-20: 20px;          /* layout type size */
+  --portal-text-22: 22px;          /* layout type size */
+  --portal-text-26: 26px;          /* layout type size */
 }
 
 @media (width >= 56.25rem) {
@@ -124,5 +178,7 @@
     --portal-sidebar-w: 240px;     /* 25 sidebar */
     --portal-sidebar-link-h: 48px; /* 25 sidebar link */
     --portal-sidebar-link-size: 15px; /* 25 sidebar link */
+    --portal-body-pt: 32px;        /* layout page body top padding */
+    --portal-body-pb: 32px;        /* layout page body bottom padding */
   }
 }
