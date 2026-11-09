@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -32,7 +32,7 @@ test("the lesson page saves the presence", async({ page }) => {
   await loginAs(page);
   await page.goto("/lectie/lplan");
   await expect(page.getByText("17:00, 1 h")).toBeVisible();
-  await page.getByLabel("Ana Stoica, Prezent").evaluate((el) => (el as HTMLInputElement).click());
+  await page.getByLabel("Prezent, Ana Stoica").evaluate((el) => (el as HTMLInputElement).click());
   await page.getByRole("button", { name: "Salvează prezența" }).click();
   await expect(page.getByText("Salvat.")).toBeVisible();
   const put = (await mockLog()).find((c) => c.method === "PUT" && c.path.endsWith("/coach/lessons/lplan"));
@@ -79,3 +79,42 @@ test("a double tap on Salvează lecția creates one lesson only", async({ page }
   const posts = (await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/coach/lessons"));
   expect(posts).toHaveLength(1);
 });
+
+const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
+
+for (const size of SIZES) {
+  test.describe(`Lecție look ${size.width}`, () => {
+    test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
+
+    test("new lesson form", async({ page }, info) => {
+      await loginAs(page);
+      await page.goto("/lectie/noua");
+      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.locator("h1")).toHaveText("Lecție individuală");
+      await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
+      const y = async(text: string) => (await page.getByText(text, { exact: true }).locator("visible=true").first().boundingBox())!.y;
+      const ys = [await y("Sportiv"), await y("Data"), await y("Durată"), await y("Antrenor")];
+      expect([...ys].sort((a, b) => a - b)).toEqual(ys);
+      expect(Math.abs((await y("Data")) - (await y("Ora")))).toBeLessThan(2);
+      await expect(page.getByRole("button", { name: "Salvează lecția" })).toBeVisible();
+      const form = page.locator("[data-lesson-form]");
+      if (size.width >= 900) {
+        await expect(form).toHaveCSS("padding-left", "24px");
+        await expect(form).toHaveCSS("max-width", "520px");
+      } else {
+        await expect(form).toHaveCSS("padding-left", "0px");
+      }
+      await shot(page, info, "lectie");
+    });
+
+    test("lesson page: Prezent row with a 44px checkbox, full width save", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/lectie/lplan");
+      await expect(page.getByText("Prezent", { exact: true })).toBeVisible();
+      await expect(page.getByLabel("Prezent, Ana Stoica").locator("xpath=..")).toHaveCSS("width", "44px");
+      const save = (await page.getByRole("button", { name: "Salvează prezența" }).boundingBox())!;
+      const form = (await page.locator("[data-lesson-form]").boundingBox())!;
+      expect(save.width).toBeGreaterThan(form.width * 0.8);
+    });
+  });
+}

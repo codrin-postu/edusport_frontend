@@ -4,17 +4,21 @@ import { useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
 import DatePickerField from "@/components/ui/date-picker-field";
-import { Input } from "@/components/ui/form-field";
-import { LESSON } from "@/lib/portal/copy";
+import { Field, Input } from "@/components/ui/form-field";
+import { LESSON, NAV } from "@/lib/portal/copy";
 import type { CoachSearchRow, LessonSaved } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useMe } from "../../../_lib/me-context";
 import { bucharestToday } from "../../../_lib/today";
 import { AthleteSearch } from "../../../_ui/AthleteSearch";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
+import { PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { CoachPicker } from "../../prezenta/CoachPicker";
 import { DurationPicker } from "../DurationPicker";
+import { FORM } from "../form";
 
 export default function NewLessonPage() {
   const me = useMe();
@@ -29,7 +33,7 @@ export default function NewLessonPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  if (!me) return <div className="py-6 flex justify-center"><Spinner /></div>;
+  if (!me) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   const ids = coachIds ?? [me.coachId];
   const ready = athlete !== null && date !== "" && time !== "" && !busy;
 
@@ -51,22 +55,27 @@ export default function NewLessonPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-title text-primary">{LESSON.title}</h1>
-      <div>
-        <p className="text-label text-secondary mb-2">{LESSON.athlete}</p>
-        {athlete && <p className="text-body text-primary mb-2">{athlete.name}</p>}
-        <AthleteSearch multiple={false} selected={athlete ? [athlete.athleteId] : []} onToggle={setAthlete} />
-      </div>
-      <DatePickerField id="lesson-date" label={LESSON.date} value={date} onChange={setDate} variant="card" />
-      <div>
-        <label htmlFor={timeId} className="text-label text-secondary block mb-2">{LESSON.time}</label>
-        <Input id={timeId} type="time" step={300} value={time} onChange={(e) => setTime(e.target.value)} surface="card" />
-      </div>
-      <DurationPicker value={duration} onChange={setDuration} />
-      <CoachPicker me={me.coachId} options={me.coachOptions} value={ids} onChange={setCoachIds} />
-      <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
-      <Button onClick={() => void save()} disabled={!ready} className="w-full">{LESSON.save}</Button>
-    </div>
+    <>
+      <PageHeader back={{ href: "/", label: NAV.today }} title={LESSON.title} />
+      <PageBody>
+        <div data-lesson-form className={FORM}>
+          <div>
+            <span className="text-field-label text-label-ink block mb-(--field-gap)">{LESSON.athlete}</span>
+            {athlete && <p className="mb-2 text-(length:--portal-text-15) font-bold">{athlete.name}</p>}
+            <AthleteSearch multiple={false} selected={athlete ? [athlete.athleteId] : []} onToggle={setAthlete} />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <DatePickerField id="lesson-date" label={LESSON.date} value={date} onChange={setDate} variant="card" />
+            <Field label={LESSON.time} id={timeId}>
+              <Input type="time" step={300} value={time} onChange={(e) => setTime(e.target.value)} surface="card" />
+            </Field>
+          </div>
+          <DurationPicker value={duration} onChange={setDuration} />
+          <CoachPicker me={me.coachId} options={me.coachOptions} value={ids} onChange={setCoachIds} />
+          <AlertLine message={message} />
+          <Button onClick={() => void save()} disabled={!ready} className="w-full">{LESSON.save}</Button>
+        </div>
+      </PageBody>
+    </>
   );
 }
