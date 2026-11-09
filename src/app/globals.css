@@ -244,6 +244,9 @@ h1.text-branding-font {
   --dialog-title-tracking: -0.01em;
   --dialog-pad: 1.5rem;
   --dialog-max-w: 28rem;
+  --icon-18: 18px;
+  --icon-20: 20px;
+  --icon-26: 26px;
 }
 
 @import "../styles/portal-theme.css";
