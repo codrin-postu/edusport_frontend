@@ -248,6 +248,11 @@ h1.text-branding-font {
   --icon-20: 20px;
   --icon-26: 26px;
 }
+@media (width >= 48rem) {
+  :root {
+    --dialog-title-size: 1.5rem;
+  }
+}
 
 @import "../styles/portal-theme.css";
 
@@ -526,7 +531,6 @@ h1.text-branding-font {
 }
 @utility text-dialog-title {
   font-family: var(--font-display); font-weight: 800; font-size: var(--dialog-title-size); line-height: var(--dialog-title-leading); letter-spacing: var(--dialog-title-tracking);
-  @media (width >= 48rem) { font-size: 1.5rem; }
 }
 @utility text-body { font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
 @utility text-subtitle {
