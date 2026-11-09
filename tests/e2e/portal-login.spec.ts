@@ -181,7 +181,7 @@ test.describe("branded frame", () => {
     expect(style.family).toMatch(/climate ?crisis/i);
     expect(style.size).toBe("62px");
     expect(style.loaded).toBe(true);
-    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
+    const strokes = await page.locator("[data-auth-frame] svg:not([data-brand-mark]):visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
     expect(strokes).toEqual(RIBBON);
     const brand = await word.boundingBox();
     const card = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
@@ -192,7 +192,7 @@ test.describe("branded frame", () => {
     await page.goto("/login");
     const word = page.locator("[data-auth-frame]").getByText("EDUSPORT", { exact: true });
     expect(await word.evaluate((el) => getComputedStyle(el).fontSize)).toBe("31px");
-    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
+    const strokes = await page.locator("[data-auth-frame] svg:not([data-brand-mark]):visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
     expect(strokes).toEqual(RIBBON);
     const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
     const form = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();

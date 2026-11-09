@@ -53,4 +53,13 @@ export type AuthCopy = {
   invite: { title: string; account: string; newPassword: string; save: string; or: string; google: string; expired: string };
 };
 
-export const KIT = { completat: "completat", necompletat: "necompletat", individual: "Individual", copied: "Numărul a fost copiat." } as const;
+export const KIT = {
+  completat: "completat",
+  necompletat: "necompletat",
+  individual: "Individual",
+  copied: "Numărul a fost copiat.",
+  place: "Loc",
+  points: "puncte",
+  weekdays: ["L", "Ma", "Mi", "J", "V", "S", "D"],
+  legend: { grup: "grup", individual: "individual", anulata: "anulată" },
+} as const;

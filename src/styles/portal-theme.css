@@ -155,6 +155,7 @@
   --portal-leading-stat: 0.85;     /* layout stat number leading */
   --portal-tracking-month: 0.08em; /* layout now tile month */
   --portal-tracking-place: 0.06em; /* layout place block word */
+  --portal-text-10: 10px;          /* layout type size */
   --portal-text-11: 11px;          /* layout type size */
   --portal-text-12: 12px;          /* layout type size */
   --portal-text-13: 13px;          /* layout type size */
