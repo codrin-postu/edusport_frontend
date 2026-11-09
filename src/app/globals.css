@@ -157,6 +157,24 @@ h1.text-branding-font {
   --color-line-on-dark: #fbf8f1;
   --color-line-subtle-on-dark: #3d4660;
 
+  /* Component colour tokens. The values here are the public site's; the
+     portal theme overrides them (see Interfaces in the portal theme plan). */
+  --color-card-line: #0e1a3c;
+  --color-input-line: #0e1a3c;
+  --color-input-bg: var(--color-surface);
+  --color-label-ink: #495269;
+  --color-hint-ink: #495269;
+  --color-button-face: #000000;
+  --color-button-face-text: #fbf8f1;
+  --color-button-secondary-bg: transparent;
+  --color-checkbox-line: #0e1a3c;
+  --color-checkbox-on: #be3330;
+  --color-checkbox-mark: #fbf8f1;
+  --color-focus: #0e1a3c;
+  --color-link-bar: #be3330;
+  --color-link-hover: #be3330;
+  --color-dialog-bg: var(--color-surface);
+
   --shadow-retro-sm: 4px 4px 0 rgb(14 26 60 / 0.16);
   --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.16);
   --shadow-paper: 4px 6px 20px rgb(0 0 0 / 0.18); /* the Cursuri schedule notebook paper */
@@ -188,7 +206,50 @@ h1.text-branding-font {
 @utility z-dialog { z-index: 300; }
 @utility z-popup { z-index: 400; }
 
+/* Component tokens, public values. Component styles read these; the portal
+   theme overrides them under [data-theme="portal"]. */
+:root {
+  --card-border-width: 1.5px;
+  --input-border-width: 1.5px;
+  --input-pad-x: 1rem;
+  --text-input-size: 0.875rem;
+  --text-input-leading: 1.55;
+  --field-label-weight: 600;
+  --field-label-size: 0.75rem;
+  --field-label-tracking: 0.14em;
+  --field-label-case: uppercase;
+  --field-label-leading: 1.1;
+  --field-hint-size: 0.75rem;
+  --field-hint-leading: 1.4;
+  --field-gap: 0.5rem;
+  --text-button-weight: 600;
+  --text-button-size: 0.8125rem;
+  --text-button-tracking: 0.06em;
+  --text-button-case: uppercase;
+  --button-pad-x: 1.5rem;
+  --control-border-width: 1.5px;
+  --button-layers: block;
+  --button-face-shadow: none;
+  --button-press-shift: 4px;
+  --checkbox-size: 1.25rem;
+  --checkbox-border-width: 1.5px;
+  --checkbox-mark-size: 14px;
+  --focus-offset: 3px;
+  --link-weight: 600;
+  --link-bar-size: 2px;
+  --link-hover-decoration: none;
+  --link-hover-animation: link-slide;
+  --dialog-title-size: 1.25rem;
+  --dialog-title-leading: 1.2;
+  --dialog-title-tracking: -0.01em;
+  --dialog-pad: 1.5rem;
+  --dialog-max-w: 28rem;
+}
+
 @utility border-retro { border-width: 1.5px; }
+@utility border-control { border-width: var(--control-border-width); }
+@utility border-input { border-width: var(--input-border-width); }
+@utility border-card { border-width: var(--card-border-width); }
 @utility border-t-retro { border-top-width: 1.5px; }
 @utility border-b-retro { border-bottom-width: 1.5px; }
 @utility border-l-retro { border-left-width: 1.5px; }
@@ -405,11 +466,11 @@ h1.text-branding-font {
 }
 
 @utility link {
-  font-weight: 600;
+  font-weight: var(--link-weight);
   color: var(--color-primary);
-  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-image: linear-gradient(var(--color-link-bar), var(--color-link-bar));
   background-repeat: no-repeat;
-  background-size: 100% 2px;
+  background-size: 100% var(--link-bar-size);
   background-position: right bottom;
   padding-bottom: 4px;
   /* Long URLs used as link text wrap instead of widening the page. */
@@ -417,7 +478,7 @@ h1.text-branding-font {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color var(--duration-fast, 150ms) ease;
-  &:hover { color: var(--color-accent); animation: link-slide var(--duration-long) var(--ease-in-out); }
+  &:hover { color: var(--color-link-hover); text-decoration-line: var(--link-hover-decoration); animation: var(--link-hover-animation) var(--duration-long) var(--ease-in-out); }
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     &:hover { animation: none; }
@@ -444,10 +505,10 @@ h1.text-branding-font {
 }
 
 @keyframes link-slide {
-  0% { background-size: 100% 2px; background-position: right bottom; }
-  49% { background-size: 0% 2px; background-position: right bottom; }
-  50% { background-size: 0% 2px; background-position: left bottom; }
-  100% { background-size: 100% 2px; background-position: left bottom; }
+  0% { background-size: 100% var(--link-bar-size); background-position: right bottom; }
+  49% { background-size: 0% var(--link-bar-size); background-position: right bottom; }
+  50% { background-size: 0% var(--link-bar-size); background-position: left bottom; }
+  100% { background-size: 100% var(--link-bar-size); background-position: left bottom; }
 }
 
 /* Type roles: each sets size, weight, line-height and letter-spacing. */
@@ -456,6 +517,10 @@ h1.text-branding-font {
 @utility text-heading { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.625rem, 3vw, 2.25rem); line-height: 1.1; letter-spacing: -0.02em; }
 @utility text-title {
   font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em;
+  @media (width >= 48rem) { font-size: 1.5rem; }
+}
+@utility text-dialog-title {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--dialog-title-size); line-height: var(--dialog-title-leading); letter-spacing: var(--dialog-title-tracking);
   @media (width >= 48rem) { font-size: 1.5rem; }
 }
 @utility text-body { font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
@@ -469,7 +534,10 @@ h1.text-branding-font {
 @utility text-body-sm { font-weight: 400; font-size: 0.875rem; line-height: 1.55; letter-spacing: 0; }
 @utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
 @utility text-label { font-weight: 600; font-size: 0.75rem; line-height: 1.1; letter-spacing: 0.14em; text-transform: uppercase; }
-@utility text-button { font-weight: 600; font-size: 0.8125rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+@utility text-button { font-weight: var(--text-button-weight); font-size: var(--text-button-size); line-height: 1; letter-spacing: var(--text-button-tracking); text-transform: var(--text-button-case); }
+@utility text-field-label { font-weight: var(--field-label-weight); font-size: var(--field-label-size); line-height: var(--field-label-leading); letter-spacing: var(--field-label-tracking); text-transform: var(--field-label-case); }
+@utility text-field-hint { font-weight: 400; font-size: var(--field-hint-size); line-height: var(--field-hint-leading); letter-spacing: 0; }
+@utility text-input { font-weight: 400; font-size: var(--text-input-size); line-height: var(--text-input-leading); letter-spacing: 0; }
 /* Named exceptions for the athlete pages (Sportivi spotlight + athlete page):
    the name, the outlined rank watermark and the big stat numbers keep their
    pre-SP1 sizes. */
@@ -536,9 +604,11 @@ html.lv2-nav footer a:not([data-button]) {
      wrapper got its width (auto → shrink-to-content, w-full, or flex-stretch).
      In @layer components so a fixed size utility (the burger's size-12) wins. */
   .lcta-face { width: 100%; }
+  /* In the components layer so `group-disabled:hidden` still wins. */
+  .lcta-layer { display: var(--button-layers); }
 }
 .lcta-layer {
-  position: absolute; inset: 0; border: 1.5px solid var(--color-navy);
+  position: absolute; inset: 0; border: var(--control-border-width) solid var(--color-navy);
   pointer-events: none;
   /* return (hover-out): plain ease, no bounce */
   transition: transform .26s ease;
@@ -552,10 +622,11 @@ html.lv2-nav footer a:not([data-button]) {
 .lcta-face {
   position: relative; z-index: 3;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1.5px solid var(--color-navy);
+  border: var(--control-border-width) solid var(--color-navy);
+  box-shadow: var(--button-face-shadow);
   transition: transform .04s steps(1);
 }
-.lcta:active .lcta-face { transform: translate(4px, 4px); }
+.lcta:active .lcta-face { transform: translate(var(--button-press-shift), var(--button-press-shift)); }
 /* Disabled: flat solid face (colour comes from group-disabled: Tailwind
    classes on the face span), no border, no layered stack. */
 .lcta:disabled .lcta-face { border-color: transparent; }

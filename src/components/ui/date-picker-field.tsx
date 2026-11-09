@@ -67,7 +67,7 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-3 data-[focus-within]:outline-primary",
+      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-(--focus-offset) data-[focus-within]:outline-focus",
     groupInvalid: "border-accent",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",

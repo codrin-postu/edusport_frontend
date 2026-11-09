@@ -5,9 +5,9 @@ import { cn } from "@/utils/cn";
 type Surface = "surface" | "raised" | "subtle" | "dark";
 
 const SURFACE: Record<Surface, string> = {
-  surface: "bg-surface text-primary border-line",
-  raised: "bg-surface-raised text-primary border-line",
-  subtle: "bg-surface-subtle text-primary border-line",
+  surface: "bg-surface text-primary border-card-line",
+  raised: "bg-surface-raised text-primary border-card-line",
+  subtle: "bg-surface-subtle text-primary border-card-line",
   dark: "bg-surface-dark text-primary-on-dark border-line",
 };
 
@@ -49,17 +49,17 @@ export default function Card({
   children,
   ...rest
 }: CardProps) {
-  const classes = cn("block border-retro", SURFACE[surface], SHADOW[shadow], PADDING[padding], className);
+  const classes = cn("block border-card", SURFACE[surface], SHADOW[shadow], PADDING[padding], className);
 
   if (href) {
     // CardTitle reads --card-hover, so the title colour follows the surface
     // without a client context.
     const linkClasses = cn(
       classes,
-      "group/card outline-none focus-visible:outline-2 focus-visible:outline-offset-3",
+      "group/card outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset)",
       surface === "dark"
         ? "[--card-hover:var(--color-accent-on-dark)] focus-visible:outline-primary-on-dark"
-        : "[--card-hover:var(--color-accent)] focus-visible:outline-primary",
+        : "[--card-hover:var(--color-accent)] focus-visible:outline-focus",
     );
     const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
     if (href.startsWith("/") && !external) {

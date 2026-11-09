@@ -43,7 +43,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         className,
       )}
     >
-      <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
+      <span className="relative inline-flex size-(--checkbox-size) shrink-0 items-center justify-center">
         <input
           ref={ref}
           id={controlId}
@@ -55,15 +55,15 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <span
           aria-hidden
           className={cn(
-            "absolute inset-0 border-retro transition-colors pointer-events-none",
-            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-3",
-            onDark ? "border-line-on-dark" : "border-line",
+            "absolute inset-0 border-(length:--checkbox-border-width) transition-colors pointer-events-none",
+            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-(--focus-offset)",
+            onDark ? "border-line-on-dark" : "border-checkbox-line",
             onDark
               ? "peer-focus-visible:outline-primary-on-dark"
-              : "peer-focus-visible:outline-primary",
+              : "peer-focus-visible:outline-focus",
             onDark
               ? "peer-checked:bg-accent-on-dark peer-checked:border-accent-on-dark"
-              : "peer-checked:bg-accent peer-checked:border-accent",
+              : "peer-checked:bg-checkbox-on peer-checked:border-checkbox-on",
             disabled && (onDark ? "border-line-subtle-on-dark" : "border-line-subtle"),
             disabled && "peer-checked:bg-disabled peer-checked:border-disabled",
           )}
@@ -72,8 +72,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           name="check"
           size="sm"
           className={cn(
-            "relative hidden size-3.5 pointer-events-none peer-checked:block",
-            onDark ? "text-primary" : "text-primary-on-dark",
+            "relative hidden size-(--checkbox-mark-size) pointer-events-none peer-checked:block",
+            onDark ? "text-primary" : "text-checkbox-mark",
             disabled && "text-disabled",
           )}
         />

@@ -50,10 +50,10 @@ export default function IconButton({
 }: IconButtonProps) {
   const classes = cn(
     "inline-flex size-10 shrink-0 items-center justify-center transition-colors select-none",
-    "outline-none focus-visible:outline-2 focus-visible:outline-offset-3",
+    "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset)",
     onDark
       ? "text-primary-on-dark hover:text-accent-on-dark focus-visible:outline-primary-on-dark"
-      : "text-primary hover:text-accent focus-visible:outline-primary",
+      : "text-primary hover:text-accent focus-visible:outline-focus",
     variant === "outline" && "border-retro",
     variant === "outline" && (onDark ? "border-line-on-dark" : "border-line"),
     disabled && (onDark ? "text-muted-on-dark" : "text-disabled"),

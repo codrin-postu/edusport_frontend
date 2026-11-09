@@ -2,7 +2,7 @@
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import React, { useState } from "react";
-import Icon from "@/components/ui/icon";
+import Icon, { type IconName } from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
 
 export interface SelectItemOption {
@@ -20,6 +20,8 @@ interface SelectProps {
   required?: boolean;
   disabled?: boolean;
   size?: "default" | "compact" | "sm";
+  /** Trigger chevron icon. */
+  chevron?: IconName;
   /** The trigger sits on a dark (navy) panel. */
   onDark?: boolean;
   className?: string;
@@ -40,6 +42,7 @@ export const Select: React.FC<SelectProps> = ({
   required,
   disabled,
   size = "default",
+  chevron = "chevron-down",
   onDark = false,
   className,
   contentClassName,
@@ -52,11 +55,11 @@ export const Select: React.FC<SelectProps> = ({
   const items = options.filter((o) => o.value !== "");
   const selected = items.find((o) => o.value === value);
   const triggerSizeClasses = cn(
-    onDark ? "bg-surface-subtle-on-dark" : "bg-surface",
+    onDark ? "bg-surface-subtle-on-dark" : size === "default" ? "bg-input-bg" : "bg-surface",
     // default 48px (forms, page toolbars next to an Input); compact 40px
     // (filter rows); sm 36px in label type (the calendar header, next to
     // its 36px buttons).
-    size === "sm" ? "h-9 px-3 text-label" : size === "compact" ? "min-h-10 px-3 text-body-sm" : "h-12 px-4 text-body-sm",
+    size === "sm" ? "h-9 px-3 text-label" : size === "compact" ? "min-h-10 px-3 text-body-sm" : "h-12 px-(--input-pad-x) text-input",
   );
 
   return (
@@ -83,11 +86,12 @@ export const Select: React.FC<SelectProps> = ({
             className={cn(
               "w-full flex items-center justify-between gap-2 text-left",
               triggerSizeClasses,
-              "border-retro outline-none transition-all",
-              onDark ? "border-line-on-dark" : "border-line",
+              size === "default" ? "border-input" : "border-retro",
+              "outline-none transition-all",
+              onDark ? "border-line-on-dark" : size === "default" ? "border-input-line" : "border-line",
               onDark
                 ? "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-on-dark"
-                : "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+                : "focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus",
               !selected && (onDark ? "text-secondary-on-dark" : "text-secondary"),
               selected && (onDark ? "text-primary-on-dark" : "text-primary"),
               disabled &&
@@ -102,7 +106,7 @@ export const Select: React.FC<SelectProps> = ({
               {selected?.label ?? placeholder}
             </span>
             <Icon
-              name="chevron-down"
+              name={chevron}
               className={cn(
                 "text-secondary transition-transform duration-fast",
                 open && "rotate-180 text-accent",

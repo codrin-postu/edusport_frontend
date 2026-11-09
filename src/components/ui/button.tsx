@@ -35,7 +35,7 @@ interface ButtonProps {
 }
 
 const FACE: Record<ButtonFace, string> = {
-  black: "bg-black text-primary-on-dark",
+  black: "bg-button-face text-button-face-text",
   white: "bg-surface-raised text-primary",
   cream: "bg-surface text-primary",
 };
@@ -50,7 +50,7 @@ const FACE_DISABLED: Record<ButtonFace, string> = {
 
 // Keyboard focus ring (shown for keyboard navigation only): navy on light
 // surfaces, cream on dark ones.
-const FOCUS_LIGHT = "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary";
+const FOCUS_LIGHT = "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus";
 const FOCUS_DARK = "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-on-dark";
 
 const SECONDARY_LIGHT = "border-line text-primary hover-layer disabled:text-disabled disabled:border-line-subtle";
@@ -81,7 +81,7 @@ const Button: React.FC<ButtonProps> = ({
 
   if (variant === "secondary") {
     classes = cn(
-      "text-button inline-flex items-center justify-center gap-2 h-12 px-6 border-retro bg-transparent transition-colors select-none",
+      "text-button inline-flex items-center justify-center gap-2 h-12 px-(--button-pad-x) border-control bg-button-secondary-bg transition-colors select-none",
       "disabled:pointer-events-none disabled:cursor-not-allowed",
       onDark ? SECONDARY_DARK : SECONDARY_LIGHT,
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
@@ -103,7 +103,7 @@ const Button: React.FC<ButtonProps> = ({
         <span aria-hidden className="lcta-layer lcta-l2 group-disabled:hidden" />
         <span
           className={cn(
-            "lcta-face h-12 px-6 inline-flex items-center justify-center gap-2 text-button",
+            "lcta-face h-12 px-(--button-pad-x) inline-flex items-center justify-center gap-2 text-button",
             FACE[face],
             FACE_DISABLED[face],
             faceClassName,
