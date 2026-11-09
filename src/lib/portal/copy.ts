@@ -60,7 +60,8 @@ export const CALENDAR = {
 } as const;
 
 export const GRUPE = {
-  title: "Grupele mele",
+  title: "Grupe",
+  groupsCount: (n: number) => count(n, "grupă", "grupe"),
   others: "Alte grupe",
   line: (program: string, n: number) => `${program}, ${children(n)}`,
   coaches: (names: string) => `Antrenor: ${names}`,

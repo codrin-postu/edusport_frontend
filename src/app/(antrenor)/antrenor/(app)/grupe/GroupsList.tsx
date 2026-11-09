@@ -1,54 +1,63 @@
 "use client";
 
-import { useState } from "react";
 import { GRUPE } from "@/lib/portal/copy";
-import type { CoachGroups } from "@/lib/portal/api-types";
-import Icon from "@/components/ui/icon";
+import { weekdayShort } from "@/lib/portal/format";
+import { roCount } from "@/lib/ro-plural";
+import type { CoachGroups, NextClass } from "@/lib/portal/api-types";
 import { usePortal } from "../../_lib/use-portal";
-import { ListCard } from "../../_ui/ListCard";
+import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
-import { Row } from "../../_ui/Row";
+import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
+import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 
-export function GroupsList({ selected }: { selected: string | null }) {
+const kids = (n: number): string => roCount(n, "copil", "copii");
+
+const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} /> : undefined);
+
+export function GroupsList() {
   const groups = usePortal<CoachGroups>("coach/groups");
-  const [open, setOpen] = useState(false);
-  if (groups.state === "loading") return <div className="py-6 flex justify-center"><Spinner /></div>;
-  if (groups.state === "error" || !groups.data) return <LoadError />;
+  if (groups.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
   const { mine, others } = groups.data;
-  const mark = (id: string): string => (id === selected ? "bg-surface-subtle" : "");
+  const total = mine.reduce((n, g) => n + g.children, 0);
   return (
-    <div>
-      <h1 className="text-title text-primary mb-4">{GRUPE.title}</h1>
-      <ListCard>
-        {mine.map((g) => (
-          <div key={g.groupId} className={mark(g.groupId)}>
-            <Row href={`/grupe/${encodeURIComponent(g.groupId)}`} title={g.name} sub={GRUPE.line(g.program.join(", "), g.children)} />
-          </div>
-        ))}
-      </ListCard>
-      {others.length > 0 && (
-        <div className="mt-6">
-          <button
-            type="button"
-            aria-expanded={open}
-            onClick={() => setOpen((o) => !o)}
-            className="w-full flex items-center justify-between gap-4 h-12 text-button text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary"
-          >
-            {GRUPE.others}
-            <Icon name="chevron-down" className={open ? "rotate-180" : ""} />
-          </button>
-          {open && (
-            <ListCard>
-              {others.map((g) => (
-                <div key={g.groupId} className={mark(g.groupId)}>
-                  <Row href={`/grupe/${encodeURIComponent(g.groupId)}`} title={g.name} sub={g.coaches.length > 0 ? GRUPE.coaches(g.coaches.join(", ")) : undefined} />
-                </div>
-              ))}
-            </ListCard>
+    <>
+      <PageHeader brand title={GRUPE.title} sub={GRUPE.sub(GRUPE.groupsCount(mine.length), kids(total))} />
+      <PageBody>
+        <Columns>
+          <Column grow={1} basis={380}>
+            <Section title={GRUPE.mine}>
+              <ListCard>
+                {mine.map((g) => (
+                  <ListRow key={g.groupId} href={`/grupe/${encodeURIComponent(g.groupId)}`} lead={lead(g.next)} title={g.name} sub={GRUPE.line(g.program.join(", "), g.children)} />
+                ))}
+              </ListCard>
+            </Section>
+          </Column>
+          {others.length > 0 && (
+            <Column grow={1} basis={380}>
+              <Section title={GRUPE.others}>
+                <ListCard>
+                  {others.map((g) => (
+                    <ListRow
+                      key={g.groupId}
+                      href={`/grupe/${encodeURIComponent(g.groupId)}`}
+                      lead={lead(g.next)}
+                      title={g.name}
+                      sub={GRUPE.line(g.program.join(", "), g.children)}
+                      extra={g.coaches.length > 0 ? <span className="text-(length:--portal-row-sub) text-muted">{GRUPE.coaches(g.coaches.join(", "))}</span> : undefined}
+                    />
+                  ))}
+                </ListCard>
+              </Section>
+            </Column>
           )}
-        </div>
-      )}
-    </div>
+        </Columns>
+      </PageBody>
+    </>
   );
 }

@@ -109,18 +109,54 @@ test.describe("Azi layout", () => {
   });
 });
 
-test("Grupe: mine, the other groups collapsed until clicked", async({ page }) => {
+for (const size of SIZES) {
+  test.describe(`Grupe ${size.width}`, () => {
+    test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
+
+    test("sections, date blocks, rows and links", async({ page }, info) => {
+      await loginAs(page);
+      await page.goto("/grupe");
+      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.locator("h1")).toHaveText("Grupe");
+      await expect(page.getByText("2 grupe, 13 copii")).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Grupele mele" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Alte grupe" })).toBeVisible();
+      const row = (name: string) => page.getByRole("link").filter({ hasText: name }).filter({ has: page.locator("[data-date-block]") });
+      const avansati = row("Avansați");
+      await expect(avansati.locator("[data-date-word]")).toHaveText("Joi");
+      await expect(avansati.locator("[data-date-num]")).toHaveText("5");
+      await expect(avansati).toContainText("Ma, Mi 18:15, 9 copii");
+      await expect(avansati).toHaveAttribute("href", "/grupe/gavansati");
+      const primii = row("Primii Pași");
+      await expect(primii.locator("[data-date-word]")).toHaveText("Joi");
+      await expect(primii.locator("[data-date-num]")).toHaveText("5");
+      await expect(primii).toContainText("Sâ, Du 10:00, 4 copii");
+      const silver = row("Intermediari Silver");
+      await expect(silver.locator("[data-date-word]")).toHaveText("Sâm");
+      await expect(silver).toContainText("Sâ, Du 10:00, 2 copii");
+      await expect(silver).toContainText("Antrenor: Bianca Ene");
+      const uscat = row("Uscat Juniori");
+      await expect(uscat.locator("[data-date-word]")).toHaveText("Joi");
+      await expect(uscat.locator("[data-date-num]")).toHaveText("5");
+      await expect(uscat).toContainText("Antrenor: Bianca Ene");
+      await expect(uscat).toHaveAttribute("href", "/grupe/guscat");
+      const h = async(name: string) => (await page.getByRole("heading", { name }).boundingBox())!;
+      if (size.width >= 900) expect((await h("Alte grupe")).x).toBeGreaterThan((await h("Grupele mele")).x);
+      else expect((await h("Alte grupe")).y).toBeGreaterThan((await h("Grupele mele")).y);
+      await shot(page, info, "grupe");
+    });
+  });
+}
+
+test("a group without a next class shows the plain row", async({ page }) => {
+  await page.route("**/api/portal/coach/groups", (route) => route.fulfill({
+    json: { mine: [{ groupId: "gavansati", name: "Avansați", kind: "club", program: ["Ma, Mi 18:15"], children: 9, next: null }], others: [] },
+  }));
   await loginAs(page);
   await page.goto("/grupe");
-  await expect(page.getByRole("heading", { name: "Grupele mele" })).toBeVisible();
-  await expect(page.getByText("Ma, Mi 18:15, 9 copii")).toBeVisible();
-  const others = page.getByRole("button", { name: "Alte grupe" });
-  await expect(others).toHaveAttribute("aria-expanded", "false");
-  await expect(page.getByText("Uscat Juniori")).toHaveCount(0);
-  await others.click();
-  await expect(others).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByText("Uscat Juniori")).toBeVisible();
-  await expect(page.getByText("Antrenor: Bianca Ene").first()).toBeVisible();
+  const first = page.getByRole("link", { name: /Avansați/ });
+  await expect(first).toBeVisible();
+  await expect(first.locator("[data-date-block]")).toHaveCount(0);
 });
 
 test("own group: members, the new label, other groups, tabs", async({ page }) => {
@@ -157,14 +193,6 @@ test("other group without a class today: the stand-in sheet lists the recent slo
   const rows = page.getByRole("dialog").getByRole("link");
   await expect(rows).toHaveCount(2);
   await expect(rows.first()).toHaveAttribute("href", "/prezenta?occurrence=occ%3Agsilver%3A2026-11-05");
-});
-
-test("desktop: the list stays beside the group page", async({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 800 });
-  await loginAs(page);
-  await page.goto("/grupe/gavansati");
-  await expect(page.getByRole("heading", { name: "Grupele mele" })).toBeVisible();
-  await expect(page.getByText("Sportivi (9)")).toBeVisible();
 });
 
 test("an unknown group shows the load error", async({ page }) => {
