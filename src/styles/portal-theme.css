@@ -126,6 +126,7 @@
   --portal-savebar-pad-x: 20px;    /* layout save bar */
   --portal-contact-pad-x: 10px;    /* layout contact button */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
+  --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
   --portal-cell-gap: 5px;          /* layout calendar cell number to marks */
   --portal-cal-head-gap: 6px;      /* layout calendar weekday row gap */
   --portal-member-min-h: 60px;     /* layout competition member row */
