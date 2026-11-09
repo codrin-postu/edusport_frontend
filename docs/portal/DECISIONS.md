@@ -244,3 +244,11 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Visitors at another group's session (make-up), prices per group, one payment covering all groups.
 - Payment processor (Netopia, Stripe, other), receipt vs invoice, unused Școala sessions after 30 days.
 - Are portal children the same records as the website "Sportivi"? Proposal (screen portal-add-child): a new PRIVATE "club member" list (not in the public API), optional link to the public Sportivi profile; a confirmed Înscriere becomes a member automatically. "Adaugă sportiv" always searches first (club members + new registrations), "Sportiv nou" only if not found.
+
+## 2026-11-09 portal theme kit (decided by Claude, low impact)
+- Copy "Numărul a fost copiat." for the toast after copying a phone number.
+- The kit preview page (`/kit-preview` on the coach host, route `src/app/(antrenor)/antrenor/kit-preview`) exists only when `PORTAL_KIT_PREVIEW=1`; deploys never set it. The e2e build sets it.
+- The stat card text stays `--color-primary-on-dark` (cream), not the canvas `#f6f9fd`; the number is ice, the label `--color-secondary-on-dark`.
+- Type sizes with no scale step (10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 26 px) are `--portal-text-<n>` tokens in the portal theme file.
+- The shared dialog title now reads its desktop size from `--dialog-title-size` (a media rule on `:root`), so the portal can set 22px at every width; public sizes are unchanged.
+- League Spartan 800 is loaded in the coach root layout (it was missing; headings fell back to sans-serif).
