@@ -7,7 +7,7 @@ import { PRESENCE } from "@/lib/portal/copy";
 import { dayTile } from "@/lib/portal/format";
 import { presentCount, saveBody, sessionQuery } from "@/lib/portal/presence";
 import type { CoachGroupPage, CoachSession, SessionSaved } from "@/lib/portal/api-types";
-import { portalApi, type ApiResult } from "../../_lib/api";
+import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
 import { useMe } from "../../_lib/me-context";
 import { useNoAccess } from "../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";

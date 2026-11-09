@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
 import type { AuthCopy } from "@/lib/portal/copy-shared";
-import { portalApi } from "@/app/(antrenor)/antrenor/_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
 import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
 import { AlertLine, GoogleBlock, useFlash } from "@/app/_portal/ui/AuthBits";

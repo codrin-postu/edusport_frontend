@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { NAV, PROFILE } from "@/lib/portal/copy";
 import { cn } from "@/utils/cn";
-import { portalApi } from "../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { useMe } from "../_lib/me-context";
 
 export const NAV_ITEMS = [

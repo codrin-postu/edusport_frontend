@@ -6,7 +6,7 @@ import Button from "@/components/ui/button";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { ADD_ATHLETE } from "@/lib/portal/copy";
 import type { CoachGroupPage, CoachSearchRow, JoinResult } from "@/lib/portal/api-types";
-import { portalApi } from "../../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { AthleteSearch } from "../../../../_ui/AthleteSearch";

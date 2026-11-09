@@ -8,7 +8,7 @@ import { addMonths } from "@/lib/portal/format";
 import { dateState, eventDocumentId, dateKey } from "@/lib/portal/program";
 import { dayMonth } from "@/lib/portal/format";
 import type { CoachProgram, DateAnswer, Occurrence, ProgramRow } from "@/lib/portal/api-types";
-import { portalApi } from "../../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";

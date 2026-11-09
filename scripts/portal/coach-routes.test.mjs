@@ -30,3 +30,17 @@ it("forwards only the query parameters a route reads", () => {
   assert.equal(forwardedQuery("/me", q("populate=*")), "");
   assert.equal(forwardedQuery("/groups", q("filters=1")), "");
 });
+
+it("allows the canvas routes", () => {
+  const a = r.allowedCoachRoute;
+  assert.equal(a("GET", "/calendar"), true);
+  assert.equal(a("POST", "/calendar"), false);
+  assert.equal(a("POST", "/groups/gavansati/members/amaria/move"), true);
+  assert.equal(a("POST", "/groups/gavansati/members/amaria/remove"), true);
+  assert.equal(a("DELETE", "/groups/gavansati/members/amaria"), false);
+  assert.equal(a("POST", "/groups/g/members/../move"), false);
+  assert.equal(a("GET", "/competitions"), true);
+  const q = (s) => new URLSearchParams(s);
+  assert.equal(r.forwardedQuery("/calendar", q("month=2026-11&x=1")), "?month=2026-11");
+  assert.equal(r.forwardedQuery("/competitions", q("scope=mine&season=2026-2027&q=x")), "?scope=mine&season=2026-2027");
+});

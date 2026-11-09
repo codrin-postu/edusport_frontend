@@ -22,7 +22,7 @@ export const COACH_AUTH: AuthCopy = { login: LOGIN, reset: RESET, invite: INVITE
 
 const children = (n: number): string => count(n, "copil", "copii");
 
-export const NAV = { today: "Azi", groups: "Grupe", history: "Istoric", profile: "Profil" } as const;
+export const NAV = { today: "Azi", groups: "Grupe", competitions: "Concursuri", history: "Istoric", profile: "Profil", menu: "Meniu" } as const;
 
 export const AZI = {
   greeting: (firstName: string) => `Bună, ${firstName}`,
@@ -35,6 +35,28 @@ export const AZI = {
   groupLine: (n: number) => `grup, ${children(n)}`,
   lessonLine: (min: string) => `individuală, ${min}`,
   todoLine: (date: string) => `grup, ${date}`,
+  title: "Azi",
+  todayHeading: "Antrenamente azi",
+  calendarLink: "Calendar",
+  statLabel: "antrenamente azi",
+  doneOne: "completat",
+  doneMany: "completate",
+  pastHeading: "Antrenamente fără prezență",
+  groupSub: (kids: string, location: string | null) => (location ? `grup, ${kids}, ${location}` : `grup, ${kids}`),
+  minutes: (n: number) => `${n} min`,
+  nowLabel: (weekdayDay: string, time: string) => `${weekdayDay}, ora ${time}`,
+} as const;
+
+export const CALENDAR = {
+  title: "Calendar",
+  sub: "Ședințele și lecțiile tale",
+  prev: "Luna anterioară",
+  next: "Luna următoare",
+  legendGroup: "grup",
+  legendIndividual: "individual",
+  legendCancelled: "anulată",
+  empty: "Nicio ședință în această zi.",
+  grid: "Zilele lunii",
 } as const;
 
 export const GRUPE = {
@@ -42,22 +64,49 @@ export const GRUPE = {
   others: "Alte grupe",
   line: (program: string, n: number) => `${program}, ${children(n)}`,
   coaches: (names: string) => `Antrenor: ${names}`,
+  mine: "Grupele mele",
+  sub: (groups: string, kids: string) => `${groups}, ${kids}`,
+  coach: (names: string) => `Antrenor: ${names}`,
 } as const;
 
 export const GROUP = {
   members: "Sportivi",
-  program: "Program",
-  coaches: (names: string) => `Antrenori: ${names}`,
+  program: "Program:",
+  place: "Loc:",
+  coaches: "Antrenori:",
+  edit: "Modifică grupa",
+  tabAthletes: (n: number) => `Sportivi (${n})`,
+  tabProgram: "Program",
+  until: (dayMonth: string) => `până pe ${dayMonth}`,
   doPresence: "Fă prezența",
   membersCount: (n: number) => `Sportivi (${n})`,
   age: (n: number) => `${n} ani`,
   isNew: "nou",
-  alsoIn: (group: string) => `și în ${group}`,
+  alsoIn: (names: string) => `și în ${names}`,
   addAthlete: "+ Adaugă sportiv",
   otherCoach: "Grupa altui antrenor",
   programLine: (program: string) => `Program: ${program}`,
   standIn: "Înlocuiesc azi",
   standInPresence: "Fă prezența ca înlocuitor",
+} as const;
+
+export const EDIT_GROUP = {
+  title: "Modifică grupa",
+  sub: (group: string, n: string) => `${group}, ${n}`,
+  add: "+ Adaugă sportiv",
+  done: "Gata",
+  move: "Mută",
+  remove: "Scoate",
+  moveTitle: (name: string) => `Muți pe ${name} în altă grupă`,
+  moveText: (group: string) => `Prezențele de până acum rămân în ${group}.`,
+  newGroup: "Grupa nouă",
+  from: "Din data",
+  cancel: "Renunță",
+  moveConfirm: "Mută",
+  removeTitle: (name: string) => `Scoți pe ${name} din grupă?`,
+  removeText: "Prezențele de până acum rămân. Nu mai apare la ședințele grupei.",
+  removeConfirm: "Scoate din grupă",
+  noOtherGroup: "Nu ai altă grupă în care să-l muți.",
 } as const;
 
 export const PRESENCE = {
@@ -68,6 +117,12 @@ export const PRESENCE = {
   athlete: "Sportiv",
   grup: "Grup",
   uscat: "Uscat",
+  coachLabel: "Antrenor",
+  you: (name: string) => `${name} (tu)`,
+  headAthlete: "Sportiv",
+  headGroup: "Grup",
+  headDry: "Uscat",
+  present: (n: string) => `${n} prezenți`,
   presentCount: (n: number) => count(n, "prezent", "prezenți"),
   save: "Salvează",
   pickDay: "Alege ziua pentru care faci prezența.",
@@ -130,7 +185,46 @@ export const NEW_ATHLETE = {
   submit: (group: string) => `Adaugă în ${group}`,
 } as const;
 
-export const CARD = { groups: "Grupe", school: "Școala", contact: "Contact", call: "Sună" } as const;
+export const CARD = {
+  groups: "Grupe",
+  school: "Școala",
+  contact: "Contact",
+  call: "Sună",
+  parent: "Părinte",
+  copy: "Copiază numărul",
+  copied: "Numărul a fost copiat.",
+  whatsapp: "WhatsApp",
+  presence: "Prezențe",
+  inSeason: "În sezon",
+  presences: (n: number) => count(n, "prezență", "prezențe"),
+  lessons: "Lecții individuale",
+  lessonsValue: (n: number) => `${n} în sezon`,
+  last: "Ultima",
+  missed: "Lipsă luna asta",
+  competitions: "Concursuri",
+  all: "Toate",
+  category: (season: string) => `Categoria ${season}`,
+  count: "concursuri",
+  podiums: "podiumuri",
+  abonament: "Abonament",
+  validUntil: "Valabil până la",
+  location: "Locație",
+  ageSection: (age: string, section: string | null) => (section ? `${age}, ${section}` : age),
+} as const;
+
+export const COMPETITIONS = {
+  title: "Concursuri",
+  sub: "Rezultatele sportivilor clubului",
+  all: "Toți sportivii",
+  mine: "Grupele mele",
+  season: "Sezon",
+  athletes: "sportivi",
+  place: "Loc",
+  points: "puncte",
+  unavailable: "Rezultatele nu sunt disponibile acum.",
+  empty: "Niciun rezultat în acest sezon.",
+  filter: "Sportivi",
+} as const;
 
 export const PROGRAM = {
   list: "Listă",
@@ -196,12 +290,21 @@ export const HISTORY = {
   group: (present: number) => `grup, ${count(present, "prezent", "prezenți")}`,
   lesson: (min: string) => `individuală, ${min}`,
   standIn: (present: number) => `înlocuitor, ${count(present, "prezent", "prezenți")}`,
+  title: "Istoric",
+  statLabel: (month: string) => `ședințe de grup în ${month}`,
+  lessons: "lecții individuale",
+  hours: "ore",
+  presentSub: (n: number) => `grup, ${n} prezenți`,
+  standInSub: (n: number) => `înlocuitor, ${n} prezenți`,
+  notDoneSub: "grup, fără prezență",
 } as const;
 
 export const PROFILE = {
   role: "Antrenor",
   settings: "Setări cont",
   security: "Securitate",
+  settingsSub: "nume, e-mail, telefon, parolă",
+  securitySub: "dispozitive conectate",
   logout: "Ieși din cont",
 } as const;
 

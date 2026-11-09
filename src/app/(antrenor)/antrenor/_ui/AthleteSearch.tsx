@@ -6,7 +6,7 @@ import type { CoachSearchRow } from "@/lib/portal/api-types";
 import { Input } from "@/components/ui/form-field";
 import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
-import { portalApi } from "../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 
 type AthleteSearchProps = {
   group?: string;

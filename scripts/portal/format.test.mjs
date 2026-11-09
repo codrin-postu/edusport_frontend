@@ -33,3 +33,16 @@ it("moves between months", () => {
   assert.equal(f.addMonths("2026-01", -1), "2025-12");
   assert.equal(f.firstOfMonth("2026-10-16"), "2026-10-01");
 });
+
+it("formats phone links and canvas dates", () => {
+  assert.deepEqual(f.phoneLinks("0722 000 222"), { tel: "tel:+40722000222", wa: "https://wa.me/40722000222" });
+  assert.deepEqual(f.phoneLinks("+40 722 000 222"), { tel: "tel:+40722000222", wa: "https://wa.me/40722000222" });
+  assert.equal(f.phoneLinks("0722"), null);
+  assert.equal(f.weekdayShort("2026-11-05"), "Joi");
+  assert.equal(f.weekdayShort("2026-11-07"), "Sâm");
+  assert.equal(f.monthShort("2026-11-05"), "Noi");
+  assert.equal(f.longDay("2026-11-04"), "Miercuri, 4 noiembrie");
+  assert.equal(f.shortWhen("2026-11-05"), "Joi, 5 noi");
+  assert.equal(f.dayMonthYear("2026-10-26"), "26 oct 2026");
+  assert.equal(f.dayMonthShort("2026-11-12"), "12 noi");
+});

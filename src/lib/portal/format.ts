@@ -85,3 +85,48 @@ export function addMonths(month: string, n: number): string {
   const y = Math.floor(index / 12);
   return `${y}-${String((index % 12) + 1).padStart(2, "0")}`;
 }
+
+const WEEKDAY_SHORT = ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm"] as const;
+const WEEKDAY_LONG = ["Duminică", "Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă"] as const;
+const MONTH_SHORT_CAP = ["Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Noi", "Dec"] as const;
+
+/** "0722 000 222" or "+40 722 000 222" -> { tel: "tel:+40722000222", wa: "https://wa.me/40722000222" }; fewer than 10 digits -> null */
+export function phoneLinks(phone: string): { tel: string; wa: string } | null {
+  let digits = phone.replace(/\D/g, "");
+  if (digits.length < 10) return null;
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  else if (digits.startsWith("0")) digits = `40${digits.slice(1)}`;
+  return { tel: `tel:+${digits}`, wa: `https://wa.me/${digits}` };
+}
+
+/** "2026-11-05" -> "Joi" */
+export function weekdayShort(date: string): string {
+  return WEEKDAY_SHORT[parts(date).weekday];
+}
+
+/** "2026-11-05" -> "Noi" */
+export function monthShort(date: string): string {
+  return MONTH_SHORT_CAP[parts(date).month - 1];
+}
+
+/** "2026-11-04" -> "Miercuri, 4 noiembrie" */
+export function longDay(date: string): string {
+  const p = parts(date);
+  return `${WEEKDAY_LONG[p.weekday]}, ${p.day} ${MONTH_LONG[p.month - 1]}`;
+}
+
+/** "2026-11-05" -> "Joi, 5 noi" */
+export function shortWhen(date: string): string {
+  const p = parts(date);
+  return `${WEEKDAY_LONG[p.weekday]}, ${p.day} ${MONTH_SHORT[p.month - 1]}`;
+}
+
+/** "2026-10-26" -> "26 oct 2026" */
+export function dayMonthYear(date: string): string {
+  return `${shortDate(date)} ${parts(date).year}`;
+}
+
+/** "2026-11-12" -> "12 noi" */
+export function dayMonthShort(date: string): string {
+  return shortDate(date);
+}

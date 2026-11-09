@@ -5,7 +5,7 @@ import Button from "@/components/ui/button";
 import { PROFILE, SECURITY } from "@/lib/portal/copy";
 import { relativeDay } from "@/lib/portal/format";
 import type { CoachDevice } from "@/lib/portal/api-types";
-import { portalApi } from "../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../_lib/today";
 import { usePortal } from "../../../_lib/use-portal";
 import { BackHeader } from "../../../_ui/BackHeader";

@@ -165,3 +165,18 @@ test("a refresh refused with 401 ends the session", async({ page }) => {
   expect(r.json.error?.name).toBe("SessionEnded");
   expect(await cookieNamed(page, "es_rt")).toBeFalsy();
 });
+
+test("the canvas routes pass through the allowlist", async({ page }) => {
+  await loginAs(page);
+  const cal = await api(page, "GET", "/calendar?month=2026-11&x=1");
+  expect(cal.status).toBe(200);
+  expect((await coachCalls()).some((c) => c.path.endsWith("/calendar?month=2026-11"))).toBe(true);
+  expect((await api(page, "GET", "/competitions?scope=mine")).status).toBe(200);
+  expect((await api(page, "POST", "/calendar", {})).status).not.toBe(200);
+  const other = await api(page, "POST", "/groups/gsilver/members/adara/remove", { from: "2026-11-05" });
+  expect(other.status).toBe(403);
+  const own = await api(page, "POST", "/groups/gavansati/members/atudor/move", { toGroupId: "gavansati", from: "2026-11-05" });
+  expect(own.status).toBe(400);
+  const forged = await api(page, "POST", "/groups/gavansati/members/atudor/move", { toGroupId: "gsilver", from: "2026-11-05" });
+  expect(forged.status).toBe(403);
+});

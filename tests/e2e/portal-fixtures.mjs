@@ -28,7 +28,7 @@ const COACH_OPTIONS = [
   { id: "tm-radu", name: "Radu Matei" },
 ];
 
-const person = (id, name, age, extra = {}) => ({ athleteId: id, name, age, isNew: false, alsoIn: [], inactive: false, ...extra });
+const person = (id, name, age, extra = {}) => ({ athleteId: id, name, age, isNew: false, alsoIn: [], inactive: false, leavesOn: null, ...extra });
 
 export function buildWorld(today) {
   const accounts = {
@@ -37,16 +37,16 @@ export function buildWorld(today) {
     "antrenor3@example.invalid": { coachId: "tm-cezar", name: "Cezar Lungu", firstName: "Cezar", initials: "CL", phone: null, password: null, google: true },
   };
   const groups = {
-    "gavansati": { id: "gavansati", name: "Avansați", kind: "club", own: true, coaches: ["Andrei Popa"], days: [2, 3], start: "18:15", dur: 60, program: ["Ma, Mi 18:15"], programPublic: true, eventId: "evavansati" },
-    "gprimii": { id: "gprimii", name: "Primii Pași", kind: "school", own: true, coaches: ["Andrei Popa"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evprimii" },
-    "gsilver": { id: "gsilver", name: "Intermediari Silver", kind: "school", own: false, coaches: ["Bianca Ene"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evsilver" },
-    "guscat": { id: "guscat", name: "Uscat Juniori", kind: "club", own: false, coaches: ["Bianca Ene"], days: [1, 4], start: "17:00", dur: 60, program: ["Lu, Jo 17:00"], programPublic: false, eventId: "evuscat" },
+    "gavansati": { id: "gavansati", name: "Avansați", kind: "club", own: true, coaches: ["Andrei Popa"], days: [2, 3], start: "18:15", dur: 60, program: ["Ma, Mi 18:15"], programPublic: true, eventId: "evavansati", location: "AFI Cotroceni" },
+    "gprimii": { id: "gprimii", name: "Primii Pași", kind: "school", own: true, coaches: ["Andrei Popa"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evprimii", location: "AFI Cotroceni" },
+    "gsilver": { id: "gsilver", name: "Intermediari Silver", kind: "school", own: false, coaches: ["Bianca Ene"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evsilver", location: "Patinoar Nord" },
+    "guscat": { id: "guscat", name: "Uscat Juniori", kind: "club", own: false, coaches: ["Bianca Ene"], days: [1, 4], start: "17:00", dur: 60, program: ["Lu, Jo 17:00"], programPublic: false, eventId: "evuscat", location: "Patinoar Nord" },
   };
   const members = {
     "gavansati": [
       person("amaria", "Maria Ionescu", 11), person("aluca", "Luca Dumitru", 10), person("aana", "Ana Stoica", 12),
       person("amatei", "Matei Radu", 9), person("aelena", "Elena Barbu", 13), person("adavid", "David Marin", 10),
-      person("asofia", "Sofia Nistor", 11), person("atudor", "Tudor Pavel", 8, { isNew: true }),
+      person("asofia", "Sofia Nistor", 11, { leavesOn: "2026-11-12" }), person("atudor", "Tudor Pavel", 8, { isNew: true }),
       person("aioana", "Ioana Diaconu", 12, { alsoIn: ["Uscat Juniori"] }),
     ],
     "gprimii": [person("apaul", "Paul Enache", 6), person("asara", "Sara Voicu", 7), person("aeric", "Eric Mocanu", 6), person("alia", "Lia Tănase", 7)],

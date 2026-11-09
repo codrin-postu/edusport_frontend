@@ -9,7 +9,7 @@ import IconButton from "@/components/ui/icon-button";
 import { A11Y, PRESENCE } from "@/lib/portal/copy";
 import { addMonths, pickLabel } from "@/lib/portal/format";
 import type { CoachSession, SessionCheck } from "@/lib/portal/api-types";
-import { portalApi } from "../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../_lib/today";
 import { usePortal } from "../../_lib/use-portal";
 import { Sheet } from "@/app/_portal/ui/Sheet";

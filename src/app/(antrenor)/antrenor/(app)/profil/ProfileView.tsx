@@ -2,7 +2,7 @@
 
 import Icon from "@/components/ui/icon";
 import { PROFILE } from "@/lib/portal/copy";
-import { portalApi } from "../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { useMe } from "../../_lib/me-context";
 import { ListCard } from "../../_ui/ListCard";
 import { Row } from "../../_ui/Row";

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/form-field";
 import Link from "@/components/ui/link";
 import { PROFILE, SETTINGS } from "@/lib/portal/copy";
 import type { CoachMe } from "@/lib/portal/api-types";
-import { portalApi } from "../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { usePortal } from "../../../_lib/use-portal";
 import { BackHeader } from "../../../_ui/BackHeader";
 import { LoadError } from "@/app/_portal/ui/LoadError";

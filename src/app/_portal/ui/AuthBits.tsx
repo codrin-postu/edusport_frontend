@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "@/components/ui/link";
-import { portalApi } from "@/app/(antrenor)/antrenor/_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 
 /** The `role="alert"` line of the auth cards; always in the DOM so a message is announced. */
 export function AlertLine({ message }: { message: string | null }) {

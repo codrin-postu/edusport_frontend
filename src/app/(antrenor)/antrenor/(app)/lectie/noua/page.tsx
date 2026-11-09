@@ -7,7 +7,7 @@ import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
 import { LESSON } from "@/lib/portal/copy";
 import type { CoachSearchRow, LessonSaved } from "@/lib/portal/api-types";
-import { portalApi } from "../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { useMe } from "../../../_lib/me-context";
 import { bucharestToday } from "../../../_lib/today";
 import { AthleteSearch } from "../../../_ui/AthleteSearch";

@@ -7,7 +7,7 @@ import Card from "@/components/ui/card";
 import { GROUP } from "@/lib/portal/copy";
 import { dateTile } from "@/lib/portal/format";
 import type { CoachGroupPage, CoachMember } from "@/lib/portal/api-types";
-import { portalApi } from "../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { bucharestToday } from "../../../_lib/today";
 import { ListCard } from "../../../_ui/ListCard";
@@ -59,13 +59,13 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
     <div>
       <h1 className="text-title text-primary mb-4">{page.name}</h1>
       <Segmented<Tab>
-        options={[{ value: "members", label: GROUP.members }, { value: "program", label: GROUP.program }]}
+        options={[{ value: "members", label: GROUP.members }, { value: "program", label: GROUP.tabProgram }]}
         value={tab}
         onChange={setTab}
       />
       {tab === "members" ? (
         <div className="mt-6">
-          {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-4">{GROUP.coaches(page.coaches.join(", "))}</p>}
+          {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-4">{`${GROUP.coaches} ${page.coaches.join(", ")}`}</p>}
           <Button href={presence} className="w-full">{GROUP.doPresence}</Button>
           <h2 className="text-label text-secondary mt-6 mb-2">{GROUP.membersCount(members.length)}</h2>
           <ListCard>
@@ -93,7 +93,7 @@ function OtherGroup({ page }: { page: CoachGroupPage }) {
         <p className="text-label text-primary">{GROUP.otherCoach}</p>
       </Card>
       <p className="text-body-sm text-secondary">{GROUP.programLine(page.program.join(", "))}</p>
-      {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-6">{GROUP.coaches(page.coaches.join(", "))}</p>}
+      {page.coaches.length > 0 && <p className="text-body-sm text-secondary mb-6">{`${GROUP.coaches} ${page.coaches.join(", ")}`}</p>}
       <div className="flex flex-col gap-4">
         {page.todayKey ? (
           <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}`} className="w-full">{GROUP.standIn}</Button>

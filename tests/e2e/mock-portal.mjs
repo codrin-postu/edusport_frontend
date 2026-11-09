@@ -1,7 +1,7 @@
 // A stand-in for the Strapi portal routes (auth and coach), for the coach app e2e.
 // Synthetic data only (tests/e2e/portal-fixtures.mjs). Plain Node http, as mock-strapi.mjs.
 // Usage: node tests/e2e/mock-portal.mjs <port>
-//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret? }
+//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret?, competitionsDown? }
 //   GET  /__mock/log    { calls: [{ method, path, headers, body }], refreshes: number }
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
@@ -31,7 +31,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -229,7 +229,7 @@ function classRow(g, date, done) {
   const rec = world.saved[keyOf(g.id, date)];
   return {
     sessionId: rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), groupId: g.id, groupName: g.name, date, startTime: g.start,
-    children: childrenOf(g.id), done: done ?? Boolean(rec), standIn: !g.own,
+    children: childrenOf(g.id), done: done ?? Boolean(rec), standIn: !g.own, location: g.location ?? null,
   };
 }
 
@@ -255,7 +255,104 @@ function groupPage(g) {
     standIn: g.own ? [] : slots,
     todayKey: hasClass(g, today) ? keyOf(g.id, today) : null,
     programPublic: g.own && g.kind === "club" ? g.programPublic : null,
+    location: g.location ?? null,
   };
+}
+
+/** First class from today on, within two weeks: { date, startTime } or null. */
+function nextOf(g) {
+  for (let i = 0; i < 14; i++) {
+    const date = addDays(today, i);
+    if (hasClass(g, date)) return { date, startTime: g.start };
+  }
+  return null;
+}
+
+const monthDays = (month) => {
+  const [y, mo] = month.split("-").map(Number);
+  return Array.from({ length: new Date(y, mo, 0).getDate() }, (_, i) => `${month}-${String(i + 1).padStart(2, "0")}`);
+};
+const CANCELLED = { gavansati: ["2026-11-11"] };
+
+/** Backend readCoachCalendar: own classes (scheduled and cancelled), saved stand-in sessions that list the coach, own lessons. */
+function calendarData(month) {
+  const days = [];
+  for (const date of monthDays(month)) {
+    const items = [];
+    for (const g of Object.values(world.groups).filter((x) => x.own && hasClass(x, date))) {
+      const rec = world.saved[keyOf(g.id, date)];
+      const cancelled = (CANCELLED[g.id] ?? []).includes(date);
+      items.push({
+        kind: "grup", cancelled, date, startTime: g.start, durationMin: g.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
+        location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null,
+      });
+    }
+    for (const [key, rec] of Object.entries(world.saved)) {
+      const g = groupOf(rec.groupId);
+      if (rec.date !== date || g.own || !rec.coachIds.includes(ME)) continue;
+      items.push({
+        kind: "grup", cancelled: false, date, startTime: rec.startTime, durationMin: rec.durationMin, title: g.name, children: rec.ticks.length,
+        location: g.location ?? null, done: true, standIn: true, sessionId: rec.sessionId, occurrenceKey: key, lessonId: null,
+      });
+    }
+    for (const l of Object.values(world.lessons).filter((x) => x.date === date && x.coachIds.includes(ME))) {
+      items.push({
+        kind: "individual", cancelled: false, date, startTime: l.startTime, durationMin: l.durationMin, title: l.athleteName, children: null,
+        location: null, done: l.state === "saved", standIn: false, sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
+      });
+    }
+    items.sort((a, b) => a.startTime.localeCompare(b.startTime));
+    if (items.length) days.push({ date, items });
+  }
+  return { month, today, days };
+}
+
+const MEMBER_FROM = /^\d{4}-\d{2}-\d{2}$/;
+/** Backend moveMember / removeMember: own source, then the body, then an own target; a later `from` keeps the child listed with `leavesOn`. */
+function changeMember({ res, params, body }, move) {
+  const [gid, aid] = params;
+  const source = groupOf(gid);
+  if (!source || !source.own) return club(res, 403, MSG.noAccess);
+  const valid = typeof body.from === "string" && MEMBER_FROM.test(body.from) && body.from >= today;
+  if (!valid) return club(res, 400, MSG.invalid);
+  let target = null;
+  if (move) {
+    target = typeof body.toGroupId === "string" ? groupOf(body.toGroupId) : null;
+    if (!target || target.id === gid) return club(res, 400, "Alege grupa.");
+    if (!target.own) return club(res, 403, MSG.noAccess);
+  }
+  const list = world.members[gid] ?? [];
+  const m = list.find((x) => x.athleteId === aid);
+  if (!m) return club(res, 409, "Lista s-a schimbat. Reîncarcă pagina.");
+  if (body.from === today) {
+    world.members[gid] = list.filter((x) => x.athleteId !== aid);
+    if (target) world.members[target.id].push({ ...m, leavesOn: null });
+  } else {
+    m.leavesOn = body.from;
+  }
+  ok(res, { athleteName: m.name, groupName: (target ?? source).name, from: body.from, toast: MSG.saved });
+}
+
+const EVENTS = [
+  { eventId: "ev-cupa", name: "Cupa României", date: "2026-10-26", location: "Brașov", picks: [["amaria", "Advanced Novice Girls", 1, 142.3], ["aana", "Advanced Novice Girls", 2, 131.9], ["adara", "Basic Novice", 3, 38.4]] },
+  { eventId: "ev-trophy", name: "Edu Sport Trophy", date: "2026-09-13", location: "București", picks: [["amaria", "Advanced Novice Girls", 2, 138.0], ["aluca", "Basic Novice", 1, 40.2]] },
+  { eventId: "ev-nord", name: "Cupa Patinoarului Nord", date: "2026-06-15", location: "București", picks: [["amaria", "Advanced Novice Girls", 3, 120.5], ["avlad", "Basic Novice", 4, 35.0]] },
+];
+const allMembers = () => [...new Map(Object.values(world.members).flat().map((m) => [m.athleteId, m])).values()];
+
+function competitionsData(query) {
+  if (state.competitionsDown) return { available: false };
+  const mine = query.get("scope") === "mine";
+  const ownIds = new Set(Object.entries(world.members).filter(([gid]) => isOwn(gid)).flatMap(([, l]) => l.map((m) => m.athleteId)));
+  const names = new Map(allMembers().map((m) => [m.athleteId, m.name]));
+  const events = EVENTS.map((e) => ({
+    eventId: e.eventId, name: e.name, date: e.date, location: e.location,
+    members: e.picks.filter(([id]) => names.has(id) && (!mine || ownIds.has(id)))
+      .map(([id, category, placement, total]) => ({ athleteId: id, name: names.get(id), category, placement, total })),
+  })).filter((e) => e.members.length > 0);
+  const seasons = ["2026-2027", "2025-2026"];
+  const season = seasons.includes(query.get("season")) ? query.get("season") : seasons[0];
+  return { available: true, stale: false, seasons, season, events: season === seasons[0] ? events : [] };
 }
 
 function sessionRows(g, rec) {
@@ -371,9 +468,10 @@ function historyData(month) {
   return {
     month: m, sessions: 2, lessons: 1, hours: "2,8",
     rows: [
-      { kind: "grup", date: `${m}-05`, name: "Avansați", present: 8, durationMin: 60, sessionId: "s-today", lessonId: null },
-      { kind: "inlocuitor", date: `${m}-04`, name: "Intermediari Silver", present: 10, durationMin: 60, sessionId: "s-standin", lessonId: null },
-      { kind: "individuala", date: `${m}-03`, name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "ldone" },
+      { kind: "grup", date: `${m}-05`, name: "Avansați", present: 8, durationMin: 60, sessionId: "s-today", lessonId: null, done: true, occurrenceKey: keyOf("gavansati", `${m}-05`) },
+      { kind: "inlocuitor", date: `${m}-04`, name: "Intermediari Silver", present: 10, durationMin: 60, sessionId: "s-standin", lessonId: null, done: true, occurrenceKey: null },
+      { kind: "individuala", date: `${m}-03`, name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "ldone", done: true, occurrenceKey: null },
+      { kind: "grup", date: `${m}-02`, name: "Avansați", present: null, durationMin: 60, sessionId: null, lessonId: null, done: false, occurrenceKey: keyOf("gavansati", `${m}-02`) },
     ],
   };
 }
@@ -420,7 +518,20 @@ function athleteCard(id) {
   const onListed = Object.values(world.saved).some((r) => r.ticks.includes(id) && r.date <= today && r.date >= addDays(today, -ARCHIVE_DAYS) && r.coachIds.includes(ME));
   if (!own && !onListed) return "none";
   const groups = all.filter((x) => x.athleteId === id).map((x) => groupOf(x.gid).name);
-  return { athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null };
+  const groupRows = all.filter((x) => x.athleteId === id).map((x) => ({ groupId: x.gid, name: groupOf(x.gid).name, program: groupOf(x.gid).program }));
+  const competitions = state.competitionsDown
+    ? { available: false }
+    : {
+      available: true, category: "Advanced Novice Girls", season: "2026-2027", count: 3, podiums: 3,
+      recent: EVENTS.map((e) => ({ eventName: e.name, date: e.date, location: e.location, placement: 1, total: 100 })),
+    };
+  return {
+    athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null,
+    sectionName: "Școala de patinaj", groupRows,
+    presence: { season: 26, lessons: 4, last: addDays(today, -2), missedThisMonth: 1 },
+    abonament: own ? { code: "A-0124", next: 5, slots: 8, validUntil: "2026-11-30", location: "AFI Cotroceni" } : null,
+    competitions,
+  };
 }
 
 function changePassword({ body, res, email }) {
@@ -507,8 +618,8 @@ const coachRoutes = [
   ["GET", /^\/groups$/, ({ res }) => {
     const all = Object.values(world.groups);
     ok(res, {
-      mine: all.filter((g) => g.own).map((g) => ({ groupId: g.id, name: g.name, kind: g.kind, program: g.program, children: childrenOf(g.id) })),
-      others: all.filter((g) => !g.own).map((g) => ({ groupId: g.id, name: g.name, coaches: g.coaches })),
+      mine: all.filter((g) => g.own).map((g) => ({ groupId: g.id, name: g.name, kind: g.kind, program: g.program, children: childrenOf(g.id), next: nextOf(g) })),
+      others: all.filter((g) => !g.own).map((g) => ({ groupId: g.id, name: g.name, coaches: g.coaches, program: g.program, children: childrenOf(g.id), next: nextOf(g) })),
     });
   }],
   ["GET", /^\/groups\/([^/]+)$/, withGroup(({ res }, g) => ok(res, groupPage(g)))],
@@ -535,6 +646,13 @@ const coachRoutes = [
   ["POST", /^\/athletes$/, newAthlete],
   ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c === "none" ? club(res, 403, MSG.noAccess) : c ? ok(res, c) : notFound(res); }],
   ["POST", /^\/groups\/([^/]+)\/members$/, ownOnly(addMembers)],
+  ["GET", /^\/calendar$/, ({ res, query }) => {
+    const month = query.get("month") ?? "";
+    return /^\d{4}-(0[1-9]|1[0-2])$/.test(month) ? ok(res, calendarData(month)) : club(res, 400, MSG.invalid);
+  }],
+  ["GET", /^\/competitions$/, ({ res, query }) => ok(res, competitionsData(query))],
+  ["POST", /^\/groups\/([^/]+)\/members\/([^/]+)\/move$/, (ctx) => changeMember(ctx, true)],
+  ["POST", /^\/groups\/([^/]+)\/members\/([^/]+)\/remove$/, (ctx) => changeMember(ctx, false)],
   ["GET", /^\/history$/, ({ res, query }) => ok(res, historyData(query.get("month")))],
   ["GET", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
   ["POST", /^\/groups\/([^/]+)\/program$/, ownClub(({ res, body }) => ok(res, { eventId: `evnew${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],

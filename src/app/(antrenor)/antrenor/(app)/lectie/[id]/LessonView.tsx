@@ -8,7 +8,7 @@ import Dialog, { DialogActions, DialogClose } from "@/components/ui/dialog";
 import { LESSON, PRESENCE } from "@/lib/portal/copy";
 import { dayTile, durationText, shortDate } from "@/lib/portal/format";
 import type { CoachLesson, LessonSaved } from "@/lib/portal/api-types";
-import { portalApi } from "../../../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 import { useMe } from "../../../_lib/me-context";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
