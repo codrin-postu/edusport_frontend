@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "@/components/ui/link";
+import { PortalLink } from "@/app/_portal/ui/PortalLink";
 import { portalApi } from "@/app/_portal/lib/api";
 
 /** The `role="alert"` line of the auth cards; always in the DOM so a message is announced. */
 export function AlertLine({ message }: { message: string | null }) {
-  return <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>;
+  return <p role="alert" className="text-body-sm text-accent empty:-my-2">{message}</p>;
 }
 
 /** Reads (and so clears) the one-shot flash message of a Google round trip, once on mount. */
@@ -57,5 +57,5 @@ export function GoogleBlock({ href, label, or, orFirst }: { href: string; label:
 }
 
 export function BackLink({ href, children }: { href: string; children: string }) {
-  return <Link href={href} className="text-body-sm">{children}</Link>;
+  return <PortalLink href={href}>{children}</PortalLink>;
 }

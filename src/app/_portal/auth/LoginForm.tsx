@@ -9,7 +9,7 @@ import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
 import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
 import { AlertLine, GoogleBlock, useFlash } from "@/app/_portal/ui/AuthBits";
 import { PasswordField } from "@/app/_portal/ui/PasswordField";
-import Link from "@/components/ui/link";
+import { PortalLink } from "@/app/_portal/ui/PortalLink";
 
 export function LoginForm({ copy, homePath, google }: { copy: AuthCopy; homePath: string; google: boolean }) {
   const LOGIN = copy.login;
@@ -44,7 +44,7 @@ export function LoginForm({ copy, homePath, google }: { copy: AuthCopy; homePath
         <AlertLine message={message} />
         <Button type="submit" disabled={busy || !email || !password} className="w-full">{LOGIN.submit}</Button>
       </form>
-      <p className="mt-4 text-center"><Link href="/forgot-password" className="text-body-sm">{LOGIN.forgot}</Link></p>
+      <p className="-mb-2 text-center"><PortalLink href="/forgot-password">{LOGIN.forgot}</PortalLink></p>
     </AuthFrame>
   );
 }

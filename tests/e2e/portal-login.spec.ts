@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, isolate, mockReset, mockState } from "./portal-helpers";
+import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, isolate, mockReset, mockState, shot } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async({ page }) => {
@@ -49,7 +49,7 @@ test("a good login lands on Azi", async({ page }) => {
   await page.getByLabel("Parolă", { exact: true }).fill(COACH_PASSWORD);
   await page.getByRole("button", { name: "Intră" }).click();
   await expect(page).toHaveURL(/localhost:3200\/$/);
-  await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+  await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
 });
 
 test("a signed in coach is moved off the login screen", async({ page }) => {
@@ -260,7 +260,7 @@ test.describe("entry transition", () => {
     await page.getByRole("link", { name: "Grupe" }).first().click();
     await expect(page).toHaveURL(/\/grupe/);
     await page.goto("/");
-    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
     await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
     await page.reload();
     await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
@@ -287,7 +287,62 @@ test.describe("entry transition", () => {
     await page.goto("/login");
     await signIn(page);
     await expect(page).toHaveURL(/localhost:3200\/$/);
-    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
     expect(await page.evaluate(() => (window as unknown as { __sawOverlay?: boolean }).__sawOverlay ?? false)).toBe(false);
   });
 });
+
+test.describe("canvas components", () => {
+  const css = (loc: import("@playwright/test").Locator, prop: string) => loc.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
+
+  test("login: card title, Google button, or line, label, button face, link", async({ page }) => {
+    await page.goto("/login");
+    await expect(page.locator("h1")).toHaveCount(1);
+    expect(await css(page.getByRole("heading", { name: "Intră în cont" }), "font-size")).toBe("28px");
+    const google = page.getByRole("link", { name: "Continuă cu Google" });
+    await expect(google.locator("svg")).toHaveCount(1);
+    expect(await css(google, "border-top-width")).toBe("2px");
+    expect(await css(google, "font-size")).toBe("15px");
+    expect(await css(google, "text-transform")).toBe("none");
+    const card = page.locator("[data-auth-frame] h1").locator("xpath=..");
+    await expect(card.locator("hr")).toHaveCount(0);
+    const or = card.getByText("sau", { exact: true });
+    await expect(or).toBeVisible();
+    expect(await or.evaluate((el) => [el.previousElementSibling, el.nextElementSibling].filter((s) => s && (s.tagName === "HR" || getComputedStyle(s).borderTopWidth !== "0px" && s.tagName !== "A" && s.tagName !== "FORM")).length)).toBe(0);
+    const label = page.locator("label", { hasText: "E-mail" }).first();
+    expect(await css(label, "font-size")).toBe("14px");
+    expect(await css(label, "text-transform")).toBe("none");
+    await page.getByLabel("E-mail").fill(COACH_EMAIL);
+    await page.getByLabel("Parolă", { exact: true }).fill(COACH_PASSWORD);
+    const submit = page.getByRole("button", { name: "Intră" }).locator(".lcta-face");
+    expect(await css(submit, "background-color")).toBe("rgb(14, 26, 60)");
+    const forgot = page.getByRole("link", { name: "Am uitat parola" });
+    expect(await css(forgot, "font-weight")).toBe("700");
+    expect(Number.parseFloat(await css(forgot, "min-height"))).toBeGreaterThanOrEqual(44);
+  });
+
+  test("reset and invite use the same label and link components", async({ page }) => {
+    await page.goto("/forgot-password");
+    const label = page.locator("label", { hasText: "E-mail" }).first();
+    expect(await css(label, "font-size")).toBe("14px");
+    expect(await css(label, "text-transform")).toBe("none");
+    const back = page.getByRole("link", { name: "Înapoi la intrare" });
+    expect(await css(back, "font-weight")).toBe("700");
+    expect(Number.parseFloat(await css(back, "min-height"))).toBeGreaterThanOrEqual(44);
+    await page.goto(`/invite/${INVITE_VALID}`);
+    const google = page.getByRole("link", { name: "Continuă cu Google" });
+    expect(await css(google, "border-top-width")).toBe("2px");
+    expect(await css(google, "font-size")).toBe("15px");
+    await page.getByLabel("Parolă nouă").fill("doisprezece12");
+    expect(await css(page.getByRole("button", { name: "Salvează parola" }).locator(".lcta-face"), "background-color")).toBe("rgb(14, 26, 60)");
+  });
+});
+
+for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) {
+  test(`login screenshot ${size.width}`, async({ page }, info) => {
+    await page.setViewportSize(size);
+    await page.goto("/login");
+    await expect(page.locator("h1")).toHaveCount(1);
+    await shot(page, info, "intrare");
+  });
+}

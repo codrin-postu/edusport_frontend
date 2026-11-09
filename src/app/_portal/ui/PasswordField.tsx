@@ -17,7 +17,7 @@ export function PasswordField({ label, value, onChange, autoComplete }: Password
   const [shown, setShown] = useState(false);
   return (
     <div>
-      <label htmlFor={id} className="text-label text-secondary block mb-2">{label}</label>
+      <label htmlFor={id} className="text-field-label text-label-ink block mb-(--field-gap)">{label}</label>
       <div className="relative">
         <Input
           id={id}

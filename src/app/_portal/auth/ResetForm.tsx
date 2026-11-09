@@ -67,7 +67,7 @@ export function ResetForm({ copy, homePath, signedIn }: { copy: AuthCopy; homePa
         <form onSubmit={(e) => void request(e)} className="flex flex-col gap-4">
           {known ? (
             <div>
-              <p className="text-label text-secondary mb-2">{RESET.email}</p>
+              <p className="mb-2 text-(length:--portal-text-14) font-bold text-primary">{RESET.email}</p>
               <p className="text-body text-primary">{email}</p>
             </div>
           ) : (
@@ -90,7 +90,7 @@ export function ResetForm({ copy, homePath, signedIn }: { copy: AuthCopy; homePa
           <Button type="submit" disabled={busy || !code || !password} className="w-full">{RESET.save}</Button>
         </form>
       )}
-      <p className="mt-4 text-center">{signedIn ? <BackLink href="/profil/setari">{RESET.backSigned}</BackLink> : <BackLink href="/login">{RESET.back}</BackLink>}</p>
+      <p className="mt-2 text-center">{signedIn ? <BackLink href="/profil/setari">{RESET.backSigned}</BackLink> : <BackLink href="/login">{RESET.back}</BackLink>}</p>
     </AuthFrame>
   );
 }
