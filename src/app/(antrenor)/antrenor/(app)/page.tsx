@@ -2,74 +2,102 @@
 
 import Button from "@/components/ui/button";
 import { AZI } from "@/lib/portal/copy";
-import { dateTile, dayTile, durationText, shortDate } from "@/lib/portal/format";
+import { longDay, monthShort, weekdayShort } from "@/lib/portal/format";
 import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { ListRow } from "@/app/_portal/ui/ListRow";
+import { NowTile } from "@/app/_portal/ui/NowTile";
+import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
+import { Section } from "@/app/_portal/ui/SectionHeading";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { StatCard } from "@/app/_portal/ui/StatCard";
+import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 import { usePortal } from "../_lib/use-portal";
 import { useMe } from "../_lib/me-context";
-import { ListCard } from "../_ui/ListCard";
-import { LoadError } from "@/app/_portal/ui/LoadError";
-import { Row } from "../_ui/Row";
-import { Spinner } from "@/app/_portal/ui/Spinner";
+import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow";
 
-const classHref = (c: CoachClassRow): string =>
-  c.sessionId ? `/prezenta?id=${encodeURIComponent(c.sessionId)}` : `/prezenta?occurrence=${encodeURIComponent(c.occurrenceKey ?? "")}`;
+/** HH:mm of the browser clock in the club's time zone. */
+function clockNow(): string {
+  return new Intl.DateTimeFormat("ro-RO", { timeZone: "Europe/Bucharest", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date());
+}
 
-function Heading({ children }: { children: string }) {
-  return <h2 className="text-label text-secondary mt-6 mb-2">{children}</h2>;
+function groupRow(c: CoachClassRow): SessionRowData {
+  return {
+    kind: "grup", startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done,
+    sessionId: c.sessionId, occurrenceKey: c.occurrenceKey, lessonId: null,
+  };
 }
 
 export default function AziPage() {
   const me = useMe();
   const today = usePortal<CoachToday>("coach/today");
-  if (today.state === "loading") return <div className="py-6 flex justify-center"><Spinner /></div>;
-  if (today.state === "error" || !today.data) return <LoadError />;
+  if (today.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (today.state === "error" || !today.data) return <PageBody><LoadError /></PageBody>;
   const { data } = today;
-  const empty = data.groups.length === 0 && data.lessons.length === 0;
-  return (
-    <div>
-      <div className="flex items-baseline justify-between gap-4">
-        <h1 className="text-title text-primary">{AZI.greeting(me?.firstName ?? "")}</h1>
-        <p className="text-label text-secondary">{dayTile(data.today)}</p>
-      </div>
-      {empty ? (
-        <p className="text-body text-secondary mt-6">{AZI.none}</p>
-      ) : (
-        <>
-          {data.groups.length > 0 && (
-            <>
-              <Heading>{AZI.groups}</Heading>
-              <ListCard>
-                {data.groups.map((c) => (
-                  <Row key={c.occurrenceKey ?? c.sessionId ?? c.groupId} href={classHref(c)} time={c.startTime} title={c.groupName} sub={AZI.groupLine(c.children)} label={c.done ? AZI.done : undefined} />
-                ))}
-              </ListCard>
-            </>
-          )}
-          {data.lessons.length > 0 && (
-            <>
-              <Heading>{AZI.lessons}</Heading>
-              <ListCard>
-                {data.lessons.map((l) => (
-                  <Row key={l.lessonId} href={`/lectie/${encodeURIComponent(l.lessonId)}`} time={l.startTime} title={l.athleteName} sub={AZI.lessonLine(durationText(l.durationMin))} label={l.done ? AZI.done : undefined} />
-                ))}
-              </ListCard>
-            </>
-          )}
-        </>
-      )}
-      <div className="mt-4">
-        <Button variant="secondary" href="/lectie/noua">{AZI.addLesson}</Button>
-      </div>
-      {data.todo.length > 0 && (
-        <>
-          <Heading>{AZI.todo}</Heading>
-          <ListCard>
-            {data.todo.map((c) => (
-              <Row key={c.occurrenceKey ?? c.groupId + c.date} href={classHref(c)} tile={dateTile(c.date)} title={c.groupName} sub={AZI.todoLine(shortDate(c.date))} />
-            ))}
-          </ListCard>
-        </>
-      )}
+  const now = clockNow();
+  const rows: SessionRowData[] = [
+    ...data.groups.map(groupRow),
+    ...data.lessons.map((l): SessionRowData => ({
+      kind: "individual", startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done,
+      sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
+    })),
+  ].sort((a, b) => a.startTime.localeCompare(b.startTime));
+  const done = rows.filter((r) => r.done).length;
+  const todayCard =
+    rows.length === 0 ? (
+      <p className="text-body text-secondary">{AZI.none}</p>
+    ) : (
+      <ListCard>
+        {rows.map((r) => <SessionRow key={r.lessonId ?? r.occurrenceKey ?? r.sessionId ?? r.startTime} row={r} now={now} />)}
+      </ListCard>
+    );
+  const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={[{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }]} />;
+  const addLesson = (
+    <div className="portal:hidden">
+      <Button variant="secondary" href="/lectie/noua" className="w-full">{AZI.addLesson}</Button>
     </div>
+  );
+  const past =
+    rows.length > 0 && data.todo.length > 0 ? (
+      <Section title={AZI.pastHeading}>
+        <ListCard>
+          {data.todo.map((c) => (
+            <ListRow
+              key={c.occurrenceKey ?? c.groupId + c.date}
+              href={presenceHref(c)}
+              lead={<DateBlock word={weekdayShort(c.date)} big={String(Number(c.date.slice(8)))} />}
+              title={c.groupName}
+              sub={AZI.todoLine(c.startTime)}
+              end={<StatusBlock kind="Grup" done={false} />}
+            />
+          ))}
+        </ListCard>
+      </Section>
+    ) : null;
+  return (
+    <>
+      <PageHeader
+        brand
+        kicker={AZI.greeting(me?.firstName ?? "")}
+        title={AZI.title}
+        aside={<NowTile month={monthShort(data.today)} day={String(Number(data.today.slice(8)))} time={now} weekday={weekdayShort(data.today)} label={AZI.nowLabel(longDay(data.today), now)} />}
+        actions={<Button variant="secondary" href="/lectie/noua">{AZI.addLesson}</Button>}
+      />
+      <PageBody>
+        <Columns className="gap-(--portal-section-gap) portal:gap-(--portal-cols-gap)">
+          <Column grow={1} basis={300} className="contents portal:flex">
+            <div className="order-1 portal:order-none">{stat}</div>
+            {past && <div className="order-4 portal:order-none">{past}</div>}
+          </Column>
+          <Column grow={2} basis={420} className="contents portal:flex">
+            <div className="order-2 portal:order-none"><Section title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }}>{todayCard}</Section></div>
+            <div className="order-3 portal:order-none">{addLesson}</div>
+          </Column>
+        </Columns>
+      </PageBody>
+    </>
   );
 }

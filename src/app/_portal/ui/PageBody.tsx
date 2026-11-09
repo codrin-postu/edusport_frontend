@@ -20,8 +20,8 @@ export function PageBody({ children, narrow }: { children: React.ReactNode; narr
 }
 
 /** Phone: one column. Desktop: wrapping flex row of Column. */
-export function Columns({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col gap-(--portal-cols-gap) portal:flex-row portal:flex-wrap portal:items-start">{children}</div>;
+export function Columns({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("flex flex-col gap-(--portal-cols-gap) portal:flex-row portal:flex-wrap portal:items-start", className)}>{children}</div>;
 }
 
 const GROW = { 1: "1", 2: "2" } as const;
@@ -33,11 +33,12 @@ const BASIS = {
   480: "portal:flex-[var(--grow)_1_var(--portal-basis-480)]",
 } as const;
 
-export function Column({ children, grow, basis }: { children: React.ReactNode; grow: 1 | 2; basis: keyof typeof BASIS }) {
+/** `className` lets a page flatten a column on the phone (`contents portal:flex`) to reorder its blocks with `order-*`. */
+export function Column({ children, grow, basis, className }: { children: React.ReactNode; grow: 1 | 2; basis: keyof typeof BASIS; className?: string }) {
   return (
     <div
       style={{ "--grow": GROW[grow] } as React.CSSProperties}
-      className={cn("flex min-w-0 flex-col gap-(--portal-section-gap)", BASIS[basis])}
+      className={cn("flex min-w-0 flex-col gap-(--portal-section-gap)", BASIS[basis], className)}
     >
       {children}
     </div>
