@@ -147,8 +147,11 @@ for (const size of SIZES) {
       const d = dialog(page);
       await expect(d.getByRole("heading", { name: "Schimbă programul" })).toBeVisible();
       await expect(d.getByText("Marți, 18:15. Datele de dinainte rămân cum au fost.")).toBeVisible();
-      await expect(d.getByRole("checkbox", { name: "Ma" })).toHaveAttribute("aria-checked", "true");
-      await expect(d.getByRole("checkbox", { name: "Mi" })).toHaveAttribute("aria-checked", "false");
+      await expect(d.getByRole("checkbox", { name: "marți" })).toHaveAttribute("aria-checked", "true");
+      // Miercuri belongs to the same event: changed on its own row, not here.
+      await expect(d.getByRole("checkbox", { name: "miercuri" })).toHaveAttribute("aria-checked", "false");
+      await expect(d.getByRole("checkbox", { name: "miercuri" })).toBeDisabled();
+      await expect(d.getByRole("checkbox", { name: "joi" })).toBeEnabled();
       await expect(d.getByLabel("Ora")).toHaveValue("18:15");
       await expect(d.getByRole("group", { name: "Se aplică din" })).toBeVisible();
       await shot(page, info, "program-schimba");

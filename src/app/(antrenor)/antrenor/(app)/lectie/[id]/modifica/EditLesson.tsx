@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TRAINING } from "@/lib/portal/copy";
+import { dayMonth } from "@/lib/portal/format";
 import { planBody, type TrainingValue } from "@/lib/portal/training-form";
 import type { CoachLesson, CoachLessonCreated } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
@@ -61,7 +62,7 @@ export function EditLesson({ id }: { id: string }) {
       <PageBody narrow={560}>
         <TrainingForm mode={{ kind: "edit", lesson: data }} today={today} me={me} groups={[]} onSubmit={submit} />
       </PageBody>
-      {asking && <ScopeSheet title={TRAINING.scopeTitle} confirm={TRAINING.save} onClose={() => setAsking(null)} onConfirm={(scope) => write(asking, scope)} />}
+      {asking && <ScopeSheet title={TRAINING.scopeTitle} oneSub={TRAINING.scopeOneSub(dayMonth(data.date))} followingSub={asking.repeat === "none" ? TRAINING.scopeFollowingEndsSub(dayMonth(data.date)) : TRAINING.scopeFollowingSub(dayMonth(data.date))} confirm={TRAINING.save} onClose={() => setAsking(null)} onConfirm={(scope) => write(asking, scope)} />}
     </>
   );
 }

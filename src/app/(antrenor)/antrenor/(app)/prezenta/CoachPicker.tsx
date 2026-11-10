@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { PRESENCE, LESSON, EDIT_GROUP } from "@/lib/portal/copy";
-import Button from "@/components/ui/button";
+import { PRESENCE, LESSON } from "@/lib/portal/copy";
 import Checkbox from "@/components/ui/checkbox";
 import IconButton from "@/components/ui/icon-button";
 import { PortalLink } from "@/app/_portal/ui/PortalLink";
 import { Sheet } from "@/app/_portal/ui/Sheet";
+import { SheetFooter } from "../../_ui/SheetFooter";
 
 type CoachPickerProps = {
   /** The signed in coach's id: always listed, shown as "<name> (tu)", never removable. */
@@ -44,12 +44,7 @@ export function CoachPicker({ me, options, value, onChange, locked }: CoachPicke
         open={open}
         onOpenChange={setOpen}
         title={PRESENCE.coach}
-        footer={
-          <div className="grid grid-cols-2 gap-(--portal-gap-12)">
-            <Button variant="secondary" onClick={() => setOpen(false)} className="w-full">{EDIT_GROUP.cancel}</Button>
-            <Button onClick={() => { onChange(draft); setOpen(false); }} className="w-full">{LESSON.ok}</Button>
-          </div>
-        }
+        footer={<SheetFooter message={null} busy={false} confirm={LESSON.ok} onClose={() => setOpen(false)} onConfirm={() => { onChange(draft); setOpen(false); }} />}
       >
         <ul className="flex flex-col gap-4">
           {options.map((o) => (

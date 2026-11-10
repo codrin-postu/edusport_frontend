@@ -21,6 +21,8 @@ export function ChangeSheet({ rule, rules, today, onClose, onDone }: Props) {
   const [time, setTime] = useState(rule.startTime);
   const [duration, setDuration] = useState(rule.durationMin);
   const [from, setFrom] = useState(rule.nextDate && rule.nextDate >= today ? rule.nextDate : today);
+  // The event's other weekdays are changed on their own rows; the backend refuses them here.
+  const taken = rules.filter((r) => r.eventId === rule.eventId && r.day !== rule.day).map((r) => r.day);
   const ready = days.length > 0 && time !== "" && from >= today;
 
   function submit() {
@@ -34,12 +36,12 @@ export function ChangeSheet({ rule, rules, today, onClose, onDone }: Props) {
   return (
     <Sheet
       open
-      onOpenChange={(o) => { if (!o) onClose(); }}
+      onOpenChange={(o) => { if (!o && !busy) onClose(); }}
       title={PROGRAM.drawerChange}
       description={PROGRAM.changeSub(PROGRAM.ruleTitle(capitalize(weekdayOfDay(rule.day)), rule.startTime))}
       footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={PROGRAM.change} onClose={onClose} onConfirm={submit} />}
     >
-      <DaySquares label={PROGRAM.days} value={days} onChange={setDays} />
+      <DaySquares label={PROGRAM.days} value={days} onChange={setDays} disabled={taken} />
       <TimeDuration time={time} onTime={setTime} duration={duration} onDuration={setDuration} />
       <DatePickerField id="program-from" label={PROGRAM.appliesFrom} value={from} onChange={setFrom} variant="card" />
     </Sheet>

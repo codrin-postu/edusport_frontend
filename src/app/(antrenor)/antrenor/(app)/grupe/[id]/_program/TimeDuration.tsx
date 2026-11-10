@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import { TRAINING } from "@/lib/portal/copy";
 
-const DURATION_OPTIONS = Array.from({ length: (240 - 15) / 5 + 1 }, (_, i) => ({ value: String(15 + i * 5), label: `${15 + i * 5} min` }));
-const LABEL = "text-field-label text-label-ink block mb-(--field-gap)";
+export const DURATION_OPTIONS = Array.from({ length: (240 - 15) / 5 + 1 }, (_, i) => ({ value: String(15 + i * 5), label: `${15 + i * 5} min` }));
+export const LABEL = "text-field-label text-label-ink block mb-(--field-gap)";
 
 type Props = { time: string; onTime: (v: string) => void; duration?: number; onDuration?: (v: number) => void };
 

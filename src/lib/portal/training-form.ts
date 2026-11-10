@@ -8,6 +8,7 @@ export type RepeatChoice = "none" | "weekly" | "biweekly" | "monthly";
 export type TrainingValue = {
   kind: TrainingKind; groupId: string | null; athlete: { athleteId: string; name: string } | null;
   repeat: RepeatChoice; days: DayKey[]; date: string; startTime: string; durationMin: number;
+  /** The week of the month a monthly series keeps (edit mode: the series' own); null: taken from `from`. */ week: WeekOfMonth | null;
   from: string; /** null: the season's end; "": "Alege data" chosen, no date yet. */ until: string | null; coachIds: string[];
 };
 export type TrainingMode = { kind: "new" } | { kind: "preset"; groupId: string } | { kind: "edit"; lesson: CoachLesson };
@@ -22,7 +23,7 @@ const sorted = (days: DayKey[]): DayKey[] => DAY_ORDER.filter((d) => days.includ
 export function initialValue(mode: TrainingMode, today: string, me: string): TrainingValue {
   const base: TrainingValue = {
     kind: "grup", groupId: null, athlete: null, repeat: "weekly", days: [dayKeyOf(today)], date: today, startTime: "", durationMin: 60,
-    from: today, until: null, coachIds: [me],
+    from: today, until: null, coachIds: [me], week: null,
   };
   // "+ Adaugă program" adds a repeating rule, so it starts weekly; a plain new training starts as a single one.
   if (mode.kind === "preset") return { ...base, groupId: mode.groupId };
@@ -31,7 +32,7 @@ export function initialValue(mode: TrainingMode, today: string, me: string): Tra
   const s = l.series;
   return {
     ...base, kind: "individual", athlete: { athleteId: l.athleteId, name: l.athleteName }, repeat: s ? s.freq : "none", days: s ? sorted(s.days) : [dayKeyOf(l.date)],
-    date: l.date, startTime: l.startTime, durationMin: l.durationMin, from: l.date, until: s && !s.untilSeasonEnd ? s.to : null, coachIds: l.coachIds,
+    date: l.date, startTime: l.startTime, durationMin: l.durationMin, from: l.date, until: s && !s.untilSeasonEnd ? s.to : null, coachIds: l.coachIds, week: s?.weekOfMonth ?? null,
   };
 }
 
@@ -44,7 +45,8 @@ export function ready(v: TrainingValue): boolean {
 }
 
 const freqOf = (v: TrainingValue): RepeatFreq => (v.repeat === "none" ? "weekly" : v.repeat);
-const weekOf = (v: TrainingValue): WeekOfMonth | null => (v.repeat === "monthly" ? weekOfMonthOf(v.from) : null);
+const weekFor = (v: TrainingValue): WeekOfMonth => v.week ?? weekOfMonthOf(v.from);
+const weekOf = (v: TrainingValue): WeekOfMonth | null => (v.repeat === "monthly" ? weekFor(v) : null);
 
 /** POST /groups/:id/program */
 export function groupBody(v: TrainingValue): ProgramAddBody {
@@ -88,12 +90,12 @@ export function trainingSummary(v: TrainingValue): string | null {
   const until = v.until ? dayMonthLong(v.until) : null;
   const from = dayMonthLong(v.from);
   const days = daysSpoken(v.days);
-  if (v.repeat === "monthly") return TRAINING.summaryMonthly(WEEK_WORD[weekOfMonthOf(v.from)], days, v.startTime, v.durationMin, from, until);
+  if (v.repeat === "monthly") return TRAINING.summaryMonthly(WEEK_WORD[weekFor(v)], days, v.startTime, v.durationMin, from, until);
   const lead = v.repeat === "biweekly" ? `${TRAINING.biweekly}, ` : "";
   return TRAINING.summarySeries(lead, lead ? days : capitalize(days), v.startTime, v.durationMin, from, until);
 }
 
 /** "11 noiembrie este a doua marți." for the grey line under the date row of a monthly repeat. */
-export function monthlyNote(from: string): string {
-  return TRAINING.monthlyNote(dayMonthLong(from), `${WEEK_WORD[weekOfMonthOf(from)]} ${weekdayLong(from)}`);
+export function monthlyNote(from: string, week: WeekOfMonth | null = null): string {
+  return TRAINING.monthlyNote(dayMonthLong(from), `${WEEK_WORD[week ?? weekOfMonthOf(from)]} ${weekdayLong(from)}`);
 }

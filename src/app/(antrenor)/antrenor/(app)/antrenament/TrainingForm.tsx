@@ -14,16 +14,14 @@ import { DaySquares } from "@/app/_portal/ui/DaySquares";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { SummaryBand } from "@/app/_portal/ui/SummaryBand";
 import { CoachPicker } from "../prezenta/CoachPicker";
+import { DURATION_OPTIONS, LABEL } from "../grupe/[id]/_program/TimeDuration";
 
-const DURATIONS = Array.from({ length: (240 - 15) / 5 + 1 }, (_, i) => 15 + i * 5);
-const DURATION_OPTIONS = DURATIONS.map((m) => ({ value: String(m), label: `${m} min` }));
 const REPEATS: { value: RepeatChoice; label: string }[] = [
   { value: "none", label: TRAINING.once }, { value: "weekly", label: TRAINING.weekly }, { value: "biweekly", label: TRAINING.biweekly }, { value: "monthly", label: TRAINING.monthly },
 ];
 const UNTIL_OPTIONS = [{ value: "season", label: TRAINING.seasonEnd }, { value: "date", label: TRAINING.untilDate }];
 const FORM =
   "flex flex-col gap-(--portal-form-gap) portal:border-card portal:border-card-line portal:bg-surface-raised portal:p-(--portal-login-pad) portal:shadow-retro";
-const LABEL = "text-field-label text-label-ink block mb-(--field-gap)";
 
 type TrainingFormProps = {
   mode: TrainingMode;
@@ -80,7 +78,7 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
   const repeatField = (
     <div>
       <label htmlFor={ids.repeat} className={LABEL}>{TRAINING.repeat}</label>
-      <Select id={ids.repeat} value={v.repeat} onValueChange={(r) => set({ repeat: r as RepeatChoice })} options={REPEATS} chevron="portal-chevron-down" contentClassName="z-popup" />
+      <Select id={ids.repeat} value={v.repeat} onValueChange={(r) => set({ repeat: r as RepeatChoice, week: null })} options={REPEATS} chevron="portal-chevron-down" contentClassName="z-popup" />
     </div>
   );
 
@@ -127,7 +125,7 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
               id="training-from"
               label={TRAINING.from}
               value={v.from}
-              onChange={(from) => set({ from, ...(daysTouched || from === "" ? {} : { days: [dayKeyOf(from)] }) })}
+              onChange={(from) => set({ from, week: null, ...(daysTouched || from === "" ? {} : { days: [dayKeyOf(from)] }) })}
               variant="card"
             />
             <div>
@@ -143,7 +141,7 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
             </div>
           </div>
           {v.until !== null && <DatePickerField id="training-until" label={TRAINING.untilDateField} value={v.until} onChange={(until) => set({ until })} variant="card" />}
-          {v.repeat === "monthly" && v.from !== "" && <p className="text-(length:--portal-sub-size) text-muted">{monthlyNote(v.from)}</p>}
+          {v.repeat === "monthly" && v.from !== "" && <p className="text-(length:--portal-sub-size) text-muted">{monthlyNote(v.from, v.week)}</p>}
         </>
       ) : (
         <>

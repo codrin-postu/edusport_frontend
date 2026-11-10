@@ -25,7 +25,7 @@ export function EndSheet({ rule, rules, today, onClose, onDone }: Props) {
   return (
     <Sheet
       open
-      onOpenChange={(o) => { if (!o) onClose(); }}
+      onOpenChange={(o) => { if (!o && !busy) onClose(); }}
       title={PROGRAM.endTitle(weekdayOfDay(rule.day))}
       description={PROGRAM.endText}
       footer={<SheetFooter message={message} busy={busy} disabled={from < today} confirm={PROGRAM.endProgram} onClose={onClose} onConfirm={submit} />}

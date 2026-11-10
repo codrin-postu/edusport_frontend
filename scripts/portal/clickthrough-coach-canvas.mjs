@@ -96,12 +96,11 @@ await page.goto(`/antrenament/nou?grupa=${own.groupId}`);
 await page.getByLabel("Ora").fill("19:10");
 const squares = page.getByRole("group", { name: "Zile" });
 await typeDate(page, "Din data", dayA);
-await squares.getByRole("checkbox", { name: "Lu" }).waitFor();
+await squares.getByRole("checkbox", { name: "luni" }).waitFor();
 const wantA = weekdayOf(dayA);
 const wantB = weekdayOf(dayB);
-const letters = { Luni: "Lu", Marți: "Ma", Miercuri: "Mi", Joi: "Jo", Vineri: "Vi", Sâmbătă: "Sâ", Duminică: "Du" };
 for (const name of [wantB]) {
-  const box = squares.getByRole("checkbox", { name: letters[name] });
+  const box = squares.getByRole("checkbox", { name: name.toLowerCase() });
   if ((await box.getAttribute("aria-checked")) !== "true") await box.click();
 }
 await page.getByLabel("Până la", { exact: true }).click();

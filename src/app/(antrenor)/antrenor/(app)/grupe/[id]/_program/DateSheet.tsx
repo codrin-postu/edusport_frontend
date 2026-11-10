@@ -46,10 +46,10 @@ export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
   return (
     <Sheet
       open
-      onOpenChange={(open) => { if (!open) onClose(); }}
+      onOpenChange={(open) => { if (!open && !busy) onClose(); }}
       title={`${capitalize(longDay(o.date))}, ${o.startTime ?? ""}`}
       description={PROGRAM.dateOnly}
-      footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={PROGRAM.save} onClose={onClose} onConfirm={submit} />}
+      footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={choice === "remove" ? PROGRAM.remove : PROGRAM.save} onClose={onClose} onConfirm={submit} />}
     >
       <div role="radiogroup" aria-label={PROGRAM.thisDate} className="flex flex-col gap-3">
         <ChoiceRow label={PROGRAM.cancel} sub={PROGRAM.cancelSub} checked={choice === "cancel"} onSelect={() => setChoice("cancel")}>

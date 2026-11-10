@@ -502,6 +502,8 @@ function lessonCreate({ body, res }) {
   if (archivedDate(body.date)) return club(res, 403, MSG.archived);
   const athlete = Object.values(world.members).flat().find((m) => m.athleteId === body.athleteId);
   if (!athlete || !planFieldsOk(body)) return club(res, 400, MSG.invalid);
+  // As the backend (coach/lessons.ts): a repeating lesson dated before today is refused.
+  if (body.repeat && body.date < today) return club(res, 400, MSG.invalid);
   const refusal = repeatRefusal(body.repeat, body.date);
   if (refusal) return club(res, 400, refusal);
   const dates = body.repeat ? lessonDates(body.date, body.repeat) : [body.date];
@@ -691,6 +693,8 @@ function programRuleWrite({ res, body, params }, end) {
   if (g && picked.some((r) => ruleHits({ ...r, gid: g.id }, body.from) && hasSavedSession(g.id, body.from))) return club(res, 409, REFUSE.datePresence);
   const newId = `evnew${++world.counters.event}`;
   const days = Array.isArray(body.days) && body.days.length ? body.days.filter((d) => DAY_KEYS.includes(d)) : null;
+  // As the backend (changeLocked): a day the event already holds besides the addressed one is refused.
+  if (!end && body.day !== undefined && days?.some((d) => d !== body.day && mine.some((r) => r.day === d))) return club(res, 400, MSG.invalid);
   for (const r of picked) {
     const split = body.from > r.from;
     const oldTo = r.to;

@@ -21,7 +21,7 @@ export function allowedCoachRoute(method: string, path: string): boolean {
   return COMPILED.some((r) => r.method === method && r.re.test(path));
 }
 
-// The query parameters each GET route reads in the backend's coach controller. Nothing else is forwarded.
+// The query parameters the backend's coach controller reads on the GET routes and on DELETE /lessons/:id (`scope`). Nothing else is forwarded.
 const QUERY: [RegExp, string[]][] = [
   [/^\/today$/, ["date"]],
   [new RegExp(`^/groups/${ID}/(program|saved-days)$`), ["month"]],

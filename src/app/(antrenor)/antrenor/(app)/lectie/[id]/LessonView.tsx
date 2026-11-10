@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import { LESSON, NAV, PRESENCE, PROGRAM, TRAINING } from "@/lib/portal/copy";
-import { capitalize, dayMonthLong, daysSpoken, longDay, shortDate } from "@/lib/portal/format";
+import { capitalize, dayMonth, dayMonthLong, daysSpoken, longDay, shortDate } from "@/lib/portal/format";
 import type { CoachLesson, LessonSaved } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../_lib/today";
@@ -118,7 +118,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
           {lesson.deletable && <PortalLink center onClick={() => setAsking(true)}>{LESSON.delete}</PortalLink>}
         </div>
       </PageBody>
-      {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
+      {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle(dayMonth(lesson.date))} oneSub={TRAINING.scopeOneSub(dayMonth(lesson.date))} followingSub={TRAINING.scopeFollowingDeleteSub(dayMonth(lesson.date))} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
       {asking && !series && <PlainDelete date={shortDate(lesson.date)} onClose={() => setAsking(false)} onConfirm={() => remove(null)} />}
     </>
   );

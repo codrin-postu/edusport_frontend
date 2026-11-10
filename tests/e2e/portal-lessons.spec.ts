@@ -124,7 +124,7 @@ test("Șterge lecția on a series lesson asks which lessons", async({ page }) =>
   await page.goto("/lectie/lser2");
   await page.getByRole("button", { name: "Șterge lecția" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.getByRole("heading", { name: "Ce ștergi?" })).toBeVisible();
+  await expect(dialog.getByRole("heading", { name: "Ce ștergi din lecția din 17 noiembrie?" })).toBeVisible();
   await dialog.getByRole("radio", { name: "Și lecțiile următoare" }).click();
   await dialog.getByRole("button", { name: "Șterge lecția" }).click();
   await expect(page.getByText("Lecții șterse.")).toBeVisible();

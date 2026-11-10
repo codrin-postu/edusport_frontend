@@ -7,7 +7,7 @@ const it = canStripTypes ? test : (name) => test.skip(name);
 
 const base = {
   kind: "grup", groupId: "gavansati", athlete: null, repeat: "weekly", days: ["thu", "tue"], date: "2026-11-05", startTime: "17:30", durationMin: 60,
-  from: "2026-11-11", until: null, coachIds: ["tm-andrei"],
+  from: "2026-11-11", until: null, coachIds: ["tm-andrei"], week: null,
 };
 
 it("writes the five summary texts", () => {
@@ -58,7 +58,7 @@ it("knows when the form is ready", () => {
 
 it("starts from the mode", () => {
   const n = t.initialValue({ kind: "new" }, "2026-11-05", "tm-andrei");
-  assert.deepEqual(n, { kind: "grup", groupId: null, athlete: null, repeat: "none", days: ["thu"], date: "2026-11-05", startTime: "", durationMin: 60, from: "2026-11-05", until: null, coachIds: ["tm-andrei"] });
+  assert.deepEqual(n, { kind: "grup", groupId: null, athlete: null, repeat: "none", days: ["thu"], date: "2026-11-05", startTime: "", durationMin: 60, from: "2026-11-05", until: null, coachIds: ["tm-andrei"], week: null });
   const preset = t.initialValue({ kind: "preset", groupId: "g1" }, "2026-11-05", "tm-andrei");
   assert.deepEqual([preset.groupId, preset.repeat], ["g1", "weekly"]);
   const lesson = {
@@ -69,4 +69,17 @@ it("starts from the mode", () => {
   assert.deepEqual([e.kind, e.repeat, e.days, e.from, e.until, e.athlete.name], ["individual", "weekly", ["tue"], "2026-11-17", null, "Ana Stoica"]);
   const single = t.initialValue({ kind: "edit", lesson: { ...lesson, series: null } }, "2026-11-05", "tm-andrei");
   assert.equal(single.repeat, "none");
+});
+
+it("editing a monthly series lesson keeps the series' week, not the date's", () => {
+  const lesson = {
+    lessonId: "lm", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-24", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"],
+    series: { seriesId: "sm", freq: "monthly", days: ["tue"], weekOfMonth: "last", startTime: "17:00", durationMin: 60, from: "2026-10-27", to: "2027-06-30", untilSeasonEnd: true },
+  };
+  const v = t.initialValue({ kind: "edit", lesson }, "2026-11-05", "tm-andrei");
+  assert.equal(v.week, "last");
+  assert.equal(t.planBody(v, "following").repeat.weekOfMonth, "last");
+  assert.match(t.trainingSummary(v), /^Lunar, în ultima marți a lunii/);
+  // Changing "Din data" clears it: the week is taken from the new date again.
+  assert.equal(t.planBody({ ...v, week: null }, "following").repeat.weekOfMonth, "fourth");
 });
