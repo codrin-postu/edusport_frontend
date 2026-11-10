@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
-import { NAV, PRESENCE } from "@/lib/portal/copy";
-import { dayTile, shortWhen } from "@/lib/portal/format";
-import { presentCount, saveBody, sessionQuery } from "@/lib/portal/presence";
+import { CALENDAR, NAV, PRESENCE } from "@/lib/portal/copy";
+import { shortWhen } from "@/lib/portal/format";
+import { fromOf, presentCount, saveBody, sessionQuery, withFrom } from "@/lib/portal/presence";
 import type { CoachGroupPage, CoachSession, SessionSaved } from "@/lib/portal/api-types";
 import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
 import { useMe } from "../../_lib/me-context";
@@ -19,7 +19,6 @@ import { SaveBar } from "@/app/_portal/ui/SaveBar";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { CoachPicker } from "./CoachPicker";
-import { DaySheet } from "./DaySheet";
 import { PresenceTable, type TickMap } from "./PresenceTable";
 import { ReactivateDialog } from "./ReactivateDialog";
 
@@ -66,6 +65,7 @@ function initialTicks(s: CoachSession): TickMap {
 
 function PresenceBody({ session, query, reload }: { session: CoachSession; query: string; reload: () => void }) {
   const router = useRouter();
+  const from = fromOf(useSearchParams());
   const toast = useToast();
   const noAccess = useNoAccess();
   const me = useMe();
@@ -73,7 +73,6 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
   const [coachIds, setCoachIds] = useState<string[]>(session.coachIds);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [dayOpen, setDayOpen] = useState(false);
   const [group, setGroup] = useState<CoachGroupPage | null>(null);
   const [queue, setQueue] = useState<Inactive[]>([]);
   const [answers, setAnswers] = useState<{ reactivate: string[]; keep: string[] }>({ reactivate: [], keep: [] });
@@ -81,7 +80,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
   const count = presentCount([...ticks.values()]);
   const meId = me?.coachId ?? "";
 
-  // The group page gives the location and info card, and for a stand-in the only dates that may be picked.
+  // The group page gives the location and info card.
   useEffect(() => {
     let cancelled = false;
     void portalApi<CoachGroupPage>("GET", `coach/groups/${encodeURIComponent(session.groupId)}`).then((r) => {
@@ -91,7 +90,6 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
       cancelled = true;
     };
   }, [session.groupId]);
-  const allowed = group ? group.standIn.map((x) => x.date) : null;
 
   const setTick = (athleteId: string, k: "grup" | "uscat", value: boolean) =>
     setTicks((prev) => new Map(prev).set(athleteId, { ...(prev.get(athleteId) ?? { grup: false, uscat: false }), [k]: value }));
@@ -108,7 +106,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
       if (next === query) {
         setBusy(false);
         reload();
-      } else router.replace(`/prezenta?${next}`); // busy stays true until the route changes
+      } else router.replace(withFrom(`/prezenta?${next}`, from)); // busy stays true until the route changes
       return;
     }
     setBusy(false);
@@ -138,22 +136,18 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
     if (queue.length === 1) void save(next.reactivate, next.keep);
   }
 
+  const back =
+    from === "istoric" ? { href: "/istoric", label: NAV.history }
+    : from === "calendar" ? { href: "/calendar", label: CALENDAR.title }
+    : from === "grupa" ? { href: `/grupe/${encodeURIComponent(session.groupId)}`, label: session.groupName }
+    : { href: "/", label: NAV.today };
   const sub = [shortWhen(session.date), session.startTime, group?.location].filter((p): p is string => Boolean(p)).join(", ");
   return (
     <>
       <PageHeader
-        back={{ href: "/", label: NAV.today }}
+        back={back}
         title={session.groupName}
         sub={sub}
-        aside={
-          <button
-            type="button"
-            onClick={() => setDayOpen(true)}
-            className="inline-flex min-h-(--portal-tap) shrink-0 items-center border-control border-line bg-surface-raised px-4 text-(length:--portal-text-14) font-bold text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus"
-          >
-            {dayTile(session.date)}
-          </button>
-        }
       />
       <PageBody>
         {(session.savedLine || session.outsideSchedule || session.archived) && (
@@ -185,7 +179,6 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
           </Column>
         </Columns>
       </PageBody>
-      <DaySheet key={session.date} open={dayOpen} onOpenChange={setDayOpen} session={session} allowed={session.standIn ? allowed ?? [] : null} />
       <ReactivateDialog athlete={queue[0] ?? null} onKeep={() => answer(false)} onReactivate={() => answer(true)} />
     </>
   );

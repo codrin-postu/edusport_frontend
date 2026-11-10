@@ -286,7 +286,7 @@ test("other group without a class today: the stand-in sheet lists the recent slo
   await page.getByRole("button", { name: "Fă prezența ca înlocuitor" }).click();
   const rows = page.getByRole("dialog").getByRole("link");
   await expect(rows).toHaveCount(2);
-  await expect(rows.first()).toHaveAttribute("href", "/prezenta?occurrence=occ%3Agsilver%3A2026-11-05");
+  await expect(rows.first()).toHaveAttribute("href", "/prezenta?occurrence=occ%3Agsilver%3A2026-11-05&from=grupa");
 });
 
 test("an unknown group shows the load error", async({ page }) => {

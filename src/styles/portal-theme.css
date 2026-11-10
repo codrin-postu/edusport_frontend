@@ -58,6 +58,9 @@
   --color-checkbox-line: #b9c6da;  /* 17 unchecked border */
   --color-checkbox-on: #0e1a3c;    /* 17 checked fill and border */
   --color-checkbox-mark: #ffffff;  /* 17 check mark */
+  --color-checkbox-on-disabled: #e1ecfb;   /* 17 read only checked fill */
+  --color-checkbox-line-disabled: #b9c6da; /* 17 read only border */
+  --color-checkbox-mark-disabled: rgb(14 26 60 / 0.55); /* 17 read only check mark: navy, dimmed */
   --checkbox-mark-size: 20px;      /* 17 check mark size */
   --color-focus: #4a7bd0;          /* 31 focus ring on light surfaces */
   --focus-offset: 2px;             /* 31 focus ring offset */

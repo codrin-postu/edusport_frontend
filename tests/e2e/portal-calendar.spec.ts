@@ -139,3 +139,12 @@ test.describe("Calendar layout", () => {
     expect(list!.y).toBeGreaterThan(grid!.y + grid!.height);
   });
 });
+
+test("a group row opens the presence page with a back link to Calendar", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/calendar");
+  const row = page.locator("main a[href^='/prezenta']").first();
+  await expect(row).toHaveAttribute("href", /&from=calendar$/);
+  await row.click();
+  await expect(page.getByRole("link", { name: "‹ Calendar" })).toHaveAttribute("href", "/calendar");
+});

@@ -298,3 +298,10 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Desktop Grupă header action "Fă prezența" is the secondary (white) button.
 - Program tab "Următoarele date": the list shows the next 4 dates with the footer "Se arată următoarele 4 date" and "Vezi toate ›". Decided by Claude: "Vezi toate" opens the calendar (the board's link) instead of expanding the list; the footer shows only when there are more than 4 dates. Phone and desktop.
 - The coach 404 renders inside the portal frame (sidebar or bottom nav, page header "Pagina nu există", a button back to Azi).
+
+## 2026-11-10 Prezență header and back link (decided by Claude on user feedback)
+
+- Prezență: no date button and no day sheet in the header; the date stays as plain text in the subline. Changing the day goes through "Antrenament nou" (Nu se repetă) and the Program date sheet "Mută". The saved-days backend route stays; the screen no longer calls it.
+- Prezență back link returns to where the coach came from, carried by `?from=istoric|calendar|grupa` on the presence link (label Istoric, Calendar, or the group name; missing or unknown means "Azi" to `/`). The save redirect keeps `from`.
+- Read-only presence boxes keep their check mark: navy mark dimmed through `--color-checkbox-mark-disabled`, light fill and border tokens; unchecked boxes stay empty.
+- Another coach's group (user 2026-11-10): the page shows the banner "Grupa altui antrenor" and a read-only names and age list (no contacts, links or actions); backend answers `members: [{ name, age }]` with `membersReadOnly: true`.

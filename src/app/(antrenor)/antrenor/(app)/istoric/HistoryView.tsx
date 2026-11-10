@@ -27,7 +27,7 @@ function sub(r: CoachHistoryRow): React.ReactNode {
 }
 
 const href = (r: CoachHistoryRow): string =>
-  r.kind === "individuala" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r);
+  r.kind === "individuala" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r, "istoric");
 
 export function HistoryView() {
   const router = useRouter();

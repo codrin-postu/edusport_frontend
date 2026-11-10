@@ -57,7 +57,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const tab: Tab = params.get("tab") === "program" ? "program" : "members";
   const [rev, setRev] = useState(0);
   const members = page.members;
-  const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}` : null;
+  const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   const tabs = (
     <Segmented<Tab>
@@ -138,7 +138,7 @@ function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> })
         </ListCard>
         <div className="flex flex-col gap-3">
           {page.todayKey ? (
-            <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}`} className="w-full">{GROUP.standIn}</Button>
+            <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa`} className="w-full">{GROUP.standIn}</Button>
           ) : page.standIn.length > 0 ? (
             <Button onClick={() => setOpen(true)} className="w-full">{GROUP.standInPresence}</Button>
           ) : null}
@@ -148,7 +148,7 @@ function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> })
       <Sheet open={open} onOpenChange={setOpen} title={GROUP.standInPresence}>
         <ListCard>
           {page.standIn.map((s) => (
-            <ListRow key={s.occurrenceKey} lead={<DateBlock word={weekdayShort(s.date)} big={String(Number(s.date.slice(8)))} />} href={`/prezenta?occurrence=${encodeURIComponent(s.occurrenceKey)}`} title={shortWhen(s.date)} sub={s.startTime} />
+            <ListRow key={s.occurrenceKey} lead={<DateBlock word={weekdayShort(s.date)} big={String(Number(s.date.slice(8)))} />} href={`/prezenta?occurrence=${encodeURIComponent(s.occurrenceKey)}&from=grupa`} title={shortWhen(s.date)} sub={s.startTime} />
           ))}
         </ListCard>
       </Sheet>

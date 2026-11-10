@@ -21,7 +21,7 @@ test("a row opens the presence page", async({ page }) => {
   await loginAs(page);
   await page.goto("/istoric");
   await page.getByRole("link", { name: /Intermediari Silver/ }).click();
-  await expect(page).toHaveURL(/\/prezenta\?id=s-standin$/);
+  await expect(page).toHaveURL(/\/prezenta\?id=s-standin&from=istoric$/);
 });
 
 test("a lesson row opens the lesson page", async({ page }) => {

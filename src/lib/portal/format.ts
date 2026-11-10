@@ -3,7 +3,6 @@ import type { DayKey, WeekOfMonth } from "./api-types";
 
 const WEEKDAY_TILE = ["DU", "LU", "MA", "MI", "JO", "VI", "SÂ"] as const;
 const WEEKDAY_FULL = ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"] as const;
-const MONTH_TILE = ["IAN", "FEB", "MAR", "APR", "MAI", "IUN", "IUL", "AUG", "SEP", "OCT", "NOI", "DEC"] as const;
 const MONTH_SHORT = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"] as const;
 const MONTH_LONG = ["ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"] as const;
 const BUCHAREST = "Europe/Bucharest";
@@ -14,12 +13,6 @@ function parts(date: string): Parts {
   const [year, month, day] = date.slice(0, 10).split("-").map(Number);
   const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
   return { year, month, day, weekday };
-}
-
-/** "2026-10-06" -> "MA 6 OCT" */
-export function dayTile(date: string): string {
-  const p = parts(date);
-  return `${WEEKDAY_TILE[p.weekday]} ${p.day} ${MONTH_TILE[p.month - 1]}`;
 }
 
 /** "2026-10-07" -> { day: "7", weekday: "MI" } */
@@ -43,11 +36,6 @@ export function dayMonth(date: string): string {
 /** "2026-10" -> "OCTOMBRIE" */
 export function monthName(month: string): string {
   return MONTH_LONG[parts(`${month.slice(0, 7)}-01`).month - 1].toUpperCase();
-}
-
-/** "2026-10-16" -> "vineri 16 oct" */
-export function pickLabel(date: string): string {
-  return `${WEEKDAY_FULL[parts(date).weekday]} ${shortDate(date)}`;
 }
 
 /** 50 -> "50 min", 60 -> "1 h", 75 -> "1 h 15 min" */

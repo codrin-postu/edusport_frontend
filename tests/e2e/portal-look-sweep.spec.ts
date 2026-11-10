@@ -96,7 +96,6 @@ for (const size of SIZES) {
       await open("/grupe/gavansati?tab=program", "Dată sheet", () => page.getByRole("button", { name: /^Mar\s*10\s/i }).click());
       await open("/grupe/gavansati?tab=program", "Dată anulată sheet", () => page.getByRole("button", { name: /^Mie\s*11\s/i }).click());
       await open("/grupe/gavansati?tab=program", "Dată mutată sheet", () => page.getByRole("button", { name: /^Joi\s*19\s/i }).click());
-      await open("/prezenta?id=s-today", "Day sheet", () => page.locator("[data-page-header] button").first().click());
       await open("/antrenament/nou", "Antrenament nou popup", async() => undefined);
       await open("/grupe/gavansati?tab=program&nou=1", "Adaugă program popup", async() => undefined);
       await open("/lectie/lplan/modifica", "Modifică lecția popup", async() => undefined);

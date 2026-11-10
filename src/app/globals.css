@@ -176,6 +176,9 @@ h1.text-branding-font {
   --color-checkbox-line: #0e1a3c;
   --color-checkbox-on: #be3330;
   --color-checkbox-mark: #fbf8f1;
+  --color-checkbox-on-disabled: var(--color-disabled);
+  --color-checkbox-line-disabled: var(--color-disabled);
+  --color-checkbox-mark-disabled: var(--color-disabled);
   --color-focus: #0e1a3c;
   --color-link-bar: #be3330;
   --color-link-hover: #be3330;

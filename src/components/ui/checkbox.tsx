@@ -65,7 +65,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
               ? "peer-checked:bg-accent-on-dark peer-checked:border-accent-on-dark"
               : "peer-checked:bg-checkbox-on peer-checked:border-checkbox-on",
             disabled && (onDark ? "border-line-subtle-on-dark" : "border-line-subtle"),
-            disabled && "peer-checked:bg-disabled peer-checked:border-disabled",
+            disabled && "peer-checked:bg-checkbox-on-disabled peer-checked:border-checkbox-line-disabled",
           )}
         />
         <Icon
@@ -74,7 +74,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           className={cn(
             "relative hidden size-(--checkbox-mark-size) pointer-events-none peer-checked:block",
             onDark ? "text-primary" : "text-checkbox-mark",
-            disabled && "text-disabled",
+            disabled && "text-checkbox-mark-disabled",
           )}
         />
       </span>

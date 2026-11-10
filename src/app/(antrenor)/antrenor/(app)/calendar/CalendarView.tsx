@@ -75,6 +75,7 @@ export function CalendarView() {
                     <ListCard>
                       {items.map((i) => (
                         <SessionRow
+                          from="calendar"
                           key={i.lessonId ?? i.occurrenceKey ?? i.sessionId ?? `${i.startTime}${i.title}`}
                           row={{
                             kind: i.kind, startTime: i.startTime, title: i.title, children: i.children, location: i.location, durationMin: i.durationMin,

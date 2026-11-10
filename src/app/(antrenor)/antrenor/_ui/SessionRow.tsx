@@ -1,4 +1,5 @@
 import { AZI, CALENDAR } from "@/lib/portal/copy";
+import { withFrom, type PresenceFrom } from "@/lib/portal/presence";
 import { roCount } from "@/lib/ro-plural";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
 import { IndividualTag } from "@/app/_portal/ui/IndividualTag";
@@ -21,14 +22,14 @@ export type SessionRowData = {
   lessonId: string | null;
 };
 
-export const presenceHref = (r: { sessionId: string | null; occurrenceKey: string | null }): string =>
-  r.sessionId ? `/prezenta?id=${encodeURIComponent(r.sessionId)}` : `/prezenta?occurrence=${encodeURIComponent(r.occurrenceKey ?? "")}`;
+export const presenceHref = (r: { sessionId: string | null; occurrenceKey: string | null }, from: PresenceFrom | null = null): string =>
+  withFrom(r.sessionId ? `/prezenta?id=${encodeURIComponent(r.sessionId)}` : `/prezenta?occurrence=${encodeURIComponent(r.occurrenceKey ?? "")}`, from);
 
-const hrefOf = (r: SessionRowData): string =>
-  r.kind === "individual" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r);
+const hrefOf = (r: SessionRowData, from: PresenceFrom | null): string =>
+  r.kind === "individual" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r, from);
 
 /** One row of the today and day lists: time block, title, sub line, and the Grup or Individual status block. `now` is HH:mm; earlier rows are dimmed. */
-export function SessionRow({ row, now }: { row: SessionRowData; now?: string }) {
+export function SessionRow({ row, now, from = null }: { row: SessionRowData; now?: string; from?: PresenceFrom | null }) {
   const cancelled = row.cancelled === true;
   const dim = cancelled || (now !== undefined && row.startTime < now);
   const sub =
@@ -42,7 +43,7 @@ export function SessionRow({ row, now }: { row: SessionRowData; now?: string }) 
     );
   return (
     <ListRow
-      href={cancelled ? undefined : hrefOf(row)}
+      href={cancelled ? undefined : hrefOf(row, from)}
       lead={<DateBlock big={row.startTime} dim={dim} />}
       title={row.title}
       sub={cancelled ? CALENDAR.legendCancelled : sub}
