@@ -23,7 +23,7 @@ async function pick(page: Page, label: string, option: string): Promise<void> {
   await page.getByRole("menuitemradio", { name: option, exact: true }).click();
 }
 
-const submit = (page: Page, name = "Adaugă antrenamentul") => page.getByRole("button", { name });
+const submit = (page: Page, name = "Adaugă") => page.getByRole("button", { name, exact: true });
 
 for (const size of SIZES) {
   test.describe(`Antrenament nou ${size.width}`, () => {

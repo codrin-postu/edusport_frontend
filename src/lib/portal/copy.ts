@@ -77,7 +77,7 @@ export const TRAINING = {
   untilDate: "Alege data",
   untilDateField: "Data de sfârșit",
   coach: "Antrenor",
-  submit: "Adaugă antrenamentul",
+  submit: "Adaugă",
   save: "Salvează",
   scopeTitle: "Ce schimbi?",
   scopeDeleteTitle: (date: string) => `Ce ștergi din lecția din ${date}?`,
