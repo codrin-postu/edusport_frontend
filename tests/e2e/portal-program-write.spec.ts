@@ -80,9 +80,9 @@ for (const size of SIZES) {
       const d = dialog(page);
       await d.getByRole("radio", { name: /^Mută/ }).click();
       await expect(d.getByRole("group", { name: "Data nouă" })).toBeVisible();
-      await expect(d.getByLabel("Ora")).toBeVisible();
+      await expect(d.getByLabel("Ora", { exact: true })).toBeVisible();
       await typeDate(page, "Data nouă", "12112026");
-      await d.getByLabel("Ora").fill("18:15");
+      await d.getByLabel("Ora", { exact: true }).fill("18:15");
       await d.getByRole("button", { name: "Salvează" }).click();
       await expect(page.getByText("Ședința din 10 noiembrie a fost mutată.")).toBeVisible();
       expect((await calls("PUT", /\/dates\//))[0]?.body).toEqual({ mode: "move", newDate: "2026-11-12", newStartTime: "18:15", reason: null });
@@ -90,7 +90,7 @@ for (const size of SIZES) {
       // A moved row is clickable and opens on Mută with its values.
       await dateRow(page, "Joi", "12").click();
       await expect(d.getByRole("radio", { name: /^Mută/ })).toHaveAttribute("aria-checked", "true");
-      await expect(d.getByLabel("Ora")).toHaveValue("18:15");
+      await expect(d.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
       await expect(d.getByRole("radio", { name: /^Se ține/ })).toBeVisible();
     });
 
@@ -152,17 +152,17 @@ for (const size of SIZES) {
       await expect(d.getByRole("checkbox", { name: "miercuri" })).toHaveAttribute("aria-checked", "false");
       await expect(d.getByRole("checkbox", { name: "miercuri" })).toBeDisabled();
       await expect(d.getByRole("checkbox", { name: "joi" })).toBeEnabled();
-      await expect(d.getByLabel("Ora")).toHaveValue("18:15");
+      await expect(d.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
       await expect(d.getByRole("group", { name: "Se aplică din" })).toBeVisible();
       await shot(page, info, "program-schimba");
       // Renunță drops the draft without a request.
-      await d.getByLabel("Ora").fill("17:00");
+      await d.getByLabel("Ora", { exact: true }).fill("17:00");
       await d.getByRole("button", { name: "Renunță" }).click();
       await expect(d).toHaveCount(0);
       expect(await calls("PUT", /\/program\/[^/]+$/)).toHaveLength(0);
       await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
-      await expect(d.getByLabel("Ora")).toHaveValue("18:15");
-      await d.getByLabel("Ora").fill("18:00");
+      await expect(d.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
+      await d.getByLabel("Ora", { exact: true }).fill("18:00");
       await d.getByRole("button", { name: "Schimbă", exact: true }).click();
       await expect(page.getByText("Program schimbat.")).toBeVisible();
       const put = (await calls("PUT", /\/program\/[^/]+$/))[0];
@@ -205,8 +205,8 @@ for (const size of SIZES) {
       expect(await rules.getByText(/^Marți, 1[89]:\d{2}$/).allTextContents()).toEqual(["Marți, 18:15", "Marți, 19:00"]);
       // The 19:00 class is the second Marți row.
       await page.getByRole("button", { name: "Schimbă programul de marți" }).nth(1).click();
-      await expect(dialog(page).getByLabel("Ora")).toHaveValue("19:00");
-      await dialog(page).getByLabel("Ora").fill("19:30");
+      await expect(dialog(page).getByLabel("Ora", { exact: true })).toHaveValue("19:00");
+      await dialog(page).getByLabel("Ora", { exact: true }).fill("19:30");
       await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
       await expect(page.getByText("Program schimbat.")).toBeVisible();
       const put = (await calls("PUT", /\/program\/[^/]+$/))[0];
@@ -226,7 +226,7 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
-      await dialog(page).getByLabel("Ora").fill("18:00");
+      await dialog(page).getByLabel("Ora", { exact: true }).fill("18:00");
       await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
       await expect(page.getByText("Program schimbat.")).toBeVisible();
       const first = (await calls("PUT", /\/program\/[^/]+$/))[0];
@@ -244,7 +244,7 @@ for (const size of SIZES) {
       // Schimbă on the started row, from a date the later row covers: the later row's event gets the write.
       await page.getByRole("button", { name: "Schimbă programul de marți" }).first().click();
       await typeDate(page, "Se aplică din", "12112026");
-      await dialog(page).getByLabel("Ora").fill("17:45");
+      await dialog(page).getByLabel("Ora", { exact: true }).fill("17:45");
       await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
       await expect(page.getByText("Program schimbat.").first()).toBeVisible();
       const second = (await calls("PUT", /\/program\/[^/]+$/))[1];
@@ -266,7 +266,7 @@ for (const size of SIZES) {
       await page.goto("/grupe/gavansati?tab=program");
       const d = dialog(page);
       await page.getByRole("button", { name: "Schimbă programul de joi" }).click();
-      await d.getByLabel("Ora").fill("19:00");
+      await d.getByLabel("Ora", { exact: true }).fill("19:00");
       await d.getByRole("button", { name: "Schimbă", exact: true }).click();
       await expect(d.getByText("Data are prezența salvată. Poți doar să o anulezi.")).toBeVisible();
       await expect(d).toBeVisible();
