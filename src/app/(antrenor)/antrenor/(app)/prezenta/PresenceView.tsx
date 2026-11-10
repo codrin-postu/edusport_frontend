@@ -164,14 +164,14 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
           </div>
         )}
         <Columns>
-          <Column grow={1} basis={280}>
+          <Column grow={1}>
             <div className="portal:border-card portal:border-card-line portal:bg-surface-raised portal:p-(--portal-card-pad) portal:shadow-retro">
               <CoachPicker me={meId} options={session.coachOptions} value={coachIds} onChange={setCoachIds} locked={readOnly} />
             </div>
             {session.standIn && <p className="text-(length:--portal-text-14) text-muted">{PRESENCE.willAppear}</p>}
             {group && <div className="hidden portal:block"><GroupInfoCard program={group.program} location={group.location} coaches={group.coaches} /></div>}
           </Column>
-          <Column grow={2} basis={480}>
+          <Column grow={2}>
             <PresenceTable rows={session.rows} kind={session.kind} groupId={session.groupId} ticks={ticks} disabled={readOnly} onChange={setTick} />
             <AlertLine message={message} />
             {!readOnly && (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import { AZI } from "@/lib/portal/copy";
 import { longDay, monthShort, weekdayShort } from "@/lib/portal/format";
@@ -8,14 +9,15 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { NowTile } from "@/app/_portal/ui/NowTile";
-import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
-import { Section } from "@/app/_portal/ui/SectionHeading";
+import { Section, SectionHeading } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 import { usePortal } from "../_lib/use-portal";
+import { NewTrainingPopup } from "./antrenament/NewTrainingPopup";
 import { useMe } from "../_lib/me-context";
 import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow";
 
@@ -33,6 +35,8 @@ function groupRow(c: CoachClassRow): SessionRowData {
 
 export default function AziPage() {
   const me = useMe();
+  const router = useRouter();
+  const nou = useSearchParams().get("nou");
   const today = usePortal<CoachToday>("coach/today");
   if (today.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   if (today.state === "error" || !today.data) return <PageBody><LoadError onRetry={today.reload} /></PageBody>;
@@ -57,7 +61,7 @@ export default function AziPage() {
   const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={[{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }]} />;
   const addLesson = (
     <div className="portal:hidden">
-      <Button variant="secondary" href="/antrenament/nou" className="w-full">{AZI.addTraining}</Button>
+      <Button variant="secondary" href="/?nou=1" className="w-full">{AZI.addTraining}</Button>
     </div>
   );
   const past =
@@ -84,20 +88,23 @@ export default function AziPage() {
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
         aside={<NowTile month={monthShort(data.today)} day={String(Number(data.today.slice(8)))} time={now} weekday={weekdayShort(data.today)} label={AZI.nowLabel(longDay(data.today), now)} />}
-        actions={<Button variant="secondary" href="/antrenament/nou">{AZI.addTraining}</Button>}
+        actions={<Button variant="secondary" href="/?nou=1">{AZI.addTraining}</Button>}
       />
       <PageBody>
-        <Columns className="gap-(--portal-section-gap) portal:gap-(--portal-cols-gap)">
-          <Column grow={1} basis={300} className="contents portal:flex">
+        {/* Desktop: heading on grid row 1, content on row 2, so the summary card's top lines up with the list's top. */}
+        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
+          <div className="contents portal:col-start-2 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
             {past && <div className="order-4 portal:order-none">{past}</div>}
-          </Column>
-          <Column grow={2} basis={420} className="contents portal:flex">
-            <div className="order-2 portal:order-none"><Section title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }}>{todayCard}</Section></div>
-            <div className="order-3 portal:order-none">{addLesson}</div>
-          </Column>
-        </Columns>
+          </div>
+          <div className="order-2 flex flex-col gap-3 portal:contents">
+            <div className="portal:col-start-1 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} /></div>
+            <div data-today-list className="portal:col-start-1 portal:row-start-2">{todayCard}</div>
+          </div>
+          <div className="order-3">{addLesson}</div>
+        </div>
       </PageBody>
+      {nou && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
     </>
   );
 }

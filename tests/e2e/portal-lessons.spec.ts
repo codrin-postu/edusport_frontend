@@ -35,11 +35,10 @@ test("Modifică lecția on a plain lesson saves with scope one and no question",
   await loginAs(page);
   await page.goto("/lectie/lplan");
   await page.getByRole("link", { name: "Modifică lecția" }).click();
-  await expect(page).toHaveURL(/\/lectie\/lplan\/modifica$/);
-  await expect(page.locator("h1")).toHaveText("Modifică lecția");
-  await expect(page.getByRole("link", { name: "‹ Ana Stoica" })).toBeVisible();
+  await expect(page).toHaveURL(/\/lectie\/lplan\?modifica=1$/);
+  await expect(page.getByRole("dialog").getByRole("heading", { name: "Modifică lecția" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Individual" })).toHaveCount(0);
-  await expect(page.getByText("Ana Stoica", { exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog").getByText("Ana Stoica", { exact: true })).toBeVisible();
   await expect(page.getByLabel("Ora")).toHaveValue("17:00");
   await expect(page.getByLabel("Durată")).toContainText("60 min");
   await expect(page.getByLabel("Se repetă")).toContainText("Nu se repetă");
@@ -58,8 +57,8 @@ test("a lesson of a series asks which lessons before it saves", async({ page }) 
   await page.getByRole("link", { name: "Modifică lecția" }).click();
   await page.getByLabel("Ora").fill("18:00");
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog.getByRole("heading", { name: "Ce schimbi?" })).toBeVisible();
+  const dialog = page.getByRole("dialog", { name: "Ce schimbi?" });
+  await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("radio", { name: "Doar această lecție" })).toHaveAttribute("aria-checked", "true");
   // Renunță drops the question and sends nothing.
   await dialog.getByRole("button", { name: "Renunță" }).click();
@@ -77,7 +76,7 @@ test("Doar această lecție on a series lesson sends no repeat", async({ page })
   await page.goto("/lectie/lser2/modifica");
   await page.getByLabel("Ora").fill("18:00");
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "Salvează", exact: true }).click();
+  await page.getByRole("dialog", { name: "Ce schimbi?" }).getByRole("button", { name: "Salvează", exact: true }).click();
   await expect(page).toHaveURL(/\/lectie\/lser2$/);
   expect(await lastBody("PUT", "/lessons/lser2/plan")).toMatchObject({ scope: "one", startTime: "18:00", repeat: null });
 });
@@ -91,8 +90,8 @@ test("a refusal of the edit shows in the scope sheet", async({ page }) => {
   await page.getByRole("group", { name: "Data" }).getByRole("spinbutton").first().click();
   await page.keyboard.type("10112026");
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "Salvează", exact: true }).click();
-  await expect(page.getByRole("dialog").getByText("Sportivul are deja o lecție pe marți, 10 noi, la 17:00.")).toBeVisible();
+  await page.getByRole("dialog", { name: "Ce schimbi?" }).getByRole("button", { name: "Salvează", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Ce schimbi?" }).getByText("Sportivul are deja o lecție pe marți, 10 noi, la 17:00.")).toBeVisible();
 });
 
 test("the archived lesson has no Modifică lecția", async({ page }) => {
@@ -158,21 +157,22 @@ for (const size of SIZES) {
       const save = (await page.getByRole("button", { name: "Salvează prezența" }).boundingBox())!;
       const form = (await page.locator("[data-lesson-form]").boundingBox())!;
       expect(save.width).toBeGreaterThan(form.width * 0.8);
-      expect(form.width).toBeLessThanOrEqual(520);
+      expect(form.width).toBeLessThanOrEqual(640);
       await expect(page.locator("h1")).toHaveCount(1);
       await shot(page, info, "lectie-detaliu");
     });
 
-    test("edit page and the scope sheet", async({ page }, info) => {
+    test("edit popup and the scope sheet", async({ page }, info) => {
       await loginAs(page);
       await page.goto("/lectie/lser2/modifica");
-      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.getByRole("dialog").getByRole("heading", { name: "Modifică lecția" })).toBeVisible();
       await shot(page, info, "lectie-modifica");
       await page.getByLabel("Ora").fill("18:00");
       await page.getByRole("button", { name: "Salvează", exact: true }).click();
-      await expect(page.getByRole("dialog").getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
-      await expect(page.getByRole("dialog").getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
-      const box = (await page.getByRole("dialog").boundingBox())!;
+      const scope = page.getByRole("dialog", { name: "Ce schimbi?" });
+      await expect(scope.getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
+      await expect(scope.getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
+      const box = (await scope.boundingBox())!;
       if (size.width >= 900) expect(Math.round(box.width)).toBe(460);
       else expect(Math.round(box.y + box.height)).toBe(size.height);
     });

@@ -82,7 +82,7 @@ export function EditGroup({ id }: { id: string }) {
           </>
         }
       />
-      <PageBody narrow={640}>
+      <PageBody narrow>
         <Button variant="secondary" href={addHref} className="w-full portal:hidden">{EDIT_GROUP.add}</Button>
         <ListCard>
           {members.map((m) => (

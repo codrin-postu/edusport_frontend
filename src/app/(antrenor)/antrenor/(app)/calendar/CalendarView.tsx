@@ -61,12 +61,12 @@ export function CalendarView() {
         {calendar.state === "error" && <LoadError onRetry={calendar.reload} />}
         {calendar.state === "ready" && cal && (
           <Columns>
-            <Column grow={1} basis={420} className="gap-(--portal-gap-14)">
+            <Column grow={1} className="gap-(--portal-gap-14)">
               <div className="portal:hidden">{picker}</div>
               <MonthGrid month={month} marks={marksOf(cal)} selected={picked} today={cal.today} onSelect={pick} label={CALENDAR.grid} />
               <CalendarLegend />
             </Column>
-            <Column grow={1} basis={380}>
+            <Column grow={1}>
               {shown && (
                 <Section title={longDay(shown)}>
                   {items.length === 0 ? (

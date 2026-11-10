@@ -102,15 +102,24 @@ test.describe("Azi layout", () => {
     expect(past!.y).toBeGreaterThan(box!.y);
   });
 
-  test("desktop: stat and past left of the today card, the lesson button in the top band", async({ page }) => {
+  test("desktop: the today list left (3), stat and past right (2), tops aligned, the lesson button in the top band", async({ page }) => {
     await page.setViewportSize(SIZES[1]);
     await loginAs(page);
     await page.goto("/");
     const stat = await page.locator("[data-stat-num]").boundingBox();
     const past = await page.getByRole("heading", { name: "Antrenamente fără prezență" }).boundingBox();
     const today = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
-    expect(stat!.x).toBeLessThan(today!.x);
-    expect(past!.x).toBeLessThan(today!.x);
+    expect(stat!.x).toBeGreaterThan(today!.x);
+    expect(past!.x).toBeGreaterThan(today!.x);
+    // The summary card's top lines up with the list's top (headings share row 1, content row 2).
+    const list = await page.locator("[data-today-list]").boundingBox();
+    const statCard = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
+    expect(Math.abs(statCard!.y - (list!.y))).toBeLessThan(2);
+    // 3:2 grid: the main column is wider than the side one.
+    const sideW = statCard!.width;
+    const mainW = list!.width;
+    expect(Math.round(mainW / sideW * 10)).toBeGreaterThanOrEqual(13);
+    expect(Math.round(mainW / sideW * 10)).toBeLessThanOrEqual(17);
     const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
     await expect(button).toHaveCount(1);
     const header = await page.locator("[data-page-header]").boundingBox();
@@ -221,9 +230,11 @@ for (const size of SIZES) {
       const left = (await page.locator("[data-group-info]").boundingBox())!;
       const list = (await rows.first().boundingBox())!;
       if (size.width >= 900) {
-        expect(left.x + left.width).toBeLessThan(list.x);
+        expect(list.x + list.width).toBeLessThan(left.x);
         const band = page.locator("[data-page-header]").getByRole("link", { name: "Fă prezența" });
         await expect(band).toBeVisible();
+        // The header action is the secondary (white) button, like the main action on the other pages.
+        await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
       } else {
         expect(list.y).toBeGreaterThan(left.y);
       }

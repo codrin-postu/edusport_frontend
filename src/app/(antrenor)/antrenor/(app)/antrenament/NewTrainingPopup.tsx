@@ -1,39 +1,34 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { NAV, PROGRAM, TRAINING } from "@/lib/portal/copy";
+import { useRouter } from "next/navigation";
+import { PROGRAM, TRAINING } from "@/lib/portal/copy";
 import { dayMonth } from "@/lib/portal/format";
 import { groupBody, lessonBody, type TrainingValue } from "@/lib/portal/training-form";
 import type { CoachGroups, CoachLessonCreated, SessionCheck } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
-import { useMe } from "../../../_lib/me-context";
-import { bucharestToday } from "../../../_lib/today";
-import { useNoAccess, usePortal } from "../../../_lib/use-portal";
+import { useMe } from "../../_lib/me-context";
+import { bucharestToday } from "../../_lib/today";
+import { useNoAccess, usePortal } from "../../_lib/use-portal";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 import { LoadError } from "@/app/_portal/ui/LoadError";
-import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
-import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
-import { TrainingForm } from "../TrainingForm";
+import { TrainingForm } from "./TrainingForm";
 
 const programHref = (groupId: string): string => `/grupe/${encodeURIComponent(groupId)}?tab=program`;
 
-/** "Antrenament nou": group or individual, once or repeating. `?grupa=<id>` presets the group, `?tip=individual` the tab. */
-export function NewTraining() {
+/** "Antrenament nou" as a popup over its opener: group or individual, once or repeating. `group` presets the group (from "+ Adaugă program"), `individual` the tab. */
+export function NewTrainingPopup({ group, individual, onClose, onDone }: { group: string | null; individual: boolean; onClose: () => void; onDone?: () => void }) {
   const me = useMe();
   const router = useRouter();
   const toast = useToast();
   const noAccess = useNoAccess();
-  const params = useSearchParams();
   const groups = usePortal<CoachGroups>("coach/groups");
   const today = bucharestToday();
-  const loading = <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (groups.state === "error") return <PageBody><LoadError onRetry={groups.reload} /></PageBody>;
-  if (groups.state === "loading" || !me || !groups.data) return loading;
+  if (groups.state === "error") return <Sheet open onOpenChange={(o) => { if (!o) onClose(); }} title={TRAINING.title} popup={{ closeLabel: TRAINING.close }}><LoadError onRetry={groups.reload} /></Sheet>;
+  if (groups.state === "loading" || !me || !groups.data) return null;
 
   const club = groups.data.mine.filter((g) => g.kind === "club");
-  const preset = club.find((g) => g.groupId === params.get("grupa")) ?? null;
-  const back = preset ? { href: programHref(preset.groupId), label: preset.name } : { href: "/", label: NAV.today };
+  const preset = club.find((g) => g.groupId === group) ?? null;
 
   async function submit(v: TrainingValue): Promise<string | null> {
     if (v.kind === "individual") {
@@ -49,6 +44,7 @@ export function NewTraining() {
     const r = await portalApi<{ eventId: string; date: string | null }>("POST", `coach/groups/${encodeURIComponent(groupId)}/program`, groupBody(v));
     if (noAccess(r)) return null;
     if (!r.ok) return r.message;
+    onDone?.();
     toast.show(r.data.date ? PROGRAM.toasts.classAdded(dayMonth(r.data.date)) : PROGRAM.toasts.programAdded);
     // A one-off class already held (today or the last 7 days): go straight to its Prezență (decided by Claude, user ruling 2026-11-10).
     if (v.repeat === "none" && v.date <= today) {
@@ -64,18 +60,15 @@ export function NewTraining() {
   }
 
   return (
-    <>
-      <PageHeader back={back} title={TRAINING.title} />
-      <PageBody narrow={560}>
-        <TrainingForm
-          mode={preset ? { kind: "preset", groupId: preset.groupId } : { kind: "new" }}
-          today={today}
-          me={me}
-          groups={club}
-          startKind={params.get("tip") === "individual" ? "individual" : undefined}
-          onSubmit={submit}
-        />
-      </PageBody>
-    </>
+    <TrainingForm
+      mode={preset ? { kind: "preset", groupId: preset.groupId } : { kind: "new" }}
+      title={TRAINING.title}
+      onClose={onClose}
+      today={today}
+      me={me}
+      groups={club}
+      startKind={individual ? "individual" : undefined}
+      onSubmit={submit}
+    />
   );
 }

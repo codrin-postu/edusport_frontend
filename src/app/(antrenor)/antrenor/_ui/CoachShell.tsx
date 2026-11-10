@@ -13,7 +13,7 @@ export function CoachShell({ children }: { children: React.ReactNode }) {
   const me = useMe();
   const nav = useMemo(coachNav, []);
   return (
-    <PortalShell nav={nav} account={{ label: me?.firstName ?? NAV.profile, href: "/profil" }} brandHref="/" phoneNav={hasPhoneNav(pathname)}>
+    <PortalShell nav={nav} account={{ label: me?.firstName ?? NAV.profile, href: "/profil", ariaLabel: NAV.profile }} brandHref="/" phoneNav={hasPhoneNav(pathname)}>
       {children}
     </PortalShell>
   );

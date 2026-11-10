@@ -69,7 +69,7 @@ const LAYOUT_PHONE = [
 // Spec 4.2 desktop column (values that differ plus the desktop-only sidebar).
 const LAYOUT_DESKTOP = [
   ["--portal-h1-size", "40px"], ["--portal-sub-size", "14px"], ["--portal-page-x", "32px"],
-  ["--portal-section-gap", "32px"], ["--portal-cols-gap", "32px"], ["--portal-container", "1200px"],
+  ["--portal-section-gap", "32px"], ["--portal-cols-gap", "32px"], ["--portal-container", "1040px"],
   ["--portal-sidebar-w", "240px"], ["--portal-sidebar-link-h", "48px"], ["--portal-sidebar-link-size", "15px"],
 ];
 

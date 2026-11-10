@@ -18,6 +18,7 @@ import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Spinner } from "@/app/_portal/ui/Spinner";
+import { NewTrainingPopup } from "../../antrenament/NewTrainingPopup";
 import { ProgramTab } from "./_program/ProgramTab";
 import { memberSub } from "./memberSub";
 
@@ -54,6 +55,7 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
   const pathname = usePathname();
   const params = useSearchParams();
   const tab: Tab = params.get("tab") === "program" ? "program" : "members";
+  const [rev, setRev] = useState(0);
   const members = page.members ?? [];
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
@@ -71,27 +73,30 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
         <PageHeader
           back={BACK}
           title={page.name}
-          actions={page.kind === "club" ? <Button variant="secondary" href={`/antrenament/nou?grupa=${encodeURIComponent(page.groupId)}`}>{PROGRAM.add}</Button> : undefined}
+          actions={page.kind === "club" ? <Button variant="secondary" href={`${pathname}?tab=program&nou=1`}>{PROGRAM.add}</Button> : undefined}
         />
         <PageBody>
-          <ProgramTab groupId={page.groupId} own tabs={tabs} />
+          <ProgramTab key={rev} groupId={page.groupId} own tabs={tabs} addHref={`${pathname}?tab=program&nou=1`} />
         </PageBody>
+        {params.get("nou") && page.kind === "club" && (
+          <NewTrainingPopup group={page.groupId} individual={false} onClose={() => router.replace(`${pathname}?tab=program`)} onDone={() => setRev((n) => n + 1)} />
+        )}
       </>
     );
   }
   return (
     <>
-      <PageHeader back={BACK} title={page.name} actions={presence ? <Button href={presence}>{GROUP.doPresence}</Button> : undefined} />
+      <PageHeader back={BACK} title={page.name} actions={presence ? <Button variant="secondary" href={presence}>{GROUP.doPresence}</Button> : undefined} />
       <PageBody>
         <Columns>
-          <Column grow={1} basis={280}>
+          <Column grow={1}>
             <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
             <div className="flex flex-col gap-3">
               {presence && <Button href={presence} className="w-full">{GROUP.doPresence}</Button>}
               <Button variant="secondary" href={`/grupe/${encodeURIComponent(page.groupId)}/modifica`} className="w-full">{GROUP.edit}</Button>
             </div>
           </Column>
-          <Column grow={2} basis={480}>
+          <Column grow={2}>
             {tabs}
             <ListCard>
               {members.map((m) => (
@@ -115,7 +120,7 @@ function OtherGroup({ page }: { page: CoachGroupPage }) {
   return (
     <>
       <PageHeader back={BACK} title={page.name} />
-      <PageBody narrow={640}>
+      <PageBody narrow>
         <PortalCard tone="subtle" pad="card">
           <p className="text-(length:--portal-text-14) font-bold">{GROUP.otherCoach}</p>
         </PortalCard>

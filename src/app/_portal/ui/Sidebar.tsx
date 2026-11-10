@@ -9,7 +9,7 @@ import { cn } from "@/utils/cn";
 
 const FOCUS = "outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ice";
 
-/** Desktop navy sidebar: brand, the links, and the account button (Profil sits behind it). Hidden below the desktop breakpoint. */
+/** Desktop navy sidebar: brand, the links, and the account button (it links to Profil). Hidden below the desktop breakpoint. */
 export function Sidebar({
   items,
   account,
@@ -17,7 +17,7 @@ export function Sidebar({
   brandHref,
 }: {
   items: NavItem[];
-  account: { label: string; href: string };
+  account: { label: string; href: string; ariaLabel?: string };
   label: string;
   brandHref: string;
 }) {
@@ -55,13 +55,14 @@ export function Sidebar({
       <Link
         href={account.href}
         data-sidebar-account
+        aria-label={account.ariaLabel}
         className={cn(
           "mt-auto flex min-h-(--portal-sidebar-link-h) items-center justify-between gap-2 border border-(--portal-band-on-dark-line) px-(--portal-sidebar-pad-x) text-(length:--portal-text-15) font-bold text-surface-raised no-underline hover:no-underline",
           FOCUS,
         )}
       >
         {account.label}
-        <Icon name="portal-chevron-down" size="sm" />
+        <Icon name="portal-chevron-right" size="sm" />
       </Link>
     </aside>
   );

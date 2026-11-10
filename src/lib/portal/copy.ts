@@ -27,6 +27,8 @@ const children = (n: number): string => count(n, "copil", "copii");
 
 export const NAV = { today: "Azi", groups: "Grupe", competitions: "Concursuri", history: "Istoric", profile: "Profil", menu: "Meniu" } as const;
 
+export const NOT_FOUND = { title: "Pagina nu există", text: "Adresa nu duce nicăieri. Poate a fost mutată sau scrisă greșit.", back: "Înapoi la Azi" } as const;
+
 export const AZI = {
   greeting: (firstName: string) => `Bună, ${firstName}`,
   groups: "Grupe",
@@ -54,6 +56,7 @@ const WEEK_WORD = { first: "prima", second: "a doua", third: "a treia", fourth: 
 
 export const TRAINING = {
   title: "Antrenament nou",
+  close: "Închide",
   editTitle: "Modifică lecția",
   group: "Grup",
   individual: "Individual",
@@ -307,6 +310,8 @@ export const PROGRAM = {
   changeLabel: (weekday: string) => `Schimbă programul de ${weekday}`,
   endLabel: (weekday: string) => `Șterge programul de ${weekday}`,
   nextHeading: "Următoarele date",
+  showingNext: (n: number) => `Se arată următoarele ${n} date`,
+  seeAll: "Vezi toate",
   monthlyRule: (week: string, weekday: string) => `lunar, în ${week} ${weekday} a lunii`,
   ruleTitle: (weekday: string, time: string) => `${weekday}, ${time}`,
   ruleSub: (min: number, freq: string, from: string, until: string | null) => (until ? `${min} min, ${freq}, din ${from}, până pe ${until}` : `${min} min, ${freq}, din ${from}`),

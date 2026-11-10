@@ -111,7 +111,7 @@ export function AthleteCard({ id }: { id: string }) {
       <PageHeader back={back} title={a.name} sub={sub} />
       <PageBody>
         <Columns>
-          <Column grow={1} basis={380} className="contents portal:flex">
+          <Column grow={1} className="contents portal:flex">
             {a.contact?.phone && <div className="order-1 portal:order-none"><ContactSection contact={a.contact} /></div>}
             <div className="order-2 portal:order-none">
               <Section title={CARD.presence}>
@@ -130,7 +130,7 @@ export function AthleteCard({ id }: { id: string }) {
               </div>
             )}
           </Column>
-          <Column grow={1} basis={380} className="contents portal:flex">
+          <Column grow={1} className="contents portal:flex">
             <div className="order-3 portal:order-none"><CompetitionsSection competitions={a.competitions} /></div>
             {ab && (
               <div className="order-5 portal:order-none">

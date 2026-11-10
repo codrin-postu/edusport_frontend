@@ -50,7 +50,7 @@ export function AddAthletes({ id }: { id: string }) {
   return (
     <>
       <PageHeader back={{ href: back, label: group.data.name }} title={ADD_ATHLETE.title(group.data.name)} />
-      <PageBody narrow={640}>
+      <PageBody narrow>
         <AthleteSearch group={id} multiple selected={picked.map((p) => p.athleteId)} onToggle={toggle} />
         <ListCard>
           <ListRow href={`${back}/sportiv-nou`} title={ADD_ATHLETE.notListed} />

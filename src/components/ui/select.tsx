@@ -109,7 +109,7 @@ export const Select: React.FC<SelectProps> = ({
               name={chevron}
               className={cn(
                 "text-secondary transition-transform duration-fast",
-                open && "rotate-180 text-accent",
+                open && "rotate-(--select-open-rotate) text-select-open-ink",
               )}
             />
           </button>

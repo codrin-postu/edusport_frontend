@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import { LESSON, NAV, PRESENCE, PROGRAM, TRAINING } from "@/lib/portal/copy";
@@ -21,6 +21,7 @@ import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { SheetFooter } from "../../../_ui/SheetFooter";
+import { EditLessonPopup } from "./EditLessonPopup";
 import { ScopeSheet, type Scope } from "./ScopeSheet";
 
 type Loaded = { key: string; lesson: CoachLesson | null };
@@ -52,7 +53,12 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
   const router = useRouter();
   const toast = useToast();
   const noAccess = useNoAccess();
+  const params = useSearchParams();
   const today = bucharestToday();
+  const lessonHref = `/lectie/${encodeURIComponent(lesson.lessonId)}`;
+  // A closed door (held, past or not yours): the address drops the popup flag.
+  const wantsEdit = params.get("modifica") === "1";
+  useEffect(() => { if (wantsEdit && !lesson.planEditable) router.replace(lessonHref); }, [wantsEdit, lesson.planEditable, router, lessonHref]);
   const [present, setPresent] = useState(lesson.present === true);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -96,7 +102,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
   return (
     <>
       <PageHeader back={{ href: "/", label: NAV.today }} kicker={LESSON.title} title={lesson.athleteName} sub={sub || undefined} />
-      <PageBody narrow={520}>
+      <PageBody narrow>
         <div data-lesson-form className="flex flex-col gap-(--portal-form-gap)">
           <KeyValueCard
             rows={[
@@ -114,10 +120,11 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
           </PortalCard>
           <AlertLine message={message} />
           {!lesson.archived && <Button onClick={() => void save()} disabled={busy || readOnly} className="w-full">{LESSON.savePresence}</Button>}
-          {lesson.planEditable && <Button variant="secondary" href={`/lectie/${encodeURIComponent(lesson.lessonId)}/modifica`} className="w-full">{LESSON.edit}</Button>}
+          {lesson.planEditable && <Button variant="secondary" href={`${lessonHref}?modifica=1`} className="w-full">{LESSON.edit}</Button>}
           {lesson.deletable && <PortalLink center onClick={() => setAsking(true)}>{LESSON.delete}</PortalLink>}
         </div>
       </PageBody>
+      {lesson.planEditable && wantsEdit && <EditLessonPopup lesson={lesson} onSaved={reload} onClose={() => router.replace(lessonHref)} />}
       {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle(dayMonth(lesson.date))} oneSub={TRAINING.scopeOneSub(dayMonth(lesson.date))} followingSub={TRAINING.scopeFollowingDeleteSub(dayMonth(lesson.date))} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
       {asking && !series && <PlainDelete date={shortDate(lesson.date)} onClose={() => setAsking(false)} onConfirm={() => remove(null)} />}
     </>

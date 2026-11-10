@@ -213,7 +213,7 @@ for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) 
         expect((await css(side.locator("[aria-current=page]"), ["background-color"]))["background-color"]).toBe(ICE);
         expect((await css(h1, ["font-size"]))["font-size"]).toBe("40px");
         expect((await css(header, ["background-color"]))["background-color"]).toBe(ICE_LIGHT);
-        expect((await css(page.locator("[data-page-body]"), ["max-width"]))["max-width"]).toBe("1200px");
+        expect((await css(page.locator("[data-page-body]"), ["max-width"]))["max-width"]).toBe("1040px");
       }
     });
 

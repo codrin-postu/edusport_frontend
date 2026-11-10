@@ -86,13 +86,13 @@ export function SettingsView() {
       <PageHeader back={{ href: "/profil", label: NAV.profile }} title={PROFILE.settings} />
       <PageBody>
         <Columns>
-          <Column grow={1} basis={380}>
+          <Column grow={1}>
             <Section title={SETTINGS.account}>
               <KeyValueCard rows={[{ key: SETTINGS.name, value: me.data.name }, { key: SETTINGS.email, value: me.data.email }]} />
               <p className="text-(length:--portal-text-13) text-muted">{SETTINGS.adminNote}</p>
             </Section>
           </Column>
-          <Column grow={1} basis={380}>
+          <Column grow={1}>
             <Section title={SETTINGS.phone}>
               <PhoneForm phone={me.data.phone} />
             </Section>

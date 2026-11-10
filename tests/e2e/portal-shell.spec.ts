@@ -76,9 +76,11 @@ test.describe("desktop 1280", () => {
     await expect(side.getByText("CLUBUL SPORTIV")).toBeVisible();
     await expect(side.getByText("EDUSPORT")).toBeVisible();
     for (const name of ["Azi", "Grupe", "Concursuri", "Istoric"]) await expect(side.getByRole("link", { name, exact: true })).toBeVisible();
-    await expect(side.getByRole("link", { name: "Profil", exact: true })).toHaveCount(0);
-    const account = side.getByRole("link", { name: "Andrei" });
+    // The account button is the one link to Profil: labelled "Profil", not a dropdown.
+    await expect(side.getByRole("link", { name: "Profil", exact: true })).toHaveCount(1);
+    const account = side.getByRole("link", { name: "Profil", exact: true });
     await expect(account).toHaveAttribute("href", "/profil");
+    await expect(account).toHaveText("Andrei");
     await expect(page.locator("[data-bottom-nav]")).toBeHidden();
   });
 

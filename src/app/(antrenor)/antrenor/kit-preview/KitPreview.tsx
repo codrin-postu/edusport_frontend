@@ -97,7 +97,7 @@ export function KitPreview() {
       </div>
       <PageBody>
         <Columns>
-          <Column grow={1} basis={380}>
+          <Column grow={1}>
             <Kit name="Field">
               <Field label="E-mail" hint="Folosește adresa de cont.">
                 <Input type="email" defaultValue="alina@example.invalid" />
@@ -187,7 +187,7 @@ export function KitPreview() {
               <SaveBar count="6 prezenți" action={<Button>Salvează</Button>} />
             </Kit>
           </Column>
-          <Column grow={2} basis={420}>
+          <Column grow={2}>
             <Kit name="StatCard">
               <StatCard big="4" label="antrenamente azi" side={[{ value: "1", label: "completat" }]} />
             </Kit>

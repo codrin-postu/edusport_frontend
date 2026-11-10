@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useState } from "react";
-import Button from "@/components/ui/button";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
@@ -9,10 +8,11 @@ import { TRAINING } from "@/lib/portal/copy";
 import type { CoachGroupRow, CoachMe } from "@/lib/portal/api-types";
 import { dayKeyOf, initialValue, monthlyNote, ready, trainingSummary, type RepeatChoice, type TrainingKind, type TrainingMode, type TrainingValue } from "@/lib/portal/training-form";
 import { AthleteSearch } from "../../_ui/AthleteSearch";
-import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { DaySquares } from "@/app/_portal/ui/DaySquares";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { SummaryBand } from "@/app/_portal/ui/SummaryBand";
+import { SheetFooter } from "../../_ui/SheetFooter";
 import { CoachPicker } from "../prezenta/CoachPicker";
 import { DURATION_OPTIONS, LABEL } from "../grupe/[id]/_program/TimeDuration";
 
@@ -20,11 +20,13 @@ const REPEATS: { value: RepeatChoice; label: string }[] = [
   { value: "none", label: TRAINING.once }, { value: "weekly", label: TRAINING.weekly }, { value: "biweekly", label: TRAINING.biweekly }, { value: "monthly", label: TRAINING.monthly },
 ];
 const UNTIL_OPTIONS = [{ value: "season", label: TRAINING.seasonEnd }, { value: "date", label: TRAINING.untilDate }];
-const FORM =
-  "flex flex-col gap-(--portal-form-gap) portal:border-card portal:border-card-line portal:bg-surface-raised portal:p-(--portal-login-pad) portal:shadow-retro";
 
 type TrainingFormProps = {
   mode: TrainingMode;
+  /** The popup title: "Antrenament nou" or "Modifică lecția". */
+  title: string;
+  /** Renunță, the close button and Escape. */
+  onClose: () => void;
   today: string;
   me: CoachMe;
   /** Own Club groups (`GET /groups` mine with kind club). */
@@ -36,7 +38,7 @@ type TrainingFormProps = {
 };
 
 /** One form for a new training (group or individual, once or repeating) and for editing a lesson. */
-export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: TrainingFormProps) {
+export function TrainingForm({ mode, title, onClose, today, me, groups, startKind, onSubmit }: TrainingFormProps) {
   const ids = { group: useId(), repeat: useId(), time: useId(), duration: useId(), until: useId() };
   const edit = mode.kind === "edit";
   const noGroups = groups.length === 0;
@@ -83,7 +85,14 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
   );
 
   return (
-    <div data-training-form className={FORM}>
+    <Sheet
+      open
+      onOpenChange={(o) => { if (!o && !busy) onClose(); }}
+      title={title}
+      popup={{ closeLabel: TRAINING.close }}
+      footer={<SheetFooter message={message} busy={busy} disabled={!ready(v)} confirm={edit ? TRAINING.save : TRAINING.submit} onClose={onClose} onConfirm={() => void submit()} />}
+    >
+    <div data-training-form className="flex flex-col gap-(--portal-form-gap)">
       {!edit && !noGroups && (
         <Segmented
           label={TRAINING.title}
@@ -155,8 +164,7 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
       )}
       {v.kind === "individual" && <CoachPicker me={me.coachId} options={me.coachOptions} value={v.coachIds} onChange={(coachIds) => set({ coachIds })} />}
       {summary && <SummaryBand>{summary}</SummaryBand>}
-      <AlertLine message={message} />
-      <Button onClick={() => void submit()} disabled={!ready(v) || busy} className="w-full">{edit ? TRAINING.save : TRAINING.submit}</Button>
     </div>
+    </Sheet>
   );
 }

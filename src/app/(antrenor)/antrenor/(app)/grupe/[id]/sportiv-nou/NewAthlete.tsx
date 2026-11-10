@@ -74,7 +74,7 @@ export function NewAthlete({ id }: { id: string }) {
   return (
     <>
       <PageHeader back={{ href: `${back}/adauga`, label: ADD_ATHLETE.title(group.data.name) }} title={NEW_ATHLETE.title} />
-      <PageBody narrow={520}>
+      <PageBody narrow>
         <Field label={NEW_ATHLETE.name}>
           {(fid) => <Input id={fid} value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} surface="card" />}
         </Field>

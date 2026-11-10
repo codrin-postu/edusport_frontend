@@ -175,7 +175,7 @@ for (const size of SIZES) {
       } else {
         const info_ = (await page.locator("[data-group-info]").boundingBox())!;
         const table = (await head.boundingBox())!;
-        expect(info_.x + info_.width).toBeLessThanOrEqual(table.x);
+        expect(table.x + table.width).toBeLessThanOrEqual(info_.x);
         await expect(page.getByText("Program:")).toBeVisible();
         await expect(page.getByText("Loc:")).toBeVisible();
         await expect(page.getByText("Antrenori:")).toBeVisible();

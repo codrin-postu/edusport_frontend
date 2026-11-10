@@ -35,7 +35,7 @@ for (const size of SIZES) {
 
       const add = page.getByRole("link", { name: "+ Adaugă program" }).locator("visible=true");
       await expect(add).toHaveCount(wide ? 2 : 1);
-      for (const link of await add.all()) await expect(link).toHaveAttribute("href", "/antrenament/nou?grupa=gavansati");
+      for (const link of await add.all()) await expect(link).toHaveAttribute("href", "/grupe/gavansati?tab=program&nou=1");
       if (wide) await expect(page.locator("[data-page-header]").getByRole("link", { name: "+ Adaugă program" })).toBeVisible();
 
       await expect(page.getByText("Programul este public, îl vede oricine pe site.")).toBeVisible();
@@ -54,6 +54,11 @@ for (const size of SIZES) {
       await expect(moved).toContainText("Joi, 18:15");
       await expect(moved).toContainText("mutată din marți, 17 noiembrie");
       await expect(moved.locator("[data-end-block]")).toHaveText("Mutată");
+      // Only the next 4 dates, then the footer with "Vezi toate" (the calendar).
+      await expect(dates.locator("[data-date-block]")).toHaveCount(4);
+      const footer = dates.locator("[data-dates-footer]");
+      await expect(footer).toContainText("Se arată următoarele 4 date");
+      await expect(footer.getByRole("link", { name: "Vezi toate ›" })).toHaveAttribute("href", "/calendar");
       // No row before today, and no other red text than the date words.
       await expect(page.locator("[data-date-block]").filter({ hasText: /^Mie\s*4$/i })).toHaveCount(0);
       const reds = await page.locator("main *").evaluateAll((els, red) => els
@@ -66,6 +71,11 @@ for (const size of SIZES) {
         const rule = (await page.getByRole("heading", { name: "Program săptămânal" }).boundingBox())!;
         const next = (await page.getByRole("heading", { name: "Următoarele date" }).boundingBox())!;
         expect(next.x).toBeGreaterThan(rule.x);
+        // Fixed 3:2 grid: the weekly program column is wider than the dates column.
+        const mainW = (await page.getByRole("heading", { name: "Program săptămânal" }).locator("xpath=../..").boundingBox())!.width;
+        const sideW = (await dates.boundingBox())!.width;
+        expect(Math.round((mainW / sideW) * 10)).toBeGreaterThanOrEqual(13);
+        expect(Math.round((mainW / sideW) * 10)).toBeLessThanOrEqual(17);
       }
       await shot(page, info, "grupa-program");
     });

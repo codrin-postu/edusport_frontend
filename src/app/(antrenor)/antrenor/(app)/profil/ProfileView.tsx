@@ -20,7 +20,7 @@ export function ProfileView() {
   return (
     <>
       <PageHeader brand title={me.name} sub={PROFILE.role} />
-      <PageBody narrow={560}>
+      <PageBody narrow>
         <ListCard>
           <ListRow href="/profil/setari" title={PROFILE.settings} sub={PROFILE.settingsSub} />
           <ListRow href="/profil/securitate" title={PROFILE.security} sub={PROFILE.securitySub} />

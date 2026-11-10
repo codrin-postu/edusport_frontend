@@ -85,7 +85,8 @@ for (const size of SIZES) {
         await step();
         await expect(dialog).toBeVisible();
         await check(page, name);
-        await page.keyboard.press("Escape");
+        // A sheet over a form popup: Escape closes the sheet, then the popup.
+        for (let i = 0; i < 3 && (await dialog.count()) > 0; i++) await page.keyboard.press("Escape");
         await expect(dialog).toHaveCount(0);
       };
       await open("/grupe/gavansati/modifica", "Mută sheet", () => page.getByRole("button", { name: /^Mută / }).first().click());
@@ -96,6 +97,9 @@ for (const size of SIZES) {
       await open("/grupe/gavansati?tab=program", "Dată anulată sheet", () => page.getByRole("button", { name: /^Mie\s*11\s/i }).click());
       await open("/grupe/gavansati?tab=program", "Dată mutată sheet", () => page.getByRole("button", { name: /^Joi\s*19\s/i }).click());
       await open("/prezenta?id=s-today", "Day sheet", () => page.locator("[data-page-header] button").first().click());
+      await open("/antrenament/nou", "Antrenament nou popup", async() => undefined);
+      await open("/grupe/gavansati?tab=program&nou=1", "Adaugă program popup", async() => undefined);
+      await open("/lectie/lplan/modifica", "Modifică lecția popup", async() => undefined);
       await open("/lectie/lser2/modifica", "Ce schimbi sheet", async() => { await page.getByLabel("Ora").fill("18:00"); await page.getByRole("button", { name: "Salvează", exact: true }).click(); });
       await open("/lectie/lser2", "Ce ștergi sheet", () => page.getByRole("button", { name: "Șterge lecția" }).click());
       await open("/lectie/lplan", "Șterge lecția sheet", () => page.getByRole("button", { name: "Șterge lecția" }).click());

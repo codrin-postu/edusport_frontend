@@ -17,7 +17,7 @@ type PageHeaderProps = {
  */
 export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: PageHeaderProps) {
   return (
-    <header data-page-header className="portal:border-b portal:border-line-subtle portal:bg-ice-light">
+    <header data-page-header className="portal:sticky portal:top-0 portal:z-sticky portal:border-b portal:border-line-subtle portal:bg-ice-light">
       <div className="mx-auto flex w-full max-w-(--portal-container) flex-col gap-(--portal-head-gap) px-(--portal-page-x) pt-(--portal-head-pt) pb-(--portal-head-pb) portal:gap-2 portal:py-(--portal-band-pad-y)">
         {back ? (
           <Link

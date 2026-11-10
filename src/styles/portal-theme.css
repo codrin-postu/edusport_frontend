@@ -32,6 +32,8 @@
   --field-label-leading: 1.3;      /* 13 field label leading */
   --color-label-ink: #0e1a3c;      /* 13 field label colour */
   --color-input-invalid: #0e1a3c;  /* layout: invalid input border in navy (strong input border), the alert icon sits on the error line */
+  --color-select-open-ink: #0e1a3c; /* layout: no red text in the portals, the open select chevron stays navy */
+  --select-open-rotate: 180deg;    /* layout: the select chevron points down, up while the menu is open */
   --color-alert-ink: #0e1a3c;      /* layout: no red text in the portals, error lines in navy with an alert icon */
   --field-hint-size: 13px;         /* 16 field hint size */
   --field-hint-leading: 1.4;       /* 16 field hint leading */
@@ -155,6 +157,9 @@
   --portal-monthtitle-w: 150px;    /* layout month picker title */
   --portal-points-w: 84px;         /* layout points cell */
   --portal-sheet-w: 460px;         /* layout sheet width from the desktop breakpoint */
+  --portal-popup-w: 560px;         /* layout form popup width from the desktop breakpoint */
+  --portal-popup-max-h: 92svh;     /* layout form popup height cap (bottom sheet on a phone) */
+  --portal-cols: minmax(0, 3fr) minmax(0, 2fr); /* layout two-part pages: main 3, side 2 */
   --portal-sheet-gap: 14px;        /* layout sheet child gap */
   --portal-nowtile-day: 32px;      /* layout now tile day */
   --portal-nowtile-time: 26px;     /* layout now tile time */
@@ -198,7 +203,7 @@
     --portal-page-x: 32px;         /* 34 page side padding */
     --portal-section-gap: 32px;    /* 34 gap between sections */
     --portal-cols-gap: 32px;       /* layout desktop columns */
-    --portal-container: 1200px;    /* 34 content max width */
+    --portal-container: 1040px;    /* 34 content max width */
     --portal-sidebar-w: 240px;     /* 25 sidebar */
     --portal-sidebar-link-h: 48px; /* 25 sidebar link */
     --portal-sidebar-link-size: 15px; /* 25 sidebar link */

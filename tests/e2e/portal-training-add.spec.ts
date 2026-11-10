@@ -33,16 +33,23 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/");
       const add = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
-      await expect(add).toHaveAttribute("href", "/antrenament/nou");
+      await expect(add).toHaveAttribute("href", "/?nou=1");
       await expect(page.getByText("+ Lecție individuală")).toHaveCount(0);
+      await add.click();
+      await expect(page).toHaveURL(/\/\?nou=1$/);
+      await expect(page.getByRole("dialog").getByRole("heading", { name: "Antrenament nou" })).toBeVisible();
+      // Renunță closes the popup over Azi.
+      await page.getByRole("dialog").getByRole("button", { name: "Renunță" }).click();
+      await expect(page.getByRole("dialog")).toHaveCount(0);
+      await expect(page).toHaveURL(/localhost:3200\/$/);
     });
 
     test("the group form: defaults, weekly summary, an end date and the body", async({ page }, info) => {
       await loginAs(page);
       await page.goto("/antrenament/nou");
-      await expect(page.locator("h1")).toHaveCount(1);
-      await expect(page.locator("h1")).toHaveText("Antrenament nou");
-      await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
+      await expect(page).toHaveURL(/\/\?nou=1$/);
+      await expect(page.getByRole("dialog").getByRole("heading", { name: "Antrenament nou" })).toBeVisible();
+      await expect(page.getByRole("dialog").getByRole("button", { name: "Închide" })).toBeVisible();
       await expect(page.getByRole("button", { name: "Grup", exact: true })).toHaveAttribute("aria-pressed", "true");
       await expect(page.getByRole("button", { name: "Individual", exact: true })).toHaveAttribute("aria-pressed", "false");
       await page.getByLabel("Grupa", { exact: true }).click();
@@ -70,8 +77,12 @@ for (const size of SIZES) {
       // Square shapes.
       for (const el of [days.first(), submit(page)]) await expect(el).toHaveCSS("border-top-left-radius", "0px");
       await expect(days.filter({ hasText: "Ma" })).toHaveCSS("background-color", NAVY);
-      const form = (await page.locator("[data-training-form]").boundingBox())!;
-      if (size.width >= 900) expect(form.width).toBeLessThanOrEqual(560);
+      const box = (await page.getByRole("dialog").boundingBox())!;
+      if (size.width >= 900) expect(Math.round(box.width)).toBe(560);
+      else expect(Math.round(box.y + box.height)).toBe(size.height);
+      expect(box.height).toBeLessThanOrEqual(size.height * 0.92 + 1);
+      // The footer stays in view with Renunță beside the confirm.
+      await expect(page.getByRole("dialog").locator("[data-sheet-footer]").getByRole("button", { name: "Renunță" })).toBeInViewport();
 
       await submit(page).click();
       await expect(page).toHaveURL(/\/grupe\/gavansati\?tab=program$/);
@@ -138,7 +149,7 @@ for (const size of SIZES) {
       await page.getByLabel("Ora", { exact: true }).fill("18:15");
       await submit(page).click();
       await expect(page.getByRole("alert").getByText("Cerere invalidă.")).toBeVisible();
-      await expect(page).toHaveURL(/\/antrenament\/nou/);
+      await expect(page.getByRole("dialog")).toBeVisible();
       await expect(page.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
     });
 
@@ -171,7 +182,7 @@ for (const size of SIZES) {
       await expect(page.getByRole("checkbox").filter({ hasText: "Ma" })).toHaveAttribute("aria-checked", "true");
       await submit(page).click();
       await expect(page.getByRole("alert").getByText("Sportivul are deja o lecție pe marți, 10 noi, la 17:00.")).toBeVisible();
-      await expect(page).toHaveURL(/\/antrenament\/nou/);
+      await expect(page.getByRole("dialog")).toBeVisible();
       await expect(page.getByLabel("Ora", { exact: true })).toHaveValue("17:00");
       expect(await lastBody("POST", "/lessons")).toMatchObject({ repeat: { freq: "weekly", days: ["tue"], until: null }, date: "2026-11-10" });
     });
@@ -192,11 +203,12 @@ for (const size of SIZES) {
     test("a group preset and the old lesson address", async({ page }) => {
       await loginAs(page);
       await page.goto("/antrenament/nou?grupa=gavansati");
-      await expect(page.getByRole("link", { name: "‹ Avansați" })).toHaveAttribute("href", "/grupe/gavansati?tab=program");
+      await expect(page).toHaveURL(/\/grupe\/gavansati\?tab=program&nou=1$/);
+      await expect(page.getByRole("dialog").getByRole("heading", { name: "Antrenament nou" })).toBeVisible();
       await expect(page.getByRole("button", { name: "Grup", exact: true })).toHaveAttribute("aria-pressed", "true");
       await expect(page.getByLabel("Grupa", { exact: true })).toContainText("Avansați");
       await page.goto("/lectie/noua");
-      await expect(page).toHaveURL(/\/antrenament\/nou\?tip=individual$/);
+      await expect(page).toHaveURL(/\/\?nou=individual$/);
       await expect(page.getByRole("button", { name: "Individual", exact: true })).toHaveAttribute("aria-pressed", "true");
     });
   });

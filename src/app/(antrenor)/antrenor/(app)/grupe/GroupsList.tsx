@@ -29,7 +29,7 @@ export function GroupsList() {
       <PageHeader brand title={GRUPE.title} sub={GRUPE.sub(GRUPE.groupsCount(mine.length), kids(total))} />
       <PageBody>
         <Columns>
-          <Column grow={1} basis={380}>
+          <Column grow={1}>
             <Section title={GRUPE.mine}>
               <ListCard>
                 {mine.map((g) => (
@@ -39,7 +39,7 @@ export function GroupsList() {
             </Section>
           </Column>
           {others.length > 0 && (
-            <Column grow={1} basis={380}>
+            <Column grow={1}>
               <Section title={GRUPE.others}>
                 <ListCard>
                   {others.map((g) => (

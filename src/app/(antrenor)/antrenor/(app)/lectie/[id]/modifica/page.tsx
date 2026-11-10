@@ -1,6 +1,7 @@
-import { EditLesson } from "./EditLesson";
+import { redirect } from "next/navigation";
 
-export default async function EditLessonPage({ params }: { params: Promise<{ id: string }> }) {
+/** The old address: "Modifică lecția" is a popup over the lesson page now. */
+export default async function EditLessonRedirect({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <EditLesson id={id} />;
+  redirect(`/lectie/${encodeURIComponent(id)}?modifica=1`);
 }

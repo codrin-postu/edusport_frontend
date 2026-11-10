@@ -19,7 +19,7 @@ export function PortalShell({
   children,
 }: {
   nav: NavItem[];
-  account: { label: string; href: string };
+  account: { label: string; href: string; ariaLabel?: string };
   brandHref: string;
   phoneNav?: boolean;
   children: React.ReactNode;

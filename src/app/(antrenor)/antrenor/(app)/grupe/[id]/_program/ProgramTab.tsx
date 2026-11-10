@@ -11,6 +11,7 @@ import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
+import Link from "@/components/ui/link";
 import { Column, Columns } from "@/app/_portal/ui/PageBody";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Section } from "@/app/_portal/ui/SectionHeading";
@@ -39,10 +40,15 @@ type ProgramTabProps = {
   own: boolean;
   /** The "Sportivi" / "Program" switch the group page owns; the tab places it at the top of its first column. */
   tabs: React.ReactNode;
+  /** Opens the "Antrenament nou" popup with this group preset. */
+  addHref: string;
 };
 
+/** The list shows the next 4 dates; "Vezi toate" opens the calendar (the board's choice). */
+const NEXT_DATES = 4;
+
 /** The Program tab: weekly rules, "+ Adaugă program", the public switch, and the next dates as a list or a month. */
-export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
+export function ProgramTab({ groupId, own, tabs, addHref }: ProgramTabProps) {
   const today = bucharestToday();
   const toast = useToast();
   const noAccess = useNoAccess();
@@ -77,15 +83,21 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
   if (first.state === "error") return <LoadError onRetry={reload} />;
   const listed = [...(first.data?.occurrences ?? []), ...(second.data?.occurrences ?? [])].filter((o) => o.date >= today).sort(byStart);
   const monthRows = (picked.data?.occurrences ?? []).slice().sort(byStart);
-  const dateRows = (rows: Occurrence[]) => (
+  const dateRows = (rows: Occurrence[], more = false) => (
     <ListCard>
       {rows.map((o) => <DateRow key={`${o.documentId ?? o.eventId}:${o.date}:${o.startTime}`} occurrence={o} today={today} onOpen={openDate(o)} />)}
+      {more && (
+        <div data-dates-footer className="flex min-h-(--portal-tap) items-center justify-between gap-3 px-(--portal-row-pad-x) text-(length:--portal-text-13) text-muted">
+          <span>{PROGRAM.showingNext(NEXT_DATES)}</span>
+          <Link href="/calendar" tone="plain" className="inline-flex min-h-(--portal-tap) items-center text-(length:--portal-text-14) font-bold text-primary no-underline">{PROGRAM.seeAll} ›</Link>
+        </div>
+      )}
     </ListCard>
   );
   const spinner = <div className="flex justify-center py-6"><Spinner /></div>;
 
   const datesBody = view === "list"
-    ? (data === null || second.data === null ? spinner : listed.length === 0 ? <p className="text-body-sm text-secondary">{PROGRAM.nothingThisMonth}</p> : dateRows(listed))
+    ? (data === null || second.data === null ? spinner : listed.length === 0 ? <p className="text-body-sm text-secondary">{PROGRAM.nothingThisMonth}</p> : dateRows(listed.slice(0, NEXT_DATES), listed.length > NEXT_DATES))
     : (
       <>
         <div className="flex items-center justify-between">
@@ -105,7 +117,7 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
   return (
     <>
       <Columns>
-        <Column grow={1} basis={380}>
+        <Column grow={1}>
           {tabs}
           {data === null ? spinner : (
             <>
@@ -117,12 +129,12 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
                   </ListCard>
                 </Section>
               )}
-              {canEdit && <Button variant="secondary" href={`/antrenament/nou?grupa=${encodeURIComponent(groupId)}`} className="w-full">{PROGRAM.add}</Button>}
+              {canEdit && <Button variant="secondary" href={addHref} className="w-full">{PROGRAM.add}</Button>}
               {own && data.kind === "club" && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
             </>
           )}
         </Column>
-        <Column grow={1} basis={380}>
+        <Column grow={1}>
           <Section title={PROGRAM.nextHeading}>
             <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
             {datesBody}

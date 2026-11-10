@@ -135,6 +135,8 @@ h1.text-branding-font {
   --color-accent: #be3330;
   /* Error and alert lines. Red here; the portals override it (portal-theme.css). */
   --color-alert-ink: #be3330;
+  --color-select-open-ink: #be3330; /* select chevron while its menu is open (the accent on the public site) */
+  --select-open-rotate: 180deg; /* select chevron while its menu is open */
   /* Border of an invalid input. Red here; the portals override it (portal-theme.css). */
   --color-input-invalid: #be3330;
   --color-primary-on-dark: #fbf8f1;
