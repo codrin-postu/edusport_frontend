@@ -18,6 +18,7 @@ export function Columns({ children, className }: { children: React.ReactNode; cl
 }
 
 /** `grow` 2 is the main part (left on the desktop), 1 the side part (right). `className` lets a page flatten a column on the phone (`contents portal:flex`) to reorder its blocks with `order-*`. */
-export function Column({ children, grow, className }: { children: React.ReactNode; grow?: 1 | 2; className?: string }) {
-  return <div className={cn("flex min-w-0 flex-col gap-(--portal-section-gap)", grow === 2 && "portal:-order-1", className)}>{children}</div>;
+export function Column({ children, grow, sticky, className }: { children: React.ReactNode; grow?: 1 | 2; sticky?: boolean; className?: string }) {
+  // `sticky`: a short side column stays under the sticky page header on the desktop while the main column scrolls.
+  return <div data-column-sticky={sticky ? "" : undefined} className={cn("flex min-w-0 flex-col gap-(--portal-section-gap)", grow === 2 && "portal:-order-1", sticky && "portal:sticky portal:top-(--portal-side-top)", className)}>{children}</div>;
 }

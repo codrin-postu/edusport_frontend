@@ -83,3 +83,25 @@ test.describe("not found", () => {
     });
   }
 });
+
+test.describe("sticky side column", () => {
+  for (const path of ["/istoric", "/grupe/gavansati"]) {
+    test(`desktop ${path}: the side column sticks just under the sticky header`, async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 480 });
+      await loginAs(page);
+      await page.goto(path);
+      const side = page.locator("[data-column-sticky]");
+      await expect(side).toHaveCount(1);
+      await expect(side).toHaveCSS("position", "sticky");
+      const header = await page.locator("[data-page-header]").evaluate((el) => (el as HTMLElement).offsetHeight);
+      const top = await side.evaluate((el) => parseFloat(getComputedStyle(el).top));
+      expect(Math.abs(top - (header + 32))).toBeLessThan(2);
+    });
+  }
+  test("phone: the side column is not sticky", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await loginAs(page);
+    await page.goto("/istoric");
+    await expect(page.locator("[data-column-sticky]")).toHaveCSS("position", "static");
+  });
+});

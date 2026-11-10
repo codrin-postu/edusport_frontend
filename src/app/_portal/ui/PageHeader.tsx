@@ -1,5 +1,6 @@
 import Link from "@/components/ui/link";
 import { BrandBlock } from "@/app/_portal/ui/BrandBlock";
+import { HeaderHeight } from "@/app/_portal/ui/HeaderHeight";
 import { PhoneBar } from "@/app/_portal/ui/PhoneBar";
 
 type PageHeaderProps = {
@@ -21,6 +22,7 @@ export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: 
     <>
     <PhoneBar title={title} back={back} brand={brand} />
     <header data-page-header className="portal:sticky portal:top-0 portal:z-sticky portal:border-b portal:border-line-subtle portal:bg-ice-light">
+      <HeaderHeight />
       <div className="mx-auto flex w-full max-w-(--portal-container) flex-col gap-(--portal-head-gap) px-(--portal-page-x) pt-(--portal-head-pt) pb-(--portal-head-pb) portal:gap-2 portal:py-(--portal-band-pad-y)">
         {back ? (
           <Link

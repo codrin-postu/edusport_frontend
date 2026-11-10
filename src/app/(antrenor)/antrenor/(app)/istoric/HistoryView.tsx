@@ -50,7 +50,7 @@ export function HistoryView() {
         {history.state === "error" && <LoadError onRetry={history.reload} />}
         {history.state === "ready" && data && (
           <Columns>
-            <Column grow={1}>
+            <Column grow={1} sticky>
               <StatCard
                 big={String(data.sessions)}
                 label={HISTORY.statLabel(data.sessions, monthName(month).toLowerCase())}

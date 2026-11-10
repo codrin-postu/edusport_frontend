@@ -77,7 +77,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
       <PageHeader back={BACK} title={page.name} />
       <PageBody>
         <Columns>
-          <Column grow={1}>
+          <Column grow={1} sticky>
             <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
             <div className="flex flex-col gap-3">
               {presence && <Button href={presence} className="w-full">{GROUP.doPresence}</Button>}
