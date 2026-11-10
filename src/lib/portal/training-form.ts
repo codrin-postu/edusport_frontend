@@ -24,8 +24,9 @@ export function initialValue(mode: TrainingMode, today: string, me: string): Tra
     kind: "grup", groupId: null, athlete: null, repeat: "weekly", days: [dayKeyOf(today)], date: today, startTime: "", durationMin: 60,
     from: today, until: null, coachIds: [me],
   };
+  // "+ Adaugă program" adds a repeating rule, so it starts weekly; a plain new training starts as a single one.
   if (mode.kind === "preset") return { ...base, groupId: mode.groupId };
-  if (mode.kind === "new") return base;
+  if (mode.kind === "new") return { ...base, repeat: "none" };
   const l = mode.lesson;
   const s = l.series;
   return {

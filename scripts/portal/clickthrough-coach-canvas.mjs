@@ -157,6 +157,8 @@ step("added a one-off class");
 await page.goto("/antrenament/nou?tip=individual");
 await page.getByLabel("Caută după nume").fill(child.name.split(" ")[0]);
 await page.getByRole("button", { name: new RegExp(`^${child.name}`) }).first().click();
+await page.getByLabel("Se repetă", { exact: true }).click();
+await page.getByRole("menuitemradio", { name: "Săptămânal", exact: true }).click();
 await page.getByLabel("Ora").fill("20:00");
 await typeDate(page, "Din data", dayA);
 await page.getByLabel("Până la", { exact: true }).click();

@@ -7,8 +7,16 @@ export function byWeekday(rules: CoachProgramRule[]): CoachProgramRule[] {
   return [...rules].sort((a, b) => ORDER.indexOf(a.day) - ORDER.indexOf(b.day) || a.from.localeCompare(b.from) || a.startTime.localeCompare(b.startTime));
 }
 
-/** The eventId a write addresses: the row of that weekday whose from and to cover `date`, else the row the coach tapped. */
+const covers = (r: CoachProgramRule, date: string): boolean => r.from <= date && date <= r.to;
+
+/**
+ * The eventId a write addresses. A row is identified by eventId, weekday and start time, never by weekday alone:
+ * the tapped row when it covers `date`; else, on the same weekday, the row that covers `date` at the same start time
+ * (a split weekday), then any row of that weekday that covers it; else the tapped row.
+ */
 export function eventForDate(rules: CoachProgramRule[], rule: CoachProgramRule, date: string): string {
-  const hit = rules.find((r) => r.day === rule.day && r.from <= date && date <= r.to);
+  if (covers(rule, date)) return rule.eventId;
+  const sameDay = rules.filter((r) => r.day === rule.day && covers(r, date));
+  const hit = sameDay.find((r) => r.startTime === rule.startTime) ?? sameDay[0];
   return (hit ?? rule).eventId;
 }

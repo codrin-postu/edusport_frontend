@@ -58,8 +58,9 @@ it("knows when the form is ready", () => {
 
 it("starts from the mode", () => {
   const n = t.initialValue({ kind: "new" }, "2026-11-05", "tm-andrei");
-  assert.deepEqual(n, { kind: "grup", groupId: null, athlete: null, repeat: "weekly", days: ["thu"], date: "2026-11-05", startTime: "", durationMin: 60, from: "2026-11-05", until: null, coachIds: ["tm-andrei"] });
-  assert.equal(t.initialValue({ kind: "preset", groupId: "g1" }, "2026-11-05", "tm-andrei").groupId, "g1");
+  assert.deepEqual(n, { kind: "grup", groupId: null, athlete: null, repeat: "none", days: ["thu"], date: "2026-11-05", startTime: "", durationMin: 60, from: "2026-11-05", until: null, coachIds: ["tm-andrei"] });
+  const preset = t.initialValue({ kind: "preset", groupId: "g1" }, "2026-11-05", "tm-andrei");
+  assert.deepEqual([preset.groupId, preset.repeat], ["g1", "weekly"]);
   const lesson = {
     lessonId: "lser2", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-17", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"],
     series: { seriesId: "sl-ana", freq: "weekly", days: ["tue"], weekOfMonth: null, startTime: "17:00", durationMin: 60, from: "2026-11-10", to: "2027-06-30", untilSeasonEnd: true },

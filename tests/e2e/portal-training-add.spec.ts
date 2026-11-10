@@ -49,8 +49,11 @@ for (const size of SIZES) {
       await expect(page.getByRole("menuitemradio", { name: "Avansați" })).toBeVisible();
       await expect(page.getByRole("menuitemradio", { name: "Primii Pași" })).toHaveCount(0);
       await page.getByRole("menuitemradio", { name: "Avansați" }).click();
-      await expect(page.getByLabel("Se repetă", { exact: true })).toContainText("Săptămânal");
+      await expect(page.getByLabel("Se repetă", { exact: true })).toContainText("Nu se repetă");
+      await expect(page.getByLabel("Data", { exact: true })).toBeVisible();
+      await expect(page.getByRole("checkbox")).toHaveCount(0);
       await expect(submit(page)).toBeDisabled();
+      await pick(page, "Se repetă", "Săptămânal");
 
       const days = page.getByRole("checkbox");
       await expect(days.filter({ hasText: "Jo" })).toHaveAttribute("aria-checked", "true");
@@ -82,10 +85,10 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/antrenament/nou");
       const y = async(text: string) => (await page.getByText(text, { exact: true }).locator("visible=true").first().boundingBox())!.y;
+      expect(Math.abs((await y("Data")) - (await y("Ora")))).toBeLessThan(2);
+      await pick(page, "Se repetă", "Săptămânal");
       expect(Math.abs((await y("Din data")) - (await y("Până la")))).toBeLessThan(2);
       expect(Math.abs((await y("Ora")) - (await y("Durată")))).toBeLessThan(2);
-      await pick(page, "Se repetă", "Nu se repetă");
-      expect(Math.abs((await y("Data")) - (await y("Ora")))).toBeLessThan(2);
     });
 
     test("Lunar says which week it uses", async({ page }) => {
@@ -162,6 +165,7 @@ for (const size of SIZES) {
       await page.goto("/antrenament/nou?tip=individual");
       await page.getByLabel("Caută după nume").fill("Ana");
       await page.getByRole("button", { name: /Ana Stoica/ }).click();
+      await pick(page, "Se repetă", "Săptămânal");
       await typeDate(page, "Din data", "10112026");
       await page.getByLabel("Ora", { exact: true }).fill("17:00");
       await expect(page.getByRole("checkbox").filter({ hasText: "Ma" })).toHaveAttribute("aria-checked", "true");
