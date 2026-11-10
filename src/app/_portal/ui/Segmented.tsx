@@ -14,7 +14,7 @@ export function Segmented<T extends string>({
   label: string;
 }) {
   return (
-    <div role="group" aria-label={label} className="flex self-start border-control border-line">
+    <div role="group" aria-label={label} className="inline-flex self-start border-control border-line">
       {options.map((o) => (
         <button
           key={o.value}

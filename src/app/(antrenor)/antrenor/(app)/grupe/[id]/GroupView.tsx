@@ -70,12 +70,11 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
       />
     </div>
   );
-  const actions = tab === "program"
-    ? page.kind === "club" ? <Button variant="secondary" href={`${pathname}?tab=program&nou=1`}>{PROGRAM.add}</Button> : undefined
-    : presence ? <Button variant="secondary" href={presence}>{GROUP.doPresence}</Button> : undefined;
+  // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (Club groups only: the admin changes Școala programs).
+  const addProgram = page.kind === "club" ? `${pathname}?tab=program&nou=1` : null;
   return (
     <>
-      <PageHeader back={BACK} title={page.name} actions={actions} />
+      <PageHeader back={BACK} title={page.name} />
       <PageBody>
         <Columns>
           <Column grow={1}>
@@ -83,6 +82,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
             <div className="flex flex-col gap-3">
               {presence && <Button href={presence} className="w-full">{GROUP.doPresence}</Button>}
               <Button variant="secondary" href={`/grupe/${encodeURIComponent(page.groupId)}/modifica`} className="w-full">{GROUP.edit}</Button>
+              {addProgram && <Button variant="secondary" href={addProgram} className="w-full">{PROGRAM.add}</Button>}
             </div>
           </Column>
           <Column grow={2}>

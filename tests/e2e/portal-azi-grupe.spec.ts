@@ -221,7 +221,7 @@ for (const size of SIZES) {
       await expect(card).toContainText("Antrenori: Andrei Popa");
       await expect(card.locator("b")).toHaveText(["Program:", "Loc:", "Antrenori:"]);
       const presence = page.getByRole("link", { name: "Fă prezența" });
-      await expect(presence).toHaveCount(size.width >= 900 ? 2 : 1);
+      await expect(presence).toHaveCount(1);
       await expect(presence.last()).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agavansati%3A/);
       await expect(page.getByRole("link", { name: "Modifică grupa" })).toHaveAttribute("href", "/grupe/gavansati/modifica");
       await expect(page.getByRole("button", { name: "Sportivi (9)" })).toHaveAttribute("aria-pressed", "true");
@@ -237,10 +237,8 @@ for (const size of SIZES) {
       const list = (await rows.first().boundingBox())!;
       if (size.width >= 900) {
         expect(list.x + list.width).toBeLessThan(left.x);
-        const band = page.locator("[data-page-header]").getByRole("link", { name: "Fă prezența" });
-        await expect(band).toBeVisible();
-        // The header action is the secondary (white) button, like the main action on the other pages.
-        await expect(band).toHaveCSS("background-color", "rgb(255, 255, 255)");
+        // No header actions on Grupă: the side column holds them on both tabs, so the header never changes height.
+        await expect(page.locator("[data-page-header]").getByRole("link")).toHaveCount(1);
       } else {
         expect(list.y).toBeGreaterThan(left.y);
       }

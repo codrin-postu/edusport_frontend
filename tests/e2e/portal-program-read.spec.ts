@@ -34,9 +34,11 @@ for (const size of SIZES) {
       await expect(page.getByRole("button", { name: "Șterge programul de marți" })).toHaveText("Șterge");
 
       const add = page.getByRole("link", { name: "+ Adaugă program" }).locator("visible=true");
-      await expect(add).toHaveCount(wide ? 2 : 1);
+      await expect(add).toHaveCount(1);
+      // It sits under "Modifică grupa" in the side column, on both tabs.
+      const edit = (await page.getByRole("link", { name: "Modifică grupa" }).boundingBox())!;
+      expect((await add.boundingBox())!.y).toBeGreaterThan(edit.y);
       for (const link of await add.all()) await expect(link).toHaveAttribute("href", "/grupe/gavansati?tab=program&nou=1");
-      if (wide) await expect(page.locator("[data-page-header]").getByRole("link", { name: "+ Adaugă program" })).toBeVisible();
 
       await expect(page.getByText("Programul este public, îl vede oricine pe site.")).toBeVisible();
       await expect(page.getByRole("checkbox", { name: "Arată programul pe site" })).toBeChecked();

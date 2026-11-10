@@ -183,6 +183,7 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
             {(segment) => (
               <DateSegment
                 segment={segment}
+                {...(segment.type === "literal" ? { "data-date-literal": "" } : {})}
                 className={cn(
                   "py-px outline-none",
                   // The dot needs no padding of its own; with it the field

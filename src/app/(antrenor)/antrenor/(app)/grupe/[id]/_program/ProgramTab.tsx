@@ -125,7 +125,6 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
                   </ListCard>
                 </Section>
               )}
-              {canEdit && <Button variant="secondary" href={addHref} className="w-full">{PROGRAM.add}</Button>}
               {own && data.kind === "club" && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
             </>
           )}
