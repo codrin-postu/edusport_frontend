@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import { AZI, LIST } from "@/lib/portal/copy";
 import { weekdayShort } from "@/lib/portal/format";
+import { roCount } from "@/lib/ro-plural";
 import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
@@ -28,7 +29,7 @@ const ROW1 = "portal:min-h-(--portal-tap) portal:items-center";
 
 function groupRow(c: CoachClassRow): SessionRowData {
   return {
-    kind: "grup", startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done,
+    kind: "grup", date: c.date, startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done,
     sessionId: c.sessionId, occurrenceKey: c.occurrenceKey, lessonId: null,
   };
 }
@@ -57,7 +58,7 @@ export default function AziPage() {
   const rows: SessionRowData[] = [
     ...data.groups.map(groupRow),
     ...data.lessons.map((l): SessionRowData => ({
-      kind: "individual", startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done,
+      kind: "individual", date: data.today, startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done,
       sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
     })),
   ].sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -85,9 +86,9 @@ export default function AziPage() {
             <ListRow
               key={c.occurrenceKey ?? c.groupId + c.date}
               href={presenceHref(c)}
-              lead={<DateBlock word={weekdayShort(c.date)} big={String(Number(c.date.slice(8)))} />}
+              lead={<DateBlock word={weekdayShort(c.date)} day={String(Number(c.date.slice(8)))} time={c.startTime} />}
               title={c.groupName}
-              sub={AZI.todoLine(c.startTime)}
+              sub={AZI.groupSub(roCount(c.children, "copil", "copii"), c.location)}
               end={<StatusBlock kind="Grup" done={false} />}
             />
           ))}
@@ -101,9 +102,9 @@ export default function AziPage() {
       <ListCard>
         <ListRow
           href={next.kind === "individual" ? `/lectie/${encodeURIComponent(next.lessonId ?? "")}` : presenceHref({ sessionId: null, occurrenceKey: next.occurrenceKey })}
-          lead={<DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} />}
+          lead={<DateBlock word={weekdayShort(next.date)} day={String(Number(next.date.slice(8)))} time={next.startTime} />}
           title={next.title}
-          sub={AZI.nextSub(next.startTime, next.location)}
+          sub={next.location}
         />
       </ListCard>
     </Section>

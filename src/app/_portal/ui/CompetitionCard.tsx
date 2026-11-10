@@ -28,7 +28,7 @@ export function CompetitionCard({
     <details open={defaultOpen} className="border-card border-card-line bg-surface-raised shadow-retro">
       <summary data-more-row className="flex min-h-(--portal-row-min-h) cursor-pointer list-none items-stretch outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden">
         <span className="flex min-w-0 flex-1 items-center gap-(--portal-row-gap) px-(--portal-row-pad-x) py-(--portal-row-pad-y)">
-          <DateBlock word={month} big={day} />
+          <DateBlock word={month} day={day} />
           <span className="flex flex-col gap-0.5">
             <span className="text-(length:--portal-row-title) font-bold">{name}</span>
             <span className="text-(length:--portal-row-sub) text-muted">{place}</span>

@@ -11,7 +11,7 @@ test("the now tile ticks on the minute and a class greys when its start passes",
   await page.goto("/");
   const tile = page.getByRole("group", { name: "Joi, 5 noiembrie, ora 14:58" });
   await expect(tile).toBeVisible();
-  const row = page.getByRole("link", { name: /^15:00 Matei Radu/ });
+  const row = page.locator("[data-today-list]").getByRole("link", { name: /15:00.*Matei Radu/ });
   await expect(row.locator("[data-date-num]")).not.toHaveCSS("color", "rgb(151, 155, 165)");
   await page.clock.runFor(31_000);
   await expect(page.getByRole("group", { name: "Joi, 5 noiembrie, ora 14:59" }).getByText("14:59", { exact: true })).toBeVisible();

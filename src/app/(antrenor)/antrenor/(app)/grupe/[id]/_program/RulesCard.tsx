@@ -22,7 +22,7 @@ export function RulesCard({ rule, later, editable, onChange, onEnd }: RulesCardP
   const freq = rule.freq === "monthly" && rule.weekOfMonth ? PROGRAM.monthlyRule(TRAINING.weekWord[rule.weekOfMonth], weekday) : PROGRAM.freqWord[rule.freq];
   return (
     <ListRow
-      lead={next ? <DateBlock word={weekdayShort(next)} big={String(Number(next.slice(8)))} /> : <EmptyDateBlock label={AZI.none} />}
+      lead={next ? <DateBlock word={weekdayShort(next)} day={String(Number(next.slice(8)))} time={rule.startTime} /> : <EmptyDateBlock label={AZI.none} />}
       title={PROGRAM.ruleTitle(capitalize(weekday), rule.startTime)}
       sub={PROGRAM.ruleSub(rule.durationMin, freq, later ? shortDate(rule.from) : dayMonthLong(rule.from), rule.untilSeasonEnd ? null : dayMonthLong(rule.to))}
       end={null}

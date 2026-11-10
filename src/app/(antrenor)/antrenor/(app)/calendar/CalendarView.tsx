@@ -78,7 +78,7 @@ export function CalendarView() {
                           from="calendar"
                           key={i.lessonId ?? i.occurrenceKey ?? i.sessionId ?? `${i.startTime}${i.title}`}
                           row={{
-                            kind: i.kind, startTime: i.startTime, title: i.title, children: i.children, location: i.location, durationMin: i.durationMin,
+                            kind: i.kind, date: shown, startTime: i.startTime, title: i.title, children: i.children, location: i.location, durationMin: i.durationMin,
                             done: i.done, cancelled: i.cancelled, sessionId: i.sessionId, occurrenceKey: i.occurrenceKey, lessonId: i.lessonId,
                           }}
                         />

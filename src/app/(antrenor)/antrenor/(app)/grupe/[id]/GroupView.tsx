@@ -144,7 +144,7 @@ function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> })
       <Sheet open={open} onOpenChange={setOpen} title={GROUP.standInPresence}>
         <ListCard>
           {page.standIn.map((s) => (
-            <ListRow key={s.occurrenceKey} lead={<DateBlock word={weekdayShort(s.date)} big={String(Number(s.date.slice(8)))} />} href={`/prezenta?occurrence=${encodeURIComponent(s.occurrenceKey)}&from=grupa`} title={shortWhen(s.date)} sub={s.startTime} />
+            <ListRow key={s.occurrenceKey} lead={<DateBlock word={weekdayShort(s.date)} day={String(Number(s.date.slice(8)))} time={s.startTime} />} href={`/prezenta?occurrence=${encodeURIComponent(s.occurrenceKey)}&from=grupa`} title={shortWhen(s.date)} />
           ))}
         </ListCard>
       </Sheet>

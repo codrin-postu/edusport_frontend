@@ -24,7 +24,7 @@ export function DateRow({ occurrence: o, today, onOpen }: DateRowProps) {
   const end = state === "cancelled" ? <EndBlock kind="soft">{PROGRAM.cancelled}</EndBlock> : state === "moved" ? <EndBlock kind="soft">{PROGRAM.moved}</EndBlock> : onOpen ? undefined : null;
   return (
     <ListRow
-      lead={<DateBlock word={weekdayShort(o.date)} big={String(Number(o.date.slice(8)))} />}
+      lead={<DateBlock word={weekdayShort(o.date)} day={String(Number(o.date.slice(8)))} time={o.startTime ?? undefined} />}
       title={PROGRAM.ruleTitle(capitalize(weekdayLong(o.date)), o.startTime ?? "")}
       sub={sub(o, state)}
       end={end}

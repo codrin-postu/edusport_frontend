@@ -8,7 +8,7 @@ const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 const calls = async(method: string, tail: RegExp) => (await mockLog()).filter((c) => c.method === method && tail.test(c.path));
 const dateRow = (page: Page, word: string, day: string): Locator => page.getByRole("button", { name: new RegExp(`^${word}\\s*${day}\\s`, "i") });
 const dialog = (page: Page): Locator => page.getByRole("dialog");
-const block = (page: Page, word: string, day: string): Locator => page.locator("[data-date-block]").filter({ hasText: new RegExp(`^${word}\\s*${day}$`, "i") });
+const block = (page: Page, word: string, day: string): Locator => page.locator("[data-date-block]").filter({ hasText: new RegExp(`^${word}\\s*${day}(\\s*\\d\\d:\\d\\d)?$`, "i") });
 
 async function typeDate(page: Page, label: string, ddmmyyyy: string): Promise<void> {
   await dialog(page).getByRole("group", { name: label }).getByRole("spinbutton").first().click();

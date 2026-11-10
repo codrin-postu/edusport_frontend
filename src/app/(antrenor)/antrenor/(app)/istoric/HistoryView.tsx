@@ -67,7 +67,7 @@ export function HistoryView() {
                     focusable
                     key={`${r.sessionId ?? r.lessonId ?? r.occurrenceKey}`}
                     href={href(r)}
-                    lead={<DateBlock word={weekdayShort(r.date)} big={String(Number(r.date.slice(8)))} />}
+                    lead={<DateBlock word={weekdayShort(r.date)} day={String(Number(r.date.slice(8)))} />}
                     title={r.name}
                     sub={sub(r)}
                     end={<StatusBlock kind={r.kind === "individuala" ? "Individual" : "Grup"} done={r.done} />}

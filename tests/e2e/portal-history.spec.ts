@@ -66,6 +66,11 @@ for (const size of SIZES) {
         await expect(rows.nth(i).locator("[data-date-word]")).toHaveText(words[i]);
         await expect(rows.nth(i).locator("[data-date-num]")).toHaveText(nums[i]);
       }
+      // The history rows carry no hour: word and day only, in the same square size.
+      for (let i = 0; i < 4; i++) {
+        await expect(rows.nth(i).locator("[data-date-time]")).toHaveCount(0);
+        expect((await rows.nth(i).locator("[data-date-block]").boundingBox())!.height).toBe(64);
+      }
       await expect(rows.nth(0)).toContainText("Avansați");
       await expect(rows.nth(0)).toContainText("grup, 8 prezenți");
       await expect(rows.nth(0).getByRole("img", { name: "Grup, completat" })).toBeVisible();

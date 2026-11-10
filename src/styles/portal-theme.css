@@ -89,11 +89,11 @@
   --portal-row-sub: 13px;          /* 5 row sub line */
   --portal-trail-w: 44px;          /* 9 chevron column */
   --portal-dateblock-w: 52px;      /* 10 date and time block */
-  --portal-dateblock-h: 52px;      /* 10 date and time block */
+  --portal-dateblock-h: 64px;      /* 10 date block, three lines: word, day, hour */
   --portal-dateblock-radius: 6px;  /* 10 named round exception */
   --portal-dateblock-num: 22px;    /* 10 date number */
-  --portal-dateblock-num-solo: 17px; /* 10 date number alone */
   --portal-dateblock-word: 11px;   /* 10 date word */
+  --portal-dateblock-time: 11px;   /* 10 date hour */
   --portal-endblock-w: 96px;       /* 11 end block, status and session band */
   --portal-typeblock-w: 64px;      /* layout status block */
   --portal-typeblock-icon: 26px;   /* layout status block icon */

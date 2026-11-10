@@ -24,13 +24,17 @@ for (const size of SIZES) {
       await expect(stat).toContainText("2 completate");
       const rows = page.getByRole("link").filter({ has: page.locator("[data-status-block]") });
       await expect(rows).toHaveCount(5);
-      const today = rows.filter({ hasNot: page.locator("[data-date-word]") });
+      const today = page.locator("[data-today-list]").getByRole("link").filter({ has: page.locator("[data-status-block]") });
       await expect(today).toHaveCount(4);
+      // Every today row shows weekday, day and hour in its square (not the hour alone).
+      for (let i = 0; i < 4; i++) {
+        await expect(today.nth(i).locator("[data-date-word]")).toHaveText("Joi");
+        await expect(today.nth(i).locator("[data-date-num]")).toHaveText("5");
+        await expect(today.nth(i).locator("[data-date-time]")).toHaveText(["10:00", "15:00", "17:00", "18:15"][i]);
+      }
       await expect(today.nth(0)).toContainText("Primii Pași");
-      await expect(today.nth(0)).toContainText("10:00");
       await expect(today.nth(0).locator("[data-date-num]")).toHaveCSS("color", "rgb(151, 155, 165)");
       await expect(today.nth(1)).toContainText("Matei Radu");
-      await expect(today.nth(1)).toContainText("15:00");
       await expect(today.nth(1).locator("[data-individual-tag]")).toHaveCSS("background-color", "rgb(17, 17, 17)");
       await expect(today.nth(1)).toContainText("50 min");
       await expect(today.nth(1).locator("[data-status-block]")).toHaveAttribute("aria-label", "Individual, completat");
@@ -38,7 +42,6 @@ for (const size of SIZES) {
       await expect(today.nth(2)).toContainText("Ana Stoica");
       await expect(today.nth(2).locator("[data-status-block]")).toHaveAttribute("aria-label", "Individual, necompletat");
       await expect(today.nth(3)).toContainText("Avansați");
-      await expect(today.nth(3)).toContainText("18:15");
       await expect(today.nth(3)).toContainText("grup, 9 copii, AFI Cotroceni");
       await expect(today.nth(3)).toHaveAttribute("href", /\/prezenta\?id=s-today$/);
       const done = today.nth(3).locator("[data-status-block]");
@@ -50,13 +53,20 @@ for (const size of SIZES) {
       await expect(today.nth(0)).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agprimii%3A/);
       await expect(page.getByRole("link", { name: "Calendar ›" })).toHaveAttribute("href", "/calendar");
       await expect(page.getByRole("heading", { name: "Prezență de completat" })).toBeVisible();
-      const past = rows.filter({ has: page.locator("[data-date-word]") });
+      const past = page.getByRole("heading", { name: "Prezență de completat" }).locator("xpath=../following-sibling::*[1]//a");
       await expect(past).toHaveCount(1);
       await expect(past).toContainText("Avansați");
       await expect(past.locator("[data-date-word]")).toHaveText("Vin");
       await expect(past.locator("[data-date-word]")).toHaveCSS("color", "rgb(190, 51, 48)");
       await expect(past.locator("[data-date-num]")).toHaveText("30");
-      await expect(past).toContainText("grup, 18:15");
+      await expect(past.locator("[data-date-time]")).toHaveText("18:15");
+      await expect(past).toContainText("grup, ");
+      await expect(past.locator("[data-date-block]")).toHaveCount(1);
+      // A today row and a future or past row share one square size.
+      const sq = async(l: typeof past) => (await l.locator("[data-date-block]").first().boundingBox())!;
+      expect((await sq(today.nth(0))).height).toBe((await sq(past)).height);
+      expect((await sq(today.nth(0))).width).toBe((await sq(past)).width);
+      expect((await sq(past)).height).toBe(64);
       await shot(page, info, "azi");
     });
 
@@ -98,7 +108,7 @@ test.describe("Azi layout", () => {
     await expect(button).toHaveCount(1);
     const box = await button.boundingBox();
     expect(box!.width).toBeGreaterThan(390 - 2 * 20 - 2);
-    const card = await page.getByRole("link", { name: /^18:15 Avansați/ }).first().boundingBox();
+    const card = await page.locator("[data-today-list]").getByRole("link", { name: /18:15.*Avansați/ }).boundingBox();
     expect(box!.y).toBeGreaterThan(card!.y);
     const past = await page.getByRole("heading", { name: "Prezență de completat" }).boundingBox();
     expect(past!.y).toBeGreaterThan(box!.y);
@@ -328,8 +338,9 @@ test.describe("Azi week column", () => {
     const nextRow = page.getByRole("heading", { name: "Următorul antrenament" }).locator("xpath=../following-sibling::*[1]//a");
     // 14:00 Bucharest: the 15:00 lesson of Matei Radu is the first one after now.
     await expect(nextRow).toContainText("Matei Radu");
-    await expect(nextRow).toContainText("15:00");
+    await expect(nextRow.locator("[data-date-time]")).toHaveText("15:00");
     await expect(nextRow.locator("[data-date-word]")).toHaveText("Joi");
+    await expect(nextRow.locator("[data-date-num]")).toHaveText("5");
     await expect(nextRow).toHaveAttribute("href", "/lectie/ldone");
     await expect(page.getByText("Ședințe de grup", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("3 ținute, 3 rămase");
     await expect(page.getByText("Lecții individuale", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText(/^\d+ ținut(ă|e), \d+ rămas(ă|e)$/);
@@ -374,7 +385,7 @@ test.describe("Azi week column", () => {
     await page.goto("/");
     const row = page.getByRole("link", { name: /Ana Stoica/ });
     await expect(row).toHaveAttribute("href", "/lectie/l9");
-    await expect(row).toContainText("09:00");
+    await expect(row.locator("[data-date-time]")).toHaveText("09:00");
     await expect(row.locator("[data-date-word]")).toHaveText("Vin");
   });
 });

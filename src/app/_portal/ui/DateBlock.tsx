@@ -17,29 +17,25 @@ export function EmptyDateBlock({ label }: { label: string }) {
   );
 }
 
-/** Date or time block: ice square, 6px radius (a named round exception), optional red word above the number. */
-export function DateBlock({ word, big, dim, tip }: { word?: string; big: string; dim?: boolean; tip?: string }) {
+/** Date block, one size everywhere: red weekday word, day number and (when the row has one) the hour, stacked in an ice square with a 6px radius (a named round exception). */
+export function DateBlock({ word, day, time, dim, tip }: { word: string; day: string; time?: string; dim?: boolean; tip?: string }) {
   const block = (
     <span
       data-date-block
       tabIndex={tip ? 0 : undefined}
       className="flex h-(--portal-dateblock-h) w-(--portal-dateblock-w) shrink-0 flex-col items-center justify-center rounded-(--portal-dateblock-radius) bg-ice-light outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus"
     >
-      {word && (
-        <span data-date-word className="text-(length:--portal-dateblock-word) font-bold uppercase text-accent">
-          {word}
+      <span data-date-word className="text-(length:--portal-dateblock-word) font-bold uppercase leading-tight text-accent">
+        {word}
+      </span>
+      <span data-date-num className={cn("font-display text-(length:--portal-dateblock-num) font-extrabold leading-none", dim && "text-muted-on-dark")}>
+        {day}
+      </span>
+      {time && (
+        <span data-date-time className={cn("text-(length:--portal-dateblock-time) font-bold leading-tight", dim && "text-muted-on-dark")}>
+          {time}
         </span>
       )}
-      <span
-        data-date-num
-        className={cn(
-          "font-display font-extrabold leading-none",
-          word ? "text-(length:--portal-dateblock-num)" : "text-(length:--portal-dateblock-num-solo)",
-          dim && "text-muted-on-dark",
-        )}
-      >
-        {big}
-      </span>
     </span>
   );
   if (!tip) return block;

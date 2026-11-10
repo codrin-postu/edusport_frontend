@@ -194,27 +194,27 @@ export function KitPreview() {
               <ListCard>
                 <ListRow
                   href="/kit-preview#r1"
-                  lead={<DateBlock word="Mar" big="10" />}
+                  lead={<DateBlock word="Mar" day="10" time="16:00" />}
                   title="Intermediari Bronze"
                   sub="grup, 14 copii, AFI Cotroceni"
                 />
                 <ListRow
                   href="/kit-preview#r2"
-                  lead={<DateBlock big="17:30" />}
+                  lead={<DateBlock word="Mar" day="10" time="17:30" />}
                   title="Inițiere A"
                   sub="grup, 8 prezenți"
                   end={<EndBlock kind="todo">Fă prezența</EndBlock>}
                 />
                 <ListRow
                   href="/kit-preview#r3"
-                  lead={<DateBlock big="18:30" />}
+                  lead={<DateBlock word="Mar" day="10" time="18:30" />}
                   title="Maria Ionescu"
                   sub={<><IndividualTag />45 min</>}
                   end={<StatusBlock kind="Individual" done />}
                 />
                 <ListRow
                   href="/kit-preview#r4"
-                  lead={<DateBlock big="15:00" dim />}
+                  lead={<DateBlock word="Mar" day="10" time="15:00" dim />}
                   title="Luca Stan"
                   sub="grup, 8 prezenți"
                   dim

@@ -31,6 +31,8 @@ for (const size of SIZES) {
       const first = cards.nth(0);
       await expect(first.locator("[data-date-block]").first()).toContainText("Oct");
       await expect(first.locator("[data-date-block]").first()).toContainText("26");
+      await expect(first.locator("[data-date-time]")).toHaveCount(0);
+      expect((await first.locator("[data-date-block]").first().boundingBox())!.height).toBe(64);
       await expect(first.locator("summary")).toContainText("Brașov");
       await expect(first.locator("[data-comp-count]")).toContainText("3");
       await expect(first.locator("[data-comp-count]")).toContainText("sportivi");

@@ -48,11 +48,11 @@ for (const size of SIZES) {
       await expect(dateRow(page, "Mar", "10")).toContainText("Marți, 18:15");
       await expect(dateRow(page, "Mar", "10")).toContainText("60 min");
       const dates = page.getByRole("heading", { name: "Următoarele date" }).locator("xpath=../..");
-      const cancelled = dates.locator("[data-date-block]").filter({ hasText: /^Mie\s*11$/i }).locator("xpath=../..");
+      const cancelled = dates.locator("[data-date-block]").filter({ hasText: /^Mie\s*11(\s*\d\d:\d\d)?$/i }).locator("xpath=../..");
       await expect(cancelled).toContainText("Miercuri, 18:15");
       await expect(cancelled.locator("[data-end-block]")).toHaveText("Anulată");
       await expect(cancelled.locator("[data-end-block]")).toHaveCSS("background-color", ICE_LIGHT);
-      const moved = dates.locator("[data-date-block]").filter({ hasText: /^Joi\s*19$/i }).locator("xpath=../..");
+      const moved = dates.locator("[data-date-block]").filter({ hasText: /^Joi\s*19(\s*\d\d:\d\d)?$/i }).locator("xpath=../..");
       await expect(moved).toContainText("Joi, 18:15");
       await expect(moved).toContainText("mutată din marți, 17 noiembrie");
       await expect(moved.locator("[data-end-block]")).toHaveText("Mutată");
@@ -62,7 +62,7 @@ for (const size of SIZES) {
       await expect(footer).toContainText("Se arată următoarele 4 date");
       await expect(footer.getByRole("link", { name: "Vezi toate ›" })).toHaveAttribute("href", "/calendar");
       // No row before today, and no other red text than the date words.
-      await expect(page.locator("[data-date-block]").filter({ hasText: /^Mie\s*4$/i })).toHaveCount(0);
+      await expect(page.locator("[data-date-block]").filter({ hasText: /^Mie\s*4(\s*\d\d:\d\d)?$/i })).toHaveCount(0);
       const reds = await page.locator("main *").evaluateAll((els, red) => els
         .filter((el) => el.children.length === 0 && (el.textContent ?? "").trim() !== "" && getComputedStyle(el).color === red && !el.hasAttribute("data-date-word"))
         .map((el) => el.textContent), RED);

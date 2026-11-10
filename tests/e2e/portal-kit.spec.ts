@@ -126,8 +126,12 @@ for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) 
       expect((await css(rows.first().locator("> span").last(), ["width"])).width).toBe("44px");
 
       const block = list.locator("[data-date-block]").first();
-      expect(await css(block, ["width", "height", "border-radius", "background-color"])).toEqual({ width: "52px", height: "52px", "border-radius": "6px", "background-color": ICE_LIGHT });
+      expect(await css(block, ["width", "height", "border-radius", "background-color"])).toEqual({ width: "52px", height: "64px", "border-radius": "6px", "background-color": ICE_LIGHT });
       expect(await css(block.locator("[data-date-word]"), ["color", "font-size", "text-transform"])).toEqual({ color: RED, "font-size": "11px", "text-transform": "uppercase" });
+      expect(await css(block.locator("[data-date-time]"), ["font-size", "font-weight"])).toEqual({ "font-size": "11px", "font-weight": "700" });
+      await expect(block.locator("[data-date-time]")).toHaveText("16:00");
+      // Every square in the list is the same size.
+      for (const b of await list.locator("[data-date-block]").all()) expect((await b.boundingBox())!.height).toBe(64);
       const num = await css(block.locator("[data-date-num]"), ["font-size", "font-family"]);
       expect(num["font-size"]).toBe("22px");
       expect(num["font-family"]).toContain("League Spartan");

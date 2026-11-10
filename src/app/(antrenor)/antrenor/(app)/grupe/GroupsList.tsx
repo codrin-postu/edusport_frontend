@@ -16,7 +16,7 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 
 const kids = (n: number): string => roCount(n, "copil", "copii");
 
-const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} tip={GRUPE.nextTooltip} /> : <EmptyDateBlock label={GRUPE.noNext} />);
+const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(next.date)} day={String(Number(next.date.slice(8)))} time={next.startTime} tip={GRUPE.nextTooltip} /> : <EmptyDateBlock label={GRUPE.noNext} />);
 
 export function GroupsList() {
   const groups = usePortal<CoachGroups>("coach/groups");
