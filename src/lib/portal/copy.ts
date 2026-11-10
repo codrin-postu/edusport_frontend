@@ -46,7 +46,15 @@ export const AZI = {
   statLabel: "antrenamente azi",
   doneOne: "completat",
   doneMany: "completate",
-  pastHeading: "Antrenamente fără prezență",
+  pastHeading: "Prezență de completat",
+  summaryHeading: "Azi pe scurt",
+  nextHeading: "Următorul antrenament",
+  nextSub: (time: string, location: string | null) => (location ? `${time}, ${location}` : time),
+  weekHeading: "Săptămâna aceasta",
+  weekGroups: "Ședințe de grup",
+  weekLessons: "Lecții individuale",
+  weekMissing: "Prezență necompletată",
+  weekCount: (held: number, left: number) => `${held} ${held === 1 ? "ținută" : "ținute"}, ${left} ${left === 1 ? "rămasă" : "rămase"}`,
   groupSub: (kids: string, location: string | null) => (location ? `grup, ${kids}, ${location}` : `grup, ${kids}`),
   minutes: (n: number) => `${n} min`,
   nowLabel: (weekdayDay: string, time: string) => `${weekdayDay}, ora ${time}`,
@@ -351,7 +359,7 @@ export const HISTORY = {
   },
   presentSub: (n: number) => `grup, ${count(n, "prezent", "prezenți")}`,
   standInSub: (n: number) => `înlocuitor, ${count(n, "prezent", "prezenți")}`,
-  notDoneSub: "grup, fără prezență",
+  notDoneSub: "grup, prezență necompletată",
 } as const;
 
 export const PROFILE = {

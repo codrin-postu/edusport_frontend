@@ -235,15 +235,35 @@ function classRow(g, date, done) {
 
 const lessonRow = (l) => ({ lessonId: l.lessonId, athleteName: l.athleteName, date: l.date, startTime: l.startTime, durationMin: l.durationMin, done: l.state === "saved" });
 
+/** Backend nextAndWeek: the browser clock stands at 14:00 Bucharest; own classes and lessons, no cancelled, no stand-in. */
+const MOCK_NOW = "14:00";
+function nextAndWeek(todo) {
+  const monday = addDays(today, -((new Date(`${today}T00:00:00Z`).getUTCDay() + 6) % 7));
+  const sunday = addDays(monday, 6);
+  const horizon = addDays(today, 14);
+  const last = sunday > horizon ? sunday : horizon;
+  const months = [...new Set([monday, last].map((d) => d.slice(0, 7)))];
+  const items = months.flatMap((m) => calendarData(m).days).flatMap((d) => d.items).filter((i) => i.date >= monday && i.date <= last && !i.cancelled && !i.standIn);
+  const started = (i) => i.date < today || (i.date === today && i.startTime <= MOCK_NOW);
+  const week = items.filter((i) => i.date <= sunday);
+  const count = (kind, held) => week.filter((i) => i.kind === kind && started(i) === held).length;
+  const f = items.find((i) => i.date <= horizon && !started(i));
+  return {
+    next: f ? { kind: f.kind, date: f.date, startTime: f.startTime, title: f.title, location: f.location, occurrenceKey: f.occurrenceKey, lessonId: f.lessonId } : null,
+    week: { groupsHeld: count("grup", true), groupsLeft: count("grup", false), lessonsHeld: count("individual", true), lessonsLeft: count("individual", false), missing: todo.filter((r) => r.date >= monday).length },
+  };
+}
+
 function todayData(date) {
-  if (state.emptyToday) return { date, today, groups: [], lessons: [], todo: date === today ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [] };
+  if (state.emptyToday) { const todo = date === today ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : []; return { date, today, groups: [], lessons: [], todo, ...nextAndWeek(todo) }; }
   const own = Object.values(world.groups).filter((g) => g.own);
   const isToday = date === today;
+  const todo = isToday ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [];
   return {
     date, today,
     groups: isToday ? own.map((g) => classRow(g, date)) : [],
     lessons: Object.values(world.lessons).filter((l) => l.date === date).map(lessonRow),
-    todo: isToday ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [],
+    todo, ...nextAndWeek(todo),
   };
 }
 

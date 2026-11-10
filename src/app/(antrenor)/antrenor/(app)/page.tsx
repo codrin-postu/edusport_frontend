@@ -7,6 +7,7 @@ import { longDay, monthShort, weekdayShort } from "@/lib/portal/format";
 import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { NowTile } from "@/app/_portal/ui/NowTile";
 import { PageBody } from "@/app/_portal/ui/PageBody";
@@ -81,6 +82,30 @@ export default function AziPage() {
         </ListCard>
       </Section>
     ) : null;
+  const { next, week } = data;
+  const nextSection = next && (
+    <Section title={AZI.nextHeading}>
+      <ListCard>
+        <ListRow
+          href={next.kind === "individual" ? `/lectie/${encodeURIComponent(next.lessonId ?? "")}` : presenceHref({ sessionId: null, occurrenceKey: next.occurrenceKey })}
+          lead={<DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} />}
+          title={next.title}
+          sub={AZI.nextSub(next.startTime, next.location)}
+        />
+      </ListCard>
+    </Section>
+  );
+  const weekSection = (
+    <Section title={AZI.weekHeading}>
+      <KeyValueCard
+        rows={[
+          { key: AZI.weekGroups, value: AZI.weekCount(week.groupsHeld, week.groupsLeft) },
+          { key: AZI.weekLessons, value: AZI.weekCount(week.lessonsHeld, week.lessonsLeft) },
+          { key: AZI.weekMissing, value: String(week.missing) },
+        ]}
+      />
+    </Section>
+  );
   return (
     <>
       <PageHeader
@@ -91,11 +116,14 @@ export default function AziPage() {
         actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
-        {/* Desktop: summary column left, list right; heading on grid row 1, content on row 2, so the card's top lines up with the list's top. */}
+        {/* Desktop: summary column left (2), list right (3); headings on grid row 1, content on row 2, so both columns start on the same line. */}
         <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols-side-first) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
+          <div className="hidden portal:col-start-1 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} /></div>
           <div className="contents portal:col-start-1 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
-            {past && <div className="order-4 portal:order-none">{past}</div>}
+            {nextSection && <div className="order-4 portal:order-none">{nextSection}</div>}
+            <div className="order-5 portal:order-none">{weekSection}</div>
+            {past && <div className="order-6 portal:order-none">{past}</div>}
           </div>
           <div className="order-2 flex flex-col gap-3 portal:contents">
             <div className="portal:col-start-2 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} /></div>

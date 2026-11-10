@@ -75,7 +75,7 @@ for (const size of SIZES) {
       await expect(rows.nth(2).locator("[data-individual-tag]")).toHaveText("Individual");
       await expect(rows.nth(2)).toContainText("50 min");
       await expect(rows.nth(2).getByRole("img", { name: "Individual, completat" })).toBeVisible();
-      await expect(rows.nth(3)).toContainText("grup, fără prezență");
+      await expect(rows.nth(3)).toContainText("grup, prezență necompletată");
       await expect(rows.nth(3).getByRole("img", { name: "Grup, necompletat" })).toBeVisible();
       await expect(rows.nth(3)).toHaveAttribute("href", /^\/prezenta\?occurrence=occ%3Agavansati%3A2026-11-02/);
       await shot(page, info, "istoric");

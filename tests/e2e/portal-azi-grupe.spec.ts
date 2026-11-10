@@ -49,7 +49,7 @@ for (const size of SIZES) {
       await expect(todo).toHaveCSS("background-color", "rgb(14, 26, 60)");
       await expect(today.nth(0)).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agprimii%3A/);
       await expect(page.getByRole("link", { name: "Calendar ›" })).toHaveAttribute("href", "/calendar");
-      await expect(page.getByRole("heading", { name: "Antrenamente fără prezență" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Prezență de completat" })).toBeVisible();
       const past = rows.filter({ has: page.locator("[data-date-word]") });
       await expect(past).toHaveCount(1);
       await expect(past).toContainText("Avansați");
@@ -67,17 +67,19 @@ for (const size of SIZES) {
       await expect(page.getByRole("heading", { name: "Antrenamente azi" })).toBeVisible();
       await expect(page.getByText("Nicio ședință azi.")).toBeVisible();
       // The unsaved presences stay listed on a day without sessions.
-      await expect(page.getByRole("heading", { name: "Antrenamente fără prezență" })).toBeVisible();
-      await expect(page.getByRole("link").filter({ has: page.locator("[data-date-word]") })).toHaveCount(1);
+      await expect(page.getByRole("heading", { name: "Prezență de completat" })).toBeVisible();
+      const past = page.getByRole("heading", { name: "Prezență de completat" }).locator("xpath=../following-sibling::*[1]//a");
+      await expect(past).toHaveCount(1);
+      await expect(past.locator("[data-date-word]")).toHaveText("Vin");
     });
 
     test("no past list when nothing is unsaved", async({ page }) => {
       await loginAs(page);
-      await page.route("**/api/portal/coach/today*", (route) => route.fulfill({ json: { date: "2026-11-05", today: "2026-11-05", groups: [], lessons: [], todo: [] } }));
+      await page.route("**/api/portal/coach/today*", (route) => route.fulfill({ json: { date: "2026-11-05", today: "2026-11-05", groups: [], lessons: [], todo: [], next: null, week: { groupsHeld: 0, groupsLeft: 0, lessonsHeld: 0, lessonsLeft: 0, missing: 0 } } }));
       await page.goto("/");
       await expect(page.getByRole("heading", { name: "Antrenamente azi" })).toBeVisible();
       await expect(page.getByText("Nicio ședință azi.")).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Antrenamente fără prezență" })).toHaveCount(0);
+      await expect(page.getByRole("heading", { name: "Prezență de completat" })).toHaveCount(0);
     });
   });
 }
@@ -98,7 +100,7 @@ test.describe("Azi layout", () => {
     expect(box!.width).toBeGreaterThan(390 - 2 * 20 - 2);
     const card = await page.getByRole("link", { name: /^18:15 Avansați/ }).first().boundingBox();
     expect(box!.y).toBeGreaterThan(card!.y);
-    const past = await page.getByRole("heading", { name: "Antrenamente fără prezență" }).boundingBox();
+    const past = await page.getByRole("heading", { name: "Prezență de completat" }).boundingBox();
     expect(past!.y).toBeGreaterThan(box!.y);
   });
 
@@ -107,7 +109,7 @@ test.describe("Azi layout", () => {
     await loginAs(page);
     await page.goto("/");
     const stat = await page.locator("[data-stat-num]").boundingBox();
-    const past = await page.getByRole("heading", { name: "Antrenamente fără prezență" }).boundingBox();
+    const past = await page.getByRole("heading", { name: "Prezență de completat" }).boundingBox();
     const today = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
     expect(stat!.x).toBeLessThan(today!.x);
     expect(past!.x).toBeLessThan(today!.x);
@@ -310,4 +312,71 @@ test("a group with no weekly schedule shows no leading comma and an empty date b
   expect(text).not.toMatch(/, 18 copii|^,/);
   expect(text).toContain("Fără program");
   await expect(row.getByText("18 copii", { exact: true })).toBeVisible();
+});
+
+test.describe("Azi week column", () => {
+  test.use({ timezoneId: "Europe/Bucharest" });
+
+  test("desktop: Azi pe scurt heading, next row link, week values, same start line as the list", async({ page }) => {
+    await page.setViewportSize(SIZES[1]);
+    await loginAs(page);
+    await page.goto("/");
+    const left = await page.getByRole("heading", { name: "Azi pe scurt" }).boundingBox();
+    const right = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
+    expect(Math.abs(left!.y - right!.y)).toBeLessThan(10);
+    const stat = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
+    const list = await page.locator("[data-today-list]").boundingBox();
+    expect(Math.abs(stat!.y - list!.y)).toBeLessThan(2);
+    const nextRow = page.getByRole("heading", { name: "Următorul antrenament" }).locator("xpath=../following-sibling::*[1]//a");
+    // 14:00 Bucharest: the 15:00 lesson of Matei Radu is the first one after now.
+    await expect(nextRow).toContainText("Matei Radu");
+    await expect(nextRow).toContainText("15:00");
+    await expect(nextRow.locator("[data-date-word]")).toHaveText("Joi");
+    await expect(nextRow).toHaveAttribute("href", "/lectie/ldone");
+    await expect(page.getByText("Ședințe de grup", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("3 ținute, 3 rămase");
+    await expect(page.getByText("Lecții individuale", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText(/^\d+ ținut(ă|e), \d+ rămas(ă|e)$/);
+    await expect(page.getByText("Prezență necompletată", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("0");
+  });
+
+  test("phone order: stat, today list, add button, next, week, to complete", async({ page }) => {
+    await page.setViewportSize(SIZES[0]);
+    await loginAs(page);
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "Azi pe scurt" })).toBeHidden();
+    const ys: number[] = [];
+    for (const loc of [
+      page.locator("[data-stat-num]"),
+      page.getByRole("heading", { name: "Antrenamente azi" }),
+      page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true"),
+      page.getByRole("heading", { name: "Următorul antrenament" }),
+      page.getByRole("heading", { name: "Săptămâna aceasta" }),
+      page.getByRole("heading", { name: "Prezență de completat" }),
+    ]) ys.push((await loc.boundingBox())!.y);
+    expect([...ys].sort((a, b) => a - b)).toEqual(ys);
+  });
+
+  test("no next: the section is hidden, the week stays; singular forms", async({ page }) => {
+    await loginAs(page);
+    await page.route("**/api/portal/coach/today*", (route) => route.fulfill({
+      json: { date: "2026-11-05", today: "2026-11-05", groups: [], lessons: [], todo: [], next: null, week: { groupsHeld: 1, groupsLeft: 1, lessonsHeld: 0, lessonsLeft: 2, missing: 3 } },
+    }));
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "Următorul antrenament" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Săptămâna aceasta" })).toBeVisible();
+    await expect(page.getByText("1 ținută, 1 rămasă")).toBeVisible();
+    await expect(page.getByText("0 ținute, 2 rămase")).toBeVisible();
+    await expect(page.getByText("Prezență necompletată", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("3");
+  });
+
+  test("a lesson as next links to its lesson page", async({ page }) => {
+    await loginAs(page);
+    await page.route("**/api/portal/coach/today*", (route) => route.fulfill({
+      json: { date: "2026-11-05", today: "2026-11-05", groups: [], lessons: [], todo: [], next: { kind: "individual", date: "2026-11-06", startTime: "09:00", title: "Ana Stoica", location: null, occurrenceKey: null, lessonId: "l9" }, week: { groupsHeld: 0, groupsLeft: 0, lessonsHeld: 0, lessonsLeft: 1, missing: 0 } },
+    }));
+    await page.goto("/");
+    const row = page.getByRole("link", { name: /Ana Stoica/ });
+    await expect(row).toHaveAttribute("href", "/lectie/l9");
+    await expect(row).toContainText("09:00");
+    await expect(row.locator("[data-date-word]")).toHaveText("Vin");
+  });
 });
