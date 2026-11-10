@@ -15,7 +15,7 @@ function arrowKeys(e: React.KeyboardEvent<HTMLButtonElement>) {
 }
 
 /** A selectable row with a square indicator, a bold label and a muted line. The caller wraps the rows in a `role="radiogroup"`. */
-export function ChoiceRow({ label, sub, checked, onSelect, children }: { label: string; sub: string; checked: boolean; onSelect: () => void; children?: React.ReactNode }) {
+export function ChoiceRow({ label, sub, checked, onSelect, children }: { label: string; sub?: string; checked: boolean; onSelect: () => void; children?: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-3">
       <button
@@ -33,7 +33,7 @@ export function ChoiceRow({ label, sub, checked, onSelect, children }: { label: 
         <span aria-hidden className={cn("size-(--portal-choice-box) shrink-0 border-control border-checkbox-on", checked ? "bg-checkbox-on" : "bg-surface-raised")} />
         <span className="flex min-w-0 flex-col gap-1">
           <span className="text-(length:--portal-row-title) font-bold">{label}</span>
-          <span className="text-(length:--portal-row-sub) text-muted">{sub}</span>
+          {sub && <span className="text-(length:--portal-row-sub) text-muted">{sub}</span>}
         </span>
       </button>
       {children}

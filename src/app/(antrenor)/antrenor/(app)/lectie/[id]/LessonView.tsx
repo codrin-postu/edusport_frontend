@@ -4,22 +4,24 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
-import Dialog, { DialogActions, DialogClose } from "@/components/ui/dialog";
-import { LESSON, NAV, PRESENCE } from "@/lib/portal/copy";
-import { dayTile, durationText, shortDate } from "@/lib/portal/format";
+import { LESSON, NAV, PRESENCE, PROGRAM, TRAINING } from "@/lib/portal/copy";
+import { capitalize, dayMonthLong, daysSpoken, longDay, shortDate } from "@/lib/portal/format";
 import type { CoachLesson, LessonSaved } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
-import { useMe } from "../../../_lib/me-context";
+import { bucharestToday } from "../../../_lib/today";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
+import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PortalCard } from "@/app/_portal/ui/PortalCard";
+import { PortalLink } from "@/app/_portal/ui/PortalLink";
+import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
-import { CoachPicker } from "../../prezenta/CoachPicker";
-import { DurationPicker } from "../DurationPicker";
-import { FORM } from "../form";
+import { SheetFooter } from "../../../_ui/SheetFooter";
+import { ScopeSheet, type Scope } from "./ScopeSheet";
 
 type Loaded = { key: string; lesson: CoachLesson | null };
 
@@ -50,19 +52,19 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
   const router = useRouter();
   const toast = useToast();
   const noAccess = useNoAccess();
-  const me = useMe();
+  const today = bucharestToday();
   const [present, setPresent] = useState(lesson.present === true);
-  const [duration, setDuration] = useState(lesson.durationMin);
-  const [coachIds, setCoachIds] = useState(lesson.coachIds);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [confirm, setConfirm] = useState(false);
-  const readOnly = lesson.archived || !lesson.editable;
+  const [asking, setAsking] = useState(false);
+  const readOnly = lesson.archived || !lesson.editable || lesson.date > today;
+  const series = lesson.series;
+  const coaches = lesson.coachOptions.filter((c) => lesson.coachIds.includes(c.id)).map((c) => c.name).join(", ");
 
   async function save() {
     setBusy(true);
     setMessage(null);
-    const r = await portalApi<LessonSaved>("PUT", `coach/lessons/${encodeURIComponent(lesson.lessonId)}`, { present, durationMin: duration, coachIds });
+    const r = await portalApi<LessonSaved>("PUT", `coach/lessons/${encodeURIComponent(lesson.lessonId)}`, { present, durationMin: lesson.durationMin, coachIds: lesson.coachIds });
     setBusy(false);
     if (r.ok) {
       toast.show(r.data.toast);
@@ -77,53 +79,70 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
     setMessage(r.message);
   }
 
-  async function remove() {
-    setBusy(true);
-    const r = await portalApi<{ toast: string }>("DELETE", `coach/lessons/${encodeURIComponent(lesson.lessonId)}`);
-    setBusy(false);
-    setConfirm(false);
+  /** The delete, for the plain confirm and for the scope sheet. Null when it went through. */
+  async function remove(scope: Scope | null): Promise<string | null> {
+    const query = scope ? `?scope=${scope}` : "";
+    const r = await portalApi<{ toast: string }>("DELETE", `coach/lessons/${encodeURIComponent(lesson.lessonId)}${query}`);
     if (r.ok) {
       toast.show(r.data.toast);
       router.replace("/");
-      return;
+      return null;
     }
-    if (noAccess(r)) return;
-    setMessage(r.message);
+    if (noAccess(r)) return null;
+    return r.message;
   }
 
   const sub = [lesson.savedLine, lesson.archived ? PRESENCE.archived : null].filter((p): p is string => Boolean(p)).join(" ");
   return (
     <>
-      <PageHeader
-        back={{ href: "/", label: NAV.today }}
-        title={LESSON.title}
-        sub={sub || undefined}
-        aside={<p className="flex min-h-(--portal-tap) shrink-0 items-center border-control border-line bg-surface-raised px-4 text-(length:--portal-text-14) font-bold">{dayTile(lesson.date)}</p>}
-      />
-      <PageBody>
-        <div data-lesson-form className={FORM}>
-          <div>
-            <span className="text-field-label text-label-ink block mb-(--field-gap)">{LESSON.athlete}</span>
-            <p className="text-(length:--portal-text-15) font-bold">{lesson.athleteName}</p>
-            <p className="text-(length:--portal-text-13) text-muted">{`${lesson.startTime}, ${durationText(duration)}`}</p>
-          </div>
-          <DurationPicker value={duration} onChange={setDuration} disabled={readOnly} />
-          <CoachPicker me={me?.coachId ?? ""} options={lesson.coachOptions} value={coachIds} onChange={setCoachIds} locked={readOnly} />
-          <div className="flex min-h-(--portal-kv-min-h) items-center justify-between gap-3">
-            <span className="text-(length:--portal-text-15) font-bold">{LESSON.present}</span>
-            <Checkbox label={<span className="sr-only">{`${LESSON.present}, ${lesson.athleteName}`}</span>} checked={present} disabled={readOnly} onChange={(e) => setPresent(e.target.checked)} />
-          </div>
+      <PageHeader back={{ href: "/", label: NAV.today }} kicker={LESSON.title} title={lesson.athleteName} sub={sub || undefined} />
+      <PageBody narrow={520}>
+        <div data-lesson-form className="flex flex-col gap-(--portal-form-gap)">
+          <KeyValueCard
+            rows={[
+              { key: LESSON.date, value: capitalize(longDay(lesson.date)) },
+              { key: LESSON.time, value: LESSON.when(lesson.startTime, lesson.durationMin) },
+              { key: LESSON.coach, value: coaches },
+              { key: LESSON.repeat, value: series ? LESSON.seriesText(capitalize(PROGRAM.freqWord[series.freq]), daysSpoken(series.days), series.untilSeasonEnd ? null : dayMonthLong(series.to)) : LESSON.no },
+            ]}
+          />
+          <PortalCard>
+            <div className="flex min-h-(--portal-kv-min-h) items-center justify-between gap-3 px-(--portal-card-pad) py-2">
+              <span className="text-(length:--portal-text-15) font-bold">{LESSON.present}</span>
+              <Checkbox label={<span className="sr-only">{`${LESSON.present}, ${lesson.athleteName}`}</span>} checked={present} disabled={readOnly} onChange={(e) => setPresent(e.target.checked)} />
+            </div>
+          </PortalCard>
           <AlertLine message={message} />
-          {!readOnly && <Button onClick={() => void save()} disabled={busy} className="w-full">{LESSON.savePresence}</Button>}
-          {lesson.deletable && <Button variant="secondary" onClick={() => setConfirm(true)} className="w-full">{LESSON.delete}</Button>}
+          {!lesson.archived && <Button onClick={() => void save()} disabled={busy || readOnly} className="w-full">{LESSON.savePresence}</Button>}
+          {lesson.planEditable && <Button variant="secondary" href={`/lectie/${encodeURIComponent(lesson.lessonId)}/modifica`} className="w-full">{LESSON.edit}</Button>}
+          {lesson.deletable && <PortalLink center onClick={() => setAsking(true)}>{LESSON.delete}</PortalLink>}
         </div>
       </PageBody>
-      <Dialog open={confirm} onOpenChange={setConfirm} title={LESSON.deleteConfirm(shortDate(lesson.date))} hideClose>
-        <DialogActions>
-          <DialogClose asChild><Button variant="secondary">{LESSON.giveUp}</Button></DialogClose>
-          <Button onClick={() => void remove()} disabled={busy}>{LESSON.delete}</Button>
-        </DialogActions>
-      </Dialog>
+      {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
+      {asking && !series && <PlainDelete date={shortDate(lesson.date)} onClose={() => setAsking(false)} onConfirm={() => remove(null)} />}
     </>
+  );
+}
+
+function PlainDelete({ date, onClose, onConfirm }: { date: string; onClose: () => void; onConfirm: () => Promise<string | null> }) {
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  async function go() {
+    setBusy(true);
+    const refusal = await onConfirm();
+    if (refusal !== null) {
+      setBusy(false);
+      setMessage(refusal);
+    }
+  }
+  return (
+    <Sheet
+      open
+      onOpenChange={(o) => { if (!o && !busy) onClose(); }}
+      title={LESSON.deleteConfirm(date)}
+      footer={<SheetFooter message={message} busy={busy} confirm={LESSON.delete} onClose={onClose} onConfirm={() => void go()} />}
+    >
+      {null}
+    </Sheet>
   );
 }

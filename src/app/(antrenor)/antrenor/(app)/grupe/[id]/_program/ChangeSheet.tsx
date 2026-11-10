@@ -7,7 +7,7 @@ import { capitalize, weekdayOfDay } from "@/lib/portal/format";
 import type { CoachProgramRule, DayKey, ProgramChangeBody } from "@/lib/portal/api-types";
 import { DaySquares } from "@/app/_portal/ui/DaySquares";
 import { Sheet } from "@/app/_portal/ui/Sheet";
-import { SheetFooter } from "./SheetFooter";
+import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { TimeDuration } from "./TimeDuration";
 import { useSend } from "./useSend";
 

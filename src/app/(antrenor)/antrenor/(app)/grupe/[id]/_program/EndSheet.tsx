@@ -6,7 +6,7 @@ import { PROGRAM } from "@/lib/portal/copy";
 import { weekdayOfDay } from "@/lib/portal/format";
 import type { CoachProgramRule, ProgramEndBody } from "@/lib/portal/api-types";
 import { Sheet } from "@/app/_portal/ui/Sheet";
-import { SheetFooter } from "./SheetFooter";
+import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { useSend } from "./useSend";
 
 type Props = { rule: CoachProgramRule; today: string; onClose: () => void; onDone: () => void };

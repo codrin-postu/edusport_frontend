@@ -9,7 +9,7 @@ import { dateKey, dateState, eventDocumentId } from "@/lib/portal/program";
 import type { DateBody, Occurrence } from "@/lib/portal/api-types";
 import { ChoiceRow } from "@/app/_portal/ui/ChoiceRow";
 import { Sheet } from "@/app/_portal/ui/Sheet";
-import { SheetFooter } from "./SheetFooter";
+import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { TimeDuration } from "./TimeDuration";
 import { useSend } from "./useSend";
 

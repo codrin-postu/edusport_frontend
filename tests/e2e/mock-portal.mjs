@@ -512,6 +512,7 @@ function lessonPlan({ body, res, params }) {
   if (l.state === "saved" || l.date < today) return club(res, 409, STALE);
   if (!planFieldsOk(body) || !["one", "following"].includes(body.scope)) return club(res, 400, MSG.invalid);
   if (!(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
+  if (body.scope === "one" && l.seriesId && body.repeat) return club(res, 400, MSG.invalid);
   const refusal = repeatRefusal(body.repeat, body.date);
   if (refusal) return club(res, 400, refusal);
   const athlete = { athleteId: l.athleteId, name: l.athleteName };

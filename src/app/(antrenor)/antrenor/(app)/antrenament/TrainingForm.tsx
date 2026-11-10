@@ -33,8 +33,8 @@ type TrainingFormProps = {
   groups: CoachGroupRow[];
   /** Starting kind for a new form (the `?tip=individual` link). */
   startKind?: TrainingKind;
-  /** Runs the write. Resolves to the refusal text to show, or null when it went through (the page then moves on). */
-  onSubmit: (value: TrainingValue) => Promise<string | null>;
+  /** Runs the write. Resolves to the refusal text to show, null when it went through (the page then moves on), or false when nothing was sent (a question opened first). */
+  onSubmit: (value: TrainingValue) => Promise<string | null | false>;
 };
 
 /** One form for a new training (group or individual, once or repeating) and for editing a lesson. */
@@ -61,7 +61,7 @@ export function TrainingForm({ mode, today, me, groups, startKind, onSubmit }: T
     // busy stays true on success: the button must not come back before the route changes.
     if (refusal !== null) {
       setBusy(false);
-      setMessage(refusal);
+      setMessage(refusal || null);
     }
   }
 
