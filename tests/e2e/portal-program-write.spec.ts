@@ -99,7 +99,7 @@ for (const size of SIZES) {
       await page.goto("/grupe/gavansati?tab=program");
       await dateRow(page, "Mar", "10").click();
       await dialog(page).getByRole("radio", { name: /^Șterge/ }).click();
-      await dialog(page).getByRole("button", { name: "Salvează" }).click();
+      await dialog(page).getByRole("button", { name: "Șterge", exact: true }).click();
       await expect(page.getByText("Ședința din 10 noiembrie a fost ștearsă.")).toBeVisible();
       expect((await calls("PUT", /\/dates\//))[0]?.body).toEqual({ mode: "remove" });
       await expect(block(page, "Mar", "10")).toHaveCount(0);
@@ -113,7 +113,7 @@ for (const size of SIZES) {
       await dateRow(page, "Joi", "5").click();
       const d = dialog(page);
       await d.getByRole("radio", { name: /^Șterge/ }).click();
-      await d.getByRole("button", { name: "Salvează" }).click();
+      await d.getByRole("button", { name: "Șterge", exact: true }).click();
       await expect(d.getByText("Data are prezența salvată. Poți doar să o anulezi.")).toBeVisible();
       await expect(d).toBeVisible();
       // The same refusal for a one-off class of that day.
@@ -122,7 +122,7 @@ for (const size of SIZES) {
       await page.reload();
       await dateRow(page, "Joi", "5").filter({ hasText: "19:30" }).click();
       await d.getByRole("radio", { name: /^Șterge/ }).click();
-      await d.getByRole("button", { name: "Salvează" }).click();
+      await d.getByRole("button", { name: "Șterge", exact: true }).click();
       await expect(d.getByText("Data are prezența salvată. Poți doar să o anulezi.")).toBeVisible();
     });
 
@@ -133,7 +133,7 @@ for (const size of SIZES) {
       await page.goto("/grupe/gavansati?tab=program");
       await dateRow(page, "Joi", "12").click();
       await dialog(page).getByRole("radio", { name: /^Șterge/ }).click();
-      await dialog(page).getByRole("button", { name: "Salvează" }).click();
+      await dialog(page).getByRole("button", { name: "Șterge", exact: true }).click();
       await expect(page.getByText("Ședință ștearsă.")).toBeVisible();
       const del = (await calls("DELETE", /\/program\/[^/]+$/))[0];
       expect(del?.path).toMatch(/\/program\/evnew\d+$/);
@@ -192,6 +192,34 @@ for (const size of SIZES) {
       await expect(page.getByText("60 min, săptămânal, din 1 octombrie, până pe 17 noiembrie")).toBeVisible();
       await expect(block(page, "Mie", "18")).toHaveCount(0);
       await expect(page.getByText("Marți, 18:15", { exact: true }).first()).toBeVisible();
+    });
+
+    test("two classes on one weekday: Schimbă and Șterge address the tapped class", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/grupe/gavansati?tab=program");
+      const added = await bff(page, "POST", "groups/gavansati/program", { repeat: true, freq: "weekly", days: ["tue"], startTime: "19:00", durationMin: 60, from: "2026-11-10", until: null });
+      expect(added.status).toBe(200);
+      await page.reload();
+      const rules = page.getByRole("heading", { name: "Program săptămânal" }).locator("xpath=../..");
+      await expect(rules.getByText("Marți, 19:00", { exact: true })).toBeVisible();
+      expect(await rules.getByText(/^Marți, 1[89]:\d{2}$/).allTextContents()).toEqual(["Marți, 18:15", "Marți, 19:00"]);
+      // The 19:00 class is the second Marți row.
+      await page.getByRole("button", { name: "Schimbă programul de marți" }).nth(1).click();
+      await expect(dialog(page).getByLabel("Ora")).toHaveValue("19:00");
+      await dialog(page).getByLabel("Ora").fill("19:30");
+      await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
+      await expect(page.getByText("Program schimbat.")).toBeVisible();
+      const put = (await calls("PUT", /\/program\/[^/]+$/))[0];
+      expect(put?.path).not.toMatch(/\/program\/evavansati$/);
+      await expect(rules.getByText("Marți, 18:15", { exact: true })).toHaveCount(1);
+      await expect(rules.getByText("Marți, 19:30", { exact: true })).toHaveCount(1);
+      // Șterge on the 19:30 class ends that class, not the 18:15 one.
+      await page.getByRole("button", { name: "Șterge programul de marți" }).nth(1).click();
+      await dialog(page).getByRole("button", { name: "Șterge programul" }).click();
+      await expect(page.getByText("Program șters.")).toBeVisible();
+      const end = (await calls("POST", /\/end$/))[0];
+      expect(end?.path).not.toMatch(/\/program\/evavansati\/end$/);
+      await expect(rules.getByText("Marți, 18:15", { exact: true })).toBeVisible();
     });
 
     test("a split weekday shows two rows and every write goes to the row that covers the date", async({ page }) => {

@@ -50,7 +50,7 @@ for (const size of SIZES) {
       await expect(page.getByRole("menuitemradio", { name: "Primii Pași" })).toHaveCount(0);
       await page.getByRole("menuitemradio", { name: "Avansați" }).click();
       await expect(page.getByLabel("Se repetă", { exact: true })).toContainText("Nu se repetă");
-      await expect(page.getByLabel("Data", { exact: true })).toBeVisible();
+      await expect(page.getByRole("group", { name: "Data", exact: true })).toBeVisible();
       await expect(page.getByRole("checkbox")).toHaveCount(0);
       await expect(submit(page)).toBeDisabled();
       await pick(page, "Se repetă", "Săptămânal");

@@ -125,6 +125,8 @@ test("Șterge lecția on a series lesson asks which lessons", async({ page }) =>
   await page.getByRole("button", { name: "Șterge lecția" }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog.getByRole("heading", { name: "Ce ștergi din lecția din 17 noiembrie?" })).toBeVisible();
+  await expect(dialog.getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
+  await expect(dialog.getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei. Cele ținute sau plătite rămân.")).toBeVisible();
   await dialog.getByRole("radio", { name: "Și lecțiile următoare" }).click();
   await dialog.getByRole("button", { name: "Șterge lecția" }).click();
   await expect(page.getByText("Lecții șterse.")).toBeVisible();
@@ -168,6 +170,8 @@ for (const size of SIZES) {
       await shot(page, info, "lectie-modifica");
       await page.getByLabel("Ora").fill("18:00");
       await page.getByRole("button", { name: "Salvează", exact: true }).click();
+      await expect(page.getByRole("dialog").getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
+      await expect(page.getByRole("dialog").getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
       const box = (await page.getByRole("dialog").boundingBox())!;
       if (size.width >= 900) expect(Math.round(box.width)).toBe(460);
       else expect(Math.round(box.y + box.height)).toBe(size.height);

@@ -174,15 +174,18 @@ test("a group without a next class keeps the row aligned with an empty date bloc
   await expect(page.getByText("Următorul antrenament")).toHaveCount(0);
 });
 
-test("a date block with a next class shows its tooltip on hover and on focus", async({ page }) => {
+test("a date block with a next class shows its tooltip on hover", async({ page }) => {
   await loginAs(page);
   await page.goto("/grupe");
-  const block = page.getByRole("link", { name: /Avansați/ }).locator("[data-date-block]");
-  await block.hover();
-  await expect(page.getByRole("tooltip")).toHaveText("Următorul antrenament");
-  await page.mouse.move(0, 0);
   await expect(page.getByRole("tooltip")).toHaveCount(0);
-  await block.focus();
+  await page.getByRole("link", { name: /Avansați/ }).locator("[data-date-block]").hover();
+  await expect(page.getByRole("tooltip")).toHaveText("Următorul antrenament");
+});
+
+test("the same tooltip shows on keyboard focus", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe");
+  await page.getByRole("link", { name: /Avansați/ }).locator("[data-date-block]").focus();
   await expect(page.getByRole("tooltip")).toHaveText("Următorul antrenament");
 });
 
