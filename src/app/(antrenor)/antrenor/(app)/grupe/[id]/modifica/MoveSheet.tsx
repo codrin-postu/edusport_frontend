@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import Button from "@/components/ui/button";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Select } from "@/components/ui/select";
@@ -23,13 +23,16 @@ export function MoveSheet({ groupId, groupName, athlete, targets, today, onClose
   const [from, setFrom] = useState(today);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const inFlight = useRef(false);
   const ready = to !== "" && from >= today && !busy;
 
   async function send() {
-    if (!ready) return;
+    if (!ready || inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setMessage(null);
     const r = await portalApi<Saved>("POST", `coach/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(athlete.athleteId)}/move`, { toGroupId: to, from });
+    inFlight.current = false;
     setBusy(false);
     if (!r.ok) {
       setMessage(r.message);

@@ -30,16 +30,27 @@ export function EditGroup({ id }: { id: string }) {
   const groups = usePortal<CoachGroups>("coach/groups");
   const [open, setOpen] = useState<Open>(null);
   const opener = useRef<HTMLElement | null>(null);
-  const own = page.data?.own ?? true;
+  const focusRow = useRef<number | null>(null);
+  const shown = page.data ?? page.previous;
+  const own = shown?.own ?? true;
   const back = `/grupe/${encodeURIComponent(id)}`;
 
   useEffect(() => {
     if (page.state === "ready" && !own) router.replace(back);
   }, [page.state, own, router, back]);
 
-  if (page.state === "loading" || groups.state === "loading" || !own) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (page.state === "error" || !page.data || groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
-  const group = page.data;
+  /** After a saved change the page reloads in place; the focus goes to the same row position (the next child when the row left). */
+  useEffect(() => {
+    if (page.state !== "ready" || focusRow.current === null) return;
+    const buttons = document.querySelectorAll<HTMLElement>("[data-roster-move]");
+    buttons[Math.min(focusRow.current, buttons.length - 1)]?.focus();
+    focusRow.current = null;
+  }, [page.state, page.data]);
+
+  if (page.state === "loading" && !shown) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (groups.state === "loading" || !own) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (page.state === "error" || !shown || groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
+  const group = shown;
   const members = group.members ?? [];
   const targets = groups.data.mine.filter((g) => g.groupId !== id).map((g) => ({ groupId: g.groupId, name: g.name }));
   const today = bucharestToday();
@@ -55,6 +66,7 @@ export function EditGroup({ id }: { id: string }) {
     setTimeout(() => el?.focus(), 0);
   };
   const done = () => {
+    focusRow.current = open ? members.findIndex((m) => m.athleteId === open.athlete.athleteId) : null;
     setOpen(null);
     page.reload();
   };
@@ -82,7 +94,7 @@ export function EditGroup({ id }: { id: string }) {
               sub={memberSub(m)}
               end={
                 <span className="flex flex-none items-center gap-(--portal-gap-6) pr-(--portal-row-pad-x)">
-                  <button type="button" className={SMALL} onClick={(e) => show("move", m, e.currentTarget)}>{EDIT_GROUP.move}</button>
+                  <button type="button" data-roster-move className={SMALL} onClick={(e) => show("move", m, e.currentTarget)}>{EDIT_GROUP.move}</button>
                   <button type="button" className={SMALL} onClick={(e) => show("remove", m, e.currentTarget)}>{EDIT_GROUP.remove}</button>
                 </span>
               }

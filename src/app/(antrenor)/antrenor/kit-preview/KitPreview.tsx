@@ -248,7 +248,7 @@ function ContactRow() {
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-1">
         <span className="font-display font-extrabold text-(length:--portal-text-22)">0722 123 456</span>
-        <CopyButton text="0722 123 456" label="Copiază numărul" copied={KIT.copied} />
+        <CopyButton text="0722 123 456" label="Copiază numărul" copied={KIT.copied} failed={KIT.copyFailed} />
       </div>
       <div className="grid grid-cols-2 gap-2">
         <ContactButton href="tel:+40722123456" icon="portal-phone" label="Sună" primary />

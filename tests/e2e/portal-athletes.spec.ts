@@ -43,6 +43,27 @@ test("a new athlete needs only a name", async({ page }) => {
   expect(post?.body).toEqual({ groupId: "gavansati", name: "Zoe Pavel" });
 });
 
+test("a double tap on Adaugă creates one athlete only", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/sportiv-nou");
+  await page.getByLabel("Nume și prenume").fill("Zoe Pavel");
+  const submit = page.getByRole("button", { name: "Adaugă în Avansați" });
+  await submit.dblclick();
+  await expect(page).toHaveURL(/\/grupe\/gavansati$/);
+  const posts = (await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/coach/athletes"));
+  expect(posts).toHaveLength(1);
+});
+
+test("a coach adds a new athlete to another coach's group", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gsilver/sportiv-nou");
+  await page.getByLabel("Nume și prenume").fill("Zoe Pavel");
+  await page.getByRole("button", { name: "Adaugă în Intermediari Silver" }).click();
+  await expect(page).toHaveURL(/\/grupe\/gsilver$/);
+  const post = (await mockLog()).find((c) => c.method === "POST" && c.path.endsWith("/coach/athletes"));
+  expect(post?.body).toEqual({ groupId: "gsilver", name: "Zoe Pavel" });
+});
+
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 
 for (const size of SIZES) {
@@ -102,27 +123,35 @@ for (const size of SIZES) {
       await page.goto("/sportiv/amaria");
       await expect(page.getByRole("link", { name: "‹ Grupe" })).toHaveAttribute("href", "/grupe");
     });
+
+    test("a stand-in child has no contact data, no Școala section and no copy button", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/sportiv/adara");
+      await expect(page.getByRole("heading", { name: "Dara Constantin" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Prezențe" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Contact" })).toHaveCount(0);
+      await expect(page.locator("a[href^='tel:']")).toHaveCount(0);
+      await expect(page.locator("a[href*='wa.me']")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Copiază numărul" })).toHaveCount(0);
+      await expect(page.getByRole("link", { name: "Sună" })).toHaveCount(0);
+      await expect(page.getByRole("heading", { name: "Școala" })).toHaveCount(0);
+    });
+
+    test("competitions unavailable: the line shows and the rest renders", async({ page }) => {
+      await mockState({ competitionsDown: true });
+      await loginAs(page);
+      await page.goto("/sportiv/amaria");
+      await expect(page.getByText("Rezultatele nu sunt disponibile acum.")).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Școala" })).toBeVisible();
+    });
+
+    test("a refused clipboard write shows a short failure", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/sportiv/amaria");
+      await page.evaluate(() => { navigator.clipboard.writeText = () => Promise.reject(new Error("denied")); });
+      await page.getByRole("button", { name: "Copiază numărul" }).click();
+      await expect(page.getByText("Nu am putut copia numărul.")).toBeVisible();
+    });
   });
 }
-
-test("a stand-in child has no contact data, no Școala section and no copy button", async({ page }) => {
-  await loginAs(page);
-  await page.goto("/sportiv/adara");
-  await expect(page.getByRole("heading", { name: "Dara Constantin" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Prezențe" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Contact" })).toHaveCount(0);
-  await expect(page.locator("a[href^='tel:']")).toHaveCount(0);
-  await expect(page.locator("a[href*='wa.me']")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Copiază numărul" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Sună" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Școala" })).toHaveCount(0);
-});
-
-test("competitions unavailable: the line shows and the rest renders", async({ page }) => {
-  await mockState({ competitionsDown: true });
-  await loginAs(page);
-  await page.goto("/sportiv/amaria");
-  await expect(page.getByText("Rezultatele nu sunt disponibile acum.")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Școala" })).toBeVisible();
-});

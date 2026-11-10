@@ -125,6 +125,20 @@ test("encoded traversal in the proxy path never reaches Strapi", async({ request
   expect(await coachCalls()).toHaveLength(0);
 });
 
+test("encoded ids in the member change routes never reach Strapi", async({ request }) => {
+  const paths = [
+    "/api/portal/coach/groups/g%2F..%2Fx/members/a/move",
+    "/api/portal/coach/groups/%2E%2E/members/a/remove",
+    "/api/portal/coach/groups/gavansati/members/%2E%2E/remove",
+    "/api/portal/coach/groups/gavansati/members/amaria/remove/",
+  ];
+  for (const p of paths) {
+    const res = await request.post(`${RAW}${p}`, { data: { from: "2026-11-06" }, headers: AS_COACH });
+    expect(res.status(), p).toBe(404);
+  }
+  expect(await coachCalls()).toHaveLength(0);
+});
+
 test("a foreign Origin is refused before any call", async({ request }) => {
   const res = await request.put(`${RAW}/api/portal/coach/me`, { data: {}, headers: { ...AS_COACH, origin: "https://evil.example" } });
   expect(res.status()).toBe(403);

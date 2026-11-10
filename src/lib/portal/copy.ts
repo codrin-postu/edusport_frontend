@@ -195,6 +195,7 @@ export const CARD = {
   parent: "Părinte",
   copy: "Copiază numărul",
   copied: "Numărul a fost copiat.",
+  copyFailed: "Nu am putut copia numărul.",
   whatsapp: "WhatsApp",
   presence: "Prezențe",
   inSeason: "În sezon",

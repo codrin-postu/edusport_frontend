@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, mockState, shot } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -117,14 +117,14 @@ test("Scoate from today removes the row only after the server answered", async({
 
 test("a refusal shows inline and the row stays", async({ page }) => {
   await page.route("**/api/portal/coach/groups/gavansati/members/*/remove", (route) => route.fulfill({
-    status: 409, json: { error: { message: "Lista s-a schimbat. Reîncarcă pagina." } },
+    status: 409, json: { error: { message: "Datele s-au schimbat. Reîncarcă pagina." } },
   }));
   await loginAs(page);
   await page.goto("/grupe/gavansati/modifica");
   await rowButton(page, "Scoate", 1).click();
   const sheet = page.getByRole("dialog");
   await sheet.getByRole("button", { name: "Scoate din grupă" }).click();
-  await expect(sheet.getByRole("alert")).toHaveText("Lista s-a schimbat. Reîncarcă pagina.");
+  await expect(sheet.getByRole("alert")).toHaveText("Datele s-au schimbat. Reîncarcă pagina.");
   await expect(sheet).toBeVisible();
   await sheet.getByRole("button", { name: "Renunță" }).click();
   await expect(sheet).toHaveCount(0);
@@ -165,4 +165,57 @@ test("another coach's group redirects to its page", async({ page }) => {
   await page.goto("/grupe/gsilver/modifica");
   await expect(page).toHaveURL(/\/grupe\/gsilver$/);
   await expect(page.getByRole("heading", { name: "Intermediari Silver" })).toBeVisible();
+});
+
+test("a double click on Scoate din grupă sends one request", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/modifica");
+  await rowButton(page, "Scoate", 1).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Scoate din grupă" }).dblclick();
+  await expect(page.getByText("Salvat.")).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  expect(await posts(/\/aluca\/remove$/)).toHaveLength(1);
+});
+
+test("a double click on Mută sends one request", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/modifica");
+  await rowButton(page, "Mută", 0).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Mută", exact: true }).dblclick();
+  await expect(page.getByText("Salvat.")).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  expect(await posts(/\/amaria\/move$/)).toHaveLength(1);
+});
+
+test("after a save the list updates in place and the focus stays on a row button", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/modifica");
+  await expect(page.getByText("Luca Dumitru")).toBeVisible();
+  await page.evaluate(() => {
+    const w = window as unknown as { __spinner: number };
+    w.__spinner = 0;
+    new MutationObserver(() => { if (document.querySelector("[data-spinner]")) w.__spinner += 1; }).observe(document.body, { childList: true, subtree: true });
+  });
+  await rowButton(page, "Scoate", 1).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Scoate din grupă" }).click();
+  await expect(page.getByText("Luca Dumitru")).toHaveCount(0);
+  await expect(page.getByText("Avansați, 8 sportivi")).toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as { __spinner: number }).__spinner)).toBe(0);
+  await expect(page.locator("[data-roster-move]").nth(1)).toBeFocused();
+});
+
+test("the server answers 400, 403 and 409 as the backend does", async({ page }) => {
+  await mockState({ inactiveGroups: ["gprimii"] });
+  await loginAs(page);
+  await page.goto("/grupe/gavansati/modifica");
+  const send = (path: string, body: unknown) => page.evaluate(async({ p, b }) => {
+    const r = await fetch(`/api/portal/coach/groups/gavansati/members/${p}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(b) });
+    return { status: r.status, message: (await r.json()).error?.message as string };
+  }, { p: path, b: body });
+  expect((await send("amaria/remove", { from: "2027-06-01" })).status).toBe(400);
+  expect((await send("amaria/move", { toGroupId: "gprimii", from: TODAY })).status).toBe(400);
+  expect((await send("amaria/remove", { from: "2026-12-01" })).status).toBe(200);
+  const again = await send("amaria/remove", { from: "2026-12-02" });
+  expect(again.status).toBe(409);
+  expect(again.message).toBe("Datele s-au schimbat. Reîncarcă pagina.");
 });

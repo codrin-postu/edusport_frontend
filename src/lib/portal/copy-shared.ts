@@ -58,6 +58,7 @@ export const KIT = {
   necompletat: "necompletat",
   individual: "Individual",
   copied: "Numărul a fost copiat.",
+  copyFailed: "Nu am putut copia numărul.",
   place: "Loc",
   points: "puncte",
   weekdays: ["L", "Ma", "Mi", "J", "V", "S", "D"],

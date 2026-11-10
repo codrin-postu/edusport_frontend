@@ -33,7 +33,7 @@ function ContactSection({ contact }: { contact: { name: string | null; phone: st
           {contact.name && <span className="text-(length:--portal-text-15) font-bold">{contact.name}</span>}
           <div className="flex items-center gap-1">
             <span className="font-display font-extrabold text-(length:--portal-text-24) tracking-(--portal-tracking-phone)">{phone}</span>
-            <CopyButton text={phone} label={CARD.copy} copied={CARD.copied} />
+            <CopyButton text={phone} label={CARD.copy} copied={CARD.copied} failed={CARD.copyFailed} />
           </div>
         </div>
         {links && (

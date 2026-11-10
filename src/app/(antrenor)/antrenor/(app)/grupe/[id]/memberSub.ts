@@ -7,6 +7,6 @@ export const memberSub = (m: CoachMember): string =>
   [
     m.age === null ? null : GROUP.age(m.age),
     m.isNew ? GROUP.isNew : null,
-    ...m.alsoIn.map(GROUP.alsoIn),
+    m.alsoIn.length > 0 ? GROUP.alsoIn(m.alsoIn.join(", ")) : null,
     m.leavesOn ? GROUP.until(dayMonthShort(m.leavesOn)) : null,
   ].filter((p): p is string => p !== null).join(", ");

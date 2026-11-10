@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "@/components/ui/button";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { EDIT_GROUP } from "@/lib/portal/copy";
@@ -19,13 +19,16 @@ export function RemoveSheet({ groupId, athlete, today, onClose, onDone }: Props)
   const [from, setFrom] = useState(today);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const inFlight = useRef(false);
   const ready = from >= today && !busy;
 
   async function send() {
-    if (!ready) return;
+    if (!ready || inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setMessage(null);
     const r = await portalApi<Saved>("POST", `coach/groups/${encodeURIComponent(groupId)}/members/${encodeURIComponent(athlete.athleteId)}/remove`, { from });
+    inFlight.current = false;
     setBusy(false);
     if (!r.ok) {
       setMessage(r.message);

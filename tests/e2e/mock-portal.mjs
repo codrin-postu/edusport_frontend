@@ -31,7 +31,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, inactiveGroups: [] };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -308,22 +308,24 @@ function calendarData(month) {
 }
 
 const MEMBER_FROM = /^\d{4}-\d{2}-\d{2}$/;
-/** Backend moveMember / removeMember: own source, then the body, then an own target; a later `from` keeps the child listed with `leavesOn`. */
+const SEASON_END = "2027-05-31";
+const STALE = "Datele s-au schimbat. Reîncarcă pagina.";
+/** Backend moveMember / removeMember: own source, then the body (a date from today to the season end), then an active own target, then the open row; a later `from` keeps the child listed with `leavesOn` and a second change answers 409 (the row is no longer current). */
 function changeMember({ res, params, body }, move) {
   const [gid, aid] = params;
   const source = groupOf(gid);
   if (!source || !source.own) return club(res, 403, MSG.noAccess);
-  const valid = typeof body.from === "string" && MEMBER_FROM.test(body.from) && body.from >= today;
+  const valid = typeof body.from === "string" && MEMBER_FROM.test(body.from) && body.from >= today && body.from <= SEASON_END;
   if (!valid) return club(res, 400, MSG.invalid);
   let target = null;
   if (move) {
     target = typeof body.toGroupId === "string" ? groupOf(body.toGroupId) : null;
-    if (!target || target.id === gid) return club(res, 400, "Alege grupa.");
+    if (!target || target.id === gid || state.inactiveGroups.includes(target.id)) return club(res, 400, "Alege grupa.");
     if (!target.own) return club(res, 403, MSG.noAccess);
   }
   const list = world.members[gid] ?? [];
   const m = list.find((x) => x.athleteId === aid);
-  if (!m) return club(res, 409, "Lista s-a schimbat. Reîncarcă pagina.");
+  if (!m || m.leavesOn) return club(res, 409, STALE);
   if (body.from === today) {
     world.members[gid] = list.filter((x) => x.athleteId !== aid);
     if (target) world.members[target.id].push({ ...m, leavesOn: null });

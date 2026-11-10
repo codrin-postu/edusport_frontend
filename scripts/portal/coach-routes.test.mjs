@@ -40,6 +40,9 @@ it("allows the canvas routes", () => {
   assert.equal(a("DELETE", "/groups/gavansati/members/amaria"), false);
   assert.equal(a("POST", "/groups/g/members/../move"), false);
   assert.equal(a("GET", "/competitions"), true);
+  assert.equal(a("POST", "/groups/g%2Fx/members/a/move"), false);
+  assert.equal(a("POST", "/groups/%2E%2E/members/a/remove"), false);
+  assert.equal(a("POST", "/groups/gavansati/members/amaria/remove/"), false);
   const q = (s) => new URLSearchParams(s);
   assert.equal(r.forwardedQuery("/calendar", q("month=2026-11&x=1")), "?month=2026-11");
   assert.equal(r.forwardedQuery("/competitions", q("scope=mine&season=2026-2027&q=x")), "?scope=mine&season=2026-2027");
