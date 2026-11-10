@@ -25,8 +25,8 @@ export function DateRow({ occurrence: o, today, actions }: DateRowProps) {
   return (
     <li className="p-4">
       <div className="flex items-center gap-4">
-        <span className="w-12 shrink-0 border-retro border-line text-center py-1">
-          <span className="text-label block text-secondary">{tile.weekday}</span>
+        <span className="w-12 shrink-0 border-control border-line text-center py-1">
+          <span className="text-(length:--portal-text-11) font-bold uppercase block text-secondary">{tile.weekday}</span>
           <span className="text-body font-semibold block text-primary">{tile.day}</span>
         </span>
         <span className="min-w-0 flex-1">

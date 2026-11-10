@@ -135,6 +135,8 @@ h1.text-branding-font {
   --color-accent: #be3330;
   /* Error and alert lines. Red here; the portals override it (portal-theme.css). */
   --color-alert-ink: #be3330;
+  /* Border of an invalid input. Red here; the portals override it (portal-theme.css). */
+  --color-input-invalid: #be3330;
   --color-primary-on-dark: #fbf8f1;
   --color-secondary-on-dark: #c0c0c4;
   --color-muted-on-dark: #979ba5;

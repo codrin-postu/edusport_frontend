@@ -80,7 +80,7 @@ function PasswordForm({ email }: { email: string }) {
 export function SettingsView() {
   const me = usePortal<CoachMe>("coach/me");
   if (me.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (me.data === null) return <PageBody><LoadError /></PageBody>;
+  if (me.data === null) return <PageBody><LoadError onRetry={me.reload} /></PageBody>;
   return (
     <>
       <PageHeader back={{ href: "/profil", label: NAV.profile }} title={PROFILE.settings} />

@@ -73,13 +73,13 @@ export function DateSheet({ occurrence: o, action, onClose, onDone }: Props) {
               <>
                 <DatePickerField id="date-new" label={PROGRAM.newDate} value={newDate} onChange={setNewDate} variant="card" />
                 <div>
-                  <label htmlFor="date-time" className="text-label text-secondary block mb-2">{PROGRAM.startAt}</label>
+                  <label htmlFor="date-time" className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.startAt}</label>
                   <Input id="date-time" type="time" step={300} value={newTime} onChange={(e) => setNewTime(e.target.value)} surface="card" />
                 </div>
               </>
             )}
             <div>
-              <label htmlFor="date-reason" className="text-label text-secondary block mb-2">{PROGRAM.reason}</label>
+              <label htmlFor="date-reason" className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.reason}</label>
               <Input id="date-reason" value={reason} maxLength={120} onChange={(e) => setReason(e.target.value)} surface="card" />
             </div>
             <Checkbox label={PROGRAM.notify} checked={notify} onChange={(e) => setNotify(e.target.checked)} />

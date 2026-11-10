@@ -6,7 +6,7 @@ type PublicSwitchProps = { value: boolean; busy: boolean; onChange: (value: bool
 /** "Program public": a square switch. */
 export function PublicSwitch({ value, busy, onChange }: PublicSwitchProps) {
   return (
-    <div className="flex items-center justify-between gap-4 p-4 border-retro border-line bg-surface-raised">
+    <div className="flex items-center justify-between gap-4 p-4 border-card border-card-line bg-surface-raised">
       <div className="min-w-0">
         <p id="program-public-label" className="text-body font-semibold text-primary">{PROGRAM.publicTitle}</p>
         <p className="text-body-sm text-secondary">{PROGRAM.publicHint}</p>
@@ -19,7 +19,7 @@ export function PublicSwitch({ value, busy, onChange }: PublicSwitchProps) {
         disabled={busy}
         onClick={() => onChange(!value)}
         className={cn(
-          "relative h-6 w-12 shrink-0 border-retro border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary disabled:border-line-subtle",
+          "relative h-6 w-12 shrink-0 border-control border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary disabled:border-line-subtle",
           value ? "bg-accent" : "bg-surface",
         )}
       >

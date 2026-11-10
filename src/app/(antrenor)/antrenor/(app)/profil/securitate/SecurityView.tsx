@@ -45,7 +45,7 @@ export function SecurityView() {
       <PageHeader back={{ href: "/profil", label: NAV.profile }} title={PROFILE.security} />
       <PageBody narrow={640}>
         {devices.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
-        {devices.state === "error" && <LoadError />}
+        {devices.state === "error" && <LoadError onRetry={devices.reload} />}
         {devices.state === "ready" && devices.data && (
           <>
             <ListCard>

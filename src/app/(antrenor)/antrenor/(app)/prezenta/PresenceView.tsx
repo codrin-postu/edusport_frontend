@@ -54,9 +54,9 @@ export function PresenceView() {
   }, [query, key, noAccess]);
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
-  if (query === null) return <PageBody><LoadError /></PageBody>;
+  if (query === null) return <PageBody><LoadError onRetry={reload} /></PageBody>;
   if (loaded === null || loaded.key !== key) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (loaded.session === null) return <PageBody><LoadError /></PageBody>;
+  if (loaded.session === null) return <PageBody><LoadError onRetry={reload} /></PageBody>;
   return <PresenceBody key={key} session={loaded.session} query={query} reload={reload} />;
 }
 

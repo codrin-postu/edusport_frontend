@@ -66,6 +66,17 @@ for (const size of SIZES) {
       await page.goto("/");
       await expect(page.getByRole("heading", { name: "Antrenamente azi" })).toBeVisible();
       await expect(page.getByText("Nicio ședință azi.")).toBeVisible();
+      // The unsaved presences stay listed on a day without sessions.
+      await expect(page.getByRole("heading", { name: "Antrenamente fără prezență" })).toBeVisible();
+      await expect(page.getByRole("link").filter({ has: page.locator("[data-date-word]") })).toHaveCount(1);
+    });
+
+    test("no past list when nothing is unsaved", async({ page }) => {
+      await loginAs(page);
+      await page.route("**/api/portal/coach/today*", (route) => route.fulfill({ json: { date: "2026-11-05", today: "2026-11-05", groups: [], lessons: [], todo: [] } }));
+      await page.goto("/");
+      await expect(page.getByRole("heading", { name: "Antrenamente azi" })).toBeVisible();
+      await expect(page.getByText("Nicio ședință azi.")).toBeVisible();
       await expect(page.getByRole("heading", { name: "Antrenamente fără prezență" })).toHaveCount(0);
     });
   });
@@ -248,4 +259,17 @@ test("an unknown group shows the load error", async({ page }) => {
   await loginAs(page);
   await page.goto("/grupe/nu-exista");
   await expect(page.getByText("Nu am putut încărca datele.")).toBeVisible();
+});
+
+test("a group with no weekly schedule shows no leading comma and no date block", async({ page }) => {
+  await loginAs(page);
+  await mockState({ unscheduledGroup: true });
+  await page.goto("/grupe");
+  const row = page.getByRole("link", { name: /Fără program/ });
+  await expect(row).toContainText("18 copii");
+  await expect(row.locator("[data-date-block]")).toHaveCount(0);
+  const text = (await row.innerText()).replace(/\s+/g, " ");
+  expect(text).not.toMatch(/, 18 copii|^,/);
+  expect(text).toContain("Fără program");
+  await expect(row.getByText("18 copii", { exact: true })).toBeVisible();
 });

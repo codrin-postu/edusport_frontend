@@ -3,6 +3,7 @@
 import { useId } from "react";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
+import { Select } from "@/components/ui/select";
 import { PROGRAM } from "@/lib/portal/copy";
 import type { DayKey, ProgramAddBody, ProgramChangeBody, RepeatFreq, WeekOfMonth } from "@/lib/portal/api-types";
 import { cn } from "@/utils/cn";
@@ -32,7 +33,6 @@ const WEEKS: { value: WeekOfMonth; label: string }[] = [
   { value: "last", label: PROGRAM.weekLast },
 ];
 const DURATIONS = Array.from({ length: (240 - 15) / 5 + 1 }, (_, i) => 15 + i * 5);
-const SELECT = "w-full h-12 px-4 text-body-sm border-retro border-line bg-surface-raised text-primary outline-none focus:outline-2 focus:outline-offset-3 focus:outline-primary";
 
 export const newForm = (today: string): ProgramFormValue => ({
   repeat: true, freq: "weekly", weekOfMonth: "first", days: [], startTime: "", durationMin: 50, from: today, date: today,
@@ -70,14 +70,12 @@ export function ProgramFields({ form, onChange, today }: Props) {
   const timeAndDuration = (
     <>
       <div>
-        <label htmlFor={ids.time} className="text-label text-secondary block mb-2">{PROGRAM.startAt}</label>
+        <label htmlFor={ids.time} className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.startAt}</label>
         <Input id={ids.time} type="time" step={300} value={form.startTime} onChange={(e) => set({ startTime: e.target.value })} surface="card" />
       </div>
       <div>
-        <label htmlFor={ids.dur} className="text-label text-secondary block mb-2">{PROGRAM.duration}</label>
-        <select id={ids.dur} className={SELECT} value={form.durationMin} onChange={(e) => set({ durationMin: Number(e.target.value) })}>
-          {DURATIONS.map((m) => <option key={m} value={m}>{m} min</option>)}
-        </select>
+        <label htmlFor={ids.dur} className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.duration}</label>
+        <Select id={ids.dur} value={String(form.durationMin)} onValueChange={(v) => set({ durationMin: Number(v) })} options={DURATIONS.map((m) => ({ value: String(m), label: `${m} min` }))} chevron="portal-chevron-down" contentClassName="z-popup" />
       </div>
     </>
   );
@@ -92,21 +90,17 @@ export function ProgramFields({ form, onChange, today }: Props) {
   return (
     <>
       <div>
-        <label htmlFor={ids.freq} className="text-label text-secondary block mb-2">{PROGRAM.howOften}</label>
-        <select id={ids.freq} className={SELECT} value={form.freq} onChange={(e) => set({ freq: e.target.value as RepeatFreq })}>
-          {FREQS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
-        </select>
+        <label htmlFor={ids.freq} className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.howOften}</label>
+        <Select id={ids.freq} value={form.freq} onValueChange={(v) => set({ freq: v as RepeatFreq })} options={FREQS} chevron="portal-chevron-down" contentClassName="z-popup" />
       </div>
       {form.freq === "monthly" && (
         <div>
-          <label htmlFor={ids.week} className="text-label text-secondary block mb-2">{PROGRAM.weekOfMonth}</label>
-          <select id={ids.week} className={SELECT} value={form.weekOfMonth} onChange={(e) => set({ weekOfMonth: e.target.value as WeekOfMonth })}>
-            {WEEKS.map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
-          </select>
+          <label htmlFor={ids.week} className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.weekOfMonth}</label>
+          <Select id={ids.week} value={form.weekOfMonth} onValueChange={(v) => set({ weekOfMonth: v as WeekOfMonth })} options={WEEKS} chevron="portal-chevron-down" contentClassName="z-popup" />
         </div>
       )}
       <div role="group" aria-label={PROGRAM.days}>
-        <p className="text-label text-secondary mb-2">{PROGRAM.days}</p>
+        <p className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.days}</p>
         <div className="grid grid-cols-7 gap-1">
           {DAY_ORDER.map((d) => (
             <button
@@ -115,7 +109,7 @@ export function ProgramFields({ form, onChange, today }: Props) {
               aria-pressed={form.days.includes(d)}
               onClick={() => toggle(d)}
               className={cn(
-                "h-12 text-button border-retro border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+                "h-12 text-button border-control border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
                 form.days.includes(d) ? "bg-surface-dark text-primary-on-dark" : "bg-surface-raised text-primary",
               )}
             >

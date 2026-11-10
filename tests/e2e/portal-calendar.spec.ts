@@ -34,6 +34,8 @@ for (const size of SIZES) {
       await expect(day(page, 5)).toHaveCSS("background-color", "rgb(225, 236, 251)");
       await expect(page.getByRole("heading", { name: "Joi, 5 noiembrie" })).toBeVisible();
       await expect(day(page, 5)).toHaveAttribute("aria-pressed", "false");
+      await expect(day(page, 5)).toHaveAttribute("aria-current", "date");
+      await expect(day(page, 4)).not.toHaveAttribute("aria-current", "date");
       await day(page, 4).click();
       await expect(day(page, 4)).toHaveAttribute("aria-pressed", "true");
       await expect(page).toHaveURL(/\/calendar\?luna=2026-11&zi=2026-11-04$/);

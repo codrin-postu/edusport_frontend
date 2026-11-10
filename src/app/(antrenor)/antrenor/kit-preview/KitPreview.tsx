@@ -97,6 +97,11 @@ export function KitPreview() {
                 <Input type="email" defaultValue="alina@example.invalid" />
               </Field>
             </Kit>
+            <Kit name="Field, invalid">
+              <Field label="Telefon" error="Numărul nu este valid.">
+                <Input defaultValue="12" />
+              </Field>
+            </Kit>
             <Kit name="Select">
               <Field label="Durată">
                 <Select value={duration} onValueChange={setDuration} options={DURATIONS} chevron="portal-chevron-down" />

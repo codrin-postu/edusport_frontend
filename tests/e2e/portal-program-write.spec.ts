@@ -15,11 +15,12 @@ test("adding a weekly series sends the days, time, duration and start", async({ 
   await sheet.getByRole("button", { name: "Ma", exact: true }).click();
   await sheet.getByRole("button", { name: "Jo", exact: true }).click();
   await sheet.getByLabel("De la").fill("17:00");
-  await sheet.getByLabel("Durată").selectOption("50");
+  await sheet.getByLabel("Durată").click();
+  await page.getByRole("menuitemradio", { name: "60 min", exact: true }).click();
   await sheet.getByRole("button", { name: "Salvează" }).click();
   await expect(page.getByText("Program adăugat.")).toBeVisible();
   const post = (await calls("POST", /\/groups\/gavansati\/program$/))[0];
-  expect(post?.body).toEqual({ repeat: true, freq: "weekly", days: ["tue", "thu"], startTime: "17:00", durationMin: 50, from: TODAY });
+  expect(post?.body).toEqual({ repeat: true, freq: "weekly", days: ["tue", "thu"], startTime: "17:00", durationMin: 60, from: TODAY });
 });
 
 test("cancelling a future date addresses the event by its documentId and notifies the parents", async({ page }) => {

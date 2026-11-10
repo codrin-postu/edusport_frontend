@@ -42,6 +42,7 @@ export function MonthGrid({
                 key={date}
                 type="button"
                 aria-pressed={on}
+                aria-current={date === today ? "date" : undefined}
                 aria-label={`${day} ${monthWord}`}
                 onClick={() => onSelect(date)}
                 className={cn(
@@ -51,12 +52,12 @@ export function MonthGrid({
                 )}
               >
                 {day}
-                <span className="flex min-h-[3px] justify-center gap-0.5">
+                <span className="flex min-h-(--portal-mark-h) justify-center gap-0.5">
                   {dayMarks.map((m, k) => (
                     <span
                       key={k}
                       className={cn(
-                        "h-[3px] w-2",
+                        "h-(--portal-mark-h) w-2",
                         m === "grup" && (on ? "bg-ice" : "bg-surface-dark"),
                         m === "individual" && "bg-ice-blue",
                         m === "anulata" && "bg-cancelled",

@@ -58,7 +58,7 @@ export function CalendarView() {
       <PageHeader back={{ href: "/", label: NAV.today }} title={CALENDAR.title} sub={CALENDAR.sub} actions={picker} />
       <PageBody>
         {calendar.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
-        {calendar.state === "error" && <LoadError />}
+        {calendar.state === "error" && <LoadError onRetry={calendar.reload} />}
         {calendar.state === "ready" && cal && (
           <Columns>
             <Column grow={1} basis={420} className="gap-(--portal-gap-14)">

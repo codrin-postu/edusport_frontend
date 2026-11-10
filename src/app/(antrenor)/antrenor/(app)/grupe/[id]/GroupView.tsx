@@ -21,27 +21,29 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 import { ProgramTab } from "./_program/ProgramTab";
 import { memberSub } from "./memberSub";
 
-type Loaded = { id: string; page: CoachGroupPage | null };
+type Loaded = { key: string; page: CoachGroupPage | null };
 type Tab = "members" | "program";
 
 export function GroupView({ id }: { id: string }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const noAccess = useNoAccess();
+  const [tick, setTick] = useState(0);
+  const key = `${tick}:${id}`;
 
   useEffect(() => {
     let cancelled = false;
     void portalApi<CoachGroupPage>("GET", `coach/groups/${encodeURIComponent(id)}`).then((r) => {
       if (cancelled) return;
       if (noAccess(r)) return;
-      setLoaded({ id, page: r.ok ? r.data : null });
+      setLoaded({ key, page: r.ok ? r.data : null });
     });
     return () => {
       cancelled = true;
     };
-  }, [id, noAccess]);
+  }, [id, key, noAccess]);
 
-  if (loaded === null || loaded.id !== id) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (loaded.page === null) return <PageBody><LoadError /></PageBody>;
+  if (loaded === null || loaded.key !== key) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (loaded.page === null) return <PageBody><LoadError onRetry={() => setTick((n) => n + 1)} /></PageBody>;
   return loaded.page.own ? <OwnGroup page={loaded.page} /> : <OtherGroup page={loaded.page} />;
 }
 

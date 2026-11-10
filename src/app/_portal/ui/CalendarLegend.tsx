@@ -11,7 +11,7 @@ export function CalendarLegend() {
     <div className="flex flex-wrap gap-4">
       {ITEMS.map((i) => (
         <span key={i.text} className="flex items-center gap-(--portal-gap-6) text-(length:--portal-text-12) text-muted">
-          <span aria-hidden className={`h-[3px] w-3 ${i.bar}`} />
+          <span aria-hidden className={`h-(--portal-mark-h) w-3 ${i.bar}`} />
           {i.text}
         </span>
       ))}

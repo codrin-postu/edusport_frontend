@@ -31,6 +31,7 @@
   --field-label-case: none;        /* 13 field label case */
   --field-label-leading: 1.3;      /* 13 field label leading */
   --color-label-ink: #0e1a3c;      /* 13 field label colour */
+  --color-input-invalid: #0e1a3c;  /* layout: invalid input border in navy (strong input border), the alert icon sits on the error line */
   --color-alert-ink: #0e1a3c;      /* layout: no red text in the portals, error lines in navy with an alert icon */
   --field-hint-size: 13px;         /* 16 field hint size */
   --field-hint-leading: 1.4;       /* 16 field hint leading */
@@ -156,6 +157,13 @@
   --portal-nowtile-time: 26px;     /* layout now tile time */
   --portal-sidebar-pad-top: 28px;  /* layout sidebar */
   --portal-sidebar-pad-x: 14px;    /* layout sidebar link and brand side padding */
+  --portal-mark-h: 3px;            /* layout calendar mark and legend bar height */
+  --portal-auth-w: 400px;          /* layout sign-in card width */
+  --portal-auth-gutter: 40px;      /* layout sign-in card side margins on a phone */
+  --portal-auth-top: clamp(20px, 5svh, 40px); /* layout sign-in brand top offset on a phone */
+  --portal-auth-spacer: clamp(96px, 15svh, 160px); /* layout space under the sign-in brand on a phone */
+  --portal-auth-word: clamp(24px, 8vw, 31px); /* layout sign-in wordmark size on a phone */
+  --portal-auth-radius: 122px;     /* layout sign-in navy panel corner */
   --portal-gap-6: 6px;             /* layout 6px gap: sidebar links, stat side lines */
   --portal-nav-safe: 84px;         /* layout phone bottom padding: nav 52 + 2 x 6 + 16 + 4 */
   --portal-nav-item-gap: 3px;      /* layout bottom nav icon to label */

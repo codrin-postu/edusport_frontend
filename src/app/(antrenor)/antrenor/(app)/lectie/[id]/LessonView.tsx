@@ -42,7 +42,7 @@ export function LessonView({ id }: { id: string }) {
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
   if (loaded === null || loaded.key !== key) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (loaded.lesson === null) return <PageBody><LoadError /></PageBody>;
+  if (loaded.lesson === null) return <PageBody><LoadError onRetry={reload} /></PageBody>;
   return <LessonBody key={key} lesson={loaded.lesson} reload={reload} />;
 }
 

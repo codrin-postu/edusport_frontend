@@ -41,6 +41,7 @@ export const STATES = {
   noAccess: "Nu mai ai acces la această grupă.",
   invalid: "Cerere invalidă.",
   tooMany: "Prea multe încercări. Încearcă din nou peste 15 minute.",
+  retry: "Încearcă din nou",
 } as const;
 
 export const A11Y = { prevMonth: "Luna anterioară", nextMonth: "Luna următoare" } as const;

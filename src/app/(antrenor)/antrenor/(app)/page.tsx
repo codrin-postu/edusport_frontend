@@ -35,7 +35,7 @@ export default function AziPage() {
   const me = useMe();
   const today = usePortal<CoachToday>("coach/today");
   if (today.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (today.state === "error" || !today.data) return <PageBody><LoadError /></PageBody>;
+  if (today.state === "error" || !today.data) return <PageBody><LoadError onRetry={today.reload} /></PageBody>;
   const { data } = today;
   const now = clockNow();
   const rows: SessionRowData[] = [
@@ -61,7 +61,7 @@ export default function AziPage() {
     </div>
   );
   const past =
-    rows.length > 0 && data.todo.length > 0 ? (
+    data.todo.length > 0 ? (
       <Section title={AZI.pastHeading}>
         <ListCard>
           {data.todo.map((c) => (

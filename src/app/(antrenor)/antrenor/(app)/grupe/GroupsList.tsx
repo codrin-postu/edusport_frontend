@@ -21,7 +21,7 @@ const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(n
 export function GroupsList() {
   const groups = usePortal<CoachGroups>("coach/groups");
   if (groups.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
+  if (groups.state === "error" || !groups.data) return <PageBody><LoadError onRetry={groups.reload} /></PageBody>;
   const { mine, others } = groups.data;
   const total = mine.reduce((n, g) => n + g.children, 0);
   return (

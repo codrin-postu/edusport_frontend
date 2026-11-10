@@ -59,7 +59,7 @@ export function CompetitionsView() {
           </div>
         )}
         {result.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
-        {result.state === "error" && <LoadError />}
+        {result.state === "error" && <LoadError onRetry={result.reload} />}
         {result.state === "ready" && data && !data.available && <p className="text-body">{COMPETITIONS.unavailable}</p>}
         {result.state === "ready" && data && data.available && (
           data.events.length === 0 ? (

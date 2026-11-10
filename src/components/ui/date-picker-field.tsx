@@ -68,7 +68,7 @@ const V = {
   card: {
     group:
       "flex items-stretch w-full bg-surface-raised border-input border-input-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-(--focus-offset) data-[focus-within]:outline-focus",
-    groupInvalid: "border-accent",
+    groupInvalid: "border-input-invalid",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
     trigger: "border-l-retro border-line bg-surface text-primary hover:text-accent",

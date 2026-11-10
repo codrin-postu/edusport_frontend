@@ -32,7 +32,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <ToastContext.Provider value={api}>
       {children}
       <div className="fixed inset-x-0 bottom-20 lg:bottom-6 z-popup flex justify-center gutter pointer-events-none">
-        <div role="status" className={text ? "bg-surface-dark text-primary-on-dark border-retro border-line shadow-retro-sm text-body-sm px-4 py-3 max-w-md" : "hidden"}>
+        <div role="status" className={text ? "bg-surface-dark text-primary-on-dark border-card border-card-line shadow-retro-sm text-body-sm px-4 py-3 max-w-md" : "hidden"}>
           {text}
         </div>
       </div>

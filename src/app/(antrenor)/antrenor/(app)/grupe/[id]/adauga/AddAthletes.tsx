@@ -28,7 +28,7 @@ export function AddAthletes({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
 
   if (group.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (group.data === null) return <PageBody><LoadError /></PageBody>;
+  if (group.data === null) return <PageBody><LoadError onRetry={group.reload} /></PageBody>;
   const back = `/grupe/${encodeURIComponent(id)}`;
 
   const toggle = (row: CoachSearchRow) =>

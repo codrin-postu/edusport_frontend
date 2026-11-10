@@ -95,7 +95,7 @@ export function AthleteCard({ id }: { id: string }) {
   const from = useSearchParams().get("grupa");
   if (card.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   const a = card.data;
-  if (a === null) return <PageBody><LoadError /></PageBody>;
+  if (a === null) return <PageBody><LoadError onRetry={card.reload} /></PageBody>;
   const origin = a.groupRows.find((g) => g.groupId === from);
   const back = origin ? { href: `/grupe/${encodeURIComponent(origin.groupId)}`, label: origin.name } : { href: "/grupe", label: GRUPE.title };
   const sub = a.age === null ? (a.sectionName ?? undefined) : CARD.ageSection(GROUP.age(a.age), a.sectionName);

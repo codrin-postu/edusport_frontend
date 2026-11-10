@@ -45,7 +45,7 @@ export function HistoryView() {
       <PageBody>
         <div className="portal:hidden">{picker}</div>
         {history.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
-        {history.state === "error" && <LoadError />}
+        {history.state === "error" && <LoadError onRetry={history.reload} />}
         {history.state === "ready" && data && (
           <Columns>
             <Column grow={1} basis={300}>

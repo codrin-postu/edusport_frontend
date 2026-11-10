@@ -8,7 +8,7 @@ const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 const posts = async(tail: RegExp) => (await mockLog()).filter((c) => c.method === "POST" && tail.test(c.path));
 
 /** The i-th member row's button (rows follow the fixture order). */
-const rowButton = (page: Page, name: "Mută" | "Scoate", i: number) => page.getByRole("button", { name, exact: true }).nth(i);
+const rowButton = (page: Page, name: "Mută" | "Scoate", i: number) => page.getByRole("button", { name: new RegExp(`^${name} `) }).nth(i);
 
 async function typeDate(page: Page, label: string, ddmmyyyy: string): Promise<void> {
   const field = page.getByRole("dialog").getByRole("group", { name: label });
@@ -27,8 +27,8 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveText("Modifică grupa");
       await expect(page.getByText("Avansați, 9 sportivi")).toBeVisible();
       await expect(page.getByRole("link", { name: "‹ Avansați" })).toHaveAttribute("href", "/grupe/gavansati");
-      await expect(page.getByRole("button", { name: "Mută", exact: true })).toHaveCount(9);
-      await expect(page.getByRole("button", { name: "Scoate", exact: true })).toHaveCount(9);
+      await expect(page.getByRole("button", { name: /^Mută / })).toHaveCount(9);
+      await expect(page.getByRole("button", { name: /^Scoate / })).toHaveCount(9);
       const add = page.getByRole("link", { name: "+ Adaugă sportiv" }).locator("visible=true");
       await expect(add).toHaveAttribute("href", "/grupe/gavansati/adauga");
       await expect(page.getByRole("link", { name: "Gata" }).locator("visible=true")).toHaveAttribute("href", "/grupe/gavansati");

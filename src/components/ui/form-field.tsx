@@ -33,7 +33,7 @@ const CONTROL_DARK =
 const DISABLED_LIGHT = "disabled:text-disabled disabled:border-line-subtle";
 const DISABLED_DARK = "disabled:text-disabled disabled:border-line-subtle-on-dark";
 
-const INVALID_LIGHT = "aria-invalid:border-accent";
+const INVALID_LIGHT = "aria-invalid:border-input-invalid";
 const INVALID_DARK = "aria-invalid:border-accent-on-dark";
 
 interface ControlProps {
@@ -68,7 +68,7 @@ export const Input: React.FC<InputProps> = ({
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
       onDark ? DISABLED_DARK : DISABLED_LIGHT,
       onDark ? INVALID_DARK : INVALID_LIGHT,
-      invalid && (onDark ? "border-accent-on-dark" : "border-accent"),
+      invalid && (onDark ? "border-accent-on-dark" : "border-input-invalid"),
       className,
     )}
     {...props}
@@ -100,7 +100,7 @@ export const Textarea: React.FC<TextareaProps> = ({
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
       onDark ? DISABLED_DARK : DISABLED_LIGHT,
       onDark ? INVALID_DARK : INVALID_LIGHT,
-      invalid && (onDark ? "border-accent-on-dark" : "border-accent"),
+      invalid && (onDark ? "border-accent-on-dark" : "border-input-invalid"),
       className,
     )}
     {...props}

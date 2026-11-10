@@ -16,7 +16,7 @@ export function SquareSwitch({ label, checked, onChange }: SquareSwitchProps) {
         aria-labelledby={id}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative h-6 w-12 shrink-0 border-retro border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+          "relative h-6 w-12 shrink-0 border-control border-line outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
           checked ? "bg-accent" : "bg-surface",
         )}
       >

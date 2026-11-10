@@ -47,6 +47,10 @@ for (const size of SIZES) {
       await expect(page.getByText("ședințe de grup în noiembrie")).toBeVisible();
       await expect(page.getByText("lecție individuală")).toBeVisible();
       await expect(page.getByText("2,8 ore")).toBeVisible();
+      // The two side lines start at the same left edge.
+      const lefts = await page.locator("section:has([data-stat-num]) b").evaluateAll((bs) => bs.map((b) => Math.round((b.parentElement as HTMLElement).getBoundingClientRect().left)));
+      expect(lefts).toHaveLength(2);
+      expect(lefts[0]).toBe(lefts[1]);
       const rows = page.locator("main a[href]");
       await expect(rows).toHaveCount(4);
       const words = ["Joi", "Mie", "Mar", "Lun"];

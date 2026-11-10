@@ -24,6 +24,8 @@ export type MockState = {
   refreshStatus?: number;
   refuseSecret?: boolean;
   competitionsDown?: boolean;
+  coachDown?: boolean;
+  unscheduledGroup?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */
@@ -78,10 +80,16 @@ export async function mockReset(): Promise<void> {
  */
 export async function shot(page: Page, info: TestInfo, name: string): Promise<void> {
   const width = page.viewportSize()?.width ?? 0;
-  await page.screenshot({ path: info.outputPath(`${name}-${width}.png`), fullPage: true, animations: "disabled" });
-  const dir = process.env.PORTAL_SHOTS;
-  if (dir) {
-    mkdirSync(dir, { recursive: true });
-    await page.screenshot({ path: `${dir}/built-${name}-${width}.png`, fullPage: true, animations: "disabled" });
+  // A full page capture draws a fixed element once, wherever the capture window happens to be: hide the bottom nav and the toast.
+  const hide = await page.addStyleTag({ content: "[data-bottom-nav], [role=status] { visibility: hidden !important; }" });
+  try {
+    await page.screenshot({ path: info.outputPath(`${name}-${width}.png`), fullPage: true, animations: "disabled" });
+    const dir = process.env.PORTAL_SHOTS;
+    if (dir) {
+      mkdirSync(dir, { recursive: true });
+      await page.screenshot({ path: `${dir}/built-${name}-${width}.png`, fullPage: true, animations: "disabled" });
+    }
+  } finally {
+    await hide.evaluate((el) => (el as Element).remove());
   }
 }

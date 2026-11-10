@@ -83,7 +83,7 @@ export function ProgramTab({ groupId, own }: { groupId: string; own: boolean }) 
     );
   };
 
-  if (program.state === "error") return <LoadError />;
+  if (program.state === "error") return <LoadError onRetry={program.reload} />;
   return (
     <div className="flex flex-col gap-6">
       {data && data.kind === "club" && data.programPublic !== null && own && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
@@ -92,7 +92,7 @@ export function ProgramTab({ groupId, own }: { groupId: string; own: boolean }) 
       <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
       <div className="flex items-center justify-between">
         <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => setMonth(addMonths(month, -1))} />
-        <p className="text-label text-primary capitalize">{monthName(month)}</p>
+        <p className="text-(length:--portal-text-16) font-bold text-primary capitalize">{monthName(month)}</p>
         <IconButton icon="chevron-right" label={A11Y.nextMonth} onClick={() => setMonth(addMonths(month, 1))} />
       </div>
       {data === null ? (

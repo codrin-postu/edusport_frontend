@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, loginAs, mockReset } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockReset, mockState } from "./portal-helpers";
 
 // One sweep over every coach screen: one h1, no red text but the date word, only the named elements round,
 // no dashed or dotted borders, the canvas page background.
@@ -8,11 +8,17 @@ test.beforeEach(async() => { await mockReset(); });
 test.use({ baseURL: COACH_BASE, timezoneId: "Europe/Bucharest" });
 
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
-const SCREENS = ["/", "/calendar", "/grupe", "/grupe/gavansati", "/grupe/gavansati/modifica", "/sportiv/amaria", "/concursuri", "/istoric", "/profil", "/profil/setari", "/prezenta?id=s-today", "/lectie/noua", "/grupe/gavansati/adauga", "/grupe/gavansati/sportiv-nou"];
+const INVITE = "inv-valid-0000000000000000000000";
+const SCREENS = ["/", "/calendar", "/grupe", "/grupe/gavansati", "/grupe/gavansati/modifica", "/sportiv/amaria", "/concursuri", "/istoric", "/profil", "/profil/setari", "/profil/securitate", "/lectie/ldone", "/grupe/gavansati?tab=program", "/prezenta?id=s-today", "/lectie/noua", "/grupe/gavansati/adauga", "/grupe/gavansati/sportiv-nou"];
 
 async function sweep(page: Page, path: string): Promise<void> {
   await page.goto(path);
   await expect(page.locator("h1")).toHaveCount(1);
+  await check(page, path);
+}
+
+/** The look rules on whatever the page shows now (open sheets and error states included). */
+async function check(page: Page, path: string): Promise<void> {
   await expect(page.locator("[data-spinner]")).toHaveCount(0);
   const result = await page.evaluate(() => {
     const exceptions: [string, string][] = [["[data-bottom-nav]", "18px"], ["[data-bottom-nav] [aria-current=page]", "13px"], ["[data-date-block]", "6px"]];
@@ -52,6 +58,85 @@ for (const size of SIZES) {
 
     test("the sign-in screen", async({ page }) => {
       await sweep(page, "/login");
+    });
+  });
+}
+
+const DATA_SCREENS = ["/", "/calendar", "/grupe", "/grupe/gavansati", "/grupe/gavansati/modifica", "/sportiv/amaria", "/concursuri", "/istoric", "/profil/setari", "/profil/securitate", "/lectie/ldone", "/grupe/gavansati/adauga", "/grupe/gavansati/sportiv-nou", "/grupe/gavansati?tab=program", "/prezenta?id=s-today"];
+const LOAD_FAILED = "Nu am putut încărca datele.";
+const NAVY = "rgb(14, 26, 60)";
+
+for (const size of SIZES) {
+  test.describe(`Look sweep, sheets and error states ${size.width}`, () => {
+    test.use({ viewport: size });
+
+    test("the sign-in side screens", async({ page }) => {
+      await sweep(page, "/forgot-password");
+      await sweep(page, `/invite/${INVITE}`);
+    });
+
+    test("every open sheet", async({ page }) => {
+      await loginAs(page);
+      const dialog = page.getByRole("dialog");
+      const open = async(path: string, name: string, step: () => Promise<void>) => {
+        await page.goto(path);
+        await expect(page.locator("[data-spinner]")).toHaveCount(0);
+        await step();
+        await expect(dialog).toBeVisible();
+        await check(page, name);
+        await page.keyboard.press("Escape");
+        await expect(dialog).toHaveCount(0);
+      };
+      await open("/grupe/gavansati/modifica", "Mută sheet", () => page.getByRole("button", { name: /^Mută / }).first().click());
+      await open("/grupe/gavansati/modifica", "Scoate sheet", () => page.getByRole("button", { name: /^Scoate / }).first().click());
+      await open("/grupe/gavansati?tab=program", "Adaugă program sheet", () => page.getByRole("button", { name: "+ Adaugă program" }).click());
+      await open("/grupe/gavansati?tab=program", "Schimbă program sheet", () => page.getByRole("button", { name: "Schimbă", exact: true }).click());
+      await open("/grupe/gavansati?tab=program", "Anulează dată sheet", () => page.getByRole("button", { name: "Anulează" }).first().click());
+      await open("/grupe/gavansati?tab=program", "Mută dată sheet", () => page.getByRole("button", { name: "Mută", exact: true }).first().click());
+      await open("/prezenta?id=s-today", "Day sheet", () => page.locator("[data-page-header] button").first().click());
+      await open("/lectie/noua", "Coach picker sheet", () => page.getByRole("button", { name: "+ Adaugă alți antrenori" }).click());
+    });
+
+    test("invalid input and error lines", async({ page }) => {
+      // The sign-in refusal.
+      await page.goto("/login");
+      await page.getByLabel("E-mail").fill("antrenor1@example.invalid");
+      await page.getByLabel("Parolă", { exact: true }).fill("wrong-password-1");
+      await page.getByRole("button", { name: "Intră" }).click();
+      await expect(page.getByRole("main").getByRole("alert")).toBeVisible();
+      await check(page, "login refusal");
+      // A refused password change: error line and an invalid field.
+      await loginAs(page);
+      await page.goto("/profil/setari");
+      await page.getByLabel("Parola actuală").fill("Throwaway-Coach-1");
+      await page.getByLabel("Parola nouă").fill("a".repeat(129));
+      await page.getByRole("button", { name: "Salvează" }).last().click();
+      await expect(page.getByText("Parola poate avea cel mult 128 de caractere.")).toBeVisible();
+      await check(page, "password rule");
+      // An invalid field: navy border (not red) and the alert line in navy with its icon.
+      await page.goto("/kit-preview");
+      const field = page.locator("[aria-invalid=true]");
+      await expect(field).toHaveCount(1);
+      await expect(field).toHaveCSS("border-top-color", NAVY);
+      const line = page.getByText("Numărul nu este valid.");
+      await expect(line).toHaveCSS("color", NAVY);
+      await expect(line.locator("svg")).toBeVisible();
+    });
+
+    test("the load failure on every screen has the retry", async({ page }) => {
+      await loginAs(page);
+      for (const path of DATA_SCREENS) {
+        await mockState({ coachDown: true });
+        await page.goto(path);
+        const retry = page.getByRole("button", { name: "Încearcă din nou" });
+        await expect(retry, `${path} retry`).toBeVisible();
+        await expect(page.getByText(LOAD_FAILED).first()).toBeVisible();
+        await check(page, `${path} error`);
+        await mockState({ coachDown: false });
+        await retry.click();
+        await expect(page.getByText(LOAD_FAILED), `${path} after retry`).toHaveCount(0);
+        await expect(page.getByRole("button", { name: "Încearcă din nou" })).toHaveCount(0);
+      }
     });
   });
 }

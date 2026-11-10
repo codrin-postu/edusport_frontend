@@ -31,7 +31,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, inactiveGroups: [] };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, unscheduledGroup: false, inactiveGroups: [] };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -236,7 +236,7 @@ function classRow(g, date, done) {
 const lessonRow = (l) => ({ lessonId: l.lessonId, athleteName: l.athleteName, date: l.date, startTime: l.startTime, durationMin: l.durationMin, done: l.state === "saved" });
 
 function todayData(date) {
-  if (state.emptyToday) return { date, today, groups: [], lessons: [], todo: [] };
+  if (state.emptyToday) return { date, today, groups: [], lessons: [], todo: date === today ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [] };
   const own = Object.values(world.groups).filter((g) => g.own);
   const isToday = date === today;
   return {
@@ -621,7 +621,11 @@ const coachRoutes = [
     const all = Object.values(world.groups);
     ok(res, {
       mine: all.filter((g) => g.own).map((g) => ({ groupId: g.id, name: g.name, kind: g.kind, program: g.program, children: childrenOf(g.id), next: nextOf(g) })),
-      others: all.filter((g) => !g.own).map((g) => ({ groupId: g.id, name: g.name, coaches: g.coaches, program: g.program, children: childrenOf(g.id), next: nextOf(g) })),
+      others: [
+        ...all.filter((g) => !g.own).map((g) => ({ groupId: g.id, name: g.name, coaches: g.coaches, program: g.program, children: childrenOf(g.id), next: nextOf(g) })),
+        // A group with no weekly schedule: no program lines and no next class.
+        ...(state.unscheduledGroup ? [{ groupId: "gfaraprogram", name: "Fără program", coaches: ["Bianca Ene"], program: [], children: 18, next: null }] : []),
+      ],
     });
   }],
   ["GET", /^\/groups\/([^/]+)$/, withGroup(({ res }, g) => ok(res, groupPage(g)))],
@@ -709,6 +713,7 @@ function handlePortal(req, res, url, body) {
   const sess = coachSession(req);
   if (!sess) return unauthorized(res);
   if (state.cutAccount) return policy403(res);
+  if (state.coachDown && req.method === "GET") return club(res, 500, "Nu am putut încărca datele.");
   return route.fn({ ...ctx, sess });
 }
 

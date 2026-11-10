@@ -9,6 +9,7 @@ import type { CoachGroupPage, CoachGroups, CoachMember } from "@/lib/portal/api-
 import { bucharestToday } from "../../../../_lib/today";
 import { usePortal } from "../../../../_lib/use-portal";
 import { ListRow } from "@/app/_portal/ui/ListRow";
+import { SmallButton } from "@/app/_portal/ui/SmallButton";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
@@ -19,9 +20,6 @@ import { MoveSheet } from "./MoveSheet";
 import { RemoveSheet } from "./RemoveSheet";
 
 type Open = { kind: "move" | "remove"; athlete: CoachMember } | null;
-
-const SMALL =
-  "flex min-h-(--portal-tap) items-center border-control border-line bg-surface-raised px-(--portal-small-btn-pad-x) text-(length:--portal-text-14) font-bold text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus";
 
 /** The roster editor of an own group: "Mută" and "Scoate" per child, each through a confirm sheet. */
 export function EditGroup({ id }: { id: string }) {
@@ -49,7 +47,7 @@ export function EditGroup({ id }: { id: string }) {
 
   if (page.state === "loading" && !shown) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   if (groups.state === "loading" || !own) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (page.state === "error" || !shown || groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
+  if (page.state === "error" || !shown || groups.state === "error" || !groups.data) return <PageBody><LoadError onRetry={() => { page.reload(); groups.reload(); }} /></PageBody>;
   const group = shown;
   const members = group.members ?? [];
   const targets = groups.data.mine.filter((g) => g.groupId !== id).map((g) => ({ groupId: g.groupId, name: g.name }));
@@ -94,8 +92,8 @@ export function EditGroup({ id }: { id: string }) {
               sub={memberSub(m)}
               end={
                 <span className="flex flex-none items-center gap-(--portal-gap-6) pr-(--portal-row-pad-x)">
-                  <button type="button" data-roster-move className={SMALL} onClick={(e) => show("move", m, e.currentTarget)}>{EDIT_GROUP.move}</button>
-                  <button type="button" className={SMALL} onClick={(e) => show("remove", m, e.currentTarget)}>{EDIT_GROUP.remove}</button>
+                  <SmallButton data-roster-move label={EDIT_GROUP.moveFor(m.name)} onClick={(e) => show("move", m, e.currentTarget)}>{EDIT_GROUP.move}</SmallButton>
+                  <SmallButton label={EDIT_GROUP.removeFor(m.name)} onClick={(e) => show("remove", m, e.currentTarget)}>{EDIT_GROUP.remove}</SmallButton>
                 </span>
               }
             />
