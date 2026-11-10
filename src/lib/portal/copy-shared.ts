@@ -43,7 +43,7 @@ export const STATES = {
   tooMany: "Prea multe încercări. Încearcă din nou peste 15 minute.",
 } as const;
 
-export const A11Y = { back: "Înapoi", prevMonth: "Luna anterioară", nextMonth: "Luna următoare", profile: "Profil" } as const;
+export const A11Y = { prevMonth: "Luna anterioară", nextMonth: "Luna următoare" } as const;
 
 /** The sign-in copy a portal passes to the shared login, reset and invite forms. */
 export type AuthCopy = {

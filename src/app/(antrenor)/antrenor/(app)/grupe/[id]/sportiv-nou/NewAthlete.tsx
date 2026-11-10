@@ -6,12 +6,13 @@ import Button from "@/components/ui/button";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
-import { NEW_ATHLETE } from "@/lib/portal/copy";
+import { ADD_ATHLETE, NEW_ATHLETE } from "@/lib/portal/copy";
 import type { CoachGroupPage, CoachNewAthleteBody } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
-import { BackHeader } from "../../../../_ui/BackHeader";
 import { LoadError } from "@/app/_portal/ui/LoadError";
+import { PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 
@@ -19,9 +20,9 @@ function Field({ label, optional, children }: { label: string; optional?: boolea
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="text-label text-secondary block mb-2">
+      <label htmlFor={id} className="text-field-label text-label-ink mb-(--field-gap) block">
         {label}
-        {optional && <span className="ml-2 normal-case">({NEW_ATHLETE.optional})</span>}
+        {optional && <span className="ml-2 font-normal">({NEW_ATHLETE.optional})</span>}
       </label>
       {children(id)}
     </div>
@@ -41,8 +42,8 @@ export function NewAthlete({ id }: { id: string }) {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  if (group.state === "loading") return <div className="py-6 flex justify-center"><Spinner /></div>;
-  if (group.data === null) return <LoadError />;
+  if (group.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (group.data === null) return <PageBody><LoadError /></PageBody>;
   const back = `/grupe/${encodeURIComponent(id)}`;
 
   async function submit() {
@@ -71,23 +72,25 @@ export function NewAthlete({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <BackHeader href={`${back}/adauga`} title={NEW_ATHLETE.title} />
-      <Field label={NEW_ATHLETE.name}>
-        {(fid) => <Input id={fid} value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} surface="card" />}
-      </Field>
-      <DatePickerField id="new-birth" label={`${NEW_ATHLETE.birthDate} (${NEW_ATHLETE.optional})`} value={birthDate} onChange={setBirthDate} variant="card" />
-      <Field label={NEW_ATHLETE.parent} optional>
-        {(fid) => <Input id={fid} value={parent} autoComplete="off" onChange={(e) => setParent(e.target.value)} surface="card" />}
-      </Field>
-      <Field label={NEW_ATHLETE.phone} optional>
-        {(fid) => <Input id={fid} type="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} surface="card" />}
-      </Field>
-      <Field label={NEW_ATHLETE.email} optional>
-        {(fid) => <Input id={fid} type="email" value={email} onChange={(e) => setEmail(e.target.value)} surface="card" />}
-      </Field>
-      <AlertLine message={message} reserve />
-      <Button onClick={() => void submit()} disabled={busy || name.trim() === ""} className="w-full">{NEW_ATHLETE.submit(group.data.name)}</Button>
-    </div>
+    <>
+      <PageHeader back={{ href: `${back}/adauga`, label: ADD_ATHLETE.title(group.data.name) }} title={NEW_ATHLETE.title} />
+      <PageBody narrow={520}>
+        <Field label={NEW_ATHLETE.name}>
+          {(fid) => <Input id={fid} value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} surface="card" />}
+        </Field>
+        <DatePickerField id="new-birth" label={`${NEW_ATHLETE.birthDate} (${NEW_ATHLETE.optional})`} value={birthDate} onChange={setBirthDate} variant="card" />
+        <Field label={NEW_ATHLETE.parent} optional>
+          {(fid) => <Input id={fid} value={parent} autoComplete="off" onChange={(e) => setParent(e.target.value)} surface="card" />}
+        </Field>
+        <Field label={NEW_ATHLETE.phone} optional>
+          {(fid) => <Input id={fid} type="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} surface="card" />}
+        </Field>
+        <Field label={NEW_ATHLETE.email} optional>
+          {(fid) => <Input id={fid} type="email" value={email} onChange={(e) => setEmail(e.target.value)} surface="card" />}
+        </Field>
+        <AlertLine message={message} reserve />
+        <Button onClick={() => void submit()} disabled={busy || name.trim() === ""} className="w-full">{NEW_ATHLETE.submit(group.data.name)}</Button>
+      </PageBody>
+    </>
   );
 }

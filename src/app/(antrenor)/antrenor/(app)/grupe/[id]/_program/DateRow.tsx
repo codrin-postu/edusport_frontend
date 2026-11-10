@@ -3,7 +3,6 @@ import { PROGRAM } from "@/lib/portal/copy";
 import { dateTile, shortDate } from "@/lib/portal/format";
 import { dateState } from "@/lib/portal/program";
 import type { Occurrence } from "@/lib/portal/api-types";
-import { SquareLabel } from "../../../../_ui/SquareLabel";
 
 /** The line under the time for a pause, cancelled or moved date. */
 function noteText(o: Occurrence, state: ReturnType<typeof dateState>): string | null {
@@ -34,7 +33,7 @@ export function DateRow({ occurrence: o, today, actions }: DateRowProps) {
           <span className={state === "cancelled" ? "text-body font-semibold text-secondary block line-through" : "text-body font-semibold text-primary block"}>{o.startTime ?? ""}</span>
           {note && <span className="text-body-sm text-secondary block">{note}</span>}
         </span>
-        {state === "past" && <SquareLabel>{PROGRAM.past}</SquareLabel>}
+        {state === "past" && <span className="shrink-0 border-control border-line px-2 py-1 text-(length:--portal-text-12) font-bold text-primary">{PROGRAM.past}</span>}
       </div>
       {actions && <div className="flex flex-wrap gap-2 mt-4">{actions}</div>}
     </li>

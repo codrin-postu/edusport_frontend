@@ -252,3 +252,17 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Type sizes with no scale step (10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 26 px) are `--portal-text-<n>` tokens in the portal theme file.
 - The shared dialog title now reads its desktop size from `--dialog-title-size` (a media rule on `:root`), so the portal can set 22px at every width; public sizes are unchanged.
 - League Spartan 800 is loaded in the coach root layout (it was missing; headings fell back to sans-serif).
+
+## 2026-11-09 coach canvas screens (decided by Claude, low impact)
+- `EDIT_GROUP.pastDate` "Alege o dată de azi încolo.": a Mută or Scoate date before today shows this line and disables the confirm button; the date field is not clamped while typing (clamping reset typing to today).
+- Copy for the screens: `doneOne` / `doneMany` ("completat" / "completate", Azi status words), "Nu ai altă grupă în care să-l muți." (Mută with no other own group), "Nicio ședință în această zi." (calendar day without a class), "Niciun rezultat în acest sezon." (Concursuri season without results).
+- The athlete page back link is "‹ <group>" to `/grupe/<id>` when `?grupa=` names one of the child's groups, else "‹ Grupe" to `/grupe`; any other `?grupa=` value is ignored.
+- Securitate has no canvas board: it is built from the kit rows (one ListRow per device, sub "Ultima dată: <day>", "acesta" ice tag in the title, secondary "Deconectează" in the extra line), no board to match.
+- The copy button on the athlete page shows "Nu am putut copia numărul." (`CARD.copyFailed`, `KIT.copyFailed`) in the shared toast when the browser refuses the clipboard write (no permission, insecure context).
+- "Ultima" on the athlete page keeps the full short weekday as on the board ("Marți, 3 noi"), not "Mar, 3 noi" as the brief said (ruling after review batch A).
+- Several extra groups of a child read "și în A, B" once, not "și în A, și în B".
+- Istoric agrees singular and plural: "1 lecție individuală", "2 lecții individuale", "20 de lecții individuale", "1 ședință de grup", "1 oră" / "2,8 ore", "1 prezent" (counts through the `count` pattern of `roCount`).
+- No red text in the portals: error and alert lines (AlertLine, the field error line) are navy with the alert icon, through the token `--color-alert-ink` (navy in `portal-theme.css`, red on the public site) and `--alert-line-display` / `--alert-icon-display` (the icon shows in the portals only). The only red text left is the top word of the date block. Invalid input borders stay as they were.
+- After a saved Mută or Scoate the list reloads in place (no spinner flash) and the focus goes to the same row position, or the last row when the list got shorter. A second dated change of the same child is refused by the server with 409, as the mock does.
+- Adaugă sportiv, Sportiv nou and the Program tab (segmented control, "Trecută" label) were moved onto the kit parts so the old coach `_ui` shell files could go; their behaviour is unchanged.
+

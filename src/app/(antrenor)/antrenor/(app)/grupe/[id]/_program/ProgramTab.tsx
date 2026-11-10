@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/button";
 import IconButton from "@/components/ui/icon-button";
-import { A11Y, PROGRAM } from "@/lib/portal/copy";
+import { A11Y, GROUP, PROGRAM } from "@/lib/portal/copy";
 import { addMonths } from "@/lib/portal/format";
 import { dateState, eventDocumentId, dateKey } from "@/lib/portal/program";
 import { dayMonth } from "@/lib/portal/format";
@@ -12,7 +12,7 @@ import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
-import { Segmented } from "../../../../_ui/Segmented";
+import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { AddProgramSheet } from "./AddProgramSheet";
@@ -89,7 +89,7 @@ export function ProgramTab({ groupId, own }: { groupId: string; own: boolean }) 
       {data && data.kind === "club" && data.programPublic !== null && own && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
       {data && data.kind === "school" && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
       {canEdit && <div><Button variant="secondary" onClick={() => setOpen({ kind: "add" })}>{PROGRAM.add}</Button></div>}
-      <Segmented<View> options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
+      <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
       <div className="flex items-center justify-between">
         <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => setMonth(addMonths(month, -1))} />
         <p className="text-label text-primary capitalize">{monthName(month)}</p>
