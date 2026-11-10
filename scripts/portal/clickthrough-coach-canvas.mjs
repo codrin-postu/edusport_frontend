@@ -3,7 +3,7 @@
 //   node scripts/portal/clickthrough-coach-canvas.mjs <base> [--password <pw>] [--today YYYY-MM-DD] [--competitions down|up]
 //
 // <base> is the coach host, e.g. http://antrenor.localhost:3219. Logs in as antrenor1@example.invalid, opens every
-// screen of the look sweep, moves the first child of the first own group from tomorrow, opens Concursuri and
+// screen of the look sweep, moves the first child of the first own Club group that has children from tomorrow, opens Concursuri and
 // then runs the training steps (weekly group program with "Până la", end one weekday, remove and keep dates, one-off class,
 // weekly lesson series, edit from the second lesson on, delete the following) and fails on any console error or non-2xx answer
 // of the BFF. Synthetic data only. The training steps write to the database: use a throwaway Strapi.
@@ -45,7 +45,7 @@ const status = await page.evaluate(async(b) => (await fetch("/api/portal/auth/lo
 if (status !== 200) { console.error(`login answered ${status}`); await browser.close(); process.exit(1); }
 
 const groups = await api("/groups");
-const own = groups?.mine?.[0];
+const own = groups?.mine?.find((g) => g.kind === "club" && g.children > 0) ?? groups?.mine?.[0];
 if (!own) { console.error("no own group"); await browser.close(); process.exit(1); }
 const detail = await api(`/groups/${own.groupId}`);
 const child = detail?.members?.[0];
@@ -64,7 +64,7 @@ for (const path of SCREENS) {
 const target = groups.mine.find((g) => g.groupId !== own.groupId);
 if (target) {
   await page.goto(`/grupe/${own.groupId}/modifica`);
-  await page.getByRole("button", { name: "Mută", exact: true }).first().click();
+  await page.getByRole("button", { name: /^Mută / }).first().click();
   const sheet = page.getByRole("dialog");
   await sheet.getByRole("group", { name: "Din data" }).getByRole("spinbutton").first().click();
   await page.keyboard.type(`${td}${tm}${ty}`);
@@ -127,7 +127,7 @@ await timed().first().waitFor({ timeout: 10_000 }).catch(() => note("no date row
 const before = await timed().count();
 await timed().first().click();
 await dialog.getByRole("radio", { name: /^Șterge/ }).click();
-await dialog.getByRole("button", { name: "Salvează" }).click();
+await dialog.getByRole("button", { name: "Șterge", exact: true }).click();
 await toast("a fost ștearsă.");
 await page.waitForTimeout(500);
 if ((await timed().count()) !== before - 1) note(`remove date: ${before} rows before, ${await timed().count()} after`); else step("removed one date");
