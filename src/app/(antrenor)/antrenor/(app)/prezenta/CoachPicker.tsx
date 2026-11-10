@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PRESENCE, LESSON } from "@/lib/portal/copy";
+import { PRESENCE, LESSON, EDIT_GROUP } from "@/lib/portal/copy";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
 import IconButton from "@/components/ui/icon-button";
@@ -20,6 +20,8 @@ type CoachPickerProps = {
 
 export function CoachPicker({ me, options, value, onChange, locked }: CoachPickerProps) {
   const [open, setOpen] = useState(false);
+  // The sheet edits a draft; OK applies it, Renunță or closing drops it.
+  const [draft, setDraft] = useState<string[]>([]);
   const name = (id: string): string => options.find((o) => o.id === id)?.name ?? "";
   const known = (id: string): boolean => id === me || options.some((o) => o.id === id);
   // Nothing is listed until the coach is known; an id with no name is not shown.
@@ -29,7 +31,7 @@ export function CoachPicker({ me, options, value, onChange, locked }: CoachPicke
       <span className="text-(length:--portal-text-14) font-bold">{PRESENCE.coach}</span>
       <ul className="flex flex-col">
         {ids.map((id) => (
-          <li key={id} className="flex items-center justify-between gap-4">
+          <li key={id} className="flex min-h-(--checkbox-size) items-center justify-between gap-4">
             <span className="text-(length:--portal-text-15)">{id === me ? PRESENCE.coachSelf(name(id)) : name(id)}</span>
             {id !== me && !locked && (
               <IconButton icon="close" label={PRESENCE.removeCoach(name(id))} onClick={() => onChange(value.filter((v) => v !== id))} />
@@ -37,21 +39,30 @@ export function CoachPicker({ me, options, value, onChange, locked }: CoachPicke
           </li>
         ))}
       </ul>
-      {!locked && <PortalLink onClick={() => setOpen(true)}>{PRESENCE.addCoaches}</PortalLink>}
-      <Sheet open={open} onOpenChange={setOpen} title={PRESENCE.coach}>
-        <ul className="flex flex-col gap-4 mb-6">
+      {!locked && <PortalLink onClick={() => { setDraft(ids); setOpen(true); }}>{PRESENCE.addCoaches}</PortalLink>}
+      <Sheet
+        open={open}
+        onOpenChange={setOpen}
+        title={PRESENCE.coach}
+        footer={
+          <div className="grid grid-cols-2 gap-(--portal-gap-12)">
+            <Button variant="secondary" onClick={() => setOpen(false)} className="w-full">{EDIT_GROUP.cancel}</Button>
+            <Button onClick={() => { onChange(draft); setOpen(false); }} className="w-full">{LESSON.ok}</Button>
+          </div>
+        }
+      >
+        <ul className="flex flex-col gap-4">
           {options.map((o) => (
             <li key={o.id}>
               <Checkbox
                 label={o.id === me ? PRESENCE.coachSelf(o.name) : o.name}
-                checked={ids.includes(o.id)}
+                checked={draft.includes(o.id)}
                 disabled={o.id === me}
-                onChange={(e) => onChange(e.target.checked ? [...ids, o.id] : ids.filter((v) => v !== o.id))}
+                onChange={(e) => setDraft(e.target.checked ? [...draft, o.id] : draft.filter((v) => v !== o.id))}
               />
             </li>
           ))}
         </ul>
-        <Button onClick={() => setOpen(false)} className="w-full">{LESSON.ok}</Button>
       </Sheet>
     </div>
   );
