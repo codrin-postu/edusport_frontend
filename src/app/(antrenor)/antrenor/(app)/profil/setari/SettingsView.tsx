@@ -1,30 +1,24 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useState } from "react";
 import Button from "@/components/ui/button";
-import { Input } from "@/components/ui/form-field";
+import { Field, Input } from "@/components/ui/form-field";
 import Link from "@/components/ui/link";
-import { PROFILE, SETTINGS } from "@/lib/portal/copy";
+import { NAV, PROFILE, SETTINGS } from "@/lib/portal/copy";
 import type { CoachMe } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { usePortal } from "../../../_lib/use-portal";
-import { BackHeader } from "../../../_ui/BackHeader";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
+import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { Section } from "@/app/_portal/ui/SectionHeading";
 import { PasswordField } from "@/app/_portal/ui/PasswordField";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 
-function ReadOnly({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-label text-secondary mb-2">{label}</p>
-      <p className="text-body text-primary">{value}</p>
-    </div>
-  );
-}
-
 function PhoneForm({ phone }: { phone: string | null }) {
-  const id = useId();
   const toast = useToast();
   const [value, setValue] = useState(phone ?? "");
   const [message, setMessage] = useState<string | null>(null);
@@ -42,11 +36,10 @@ function PhoneForm({ phone }: { phone: string | null }) {
   }
   return (
     <form onSubmit={(e) => void save(e)} className="flex flex-col gap-4">
-      <div>
-        <label htmlFor={id} className="text-label text-secondary block mb-2">{SETTINGS.phone}</label>
-        <Input id={id} type="tel" inputMode="tel" autoComplete="tel" value={value} onChange={(e) => setValue(e.target.value)} surface="card" />
-      </div>
-      <p role="alert" className="text-body-sm text-accent empty:hidden">{message}</p>
+      <Field label={SETTINGS.phone}>
+        <Input type="tel" inputMode="tel" autoComplete="tel" value={value} onChange={(e) => setValue(e.target.value)} />
+      </Field>
+      <AlertLine message={message} />
       <Button type="submit" disabled={busy} className="w-full">{SETTINGS.save}</Button>
     </form>
   );
@@ -78,7 +71,7 @@ function PasswordForm({ email }: { email: string }) {
       <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
       <PasswordField label={SETTINGS.currentPassword} value={current} onChange={setCurrent} autoComplete="current-password" />
       <PasswordField label={SETTINGS.newPassword} value={password} onChange={setPassword} autoComplete="new-password" />
-      <p role="alert" className="text-body-sm text-accent empty:hidden">{message}</p>
+      <AlertLine message={message} />
       <Button type="submit" disabled={busy || current === "" || password === ""} className="w-full">{SETTINGS.save}</Button>
     </form>
   );
@@ -86,17 +79,29 @@ function PasswordForm({ email }: { email: string }) {
 
 export function SettingsView() {
   const me = usePortal<CoachMe>("coach/me");
-  if (me.state === "loading") return <div className="py-6 flex justify-center"><Spinner /></div>;
-  if (me.data === null) return <LoadError />;
+  if (me.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (me.data === null) return <PageBody><LoadError /></PageBody>;
   return (
-    <div className="flex flex-col gap-6">
-      <BackHeader href="/profil" title={PROFILE.settings} />
-      <ReadOnly label={SETTINGS.name} value={me.data.name} />
-      <ReadOnly label={SETTINGS.email} value={me.data.email} />
-      <p className="text-body-sm text-secondary">{SETTINGS.adminNote}</p>
-      <PhoneForm phone={me.data.phone} />
-      <h2 className="text-subtitle text-primary">{SETTINGS.changePassword}</h2>
-      {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
-    </div>
+    <>
+      <PageHeader back={{ href: "/profil", label: NAV.profile }} title={PROFILE.settings} />
+      <PageBody>
+        <Columns>
+          <Column grow={1} basis={380}>
+            <Section title={SETTINGS.account}>
+              <KeyValueCard rows={[{ key: SETTINGS.name, value: me.data.name }, { key: SETTINGS.email, value: me.data.email }]} />
+              <p className="text-(length:--portal-text-13) text-muted">{SETTINGS.adminNote}</p>
+            </Section>
+          </Column>
+          <Column grow={1} basis={380}>
+            <Section title={SETTINGS.phone}>
+              <PhoneForm phone={me.data.phone} />
+            </Section>
+            <Section title={SETTINGS.changePassword}>
+              {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
+            </Section>
+          </Column>
+        </Columns>
+      </PageBody>
+    </>
   );
 }

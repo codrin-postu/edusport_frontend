@@ -1,12 +1,14 @@
 "use client";
 
-import Icon from "@/components/ui/icon";
+import Button from "@/components/ui/button";
 import { PROFILE } from "@/lib/portal/copy";
 import { portalApi } from "@/app/_portal/lib/api";
-import { useMe } from "../../_lib/me-context";
-import { ListCard } from "../../_ui/ListCard";
-import { Row } from "../../_ui/Row";
+import { ListRow } from "@/app/_portal/ui/ListRow";
+import { PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useMe } from "../../_lib/me-context";
 
 export function ProfileView() {
   const me = useMe();
@@ -14,23 +16,17 @@ export function ProfileView() {
     await portalApi("POST", "auth/logout");
     window.location.assign("/login");
   }
-  if (me === null) return <div className="py-6 flex justify-center"><Spinner /></div>;
+  if (me === null) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   return (
-    <div>
-      <h1 className="text-title text-primary">{me.name}</h1>
-      <p className="text-body-sm text-secondary mb-6">{PROFILE.role}</p>
-      <ListCard>
-        <Row href="/profil/setari" title={PROFILE.settings} />
-        <Row href="/profil/securitate" title={PROFILE.security} />
-        <button
-          type="button"
-          onClick={() => void logout()}
-          className="w-full flex items-center gap-4 p-4 text-left outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
-        >
-          <span className="min-w-0 flex-1 text-body font-semibold text-primary">{PROFILE.logout}</span>
-          <Icon name="chevron-right" />
-        </button>
-      </ListCard>
-    </div>
+    <>
+      <PageHeader brand title={me.name} sub={PROFILE.role} />
+      <PageBody narrow={560}>
+        <ListCard>
+          <ListRow href="/profil/setari" title={PROFILE.settings} sub={PROFILE.settingsSub} />
+          <ListRow href="/profil/securitate" title={PROFILE.security} sub={PROFILE.securitySub} />
+        </ListCard>
+        <Button variant="secondary" onClick={() => void logout()} className="w-full">{PROFILE.logout}</Button>
+      </PageBody>
+    </>
   );
 }

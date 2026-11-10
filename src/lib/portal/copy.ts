@@ -312,6 +312,7 @@ export const PROFILE = {
 } as const;
 
 export const SETTINGS = {
+  account: "Cont",
   name: "Nume",
   email: "E-mail",
   adminNote: "Numele și e-mailul le schimbă administratorul. După schimbarea e-mailului, intri cu adresa nouă.",
