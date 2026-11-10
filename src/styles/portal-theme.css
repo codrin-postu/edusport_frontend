@@ -67,7 +67,6 @@
   --link-weight: 700;              /* 21 link weight */
   --color-link-bar: transparent;   /* 21 link bar colour */
   --link-bar-size: 0px;            /* 21 link bar size */
-  --color-link-hover: #0e1a3c;     /* 21 link hover colour */
   --link-hover-decoration: underline; /* 21 link hover decoration */
   --link-hover-animation: none;    /* 21 link hover animation */
   --dialog-title-size: 22px;       /* 26 dialog title size */
@@ -164,6 +163,7 @@
   --portal-popup-max-h: 92svh;     /* layout form popup height cap (bottom sheet on a phone) */
   --portal-cols: minmax(0, 3fr) minmax(0, 2fr); /* layout two-part pages: main 3, side 2 */
   --portal-cols-side-first: minmax(0, 2fr) minmax(0, 3fr); /* layout Azi: summary column left, list right (user 2026-11-10) */
+  --portal-side-top: calc(var(--portal-header-h, 0px) + var(--portal-cols-gap)); /* layout sticky side column: under the sticky header */
   --portal-sheet-gap: 14px;        /* layout sheet child gap */
   --portal-nowtile-day: 32px;      /* layout now tile day */
   --portal-nowtile-time: 26px;     /* layout now tile time */

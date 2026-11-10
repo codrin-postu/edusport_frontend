@@ -25,7 +25,7 @@ interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 
 
 const TONE: Record<LinkTone, { light: string; dark: string }> = {
   default: { light: "link", dark: "link link-on-dark" },
-  quiet: { light: "transition-colors hover:text-accent", dark: "transition-colors hover:text-accent-on-dark" },
+  quiet: { light: "transition-colors", dark: "transition-colors hover:text-accent-on-dark" },
   footer: { light: "link-footer", dark: "link-footer" },
   plain: { light: "", dark: "" },
 };

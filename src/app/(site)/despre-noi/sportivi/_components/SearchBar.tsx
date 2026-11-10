@@ -95,7 +95,7 @@ export function SearchBar({ initialValue = "", scrollAnchor, extraQuery }: Props
           icon="close"
           label="Șterge căutarea"
           onClick={() => setValue("")}
-          className="absolute right-1 top-1/2 -translate-y-1/2 text-secondary hover:text-accent"
+          className="absolute right-1 top-1/2 -translate-y-1/2 text-secondary"
         />
       )}
     </div>

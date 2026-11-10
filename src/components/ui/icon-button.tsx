@@ -53,7 +53,7 @@ export default function IconButton({
     "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset)",
     onDark
       ? "text-primary-on-dark hover:text-accent-on-dark focus-visible:outline-primary-on-dark"
-      : "text-primary hover:text-accent focus-visible:outline-focus",
+      : "text-primary focus-visible:outline-focus",
     variant === "outline" && "border-retro",
     variant === "outline" && (onDark ? "border-line-on-dark" : "border-line"),
     disabled && (onDark ? "text-muted-on-dark" : "text-disabled"),

@@ -83,7 +83,7 @@ export default function AccordionItem({
             "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus",
             look === "band"
               ? "px-4 py-3 bg-surface-subtle hover-layer border-b-retro border-line"
-              : "py-4 border-b border-line-subtle hover:text-accent",
+              : "py-4 border-b border-line-subtle",
             triggerClassName,
           )}
         >

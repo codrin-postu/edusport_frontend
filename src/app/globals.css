@@ -181,7 +181,6 @@ h1.text-branding-font {
   --color-checkbox-mark-disabled: var(--color-disabled);
   --color-focus: #0e1a3c;
   --color-link-bar: #be3330;
-  --color-link-hover: #be3330;
   --color-dialog-bg: var(--color-surface);
 
   --shadow-retro-sm: 4px 4px 0 rgb(14 26 60 / 0.16);
@@ -499,7 +498,7 @@ h1.text-branding-font {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color var(--duration-fast, 150ms) ease;
-  &:hover { color: var(--color-link-hover); text-decoration-line: var(--link-hover-decoration); animation: var(--link-hover-animation) var(--duration-long) var(--ease-in-out); }
+  &:hover { text-decoration-line: var(--link-hover-decoration); animation: var(--link-hover-animation) var(--duration-long) var(--ease-in-out); }
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     &:hover { animation: none; }
@@ -667,8 +666,6 @@ html.lv2-nav [data-nav-row] > a {
   color: var(--color-navy);
   position: relative;
 }
-html.lv2-nav [data-nav-row] > button:hover,
-html.lv2-nav [data-nav-row] > a:hover { color: var(--color-rust); }
 html.lv2-nav [data-nav-row] > button::after,
 html.lv2-nav [data-nav-row] > a::after {
   content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
@@ -707,10 +704,9 @@ html.lv2-nav .nav-dropdown-panel p { display: none !important; }
 html.lv2-nav .nav-dropdown-panel a { border-radius: 0 !important; border-left: 3px solid transparent; }
 html.lv2-nav .nav-dropdown-panel a svg { display: none !important; }
 html.lv2-nav .nav-dropdown-panel a:hover { background: #ffffff !important; border-left-color: var(--color-rust); }
-/* title tints to brick on hover; description stays muted navy (below the title) */
+/* title stays navy on hover (the brick left bar is the cue); description stays muted navy */
 html.lv2-nav .nav-dropdown-panel a > div > span:first-child { color: var(--color-navy); }
 html.lv2-nav .nav-dropdown-panel a > div > span + span { color: var(--color-secondary) !important; font-weight: 400; }
-html.lv2-nav .nav-dropdown-panel a:hover > div > span:first-child { color: var(--color-rust) !important; }
 
 /* Dropdown promo tile (image + gradient + title/description) */
 html.lv2-nav .nav-promo {
@@ -732,9 +728,7 @@ html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; margin-top: 4px; line
 
 /* Mobile menu panel → square + cream + brick hover (light pass) */
 html.lv2-nav .z-menu { border-radius: 0 !important; }
-/* Row links tint rust on hover — but NOT the layers CTA button (.lcta), whose
-   face text must stay white. */
-html.lv2-nav .z-menu a:not(.lcta):hover span { color: var(--color-rust) !important; }
+/* Mobile menu row links keep their text colour on hover (no red text in interactive states). */
 
 /* Black contact strip: hidden by default, shown only when we KNOW we are at
    the top of the page.

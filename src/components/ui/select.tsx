@@ -140,7 +140,7 @@ export const Select: React.FC<SelectProps> = ({
                     "relative flex items-center justify-between gap-2 px-3 py-2 text-sm",
                     "cursor-pointer select-none outline-none transition-colors text-primary",
                     "data-[highlighted]:bg-surface-subtle data-[highlighted]:text-primary",
-                    "data-[state=checked]:text-accent data-[state=checked]:font-semibold",
+                    "data-[state=checked]:font-semibold",
                   )}
                 >
                   <span className="flex-1 truncate">{opt.label}</span>

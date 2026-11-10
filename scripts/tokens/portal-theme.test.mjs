@@ -42,7 +42,7 @@ const COMPONENT = [
   ["--checkbox-size", "44px"], ["--checkbox-border-width", "2px"], ["--color-checkbox-line", "#b9c6da"],
   ["--color-checkbox-on", "#0e1a3c"], ["--color-checkbox-mark", "#ffffff"], ["--checkbox-mark-size", "20px"],
   ["--color-focus", "#4a7bd0"], ["--focus-offset", "2px"], ["--link-weight", "700"],
-  ["--color-link-bar", "transparent"], ["--link-bar-size", "0px"], ["--color-link-hover", "#0e1a3c"],
+  ["--color-link-bar", "transparent"], ["--link-bar-size", "0px"],
   ["--link-hover-decoration", "underline"], ["--link-hover-animation", "none"],
   ["--dialog-title-size", "22px"], ["--dialog-title-leading", "1.2"], ["--dialog-title-tracking", "0"],
   ["--color-dialog-bg", "#ffffff"], ["--dialog-pad", "20px"], ["--dialog-max-w", "460px"],

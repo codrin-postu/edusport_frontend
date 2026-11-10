@@ -59,7 +59,7 @@ export default function Card({
       "group/card outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset)",
       surface === "dark"
         ? "[--card-hover:var(--color-accent-on-dark)] focus-visible:outline-primary-on-dark"
-        : "[--card-hover:var(--color-accent)] focus-visible:outline-focus",
+        : "[--card-hover:var(--color-primary)] focus-visible:outline-focus",
     );
     const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
     if (href.startsWith("/") && !external) {

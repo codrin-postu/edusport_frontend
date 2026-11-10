@@ -296,7 +296,7 @@ const VolunteerForm: React.FC<{ config?: FormConfig | null }> = ({
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="text-body-sm text-secondary hover:text-accent transition-colors"
+                    className="text-body-sm text-secondary transition-colors"
                   >
                     Înapoi
                   </button>

@@ -148,3 +148,36 @@ for (const size of SIZES) {
     });
   });
 }
+
+// Interactive states never show red text: hover and focus every link and button, then check the text colour of the
+// element and its descendants (selected and current states are covered by `check`, which runs on every screen).
+for (const size of SIZES) {
+  test.describe(`Look sweep, hover and focus states ${size.width}`, () => {
+    test.use({ viewport: size });
+
+    test("no red text while hovered or focused", async({ page }) => {
+      await loginAs(page);
+      const redText = (root: Element): string[] => {
+        const found: string[] = [];
+        for (const el of [root, ...Array.from(root.querySelectorAll("*"))]) {
+          const hasText = Array.from(el.childNodes).some((n) => n.nodeType === 3 && (n.textContent ?? "").trim() !== "");
+          if (hasText && getComputedStyle(el).color === "rgb(190, 51, 48)" && !el.closest("[data-date-word]")) found.push(`${el.tagName}:${el.textContent}`);
+        }
+        return found;
+      };
+      for (const path of SCREENS) {
+        await page.goto(path);
+        await expect(page.locator("[data-spinner]")).toHaveCount(0);
+        const targets = page.locator("main a:visible, main button:visible, nav a:visible, [role=tab]:visible");
+        const count = Math.min(await targets.count(), 20);
+        for (let i = 0; i < count; i++) {
+          const target = targets.nth(i);
+          await target.hover({ trial: false, force: true }).catch(() => undefined);
+          expect(await target.evaluate(redText), `${path} hover #${i}`).toEqual([]);
+          await target.focus().catch(() => undefined);
+          expect(await target.evaluate(redText), `${path} focus #${i}`).toEqual([]);
+        }
+      }
+    });
+  });
+}

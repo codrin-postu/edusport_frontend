@@ -71,10 +71,10 @@ const V = {
     groupInvalid: "border-input-invalid",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
-    trigger: "border-l-retro border-line bg-surface text-primary hover:text-accent",
+    trigger: "border-l-retro border-line bg-surface text-primary",
     popover: "bg-surface-raised border-retro border-line shadow-retro-sm",
-    heading: "text-primary hover:text-accent",
-    nav: "text-primary hover:text-accent",
+    heading: "text-primary",
+    nav: "text-primary",
     weekday: "text-secondary",
     cell:
       "text-primary data-[outside-month]:text-line-subtle data-[hovered]:bg-surface-subtle data-[selected]:bg-rust data-[selected]:text-primary-on-dark data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-line-subtle",
