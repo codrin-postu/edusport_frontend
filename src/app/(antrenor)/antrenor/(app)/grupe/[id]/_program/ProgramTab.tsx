@@ -12,7 +12,6 @@ import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import Link from "@/components/ui/link";
-import { Column, Columns } from "@/app/_portal/ui/PageBody";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Segmented } from "@/app/_portal/ui/Segmented";
@@ -38,8 +37,6 @@ const byStart = (a: Occurrence, b: Occurrence): number => `${a.date}${a.startTim
 type ProgramTabProps = {
   groupId: string;
   own: boolean;
-  /** The "Sportivi" / "Program" switch the group page owns; the tab places it at the top of its first column. */
-  tabs: React.ReactNode;
   /** Opens the "Antrenament nou" popup with this group preset. */
   addHref: string;
 };
@@ -48,7 +45,7 @@ type ProgramTabProps = {
 const NEXT_DATES = 4;
 
 /** The Program tab: weekly rules, "+ Adaugă program", the public switch, and the next dates as a list or a month. */
-export function ProgramTab({ groupId, own, tabs, addHref }: ProgramTabProps) {
+export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
   const today = bucharestToday();
   const toast = useToast();
   const noAccess = useNoAccess();
@@ -116,9 +113,8 @@ export function ProgramTab({ groupId, own, tabs, addHref }: ProgramTabProps) {
 
   return (
     <>
-      <Columns>
-        <Column grow={1}>
-          {tabs}
+      <div className="flex flex-col gap-(--portal-section-gap)">
+        <div className="flex flex-col gap-(--portal-section-gap)">
           {data === null ? spinner : (
             <>
               {data.kind === "school" && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
@@ -133,14 +129,14 @@ export function ProgramTab({ groupId, own, tabs, addHref }: ProgramTabProps) {
               {own && data.kind === "club" && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
             </>
           )}
-        </Column>
-        <Column grow={1}>
+        </div>
+        <div className="flex flex-col gap-(--portal-section-gap)">
           <Section title={PROGRAM.nextHeading}>
             <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
             {datesBody}
           </Section>
-        </Column>
-      </Columns>
+        </div>
+      </div>
       {open?.kind === "change" && <ChangeSheet rule={open.rule} rules={data?.rules ?? []} today={today} onClose={() => setOpen(null)} onDone={done} />}
       {open?.kind === "end" && <EndSheet rule={open.rule} rules={data?.rules ?? []} today={today} onClose={() => setOpen(null)} onDone={done} />}
       {open?.kind === "date" && <DateSheet occurrence={open.occurrence} today={today} onClose={() => setOpen(null)} onDone={done} />}

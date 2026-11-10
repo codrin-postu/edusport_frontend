@@ -1,5 +1,6 @@
 import Link from "@/components/ui/link";
 import { BrandBlock } from "@/app/_portal/ui/BrandBlock";
+import { PhoneBar } from "@/app/_portal/ui/PhoneBar";
 
 type PageHeaderProps = {
   title: string;
@@ -17,6 +18,8 @@ type PageHeaderProps = {
  */
 export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: PageHeaderProps) {
   return (
+    <>
+    <PhoneBar title={title} back={back} brand={brand} />
     <header data-page-header className="portal:sticky portal:top-0 portal:z-sticky portal:border-b portal:border-line-subtle portal:bg-ice-light">
       <div className="mx-auto flex w-full max-w-(--portal-container) flex-col gap-(--portal-head-gap) px-(--portal-page-x) pt-(--portal-head-pt) pb-(--portal-head-pb) portal:gap-2 portal:py-(--portal-band-pad-y)">
         {back ? (
@@ -50,5 +53,6 @@ export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: 
         </div>
       </div>
     </header>
+    </>
   );
 }

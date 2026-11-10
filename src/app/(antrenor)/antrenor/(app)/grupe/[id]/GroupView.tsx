@@ -59,34 +59,23 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const members = page.members;
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
+  // One page for both tabs: the info card and the buttons above, then the tabs, then only the tab body changes (no layout jump). On a phone the tabs stick under the compact top bar.
   const tabs = (
-    <Segmented<Tab>
-      label={GROUP.members}
-      options={[{ value: "members", label: GROUP.tabAthletes(members.length) }, { value: "program", label: GROUP.tabProgram }]}
-      value={tab}
-      onChange={setTab}
-    />
+    <div data-group-tabs className="sticky top-(--portal-tap) z-raised -mx-(--portal-page-x) bg-surface px-(--portal-page-x) py-2 portal:static portal:mx-0 portal:p-0">
+      <Segmented<Tab>
+        label={GROUP.members}
+        options={[{ value: "members", label: GROUP.tabAthletes(members.length) }, { value: "program", label: GROUP.tabProgram }]}
+        value={tab}
+        onChange={setTab}
+      />
+    </div>
   );
-  if (tab === "program") {
-    return (
-      <>
-        <PageHeader
-          back={BACK}
-          title={page.name}
-          actions={page.kind === "club" ? <Button variant="secondary" href={`${pathname}?tab=program&nou=1`}>{PROGRAM.add}</Button> : undefined}
-        />
-        <PageBody>
-          <ProgramTab key={rev} groupId={page.groupId} own tabs={tabs} addHref={`${pathname}?tab=program&nou=1`} />
-        </PageBody>
-        {params.get("nou") && page.kind === "club" && (
-          <NewTrainingPopup group={page.groupId} individual={false} onClose={() => router.replace(`${pathname}?tab=program`)} onDone={() => setRev((n) => n + 1)} />
-        )}
-      </>
-    );
-  }
+  const actions = tab === "program"
+    ? page.kind === "club" ? <Button variant="secondary" href={`${pathname}?tab=program&nou=1`}>{PROGRAM.add}</Button> : undefined
+    : presence ? <Button variant="secondary" href={presence}>{GROUP.doPresence}</Button> : undefined;
   return (
     <>
-      <PageHeader back={BACK} title={page.name} actions={presence ? <Button variant="secondary" href={presence}>{GROUP.doPresence}</Button> : undefined} />
+      <PageHeader back={BACK} title={page.name} actions={actions} />
       <PageBody>
         <Columns>
           <Column grow={1}>
@@ -98,19 +87,26 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
           </Column>
           <Column grow={2}>
             {tabs}
-            <ListCard>
-              {members.map((m) => (
-                <ListRow
-                  key={m.athleteId}
-                  href={`/sportiv/${encodeURIComponent(m.athleteId)}?grupa=${encodeURIComponent(page.groupId)}`}
-                  title={m.name}
-                  sub={memberSub(m)}
-                />
-              ))}
-            </ListCard>
+            {tab === "program" ? (
+              <ProgramTab key={rev} groupId={page.groupId} own addHref={`${pathname}?tab=program&nou=1`} />
+            ) : (
+              <ListCard>
+                {members.map((m) => (
+                  <ListRow
+                    key={m.athleteId}
+                    href={`/sportiv/${encodeURIComponent(m.athleteId)}?grupa=${encodeURIComponent(page.groupId)}`}
+                    title={m.name}
+                    sub={memberSub(m)}
+                  />
+                ))}
+              </ListCard>
+            )}
           </Column>
         </Columns>
       </PageBody>
+      {tab === "program" && params.get("nou") && page.kind === "club" && (
+        <NewTrainingPopup group={page.groupId} individual={false} onClose={() => router.replace(`${pathname}?tab=program`)} onDone={() => setRev((n) => n + 1)} />
+      )}
     </>
   );
 }

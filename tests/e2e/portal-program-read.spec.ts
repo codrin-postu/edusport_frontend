@@ -70,12 +70,10 @@ for (const size of SIZES) {
       if (wide) {
         const rule = (await page.getByRole("heading", { name: "Program săptămânal" }).boundingBox())!;
         const next = (await page.getByRole("heading", { name: "Următoarele date" }).boundingBox())!;
-        expect(next.x).toBeGreaterThan(rule.x);
-        // Fixed 3:2 grid: the weekly program column is wider than the dates column.
-        const mainW = (await page.getByRole("heading", { name: "Program săptămânal" }).locator("xpath=../..").boundingBox())!.width;
-        const sideW = (await dates.boundingBox())!.width;
-        expect(Math.round((mainW / sideW) * 10)).toBeGreaterThanOrEqual(13);
-        expect(Math.round((mainW / sideW) * 10)).toBeLessThanOrEqual(17);
+        // One page for both tabs (user 2026-11-10): the program stacks in the main column, the next dates below the weekly rules.
+        expect(next.y).toBeGreaterThan(rule.y);
+        const infoCard = (await page.getByText(/^Antrenori/).first().boundingBox())!;
+        expect(infoCard.x).toBeGreaterThan(rule.x);
       }
       await shot(page, info, "grupa-program");
     });
