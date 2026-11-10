@@ -73,6 +73,48 @@ for (const size of SIZES) {
   });
 }
 
+test.describe("Calendar program dates and lessons", () => {
+  test.use({ viewport: SIZES[0] });
+  const open = async(page: Page, date: string) => {
+    await loginAs(page);
+    await page.goto(`/calendar?luna=2026-11&zi=${date}`);
+    await expect(page.locator("[data-spinner]")).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: /^\S+, \d+ noiembrie$/ })).toBeVisible();
+  };
+
+  test("series lessons show on every date and open the lesson page", async({ page }) => {
+    for (const [date, id] of [["2026-11-10", "lser1"], ["2026-11-17", "lser2"], ["2026-11-24", "lser3"]]) {
+      await open(page, date);
+      const row = page.getByRole("link").filter({ hasText: "Ana Stoica" });
+      await expect(row).toHaveCount(1);
+      await expect(row).toContainText("17:00");
+      await expect(row).toContainText("Individual");
+      await expect(row).toHaveAttribute("href", `/lectie/${id}`);
+    }
+    await expect(page.locator("a[href='/lectie/noua']")).toHaveCount(0);
+  });
+
+  test("a moved date shows on its new day and not on the old one", async({ page }) => {
+    await open(page, "2026-11-17");
+    await expect(page.getByRole("link").filter({ hasText: "Avansați" })).toHaveCount(0);
+    await page.goto("/calendar?luna=2026-11&zi=2026-11-19");
+    const row = page.getByRole("link").filter({ hasText: "Avansați" });
+    await expect(row).toHaveCount(1);
+    await expect(row).toContainText("18:15");
+  });
+
+  test("a removed date is gone", async({ page }) => {
+    await open(page, "2026-11-24");
+    await expect(page.getByRole("link").filter({ hasText: "Avansați" })).toHaveCount(1);
+    const status = await page.evaluate(async() => (await fetch("/api/portal/coach/program/evavansati/dates/2026-11-24", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ mode: "remove" }) })).status);
+    expect(status).toBe(200);
+    await page.goto("/calendar?luna=2026-11&zi=2026-11-24");
+    await expect(page.getByRole("heading", { name: "Marți, 24 noiembrie" })).toBeVisible();
+    await expect(page.getByRole("link").filter({ hasText: "Avansați" })).toHaveCount(0);
+    await expect(page.getByRole("link").filter({ hasText: "Ana Stoica" })).toHaveCount(1);
+  });
+});
+
 test.describe("Calendar layout", () => {
   test("desktop: month picker in the top band, day list right of the grid", async({ page }) => {
     await page.setViewportSize(SIZES[1]);

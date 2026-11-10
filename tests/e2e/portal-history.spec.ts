@@ -31,6 +31,13 @@ test("a lesson row opens the lesson page", async({ page }) => {
   await expect(page).toHaveURL(/\/lectie\/ldone$/);
 });
 
+test("no lesson row links to the old new-lesson address", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/istoric");
+  await expect(page.getByRole("link", { name: /Matei Radu/ })).toBeVisible();
+  await expect(page.locator("a[href='/lectie/noua']")).toHaveCount(0);
+});
+
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 
 for (const size of SIZES) {

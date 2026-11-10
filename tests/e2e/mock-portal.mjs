@@ -278,13 +278,18 @@ function calendarData(month) {
   const days = [];
   for (const date of monthDays(month)) {
     const items = [];
-    for (const g of Object.values(world.groups).filter((x) => x.own && hasClass(x, date))) {
-      const rec = world.saved[keyOf(g.id, date)];
-      const cancelled = (world.cancelled[g.id] ?? []).some((c) => c.date === date);
-      items.push({
-        kind: "grup", cancelled, date, startTime: g.start, durationMin: g.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
-        location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null,
-      });
+    // Own classes come from the group's rules with moved, cancelled and removed dates applied; today keeps its class (the Azi fixture).
+    for (const g of Object.values(world.groups).filter((x) => x.own)) {
+      let occ = occurrencesOf(g, month).filter((o) => o.date === date).map((o) => ({ start: o.startTime, dur: o.durationMin ?? g.dur, cancelled: o.status === "cancelled" }));
+      if (!occ.length && date === today) occ = [{ start: g.start, dur: g.dur, cancelled: false }];
+      for (const o of occ) {
+        const rec = world.saved[keyOf(g.id, date)];
+        const { cancelled } = o;
+        items.push({
+          kind: "grup", cancelled, date, startTime: o.start, durationMin: o.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
+          location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null,
+        });
+      }
     }
     for (const [key, rec] of Object.entries(world.saved)) {
       const g = groupOf(rec.groupId);
