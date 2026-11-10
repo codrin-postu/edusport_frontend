@@ -251,7 +251,8 @@ function groupPage(g) {
   const slots = [today, addDays(today, -3)].map((date) => ({ occurrenceKey: keyOf(g.id, date), date, startTime: g.start }));
   return {
     groupId: g.id, name: g.name, kind: g.kind, own: g.own, coaches: g.coaches, program: g.program,
-    members: g.own ? world.members[g.id] : null,
+    members: g.own ? world.members[g.id] : (world.members[g.id] ?? []).map(({ name, age }) => ({ name, age })),
+    membersReadOnly: !g.own,
     standIn: g.own ? [] : slots,
     todayKey: hasClass(g, today) ? keyOf(g.id, today) : null,
     programPublic: g.own && g.kind === "club" ? g.programPublic : null,

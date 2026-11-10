@@ -121,11 +121,11 @@ export type OtherGroupRow = { groupId: string; name: string; coaches: string[]; 
 export type CoachGroups = { mine: CoachGroupRow[]; others: OtherGroupRow[] };
 /** `leavesOn`: the date a scheduled move or removal takes effect (the membership's `to` + 1 day), null when none; the member is listed until `to`. */
 export type CoachMember = { athleteId: string; name: string; age: number | null; isNew: boolean; alsoIn: string[]; leavesOn: string | null };
+/** Another coach's group: name and age only. */
+export type CoachMemberName = { name: string; age: number | null };
 export type StandInSlot = { occurrenceKey: string; date: string; startTime: string };
-export type CoachGroupPage = {
-  groupId: string; name: string; kind: SectionKind; own: boolean; coaches: string[]; program: string[];
-  /** null for another coach's group. */
-  members: CoachMember[] | null;
+type CoachGroupPageBase = {
+  groupId: string; name: string; kind: SectionKind; coaches: string[]; program: string[];
   /** Other group only: scheduled classes from today - 7 to today, newest first. */
   standIn: StandInSlot[];
   /** Occurrence key of today's class (own or other), drives "Fă prezența" / "Înlocuiesc azi". */
@@ -134,6 +134,10 @@ export type CoachGroupPage = {
   programPublic: boolean | null;
   location: string | null;
 };
+/** Own group: the full roster. Another coach's group: names and ages only, read only. */
+export type CoachGroupPage =
+  | (CoachGroupPageBase & { own: true; members: CoachMember[]; membersReadOnly: false })
+  | (CoachGroupPageBase & { own: false; members: CoachMemberName[]; membersReadOnly: true });
 export type CoachPresenceRow = {
   athleteId: string; name: string; age: number | null; inactive: boolean; visitor: boolean; grup: boolean; uscat: boolean; abonament: string | null;
 };

@@ -49,7 +49,7 @@ export function EditGroup({ id }: { id: string }) {
   if (groups.state === "loading" || !own) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   if (page.state === "error" || !shown || groups.state === "error" || !groups.data) return <PageBody><LoadError onRetry={() => { page.reload(); groups.reload(); }} /></PageBody>;
   const group = shown;
-  const members = group.members ?? [];
+  const members = group.own ? group.members : [];
   const targets = groups.data.mine.filter((g) => g.groupId !== id).map((g) => ({ groupId: g.groupId, name: g.name }));
   const today = bucharestToday();
   const addHref = `/grupe/${encodeURIComponent(id)}/adauga`;

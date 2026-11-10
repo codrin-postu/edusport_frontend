@@ -50,13 +50,13 @@ export function GroupView({ id }: { id: string }) {
 
 const BACK = { href: "/grupe", label: GRUPE.title };
 
-function OwnGroup({ page }: { page: CoachGroupPage }) {
+function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
   const tab: Tab = params.get("tab") === "program" ? "program" : "members";
   const [rev, setRev] = useState(0);
-  const members = page.members ?? [];
+  const members = page.members;
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   const tabs = (
@@ -115,7 +115,7 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
   );
 }
 
-function OtherGroup({ page }: { page: CoachGroupPage }) {
+function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -125,6 +125,17 @@ function OtherGroup({ page }: { page: CoachGroupPage }) {
           <p className="text-(length:--portal-text-14) font-bold">{GROUP.otherCoach}</p>
         </PortalCard>
         <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
+        <Segmented<"members">
+          label={GROUP.members}
+          options={[{ value: "members", label: GROUP.tabAthletes(page.members.length) }]}
+          value="members"
+          onChange={() => undefined}
+        />
+        <ListCard>
+          {page.members.map((m, i) => (
+            <ListRow key={`${i}:${m.name}`} title={m.name} sub={m.age === null ? undefined : GROUP.age(m.age)} end={null} />
+          ))}
+        </ListCard>
         <div className="flex flex-col gap-3">
           {page.todayKey ? (
             <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}`} className="w-full">{GROUP.standIn}</Button>
