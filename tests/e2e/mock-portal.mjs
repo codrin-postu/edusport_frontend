@@ -587,7 +587,8 @@ function ruleHits(r, date, anchor = r.from) {
 }
 const rulesOf = (gid) => world.rules[gid] ?? (world.rules[gid] = []);
 function nextDateOf(r) {
-  for (let i = 0; i < 400; i++) { const date = addDays(today, i); if (ruleHits(r, date) && !isRemoved(r.gid, date)) return date; }
+  const away = (date) => isRemoved(r.gid, date) || (world.cancelled[r.gid] ?? []).some((c) => c.date === date) || (world.moved[r.gid] ?? []).some((m) => m.date === date);
+  for (let i = 0; i < 400; i++) { const date = addDays(today, i); if (ruleHits(r, date) && !away(date)) return date; }
   return null;
 }
 const isRemoved = (gid, date) => (world.removed[gid] ?? []).includes(date);
@@ -636,7 +637,7 @@ function programData(g, month) {
   return {
     kind: g.kind, editable: g.kind === "club", programPublic: g.kind === "club" ? g.programPublic : null,
     program: { season: { documentId: "season-1", label: "2026-2027", past: false }, series: [row] }, occurrences: occurrencesOf(g, m),
-    rules: rulesOf(g.id).map((r) => ruleView({ ...r, gid: g.id })),
+    rules: rulesOf(g.id).filter((r) => r.to >= today).map((r) => ruleView({ ...r, gid: g.id })),
   };
 }
 
@@ -678,6 +679,7 @@ function programRuleWrite({ res, body, params }, end) {
   const list = g ? rulesOf(g.id) : [];
   const mine = list.filter((r) => r.eventId === eventId);
   if (body.day !== undefined && !mine.some((r) => r.day === body.day)) return club(res, 400, MSG.invalid);
+  if (!validDate(body.from) || body.from < today) return club(res, 400, MSG.invalid);
   const picked = body.day === undefined ? mine : mine.filter((r) => r.day === body.day);
   if (end && g) {
     world.rules[g.id] = list.filter((r) => !picked.includes(r));
@@ -696,6 +698,7 @@ function programRuleWrite({ res, body, params }, end) {
 /** PUT /program/:eventId/dates/:date. */
 function programDate({ res, body, params }) {
   const [eventId, date] = params;
+  if (date < today) return club(res, 400, MSG.invalid);
   const g = groupOfEvent(eventId);
   const gid = g?.id;
   const drop = (store) => { world[store][gid] = (world[store][gid] ?? []).filter((x) => (x.date ?? x) !== date); };
@@ -874,6 +877,7 @@ const coachRoutes = [
   ["DELETE", /^\/program\/([^/]+)$/, eventGuard(({ res, params }) => {
     const g = groupOfEvent(params[0]);
     const one = g ? (world.oneOffs[g.id] ?? []).find((o) => o.eventId === params[0]) : null;
+    if (g && one && hasSavedSession(g.id, one.date)) return club(res, 409, REFUSE.datePresence);
     if (g && one) world.oneOffs[g.id] = world.oneOffs[g.id].filter((o) => o !== one);
     ok(res, { date: one?.date ?? today });
   })],

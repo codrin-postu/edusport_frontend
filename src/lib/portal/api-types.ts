@@ -198,5 +198,5 @@ export type ProgramEndBody = { from: string; day?: DayKey };
 export type DateBody =
   | { mode: "keep" }
   | { mode: "cancel"; reason?: string; notifyParents?: boolean }
-  | { mode: "move"; newDate: string; newStartTime: string; reason?: string; notifyParents?: boolean }
+  | { mode: "move"; newDate: string; newStartTime: string; reason?: string | null; notifyParents?: boolean }
   | { mode: "remove" };

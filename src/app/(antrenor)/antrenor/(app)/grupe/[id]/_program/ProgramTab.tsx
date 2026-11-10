@@ -6,7 +6,7 @@ import IconButton from "@/components/ui/icon-button";
 import { A11Y, GROUP, PROGRAM } from "@/lib/portal/copy";
 import { addMonths } from "@/lib/portal/format";
 import { dateState, eventDocumentId } from "@/lib/portal/program";
-import type { CoachProgram, Occurrence, ProgramRow } from "@/lib/portal/api-types";
+import type { CoachProgram, CoachProgramRule, Occurrence } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
@@ -20,12 +20,13 @@ import { useToast } from "@/app/_portal/ui/Toast";
 import { ChangeSheet } from "./ChangeSheet";
 import { DateRow } from "./DateRow";
 import { DateSheet } from "./DateSheet";
+import { EndSheet } from "./EndSheet";
 import { ProgramMonth } from "./ProgramMonth";
 import { PublicSwitch } from "./PublicSwitch";
 import { RulesCard } from "./RulesCard";
 
 type View = "list" | "month";
-type Open = { kind: "change"; row: ProgramRow } | { kind: "date"; occurrence: Occurrence };
+type Open = { kind: "change" | "end"; rule: CoachProgramRule } | { kind: "date"; occurrence: Occurrence };
 
 const monthName = (month: string): string =>
   new Intl.DateTimeFormat("ro", { month: "long", year: "numeric" }).format(new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1));
@@ -67,10 +68,9 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
 
   const done = () => { setOpen(null); reload(); };
   const canEdit = own && data !== null && data.kind === "club" && data.editable;
-  const openDate = (o: Occurrence) => (canEdit && dateState(o, today) === "open" && eventDocumentId(o) !== null ? () => setOpen({ kind: "date", occurrence: o }) : undefined);
-  const openRule = (eventId: string) => {
-    const row = data?.program.series.find((r) => r.eventId === eventId);
-    if (row) setOpen({ kind: "change", row });
+  const openDate = (o: Occurrence) => {
+    const state = dateState(o, today);
+    return canEdit && (state === "open" || state === "cancelled" || state === "moved") && eventDocumentId(o) !== null ? () => setOpen({ kind: "date", occurrence: o }) : undefined;
   };
 
   if (first.state === "error") return <LoadError onRetry={reload} />;
@@ -112,7 +112,7 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
               {data.rules.length > 0 && (
                 <Section title={PROGRAM.weeklyHeading}>
                   <ListCard>
-                    {data.rules.map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} editable={canEdit} onChange={() => openRule(r.eventId)} onEnd={() => openRule(r.eventId)} />)}
+                    {data.rules.map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} editable={canEdit} onChange={() => setOpen({ kind: "change", rule: r })} onEnd={() => setOpen({ kind: "end", rule: r })} />)}
                   </ListCard>
                 </Section>
               )}
@@ -128,8 +128,9 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
           </Section>
         </Column>
       </Columns>
-      {open?.kind === "change" && <ChangeSheet row={open.row} today={today} onClose={() => setOpen(null)} onDone={done} />}
-      {open?.kind === "date" && <DateSheet occurrence={open.occurrence} action="cancel" onClose={() => setOpen(null)} onDone={done} />}
+      {open?.kind === "change" && <ChangeSheet rule={open.rule} today={today} onClose={() => setOpen(null)} onDone={done} />}
+      {open?.kind === "end" && <EndSheet rule={open.rule} today={today} onClose={() => setOpen(null)} onDone={done} />}
+      {open?.kind === "date" && <DateSheet occurrence={open.occurrence} today={today} onClose={() => setOpen(null)} onDone={done} />}
     </>
   );
 }

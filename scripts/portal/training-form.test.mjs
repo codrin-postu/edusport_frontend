@@ -19,7 +19,7 @@ it("writes the five summary texts", () => {
   assert.equal(t.trainingSummary({ ...base, days: ["mon", "wed", "fri"] }), "Luni, miercuri și vineri, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului.");
   assert.equal(t.trainingSummary({ ...base, startTime: "" }), null);
   assert.equal(t.trainingSummary({ ...base, days: [] }), null);
-  assert.equal(t.monthlyNote("2026-11-11"), 'Săptămâna din lună se ia din "Din data": 11 noiembrie este a doua miercuri.');
+  assert.equal(t.monthlyNote("2026-11-11"), "Săptămâna din lună se ia din \"Din data\": 11 noiembrie este a doua miercuri.");
 });
 
 it("builds the group body", () => {
