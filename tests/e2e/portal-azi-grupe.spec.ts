@@ -102,15 +102,15 @@ test.describe("Azi layout", () => {
     expect(past!.y).toBeGreaterThan(box!.y);
   });
 
-  test("desktop: the today list left (3), stat and past right (2), tops aligned, the lesson button in the top band", async({ page }) => {
+  test("desktop: stat and past left (2), the today list right (3), tops aligned, the lesson button as tall as the now tile", async({ page }) => {
     await page.setViewportSize(SIZES[1]);
     await loginAs(page);
     await page.goto("/");
     const stat = await page.locator("[data-stat-num]").boundingBox();
     const past = await page.getByRole("heading", { name: "Antrenamente fără prezență" }).boundingBox();
     const today = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
-    expect(stat!.x).toBeGreaterThan(today!.x);
-    expect(past!.x).toBeGreaterThan(today!.x);
+    expect(stat!.x).toBeLessThan(today!.x);
+    expect(past!.x).toBeLessThan(today!.x);
     // The summary card's top lines up with the list's top (headings share row 1, content row 2).
     const list = await page.locator("[data-today-list]").boundingBox();
     const statCard = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
@@ -122,6 +122,10 @@ test.describe("Azi layout", () => {
     expect(Math.round(mainW / sideW * 10)).toBeLessThanOrEqual(17);
     const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
     await expect(button).toHaveCount(1);
+    const tile = await page.locator("[role=group][aria-label]").filter({ has: page.locator("text=/\\d\\d:\\d\\d/") }).first().boundingBox();
+    const btn = await button.boundingBox();
+    expect(Math.abs(btn!.height - tile!.height)).toBeLessThan(2);
+    expect(Math.abs(btn!.y - tile!.y)).toBeLessThan(2);
     const header = await page.locator("[data-page-header]").boundingBox();
     const bb = await button.boundingBox();
     expect(bb!.y).toBeGreaterThanOrEqual(header!.y);

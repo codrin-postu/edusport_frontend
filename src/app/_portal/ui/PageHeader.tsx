@@ -41,9 +41,10 @@ export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: 
             {sub && <span className="text-(length:--portal-sub-size) text-muted">{sub}</span>}
           </div>
           {(aside || actions) && (
-            <div className="flex items-center gap-(--portal-actions-gap)">
+            <div className="flex items-stretch gap-(--portal-actions-gap)">
               {aside}
-              {actions && <div className="hidden items-center gap-3 portal:flex">{actions}</div>}
+              {/* Actions take the height of the aside (the now tile), so they line up as one row. */}
+              {actions && <div className="hidden items-stretch gap-3 portal:flex">{actions}</div>}
             </div>
           )}
         </div>

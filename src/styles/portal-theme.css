@@ -163,6 +163,7 @@
   --portal-popup-w: 560px;         /* layout form popup width from the desktop breakpoint */
   --portal-popup-max-h: 92svh;     /* layout form popup height cap (bottom sheet on a phone) */
   --portal-cols: minmax(0, 3fr) minmax(0, 2fr); /* layout two-part pages: main 3, side 2 */
+  --portal-cols-side-first: minmax(0, 2fr) minmax(0, 3fr); /* layout Azi: summary column left, list right (user 2026-11-10) */
   --portal-sheet-gap: 14px;        /* layout sheet child gap */
   --portal-nowtile-day: 32px;      /* layout now tile day */
   --portal-nowtile-time: 26px;     /* layout now tile time */

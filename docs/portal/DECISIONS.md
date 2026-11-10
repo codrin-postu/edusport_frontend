@@ -305,3 +305,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Prezență back link returns to where the coach came from, carried by `?from=istoric|calendar|grupa` on the presence link (label Istoric, Calendar, or the group name; missing or unknown means "Azi" to `/`). The save redirect keeps `from`.
 - Read-only presence boxes keep their check mark: navy mark dimmed through `--color-checkbox-mark-disabled`, light fill and border tokens; unchecked boxes stay empty.
 - Another coach's group (user 2026-11-10): the page shows the banner "Grupa altui antrenor" and a read-only names and age list (no contacts, links or actions); backend answers `members: [{ name, age }]` with `membersReadOnly: true`.
+- 2026-11-10 (user): Azi desktop puts the dark summary card and 'Antrenamente fără prezență' in the left column (2 parts) and today's list on the right (3 parts); header actions take the height of the now tile.

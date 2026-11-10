@@ -88,18 +88,18 @@ export default function AziPage() {
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
         aside={<NowTile month={monthShort(data.today)} day={String(Number(data.today.slice(8)))} time={now} weekday={weekdayShort(data.today)} label={AZI.nowLabel(longDay(data.today), now)} />}
-        actions={<Button variant="secondary" href="/?nou=1">{AZI.addTraining}</Button>}
+        actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
-        {/* Desktop: heading on grid row 1, content on row 2, so the summary card's top lines up with the list's top. */}
-        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
-          <div className="contents portal:col-start-2 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
+        {/* Desktop: summary column left, list right; heading on grid row 1, content on row 2, so the card's top lines up with the list's top. */}
+        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols-side-first) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
+          <div className="contents portal:col-start-1 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
             {past && <div className="order-4 portal:order-none">{past}</div>}
           </div>
           <div className="order-2 flex flex-col gap-3 portal:contents">
-            <div className="portal:col-start-1 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} /></div>
-            <div data-today-list className="portal:col-start-1 portal:row-start-2">{todayCard}</div>
+            <div className="portal:col-start-2 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} /></div>
+            <div data-today-list className="portal:col-start-2 portal:row-start-2">{todayCard}</div>
           </div>
           <div className="order-3">{addLesson}</div>
         </div>
