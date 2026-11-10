@@ -128,6 +128,8 @@
   --portal-small-btn-pad-x: 12px;  /* layout member row Mută and Scoate buttons */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
+  --portal-gap-12: 12px;           /* layout competitions filter column gap */
+  --portal-season-w: 220px;        /* layout competitions season select */
   --portal-cell-gap: 5px;          /* layout calendar cell number to marks */
   --portal-cal-head-gap: 6px;      /* layout calendar weekday row gap */
   --portal-presence-row-h: 68px;   /* layout presence table row */
