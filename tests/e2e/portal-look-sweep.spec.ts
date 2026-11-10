@@ -89,10 +89,8 @@ for (const size of SIZES) {
       };
       await open("/grupe/gavansati/modifica", "Mută sheet", () => page.getByRole("button", { name: /^Mută / }).first().click());
       await open("/grupe/gavansati/modifica", "Scoate sheet", () => page.getByRole("button", { name: /^Scoate / }).first().click());
-      await open("/grupe/gavansati?tab=program", "Adaugă program sheet", () => page.getByRole("button", { name: "+ Adaugă program" }).click());
-      await open("/grupe/gavansati?tab=program", "Schimbă program sheet", () => page.getByRole("button", { name: "Schimbă", exact: true }).click());
-      await open("/grupe/gavansati?tab=program", "Anulează dată sheet", () => page.getByRole("button", { name: "Anulează" }).first().click());
-      await open("/grupe/gavansati?tab=program", "Mută dată sheet", () => page.getByRole("button", { name: "Mută", exact: true }).first().click());
+      await open("/grupe/gavansati?tab=program", "Schimbă program sheet", () => page.getByRole("button", { name: "Schimbă programul de marți" }).click());
+      await open("/grupe/gavansati?tab=program", "Anulează dată sheet", () => page.getByRole("button", { name: /^Mar\s*10\s/i }).click());
       await open("/prezenta?id=s-today", "Day sheet", () => page.locator("[data-page-header] button").first().click());
       await open("/lectie/noua", "Coach picker sheet", () => page.getByRole("button", { name: "+ Adaugă alți antrenori" }).click());
     });

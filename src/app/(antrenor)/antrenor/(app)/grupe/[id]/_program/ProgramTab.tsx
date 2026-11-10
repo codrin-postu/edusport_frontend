@@ -5,33 +5,42 @@ import Button from "@/components/ui/button";
 import IconButton from "@/components/ui/icon-button";
 import { A11Y, GROUP, PROGRAM } from "@/lib/portal/copy";
 import { addMonths } from "@/lib/portal/format";
-import { dateState, eventDocumentId, dateKey } from "@/lib/portal/program";
-import { dayMonth } from "@/lib/portal/format";
-import type { CoachProgram, DateAnswer, Occurrence, ProgramRow } from "@/lib/portal/api-types";
+import { dateState, eventDocumentId } from "@/lib/portal/program";
+import type { CoachProgram, Occurrence, ProgramRow } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
+import { Column, Columns } from "@/app/_portal/ui/PageBody";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
+import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
-import { AddProgramSheet } from "./AddProgramSheet";
 import { ChangeSheet } from "./ChangeSheet";
-import { DateSheet, type DateAction } from "./DateSheet";
-import { ProgramList } from "./ProgramList";
+import { DateRow } from "./DateRow";
+import { DateSheet } from "./DateSheet";
 import { ProgramMonth } from "./ProgramMonth";
 import { PublicSwitch } from "./PublicSwitch";
+import { RulesCard } from "./RulesCard";
 
 type View = "list" | "month";
-type Open =
-  | { kind: "add" }
-  | { kind: "change"; row: ProgramRow }
-  | { kind: "date"; occurrence: Occurrence; action: DateAction };
+type Open = { kind: "change"; row: ProgramRow } | { kind: "date"; occurrence: Occurrence };
 
 const monthName = (month: string): string =>
   new Intl.DateTimeFormat("ro", { month: "long", year: "numeric" }).format(new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1, 1));
+const programPath = (groupId: string, month: string): string => `coach/groups/${encodeURIComponent(groupId)}/program?month=${month}`;
+const byStart = (a: Occurrence, b: Occurrence): number => `${a.date}${a.startTime ?? ""}`.localeCompare(`${b.date}${b.startTime ?? ""}`);
 
-export function ProgramTab({ groupId, own }: { groupId: string; own: boolean }) {
+type ProgramTabProps = {
+  groupId: string;
+  own: boolean;
+  /** The "Sportivi" / "Program" switch the group page owns; the tab places it at the top of its first column. */
+  tabs: React.ReactNode;
+};
+
+/** The Program tab: weekly rules, "+ Adaugă program", the public switch, and the next dates as a list or a month. */
+export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
   const today = bucharestToday();
   const toast = useToast();
   const noAccess = useNoAccess();
@@ -39,77 +48,88 @@ export function ProgramTab({ groupId, own }: { groupId: string; own: boolean }) 
   const [month, setMonth] = useState(today.slice(0, 7));
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState<Open | null>(null);
-  const program = usePortal<CoachProgram>(`coach/groups/${encodeURIComponent(groupId)}/program?month=${month}`);
-  const data = program.data;
+  // The list reads this month and the next (to the end of next month); the month view reads the month it shows.
+  const nextMonth = addMonths(today.slice(0, 7), 1);
+  const first = usePortal<CoachProgram>(programPath(groupId, today.slice(0, 7)));
+  const second = usePortal<CoachProgram>(view === "list" ? programPath(groupId, nextMonth) : null);
+  const picked = usePortal<CoachProgram>(view === "month" ? programPath(groupId, month) : null);
+  const data = first.data;
+  const reload = () => { first.reload(); second.reload(); picked.reload(); };
 
   async function setPublic(value: boolean) {
     setBusy(true);
     const r = await portalApi<{ toast: string }>("PUT", `coach/groups/${encodeURIComponent(groupId)}/program-public`, { value });
     setBusy(false);
     if (noAccess(r)) return;
-    if (!r.ok) {
-      toast.show(r.message);
-      return;
-    }
-    toast.show(r.data.toast);
-    program.reload();
+    toast.show(r.ok ? r.data.toast : r.message);
+    if (r.ok) reload();
   }
 
-  async function keep(o: Occurrence) {
-    const documentId = eventDocumentId(o);
-    if (documentId === null) return;
-    setBusy(true);
-    const r = await portalApi<DateAnswer>("PUT", `coach/program/${encodeURIComponent(documentId)}/dates/${dateKey(o)}`, { mode: "keep" });
-    setBusy(false);
-    if (noAccess(r)) return;
-    toast.show(r.ok ? PROGRAM.toasts.dateKept(dayMonth(dateKey(o))) : r.message);
-    if (r.ok) program.reload();
-  }
-
-  const done = () => {
-    setOpen(null);
-    program.reload();
-  };
+  const done = () => { setOpen(null); reload(); };
   const canEdit = own && data !== null && data.kind === "club" && data.editable;
-  const dateActions = (o: Occurrence) => {
-    if (!canEdit || dateState(o, today) !== "open" || eventDocumentId(o) === null) return null;
-    return (
+  const openDate = (o: Occurrence) => (canEdit && dateState(o, today) === "open" && eventDocumentId(o) !== null ? () => setOpen({ kind: "date", occurrence: o }) : undefined);
+  const openRule = (eventId: string) => {
+    const row = data?.program.series.find((r) => r.eventId === eventId);
+    if (row) setOpen({ kind: "change", row });
+  };
+
+  if (first.state === "error") return <LoadError onRetry={reload} />;
+  const listed = [...(first.data?.occurrences ?? []), ...(second.data?.occurrences ?? [])].filter((o) => o.date >= today).sort(byStart);
+  const monthRows = (picked.data?.occurrences ?? []).slice().sort(byStart);
+  const dateRows = (rows: Occurrence[]) => (
+    <ListCard>
+      {rows.map((o) => <DateRow key={`${o.documentId ?? o.eventId}:${o.date}:${o.startTime}`} occurrence={o} today={today} onOpen={openDate(o)} />)}
+    </ListCard>
+  );
+  const spinner = <div className="flex justify-center py-6"><Spinner /></div>;
+
+  const datesBody = view === "list"
+    ? (data === null || second.data === null ? spinner : listed.length === 0 ? <p className="text-body-sm text-secondary">{PROGRAM.nothingThisMonth}</p> : dateRows(listed))
+    : (
       <>
-        <Button variant="secondary" disabled={busy} onClick={() => void keep(o)}>{PROGRAM.keep}</Button>
-        <Button variant="secondary" onClick={() => setOpen({ kind: "date", occurrence: o, action: "cancel" })}>{PROGRAM.cancel}</Button>
-        <Button variant="secondary" onClick={() => setOpen({ kind: "date", occurrence: o, action: "move" })}>{PROGRAM.move}</Button>
-        {o.oneOff && <Button variant="secondary" onClick={() => setOpen({ kind: "date", occurrence: o, action: "delete" })}>{PROGRAM.deleteClass}</Button>}
+        <div className="flex items-center justify-between">
+          <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => setMonth(addMonths(month, -1))} />
+          <p className="text-(length:--portal-text-16) font-bold text-primary capitalize">{monthName(month)}</p>
+          <IconButton icon="chevron-right" label={A11Y.nextMonth} onClick={() => setMonth(addMonths(month, 1))} />
+        </div>
+        {picked.data === null ? spinner : (
+          <>
+            <ProgramMonth month={month} occurrences={picked.data.occurrences} />
+            {monthRows.length > 0 && dateRows(monthRows)}
+          </>
+        )}
       </>
     );
-  };
 
-  if (program.state === "error") return <LoadError onRetry={program.reload} />;
   return (
-    <div className="flex flex-col gap-6">
-      {data && data.kind === "club" && data.programPublic !== null && own && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
-      {data && data.kind === "school" && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
-      {canEdit && <div><Button variant="secondary" onClick={() => setOpen({ kind: "add" })}>{PROGRAM.add}</Button></div>}
-      <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
-      <div className="flex items-center justify-between">
-        <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => setMonth(addMonths(month, -1))} />
-        <p className="text-(length:--portal-text-16) font-bold text-primary capitalize">{monthName(month)}</p>
-        <IconButton icon="chevron-right" label={A11Y.nextMonth} onClick={() => setMonth(addMonths(month, 1))} />
-      </div>
-      {data === null ? (
-        <div className="py-6 flex justify-center"><Spinner /></div>
-      ) : view === "list" ? (
-        <ProgramList
-          data={data}
-          today={today}
-          seriesActions={canEdit ? (row) => <Button variant="secondary" onClick={() => setOpen({ kind: "change", row })}>{PROGRAM.change}</Button> : undefined}
-          dateActions={dateActions}
-        />
-      ) : (
-        <ProgramMonth month={month} occurrences={data.occurrences} />
-      )}
-      {open?.kind === "add" && <AddProgramSheet groupId={groupId} today={today} onClose={() => setOpen(null)} onDone={done} />}
+    <>
+      <Columns>
+        <Column grow={1} basis={380}>
+          {tabs}
+          {data === null ? spinner : (
+            <>
+              {data.kind === "school" && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
+              {data.rules.length > 0 && (
+                <Section title={PROGRAM.weeklyHeading}>
+                  <ListCard>
+                    {data.rules.map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} editable={canEdit} onChange={() => openRule(r.eventId)} onEnd={() => openRule(r.eventId)} />)}
+                  </ListCard>
+                </Section>
+              )}
+              {canEdit && <Button variant="secondary" href={`/antrenament/nou?grupa=${encodeURIComponent(groupId)}`} className="w-full">{PROGRAM.add}</Button>}
+              {own && data.kind === "club" && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
+            </>
+          )}
+        </Column>
+        <Column grow={1} basis={380}>
+          <Section title={PROGRAM.nextHeading}>
+            <Segmented<View> label={GROUP.tabProgram} options={[{ value: "list", label: PROGRAM.list }, { value: "month", label: PROGRAM.month }]} value={view} onChange={setView} />
+            {datesBody}
+          </Section>
+        </Column>
+      </Columns>
       {open?.kind === "change" && <ChangeSheet row={open.row} today={today} onClose={() => setOpen(null)} onDone={done} />}
-      {open?.kind === "date" && <DateSheet occurrence={open.occurrence} action={open.action} onClose={() => setOpen(null)} onDone={done} />}
-    </div>
+      {open?.kind === "date" && <DateSheet occurrence={open.occurrence} action="cancel" onClose={() => setOpen(null)} onDone={done} />}
+    </>
   );
 }

@@ -1,41 +1,34 @@
-import type { ReactNode } from "react";
-import { PROGRAM } from "@/lib/portal/copy";
-import { dateTile, shortDate } from "@/lib/portal/format";
-import { dateState } from "@/lib/portal/program";
+import { AZI, PROGRAM } from "@/lib/portal/copy";
+import { capitalize, longDay, weekdayLong, weekdayShort } from "@/lib/portal/format";
+import { dateState, occurrenceMinutes, type DateState } from "@/lib/portal/program";
 import type { Occurrence } from "@/lib/portal/api-types";
+import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { EndBlock } from "@/app/_portal/ui/EndBlock";
+import { ListRow } from "@/app/_portal/ui/ListRow";
 
-/** The line under the time for a pause, cancelled or moved date. */
-function noteText(o: Occurrence, state: ReturnType<typeof dateState>): string | null {
+/** "mutată din marți, 17 noiembrie": the series date a moved class came from, in lowercase. */
+const movedFrom = (o: Occurrence): string => PROGRAM.movedFromSub(longDay(o.originalDate ?? o.date).toLowerCase());
+
+function sub(o: Occurrence, state: DateState): string | null {
   if (state === "pause") return PROGRAM.breakNotice(o.note ?? "");
-  if (state === "cancelled") return o.note ? `${PROGRAM.cancelled}: ${o.note}` : PROGRAM.cancelled;
-  if (state === "moved") {
-    const sameDay = !o.originalDate || o.originalDate === o.date;
-    return PROGRAM.movedFrom(sameDay ? (o.originalStartTime ?? "") : shortDate(o.originalDate as string));
-  }
-  return null;
+  if (state === "moved") return movedFrom(o);
+  const min = occurrenceMinutes(o);
+  return min === null ? null : AZI.minutes(min);
 }
 
-type DateRowProps = { occurrence: Occurrence; today: string; actions?: ReactNode };
+type DateRowProps = { occurrence: Occurrence; today: string; /** Set when the date is open and the group editable: the row opens the date sheet. */ onOpen?: (o: Occurrence) => void };
 
-/** One date of the group: tile, time and state; `actions` is the slot of the date buttons. */
-export function DateRow({ occurrence: o, today, actions }: DateRowProps) {
-  const tile = dateTile(o.date);
+/** One date of the group: date block, "Marți, 17:30", length or note, "Anulată" or "Mutată" at the end. */
+export function DateRow({ occurrence: o, today, onOpen }: DateRowProps) {
   const state = dateState(o, today);
-  const note = noteText(o, state);
+  const end = state === "cancelled" ? <EndBlock kind="soft">{PROGRAM.cancelled}</EndBlock> : state === "moved" ? <EndBlock kind="soft">{PROGRAM.moved}</EndBlock> : onOpen ? undefined : null;
   return (
-    <li className="p-4">
-      <div className="flex items-center gap-4">
-        <span className="w-12 shrink-0 border-control border-line text-center py-1">
-          <span className="text-(length:--portal-text-11) font-bold uppercase block text-secondary">{tile.weekday}</span>
-          <span className="text-body font-semibold block text-primary">{tile.day}</span>
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className={state === "cancelled" ? "text-body font-semibold text-secondary block line-through" : "text-body font-semibold text-primary block"}>{o.startTime ?? ""}</span>
-          {note && <span className="text-body-sm text-secondary block">{note}</span>}
-        </span>
-        {state === "past" && <span className="shrink-0 border-control border-line px-2 py-1 text-(length:--portal-text-12) font-bold text-primary">{PROGRAM.past}</span>}
-      </div>
-      {actions && <div className="flex flex-wrap gap-2 mt-4">{actions}</div>}
-    </li>
+    <ListRow
+      lead={<DateBlock word={weekdayShort(o.date)} big={String(Number(o.date.slice(8)))} />}
+      title={PROGRAM.ruleTitle(capitalize(weekdayLong(o.date)), o.startTime ?? "")}
+      sub={sub(o, state)}
+      end={end}
+      onClick={onOpen ? () => onOpen(o) : undefined}
+    />
   );
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
-import { GROUP, GRUPE } from "@/lib/portal/copy";
+import { GROUP, GRUPE, PROGRAM } from "@/lib/portal/copy";
 import { shortWhen, weekdayShort } from "@/lib/portal/format";
 import type { CoachGroupPage } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
@@ -57,6 +57,28 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
   const members = page.members ?? [];
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
+  const tabs = (
+    <Segmented<Tab>
+      label={GROUP.members}
+      options={[{ value: "members", label: GROUP.tabAthletes(members.length) }, { value: "program", label: GROUP.tabProgram }]}
+      value={tab}
+      onChange={setTab}
+    />
+  );
+  if (tab === "program") {
+    return (
+      <>
+        <PageHeader
+          back={BACK}
+          title={page.name}
+          actions={page.kind === "club" ? <Button variant="secondary" href={`/antrenament/nou?grupa=${encodeURIComponent(page.groupId)}`}>{PROGRAM.add}</Button> : undefined}
+        />
+        <PageBody>
+          <ProgramTab groupId={page.groupId} own tabs={tabs} />
+        </PageBody>
+      </>
+    );
+  }
   return (
     <>
       <PageHeader back={BACK} title={page.name} actions={presence ? <Button href={presence}>{GROUP.doPresence}</Button> : undefined} />
@@ -70,26 +92,17 @@ function OwnGroup({ page }: { page: CoachGroupPage }) {
             </div>
           </Column>
           <Column grow={2} basis={480}>
-            <Segmented<Tab>
-              label={GROUP.members}
-              options={[{ value: "members", label: GROUP.tabAthletes(members.length) }, { value: "program", label: GROUP.tabProgram }]}
-              value={tab}
-              onChange={setTab}
-            />
-            {tab === "members" ? (
-              <ListCard>
-                {members.map((m) => (
-                  <ListRow
-                    key={m.athleteId}
-                    href={`/sportiv/${encodeURIComponent(m.athleteId)}?grupa=${encodeURIComponent(page.groupId)}`}
-                    title={m.name}
-                    sub={memberSub(m)}
-                  />
-                ))}
-              </ListCard>
-            ) : (
-              <ProgramTab groupId={page.groupId} own />
-            )}
+            {tabs}
+            <ListCard>
+              {members.map((m) => (
+                <ListRow
+                  key={m.athleteId}
+                  href={`/sportiv/${encodeURIComponent(m.athleteId)}?grupa=${encodeURIComponent(page.groupId)}`}
+                  title={m.name}
+                  sub={memberSub(m)}
+                />
+              ))}
+            </ListCard>
           </Column>
         </Columns>
       </PageBody>
