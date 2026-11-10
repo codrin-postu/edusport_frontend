@@ -11,6 +11,7 @@ import { dateKey, eventDocumentId } from "@/lib/portal/program";
 import type { DateAnswer, DateBody, Occurrence } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { useToast } from "@/app/_portal/ui/Toast";
 
@@ -84,7 +85,7 @@ export function DateSheet({ occurrence: o, action, onClose, onDone }: Props) {
             <Checkbox label={PROGRAM.notify} checked={notify} onChange={(e) => setNotify(e.target.checked)} />
           </>
         )}
-        <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+        <AlertLine message={message} reserve />
         <Button onClick={() => void submit()} disabled={busy || documentId === null || (action === "move" && (newDate === "" || newTime === ""))} className="w-full">
           {action === "delete" ? PROGRAM.deleteClass : PROGRAM.save}
         </Button>

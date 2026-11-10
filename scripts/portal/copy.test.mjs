@@ -31,4 +31,14 @@ it("agrees counts in Romanian", () => {
   assert.equal(copy.AZI.groupLine(20), "grup, 20 de copii");
   assert.equal(copy.ADD_ATHLETE.submit(1), "Adaugă 1 sportiv");
   assert.equal(copy.PRESENCE.presentCount(10), "10 prezenți");
+  assert.equal(copy.HISTORY.lessons(1), "lecție individuală");
+  assert.equal(copy.HISTORY.lessons(2), "lecții individuale");
+  assert.equal(copy.HISTORY.lessons(20), "de lecții individuale");
+  assert.equal(copy.HISTORY.statLabel(1, "noiembrie"), "ședință de grup în noiembrie");
+  assert.equal(copy.HISTORY.statLabel(12, "noiembrie"), "ședințe de grup în noiembrie");
+  assert.equal(copy.HISTORY.hours("1"), "oră");
+  assert.equal(copy.HISTORY.hours("2,8"), "ore");
+  assert.equal(copy.HISTORY.hours("24"), "de ore");
+  assert.equal(copy.HISTORY.presentSub(1), "grup, 1 prezent");
+  assert.equal(copy.HISTORY.standInSub(10), "înlocuitor, 10 prezenți");
 });

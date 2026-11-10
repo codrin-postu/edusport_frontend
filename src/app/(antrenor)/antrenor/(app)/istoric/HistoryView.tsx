@@ -51,8 +51,8 @@ export function HistoryView() {
             <Column grow={1} basis={300}>
               <StatCard
                 big={String(data.sessions)}
-                label={HISTORY.statLabel(monthName(month).toLowerCase())}
-                side={[{ value: String(data.lessons), label: HISTORY.lessons }, { value: data.hours, label: HISTORY.hours }]}
+                label={HISTORY.statLabel(data.sessions, monthName(month).toLowerCase())}
+                side={[{ value: String(data.lessons), label: HISTORY.lessons(data.lessons) }, { value: data.hours, label: HISTORY.hours(data.hours) }]}
               />
             </Column>
             <Column grow={2} basis={420}>

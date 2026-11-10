@@ -45,8 +45,8 @@ for (const size of SIZES) {
       await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toBeVisible();
       await expect(page.locator("[data-stat-num]")).toHaveText("2");
       await expect(page.getByText("ședințe de grup în noiembrie")).toBeVisible();
-      await expect(page.getByText("lecții individuale")).toBeVisible();
-      await expect(page.getByText("2,8")).toBeVisible();
+      await expect(page.getByText("lecție individuală")).toBeVisible();
+      await expect(page.getByText("2,8 ore")).toBeVisible();
       const rows = page.locator("main a[href]");
       await expect(rows).toHaveCount(4);
       const words = ["Joi", "Mie", "Mar", "Lun"];

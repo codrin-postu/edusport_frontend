@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { ADD_ATHLETE } from "@/lib/portal/copy";
 import type { CoachGroupPage, CoachSearchRow, JoinResult } from "@/lib/portal/api-types";
@@ -55,7 +56,7 @@ export function AddAthletes({ id }: { id: string }) {
       {picked.length > 0 && (
         <>
           <DatePickerField id="add-from" label={ADD_ATHLETE.from} value={from} onChange={setFrom} variant="card" />
-          <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+          <AlertLine message={message} reserve />
           <Button onClick={() => void submit()} disabled={busy || from === ""} className="w-full">{ADD_ATHLETE.submit(picked.length)}</Button>
         </>
       )}

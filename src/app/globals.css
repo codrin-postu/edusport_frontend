@@ -133,6 +133,8 @@ h1.text-branding-font {
   --color-secondary: #495269;
   --color-muted: #5f657a;
   --color-accent: #be3330;
+  /* Error and alert lines. Red here; the portals override it (portal-theme.css). */
+  --color-alert-ink: #be3330;
   --color-primary-on-dark: #fbf8f1;
   --color-secondary-on-dark: #c0c0c4;
   --color-muted-on-dark: #979ba5;
@@ -222,6 +224,8 @@ h1.text-branding-font {
   --field-hint-size: 0.75rem;
   --field-hint-leading: 1.4;
   --field-gap: 0.5rem;
+  --alert-line-display: block;
+  --alert-icon-display: none;
   --text-button-weight: 600;
   --text-button-size: 0.8125rem;
   --text-button-tracking: 0.06em;

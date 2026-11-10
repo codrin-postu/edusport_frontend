@@ -31,10 +31,13 @@
   --field-label-case: none;        /* 13 field label case */
   --field-label-leading: 1.3;      /* 13 field label leading */
   --color-label-ink: #0e1a3c;      /* 13 field label colour */
+  --color-alert-ink: #0e1a3c;      /* layout: no red text in the portals, error lines in navy with an alert icon */
   --field-hint-size: 13px;         /* 16 field hint size */
   --field-hint-leading: 1.4;       /* 16 field hint leading */
   --color-hint-ink: #5f657a;       /* 16 field hint colour */
   --field-gap: 6px;                /* 13 label to control gap */
+  --alert-line-display: flex;      /* layout: error line = alert icon + text */
+  --alert-icon-display: block;     /* layout: the alert icon shows in the portals only */
   --text-button-weight: 700;       /* 19 20 27 button weight */
   --text-button-size: 15px;        /* 19 20 27 button size */
   --text-button-tracking: 0;       /* 19 20 27 button tracking */

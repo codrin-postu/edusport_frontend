@@ -1,12 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Icon from "@/components/ui/icon";
 import { PortalLink } from "@/app/_portal/ui/PortalLink";
 import { portalApi } from "@/app/_portal/lib/api";
 
 /** The `role="alert"` line of the auth cards; always in the DOM so a message is announced. */
-export function AlertLine({ message }: { message: string | null }) {
-  return <p role="alert" className="text-body-sm text-accent empty:-my-2">{message}</p>;
+export function AlertLine({ message, reserve }: { message: string | null; reserve?: boolean }) {
+  return (
+    <p role="alert" className={`text-body-sm text-alert-ink ${reserve ? "min-h-6" : "empty:-my-2"}`}>
+      {message && (
+        <span className="flex items-start gap-2">
+          <Icon name="shield-alert" className="mt-0.5" />
+          <span>{message}</span>
+        </span>
+      )}
+    </p>
+  );
 }
 
 /** Reads (and so clears) the one-shot flash message of a Google round trip, once on mount. */

@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
 import { NEW_ATHLETE } from "@/lib/portal/copy";
@@ -85,7 +86,7 @@ export function NewAthlete({ id }: { id: string }) {
       <Field label={NEW_ATHLETE.email} optional>
         {(fid) => <Input id={fid} type="email" value={email} onChange={(e) => setEmail(e.target.value)} surface="card" />}
       </Field>
-      <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+      <AlertLine message={message} reserve />
       <Button onClick={() => void submit()} disabled={busy || name.trim() === ""} className="w-full">{NEW_ATHLETE.submit(group.data.name)}</Button>
     </div>
   );

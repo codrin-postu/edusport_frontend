@@ -6,6 +6,7 @@ import { PROGRAM } from "@/lib/portal/copy";
 import { dayMonth } from "@/lib/portal/format";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { ProgramFields, addBody, formReady, newForm } from "./ProgramForm";
@@ -40,7 +41,7 @@ export function AddProgramSheet({ groupId, today, onClose, onDone }: Props) {
       <div className="flex flex-col gap-6">
         <SquareSwitch label={PROGRAM.repeat} checked={form.repeat} onChange={(repeat) => setForm({ ...form, repeat })} />
         <ProgramFields form={form} onChange={setForm} today={today} />
-        <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+        <AlertLine message={message} reserve />
         <Button onClick={() => void save()} disabled={busy || !formReady(form)} className="w-full">{PROGRAM.save}</Button>
       </div>
     </Sheet>

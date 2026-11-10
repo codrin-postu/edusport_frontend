@@ -7,6 +7,7 @@ import { shortDate } from "@/lib/portal/format";
 import type { ProgramRow } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useNoAccess } from "../../../../_lib/use-portal";
+import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { ProgramFields, changeBody, formOfRow, formReady } from "./ProgramForm";
@@ -42,14 +43,14 @@ export function ChangeSheet({ row, today, onClose, onDone }: Props) {
       {confirming ? (
         <div className="flex flex-col gap-4">
           <p className="text-body text-primary">{PROGRAM.endConfirm(shortDate(form.from))}</p>
-          <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+          <AlertLine message={message} reserve />
           <Button onClick={() => void send("POST", `${path}/end`, { from: form.from }, PROGRAM.toasts.programEnded)} disabled={busy} className="w-full">{PROGRAM.endProgram}</Button>
           <Button variant="secondary" onClick={() => setConfirming(false)} disabled={busy} className="w-full">{LESSON.giveUp}</Button>
         </div>
       ) : (
         <div className="flex flex-col gap-6">
           <ProgramFields form={form} onChange={setForm} today={today} />
-          <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
+          <AlertLine message={message} reserve />
           <Button onClick={() => void send("PUT", path, changeBody(form), PROGRAM.toasts.programChanged)} disabled={busy || !formReady(form)} className="w-full">{PROGRAM.save}</Button>
           <Button variant="secondary" onClick={() => setConfirming(true)} disabled={busy} className="w-full">{PROGRAM.endProgram}</Button>
         </div>

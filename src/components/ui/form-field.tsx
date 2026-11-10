@@ -2,6 +2,7 @@
 
 import React, { useId } from "react";
 import { cn } from "@/utils/cn";
+import Icon from "./icon";
 
 // ---------------------------------------------------------------------------
 // Shared form field: a Field wrapper (label + hint + error) around a single
@@ -178,8 +179,9 @@ export const Field: React.FC<FieldProps> = ({
         <p
           id={errorId}
           aria-live="polite"
-          className={cn("text-caption mt-2", onDark ? "text-accent-on-dark" : "text-accent")}
+          className={cn("text-caption mt-2 items-start gap-2 [display:var(--alert-line-display)]", onDark ? "text-accent-on-dark" : "text-alert-ink")}
         >
+          <Icon name="shield-alert" className="mt-0.5 [display:var(--alert-icon-display)]" />
           {error}
         </p>
       )}

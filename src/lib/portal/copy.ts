@@ -20,6 +20,9 @@ import { LOGIN, RESET, INVITE, type AuthCopy } from "./copy-shared.ts";
 /** The coach portal's sign-in copy. */
 export const COACH_AUTH: AuthCopy = { login: LOGIN, reset: RESET, invite: INVITE };
 
+/** The noun alone, for a screen that shows the number in its own element ("de ședințe" from 20 on). */
+const noun = (n: number, one: string, many: string): string => count(n, one, many).slice(String(n).length + 1);
+
 const children = (n: number): string => count(n, "copil", "copii");
 
 export const NAV = { today: "Azi", groups: "Grupe", competitions: "Concursuri", history: "Istoric", profile: "Profil", menu: "Meniu" } as const;
@@ -295,11 +298,15 @@ export const HISTORY = {
   lesson: (min: string) => `individuală, ${min}`,
   standIn: (present: number) => `înlocuitor, ${count(present, "prezent", "prezenți")}`,
   title: "Istoric",
-  statLabel: (month: string) => `ședințe de grup în ${month}`,
-  lessons: "lecții individuale",
-  hours: "ore",
-  presentSub: (n: number) => `grup, ${n} prezenți`,
-  standInSub: (n: number) => `înlocuitor, ${n} prezenți`,
+  statLabel: (n: number, month: string) => `${noun(n, "ședință de grup", "ședințe de grup")} în ${month}`,
+  lessons: (n: number) => noun(n, "lecție individuală", "lecții individuale"),
+  /** `hours` is the formatted amount ("1", "2,8"): a whole number agrees, a fraction takes "ore". */
+  hours: (hours: string) => {
+    const n = Number(String(hours).replace(",", "."));
+    return Number.isInteger(n) ? noun(n, "oră", "ore") : "ore";
+  },
+  presentSub: (n: number) => `grup, ${count(n, "prezent", "prezenți")}`,
+  standInSub: (n: number) => `înlocuitor, ${count(n, "prezent", "prezenți")}`,
   notDoneSub: "grup, fără prezență",
 } as const;
 
