@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-export type ClubClock = { date: string; time: string };
+export type ClubNow = { date: string; time: string };
 
-const read = (): ClubClock => {
+const read = (): ClubNow => {
   const now = new Date();
   return {
     date: new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Bucharest" }).format(now),
@@ -13,8 +13,9 @@ const read = (): ClubClock => {
 };
 
 /** Bucharest date and HH:mm, ticking on every minute (the next tick is set for the next :00 seconds). Paused while the tab is hidden, resynced when it shows again. */
-export function useClubClock(): ClubClock {
-  const [clock, setClock] = useState<ClubClock>(read);
+export function useNow(): ClubNow | null {
+  // null until mounted, so the server render and the first client render agree.
+  const [clock, setClock] = useState<ClubNow | null>(null);
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
     const stop = () => {
@@ -23,7 +24,7 @@ export function useClubClock(): ClubClock {
     };
     const tick = () => {
       const next = read();
-      setClock((c) => (c.date === next.date && c.time === next.time ? c : next));
+      setClock((c) => (c && c.date === next.date && c.time === next.time ? c : next));
       timer = setTimeout(tick, 60_000 - (Date.now() % 60_000));
     };
     const start = () => {
@@ -34,8 +35,8 @@ export function useClubClock(): ClubClock {
       if (document.hidden) stop();
       else start();
     };
-    if (document.hidden) setClock(read());
-    else timer = setTimeout(tick, 60_000 - (Date.now() % 60_000));
+    setClock(read());
+    if (!document.hidden) timer = setTimeout(tick, 60_000 - (Date.now() % 60_000));
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       document.removeEventListener("visibilitychange", onVisibility);

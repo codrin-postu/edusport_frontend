@@ -22,7 +22,6 @@ import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { MonthGrid, type DayMarks } from "@/app/_portal/ui/MonthGrid";
 import { MonthPicker } from "@/app/_portal/ui/MonthPicker";
-import { NowTile } from "@/app/_portal/ui/NowTile";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { PortalLink } from "@/app/_portal/ui/PortalLink";
@@ -91,7 +90,6 @@ export function KitPreview() {
           brand
           kicker="Bună, Alina"
           title="Azi"
-          aside={<NowTile month="Noi" day="10" time="17:05" weekday="Marți" label="Marți, 10 noiembrie, ora 17:05" />}
           actions={<Button variant="secondary">Lecție individuală</Button>}
         />
       </div>

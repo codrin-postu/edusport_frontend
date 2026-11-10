@@ -1,5 +1,6 @@
 import Link from "@/components/ui/link";
 import { BrandBlock } from "@/app/_portal/ui/BrandBlock";
+import { NowTile } from "@/app/_portal/ui/NowTile";
 import { HeaderHeight } from "@/app/_portal/ui/HeaderHeight";
 import { PhoneBar } from "@/app/_portal/ui/PhoneBar";
 
@@ -9,7 +10,8 @@ type PageHeaderProps = {
   kicker?: string;
   sub?: string;
   brand?: boolean;
-  aside?: React.ReactNode;
+  /** Show the now tile on the phone too (Azi). It is always shown from the desktop breakpoint. */
+  tileOnPhone?: boolean;
   actions?: React.ReactNode;
 };
 
@@ -17,7 +19,7 @@ type PageHeaderProps = {
  * One header for both layouts. Phone: plain, brand row or back link above the title block.
  * From `portal:` it is the ice top band (the sidebar carries the brand).
  */
-export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: PageHeaderProps) {
+export function PageHeader({ title, back, kicker, sub, brand, tileOnPhone, actions }: PageHeaderProps) {
   return (
     <>
     <PhoneBar title={title} back={back} brand={brand} />
@@ -39,19 +41,17 @@ export function PageHeader({ title, back, kicker, sub, brand, aside, actions }: 
             </div>
           )
         )}
-        <div className="flex flex-wrap items-end justify-between gap-3 portal:gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3 portal:items-center portal:gap-4">
           <div className="flex min-w-0 flex-col gap-2">
             {kicker && <span className="text-(length:--portal-kicker-size) text-muted">{kicker}</span>}
             <h1 className="font-display font-extrabold text-(length:--portal-h1-size) leading-(--portal-leading-h1)">{title}</h1>
             {sub && <span className="text-(length:--portal-sub-size) text-muted">{sub}</span>}
           </div>
-          {(aside || actions) && (
-            <div className="flex items-stretch gap-(--portal-actions-gap)">
-              {aside}
-              {/* Actions take the height of the aside (the now tile), so they line up as one row. */}
-              {actions && <div className="hidden items-stretch gap-3 portal:flex">{actions}</div>}
-            </div>
-          )}
+          <div data-header-end className="flex items-stretch gap-(--portal-actions-gap)">
+            {/* Actions take the height of the now tile, so they line up as one row; the tile is the far right item on every page. */}
+            {actions && <div className="hidden items-stretch gap-3 portal:flex">{actions}</div>}
+            <NowTile className={tileOnPhone ? undefined : "hidden portal:flex"} />
+          </div>
         </div>
       </div>
     </header>
