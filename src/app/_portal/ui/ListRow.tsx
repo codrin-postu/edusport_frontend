@@ -12,13 +12,15 @@ type ListRowProps = {
   end?: React.ReactNode;
   dim?: boolean;
   label?: string;
+  /** Marks the row as a target for programmatic focus after "Arată mai multe". */
+  focusable?: boolean;
 };
 
 const ROW =
   "flex w-full min-h-(--portal-row-min-h) items-stretch text-left text-primary no-underline outline-none hover:no-underline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus";
 
 /** One list row: the whole row is one link (or button, or plain without either), lead block, two text lines, an end block (`null` for none) or a chevron. */
-export function ListRow({ href, onClick, lead, title, sub, extra, end, dim, label }: ListRowProps) {
+export function ListRow({ href, onClick, lead, title, sub, extra, end, dim, label, focusable }: ListRowProps) {
   const body = (
     <>
       <span className="flex min-w-0 flex-1 items-center gap-(--portal-row-gap) px-(--portal-row-pad-x) py-(--portal-row-pad-y)">
@@ -38,7 +40,7 @@ export function ListRow({ href, onClick, lead, title, sub, extra, end, dim, labe
   );
   if (href) {
     return (
-      <NextLink href={href} aria-label={label} className={ROW}>
+      <NextLink href={href} aria-label={label} className={ROW} {...(focusable ? { "data-more-row": "" } : {})}>
         {body}
       </NextLink>
     );

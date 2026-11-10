@@ -17,6 +17,7 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 import { bucharestToday } from "../../_lib/today";
+import { ShowMoreButton, useShowMore } from "../../_lib/show-more";
 import { usePortal } from "../../_lib/use-portal";
 import { presenceHref } from "../../_ui/SessionRow";
 
@@ -39,6 +40,7 @@ export function HistoryView() {
     <MonthPicker title={monthTitle(month)} onPrev={() => go(-1)} onNext={() => go(1)} prevLabel={CALENDAR.prev} nextLabel={CALENDAR.next} />
   );
   const data = history.data;
+  const more = useShowMore(month, data?.rows.length ?? 0);
   return (
     <>
       <PageHeader brand title={HISTORY.title} actions={picker} />
@@ -56,9 +58,11 @@ export function HistoryView() {
               />
             </Column>
             <Column grow={2}>
+              <div ref={more.box} className="flex flex-col gap-3">
               <ListCard>
-                {data.rows.map((r) => (
+                {data.rows.slice(0, more.n).map((r) => (
                   <ListRow
+                    focusable
                     key={`${r.sessionId ?? r.lessonId ?? r.occurrenceKey}`}
                     href={href(r)}
                     lead={<DateBlock word={weekdayShort(r.date)} big={String(Number(r.date.slice(8)))} />}
@@ -68,6 +72,8 @@ export function HistoryView() {
                   />
                 ))}
               </ListCard>
+              {more.hasMore && <ShowMoreButton onClick={more.more} />}
+              </div>
             </Column>
           </Columns>
         )}

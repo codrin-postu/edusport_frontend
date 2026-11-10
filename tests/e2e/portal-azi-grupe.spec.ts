@@ -323,7 +323,7 @@ test.describe("Azi week column", () => {
     await page.goto("/");
     const left = await page.getByRole("heading", { name: "Azi pe scurt" }).boundingBox();
     const right = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
-    expect(Math.abs(left!.y - right!.y)).toBeLessThan(10);
+    expect(Math.abs(left!.y - right!.y)).toBeLessThan(2);
     const stat = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
     const list = await page.locator("[data-today-list]").boundingBox();
     expect(Math.abs(stat!.y - list!.y)).toBeLessThan(2);

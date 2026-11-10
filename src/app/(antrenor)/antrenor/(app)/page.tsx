@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
-import { AZI } from "@/lib/portal/copy";
+import { AZI, LIST } from "@/lib/portal/copy";
 import { longDay, monthShort, weekdayShort } from "@/lib/portal/format";
 import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
 import { LoadError } from "@/app/_portal/ui/LoadError";
@@ -13,7 +13,7 @@ import { NowTile } from "@/app/_portal/ui/NowTile";
 import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
-import { Section, SectionHeading } from "@/app/_portal/ui/SectionHeading";
+import { Section, SectionHeading, SeeAllLink } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
@@ -21,6 +21,9 @@ import { usePortal } from "../_lib/use-portal";
 import { NewTrainingPopup } from "./antrenament/NewTrainingPopup";
 import { useMe } from "../_lib/me-context";
 import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow";
+
+/** Both Azi heading rows share this box on the desktop so their tops line up. */
+const ROW1 = "portal:min-h-(--portal-tap) portal:items-center";
 
 /** HH:mm of the browser clock in the club's time zone. */
 function clockNow(): string {
@@ -56,9 +59,10 @@ export default function AziPage() {
       <p className="text-body text-secondary">{AZI.none}</p>
     ) : (
       <ListCard>
-        {rows.map((r) => <SessionRow key={r.lessonId ?? r.occurrenceKey ?? r.sessionId ?? r.startTime} row={r} now={now} />)}
+        {rows.slice(0, LIST.azi).map((r) => <SessionRow key={r.lessonId ?? r.occurrenceKey ?? r.sessionId ?? r.startTime} row={r} now={now} />)}
       </ListCard>
     );
+  const todayMore = rows.length > LIST.azi && <SeeAllLink href={`/calendar?luna=${data.today.slice(0, 7)}&zi=${data.today}`} label={LIST.seeAll(rows.length)} />;
   const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={[{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }]} />;
   const addLesson = (
     <div className="portal:hidden">
@@ -69,7 +73,7 @@ export default function AziPage() {
     data.todo.length > 0 ? (
       <Section title={AZI.pastHeading}>
         <ListCard>
-          {data.todo.map((c) => (
+          {data.todo.slice(0, LIST.azi).map((c) => (
             <ListRow
               key={c.occurrenceKey ?? c.groupId + c.date}
               href={presenceHref(c)}
@@ -80,6 +84,7 @@ export default function AziPage() {
             />
           ))}
         </ListCard>
+        {data.todo.length > LIST.azi && <SeeAllLink href="/istoric" label={LIST.seeAll(data.todo.length)} />}
       </Section>
     ) : null;
   const { next, week } = data;
@@ -118,7 +123,7 @@ export default function AziPage() {
       <PageBody>
         {/* Desktop: summary column left (2), list right (3); headings on grid row 1, content on row 2, so both columns start on the same line. */}
         <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols-side-first) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
-          <div className="hidden portal:col-start-1 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} /></div>
+          <div className="hidden portal:col-start-1 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} className={ROW1} /></div>
           <div className="contents portal:col-start-1 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
             {nextSection && <div className="order-4 portal:order-none">{nextSection}</div>}
@@ -126,8 +131,8 @@ export default function AziPage() {
             {past && <div className="order-6 portal:order-none">{past}</div>}
           </div>
           <div className="order-2 flex flex-col gap-3 portal:contents">
-            <div className="portal:col-start-2 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} /></div>
-            <div data-today-list className="portal:col-start-2 portal:row-start-2">{todayCard}</div>
+            <div className="portal:col-start-2 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} className={ROW1} /></div>
+            <div data-today-list className="flex flex-col gap-3 portal:col-start-2 portal:row-start-2">{todayCard}{todayMore}</div>
           </div>
           <div className="order-3">{addLesson}</div>
         </div>

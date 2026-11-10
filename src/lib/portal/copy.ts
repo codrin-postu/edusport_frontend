@@ -343,6 +343,14 @@ export const PROGRAM = {
   },
 } as const;
 
+/** Long lists: Azi shows a few rows and a link, Istoric and Concursuri show a page and a button. */
+export const LIST = {
+  azi: 5,
+  page: 20,
+  seeAll: (n: number) => `Vezi toate (${n})`,
+  showMore: "Arată mai multe",
+} as const;
+
 export const HISTORY = {
   summary: (sessions: number, lessons: number, hours: string) =>
     `${count(sessions, "ședință de grup", "ședințe de grup")}, ${count(lessons, "lecție individuală", "lecții individuale")}, ${hours} ore`,

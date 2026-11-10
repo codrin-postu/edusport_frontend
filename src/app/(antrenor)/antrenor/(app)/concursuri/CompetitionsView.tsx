@@ -12,6 +12,7 @@ import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Spinner } from "@/app/_portal/ui/Spinner";
+import { ShowMoreButton, useShowMore } from "../../_lib/show-more";
 import { usePortal } from "../../_lib/use-portal";
 
 type Scope = "all" | "mine";
@@ -26,6 +27,8 @@ export function CompetitionsView() {
   const [seen, setSeen] = useState<Available | null>(null);
   const data = result.data;
   if (data && data.available && seen !== data) setSeen(data);
+
+  const more = useShowMore(query, data && data.available ? data.events.length : 0);
 
   const onScope = (next: Scope) => {
     setScope(next);
@@ -65,8 +68,8 @@ export function CompetitionsView() {
           data.events.length === 0 ? (
             <p className="text-body">{COMPETITIONS.empty}</p>
           ) : (
-            <div className="flex w-full flex-col gap-(--portal-gap-14) portal:max-w-(--portal-narrow-860)">
-              {data.events.map((e, i) => (
+            <div ref={more.box} className="flex w-full flex-col gap-(--portal-gap-14) portal:max-w-(--portal-narrow-860)">
+              {data.events.slice(0, more.n).map((e, i) => (
                 <CompetitionCard
                   key={e.eventId}
                   month={e.date ? monthShort(e.date) : ""}
@@ -85,6 +88,7 @@ export function CompetitionsView() {
                   }))}
                 />
               ))}
+              {more.hasMore && <ShowMoreButton onClick={more.more} />}
             </div>
           )
         )}
