@@ -40,7 +40,7 @@ test("Azi: exactly five rows show no Vezi toate", async({ page }) => {
 test("Istoric: 20 rows, Arată mai multe adds 20 and focuses the first new row", async({ page }) => {
   await loginAs(page);
   const rows = Array.from({ length: 45 }, (_, i) => ({
-    kind: "grup", date: "2026-11-02", name: `Grupa ${i + 1}`, present: 3, durationMin: 60, sessionId: `s${i + 1}`, lessonId: null, done: true, occurrenceKey: null,
+    kind: "grup", date: "2026-11-02", startTime: "17:00", name: `Grupa ${i + 1}`, present: 3, durationMin: 60, sessionId: `s${i + 1}`, lessonId: null, done: true, occurrenceKey: null,
   }));
   await page.route("**/api/portal/coach/history*", (route) => route.fulfill({ json: { month: "2026-11", sessions: 45, lessons: 0, hours: "45", rows } }));
   await page.goto("/istoric");

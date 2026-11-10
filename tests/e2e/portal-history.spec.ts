@@ -66,9 +66,10 @@ for (const size of SIZES) {
         await expect(rows.nth(i).locator("[data-date-word]")).toHaveText(words[i]);
         await expect(rows.nth(i).locator("[data-date-num]")).toHaveText(nums[i]);
       }
-      // The history rows carry no hour: word and day only, in the same square size.
+      // The history rows show the hour in the square (option B), same square size as every list.
+      const times = ["18:15", "17:00", "16:30", "18:15"];
       for (let i = 0; i < 4; i++) {
-        await expect(rows.nth(i).locator("[data-date-time]")).toHaveCount(0);
+        await expect(rows.nth(i).locator("[data-date-time]")).toHaveText(times[i]);
         expect((await rows.nth(i).locator("[data-date-block]").boundingBox())!.height).toBe(64);
       }
       await expect(rows.nth(0)).toContainText("Avansați");

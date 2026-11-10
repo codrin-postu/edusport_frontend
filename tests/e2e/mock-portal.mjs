@@ -589,10 +589,10 @@ function historyData(month) {
   return {
     month: m, sessions: 2, lessons: 1, hours: "2,8",
     rows: [
-      { kind: "grup", date: `${m}-05`, name: "Avansați", present: 8, durationMin: 60, sessionId: "s-today", lessonId: null, done: true, occurrenceKey: keyOf("gavansati", `${m}-05`) },
-      { kind: "inlocuitor", date: `${m}-04`, name: "Intermediari Silver", present: 10, durationMin: 60, sessionId: "s-standin", lessonId: null, done: true, occurrenceKey: null },
-      { kind: "individuala", date: `${m}-03`, name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "ldone", done: true, occurrenceKey: null },
-      { kind: "grup", date: `${m}-02`, name: "Avansați", present: null, durationMin: 60, sessionId: null, lessonId: null, done: false, occurrenceKey: keyOf("gavansati", `${m}-02`) },
+      { kind: "grup", date: `${m}-05`, startTime: "18:15", name: "Avansați", present: 8, durationMin: 60, sessionId: "s-today", lessonId: null, done: true, occurrenceKey: keyOf("gavansati", `${m}-05`) },
+      { kind: "inlocuitor", date: `${m}-04`, startTime: "17:00", name: "Intermediari Silver", present: 10, durationMin: 60, sessionId: "s-standin", lessonId: null, done: true, occurrenceKey: null },
+      { kind: "individuala", date: `${m}-03`, startTime: "16:30", name: "Matei Radu", present: null, durationMin: 50, sessionId: null, lessonId: "ldone", done: true, occurrenceKey: null },
+      { kind: "grup", date: `${m}-02`, startTime: "18:15", name: "Avansați", present: null, durationMin: 60, sessionId: null, lessonId: null, done: false, occurrenceKey: keyOf("gavansati", `${m}-02`) },
     ],
   };
 }
