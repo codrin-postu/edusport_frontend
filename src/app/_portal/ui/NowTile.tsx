@@ -1,6 +1,6 @@
 export function NowTile({ month, day, time, weekday, label }: { month: string; day: string; time: string; weekday: string; label: string }) {
   return (
-    <div role="group" aria-label={label} className="flex shrink-0 items-stretch shadow-retro">
+    <div role="group" aria-label={label} className="flex shrink-0 items-stretch">
       <span className="flex w-(--portal-typeblock-w) flex-col items-center justify-center gap-0.5 bg-surface-dark py-2">
         <span className="text-(length:--portal-text-11) font-bold uppercase tracking-(--portal-tracking-month) text-ice">{month}</span>
         <span className="font-display font-extrabold text-(length:--portal-nowtile-day) leading-none text-white">{day}</span>
