@@ -211,6 +211,7 @@ export const CARD = {
   abonament: "Abonament",
   validUntil: "Valabil până la",
   location: "Locație",
+  session: (next: number, slots: number) => `Ședința ${next}/${slots}`,
   ageSection: (age: string, section: string | null) => (section ? `${age}, ${section}` : age),
 } as const;
 

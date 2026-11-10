@@ -130,3 +130,8 @@ export function dayMonthYear(date: string): string {
 export function dayMonthShort(date: string): string {
   return shortDate(date);
 }
+
+/** 142.3 -> "142,30" (two decimals, comma); the points of a competition result. */
+export function pointsText(total: number): string {
+  return total.toFixed(2).replace(".", ",");
+}

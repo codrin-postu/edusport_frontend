@@ -160,6 +160,7 @@
   --portal-leading-stat: 0.85;     /* layout stat number leading */
   --portal-tracking-month: 0.08em; /* layout now tile month */
   --portal-tracking-place: 0.06em; /* layout place block word */
+  --portal-tracking-phone: 0.02em; /* layout contact phone number */
   --portal-text-10: 10px;          /* layout type size */
   --portal-text-11: 11px;          /* layout type size */
   --portal-text-12: 12px;          /* layout type size */
@@ -170,6 +171,7 @@
   --portal-text-18: 18px;          /* layout type size */
   --portal-text-20: 20px;          /* layout type size */
   --portal-text-22: 22px;          /* layout type size */
+  --portal-text-24: 24px;          /* layout type size */
   --portal-text-26: 26px;          /* layout type size */
 }
 
