@@ -1,0 +1,100 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import Button from "@/components/ui/button";
+import { EDIT_GROUP } from "@/lib/portal/copy";
+import { roCount } from "@/lib/ro-plural";
+import type { CoachGroupPage, CoachGroups, CoachMember } from "@/lib/portal/api-types";
+import { bucharestToday } from "../../../../_lib/today";
+import { usePortal } from "../../../../_lib/use-portal";
+import { ListRow } from "@/app/_portal/ui/ListRow";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { memberSub } from "../memberSub";
+import { MoveSheet } from "./MoveSheet";
+import { RemoveSheet } from "./RemoveSheet";
+
+type Open = { kind: "move" | "remove"; athlete: CoachMember } | null;
+
+const SMALL =
+  "flex min-h-(--portal-tap) items-center border-control border-line bg-surface-raised px-(--portal-small-btn-pad-x) text-(length:--portal-text-14) font-bold text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus";
+
+/** The roster editor of an own group: "Mută" and "Scoate" per child, each through a confirm sheet. */
+export function EditGroup({ id }: { id: string }) {
+  const router = useRouter();
+  const page = usePortal<CoachGroupPage>(`coach/groups/${encodeURIComponent(id)}`);
+  const groups = usePortal<CoachGroups>("coach/groups");
+  const [open, setOpen] = useState<Open>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  const own = page.data?.own ?? true;
+  const back = `/grupe/${encodeURIComponent(id)}`;
+
+  useEffect(() => {
+    if (page.state === "ready" && !own) router.replace(back);
+  }, [page.state, own, router, back]);
+
+  if (page.state === "loading" || groups.state === "loading" || !own) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (page.state === "error" || !page.data || groups.state === "error" || !groups.data) return <PageBody><LoadError /></PageBody>;
+  const group = page.data;
+  const members = group.members ?? [];
+  const targets = groups.data.mine.filter((g) => g.groupId !== id).map((g) => ({ groupId: g.groupId, name: g.name }));
+  const today = bucharestToday();
+  const addHref = `/grupe/${encodeURIComponent(id)}/adauga`;
+  const show = (kind: "move" | "remove", athlete: CoachMember, el: HTMLElement) => {
+    opener.current = el;
+    setOpen({ kind, athlete });
+  };
+  /** Closing without a change puts the focus back on the button that opened the sheet. */
+  const close = () => {
+    setOpen(null);
+    const el = opener.current;
+    setTimeout(() => el?.focus(), 0);
+  };
+  const done = () => {
+    setOpen(null);
+    page.reload();
+  };
+
+  return (
+    <>
+      <PageHeader
+        back={{ href: back, label: group.name }}
+        title={EDIT_GROUP.title}
+        sub={EDIT_GROUP.sub(group.name, roCount(members.length, "sportiv", "sportivi"))}
+        actions={
+          <>
+            <Button variant="secondary" href={addHref}>{EDIT_GROUP.add}</Button>
+            <Button href={back}>{EDIT_GROUP.done}</Button>
+          </>
+        }
+      />
+      <PageBody narrow={640}>
+        <Button variant="secondary" href={addHref} className="w-full portal:hidden">{EDIT_GROUP.add}</Button>
+        <ListCard>
+          {members.map((m) => (
+            <ListRow
+              key={m.athleteId}
+              title={m.name}
+              sub={memberSub(m)}
+              end={
+                <span className="flex flex-none items-center gap-(--portal-gap-6) pr-(--portal-row-pad-x)">
+                  <button type="button" className={SMALL} onClick={(e) => show("move", m, e.currentTarget)}>{EDIT_GROUP.move}</button>
+                  <button type="button" className={SMALL} onClick={(e) => show("remove", m, e.currentTarget)}>{EDIT_GROUP.remove}</button>
+                </span>
+              }
+            />
+          ))}
+        </ListCard>
+        <Button href={back} className="w-full portal:hidden">{EDIT_GROUP.done}</Button>
+      </PageBody>
+      {open?.kind === "move" && (
+        <MoveSheet groupId={id} groupName={group.name} athlete={open.athlete} targets={targets} today={today} onClose={close} onDone={done} />
+      )}
+      {open?.kind === "remove" && <RemoveSheet groupId={id} athlete={open.athlete} today={today} onClose={close} onDone={done} />}
+    </>
+  );
+}

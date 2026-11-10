@@ -108,6 +108,7 @@ export const EDIT_GROUP = {
   removeText: "Prezențele de până acum rămân. Nu mai apare la ședințele grupei.",
   removeConfirm: "Scoate din grupă",
   noOtherGroup: "Nu ai altă grupă în care să-l muți.",
+  pastDate: "Alege o dată de azi încolo.",
 } as const;
 
 export const PRESENCE = {

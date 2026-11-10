@@ -125,6 +125,7 @@
   --portal-savebar-pad-y: 14px;    /* layout save bar */
   --portal-savebar-pad-x: 20px;    /* layout save bar */
   --portal-contact-pad-x: 10px;    /* layout contact button */
+  --portal-small-btn-pad-x: 12px;  /* layout member row Mută and Scoate buttons */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
   --portal-cell-gap: 5px;          /* layout calendar cell number to marks */
