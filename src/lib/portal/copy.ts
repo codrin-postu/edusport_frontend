@@ -68,6 +68,7 @@ export const GRUPE = {
   others: "Alte grupe",
   line: (program: string, n: number) => [program, children(n)].filter((part) => part !== "").join(", "),
   coaches: (names: string) => `Antrenor: ${names}`,
+  noNext: "Fără ședință programată",
   mine: "Grupele mele",
   sub: (groups: string, kids: string) => `${groups}, ${kids}`,
   coach: (names: string) => `Antrenor: ${names}`,

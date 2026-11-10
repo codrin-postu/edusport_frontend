@@ -5,7 +5,7 @@ import { weekdayShort } from "@/lib/portal/format";
 import { roCount } from "@/lib/ro-plural";
 import type { CoachGroups, NextClass } from "@/lib/portal/api-types";
 import { usePortal } from "../../_lib/use-portal";
-import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { DateBlock, EmptyDateBlock } from "@/app/_portal/ui/DateBlock";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
@@ -16,7 +16,7 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 
 const kids = (n: number): string => roCount(n, "copil", "copii");
 
-const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} /> : undefined);
+const lead = (next: NextClass | null) => (next ? <DateBlock word={weekdayShort(next.date)} big={String(Number(next.date.slice(8)))} /> : <EmptyDateBlock label={GRUPE.noNext} />);
 
 export function GroupsList() {
   const groups = usePortal<CoachGroups>("coach/groups");

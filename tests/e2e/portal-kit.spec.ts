@@ -109,7 +109,9 @@ for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) 
       await page.getByRole("button", { name: "Deschide foaia" }).click();
       const content = page.getByRole("dialog");
       await expect(content).toBeVisible();
-      expect(await css(content, ["background-color", "padding-left", "border-top-width"])).toEqual({ "background-color": WHITE, "padding-left": "20px", "border-top-width": "1px" });
+      expect(await css(content, ["background-color", "border-top-width"])).toEqual({ "background-color": WHITE, "border-top-width": "1px" });
+      // The body scrolls inside the sheet; the 20px padding sits on it.
+      expect((await css(content.locator("> div").first(), ["padding-left", "overflow-y"]))).toEqual({ "padding-left": "20px", "overflow-y": "auto" });
       expect(await page.locator("[aria-hidden] .h-1.w-12").count()).toBe(0);
       if (!phone) expect((await css(content, ["width"])).width).toBe("460px");
     });

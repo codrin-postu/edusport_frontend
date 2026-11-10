@@ -1,4 +1,20 @@
+import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
+
+/** Same ice square with a muted calendar icon, for a row with no date to show (keeps list rows aligned). */
+export function EmptyDateBlock({ label }: { label: string }) {
+  return (
+    <span
+      data-date-block
+      data-date-empty
+      role="img"
+      aria-label={label}
+      className="flex h-(--portal-dateblock-h) w-(--portal-dateblock-w) shrink-0 items-center justify-center rounded-(--portal-dateblock-radius) bg-ice-light text-muted"
+    >
+      <Icon name="calendar" size="sm" />
+    </span>
+  );
+}
 
 /** Date or time block: ice square, 6px radius (a named round exception), optional red word above the number. */
 export function DateBlock({ word, big, dim }: { word?: string; big: string; dim?: boolean }) {

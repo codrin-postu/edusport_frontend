@@ -159,7 +159,7 @@ for (const size of SIZES) {
   });
 }
 
-test("a group without a next class shows the plain row", async({ page }) => {
+test("a group without a next class keeps the row aligned with an empty date block", async({ page }) => {
   await page.route("**/api/portal/coach/groups", (route) => route.fulfill({
     json: { mine: [{ groupId: "gavansati", name: "Avansați", kind: "club", program: ["Ma, Mi 18:15"], children: 9, next: null }], others: [] },
   }));
@@ -167,7 +167,8 @@ test("a group without a next class shows the plain row", async({ page }) => {
   await page.goto("/grupe");
   const first = page.getByRole("link", { name: /Avansați/ });
   await expect(first).toBeVisible();
-  await expect(first.locator("[data-date-block]")).toHaveCount(0);
+  await expect(first.locator("[data-date-empty]")).toHaveCount(1);
+  await expect(first.locator("[data-date-word]")).toHaveCount(0);
 });
 
 for (const size of SIZES) {
@@ -261,13 +262,13 @@ test("an unknown group shows the load error", async({ page }) => {
   await expect(page.getByText("Nu am putut încărca datele.")).toBeVisible();
 });
 
-test("a group with no weekly schedule shows no leading comma and no date block", async({ page }) => {
+test("a group with no weekly schedule shows no leading comma and an empty date block", async({ page }) => {
   await loginAs(page);
   await mockState({ unscheduledGroup: true });
   await page.goto("/grupe");
   const row = page.getByRole("link", { name: /Fără program/ });
   await expect(row).toContainText("18 copii");
-  await expect(row.locator("[data-date-block]")).toHaveCount(0);
+  await expect(row.locator("[data-date-empty]")).toHaveCount(1);
   const text = (await row.innerText()).replace(/\s+/g, " ");
   expect(text).not.toMatch(/, 18 copii|^,/);
   expect(text).toContain("Fără program");
