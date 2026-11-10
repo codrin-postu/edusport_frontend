@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import { AZI, LIST } from "@/lib/portal/copy";
@@ -17,6 +18,7 @@ import { Section, SectionHeading, SeeAllLink } from "@/app/_portal/ui/SectionHea
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
+import { useClubClock } from "../_lib/use-clock";
 import { usePortal } from "../_lib/use-portal";
 import { NewTrainingPopup } from "./antrenament/NewTrainingPopup";
 import { useMe } from "../_lib/me-context";
@@ -24,11 +26,6 @@ import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow
 
 /** Both Azi heading rows share this box on the desktop so their tops line up. */
 const ROW1 = "portal:min-h-(--portal-tap) portal:items-center";
-
-/** HH:mm of the browser clock in the club's time zone. */
-function clockNow(): string {
-  return new Intl.DateTimeFormat("ro-RO", { timeZone: "Europe/Bucharest", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date());
-}
 
 function groupRow(c: CoachClassRow): SessionRowData {
   return {
@@ -42,10 +39,20 @@ export default function AziPage() {
   const router = useRouter();
   const nou = useSearchParams().get("nou");
   const today = usePortal<CoachToday>("coach/today");
-  if (today.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (today.state === "error" || !today.data) return <PageBody><LoadError onRetry={today.reload} /></PageBody>;
-  const { data } = today;
-  const now = clockNow();
+  const clock = useClubClock();
+  // At midnight the day changes: ask for today's lists again (the old ones stay on screen meanwhile).
+  const seenDate = useRef(clock.date);
+  const { reload } = today;
+  useEffect(() => {
+    if (seenDate.current === clock.date) return;
+    seenDate.current = clock.date;
+    reload();
+  }, [clock.date, reload]);
+  const shown = today.data ?? today.previous;
+  if (today.state === "loading" && !shown) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
+  if (!shown) return <PageBody><LoadError onRetry={today.reload} /></PageBody>;
+  const data = shown;
+  const now = clock.time;
   const rows: SessionRowData[] = [
     ...data.groups.map(groupRow),
     ...data.lessons.map((l): SessionRowData => ({
@@ -117,7 +124,7 @@ export default function AziPage() {
         brand
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
-        aside={<NowTile month={monthShort(data.today)} day={String(Number(data.today.slice(8)))} time={now} weekday={weekdayShort(data.today)} label={AZI.nowLabel(longDay(data.today), now)} />}
+        aside={<NowTile month={monthShort(clock.date)} day={String(Number(clock.date.slice(8)))} time={now} weekday={weekdayShort(clock.date)} label={AZI.nowLabel(longDay(clock.date), now)} />}
         actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
