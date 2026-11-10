@@ -92,7 +92,7 @@ test.describe("Azi layout", () => {
     const head = page.locator("[data-page-header]");
     await expect(head.getByText("CLUBUL SPORTIV")).toBeVisible();
     await expect(head.getByText("EDUSPORT", { exact: true })).toBeVisible();
-    const button = page.getByRole("link", { name: "+ Lecție individuală" }).locator("visible=true");
+    const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
     await expect(button).toHaveCount(1);
     const box = await button.boundingBox();
     expect(box!.width).toBeGreaterThan(390 - 2 * 20 - 2);
@@ -111,7 +111,7 @@ test.describe("Azi layout", () => {
     const today = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
     expect(stat!.x).toBeLessThan(today!.x);
     expect(past!.x).toBeLessThan(today!.x);
-    const button = page.getByRole("link", { name: "+ Lecție individuală" }).locator("visible=true");
+    const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
     await expect(button).toHaveCount(1);
     const header = await page.locator("[data-page-header]").boundingBox();
     const bb = await button.boundingBox();

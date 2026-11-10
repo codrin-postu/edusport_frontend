@@ -46,3 +46,18 @@ it("formats phone links and canvas dates", () => {
   assert.equal(f.dayMonthYear("2026-10-26"), "26 oct 2026");
   assert.equal(f.dayMonthShort("2026-11-12"), "12 noi");
 });
+
+it("speaks days and weeks for the training form", () => {
+  assert.equal(f.weekdayLong("2026-11-10"), "marți");
+  assert.equal(f.weekdayOfDay("tue"), "marți");
+  assert.equal(f.daysSpoken(["thu", "tue"]), "marți și joi");
+  assert.equal(f.daysSpoken(["mon", "wed", "fri"]), "luni, miercuri și vineri");
+  assert.equal(f.daysSpoken(["sun", "mon"]), "luni și duminică");
+  assert.equal(f.daysSpoken(["tue"]), "marți");
+  assert.equal(f.dayMonthLong("2026-11-11"), "11 noiembrie");
+  assert.equal(f.weekOfMonthOf("2026-11-11"), "second");
+  assert.equal(f.weekOfMonthOf("2026-11-07"), "first");
+  assert.equal(f.weekOfMonthOf("2026-11-22"), "fourth");
+  assert.equal(f.weekOfMonthOf("2026-11-29"), "last");
+  assert.equal(f.capitalize("marți"), "Marți");
+});

@@ -42,3 +42,14 @@ it("agrees counts in Romanian", () => {
   assert.equal(copy.HISTORY.presentSub(1), "grup, 1 prezent");
   assert.equal(copy.HISTORY.standInSub(10), "înlocuitor, 10 prezenți");
 });
+
+it("names the training copy", () => {
+  assert.equal(copy.AZI.addTraining, "+ Adaugă antrenament");
+  assert.equal(copy.PROGRAM.publicHint, "Programul este public, îl vede oricine pe site.");
+  assert.equal(copy.TRAINING.title, "Antrenament nou");
+  assert.equal(copy.TRAINING.summaryOnce("Miercuri, 12 noiembrie", "18:30"), "Miercuri, 12 noiembrie, 18:30, o singură dată.");
+  const curly = /[\u2014\u2013\u00B7\u201E\u201C\u201D\u2018\u2019]/;
+  const all = [];
+  for (const [name, area] of Object.entries({ TRAINING: copy.TRAINING, PROGRAM: copy.PROGRAM, LESSON: copy.LESSON, AZI: copy.AZI })) strings(area, name, all);
+  for (const [path, text] of all) assert.ok(!curly.test(text), `${path}: ${text}`);
+});

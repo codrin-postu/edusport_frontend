@@ -33,7 +33,7 @@ export const AZI = {
   lessons: "Lecții individuale",
   todo: "De făcut",
   done: "Completat",
-  addLesson: "+ Lecție individuală",
+  addTraining: "+ Adaugă antrenament",
   none: "Nicio ședință azi.",
   groupLine: (n: number) => `grup, ${children(n)}`,
   lessonLine: (min: string) => `individuală, ${min}`,
@@ -48,6 +48,48 @@ export const AZI = {
   groupSub: (kids: string, location: string | null) => (location ? `grup, ${kids}, ${location}` : `grup, ${kids}`),
   minutes: (n: number) => `${n} min`,
   nowLabel: (weekdayDay: string, time: string) => `${weekdayDay}, ora ${time}`,
+} as const;
+
+const WEEK_WORD = { first: "prima", second: "a doua", third: "a treia", fourth: "a patra", last: "ultima" } as const;
+
+export const TRAINING = {
+  title: "Antrenament nou",
+  editTitle: "Modifică lecția",
+  group: "Grup",
+  individual: "Individual",
+  groupField: "Grupa",
+  athlete: "Sportiv",
+  repeat: "Se repetă",
+  once: "Nu se repetă",
+  weekly: "Săptămânal",
+  biweekly: "La 2 săptămâni",
+  monthly: "Lunar",
+  days: "Zile",
+  date: "Data",
+  time: "Ora",
+  duration: "Durată",
+  from: "Din data",
+  until: "Până la",
+  seasonEnd: "Sfârșitul sezonului",
+  untilDate: "Alege data",
+  untilDateField: "Data de sfârșit",
+  coach: "Antrenor",
+  submit: "Adaugă antrenamentul",
+  save: "Salvează",
+  scopeTitle: "Ce schimbi?",
+  scopeDeleteTitle: "Ce ștergi?",
+  scopeOne: "Doar această lecție",
+  scopeFollowing: "Și lecțiile următoare",
+  noGroup: "Nu ai o grupă de club.",
+  weekWord: WEEK_WORD,
+  // Summary builders: `lead` is "" or "La 2 săptămâni, " (the days follow in lowercase).
+  summaryOnce: (when: string, time: string) => `${when}, ${time}, o singură dată.`,
+  summarySeries: (lead: string, days: string, time: string, min: number, from: string, until: string | null) =>
+    `${lead}${days}, ${time}, ${min} min, din ${from} ${until ? `până pe ${until}` : "până la sfârșitul sezonului"}.`,
+  // Lunar, variant A (user 2026-11-10): "Lunar, în a doua marți a lunii, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului."
+  summaryMonthly: (week: string, days: string, time: string, min: number, from: string, until: string | null) =>
+    `Lunar, în ${week} ${days} a lunii, ${time}, ${min} min, din ${from} ${until ? `până pe ${until}` : "până la sfârșitul sezonului"}.`,
+  monthlyNote: (day: string, nth: string) => `Săptămâna din lună se ia din "Din data": ${day} este ${nth}.`,
 } as const;
 
 export const CALENDAR = {
@@ -170,6 +212,12 @@ export const LESSON = {
   delete: "Șterge lecția",
   deleteConfirm: (date: string) => `Ștergi lecția din ${date}?`,
   giveUp: "Renunță",
+  repeat: "Se repetă",
+  no: "Nu",
+  edit: "Modifică lecția",
+  when: (time: string, min: number) => `${time}, ${min} min`,
+  seriesText: (freq: string, days: string, until: string | null) => (until ? `${freq}, ${days}, până pe ${until}` : `${freq}, ${days}, până la sfârșitul sezonului`),
+  deletedMany: "Lecții șterse.",
 } as const;
 
 export const ADD_ATHLETE = {
@@ -276,8 +324,23 @@ export const PROGRAM = {
   cancelled: "Anulată",
   movedFrom: (what: string) => `Mutată de la ${what}`,
   nothingThisMonth: "Nimic programat în această lună.",
-  publicTitle: "Program public",
-  publicHint: "Programul apare în calendarul de pe site.",
+  publicLabel: "Arată programul pe site",
+  publicHint: "Programul este public, îl vede oricine pe site.",
+  weeklyHeading: "Program săptămânal",
+  nextHeading: "Următoarele date",
+  ruleTitle: (weekday: string, time: string) => `${weekday}, ${time}`,
+  ruleSub: (min: number, freq: string, from: string, until: string | null) => (until ? `${min} min, ${freq}, din ${from}, până pe ${until}` : `${min} min, ${freq}, din ${from}`),
+  movedFromSub: (when: string) => `mutată din ${when}`,
+  moved: "Mutată",
+  dateOnly: "Schimbi doar această dată. Programul săptămânal rămâne.",
+  cancelSub: "Părinții văd data anulată și nota.",
+  moveSub: "Alegi altă zi sau oră pentru această dată.",
+  remove: "Șterge",
+  removeSub: "Data dispare din program, fără notă.",
+  giveUp: "Renunță",
+  changeSub: (rule: string) => `${rule}. Datele de dinainte rămân cum au fost.`,
+  endTitle: (weekday: string) => `Ștergi programul de ${weekday}?`,
+  endText: "Ședințele și prezențele de până atunci rămân. După data aleasă nu mai apare.",
   past: "trecut",
   schoolLocked: "Programul Școlii îl schimbă administratorul.",
   save: "Salvează",
@@ -291,6 +354,7 @@ export const PROGRAM = {
     dateCancelled: (day: string) => `Ședința din ${day} a fost anulată.`,
     dateMoved: (day: string) => `Ședința din ${day} a fost mutată.`,
     dateKept: (day: string) => `Ședința din ${day} se ține.`,
+    dateRemoved: (day: string) => `Ședința din ${day} a fost ștearsă.`,
   },
 } as const;
 

@@ -1,4 +1,6 @@
-// Date and duration texts of the coach app. Pure, no imports (loaded by Node tests).
+// Date and duration texts of the coach app. Pure, type imports only (loaded by Node tests).
+import type { DayKey, WeekOfMonth } from "./api-types";
+
 const WEEKDAY_TILE = ["DU", "LU", "MA", "MI", "JO", "VI", "SÂ"] as const;
 const WEEKDAY_FULL = ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"] as const;
 const MONTH_TILE = ["IAN", "FEB", "MAR", "APR", "MAI", "IUN", "IUL", "AUG", "SEP", "OCT", "NOI", "DEC"] as const;
@@ -135,3 +137,41 @@ export function dayMonthShort(date: string): string {
 export function pointsText(total: number): string {
   return total.toFixed(2).replace(".", ",");
 }
+
+const DAY_ORDER: DayKey[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+const DAY_WORD: Record<DayKey, string> = { mon: "luni", tue: "marți", wed: "miercuri", thu: "joi", fri: "vineri", sat: "sâmbătă", sun: "duminică" };
+
+/** "2026-11-10" -> "marți" */
+export function weekdayLong(date: string): string {
+  return WEEKDAY_FULL[parts(date).weekday];
+}
+
+/** "tue" -> "marți" */
+export function weekdayOfDay(day: DayKey): string {
+  return DAY_WORD[day];
+}
+
+/** ["thu", "tue"] -> "marți și joi"; three: "luni, miercuri și vineri" (Monday first) */
+export function daysSpoken(days: DayKey[]): string {
+  const words = DAY_ORDER.filter((d) => days.includes(d)).map((d) => DAY_WORD[d]);
+  if (words.length < 2) return words.join("");
+  return `${words.slice(0, -1).join(", ")} și ${words[words.length - 1]}`;
+}
+
+/** "2026-11-11" -> "11 noiembrie" */
+export function dayMonthLong(date: string): string {
+  return dayMonth(date);
+}
+
+/** Day 1-7 "first", 8-14 "second", 15-21 "third", 22-28 "fourth", 29-31 "last". */
+export function weekOfMonthOf(date: string): WeekOfMonth {
+  const d = parts(date).day;
+  if (d <= 7) return "first";
+  if (d <= 14) return "second";
+  if (d <= 21) return "third";
+  if (d <= 28) return "fourth";
+  return "last";
+}
+
+/** "marți" -> "Marți" */
+export const capitalize = (s: string): string => (s ? s[0].toUpperCase() + s.slice(1) : s);

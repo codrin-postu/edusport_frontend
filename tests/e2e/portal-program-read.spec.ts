@@ -4,13 +4,13 @@ import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
 
-test("an own Club group shows the series and toggles Program public", async({ page }) => {
+test("an own Club group shows the series and toggles the public switch", async({ page }) => {
   await loginAs(page);
   await page.goto("/grupe/gavansati?tab=program");
   await expect(page.getByText("Ma, Mi 18:15", { exact: true })).toBeVisible();
-  const sw = page.getByRole("switch", { name: "Program public" });
+  const sw = page.getByRole("switch", { name: "Arată programul pe site" });
   await expect(sw).toHaveAttribute("aria-checked", "true");
-  await expect(page.getByText("Programul apare în calendarul de pe site.")).toBeVisible();
+  await expect(page.getByText("Programul este public, îl vede oricine pe site.")).toBeVisible();
   await sw.click();
   await expect(page.getByText("Salvat.")).toBeVisible();
   const put = (await mockLog()).find((c) => c.method === "PUT" && c.path.endsWith("/groups/gavansati/program-public"));

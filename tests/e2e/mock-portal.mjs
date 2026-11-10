@@ -272,7 +272,6 @@ const monthDays = (month) => {
   const [y, mo] = month.split("-").map(Number);
   return Array.from({ length: new Date(y, mo, 0).getDate() }, (_, i) => `${month}-${String(i + 1).padStart(2, "0")}`);
 };
-const CANCELLED = { gavansati: ["2026-11-11"] };
 
 /** Backend readCoachCalendar: own classes (scheduled and cancelled), saved stand-in sessions that list the coach, own lessons. */
 function calendarData(month) {
@@ -281,7 +280,7 @@ function calendarData(month) {
     const items = [];
     for (const g of Object.values(world.groups).filter((x) => x.own && hasClass(x, date))) {
       const rec = world.saved[keyOf(g.id, date)];
-      const cancelled = (CANCELLED[g.id] ?? []).includes(date);
+      const cancelled = (world.cancelled[g.id] ?? []).some((c) => c.date === date);
       items.push({
         kind: "grup", cancelled, date, startTime: g.start, durationMin: g.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
         location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null,
@@ -436,28 +435,119 @@ function saveSession({ body, res }) {
 
 function lessonView(l) {
   const archived = archivedDate(l.date);
-  return { ...l, coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Antrenor Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived };
+  return { ...withoutSeries(l), coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Antrenor Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived,
+    series: l.seriesId ? world.series[l.seriesId] ?? null : null, planEditable: l.state === "planned" && l.date >= today && l.coachIds.includes(ME) };
+}
+
+const withoutSeries = (l) => { const copy = { ...l }; delete copy.seriesId; return copy; };
+const weekdayWord = ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"];
+const conflictText = (date, time) => `Sportivul are deja o lecție pe ${weekdayWord[weekdayOf(date)]}, ${shortDay(date)}, la ${time}.`;
+
+/** The dates a lesson repeat writes: `from` to `until` (or the season end), by freq and days; biweekly counts weeks from `from`'s week. */
+function lessonDates(from, repeat) {
+  const to = repeat.until ?? SEASON_END;
+  const rule = { from, to, freq: repeat.freq, weekOfMonth: repeat.weekOfMonth ?? null };
+  const out = [];
+  for (let date = from; date <= to; date = addDays(date, 1)) {
+    if (repeat.days.some((day) => ruleHits({ ...rule, day }, date, from))) out.push(date);
+  }
+  return out;
+}
+
+/** Contract validation of a repeat; null when fine. */
+function repeatRefusal(repeat, from) {
+  if (!repeat || typeof repeat !== "object") return null;
+  if (!FREQS.includes(repeat.freq) || !Array.isArray(repeat.days) || !repeat.days.length || !repeat.days.every((d) => DAY_KEYS.includes(d))) return MSG.invalid;
+  const until = repeat.until ?? null;
+  if (until !== null && (!validDate(until) || until < from || until > SEASON_END)) return MSG.invalid;
+  return null;
+}
+
+const planFieldsOk = (body) => validDate(body.date) && HHMM.test(body.startTime ?? "") && Number.isInteger(body.durationMin) && body.durationMin >= 15 && body.durationMin <= 240;
+
+function conflictFor(athleteId, dates, time, ignore) {
+  const hit = dates.find((date) => Object.values(world.lessons).some((l) => l.athleteId === athleteId && l.date === date && l.startTime === time && !ignore.includes(l.lessonId)));
+  return hit ? conflictText(hit, time) : null;
+}
+
+/** Writes the lessons of a create or a following edit; answers CoachLessonCreated. */
+function writeLessons({ athlete, body }) {
+  const repeat = body.repeat ?? null;
+  const dates = repeat ? lessonDates(body.date, repeat) : [body.date];
+  let seriesId = null;
+  if (repeat) {
+    seriesId = `sl-new${++world.counters.lesson}`;
+    const to = repeat.until ?? SEASON_END;
+    world.series[seriesId] = {
+      seriesId, freq: repeat.freq, days: repeat.days, weekOfMonth: repeat.freq === "monthly" ? repeat.weekOfMonth ?? weekOfMonthOf(body.date) : null,
+      startTime: body.startTime, durationMin: body.durationMin, from: body.date, to, untilSeasonEnd: repeat.until === null || repeat.until === undefined,
+    };
+  }
+  const ids = dates.map((date) => {
+    const lessonId = `lnew${++world.counters.lesson}`;
+    world.lessons[lessonId] = { lessonId, athleteId: athlete.athleteId, athleteName: athlete.name, date, startTime: body.startTime, durationMin: body.durationMin, coachIds: body.coachIds, state: "planned", present: null, ...(seriesId ? { seriesId } : {}) };
+    return lessonId;
+  });
+  return { lessonId: ids[0], seriesId, count: ids.length, toast: MSG.saved };
+}
+
+/** POST /lessons: one lesson, or a series with `repeat` (date is "Din data"). */
+function lessonCreate({ body, res }) {
+  if (!(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
+  if (archivedDate(body.date)) return club(res, 403, MSG.archived);
+  const athlete = Object.values(world.members).flat().find((m) => m.athleteId === body.athleteId);
+  if (!athlete || !planFieldsOk(body)) return club(res, 400, MSG.invalid);
+  const refusal = repeatRefusal(body.repeat, body.date);
+  if (refusal) return club(res, 400, refusal);
+  const dates = body.repeat ? lessonDates(body.date, body.repeat) : [body.date];
+  const conflict = conflictFor(athlete.athleteId, dates, body.startTime, []);
+  if (conflict) return club(res, 409, conflict);
+  ok(res, writeLessons({ athlete, body }));
+}
+
+/** PUT /lessons/:id/plan: change one lesson or this and the following ones of its series. */
+function lessonPlan({ body, res, params }) {
+  const l = world.lessons[params[0]];
+  if (!l || !l.coachIds.includes(ME)) return notFound(res);
+  if (l.state === "saved" || l.date < today) return club(res, 409, STALE);
+  if (!planFieldsOk(body) || !["one", "following"].includes(body.scope)) return club(res, 400, MSG.invalid);
+  if (!(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
+  const refusal = repeatRefusal(body.repeat, body.date);
+  if (refusal) return club(res, 400, refusal);
+  const athlete = { athleteId: l.athleteId, name: l.athleteName };
+  const following = body.scope === "following" && l.seriesId;
+  const gone = following ? Object.values(world.lessons).filter((x) => x.seriesId === l.seriesId && x.date >= l.date && x.state === "planned").map((x) => x.lessonId) : [l.lessonId];
+  const dates = body.repeat && following ? lessonDates(body.date, body.repeat) : [body.date];
+  const conflict = conflictFor(l.athleteId, dates, body.startTime, gone);
+  if (conflict) return club(res, 409, conflict);
+  if (!following) {
+    Object.assign(l, { date: body.date, startTime: body.startTime, durationMin: body.durationMin, coachIds: body.coachIds });
+    return ok(res, { lessonId: l.lessonId, seriesId: l.seriesId ?? null, count: 1, toast: MSG.saved });
+  }
+  for (const id of gone) delete world.lessons[id];
+  ok(res, writeLessons({ athlete, body }));
+}
+
+/** DELETE /lessons/:id?scope=one|following. */
+function lessonDelete({ res, params, query }) {
+  const scope = query.get("scope") ?? "one";
+  if (!["one", "following"].includes(scope)) return club(res, 400, MSG.invalid);
+  const l = world.lessons[params[0]];
+  if (!l || !l.coachIds.includes(ME)) return notFound(res);
+  if (l.state === "saved" && archivedDate(l.date)) return club(res, 403, MSG.archived);
+  const ids = scope === "following" && l.seriesId
+    ? Object.values(world.lessons).filter((x) => x.seriesId === l.seriesId && x.date >= l.date && x.state === "planned").map((x) => x.lessonId)
+    : [l.lessonId];
+  for (const id of ids) delete world.lessons[id];
+  ok(res, { deleted: true, count: ids.length, toast: ids.length > 1 ? "Lecții șterse." : "Lecție ștearsă." });
 }
 
 function lessonWrite({ body, res, params, method }) {
-  if (method === "POST") {
-    if (!(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
-    if (archivedDate(body.date)) return club(res, 403, MSG.archived);
-    const athlete = Object.values(world.members).flat().find((m) => m.athleteId === body.athleteId);
-    if (!athlete) return club(res, 400, MSG.invalid);
-    const lessonId = `lnew${++world.counters.lesson}`;
-    world.lessons[lessonId] = { lessonId, athleteId: athlete.athleteId, athleteName: athlete.name, date: body.date, startTime: body.startTime, durationMin: body.durationMin, coachIds: body.coachIds, state: "planned", present: null };
-    return ok(res, { lessonId, changed: true, toast: MSG.saved });
-  }
   const l = world.lessons[params[0]];
   if (!l || !l.coachIds.includes(ME)) return notFound(res);
   if (l.state === "saved" && archivedDate(l.date)) return club(res, 403, MSG.archived);
   if (method === "PUT" && l.date > today) return club(res, 403, MSG.noAccess);
   if (method === "PUT" && !(body.coachIds ?? []).includes(ME)) return club(res, 403, MSG.noAccess);
-  if (method === "DELETE") {
-    delete world.lessons[l.lessonId];
-    return ok(res, { deleted: true, toast: "Lecție ștearsă." });
-  }
   const unchanged = l.state === "saved" && l.present === body.present && l.durationMin === body.durationMin
     && JSON.stringify([...l.coachIds].sort()) === JSON.stringify([...(body.coachIds ?? [])].sort());
   if (unchanged) return ok(res, { lessonId: l.lessonId, changed: false, toast: "Nicio modificare." });
@@ -478,33 +568,148 @@ function historyData(month) {
   };
 }
 
+const DAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
+const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+const FREQS = ["weekly", "biweekly", "monthly"];
+const weekOfMonthOf = (date) => { const d = Number(date.slice(8)); return d <= 7 ? "first" : d <= 14 ? "second" : d <= 21 ? "third" : d <= 28 ? "fourth" : "last"; };
+const dayDiff = (a, b) => Math.round((new Date(`${b}T00:00:00Z`) - new Date(`${a}T00:00:00Z`)) / 86_400_000);
+const mondayOf = (date) => addDays(date, -((weekdayOf(date) + 6) % 7));
+const validDate = (v) => typeof v === "string" && ISO.test(v) && !Number.isNaN(Date.parse(v));
+const addMin = (time, min) => { const [h, m] = time.split(":").map(Number); const t = h * 60 + m + min; return `${String(Math.floor(t / 60) % 24).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`; };
+
+/** Does a rule (or a lesson series: same fields) fall on `date`? `anchor` is its first date. */
+function ruleHits(r, date, anchor = r.from) {
+  if (date < r.from || date > r.to || DAY_KEYS[weekdayOf(date)] !== r.day) return false;
+  if (r.freq === "biweekly") return (dayDiff(mondayOf(anchor), mondayOf(date)) / 7) % 2 === 0;
+  if (r.freq === "monthly") return weekOfMonthOf(date) === (r.weekOfMonth ?? weekOfMonthOf(anchor));
+  return true;
+}
+const rulesOf = (gid) => world.rules[gid] ?? (world.rules[gid] = []);
+function nextDateOf(r) {
+  for (let i = 0; i < 400; i++) { const date = addDays(today, i); if (ruleHits(r, date) && !isRemoved(r.gid, date)) return date; }
+  return null;
+}
+const isRemoved = (gid, date) => (world.removed[gid] ?? []).includes(date);
+const ruleView = ({ gid: _gid, ...r }) => ({ ...r, nextDate: nextDateOf({ ...r, gid: _gid }) });
+const hasSavedSession = (gid, date) => Object.values(world.saved).some((r) => r.groupId === gid && r.date === date);
+
+function occurrence(g, date, startTime, durationMin, eventId, extra = {}) {
+  return {
+    eventId: 1, documentId: eventId, title: g.name, type: g.kind === "club" ? "curs" : "scoala", label: null, color: null, order: 0, date,
+    startTime, endTime: addMin(startTime, durationMin), endsNextDay: false, endDate: date,
+    status: "scheduled", cancelReason: null, groupId: g.id, groupName: g.name, oneOff: false, originalDate: null, originalStartTime: null, ...extra,
+  };
+}
+
+/** Occurrences of a month from the group's rules and one-off classes, with cancelled, moved and removed dates applied. */
 function occurrencesOf(g, month) {
   const [y, mo] = month.split("-").map(Number);
   const out = [];
+  const moves = world.moved[g.id] ?? [];
+  const cancels = world.cancelled[g.id] ?? [];
   for (let d = 1; d <= new Date(y, mo, 0).getDate(); d++) {
     const date = `${month}-${String(d).padStart(2, "0")}`;
-    if (!hasClass(g, date)) continue;
-    const [h, mi] = g.start.split(":").map(Number);
-    const end = h * 60 + mi + g.dur;
-    out.push({
-      eventId: 1, documentId: g.eventId, title: g.name, type: g.kind === "club" ? "curs" : "scoala", label: null, color: null, order: 0, date,
-      startTime: g.start, endTime: `${String(Math.floor(end / 60)).padStart(2, "0")}:${String(end % 60).padStart(2, "0")}`, endsNextDay: false, endDate: date,
-      status: "scheduled", cancelReason: null, groupId: g.id, groupName: g.name, oneOff: false, originalDate: null, originalStartTime: null,
-    });
+    if (isRemoved(g.id, date)) continue;
+    for (const r of rulesOf(g.id).map((x) => ({ ...x, gid: g.id }))) {
+      if (!ruleHits(r, date)) continue;
+      if (moves.some((m) => m.date === date)) continue;
+      const cancel = cancels.find((c) => c.date === date);
+      out.push(occurrence(g, date, r.startTime, r.durationMin, r.eventId, cancel ? { status: "cancelled", cancelReason: "exception", note: cancel.note } : {}));
+    }
+    for (const o of world.oneOffs[g.id] ?? []) if (o.date === date) out.push(occurrence(g, date, o.startTime, o.durationMin, o.eventId, { oneOff: true }));
   }
-  return out;
+  for (const m of moves) {
+    if (!m.newDate.startsWith(month)) continue;
+    const rule = rulesOf(g.id).find((r) => r.day === DAY_KEYS[weekdayOf(m.date)]);
+    out.push(occurrence(g, m.newDate, m.newStartTime, rule?.durationMin ?? g.dur, rule?.eventId ?? g.eventId, { status: "override", originalDate: m.date, originalStartTime: rule?.startTime ?? g.start, note: m.note }));
+  }
+  return out.sort((a, b) => (a.date + a.startTime).localeCompare(b.date + b.startTime));
 }
 
 function programData(g, month) {
   const m = /^\d{4}-\d{2}$/.test(month ?? "") ? month : today.slice(0, 7);
   const row = {
-    eventId: g.eventId, freq: "weekly", days: g.days.map((d) => ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][d]), weekOfMonth: null, startTime: g.start,
+    eventId: g.eventId, freq: "weekly", days: g.days.map((d) => DAY_KEYS[d]), weekOfMonth: null, startTime: g.start,
     durationMin: g.dur, from: `${today.slice(0, 4)}-10-01`, to: `${Number(today.slice(0, 4)) + 1}-05-31`, text: g.program[0], fromText: "1 oct", nextDate: today,
   };
   return {
     kind: g.kind, editable: g.kind === "club", programPublic: g.kind === "club" ? g.programPublic : null,
     program: { season: { documentId: "season-1", label: "2026-2027", past: false }, series: [row] }, occurrences: occurrencesOf(g, m),
+    rules: rulesOf(g.id).map((r) => ruleView({ ...r, gid: g.id })),
   };
+}
+
+const groupOfEvent = (eventId) => Object.values(world.groups).find((g) => g.eventId === eventId || rulesOf(g.id).some((r) => r.eventId === eventId) || (world.oneOffs[g.id] ?? []).some((o) => o.eventId === eventId));
+
+const REFUSE = {
+  datePresence: "Data are prezența salvată. Poți doar să o anulezi.",
+};
+const LAST_BACK = 7;
+
+/** POST /groups/:id/program (contract): a series (optionally with `until`) or a one-off class up to 7 days back. */
+function programAdd({ res, body }, g) {
+  const valid = typeof body.startTime === "string" && HHMM.test(body.startTime) && Number.isInteger(body.durationMin) && body.durationMin >= 15 && body.durationMin <= 240;
+  if (!valid) return club(res, 400, MSG.invalid);
+  const eventId = `evnew${++world.counters.event}`;
+  if (body.repeat === false) {
+    if (!validDate(body.date) || body.date < addDays(today, -LAST_BACK) || body.date > SEASON_END) return club(res, 400, MSG.invalid);
+    (world.oneOffs[g.id] ??= []).push({ eventId, date: body.date, startTime: body.startTime, durationMin: body.durationMin });
+    return ok(res, { eventId, date: body.date });
+  }
+  const days = Array.isArray(body.days) ? body.days.filter((d) => DAY_KEYS.includes(d)) : [];
+  if (!FREQS.includes(body.freq) || !days.length || !validDate(body.from)) return club(res, 400, MSG.invalid);
+  const until = body.until ?? null;
+  if (until !== null && (!validDate(until) || until < body.from || until > SEASON_END)) return club(res, 400, MSG.invalid);
+  const to = until ?? SEASON_END;
+  for (const day of DAY_KEYS.slice(1).concat("sun").filter((d) => days.includes(d))) {
+    rulesOf(g.id).push({
+      eventId, day, freq: body.freq, weekOfMonth: body.freq === "monthly" ? body.weekOfMonth ?? weekOfMonthOf(body.from) : null,
+      startTime: body.startTime, durationMin: body.durationMin, from: body.from, to, untilSeasonEnd: to === SEASON_END,
+    });
+  }
+  ok(res, { eventId, date: null });
+}
+
+/** PUT /program/:eventId and POST /program/:eventId/end with an optional `day`. */
+function programRuleWrite({ res, body, params }, end) {
+  const [eventId] = params;
+  const g = groupOfEvent(eventId);
+  const list = g ? rulesOf(g.id) : [];
+  const mine = list.filter((r) => r.eventId === eventId);
+  if (body.day !== undefined && !mine.some((r) => r.day === body.day)) return club(res, 400, MSG.invalid);
+  const picked = body.day === undefined ? mine : mine.filter((r) => r.day === body.day);
+  if (end && g) {
+    world.rules[g.id] = list.filter((r) => !picked.includes(r));
+    return ok(res, { eventId });
+  }
+  if (end) return ok(res, { eventId });
+  const newId = `evnew${++world.counters.event}`;
+  for (const r of picked) {
+    if (typeof body.startTime === "string") r.startTime = body.startTime;
+    if (Number.isInteger(body.durationMin)) r.durationMin = body.durationMin;
+    r.eventId = newId;
+  }
+  ok(res, { eventId: picked.length ? newId : eventId });
+}
+
+/** PUT /program/:eventId/dates/:date. */
+function programDate({ res, body, params }) {
+  const [eventId, date] = params;
+  const g = groupOfEvent(eventId);
+  const gid = g?.id;
+  const drop = (store) => { world[store][gid] = (world[store][gid] ?? []).filter((x) => (x.date ?? x) !== date); };
+  if (body.mode === "remove") {
+    if (gid && hasSavedSession(gid, date)) return club(res, 409, REFUSE.datePresence);
+    if (gid) (world.removed[gid] ??= []).push(date);
+    return ok(res, { mode: "remove", date, emails: 0 });
+  }
+  if (gid) {
+    if (body.mode === "keep") { drop("cancelled"); drop("moved"); world.removed[gid] = (world.removed[gid] ?? []).filter((d) => d !== date); }
+    if (body.mode === "cancel") { drop("cancelled"); (world.cancelled[gid] ??= []).push({ date, note: body.reason ?? null }); }
+    if (body.mode === "move") { drop("moved"); (world.moved[gid] ??= []).push({ date, newDate: body.newDate, newStartTime: body.newStartTime, note: body.reason ?? null }); }
+  }
+  ok(res, { mode: body.mode, date, emails: body.notifyParents === true ? 3 : 0 });
 }
 
 function meData(email) {
@@ -567,7 +772,7 @@ const ownClub = (fn) => withGroup((ctx, g) => (g.own && g.kind === "club" ? fn(c
 const ownOnly = (fn) => withGroup((ctx, g) => (g.own ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
 // Backend writeRight: the event's group must be an own Club group; an unknown event is 404.
 const eventGuard = (fn) => (ctx) => {
-  const g = Object.values(world.groups).find((x) => x.eventId === ctx.params[0]);
+  const g = groupOfEvent(ctx.params[0]);
   if (!g) return fn(ctx);
   return g.own && g.kind === "club" ? fn(ctx) : club(ctx.res, 403, MSG.noAccess);
 };
@@ -645,9 +850,10 @@ const coachRoutes = [
   }],
   ["PUT", /^\/session$/, saveSession],
   ["GET", /^\/lessons\/([^/]+)$/, ({ res, params }) => { const l = world.lessons[params[0]]; return l && l.coachIds.includes(ME) ? ok(res, lessonView(l)) : notFound(res); }],
-  ["POST", /^\/lessons$/, lessonWrite],
+  ["POST", /^\/lessons$/, lessonCreate],
+  ["PUT", /^\/lessons\/([^/]+)\/plan$/, lessonPlan],
   ["PUT", /^\/lessons\/([^/]+)$/, lessonWrite],
-  ["DELETE", /^\/lessons\/([^/]+)$/, lessonWrite],
+  ["DELETE", /^\/lessons\/([^/]+)$/, lessonDelete],
   ["GET", /^\/athletes\/search$/, searchAthletes],
   ["POST", /^\/athletes$/, newAthlete],
   ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c === "none" ? club(res, 403, MSG.noAccess) : c ? ok(res, c) : notFound(res); }],
@@ -661,13 +867,17 @@ const coachRoutes = [
   ["POST", /^\/groups\/([^/]+)\/members\/([^/]+)\/remove$/, (ctx) => changeMember(ctx, false)],
   ["GET", /^\/history$/, ({ res, query }) => ok(res, historyData(query.get("month")))],
   ["GET", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
-  ["POST", /^\/groups\/([^/]+)\/program$/, ownClub(({ res, body }) => ok(res, { eventId: `evnew${++world.counters.event}`, date: body.repeat === false ? body.date : null }))],
+  ["POST", /^\/groups\/([^/]+)\/program$/, ownClub(programAdd)],
   ["PUT", /^\/groups\/([^/]+)\/program-public$/, ownClub(({ res, body }, g) => { g.programPublic = Boolean(body.value); ok(res, { toast: MSG.saved }); })],
-  ["PUT", /^\/program\/([^/]+)$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
-  ["POST", /^\/program\/([^/]+)\/end$/, eventGuard(({ res, params }) => ok(res, { eventId: params[0] }))],
-  ["DELETE", /^\/program\/([^/]+)$/, eventGuard(({ res }) => ok(res, { date: today }))],
-  ["PUT", /^\/program\/([^/]+)\/dates\/(\d{4}-\d{2}-\d{2})$/, eventGuard(({ res, body, params }) =>
-    ok(res, { mode: body.mode, date: params[1], emails: body.notifyParents === true ? 3 : 0 }))],
+  ["PUT", /^\/program\/([^/]+)$/, eventGuard((ctx) => programRuleWrite(ctx, false))],
+  ["POST", /^\/program\/([^/]+)\/end$/, eventGuard((ctx) => programRuleWrite(ctx, true))],
+  ["DELETE", /^\/program\/([^/]+)$/, eventGuard(({ res, params }) => {
+    const g = groupOfEvent(params[0]);
+    const one = g ? (world.oneOffs[g.id] ?? []).find((o) => o.eventId === params[0]) : null;
+    if (g && one) world.oneOffs[g.id] = world.oneOffs[g.id].filter((o) => o !== one);
+    ok(res, { date: one?.date ?? today });
+  })],
+  ["PUT", /^\/program\/([^/]+)\/dates\/(\d{4}-\d{2}-\d{2})$/, eventGuard(programDate)],
 ];
 
 // ---------- dispatch ----------
@@ -692,7 +902,7 @@ function find(table, method, path) {
 }
 
 function handleMock(req, res, url, body) {
-  if (url.pathname === "/__mock/log") return send(res, 200, { calls, refreshes: auth.refreshes });
+  if (url.pathname === "/__mock/log") return send(res, 200, { calls, refreshes: auth.refreshes, requests: world.requests });
   if (url.pathname === "/__mock/reset") { reset(); return send(res, 200, { ok: true }); }
   if (url.pathname === "/__mock/state") {
     Object.assign(state, body);
@@ -722,5 +932,6 @@ createServer(async(req, res) => {
   const body = req.method === "GET" ? {} : await readBody(req);
   if (url.pathname.startsWith("/__mock/")) return handleMock(req, res, url, body);
   record(req, url, body);
+  if (req.method !== "GET" && url.pathname.startsWith(`${PREFIX}/`)) world.requests[`${req.method} ${url.pathname.slice(PREFIX.length)}`] = body;
   return handlePortal(req, res, url, body);
 }).listen(PORT, () => console.log(`mock portal on ${PORT}`));

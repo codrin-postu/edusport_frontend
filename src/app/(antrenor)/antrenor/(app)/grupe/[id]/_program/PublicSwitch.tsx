@@ -8,7 +8,7 @@ export function PublicSwitch({ value, busy, onChange }: PublicSwitchProps) {
   return (
     <div className="flex items-center justify-between gap-4 p-4 border-card border-card-line bg-surface-raised">
       <div className="min-w-0">
-        <p id="program-public-label" className="text-body font-semibold text-primary">{PROGRAM.publicTitle}</p>
+        <p id="program-public-label" className="text-body font-semibold text-primary">{PROGRAM.publicLabel}</p>
         <p className="text-body-sm text-secondary">{PROGRAM.publicHint}</p>
       </div>
       <button

@@ -7,7 +7,7 @@ const ROUTES: [string, string][] = [
   ["GET", "/today"], ["GET", "/groups"], ["GET", `/groups/${ID}`], ["GET", `/groups/${ID}/program`], ["GET", `/groups/${ID}/saved-days`],
   ["POST", `/groups/${ID}/program`], ["PUT", `/groups/${ID}/program-public`], ["POST", `/groups/${ID}/members`],
   ["GET", "/session"], ["POST", "/session/check"], ["PUT", "/session"],
-  ["POST", "/lessons"], ["GET", `/lessons/${ID}`], ["PUT", `/lessons/${ID}`], ["DELETE", `/lessons/${ID}`],
+  ["POST", "/lessons"], ["GET", `/lessons/${ID}`], ["PUT", `/lessons/${ID}`], ["DELETE", `/lessons/${ID}`], ["PUT", `/lessons/${ID}/plan`],
   ["GET", "/athletes/search"], ["POST", "/athletes"], ["GET", `/athletes/${ID}`], ["GET", "/history"],
   ["GET", "/calendar"], ["GET", "/competitions"],
   ["POST", `/groups/${ID}/members/${ID}/move`], ["POST", `/groups/${ID}/members/${ID}/remove`],
@@ -29,6 +29,7 @@ const QUERY: [RegExp, string[]][] = [
   [/^\/calendar$/, ["month"]],
   [/^\/competitions$/, ["scope", "season"]],
   [/^\/athletes\/search$/, ["q", "group"]],
+  [new RegExp(`^/lessons/${ID}$`), ["scope"]],
   [/^\/session$/, ["id", "occurrence", "group", "date", "time", "duration"]],
 ];
 

@@ -47,3 +47,11 @@ it("allows the canvas routes", () => {
   assert.equal(r.forwardedQuery("/calendar", q("month=2026-11&x=1")), "?month=2026-11");
   assert.equal(r.forwardedQuery("/competitions", q("scope=mine&season=2026-2027&q=x")), "?scope=mine&season=2026-2027");
 });
+
+it("allows the lesson plan route and forwards the delete scope", () => {
+  const a = r.allowedCoachRoute;
+  assert.equal(a("PUT", "/lessons/lser1/plan"), true);
+  assert.equal(a("POST", "/lessons/lser1/plan"), false);
+  assert.equal(a("PUT", "/lessons/../plan"), false);
+  assert.equal(r.forwardedQuery("/lessons/lser1", new URLSearchParams("scope=following&x=1")), "?scope=following");
+});

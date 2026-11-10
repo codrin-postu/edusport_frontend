@@ -8,6 +8,8 @@
  * src/club/presence/types.ts (LessonState),
  * and src/club/portal/auth/issue.ts (PortalSession).
  * The four program body types are written from the readers in src/club/groups/program-plan.ts.
+ * Training add (2026-11-10): CoachProgramRule, LessonRepeat, LessonSeriesView, CoachLessonCreated, CoachLessonPlanBody, CoachProgram.rules, CoachLesson.series and planEditable, DateAnswer.mode "remove", the `until`, `day` and `repeat` body fields,
+ * from the backend plan edusport_backend/docs/superpowers/plans/2026-11-10-coach-training-add.md (branch feat/training-add), section "HTTP contracts".
  * Type-only module: loaded by Node tests through type stripping.
  */
 
@@ -18,7 +20,7 @@ export type SectionKind = "school" | "club";
 export type LessonState = "planned" | "saved";
 export type SeasonRef = { documentId: string; label: string; past: boolean };
 export type JoinResult = { added: number; athleteNames: string[]; groupName: string };
-export type DateAnswer = { mode: "keep" | "cancel" | "move"; date: string; emails: number };
+export type DateAnswer = { mode: "keep" | "cancel" | "move" | "remove"; date: string; emails: number };
 
 /** "Program obișnuit": one row per series of the season still running. */
 export type ProgramRow = {
@@ -77,6 +79,22 @@ export type SessionSaveBody = {
 };
 export type SessionSaved = { sessionId: string; toast: string };
 export type LessonBody = { athleteId: string; date: string; startTime: string; durationMin: number; coachIds: string[] };
+/** One weekday of a series: the rows of "Program săptămânal". `untilSeasonEnd` is true when `to` is the season's last day. */
+export type CoachProgramRule = {
+  eventId: string; day: DayKey; freq: RepeatFreq; weekOfMonth: WeekOfMonth | null; startTime: string; durationMin: number;
+  from: string; to: string; untilSeasonEnd: boolean; nextDate: string | null;
+};
+export type LessonRepeat = { freq: RepeatFreq; days: DayKey[]; weekOfMonth?: WeekOfMonth | null; until: string | null };
+export type LessonSeriesView = {
+  seriesId: string; freq: RepeatFreq; days: DayKey[]; weekOfMonth: WeekOfMonth | null; startTime: string; durationMin: number;
+  from: string; to: string; untilSeasonEnd: boolean;
+};
+export type CoachLessonCreated = { lessonId: string; seriesId: string | null; count: number; toast: string };
+export type CoachLessonPlanBody = {
+  date: string; startTime: string; durationMin: number; coachIds: string[]; scope: "one" | "following"; repeat?: LessonRepeat | null;
+};
+/** `POST /lessons`: today's body plus `repeat` (with `repeat`, `date` is "Din data"). */
+export type CoachLessonBody = LessonBody & { repeat?: LessonRepeat | null };
 export type LessonPatch = { present: boolean; durationMin: number; coachIds: string[] };
 export type LessonSaved = { lessonId: string; changed: boolean; toast: string };
 
@@ -127,6 +145,7 @@ export type CoachSession = {
 export type CoachLesson = {
   lessonId: string; athleteId: string; athleteName: string; date: string; startTime: string; durationMin: number; coachIds: string[];
   coachOptions: { id: string; name: string }[]; state: LessonState; present: boolean | null; savedLine: string | null; editable: boolean; archived: boolean; deletable: boolean;
+  series: LessonSeriesView | null; planEditable: boolean;
 };
 export type CoachSearchRow = { athleteId: string; name: string; age: number | null };
 export type CoachNewAthleteBody = { groupId: string; name: string; birthDate?: string | null; contactName?: string | null; phone?: string | null; email?: string | null };
@@ -164,19 +183,20 @@ export type CoachHistoryRow = {
   done: boolean; occurrenceKey: string | null;
 };
 export type CoachHistory = { month: string; sessions: number; lessons: number; hours: string; rows: CoachHistoryRow[] };
-export type CoachProgram = { kind: SectionKind; editable: boolean; programPublic: boolean | null; program: GroupProgram; occurrences: Occurrence[] };
+export type CoachProgram = { kind: SectionKind; editable: boolean; programPublic: boolean | null; program: GroupProgram; occurrences: Occurrence[]; rules: CoachProgramRule[] };
 
 /** Login-like answer of /api/portal/auth/* (contracts). */
 export type PortalSession = { accessToken: string; refreshToken: string; accessExpiresAt: string; deviceKey: string | null };
 export type ApiRefusal = { data: null; error: { status: number; name: string; message: string } };
 
 export type ProgramAddBody =
-  | { repeat: true; freq: RepeatFreq; days: DayKey[]; weekOfMonth?: WeekOfMonth; startTime: string; durationMin: number; from: string }
+  | { repeat: true; freq: RepeatFreq; days: DayKey[]; weekOfMonth?: WeekOfMonth; startTime: string; durationMin: number; from: string; until?: string | null }
   | { repeat: false; date: string; startTime: string; durationMin: number; note?: string };
 /** `readSeriesInput` in program-plan.ts: the same fields as a repeating add, without `repeat`. */
-export type ProgramChangeBody = Omit<Extract<ProgramAddBody, { repeat: true }>, "repeat">;
-export type ProgramEndBody = { from: string };
+export type ProgramChangeBody = Omit<Extract<ProgramAddBody, { repeat: true }>, "repeat" | "until"> & { day?: DayKey };
+export type ProgramEndBody = { from: string; day?: DayKey };
 export type DateBody =
   | { mode: "keep" }
   | { mode: "cancel"; reason?: string; notifyParents?: boolean }
-  | { mode: "move"; newDate: string; newStartTime: string; reason?: string; notifyParents?: boolean };
+  | { mode: "move"; newDate: string; newStartTime: string; reason?: string; notifyParents?: boolean }
+  | { mode: "remove" };

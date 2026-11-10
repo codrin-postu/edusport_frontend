@@ -57,7 +57,7 @@ export default function AziPage() {
   const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={[{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }]} />;
   const addLesson = (
     <div className="portal:hidden">
-      <Button variant="secondary" href="/lectie/noua" className="w-full">{AZI.addLesson}</Button>
+      <Button variant="secondary" href="/lectie/noua" className="w-full">{AZI.addTraining}</Button>
     </div>
   );
   const past =
@@ -84,7 +84,7 @@ export default function AziPage() {
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
         aside={<NowTile month={monthShort(data.today)} day={String(Number(data.today.slice(8)))} time={now} weekday={weekdayShort(data.today)} label={AZI.nowLabel(longDay(data.today), now)} />}
-        actions={<Button variant="secondary" href="/lectie/noua">{AZI.addLesson}</Button>}
+        actions={<Button variant="secondary" href="/lectie/noua">{AZI.addTraining}</Button>}
       />
       <PageBody>
         <Columns className="gap-(--portal-section-gap) portal:gap-(--portal-cols-gap)">

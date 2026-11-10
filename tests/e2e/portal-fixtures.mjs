@@ -65,12 +65,26 @@ export function buildWorld(today) {
   const lessons = {
     "ldone": { lessonId: "ldone", athleteId: "amatei", athleteName: "Matei Radu", date: today, startTime: "15:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
     "larchived": { lessonId: "larchived", athleteId: "aana", athleteName: "Ana Stoica", date: addDays(today, -9), startTime: "16:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
+    "lser1": { lessonId: "lser1", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-10", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
+    "lser2": { lessonId: "lser2", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-17", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
+    "lser3": { lessonId: "lser3", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-24", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
     "lplan": { lessonId: "lplan", athleteId: "aana", athleteName: "Ana Stoica", date: today, startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null },
   };
+  // Lesson series (contract LessonSeriesView), keyed by seriesId.
+  const series = { "sl-ana": { seriesId: "sl-ana", freq: "weekly", days: ["tue"], weekOfMonth: null, startTime: "17:00", durationMin: 60, from: "2026-11-10", to: "2027-06-30", untilSeasonEnd: true } };
+  // Program rules per group (one per weekday, contract CoachProgramRule without nextDate), from the groups' events.
+  const DAY = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const season = { from: `${today.slice(0, 4)}-10-01`, to: `${Number(today.slice(0, 4)) + 1}-05-31` };
+  const rules = Object.fromEntries(Object.values(groups).map((g) => [g.id, g.days.slice().sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7)).map((d) => ({
+    eventId: g.eventId, day: DAY[d], freq: "weekly", weekOfMonth: null, startTime: g.start, durationMin: g.dur, from: season.from, to: season.to, untilSeasonEnd: true,
+  }))]));
+  // Date exceptions: cancelled (with a note), moved (original date -> new date and time), removed; one-off classes.
+  const cancelled = { gavansati: [{ date: "2026-11-11", note: null }] };
+  const moved = { gavansati: [{ date: "2026-11-17", newDate: "2026-11-19", newStartTime: "18:15", note: null }] };
   const devices = [
     { id: "dev1", key: SEED_DEVICE_KEY, label: "Chrome pe Windows", lastSeenAt: new Date().toISOString() },
     { id: "dev2", key: OTHER_DEVICE_KEY, label: "Safari pe iPhone", lastSeenAt: new Date(Date.now() - 5 * 86_400_000).toISOString() },
   ];
   const pool = [person("apool1", "Teodora Anghel", 9), person("apool2", "Rareș Cojocaru", 11), person("apool3", "Irina Munteanu", 8), person("apool4", "Ana Bălan", 9), person("apool5", "Diana Ilie", 10)];
-  return { accounts, groups, members, inactive, saved, lessons, devices, pool, coachOptions: COACH_OPTIONS, counters: { athlete: 0, lesson: 0, event: 0 } };
+  return { accounts, groups, members, inactive, saved, lessons, series, rules, cancelled, moved, removed: {}, oneOffs: {}, requests: {}, devices, pool, coachOptions: COACH_OPTIONS, counters: { athlete: 0, lesson: 0, event: 0 } };
 }
