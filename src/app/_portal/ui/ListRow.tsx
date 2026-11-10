@@ -17,7 +17,10 @@ type ListRowProps = {
 };
 
 const ROW =
-  "flex w-full min-h-(--portal-row-min-h) items-stretch text-left text-primary no-underline outline-none hover:no-underline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus";
+  "group flex w-full min-h-(--portal-row-min-h) items-stretch text-left text-primary no-underline outline-none hover:no-underline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus";
+
+/** Link and button rows only: ice light on hover, a slightly darker ice while pressed (tokens in the portal theme). */
+const ROW_LIVE = "transition-colors duration-(--motion-fast) ease-(--motion-ease) hover:bg-row-hover active:bg-row-press";
 
 /** One list row: the whole row is one link (or button, or plain without either), lead block, two text lines, an end block (`null` for none) or a chevron. */
 export function ListRow({ href, onClick, lead, title, sub, extra, end, dim, label, focusable }: ListRowProps) {
@@ -33,21 +36,23 @@ export function ListRow({ href, onClick, lead, title, sub, extra, end, dim, labe
       </span>
       {end !== undefined ? end : (
         <span className="flex w-(--portal-trail-w) shrink-0 items-center justify-center text-secondary">
-          <Icon name="portal-chevron-right" size="sm" />
+          <span data-row-chevron className="flex transition-transform duration-(--motion-fast) ease-(--motion-ease) group-hover:translate-x-(--motion-nudge)">
+            <Icon name="portal-chevron-right" size="sm" />
+          </span>
         </span>
       )}
     </>
   );
   if (href) {
     return (
-      <NextLink href={href} aria-label={label} className={ROW} {...(focusable ? { "data-more-row": "" } : {})}>
+      <NextLink href={href} aria-label={label} className={cn(ROW, ROW_LIVE)} {...(focusable ? { "data-more-row": "" } : {})}>
         {body}
       </NextLink>
     );
   }
   if (!onClick) return <div className={ROW}>{body}</div>;
   return (
-    <button type="button" onClick={onClick} aria-label={label} className={ROW}>
+    <button type="button" onClick={onClick} aria-label={label} className={cn(ROW, ROW_LIVE)}>
       {body}
     </button>
   );

@@ -21,11 +21,11 @@ export function Sheet({ open, onOpenChange, title, description, children, footer
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-dialog bg-overlay" />
+        <Dialog.Overlay className="fixed inset-0 z-dialog bg-overlay data-[state=open]:animate-(--motion-overlay-in) data-[state=closed]:animate-(--motion-overlay-out)" />
         <Dialog.Content
           {...(!description && { "aria-describedby": undefined })}
           className={cn(
-            "fixed inset-x-0 bottom-0 z-dialog flex flex-col border-card border-card-line bg-surface-raised shadow-retro outline-none portal:inset-auto portal:top-1/2 portal:left-1/2 portal:-translate-x-1/2 portal:-translate-y-1/2",
+            "fixed inset-x-0 bottom-0 z-dialog flex flex-col border-card border-card-line bg-surface-raised shadow-retro outline-none data-[state=open]:animate-(--motion-sheet-in) data-[state=closed]:animate-(--motion-sheet-out) portal:inset-auto portal:top-1/2 portal:left-1/2 portal:-translate-x-1/2 portal:-translate-y-1/2",
             popup ? "max-h-(--portal-popup-max-h) portal:w-(--portal-popup-w)" : "max-h-[85vh] portal:w-(--portal-sheet-w)",
           )}
         >

@@ -22,7 +22,7 @@ export function Segmented<T extends string>({
           aria-pressed={o.value === value}
           onClick={() => onChange(o.value)}
           className={cn(
-            "flex min-h-(--portal-tap) items-center px-4 text-(length:--portal-text-14) font-bold outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus",
+            "flex min-h-(--portal-tap) items-center px-4 transition-colors duration-(--motion-fast) ease-(--motion-ease) text-(length:--portal-text-14) font-bold outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus",
             o.value === value ? "bg-surface-dark text-surface-raised" : "bg-surface-raised text-primary",
           )}
         >

@@ -70,7 +70,7 @@ export function HistoryView() {
                     lead={<DateBlock word={weekdayShort(r.date)} day={String(Number(r.date.slice(8)))} time={r.startTime} />}
                     title={r.name}
                     sub={sub(r)}
-                    end={<StatusBlock kind={r.kind === "individuala" ? "Individual" : "Grup"} done={r.done} />}
+                    end={<StatusBlock kind={r.kind === "individuala" ? "Individual" : "Grup"} done={r.done} popId={r.sessionId} />}
                   />
                 ))}
               </ListCard>

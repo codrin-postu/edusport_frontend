@@ -72,7 +72,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           name="check"
           size="sm"
           className={cn(
-            "relative hidden size-(--checkbox-mark-size) pointer-events-none peer-checked:block",
+            "relative hidden size-(--checkbox-mark-size) pointer-events-none peer-checked:block peer-checked:animate-(--checkbox-mark-anim)",
             onDark ? "text-primary" : "text-checkbox-mark",
             disabled && "text-checkbox-mark-disabled",
           )}

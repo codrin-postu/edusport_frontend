@@ -7,6 +7,7 @@ import { CALENDAR, NAV, PRESENCE } from "@/lib/portal/copy";
 import { shortWhen } from "@/lib/portal/format";
 import { fromOf, presentCount, saveBody, sessionQuery, withFrom } from "@/lib/portal/presence";
 import type { CoachGroupPage, CoachSession, SessionSaved } from "@/lib/portal/api-types";
+import { setSavedFlag } from "@/app/_portal/lib/saved-flag";
 import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
 import { useMe } from "../../_lib/me-context";
 import { useNoAccess } from "../../_lib/use-portal";
@@ -102,6 +103,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
     const r = await portalApi<SessionSaved>("PUT", "coach/session", saveBody(session, ticks, ids, reactivate, keep));
     if (r.ok) {
       toast.show(r.data.toast);
+      setSavedFlag(r.data.sessionId);
       const next = new URLSearchParams({ id: r.data.sessionId }).toString();
       if (next === query) {
         setBusy(false);

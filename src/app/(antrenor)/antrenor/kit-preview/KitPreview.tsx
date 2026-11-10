@@ -20,6 +20,7 @@ import { IndividualTag } from "@/app/_portal/ui/IndividualTag";
 import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
 import { ListRow } from "@/app/_portal/ui/ListRow";
+import { MotionDemo } from "./MotionDemo";
 import { MonthGrid, type DayMarks } from "@/app/_portal/ui/MonthGrid";
 import { MonthPicker } from "@/app/_portal/ui/MonthPicker";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
@@ -180,6 +181,10 @@ export function KitPreview() {
             </Kit>
             <Kit name="SummaryBand">
               <SummaryBand>Marți și joi, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului.</SummaryBand>
+            </Kit>
+            <Kit name="Motion">
+              <SectionHeading title="Mișcare" />
+              <MotionDemo />
             </Kit>
             <Kit name="SaveBar">
               <SaveBar count="6 prezenți" action={<Button>Salvează</Button>} />

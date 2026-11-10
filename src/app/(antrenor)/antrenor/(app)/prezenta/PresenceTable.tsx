@@ -4,6 +4,7 @@ import Checkbox from "@/components/ui/checkbox";
 import Link from "@/components/ui/link";
 import { GROUP, PRESENCE } from "@/lib/portal/copy";
 import type { CoachPresenceRow, SectionKind } from "@/lib/portal/api-types";
+import { useFlash } from "@/app/_portal/lib/use-flash";
 import { PortalCard } from "@/app/_portal/ui/PortalCard";
 
 export type TickMap = Map<string, { grup: boolean; uscat: boolean }>;
@@ -21,6 +22,11 @@ const COL = "flex w-(--portal-tap) shrink-0 justify-center";
 
 export function PresenceTable({ rows, kind, groupId, ticks, disabled, onChange }: PresenceTableProps) {
   const school = kind === "school";
+  const { flashOf, flash } = useFlash();
+  const toggle = (athleteId: string, key: "grup" | "uscat", value: boolean) => {
+    flash(athleteId);
+    onChange(athleteId, key, value);
+  };
   const meta = (r: CoachPresenceRow): string =>
     [r.age === null ? null : GROUP.age(r.age), school ? r.abonament ?? PRESENCE.noSubscription : null].filter((p): p is string => p !== null).join(", ");
   return (
@@ -35,7 +41,7 @@ export function PresenceTable({ rows, kind, groupId, ticks, disabled, onChange }
           const t = ticks.get(r.athleteId) ?? { grup: false, uscat: false };
           const sub = meta(r);
           return (
-            <li key={r.athleteId} className="flex min-h-(--portal-presence-row-h) items-center gap-(--portal-gap-10) px-(--portal-row-pad-x) py-2">
+            <li key={r.athleteId} data-flash={flashOf(r.athleteId)} className="flex min-h-(--portal-presence-row-h) items-center gap-(--portal-gap-10) px-(--portal-row-pad-x) py-2">
               <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <Link
                   href={`/sportiv/${encodeURIComponent(r.athleteId)}?grupa=${encodeURIComponent(groupId)}`}
@@ -47,11 +53,11 @@ export function PresenceTable({ rows, kind, groupId, ticks, disabled, onChange }
                 {sub && <span className="text-(length:--portal-text-13) text-muted">{sub}</span>}
               </span>
               <span className={COL}>
-                <Checkbox label={<span className="sr-only">{`${PRESENCE.grup}, ${r.name}`}</span>} checked={t.grup} disabled={disabled} onChange={(e) => onChange(r.athleteId, "grup", e.target.checked)} />
+                <Checkbox label={<span className="sr-only">{`${PRESENCE.grup}, ${r.name}`}</span>} checked={t.grup} disabled={disabled} onChange={(e) => toggle(r.athleteId, "grup", e.target.checked)} />
               </span>
               {!school && (
                 <span className={COL}>
-                  <Checkbox label={<span className="sr-only">{`${PRESENCE.uscat}, ${r.name}`}</span>} checked={t.uscat} disabled={disabled} onChange={(e) => onChange(r.athleteId, "uscat", e.target.checked)} />
+                  <Checkbox label={<span className="sr-only">{`${PRESENCE.uscat}, ${r.name}`}</span>} checked={t.uscat} disabled={disabled} onChange={(e) => toggle(r.athleteId, "uscat", e.target.checked)} />
                 </span>
               )}
             </li>

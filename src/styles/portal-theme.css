@@ -8,6 +8,8 @@
   --color-nav-on-dark: #c9d6ee;    /* 23 25 sidebar links, kicker on navy */
   --color-tag-ink: #111111;        /* 12 Individual tag */
   --color-cancelled: #c0c0c4;      /* 33 calendar cancelled bar */
+  --color-row-hover: #e1ecfb;      /* motion: link row hover, presence flash (same ice light) */
+  --color-row-press: #cfe0f8;      /* motion: link row pressed, a slightly darker ice */
   --breakpoint-portal: 56.25rem;   /* 34 900 px phone / desktop switch */
 }
 
@@ -52,7 +54,14 @@
   --color-button-face-text: #ffffff; /* 19 primary face text */
   --button-layers: none;           /* 19 mustard and rust layers off */
   --button-face-shadow: 8px 8px 0 rgb(14 26 60 / 0.16); /* 19 primary static shadow */
-  --button-press-shift: 0px;       /* 19 press snap of the face */
+  --button-press-shift: 2px;       /* motion: press moves the face 2px down and right into its shadow */
+  --button-press-shadow: 6px 6px 0 rgb(14 26 60 / 0.16); /* motion: the shadow shrinks by the same 2px */
+  --button-face-transition: transform var(--motion-press) var(--motion-ease), box-shadow var(--motion-press) var(--motion-ease); /* motion: press */
+  --button-secondary-press-shift: 2px; /* motion: the bordered button moves 2px on press */
+  --button-transition-props: color, background-color, border-color, transform; /* motion: secondary button */
+  --button-transition-duration: var(--motion-press); /* motion */
+  --button-transition-ease: var(--motion-ease); /* motion */
+  --checkbox-mark-anim: motion-check-in var(--motion-fast) var(--motion-ease) both; /* motion: the check mark scales in */
   --checkbox-size: 44px;           /* 17 30 checkbox box */
   --checkbox-border-width: 2px;    /* 17 checkbox border */
   --color-checkbox-line: #b9c6da;  /* 17 unchecked border */
@@ -137,6 +146,22 @@
   --portal-savebar-pad-x: 20px;    /* layout save bar */
   --portal-contact-pad-x: 10px;    /* layout contact button */
   --portal-small-btn-pad-x: 12px;  /* layout member row Mută and Scoate buttons */
+  /* Motion (user 2026-11-11): one effect per element, 80 to 180 ms, ease-out, no bounce */
+  --motion-press: 80ms;            /* motion: button press */
+  --motion-fast: 120ms;            /* motion: hover, check mark, count, segmented */
+  --motion-base: 160ms;            /* motion: toast in and out */
+  --motion-slow: 180ms;            /* motion: sheet, row flash */
+  --motion-ease: cubic-bezier(0, 0, 0.2, 1); /* motion: ease-out */
+  --motion-nudge: 2px;             /* motion: chevron nudge */
+  --motion-rise: 12px;             /* motion: sheet and toast rise */
+  --motion-rise-sm: 6px;           /* motion: count change slide */
+  --motion-sheet-in: motion-sheet-in var(--motion-slow) var(--motion-ease) both; /* motion */
+  --motion-sheet-out: motion-sheet-out var(--motion-slow) var(--motion-ease) both; /* motion */
+  --motion-overlay-in: motion-fade-in var(--motion-slow) var(--motion-ease) both; /* motion */
+  --motion-overlay-out: motion-fade-out var(--motion-slow) var(--motion-ease) both; /* motion */
+  --motion-count: motion-count-in var(--motion-fast) var(--motion-ease) both; /* motion */
+  --motion-pop: motion-check-in var(--motion-fast) var(--motion-ease) both; /* motion: status block flip */
+  --motion-flash: var(--motion-slow); /* motion: presence row flash */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
   --portal-gap-12: 12px;           /* layout competitions filter column gap */
@@ -226,4 +251,38 @@
   font-size: var(--text-input-size);
   padding: 0 0.35em;
   color: var(--color-muted);
+}
+
+/* Motion keyframes and hooks. Durations, easing and offsets are the tokens above. Reduced motion turns every
+   duration to 0 and every animation off, so a state change is instant. */
+@keyframes motion-check-in { from { transform: scale(0.6); } to { transform: scale(1); } }
+@keyframes motion-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes motion-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes motion-sheet-in { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
+@keyframes motion-sheet-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(var(--motion-rise)); } }
+@keyframes motion-count-in { from { opacity: 0; transform: translateY(var(--motion-rise-sm)); } to { opacity: 1; transform: none; } }
+@keyframes motion-flash-a { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
+@keyframes motion-flash-b { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
+
+/* Presence row: one ice flash per toggle. The two names alternate so a second toggle restarts it. */
+[data-theme="portal"] [data-flash="a"] { animation: motion-flash-a var(--motion-flash) var(--motion-ease); }
+[data-theme="portal"] [data-flash="b"] { animation: motion-flash-b var(--motion-flash) var(--motion-ease); }
+/* Status block: the icon pops once when its row has just been completed. */
+[data-theme="portal"] [data-status-block][data-pop] > * { animation: var(--motion-pop); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="portal"] {
+    --motion-press: 0ms;
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+    --motion-sheet-in: none;
+    --motion-sheet-out: none;
+    --motion-overlay-in: none;
+    --motion-overlay-out: none;
+    --motion-count: none;
+    --motion-pop: none;
+    --checkbox-mark-anim: none;
+  }
+  [data-theme="portal"] [data-flash] { animation: none; }
 }

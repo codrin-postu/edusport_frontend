@@ -241,6 +241,13 @@ h1.text-branding-font {
   --button-layers: block;
   --button-face-shadow: none;
   --button-press-shift: 4px;
+  --button-press-shadow: none;
+  --button-face-transition: transform .04s steps(1);
+  --button-secondary-press-shift: 0px;
+  --button-transition-props: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  --button-transition-duration: 150ms;
+  --button-transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --checkbox-mark-anim: none;
   --checkbox-size: 1.25rem;
   --checkbox-border-width: 1.5px;
   --checkbox-mark-size: 14px;
@@ -643,15 +650,24 @@ html.lv2-nav footer a:not([data-button]) {
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--control-border-width) solid var(--color-navy);
   box-shadow: var(--button-face-shadow);
-  transition: transform .04s steps(1);
+  transition: var(--button-face-transition);
 }
-.lcta:active .lcta-face { transform: translate(var(--button-press-shift), var(--button-press-shift)); }
+.lcta:active .lcta-face { transform: translate(var(--button-press-shift), var(--button-press-shift)); box-shadow: var(--button-press-shadow); }
+/* Disabled never moves. */
+.lcta:disabled:active .lcta-face { transform: none; box-shadow: var(--button-face-shadow); }
 /* Disabled: flat solid face (colour comes from group-disabled: Tailwind
    classes on the face span), no border, no layered stack. */
 .lcta:disabled .lcta-face { border-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   .lcta-layer, .lcta-face { transition: none; }
 }
+/* Secondary button motion: colours as before on the public site; the portals add the press move (tokens). */
+.btn-motion {
+  transition-property: var(--button-transition-props);
+  transition-duration: var(--button-transition-duration);
+  transition-timing-function: var(--button-transition-ease);
+}
+.btn-motion:active:not(:disabled) { transform: translate(var(--button-secondary-press-shift), var(--button-secondary-press-shift)); }
 
 /* Retro NAV. Restyles the global Header via lv2-nav on <html>: cream bar,
    uppercase Inter links with a brick underline, and a square dropdown panel

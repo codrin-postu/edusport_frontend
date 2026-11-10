@@ -51,7 +51,7 @@ export function SessionRow({ row, now, from = null }: { row: SessionRowData; now
       title={row.title}
       sub={cancelled ? CALENDAR.legendCancelled : sub}
       dim={dim}
-      end={cancelled ? null : <StatusBlock kind={row.kind === "grup" ? "Grup" : "Individual"} done={row.done} />}
+      end={cancelled ? null : <StatusBlock kind={row.kind === "grup" ? "Grup" : "Individual"} done={row.done} popId={row.sessionId} />}
     />
   );
 }

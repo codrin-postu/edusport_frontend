@@ -81,7 +81,7 @@ const Button: React.FC<ButtonProps> = ({
 
   if (variant === "secondary") {
     classes = cn(
-      "text-button inline-flex items-center justify-center gap-2 h-12 px-(--button-pad-x) border-control bg-button-secondary-bg transition-colors select-none",
+      "text-button inline-flex items-center justify-center gap-2 h-12 px-(--button-pad-x) border-control bg-button-secondary-bg btn-motion select-none",
       "disabled:pointer-events-none disabled:cursor-not-allowed",
       onDark ? SECONDARY_DARK : SECONDARY_LIGHT,
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
