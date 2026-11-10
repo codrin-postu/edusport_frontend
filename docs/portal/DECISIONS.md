@@ -324,3 +324,8 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - After a presence save: `setSavedFlag(sessionId)` writes a one-shot sessionStorage flag (valid 2 minutes); the StatusBlock of that session (Azi, Calendar, Istoric rows via `popId`) pops its check once when it next mounts. The Toast slides up 12px and fades in 160ms and out again on dismiss.
 - Sheet: overlay fades in, content slides up 12px and fades in 180ms, reverse on close (Radix data-state). Segmented: the selected background fades 120ms.
 - Kit preview has a "Mișcare" section showing each effect; e2e `portal-motion.spec.ts` (the e2e config runs with reduced motion, this file turns it on per test).
+
+## 2026-11-11 Standard desktop header height (user)
+- Desktop page header band has one height on every coach page, `--portal-band-h` 112px (was about 150). Left: a reserved line (`--portal-headline-h` 22px) above the title for the back link or the kicker, empty when neither, so the title sits at the same y everywhere. Right: actions, then the 64px now tile (`--portal-nowtile-h`), vertically centred. Sticky side columns follow through `--portal-header-h`. Phone unchanged.
+- Sub lines leave the desktop header and become `PageSub`, the first line of the page body (desktop only; the phone header keeps its sub). Moved, not dropped: Grupe (group and child count), Calendar, Concursuri, Profil (role), Sportiv, Lecție, Prezență, Modifică grupa. Dropped: none.
+- Tests: the sub text now exists twice in the DOM (header on phone, body on desktop), so functional specs for those pages locate it with `.locator("visible=true")`. No layout, size or screenshot assertions added; the built-*.png screenshots were not refreshed.

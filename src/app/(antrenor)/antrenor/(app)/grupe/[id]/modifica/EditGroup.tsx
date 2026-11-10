@@ -12,7 +12,7 @@ import { ListRow } from "@/app/_portal/ui/ListRow";
 import { SmallButton } from "@/app/_portal/ui/SmallButton";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { memberSub } from "../memberSub";
@@ -83,6 +83,7 @@ export function EditGroup({ id }: { id: string }) {
         }
       />
       <PageBody narrow>
+        <PageSub>{EDIT_GROUP.sub(group.name, roCount(members.length, "sportiv", "sportivi"))}</PageSub>
         <Button variant="secondary" href={addHref} className="w-full portal:hidden">{EDIT_GROUP.add}</Button>
         <ListCard>
           {members.map((m) => (

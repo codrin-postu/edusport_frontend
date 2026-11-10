@@ -42,7 +42,7 @@ test("the own coach row cannot be removed, others can", async({ page }) => {
 test("an archived session is read only", async({ page }) => {
   await loginAs(page);
   await page.goto("/prezenta?id=s-archived");
-  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.")).toBeVisible();
+  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.").locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează", exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
 });
@@ -59,7 +59,7 @@ test("an archived session keeps the check marks: ticked boxes show a dimmed navy
 test("no date button or day sheet: the date is plain text in the subline", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gavansati", FREE_DAY));
-  await expect(page.getByText(/^Mar(ți|ti)?, 3 noi/)).toBeVisible();
+  await expect(page.getByText(/^Mar(ți|ti)?, 3 noi/).locator("visible=true")).toBeVisible();
   await expect(page.locator("[data-page-header] button")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^MA 3 NOI/ })).toHaveCount(0);
 });
@@ -134,7 +134,7 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Avansați");
       await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
-      await expect(page.getByText("Joi, 5 noi, 18:15, AFI Cotroceni")).toBeVisible();
+      await expect(page.getByText("Joi, 5 noi, 18:15, AFI Cotroceni").locator("visible=true")).toBeVisible();
       await expect(page.getByText("Antrenor", { exact: true }).locator("visible=true").first()).toHaveCSS("font-weight", "700");
       await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
       await expect(page.getByRole("button", { name: "+ Adaugă alți antrenori" })).toBeVisible();

@@ -154,7 +154,7 @@ for (const size of SIZES) {
       await page.goto("/grupe");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Grupe");
-      await expect(page.getByText("2 grupe, 13 copii")).toBeVisible();
+      await expect(page.getByText("2 grupe, 13 copii").locator("visible=true")).toBeVisible();
       await expect(page.getByRole("heading", { name: "Grupele mele" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Alte grupe" })).toBeVisible();
       const row = (name: string) => page.getByRole("link").filter({ hasText: name }).filter({ has: page.locator("[data-date-block]") });

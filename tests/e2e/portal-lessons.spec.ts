@@ -138,7 +138,7 @@ test("Șterge lecția on a series lesson asks which lessons", async({ page }) =>
 test("an archived lesson is read only", async({ page }) => {
   await loginAs(page);
   await page.goto("/lectie/larchived");
-  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.")).toBeVisible();
+  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.").locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează prezența" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Șterge lecția" })).toHaveCount(0);
 });

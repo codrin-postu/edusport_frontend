@@ -77,7 +77,7 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Maria Ionescu");
       await expect(page.getByRole("link", { name: "‹ Avansați" })).toHaveAttribute("href", "/grupe/gavansati");
-      await expect(page.getByText("11 ani, Școala de patinaj")).toBeVisible();
+      await expect(page.getByText("11 ani, Școala de patinaj").locator("visible=true")).toBeVisible();
       await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
       await expect(page.getByText("Părinte", { exact: true })).toBeVisible();
       await expect(page.getByText("Părinte Exemplu")).toBeVisible();

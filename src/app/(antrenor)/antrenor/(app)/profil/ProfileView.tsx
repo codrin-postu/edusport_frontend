@@ -5,7 +5,7 @@ import { PROFILE } from "@/lib/portal/copy";
 import { portalApi } from "@/app/_portal/lib/api";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useMe } from "../../_lib/me-context";
@@ -21,6 +21,7 @@ export function ProfileView() {
     <>
       <PageHeader brand title={me.name} sub={PROFILE.role} />
       <PageBody narrow>
+        <PageSub>{PROFILE.role}</PageSub>
         <ListCard>
           <ListRow href="/profil/setari" title={PROFILE.settings} sub={PROFILE.settingsSub} />
           <ListRow href="/profil/securitate" title={PROFILE.security} sub={PROFILE.securitySub} />

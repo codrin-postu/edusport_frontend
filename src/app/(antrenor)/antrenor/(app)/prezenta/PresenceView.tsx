@@ -15,7 +15,7 @@ import { GroupInfoCard } from "../../_ui/GroupInfoCard";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { SaveBar } from "@/app/_portal/ui/SaveBar";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
@@ -152,6 +152,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
         sub={sub}
       />
       <PageBody>
+        <PageSub>{sub}</PageSub>
         {(session.savedLine || session.outsideSchedule || session.archived) && (
           <div className="flex flex-col gap-1 text-(length:--portal-text-14) text-muted">
             {session.savedLine && <p>{session.savedLine}</p>}

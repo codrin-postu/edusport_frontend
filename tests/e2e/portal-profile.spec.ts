@@ -8,7 +8,7 @@ test("the profile page lists the rows and logs out", async({ page }) => {
   await loginAs(page);
   await page.goto("/profil");
   await expect(page.getByRole("heading", { name: "Andrei Popa" })).toBeVisible();
-  await expect(page.getByText("Antrenor", { exact: true })).toBeVisible();
+  await expect(page.getByText("Antrenor", { exact: true }).locator("visible=true")).toBeVisible();
   await expect(page.getByRole("link", { name: "Setări cont" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Securitate" }).first()).toBeVisible();
   await page.getByRole("button", { name: "Ieși din cont" }).click();
@@ -123,7 +123,7 @@ for (const size of SIZES) {
       await page.goto("/profil");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Andrei Popa");
-      await expect(page.getByText("Antrenor", { exact: true })).toBeVisible();
+      await expect(page.getByText("Antrenor", { exact: true }).locator("visible=true")).toBeVisible();
       await expect(page.locator("main").getByRole("link", { name: /Setări cont/ })).toContainText("nume, e-mail, telefon, parolă");
       await expect(page.locator("main").getByRole("link", { name: /Securitate/ })).toContainText("dispozitive conectate");
       await expect(page.getByRole("button", { name: "Ieși din cont" })).toBeVisible();

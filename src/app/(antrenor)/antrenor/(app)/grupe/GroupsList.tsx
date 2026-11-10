@@ -9,7 +9,7 @@ import { DateBlock, EmptyDateBlock } from "@/app/_portal/ui/DateBlock";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
@@ -28,6 +28,7 @@ export function GroupsList() {
     <>
       <PageHeader brand title={GRUPE.title} sub={GRUPE.sub(GRUPE.groupsCount(mine.length), kids(total))} />
       <PageBody>
+        <PageSub>{GRUPE.sub(GRUPE.groupsCount(mine.length), kids(total))}</PageSub>
         <Columns>
           <Column grow={1}>
             <Section title={GRUPE.mine}>

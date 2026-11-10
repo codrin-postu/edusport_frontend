@@ -11,7 +11,7 @@ import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
 import { PlaceBlock } from "@/app/_portal/ui/PlaceBlock";
 import { PointsCell } from "@/app/_portal/ui/PointsCell";
@@ -110,6 +110,7 @@ export function AthleteCard({ id }: { id: string }) {
     <>
       <PageHeader back={back} title={a.name} sub={sub} />
       <PageBody>
+        <PageSub>{sub}</PageSub>
         <Columns>
           <Column grow={1} className="contents portal:flex">
             {a.contact?.phone && <div className="order-1 portal:order-none"><ContactSection contact={a.contact} /></div>}

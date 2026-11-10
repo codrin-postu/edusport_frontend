@@ -9,7 +9,7 @@ import type { CoachCompetitions } from "@/lib/portal/api-types";
 import { CompetitionCard } from "@/app/_portal/ui/CompetitionCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { ShowMoreButton, useShowMore } from "../../_lib/show-more";
@@ -39,6 +39,7 @@ export function CompetitionsView() {
     <>
       <PageHeader brand title={COMPETITIONS.title} sub={COMPETITIONS.sub} />
       <PageBody>
+        <PageSub>{COMPETITIONS.sub}</PageSub>
         {seen && (
           <div className="flex flex-col gap-(--portal-gap-12) portal:flex-row portal:flex-wrap portal:items-end portal:gap-4">
             <div className="flex">

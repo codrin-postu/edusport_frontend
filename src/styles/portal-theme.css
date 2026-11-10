@@ -190,6 +190,11 @@
   --portal-cols-side-first: minmax(0, 2fr) minmax(0, 3fr); /* layout Azi: summary column left, list right (user 2026-11-10) */
   --portal-side-top: calc(var(--portal-header-h, 0px) + var(--portal-cols-gap)); /* layout sticky side column: under the sticky header */
   --portal-sheet-gap: 14px;        /* layout sheet child gap */
+  --portal-band-h: 112px;          /* layout desktop page header band, one height on every page */
+  --portal-headline-h: 22px;       /* layout reserved back link / kicker line above the title */
+  --portal-headline-gap: 4px;      /* layout gap between that line and the title */
+  --portal-headline-gap-x: 16px;   /* layout gap between back link and kicker */
+  --portal-nowtile-h: 64px;        /* layout now tile and header actions height */
   --portal-nowtile-day: 32px;      /* layout now tile day */
   --portal-nowtile-time: 26px;     /* layout now tile time */
   --portal-sidebar-pad-top: 28px;  /* layout sidebar */

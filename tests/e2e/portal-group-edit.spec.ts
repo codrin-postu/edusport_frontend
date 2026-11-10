@@ -25,7 +25,7 @@ for (const size of SIZES) {
       await page.goto("/grupe/gavansati/modifica");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Modifică grupa");
-      await expect(page.getByText("Avansați, 9 sportivi")).toBeVisible();
+      await expect(page.getByText("Avansați, 9 sportivi").locator("visible=true")).toBeVisible();
       await expect(page.getByRole("link", { name: "‹ Avansați" })).toHaveAttribute("href", "/grupe/gavansati");
       await expect(page.getByRole("button", { name: /^Mută / })).toHaveCount(9);
       await expect(page.getByRole("button", { name: /^Scoate / })).toHaveCount(9);
@@ -75,7 +75,7 @@ test("Mută offers only own groups and posts the target and the date", async({ p
   const call = (await posts(/\/groups\/gavansati\/members\/amaria\/move$/))[0];
   expect(call?.body).toEqual({ toGroupId: "gprimii", from: TODAY });
   await expect(page.getByText("Maria Ionescu")).toHaveCount(0);
-  await expect(page.getByText("Avansați, 8 sportivi")).toBeVisible();
+  await expect(page.getByText("Avansați, 8 sportivi").locator("visible=true")).toBeVisible();
 });
 
 test("Scoate from a later date keeps the row and marks it until that day", async({ page }) => {
@@ -144,7 +144,7 @@ test("a forged move to another coach's group answers 403 and nothing changes", a
   expect(res.body.error.message).toBe("Nu mai ai acces la această grupă.");
   await page.reload();
   await expect(page.getByText("Maria Ionescu")).toBeVisible();
-  await expect(page.getByText("Avansați, 9 sportivi")).toBeVisible();
+  await expect(page.getByText("Avansați, 9 sportivi").locator("visible=true")).toBeVisible();
 });
 
 test("without another own group the sheet says so", async({ page }) => {
@@ -199,7 +199,7 @@ test("after a save the list updates in place and the focus stays on a row button
   await rowButton(page, "Scoate", 1).click();
   await page.getByRole("dialog").getByRole("button", { name: "Scoate din grupă" }).click();
   await expect(page.getByText("Luca Dumitru")).toHaveCount(0);
-  await expect(page.getByText("Avansați, 8 sportivi")).toBeVisible();
+  await expect(page.getByText("Avansați, 8 sportivi").locator("visible=true")).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { __spinner: number }).__spinner)).toBe(0);
   await expect(page.locator("[data-roster-move]").nth(1)).toBeFocused();
 });

@@ -17,7 +17,7 @@ export function NowTile({ className }: { className?: string }) {
       role="group"
       aria-label={now ? AZI.nowLabel(longDay(now.date), now.time) : undefined}
       aria-hidden={now ? undefined : true}
-      className={cn("flex shrink-0 items-stretch", !now && "invisible", className)}
+      className={cn("flex shrink-0 items-stretch portal:h-(--portal-nowtile-h)", !now && "invisible", className)}
     >
       <span className="flex w-(--portal-typeblock-w) flex-col items-center justify-center gap-0.5 bg-surface-dark py-2">
         <span className="text-(length:--portal-text-11) font-bold uppercase tracking-(--portal-tracking-month) text-ice">{month || "Noi"}</span>

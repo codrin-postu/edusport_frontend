@@ -14,7 +14,7 @@ import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { PortalCard } from "@/app/_portal/ui/PortalCard";
 import { PortalLink } from "@/app/_portal/ui/PortalLink";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -103,6 +103,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
     <>
       <PageHeader back={{ href: "/", label: NAV.today }} kicker={LESSON.title} title={lesson.athleteName} sub={sub || undefined} />
       <PageBody narrow>
+        <PageSub>{sub}</PageSub>
         <div data-lesson-form className="flex flex-col gap-(--portal-form-gap)">
           <KeyValueCard
             rows={[

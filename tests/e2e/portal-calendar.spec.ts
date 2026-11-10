@@ -23,7 +23,7 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Calendar");
       await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
-      await expect(page.getByText("Ședințele și lecțiile tale")).toBeVisible();
+      await expect(page.getByText("Ședințele și lecțiile tale").locator("visible=true")).toBeVisible();
       await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toHaveCount(1);
       const grid = page.getByRole("group", { name: "Zilele lunii" });
       await expect(grid.getByRole("button")).toHaveCount(30);

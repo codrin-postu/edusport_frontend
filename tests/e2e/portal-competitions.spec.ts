@@ -15,7 +15,7 @@ for (const size of SIZES) {
       await page.goto("/concursuri");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Concursuri");
-      await expect(page.getByText("Rezultatele sportivilor clubului")).toBeVisible();
+      await expect(page.getByText("Rezultatele sportivilor clubului").locator("visible=true")).toBeVisible();
       await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "true");
       await expect(page.getByRole("button", { name: "Grupele mele" })).toHaveAttribute("aria-pressed", "false");
       await expect(page.getByRole("group", { name: "Sportivi" })).toBeVisible();
