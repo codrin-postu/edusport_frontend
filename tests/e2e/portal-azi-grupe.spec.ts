@@ -159,19 +159,68 @@ test("a group without a next class shows the plain row", async({ page }) => {
   await expect(first.locator("[data-date-block]")).toHaveCount(0);
 });
 
-test("own group: members, the new label, other groups, tabs", async({ page }) => {
+for (const size of SIZES) {
+  test.describe(`Grupă ${size.width}`, () => {
+    test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
+
+    test("info card, actions, tabs and the member rows", async({ page }, info) => {
+      await loginAs(page);
+      await page.goto("/grupe/gavansati");
+      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.locator("h1")).toHaveText("Avansați");
+      await expect(page.getByRole("link", { name: "‹ Grupe" })).toHaveAttribute("href", "/grupe");
+      const card = page.locator("[data-group-info] > div");
+      await expect(card).toHaveCSS("background-color", "rgb(225, 236, 251)");
+      await expect(card).toContainText("Program: Ma, Mi 18:15");
+      await expect(card).toContainText("Loc: AFI Cotroceni");
+      await expect(card).toContainText("Antrenori: Andrei Popa");
+      await expect(card.locator("b")).toHaveText(["Program:", "Loc:", "Antrenori:"]);
+      const presence = page.getByRole("link", { name: "Fă prezența" });
+      await expect(presence).toHaveCount(size.width >= 900 ? 2 : 1);
+      await expect(presence.last()).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agavansati%3A/);
+      await expect(page.getByRole("link", { name: "Modifică grupa" })).toHaveAttribute("href", "/grupe/gavansati/modifica");
+      await expect(page.getByRole("button", { name: "Sportivi (9)" })).toHaveAttribute("aria-pressed", "true");
+      await expect(page.getByRole("button", { name: "Program" })).toHaveAttribute("aria-pressed", "false");
+      const rows = page.locator("a[href^='/sportiv/']");
+      await expect(rows).toHaveCount(9);
+      const row = (name: string) => rows.filter({ hasText: name });
+      await expect(row("Tudor Pavel")).toContainText("8 ani, nou");
+      await expect(row("Ioana Diaconu")).toContainText("12 ani, și în Uscat Juniori");
+      await expect(row("Sofia Nistor")).toContainText("11 ani, până pe 12 noi");
+      await expect(row("Sofia Nistor")).toHaveAttribute("href", "/sportiv/asofia?grupa=gavansati");
+      const left = (await page.locator("[data-group-info]").boundingBox())!;
+      const list = (await rows.first().boundingBox())!;
+      if (size.width >= 900) {
+        expect(left.x + left.width).toBeLessThan(list.x);
+        const band = page.locator("[data-page-header]").getByRole("link", { name: "Fă prezența" });
+        await expect(band).toBeVisible();
+      } else {
+        expect(list.y).toBeGreaterThan(left.y);
+      }
+      await shot(page, info, "grupa");
+    });
+  });
+}
+
+test("a group without a class today has no Fă prezența", async({ page }) => {
+  await page.route("**/api/portal/coach/groups/gavansati", (route) => route.fulfill({
+    json: {
+      groupId: "gavansati", name: "Avansați", kind: "club", own: true, coaches: ["Andrei Popa"], program: ["Ma, Mi 18:15"], members: [], standIn: [],
+      todayKey: null, programPublic: null, location: "AFI Cotroceni",
+    },
+  }));
   await loginAs(page);
   await page.goto("/grupe/gavansati");
-  await expect(page.getByRole("heading", { name: "Avansați" })).toBeVisible();
-  await expect(page.getByText("Sportivi (9)")).toBeVisible();
-  await expect(page.getByText("nou", { exact: true })).toHaveCount(1);
-  await expect(page.getByText("și în Uscat Juniori")).toBeVisible();
-  await expect(page.getByText("Antrenori: Andrei Popa")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Fă prezența" })).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agavansati%3A/);
-  await expect(page.getByRole("link", { name: "+ Adaugă sportiv" })).toHaveAttribute("href", "/grupe/gavansati/adauga");
+  await expect(page.getByRole("link", { name: "Modifică grupa" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Fă prezența" })).toHaveCount(0);
+});
+
+test("own group: the program tab", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/gavansati");
   await page.getByRole("button", { name: "Program" }).click();
   await expect(page).toHaveURL(/\/grupe\/gavansati\?tab=program$/);
-  await expect(page.getByText("Sportivi (9)")).toHaveCount(0);
+  await expect(page.locator("a[href^='/sportiv/']")).toHaveCount(0);
 });
 
 test("other group: banner, stand-in today, no roster", async({ page }) => {
