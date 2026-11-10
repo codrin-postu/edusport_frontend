@@ -150,6 +150,37 @@ for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) 
       expect((await css(page.locator("[data-save-count]"), ["font-size"]))["font-size"]).toBe("20px");
     });
 
+    test("day squares, choice row and summary band", async({ page }) => {
+      const squares = kit(page, "DaySquares").locator("[role=checkbox]");
+      await expect(squares).toHaveCount(7);
+      await expect(squares).toHaveText(["Lu", "Ma", "Mi", "Jo", "Vi", "Sâ", "Du"]);
+      expect(await css(squares.nth(1), ["height", "border-top-left-radius", "background-color", "color", "border-top-width"])).toEqual({
+        height: "44px", "border-top-left-radius": "0px", "background-color": NAVY, color: WHITE, "border-top-width": "2px",
+      });
+      expect(await css(squares.first(), ["background-color", "border-top-color", "border-top-width", "border-top-left-radius"])).toEqual({
+        "background-color": WHITE, "border-top-color": "rgb(185, 198, 218)", "border-top-width": "1px", "border-top-left-radius": "0px",
+      });
+      await squares.first().click();
+      await expect(squares.first()).toHaveAttribute("aria-checked", "true");
+      await squares.first().focus();
+      await page.keyboard.press("Space");
+      await expect(squares.first()).toHaveAttribute("aria-checked", "false");
+
+      const rows = kit(page, "ChoiceRow").locator("[role=radio]");
+      expect((await css(rows.first(), ["min-height", "border-top-width", "border-top-color"]))).toEqual({ "min-height": "60px", "border-top-width": "2px", "border-top-color": NAVY });
+      expect((await css(rows.nth(1), ["border-top-width"]))["border-top-width"]).toBe("1px");
+      const box = rows.first().locator("span").first();
+      expect(await css(box, ["width", "height", "border-top-left-radius"])).toEqual({ width: "20px", height: "20px", "border-top-left-radius": "0px" });
+      await rows.first().focus();
+      await page.keyboard.press("ArrowDown");
+      await expect(rows.nth(1)).toHaveAttribute("aria-checked", "true");
+      await expect(rows.first()).toHaveAttribute("aria-checked", "false");
+      await page.keyboard.press("ArrowUp");
+      await expect(rows.first()).toHaveAttribute("aria-checked", "true");
+
+      expect(await css(page.locator("[data-summary-band]"), ["background-color", "font-weight", "font-size"])).toEqual({ "background-color": ICE_LIGHT, "font-weight": "600", "font-size": "14px" });
+    });
+
     test("month grid and competition card", async({ page }) => {
       const cells = kit(page, "MonthGrid").locator("[role=group] button");
       await expect(cells).toHaveCount(30);

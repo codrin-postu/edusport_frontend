@@ -33,6 +33,10 @@ import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
+import { ChoiceRow } from "@/app/_portal/ui/ChoiceRow";
+import { DaySquares } from "@/app/_portal/ui/DaySquares";
+import { SummaryBand } from "@/app/_portal/ui/SummaryBand";
+import type { DayKey } from "@/lib/portal/api-types";
 import { KIT } from "@/lib/portal/copy-shared";
 import { monthTitle, shiftMonth } from "@/lib/portal/month-grid";
 
@@ -77,6 +81,8 @@ export function KitPreview() {
   const [selected, setSelected] = useState<string | null>("2026-11-12");
   const [checked, setChecked] = useState(true);
   const [unchecked, setUnchecked] = useState(false);
+  const [days, setDays] = useState<DayKey[]>(["tue", "thu"]);
+  const [choice, setChoice] = useState<"cancel" | "move" | "remove">("cancel");
 
   return (
     <PortalShell nav={NAV} account={ACCOUNT} brandHref="/kit-preview">
@@ -163,6 +169,19 @@ export function KitPreview() {
                   { value: "mine", label: "Grupele mele" },
                 ]}
               />
+            </Kit>
+            <Kit name="DaySquares">
+              <DaySquares label="Zile" value={days} onChange={setDays} />
+            </Kit>
+            <Kit name="ChoiceRow">
+              <div role="radiogroup" aria-label="Ce faci" className="flex flex-col gap-3">
+                <ChoiceRow label="Anulează" sub="Părinții văd data anulată și nota." checked={choice === "cancel"} onSelect={() => setChoice("cancel")} />
+                <ChoiceRow label="Mută" sub="Alegi altă zi sau oră pentru această dată." checked={choice === "move"} onSelect={() => setChoice("move")} />
+                <ChoiceRow label="Șterge" sub="Data dispare din program, fără notă." checked={choice === "remove"} onSelect={() => setChoice("remove")} />
+              </div>
+            </Kit>
+            <Kit name="SummaryBand">
+              <SummaryBand>Marți și joi, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului.</SummaryBand>
             </Kit>
             <Kit name="SaveBar">
               <SaveBar count="6 prezenți" action={<Button>Salvează</Button>} />

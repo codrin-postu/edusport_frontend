@@ -95,6 +95,9 @@
   --portal-typeblock-icon: 26px;   /* layout status block icon */
   --portal-stat-num: 88px;         /* 33 stat card number */
   --portal-tap: 44px;              /* layout min tap height */
+  --portal-choice-min-h: 60px;     /* layout choice row min height */
+  --portal-choice-box: 20px;       /* layout choice row square indicator */
+  --portal-day-gap: 6px;           /* layout day squares gap */
   --portal-kv-min-h: 56px;         /* layout key/value row */
   --portal-card-pad: 16px;         /* layout info card, kv row x padding */
   --portal-sheet-pad: 20px;        /* 26 sheet card */
