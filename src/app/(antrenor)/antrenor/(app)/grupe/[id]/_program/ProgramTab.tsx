@@ -24,6 +24,7 @@ import { EndSheet } from "./EndSheet";
 import { ProgramMonth } from "./ProgramMonth";
 import { PublicSwitch } from "./PublicSwitch";
 import { RulesCard } from "./RulesCard";
+import { byWeekday } from "./rules";
 
 type View = "list" | "month";
 type Open = { kind: "change" | "end"; rule: CoachProgramRule } | { kind: "date"; occurrence: Occurrence };
@@ -112,7 +113,7 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
               {data.rules.length > 0 && (
                 <Section title={PROGRAM.weeklyHeading}>
                   <ListCard>
-                    {data.rules.map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} editable={canEdit} onChange={() => setOpen({ kind: "change", rule: r })} onEnd={() => setOpen({ kind: "end", rule: r })} />)}
+                    {byWeekday(data.rules).map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} later={r.from > today} editable={canEdit} onChange={() => setOpen({ kind: "change", rule: r })} onEnd={() => setOpen({ kind: "end", rule: r })} />)}
                   </ListCard>
                 </Section>
               )}
@@ -128,8 +129,8 @@ export function ProgramTab({ groupId, own, tabs }: ProgramTabProps) {
           </Section>
         </Column>
       </Columns>
-      {open?.kind === "change" && <ChangeSheet rule={open.rule} today={today} onClose={() => setOpen(null)} onDone={done} />}
-      {open?.kind === "end" && <EndSheet rule={open.rule} today={today} onClose={() => setOpen(null)} onDone={done} />}
+      {open?.kind === "change" && <ChangeSheet rule={open.rule} rules={data?.rules ?? []} today={today} onClose={() => setOpen(null)} onDone={done} />}
+      {open?.kind === "end" && <EndSheet rule={open.rule} rules={data?.rules ?? []} today={today} onClose={() => setOpen(null)} onDone={done} />}
       {open?.kind === "date" && <DateSheet occurrence={open.occurrence} today={today} onClose={() => setOpen(null)} onDone={done} />}
     </>
   );

@@ -6,19 +6,20 @@ import { PROGRAM } from "@/lib/portal/copy";
 import { weekdayOfDay } from "@/lib/portal/format";
 import type { CoachProgramRule, ProgramEndBody } from "@/lib/portal/api-types";
 import { Sheet } from "@/app/_portal/ui/Sheet";
+import { eventForDate } from "./rules";
 import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { useSend } from "./useSend";
 
-type Props = { rule: CoachProgramRule; today: string; onClose: () => void; onDone: () => void };
+type Props = { rule: CoachProgramRule; rules: CoachProgramRule[]; today: string; onClose: () => void; onDone: () => void };
 
 /** "Șterge" on one weekday of the program: the program stops from a date, earlier dates stay. */
-export function EndSheet({ rule, today, onClose, onDone }: Props) {
+export function EndSheet({ rule, rules, today, onClose, onDone }: Props) {
   const { busy, message, send } = useSend(onDone);
   const [from, setFrom] = useState(rule.nextDate && rule.nextDate >= today ? rule.nextDate : today);
 
   function submit() {
     const body: ProgramEndBody = { from, day: rule.day };
-    void send("POST", `coach/program/${encodeURIComponent(rule.eventId)}/end`, body, PROGRAM.toasts.programEnded);
+    void send("POST", `coach/program/${encodeURIComponent(eventForDate(rules, rule, from))}/end`, body, PROGRAM.toasts.programEnded);
   }
 
   return (

@@ -272,3 +272,18 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Azi lists "Antrenamente fără prezență" whenever an unsaved class exists, also on a day without sessions.
 - Grupe row text joins only the parts that exist (no leading comma for a group with no weekly schedule), and the row has no date block when there is no next class.
 - Istoric stat card side lines start at the same left edge (decided by Claude).
+
+## 2026-11-10 coach training screens (decided by Claude, low impact)
+- Copy: `TRAINING.editTitle` "Modifică lecția", `untilDate` "Alege data", `untilDateField` "Data de sfârșit", `scopeTitle` "Ce schimbi?", `scopeDeleteTitle` "Ce ștergi?", `scopeOne` / `scopeFollowing`, `noGroup`, `LESSON.seriesText`, the monthly summary wording ("Lunar, în a doua marți a lunii", user variant A), the fields of Mută in the date sheet ("Data nouă", "Ora").
+- "Se ține" is a fourth choice in the date sheet, shown only on a cancelled or moved date; it keeps the former "Ține" action reachable (the board shows an open date only). Copy `PROGRAM.keepChoice` and `keepSub`.
+- The Listă of "Următoarele date" runs from today to the end of the next month (two month reads).
+- A form opened from "+ Adaugă program" has the group preset and its back link goes to the group's Program tab; a plain "Antrenament nou" goes back to Azi.
+- The Grup tab of "Antrenament nou" is hidden (Individual only) for a coach with no own Club group.
+- A one-off group class dated today or earlier goes straight to its Prezență; a later date goes to the Program tab.
+- Sheets: a date before today is not clamped while typing; it disables the confirm button (same rule as Mută and Scoate).
+- Toasts of the date sheet keep the long month ("Ședința din 10 noiembrie a fost anulată."); the lesson delete confirm keeps the backend short month ("Ștergi lecția din 5 noi?").
+- Lesson page: the day tile in the header is gone (the Data row says it); "Salvează prezența" is disabled, not hidden, for a lesson dated after today and hidden for an archived one; "Modifică lecția" shows when `planEditable`, and `/lectie/<id>/modifica` goes back to the lesson when it is not.
+- "Doar această lecție" on a lesson of a series sends `repeat: null` (the backend refuses `repeat` with scope one).
+- The coach BFF forwards the allowed query names on DELETE as well as GET (`DELETE /lessons/:id?scope=following` lost its scope before).
+- Shared sheet footer: Renunță and the confirm side by side, the refusal line above them; every sheet of the plan uses the Sheet `footer` prop and applies its changes only on confirm.
+- A weekday split by a change or an end from a later date shows two rows: the started one first, the later one under it with "din 19 noi" in its line; every write sends the eventId of the row whose from and to cover the chosen date. A change or an end from a date whose class has saved presence is refused with 409 and the message shows in the sheet.

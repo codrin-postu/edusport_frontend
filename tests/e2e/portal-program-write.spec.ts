@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
 
 test.beforeEach(async() => { await mockReset(); });
 
@@ -27,7 +27,7 @@ for (const size of SIZES) {
   test.describe(`Program writes ${size.width}`, () => {
     test.use({ baseURL: COACH_BASE, viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("an open date: Anulează with a note, then the row reads Anulată", async({ page }) => {
+    test("an open date: Anulează with a note, then the row reads Anulată", async({ page }, info) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await dateRow(page, "Mar", "10").click();
@@ -38,6 +38,7 @@ for (const size of SIZES) {
       await expect(d.getByLabel("Notă")).toBeVisible();
       for (const name of [/^Anulează/, /^Mută/, /^Șterge/]) await expect(d.getByRole("radio", { name })).toBeVisible();
       await expect(d.getByRole("radio", { name: /^Se ține/ })).toHaveCount(0);
+      await shot(page, info, "program-data");
       await expect(d.locator("[role=radio] span[aria-hidden]").first()).toHaveCSS("border-top-left-radius", "0px");
       const box = (await d.boundingBox())!;
       if (size.width >= 900) {
@@ -139,7 +140,7 @@ for (const size of SIZES) {
       await expect(block(page, "Joi", "12")).toHaveCount(0);
     });
 
-    test("Schimbă programul of one weekday", async({ page }) => {
+    test("Schimbă programul of one weekday", async({ page }, info) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
@@ -150,6 +151,7 @@ for (const size of SIZES) {
       await expect(d.getByRole("checkbox", { name: "Mi" })).toHaveAttribute("aria-checked", "false");
       await expect(d.getByLabel("Ora")).toHaveValue("18:15");
       await expect(d.getByRole("group", { name: "Se aplică din" })).toBeVisible();
+      await shot(page, info, "program-schimba");
       // Renunță drops the draft without a request.
       await d.getByLabel("Ora").fill("17:00");
       await d.getByRole("button", { name: "Renunță" }).click();
@@ -166,7 +168,7 @@ for (const size of SIZES) {
       await expect(page.getByText("Miercuri, 18:15", { exact: true }).first()).toBeVisible();
     });
 
-    test("Șterge programul of one weekday", async({ page }) => {
+    test("Șterge programul of one weekday", async({ page }, info) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await page.getByRole("button", { name: "Șterge programul de miercuri" }).click();
@@ -174,6 +176,7 @@ for (const size of SIZES) {
       await expect(d.getByRole("heading", { name: "Ștergi programul de miercuri?" })).toBeVisible();
       await expect(d.getByText("Ședințele și prezențele de până atunci rămân. După data aleasă nu mai apare.")).toBeVisible();
       await expect(d.getByRole("group", { name: "Din data" })).toBeVisible();
+      await shot(page, info, "program-sterge");
       await d.getByRole("button", { name: "Renunță" }).click();
       expect(await calls("POST", /\/end$/)).toHaveLength(0);
       await page.getByRole("button", { name: "Șterge programul de miercuri" }).click();
@@ -182,8 +185,64 @@ for (const size of SIZES) {
       // The cancelled Wednesday 11 November is skipped: the next Wednesday date is 18 November.
       const post = (await calls("POST", /\/program\/evavansati\/end$/))[0];
       expect(post?.body).toEqual({ from: "2026-11-18", day: "wed" });
-      await expect(page.getByText("Miercuri, 18:15", { exact: true })).toHaveCount(0);
+      // The weekday stops the day before: its row stays with "până pe 17 noiembrie" and no date after it.
+      await expect(page.getByText("60 min, săptămânal, din 1 octombrie, până pe 17 noiembrie")).toBeVisible();
+      await expect(block(page, "Mie", "18")).toHaveCount(0);
       await expect(page.getByText("Marți, 18:15", { exact: true }).first()).toBeVisible();
+    });
+
+    test("a split weekday shows two rows and every write goes to the row that covers the date", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/grupe/gavansati?tab=program");
+      await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
+      await dialog(page).getByLabel("Ora").fill("18:00");
+      await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
+      await expect(page.getByText("Program schimbat.")).toBeVisible();
+      const first = (await calls("PUT", /\/program\/[^/]+$/))[0];
+      expect(first?.path).toMatch(/\/program\/evavansati$/);
+      // Two rows for Tuesday: the one that has started, and the later one under it as "din 10 noi".
+      const rules = page.getByRole("heading", { name: "Program săptămânal" }).locator("xpath=../..");
+      await expect(rules.getByText("Marți, 18:15", { exact: true })).toHaveCount(1);
+      await expect(rules.getByText("Marți, 18:00", { exact: true })).toHaveCount(1);
+      await expect(rules.getByText("60 min, săptămânal, din 1 octombrie, până pe 9 noiembrie")).toBeVisible();
+      await expect(rules.getByText("60 min, săptămânal, din 10 noi", { exact: true })).toBeVisible();
+      const order = await rules.getByText(/^Marți, 18:(15|00)$/).allTextContents();
+      expect(order).toEqual(["Marți, 18:15", "Marți, 18:00"]);
+      // The date list follows: 10 November is at 18:00 now.
+      await expect(dateRow(page, "Mar", "10")).toContainText("Marți, 18:00");
+      // Schimbă on the started row, from a date the later row covers: the later row's event gets the write.
+      await page.getByRole("button", { name: "Schimbă programul de marți" }).first().click();
+      await typeDate(page, "Se aplică din", "12112026");
+      await dialog(page).getByLabel("Ora").fill("17:45");
+      await dialog(page).getByRole("button", { name: "Schimbă", exact: true }).click();
+      await expect(page.getByText("Program schimbat.").first()).toBeVisible();
+      const second = (await calls("PUT", /\/program\/[^/]+$/))[1];
+      expect(second?.path).toMatch(/\/program\/evnew\d+$/);
+      expect(second?.body).toMatchObject({ day: "tue", startTime: "17:45", from: "2026-11-12" });
+      // Șterge on the later row sends its own event.
+      await page.getByRole("button", { name: "Șterge programul de marți" }).last().click();
+      await dialog(page).getByRole("button", { name: "Șterge programul" }).click();
+      await expect(page.getByText("Program șters.")).toBeVisible();
+      const end = (await calls("POST", /\/end$/)).at(-1);
+      expect(end?.path).toMatch(/\/program\/evnew\d+\/end$/);
+      expect(end?.body).toMatchObject({ day: "tue" });
+    });
+
+    test("a change or an end from a date with saved presence is refused in the sheet", async({ page }) => {
+      await loginAs(page);
+      // Thursday is today and has a saved session; a Thursday program makes today a class date.
+      expect((await bff(page, "POST", "groups/gavansati/program", { repeat: true, freq: "weekly", days: ["thu"], startTime: "18:15", durationMin: 60, from: TODAY })).status).toBe(200);
+      await page.goto("/grupe/gavansati?tab=program");
+      const d = dialog(page);
+      await page.getByRole("button", { name: "Schimbă programul de joi" }).click();
+      await d.getByLabel("Ora").fill("19:00");
+      await d.getByRole("button", { name: "Schimbă", exact: true }).click();
+      await expect(d.getByText("Data are prezența salvată. Poți doar să o anulezi.")).toBeVisible();
+      await expect(d).toBeVisible();
+      await d.getByRole("button", { name: "Renunță" }).click();
+      await page.getByRole("button", { name: "Șterge programul de joi" }).click();
+      await d.getByRole("button", { name: "Șterge programul" }).click();
+      await expect(d.getByText("Data are prezența salvată. Poți doar să o anulezi.")).toBeVisible();
     });
 
     test("past dates are refused", async({ page }) => {

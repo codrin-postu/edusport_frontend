@@ -628,7 +628,7 @@ function occurrencesOf(g, month) {
   }
   for (const m of moves) {
     if (!m.newDate.startsWith(month)) continue;
-    const rule = rulesOf(g.id).find((r) => r.day === DAY_KEYS[weekdayOf(m.date)]);
+    const rule = rulesOf(g.id).find((r) => r.day === DAY_KEYS[weekdayOf(m.date)] && m.date >= r.from && m.date <= r.to) ?? rulesOf(g.id).find((r) => r.day === DAY_KEYS[weekdayOf(m.date)]);
     out.push(occurrence(g, m.newDate, m.newStartTime, rule?.durationMin ?? g.dur, rule?.eventId ?? g.eventId, { status: "override", originalDate: m.date, originalStartTime: rule?.startTime ?? g.start, note: m.note }));
   }
   return out.sort((a, b) => (a.date + a.startTime).localeCompare(b.date + b.startTime));
@@ -678,7 +678,7 @@ function programAdd({ res, body }, g) {
   ok(res, { eventId, date: null });
 }
 
-/** PUT /program/:eventId and POST /program/:eventId/end with an optional `day`. */
+/** PUT /program/:eventId and POST /program/:eventId/end with an optional `day`: a change or an end from a later date splits the weekday (the old row stops the day before). */
 function programRuleWrite({ res, body, params }, end) {
   const [eventId] = params;
   const g = groupOfEvent(eventId);
@@ -687,18 +687,27 @@ function programRuleWrite({ res, body, params }, end) {
   if (body.day !== undefined && !mine.some((r) => r.day === body.day)) return club(res, 400, MSG.invalid);
   if (!validDate(body.from) || body.from < today) return club(res, 400, MSG.invalid);
   const picked = body.day === undefined ? mine : mine.filter((r) => r.day === body.day);
-  if (end && g) {
-    world.rules[g.id] = list.filter((r) => !picked.includes(r));
-    return ok(res, { eventId });
-  }
-  if (end) return ok(res, { eventId });
+  // A class of the weekday on that date already has presence: the series is not touched.
+  if (g && picked.some((r) => ruleHits({ ...r, gid: g.id }, body.from) && hasSavedSession(g.id, body.from))) return club(res, 409, REFUSE.datePresence);
   const newId = `evnew${++world.counters.event}`;
+  const days = Array.isArray(body.days) && body.days.length ? body.days.filter((d) => DAY_KEYS.includes(d)) : null;
   for (const r of picked) {
-    if (typeof body.startTime === "string") r.startTime = body.startTime;
-    if (Number.isInteger(body.durationMin)) r.durationMin = body.durationMin;
-    r.eventId = newId;
+    const split = body.from > r.from;
+    const oldTo = r.to;
+    if (end) {
+      if (split) Object.assign(r, { to: addDays(body.from, -1), untilSeasonEnd: false });
+      else world.rules[g.id] = rulesOf(g.id).filter((x) => x !== r);
+      continue;
+    }
+    const fields = {
+      ...(typeof body.startTime === "string" ? { startTime: body.startTime } : {}),
+      ...(Number.isInteger(body.durationMin) ? { durationMin: body.durationMin } : {}),
+    };
+    if (!split) { Object.assign(r, fields, { eventId: newId }); continue; }
+    Object.assign(r, { to: addDays(body.from, -1), untilSeasonEnd: false });
+    for (const day of days ?? [r.day]) rulesOf(g.id).push({ ...r, ...fields, eventId: newId, day, from: body.from, to: oldTo, untilSeasonEnd: oldTo === SEASON_END });
   }
-  ok(res, { eventId: picked.length ? newId : eventId });
+  ok(res, { eventId: end || !picked.length ? eventId : newId });
 }
 
 /** PUT /program/:eventId/dates/:date. */

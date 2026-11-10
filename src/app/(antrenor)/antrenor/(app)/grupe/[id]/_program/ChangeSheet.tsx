@@ -7,14 +7,15 @@ import { capitalize, weekdayOfDay } from "@/lib/portal/format";
 import type { CoachProgramRule, DayKey, ProgramChangeBody } from "@/lib/portal/api-types";
 import { DaySquares } from "@/app/_portal/ui/DaySquares";
 import { Sheet } from "@/app/_portal/ui/Sheet";
+import { eventForDate } from "./rules";
 import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { TimeDuration } from "./TimeDuration";
 import { useSend } from "./useSend";
 
-type Props = { rule: CoachProgramRule; today: string; onClose: () => void; onDone: () => void };
+type Props = { rule: CoachProgramRule; rules: CoachProgramRule[]; today: string; onClose: () => void; onDone: () => void };
 
 /** "Schimbă" on one weekday of the program: new days, time and length from a date. Nothing is sent before "Schimbă". */
-export function ChangeSheet({ rule, today, onClose, onDone }: Props) {
+export function ChangeSheet({ rule, rules, today, onClose, onDone }: Props) {
   const { busy, message, send } = useSend(onDone);
   const [days, setDays] = useState<DayKey[]>([rule.day]);
   const [time, setTime] = useState(rule.startTime);
@@ -27,7 +28,7 @@ export function ChangeSheet({ rule, today, onClose, onDone }: Props) {
       freq: rule.freq, days, startTime: time, durationMin: duration, from, day: rule.day,
       ...(rule.freq === "monthly" && rule.weekOfMonth ? { weekOfMonth: rule.weekOfMonth } : {}),
     };
-    void send("PUT", `coach/program/${encodeURIComponent(rule.eventId)}`, body, PROGRAM.toasts.programChanged);
+    void send("PUT", `coach/program/${encodeURIComponent(eventForDate(rules, rule, from))}`, body, PROGRAM.toasts.programChanged);
   }
 
   return (

@@ -28,8 +28,8 @@ export function NewTraining() {
   const groups = usePortal<CoachGroups>("coach/groups");
   const today = bucharestToday();
   const loading = <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
-  if (groups.state === "loading" || !me) return loading;
-  if (groups.state === "error" || !groups.data) return <PageBody><LoadError onRetry={groups.reload} /></PageBody>;
+  if (groups.state === "error") return <PageBody><LoadError onRetry={groups.reload} /></PageBody>;
+  if (groups.state === "loading" || !me || !groups.data) return loading;
 
   const club = groups.data.mine.filter((g) => g.kind === "club");
   const preset = club.find((g) => g.groupId === params.get("grupa")) ?? null;
