@@ -43,7 +43,7 @@ export function HistoryView() {
   const more = useShowMore(month, data?.rows.length ?? 0);
   return (
     <>
-      <PageHeader brand title={HISTORY.title} actions={picker} />
+      <PageHeader brand title={HISTORY.title} />
       <PageBody>
         <div className="portal:hidden">{picker}</div>
         {history.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
@@ -58,6 +58,8 @@ export function HistoryView() {
               />
             </Column>
             <Column grow={2}>
+              {/* Desktop: the month picker heads the list it controls, not the page header. */}
+              <div className="hidden portal:block">{picker}</div>
               <div ref={more.box} className="flex flex-col gap-3">
               <ListCard>
                 {data.rows.slice(0, more.n).map((r) => (
