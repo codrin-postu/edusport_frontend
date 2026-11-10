@@ -99,7 +99,7 @@ for (const size of SIZES) {
       await open("/antrenament/nou", "Antrenament nou popup", async() => undefined);
       await open("/grupe/gavansati?tab=program&nou=1", "Adaugă program popup", async() => undefined);
       await open("/lectie/lplan/modifica", "Modifică lecția popup", async() => undefined);
-      await open("/lectie/lser2/modifica", "Ce schimbi sheet", async() => { await page.getByLabel("Ora").fill("18:00"); await page.getByRole("button", { name: "Salvează", exact: true }).click(); });
+      await open("/lectie/lser2/modifica", "Ce schimbi sheet", async() => { await page.getByLabel("Ora", { exact: true }).fill("18:00"); await page.getByRole("button", { name: "Salvează", exact: true }).click(); });
       await open("/lectie/lser2", "Ce ștergi sheet", () => page.getByRole("button", { name: "Șterge lecția" }).click());
       await open("/lectie/lplan", "Șterge lecția sheet", () => page.getByRole("button", { name: "Șterge lecția" }).click());
       await open("/antrenament/nou?tip=individual", "Coach picker sheet", () => page.getByRole("button", { name: "+ Adaugă alți antrenori" }).click());
