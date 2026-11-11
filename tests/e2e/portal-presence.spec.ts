@@ -47,6 +47,14 @@ test("an archived session is read only", async({ page }) => {
   await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
 });
 
+test("a future date says when presence opens and stays read only", async({ page }) => {
+  await loginAs(page);
+  await page.goto(occ("gavansati", "2026-11-10"));
+  await expect(page.getByText("Prezența se poate face din ziua antrenamentului.").locator("visible=true")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Salvează", exact: true })).toHaveCount(0);
+  await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
+});
+
 test("an archived session keeps the check marks: ticked boxes show a mark, unticked stay empty", async({ page }) => {
   await loginAs(page);
   await page.goto("/prezenta?id=s-archived");

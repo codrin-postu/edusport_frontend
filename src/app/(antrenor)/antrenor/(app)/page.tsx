@@ -130,20 +130,20 @@ export default function AziPage() {
         actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
-        {/* Desktop: summary column left (2), list right (3); headings on grid row 1, content on row 2, so both columns start on the same line. */}
-        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols-side-first) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
-          <div className="hidden portal:col-start-1 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} className={ROW1} /></div>
-          <div className="contents portal:col-start-1 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
+        {/* Desktop: list left (3), summary column right (2, user 2026-11-11); headings on grid row 1, content on row 2, so both columns start on the same line. */}
+        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
+          <div className="hidden portal:col-start-2 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} className={ROW1} /></div>
+          <div className="contents portal:col-start-2 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
             {nextSection && <div className="order-4 portal:order-none">{nextSection}</div>}
             <div className="order-5 portal:order-none">{weekSection}</div>
             {past && <div className="order-6 portal:order-none">{past}</div>}
           </div>
           <div className="order-2 flex flex-col gap-3 portal:contents">
-            <div className="portal:col-start-2 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} className={ROW1} /></div>
-            <div data-today-list className="flex flex-col gap-3 portal:col-start-2 portal:row-start-2">{todayCard}{todayMore}</div>
+            <div className="portal:col-start-1 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} className={ROW1} /></div>
+            <div data-today-list className="flex flex-col gap-3 portal:col-start-1 portal:row-start-2">{todayCard}{todayMore}</div>
           </div>
-          <div className="order-3">{addLesson}</div>
+          <div className="order-3 portal:col-start-1">{addLesson}</div>
         </div>
       </PageBody>
       {nou && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}

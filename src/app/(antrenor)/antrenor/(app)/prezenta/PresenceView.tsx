@@ -9,6 +9,7 @@ import { fromOf, presentCount, saveBody, sessionQuery, withFrom } from "@/lib/po
 import type { CoachGroupPage, CoachSession, SessionSaved } from "@/lib/portal/api-types";
 import { setSavedFlag } from "@/app/_portal/lib/saved-flag";
 import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
+import { useNow } from "@/app/_portal/lib/use-now";
 import { useMe } from "../../_lib/me-context";
 import { useNoAccess } from "../../_lib/use-portal";
 import { GroupInfoCard } from "../../_ui/GroupInfoCard";
@@ -78,6 +79,9 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
   const [queue, setQueue] = useState<Inactive[]>([]);
   const [answers, setAnswers] = useState<{ reactivate: string[]; keep: string[] }>({ reactivate: [], keep: [] });
   const readOnly = session.archived || !session.editable;
+  // A future date is read only on the backend (presence opens on the day); say so instead of a silent lock.
+  const now = useNow();
+  const future = readOnly && now !== null && session.date > now.date;
   const count = presentCount([...ticks.values()]);
   const meId = me?.coachId ?? "";
 
@@ -153,8 +157,9 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
       />
       <PageBody>
         <PageSub>{sub}</PageSub>
-        {(session.savedLine || session.outsideSchedule || session.archived) && (
+        {(session.savedLine || session.outsideSchedule || session.archived || future) && (
           <div className="flex flex-col gap-1 text-(length:--portal-text-14) text-muted">
+            {future && <p>{PRESENCE.future}</p>}
             {session.savedLine && <p>{session.savedLine}</p>}
             {session.outsideSchedule && <p>{PRESENCE.outside}</p>}
             {session.archived && <p>{PRESENCE.archived}</p>}

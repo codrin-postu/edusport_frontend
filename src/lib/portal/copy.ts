@@ -191,6 +191,7 @@ export const PRESENCE = {
   save: "Salvează",
   willAppear: "Vei apărea ca antrenor la această ședință.",
   archived: "Arhivată. Nu mai poate fi modificată.",
+  future: "Prezența se poate face din ziua antrenamentului.",
   outside: "În afara programului",
   noSubscription: "Fără abonament",
   reactivate: {

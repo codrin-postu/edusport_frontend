@@ -396,7 +396,7 @@ function buildSession({ groupId, date, startTime, durationMin, key, rec, free })
     sessionId: rec?.sessionId ?? null, occurrenceKey: free ? null : key, added: free ? { groupId, date, startTime, durationMin } : null,
     groupId, groupName: g.name, kind: g.kind, date, startTime, durationMin, outsideSchedule: Boolean(free),
     coachIds: rec?.coachIds ?? ["tm-andrei"], coachOptions: world.coachOptions, rows: sessionRows(g, rec),
-    savedLine: rec ? `Salvată de Antrenor Andrei Popa, ${longDay(rec.date)} 18:40` : null, editable: !archivedDate(date), archived: archivedDate(date), standIn: !g.own,
+    savedLine: rec ? `Salvată de Antrenor Andrei Popa, ${longDay(rec.date)} 18:40` : null, editable: !archivedDate(date) && date <= today, archived: archivedDate(date), standIn: !g.own,
   };
 }
 
