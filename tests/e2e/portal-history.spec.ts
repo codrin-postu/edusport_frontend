@@ -17,6 +17,15 @@ test("the previous month arrow changes the URL and reloads", async({ page }) => 
   await expect(page).toHaveURL(/\/istoric\?luna=2026-11$/);
 });
 
+test("no month after the current one: next is disabled and a later address falls back", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/istoric");
+  await expect(page.getByRole("button", { name: "Luna următoare" }).locator("visible=true")).toBeDisabled();
+  await page.goto("/istoric?luna=2026-12");
+  await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toBeVisible();
+  expect((await mockLog()).some((c) => c.path.includes("history?month=2026-12"))).toBe(false);
+});
+
 test("a row opens the presence page", async({ page }) => {
   await loginAs(page);
   await page.goto("/istoric");

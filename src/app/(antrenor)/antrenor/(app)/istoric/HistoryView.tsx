@@ -33,11 +33,13 @@ const href = (r: CoachHistoryRow): string =>
 export function HistoryView() {
   const router = useRouter();
   const raw = useSearchParams().get("luna");
-  const month = raw !== null && /^\d{4}-(0[1-9]|1[0-2])$/.test(raw) ? raw : bucharestToday().slice(0, 7);
+  const current = bucharestToday().slice(0, 7);
+  // History has no future: a later month in the address falls back to the current one.
+  const month = raw !== null && /^\d{4}-(0[1-9]|1[0-2])$/.test(raw) && raw <= current ? raw : current;
   const history = usePortal<CoachHistory>(`coach/history?month=${month}`);
   const go = (n: number) => router.replace(`/istoric?luna=${addMonths(month, n)}`);
   const picker = (
-    <MonthPicker title={monthTitle(month)} onPrev={() => go(-1)} onNext={() => go(1)} prevLabel={CALENDAR.prev} nextLabel={CALENDAR.next} />
+    <MonthPicker title={monthTitle(month)} onPrev={() => go(-1)} onNext={() => go(1)} nextDisabled={month >= current} prevLabel={CALENDAR.prev} nextLabel={CALENDAR.next} />
   );
   const data = history.data;
   const more = useShowMore(month, data?.rows.length ?? 0);
