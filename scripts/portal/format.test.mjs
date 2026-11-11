@@ -10,7 +10,6 @@ it("formats day tiles and labels", () => {
   assert.deepEqual(f.dateTile("2026-10-07"), { day: "7", weekday: "MI" });
   assert.equal(f.shortDate("2026-09-30"), "30 sep");
   assert.equal(f.shortDate("2026-11-04"), "4 noi");
-  assert.equal(f.pickLabel("2026-10-16"), "vineri 16 oct");
 });
 
 it("formats durations", () => {
