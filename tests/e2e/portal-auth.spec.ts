@@ -59,10 +59,10 @@ test("a foreign Origin is refused before any upstream call", async({ request }) 
 test("invite link moves the secret into a cookie and accepts with a password", async({ page }) => {
   const urls: string[] = [];
   page.on("request", (req) => urls.push(req.url()));
-  await page.goto(`${COACH_BASE}/invitatie/${INVITE}`);
-  expect(new URL(page.url()).pathname).toBe("/invitatie");
+  await page.goto(`${COACH_BASE}/invite/${INVITE}`);
+  expect(new URL(page.url()).pathname).toBe("/invite");
   expect(urls.filter((u) => u.includes("inv-valid")).length).toBe(1);
-  expect(urls.filter((u) => u.includes("inv-valid"))[0]).toContain("/invitatie/inv-valid");
+  expect(urls.filter((u) => u.includes("inv-valid"))[0]).toContain("/invite/inv-valid");
   expect(page.url()).not.toContain("inv-valid");
   expect((await cookieNamed(page, "es_inv"))?.httpOnly).toBe(true);
   const res = await post(page, "/api/portal/auth/invite/accept", { password: "Noua-Throwaway-2026" }, COACH_BASE);
@@ -73,8 +73,8 @@ test("invite link moves the secret into a cookie and accepts with a password", a
 });
 
 test("a malformed invite secret sets no cookie", async({ page }) => {
-  await page.goto(`${COACH_BASE}/invitatie/short`);
-  expect(new URL(page.url()).pathname).toBe("/invitatie");
+  await page.goto(`${COACH_BASE}/invite/short`);
+  expect(new URL(page.url()).pathname).toBe("/invite");
   expect(await cookieNamed(page, "es_inv")).toBeFalsy();
 });
 
@@ -112,8 +112,8 @@ test("an oversized body is refused with 413, declared or chunked", async({ reque
 });
 
 test("a malformed invite secret drops an older invite cookie", async({ page }) => {
-  await page.goto(`${COACH_BASE}/invitatie/${INVITE}`);
+  await page.goto(`${COACH_BASE}/invite/${INVITE}`);
   expect(await cookieNamed(page, "es_inv")).toBeTruthy();
-  await page.goto(`${COACH_BASE}/invitatie/short`);
+  await page.goto(`${COACH_BASE}/invite/short`);
   expect(await cookieNamed(page, "es_inv")).toBeFalsy();
 });

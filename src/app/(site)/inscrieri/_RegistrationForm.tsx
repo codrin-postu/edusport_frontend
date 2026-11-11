@@ -393,7 +393,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
                   <button
                     type="button"
                     onClick={() => goToStep(Math.max(index - 1, 0))}
-                    className="text-body-sm text-secondary hover:text-accent transition-colors"
+                    className="text-body-sm text-secondary transition-colors"
                   >
                     Înapoi
                   </button>

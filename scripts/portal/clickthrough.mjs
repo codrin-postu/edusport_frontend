@@ -81,33 +81,33 @@ const pathOf = (url) => url.replace(/^https?:\/\/[^/]+/, "");
 const steps = [
   // ---- signed out
   { slug: "login", caption: "Intrare: e-mail, parolă și Google.", anon: true, run: async({ page, shot }) => {
-    await page.goto("/intrare"); await settle(page); await shot();
+    await page.goto("/login"); await settle(page); await shot();
   } },
   { slug: "login-eroare", caption: "Parolă greșită: mesajul de la server și parola golită.", anon: true, run: async({ page, shot }) => {
-    await page.goto("/intrare");
+    await page.goto("/login");
     await page.getByLabel("E-mail").fill(COACH.email);
     await page.getByLabel("Parolă", { exact: true }).fill("parola-gresita-1");
     await page.getByRole("button", { name: "Intră" }).click();
     await page.getByRole("main").getByRole("alert").waitFor(); await settle(page); await shot();
   } },
   { slug: "reset-1", caption: "Resetare parolă, pasul 1: adresa de e-mail.", anon: true, run: async({ page, shot }) => {
-    await page.goto("/am-uitat-parola"); await settle(page); await shot();
+    await page.goto("/forgot-password"); await settle(page); await shot();
   } },
   { slug: "reset-2", caption: "Resetare parolă, pasul 2: codul din e-mail și parola nouă.", anon: true, mock: true, note: "Imagine din serverul fals (mock): pe serverul real fără cheie de e-mail cererea răspunde 503 \"Nu am putut trimite e-mailul.\", deci pasul 2 nu se deschide.", run: async({ page, shot }) => {
-    await page.goto("/am-uitat-parola");
+    await page.goto("/forgot-password");
     await page.getByLabel("E-mail").fill(COACH.email);
     await page.getByRole("button", { name: "Trimite codul" }).click();
     await page.getByLabel("Cod din e-mail").waitFor({ timeout: 10000 }).catch(() => {}); await settle(page); await shot();
   } },
   { slug: "reset-eroare", caption: "Resetare fără e-mail configurat: serverul răspunde că nu a putut trimite codul.", anon: true, run: async({ page, shot }) => {
-    await page.goto("/am-uitat-parola"); await page.getByLabel("E-mail").fill(COACH.email);
+    await page.goto("/forgot-password"); await page.getByLabel("E-mail").fill(COACH.email);
     await page.getByRole("button", { name: "Trimite codul" }).click(); await page.getByRole("alert").waitFor({ timeout: 10000 }).catch(() => {}); await settle(page); await shot();
   } },
   { slug: "invitatie", caption: "Invitație valabilă: contul se activează cu o parolă nouă.", anon: true, run: async({ page, shot }) => {
-    await page.goto(`/invitatie/${ids.invite2}`); await settle(page); await shot();
+    await page.goto(`/invite/${ids.invite2}`); await settle(page); await shot();
   } },
   { slug: "invitatie-expirata", caption: "Invitație expirată sau necunoscută.", anon: true, run: async({ page, shot }) => {
-    await page.goto("/invitatie/invitatie-necunoscuta-000000000000000"); await settle(page); await shot();
+    await page.goto("/invite/invite-necunoscuta-000000000000000"); await settle(page); await shot();
   } },
 
   // ---- Azi, Grupe
@@ -299,7 +299,7 @@ const steps = [
     await page.waitForTimeout(1500); await settle(page); await shot();
   } },
   { slug: "eroare-sesiune", caption: "Sesiune încheiată: orice pagină te duce la Intrare.", run: async({ page, context, shot }) => {
-    await context.clearCookies(); await page.goto("/grupe"); await page.waitForURL(/\/intrare/, { timeout: 10000 }).catch(() => {}); await settle(page); await shot();
+    await context.clearCookies(); await page.goto("/grupe"); await page.waitForURL(/\/login/, { timeout: 10000 }).catch(() => {}); await settle(page); await shot();
   } },
 ];
 

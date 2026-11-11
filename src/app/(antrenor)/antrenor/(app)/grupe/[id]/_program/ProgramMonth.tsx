@@ -15,18 +15,18 @@ export function ProgramMonth({ month, occurrences }: { month: string; occurrence
   return (
     <div data-testid="program-month">
       <ol className="grid grid-cols-7 mb-1">
-        {HEAD.map((h) => <li key={h} className="text-label text-secondary text-center uppercase">{h}</li>)}
+        {HEAD.map((h) => <li key={h} className="text-(length:--portal-text-12) font-bold text-secondary text-center uppercase">{h}</li>)}
       </ol>
-      <ol className="grid grid-cols-7 gap-px bg-line-subtle border-retro border-line">
+      <ol className="grid grid-cols-7 gap-px bg-line-subtle border-card border-card-line">
         {cells.map((d, i) => (
           <li key={i} className="aspect-square bg-surface-raised p-1 overflow-hidden">
             {d !== null && (
               <>
-                <span className="text-label text-secondary block">{d}</span>
+                <span className="text-(length:--portal-text-12) font-bold text-secondary block">{d}</span>
                 {byDay(d).map((o) => (
                   <span
                     key={`${o.startTime}:${o.originalDate ?? ""}`}
-                    className={cn("text-label block text-primary", o.status === "cancelled" && !isPause(o) && "line-through text-secondary", isPause(o) && "text-secondary")}
+                    className={cn("text-(length:--portal-text-12) font-bold block text-primary", o.status === "cancelled" && !isPause(o) && "line-through text-secondary", isPause(o) && "text-secondary")}
                     title={isPause(o) ? PROGRAM.breakNotice(o.note ?? "") : undefined}
                   >
                     {o.startTime}

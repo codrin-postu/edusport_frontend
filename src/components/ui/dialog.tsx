@@ -10,7 +10,7 @@ type DialogWidth = "sm" | "md";
 
 const WIDTH: Record<DialogWidth, string> = {
   sm: "max-w-sm",
-  md: "max-w-md",
+  md: "max-w-(--dialog-max-w)",
 };
 
 type DialogProps = {
@@ -62,7 +62,7 @@ function Dialog({
             "w-[calc(100%-2rem)]",
             WIDTH[width],
             "max-h-[85vh] overflow-y-auto",
-            "bg-surface border-retro border-line shadow-retro p-6",
+            "bg-dialog-bg border-card border-card-line shadow-retro p-(--dialog-pad)",
             "outline-none",
             "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -76,7 +76,7 @@ function Dialog({
             </DialogPrimitive.Close>
           )}
           {eyebrow && <p className="text-label text-accent mb-2">{eyebrow}</p>}
-          <DialogPrimitive.Title className="text-title text-primary">
+          <DialogPrimitive.Title className="text-dialog-title text-primary">
             {title}
           </DialogPrimitive.Title>
           {description && (

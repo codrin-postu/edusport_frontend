@@ -18,6 +18,19 @@ export function sessionQuery(search: URLSearchParams): string | null {
   return out.toString();
 }
 
+export type PresenceFrom = "istoric" | "calendar" | "grupa";
+
+/** Where the coach came from (`from` query); anything else means Azi. */
+export function fromOf(search: URLSearchParams): PresenceFrom | null {
+  const v = search.get("from");
+  return v === "istoric" || v === "calendar" || v === "grupa" ? v : null;
+}
+
+/** Adds `from` to a presence href. */
+export function withFrom(href: string, from: PresenceFrom | null): string {
+  return from === null ? href : `${href}${href.includes("?") ? "&" : "?"}from=${from}`;
+}
+
 export function presentCount(rows: { grup: boolean; uscat: boolean }[]): number {
   return rows.filter((r) => r.grup || r.uscat).length;
 }

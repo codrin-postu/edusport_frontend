@@ -37,7 +37,7 @@ it("reads a session only when it is whole", () => {
 });
 
 it("masks secrets", () => {
-  assert.ok(u.maskSecrets("GET /invitatie/abcDEF123?x=1").includes("/invitatie/***?x=1"));
+  assert.ok(u.maskSecrets("GET /invite/abcDEF123?x=1").includes("/invite/***?x=1"));
   assert.equal(u.maskSecrets("{\"secret\":\"abc\",\"email\":\"a@b\"}"), "{\"secret\":\"***\",\"email\":\"a@b\"}");
   assert.equal(u.maskSecrets("{\"refreshToken\":\"r\",\"accessToken\":\"a\",\"password\":\"p\",\"current\":\"c\",\"code\":\"1\"}"), "{\"refreshToken\":\"***\",\"accessToken\":\"***\",\"password\":\"***\",\"current\":\"***\",\"code\":\"***\"}");
 });

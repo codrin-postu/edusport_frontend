@@ -1,10 +1,11 @@
 import { Suspense } from "react";
-import { Spinner } from "../../_ui/Spinner";
+import { PageBody } from "@/app/_portal/ui/PageBody";
+import { Spinner } from "@/app/_portal/ui/Spinner";
 import { PresenceView } from "./PresenceView";
 
 export default function PresencePage() {
   return (
-    <Suspense fallback={<div className="py-6 flex justify-center"><Spinner /></div>}>
+    <Suspense fallback={<PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>}>
       <PresenceView />
     </Suspense>
   );

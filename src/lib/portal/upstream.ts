@@ -49,7 +49,7 @@ const SECRET_KEYS = "secret|password|current|code|refreshToken|accessToken";
 
 export function maskSecrets(text: string): string {
   return text
-    .replace(/\/invitatie\/[^?#\s"]*/g, "/invitatie/***")
+    .replace(/\/invite\/[^?#\s"]*/g, "/invite/***")
     .replace(/([?&](?:code|state|secret)=)[^&#\s"]*/g, "$1***")
     .replace(new RegExp(`"(${SECRET_KEYS})"\\s*:\\s*"[^"]*"`, "g"), "\"$1\":\"***\"");
 }

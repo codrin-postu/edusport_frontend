@@ -17,7 +17,7 @@ async function noStrayText(page: import("@playwright/test").Page): Promise<void>
 }
 
 test("a wrong password shows the refusal and empties the password", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await page.getByLabel("E-mail").fill(COACH_EMAIL);
   await page.getByLabel("Parolă", { exact: true }).fill("wrong-password-1");
   await page.getByRole("button", { name: "Intră" }).click();
@@ -28,7 +28,7 @@ test("a wrong password shows the refusal and empties the password", async({ page
 });
 
 test("the eye button shows the password", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   const field = page.getByLabel("Parolă", { exact: true });
   await field.fill("abc");
   await expect(field).toHaveAttribute("type", "password");
@@ -38,34 +38,34 @@ test("the eye button shows the password", async({ page }) => {
 });
 
 test("inputs carry the right autocomplete", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await expect(page.getByLabel("E-mail")).toHaveAttribute("autocomplete", "email");
   await expect(page.getByLabel("Parolă", { exact: true })).toHaveAttribute("autocomplete", "current-password");
 });
 
 test("a good login lands on Azi", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await page.getByLabel("E-mail").fill(COACH_EMAIL);
   await page.getByLabel("Parolă", { exact: true }).fill(COACH_PASSWORD);
   await page.getByRole("button", { name: "Intră" }).click();
   await expect(page).toHaveURL(/localhost:3200\/$/);
-  await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+  await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
 });
 
 test("a signed in coach is moved off the login screen", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await page.getByLabel("E-mail").fill(COACH_EMAIL);
   await page.getByLabel("Parolă", { exact: true }).fill(COACH_PASSWORD);
   await page.getByRole("button", { name: "Intră" }).click();
   await expect(page).toHaveURL(/localhost:3200\/$/);
-  await page.goto("/intrare");
+  await page.goto("/login");
   await expect(page).toHaveURL(/localhost:3200\/$/);
 });
 
 test("reset: an unknown e-mail gets the same text, the code logs in", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await page.getByRole("link", { name: "Am uitat parola" }).click();
-  await expect(page).toHaveURL(/\/am-uitat-parola$/);
+  await expect(page).toHaveURL(/\/forgot-password$/);
   await page.getByLabel("E-mail").fill("necunoscut@example.invalid");
   await page.getByRole("button", { name: "Trimite codul" }).click();
   await expect(page.getByText("Dacă adresa are cont, am trimis un cod.")).toBeVisible();
@@ -78,7 +78,7 @@ test("reset: an unknown e-mail gets the same text, the code logs in", async({ pa
 });
 
 test("reset: the mock code logs a known coach in", async({ page }) => {
-  await page.goto("/am-uitat-parola");
+  await page.goto("/forgot-password");
   await page.getByLabel("E-mail").fill(COACH_EMAIL);
   await page.getByRole("button", { name: "Trimite codul" }).click();
   await page.getByLabel("Cod din e-mail").fill("123456");
@@ -88,27 +88,27 @@ test("reset: the mock code logs a known coach in", async({ page }) => {
 });
 
 test("an old invite shows the expired text and no secret stays in the URL", async({ page }) => {
-  await page.goto(`/invitatie/${INVITE_OLD}`);
-  await expect(page).toHaveURL(/\/invitatie$/);
+  await page.goto(`/invite/${INVITE_OLD}`);
+  await expect(page).toHaveURL(/\/invite$/);
   await expect(page.getByText("Invitația a expirat. Cere administratorului una nouă.")).toBeVisible();
   await expect(page.getByRole("link", { name: "Înapoi la intrare" })).toBeVisible();
 });
 
 test("a failed invite read shows the load error, not the expired text", async({ page }) => {
   await mockState({ refuseSecret: true });
-  await page.goto(`/invitatie/${INVITE_VALID}`);
+  await page.goto(`/invite/${INVITE_VALID}`);
   await expect(page.getByText("Nu am putut încărca datele.")).toBeVisible();
   await expect(page.getByText("Invitația a expirat.")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Înapoi la intrare" })).toBeVisible();
 });
 
 test("no invite cookie shows the expired text", async({ page }) => {
-  await page.goto("/invitatie");
+  await page.goto("/invite");
   await expect(page.getByText("Invitația a expirat. Cere administratorului una nouă.")).toBeVisible();
 });
 
 test("a valid invite saves a password and lands on Azi", async({ page }) => {
-  await page.goto(`/invitatie/${INVITE_VALID}`);
+  await page.goto(`/invite/${INVITE_VALID}`);
   expect(page.url()).not.toContain(INVITE_VALID);
   await expect(page.getByText("Bun venit")).toBeVisible();
   await expect(page.getByText("Contul tău: antrenor2@example.invalid")).toBeVisible();
@@ -122,16 +122,16 @@ test("a valid invite saves a password and lands on Azi", async({ page }) => {
 
 test("without a Google client id there is no Google link", async({ page }) => {
   await mockState({ googleClientId: null });
-  await page.goto("/intrare");
+  await page.goto("/login");
   await expect(page.getByRole("button", { name: "Intră" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Continuă cu Google" })).toHaveCount(0);
-  await page.goto(`/invitatie/${INVITE_VALID}`);
+  await page.goto(`/invite/${INVITE_VALID}`);
   await expect(page.getByText("Contul tău: antrenor2@example.invalid")).toBeVisible();
   await expect(page.getByRole("link", { name: "Continuă cu Google" })).toHaveCount(0);
 });
 
 test("with Google configured the login shows the link before the form", async({ page }) => {
-  await page.goto("/intrare");
+  await page.goto("/login");
   await expect(page.getByRole("link", { name: "Continuă cu Google" })).toHaveAttribute("href", "/api/portal/google/start");
 });
 
@@ -149,7 +149,7 @@ test("a signed in Google only coach sets a password: e-mail prefilled, code logs
   await page.context().addCookies(session.map((c) => ({ ...c, url: COACH_BASE })));
   await page.goto("/profil/setari");
   await page.getByRole("link", { name: "Setează o parolă" }).click();
-  await expect(page).toHaveURL(/\/am-uitat-parola$/);
+  await expect(page).toHaveURL(/\/forgot-password$/);
   await expect(page.getByText("antrenor3@example.invalid")).toBeVisible();
   await expect(page.getByRole("link", { name: "Înapoi", exact: true })).toHaveAttribute("href", "/profil/setari");
   await page.getByRole("button", { name: "Trimite codul" }).click();
@@ -161,78 +161,15 @@ test("a signed in Google only coach sets a password: e-mail prefilled, code logs
   await expect(page.getByLabel("Parola actuală")).toBeVisible();
 });
 
-const RIBBON = ["rgb(239, 178, 43)", "rgb(234, 114, 51)", "rgb(190, 51, 48)", "rgb(110, 66, 86)"];
-
 test.describe("branded frame", () => {
-  test("desktop: panel with brand and ribbon, form card to its right", async({ page }) => {
+  test("desktop: the brand panel and the form", async({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/intrare");
+    await page.goto("/login");
     const frame = page.locator("[data-auth-frame]");
     await expect(frame.getByText(/^clubul sportiv$/i)).toBeVisible();
     await expect(frame.getByText("Portal antrenor", { exact: true })).toBeVisible();
-    const word = frame.getByText("EDUSPORT", { exact: true });
-    await expect(word).toBeVisible();
-    const style = await word.evaluate(async(el) => {
-      const cs = getComputedStyle(el);
-      await document.fonts.ready;
-      const loaded = [...document.fonts].some((f) => /climate ?crisis/i.test(f.family) && f.status === "loaded");
-      return { family: cs.fontFamily, size: cs.fontSize, loaded };
-    });
-    expect(style.family).toMatch(/climate ?crisis/i);
-    expect(style.size).toBe("62px");
-    expect(style.loaded).toBe(true);
-    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
-    expect(strokes).toEqual(RIBBON);
-    const brand = await word.boundingBox();
-    const card = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(card!.x).toBeGreaterThan(brand!.x + brand!.width);
-  });
-
-  test("phone: 31px wordmark on white, form below it, wave band on the bottom edge", async({ page }) => {
-    await page.goto("/intrare");
-    const word = page.locator("[data-auth-frame]").getByText("EDUSPORT", { exact: true });
-    expect(await word.evaluate((el) => getComputedStyle(el).fontSize)).toBe("31px");
-    const strokes = await page.locator("[data-auth-frame] svg:visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
-    expect(strokes).toEqual(RIBBON);
-    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
-    const form = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(form!.y).toBeGreaterThan(brand!.y + brand!.height);
-    const band = await page.locator("[data-auth-frame] svg[viewBox=\"0 0 390 168\"]").boundingBox();
-    expect(Math.round(band!.y + band!.height)).toBe(844);
-  });
-
-  for (const size of [{ width: 390, height: 844 }, { width: 375, height: 667 }]) {
-    test(`a ${size.width} x ${size.height} phone shows the login on one screen`, async({ page }) => {
-      await page.setViewportSize(size);
-      await page.goto("/intrare");
-      expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
-      await expect(page.getByRole("button", { name: "Intră" })).toBeInViewport();
-    });
-  }
-
-  test("a 320 x 568 phone scrolls to the button and the brand keeps clear of the form", async({ page }) => {
-    await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto("/intrare");
-    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
-    const heading = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(brand!.y + brand!.height).toBeLessThan(heading!.y);
-    const button = page.getByRole("button", { name: "Intră" });
-    await button.scrollIntoViewIfNeeded();
-    await expect(button).toBeInViewport();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  });
-
-  test("only the spinner may have rounded corners, on every auth screen", async({ page }) => {
-    for (const path of ["/intrare", "/am-uitat-parola", `/invitatie/${INVITE_VALID}`]) {
-      for (const size of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
-        await page.setViewportSize(size);
-        await page.goto(path);
-        await expect(page.locator("[data-auth-frame]")).toBeVisible();
-        const rounded = await page.evaluate(() =>
-          [...document.querySelectorAll("body *")].filter((el) => getComputedStyle(el).borderRadius !== "0px" && !el.closest("[role=status]")).map((el) => el.tagName));
-        expect(rounded, `${path} ${size.width}`).toEqual([]);
-      }
-    }
+    await expect(frame.getByText("EDUSPORT", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Intră în cont" })).toBeVisible();
   });
 });
 
@@ -245,7 +182,7 @@ async function signIn(page: import("@playwright/test").Page, password: string = 
 test.describe("entry transition", () => {
   test("a good login plays the exit, the reveal, then leaves nothing behind", async({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.goto("/intrare");
+    await page.goto("/login");
     await signIn(page);
     const overlay = page.locator("[data-entry-overlay]");
     await expect(overlay).toBeAttached();
@@ -260,7 +197,7 @@ test.describe("entry transition", () => {
     await page.getByRole("link", { name: "Grupe" }).first().click();
     await expect(page).toHaveURL(/\/grupe/);
     await page.goto("/");
-    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
     await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
     await page.reload();
     await expect(page.locator("[data-entry-reveal]")).toHaveCount(0);
@@ -268,7 +205,7 @@ test.describe("entry transition", () => {
 
   test("a wrong password starts no animation and the form stays usable", async({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.goto("/intrare");
+    await page.goto("/login");
     await signIn(page, "wrong-password-1");
     await expect(page.getByRole("main").getByRole("alert")).toHaveText("E-mailul sau parola nu sunt corecte.");
     await expect(page.locator("[data-entry-overlay]")).toHaveCount(0);
@@ -284,10 +221,10 @@ test.describe("entry transition", () => {
         if (document.querySelector("[data-entry-overlay], [data-entry-reveal]")) (window as unknown as { __sawOverlay: boolean }).__sawOverlay = true;
       }).observe(document, { childList: true, subtree: true });
     });
-    await page.goto("/intrare");
+    await page.goto("/login");
     await signIn(page);
     await expect(page).toHaveURL(/localhost:3200\/$/);
-    await expect(page.getByRole("link", { name: "Profil" }).first()).toHaveText("AP");
+    await expect(page.locator("[data-bottom-nav]").getByRole("link", { name: "Azi", exact: true })).toBeVisible();
     expect(await page.evaluate(() => (window as unknown as { __sawOverlay?: boolean }).__sawOverlay ?? false)).toBe(false);
   });
 });

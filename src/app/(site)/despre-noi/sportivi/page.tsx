@@ -257,13 +257,13 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                         />
                         <span
                           aria-hidden
-                          className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-muted group-hover:text-accent transition-colors"
+                          className="text-heading w-9 sm:w-11 text-center shrink-0 tabular-nums text-muted transition-colors"
                         >
                           {String(rank).padStart(2, "0")}
                         </span>
                         <div className="min-w-0 flex-1 lg:flex lg:items-center lg:gap-6">
                           <div className="min-w-0 lg:flex-1">
-                            <div className="text-body text-primary group-hover:text-accent transition-colors truncate">
+                            <div className="text-body text-primary transition-colors truncate">
                               {sp.name}
                             </div>
                             {sp.activeSince && (
@@ -304,7 +304,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
                             />
                           </div>
                         </div>
-                        <Icon name="chevron-right" className="shrink-0 text-secondary group-hover:text-accent transition-colors" />
+                        <Icon name="chevron-right" className="shrink-0 text-secondary transition-colors" />
                       </Link>
                     );
                   })}

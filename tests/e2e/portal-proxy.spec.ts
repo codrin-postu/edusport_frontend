@@ -125,6 +125,20 @@ test("encoded traversal in the proxy path never reaches Strapi", async({ request
   expect(await coachCalls()).toHaveLength(0);
 });
 
+test("encoded ids in the member change routes never reach Strapi", async({ request }) => {
+  const paths = [
+    "/api/portal/coach/groups/g%2F..%2Fx/members/a/move",
+    "/api/portal/coach/groups/%2E%2E/members/a/remove",
+    "/api/portal/coach/groups/gavansati/members/%2E%2E/remove",
+    "/api/portal/coach/groups/gavansati/members/amaria/remove/",
+  ];
+  for (const p of paths) {
+    const res = await request.post(`${RAW}${p}`, { data: { from: "2026-11-06" }, headers: AS_COACH });
+    expect(res.status(), p).toBe(404);
+  }
+  expect(await coachCalls()).toHaveLength(0);
+});
+
 test("a foreign Origin is refused before any call", async({ request }) => {
   const res = await request.put(`${RAW}/api/portal/coach/me`, { data: {}, headers: { ...AS_COACH, origin: "https://evil.example" } });
   expect(res.status()).toBe(403);
@@ -164,4 +178,19 @@ test("a refresh refused with 401 ends the session", async({ page }) => {
   expect(r.status).toBe(401);
   expect(r.json.error?.name).toBe("SessionEnded");
   expect(await cookieNamed(page, "es_rt")).toBeFalsy();
+});
+
+test("the canvas routes pass through the allowlist", async({ page }) => {
+  await loginAs(page);
+  const cal = await api(page, "GET", "/calendar?month=2026-11&x=1");
+  expect(cal.status).toBe(200);
+  expect((await coachCalls()).some((c) => c.path.endsWith("/calendar?month=2026-11"))).toBe(true);
+  expect((await api(page, "GET", "/competitions?scope=mine")).status).toBe(200);
+  expect((await api(page, "POST", "/calendar", {})).status).not.toBe(200);
+  const other = await api(page, "POST", "/groups/gsilver/members/adara/remove", { from: "2026-11-05" });
+  expect(other.status).toBe(403);
+  const own = await api(page, "POST", "/groups/gavansati/members/atudor/move", { toGroupId: "gavansati", from: "2026-11-05" });
+  expect(own.status).toBe(400);
+  const forged = await api(page, "POST", "/groups/gavansati/members/atudor/move", { toGroupId: "gsilver", from: "2026-11-05" });
+  expect(forged.status).toBe(403);
 });

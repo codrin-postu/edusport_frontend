@@ -1,94 +1,75 @@
 "use client";
 
 import { useState } from "react";
-import Button from "@/components/ui/button";
-import Checkbox from "@/components/ui/checkbox";
 import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
-import { LESSON, PROGRAM } from "@/lib/portal/copy";
-import { dayMonth } from "@/lib/portal/format";
-import { dateKey, eventDocumentId } from "@/lib/portal/program";
-import type { DateAnswer, DateBody, Occurrence } from "@/lib/portal/api-types";
-import { portalApi } from "../../../../_lib/api";
-import { useNoAccess } from "../../../../_lib/use-portal";
-import { Sheet } from "../../../../_ui/Sheet";
-import { useToast } from "../../../../_ui/Toast";
+import { PROGRAM } from "@/lib/portal/copy";
+import { capitalize, dayMonth, longDay } from "@/lib/portal/format";
+import { dateKey, dateState, eventDocumentId } from "@/lib/portal/program";
+import type { DateBody, Occurrence } from "@/lib/portal/api-types";
+import { ChoiceRow } from "@/app/_portal/ui/ChoiceRow";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { SheetFooter } from "../../../../_ui/SheetFooter";
+import { TimeDuration } from "./TimeDuration";
+import { useSend } from "./useSend";
 
-export type DateAction = "cancel" | "move" | "delete";
-type Props = { occurrence: Occurrence; action: DateAction; onClose: () => void; onDone: () => void };
+type Choice = "cancel" | "move" | "remove" | "keep";
+type Props = { occurrence: Occurrence; today: string; onClose: () => void; onDone: () => void };
 
-const TITLES: Record<DateAction, string> = { cancel: PROGRAM.cancel, move: PROGRAM.move, delete: PROGRAM.deleteClass };
-
-/** Cancel, move or delete one date ("Ține" needs no sheet: the tab sends it). */
-export function DateSheet({ occurrence: o, action, onClose, onDone }: Props) {
-  const toast = useToast();
-  const noAccess = useNoAccess();
-  const key = dateKey(o);
-  const documentId = eventDocumentId(o);
-  const [reason, setReason] = useState("");
+/** One date of the program: "Anulează" with a note, "Mută", "Șterge", and "Se ține" on a date that was cancelled or moved. */
+export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
+  const { busy, message, send } = useSend(onDone);
+  const state = dateState(o, today);
+  const changed = state === "cancelled" || state === "moved";
+  const [choice, setChoice] = useState<Choice>(state === "moved" ? "move" : "cancel");
+  const [reason, setReason] = useState(o.note ?? "");
   const [newDate, setNewDate] = useState(o.date);
   const [newTime, setNewTime] = useState(o.startTime ?? "");
-  const [notify, setNotify] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const key = dateKey(o);
+  const documentId = eventDocumentId(o);
   const day = dayMonth(key);
+  const ready = documentId !== null && (choice !== "move" || (newDate >= today && newTime !== ""));
 
-  async function submit() {
+  function submit() {
     if (documentId === null) return;
-    setBusy(true);
-    setMessage(null);
     const path = `coach/program/${encodeURIComponent(documentId)}`;
-    const trimmed = reason.trim();
-    let done: string;
-    let r;
-    if (action === "delete") {
-      r = await portalApi<{ date: string }>("DELETE", path);
-      done = PROGRAM.toasts.classDeleted;
-    } else {
-      const body: DateBody = action === "move"
-        ? { mode: "move", newDate, newStartTime: newTime, notifyParents: notify, ...(trimmed ? { reason: trimmed } : {}) }
-        : { mode: "cancel", notifyParents: notify, ...(trimmed ? { reason: trimmed } : {}) };
-      r = await portalApi<DateAnswer>("PUT", `${path}/dates/${key}`, body);
-      done = action === "move" ? PROGRAM.toasts.dateMoved(day) : PROGRAM.toasts.dateCancelled(day);
-    }
-    setBusy(false);
-    if (noAccess(r)) return;
-    if (!r.ok) {
-      setMessage(r.message);
-      return;
-    }
-    toast.show(done);
-    onDone();
+    const note = reason.trim();
+    if (choice === "remove" && o.oneOff) return void send("DELETE", path, undefined, PROGRAM.toasts.classDeleted);
+    const body: DateBody = choice === "cancel" ? { mode: "cancel", ...(note ? { reason: note } : {}) }
+      : choice === "move" ? { mode: "move", newDate, newStartTime: newTime, reason: null }
+      : choice === "keep" ? { mode: "keep" } : { mode: "remove" };
+    const done = choice === "cancel" ? PROGRAM.toasts.dateCancelled(day) : choice === "move" ? PROGRAM.toasts.dateMoved(day)
+      : choice === "keep" ? PROGRAM.toasts.dateKept(day) : PROGRAM.toasts.dateRemoved(day);
+    void send("PUT", `${path}/dates/${key}`, body, done);
   }
 
   return (
-    <Sheet open onOpenChange={(open) => { if (!open) onClose(); }} title={TITLES[action]}>
-      <div className="flex flex-col gap-6">
-        {action === "delete" ? (
-          <p className="text-body text-primary">{PROGRAM.deleteClassConfirm(day)}</p>
-        ) : (
-          <>
-            {action === "move" && (
-              <>
-                <DatePickerField id="date-new" label={PROGRAM.newDate} value={newDate} onChange={setNewDate} variant="card" />
-                <div>
-                  <label htmlFor="date-time" className="text-label text-secondary block mb-2">{PROGRAM.startAt}</label>
-                  <Input id="date-time" type="time" step={300} value={newTime} onChange={(e) => setNewTime(e.target.value)} surface="card" />
-                </div>
-              </>
-            )}
+    <Sheet
+      open
+      onOpenChange={(open) => { if (!open && !busy) onClose(); }}
+      title={`${capitalize(longDay(o.date))}, ${o.startTime ?? ""}`}
+      description={PROGRAM.dateOnly}
+      footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={choice === "remove" ? PROGRAM.remove : PROGRAM.save} onClose={onClose} onConfirm={submit} />}
+    >
+      <div role="radiogroup" aria-label={PROGRAM.thisDate} className="flex flex-col gap-3">
+        <ChoiceRow label={PROGRAM.cancel} sub={PROGRAM.cancelSub} checked={choice === "cancel"} onSelect={() => setChoice("cancel")}>
+          {choice === "cancel" && (
             <div>
-              <label htmlFor="date-reason" className="text-label text-secondary block mb-2">{PROGRAM.reason}</label>
-              <Input id="date-reason" value={reason} maxLength={120} onChange={(e) => setReason(e.target.value)} surface="card" />
+              <label htmlFor="date-note" className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.note}</label>
+              <Input id="date-note" value={reason} maxLength={120} onChange={(e) => setReason(e.target.value)} surface="card" />
             </div>
-            <Checkbox label={PROGRAM.notify} checked={notify} onChange={(e) => setNotify(e.target.checked)} />
-          </>
-        )}
-        <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
-        <Button onClick={() => void submit()} disabled={busy || documentId === null || (action === "move" && (newDate === "" || newTime === ""))} className="w-full">
-          {action === "delete" ? PROGRAM.deleteClass : PROGRAM.save}
-        </Button>
-        {action === "delete" && <Button variant="secondary" onClick={onClose} disabled={busy} className="w-full">{LESSON.giveUp}</Button>}
+          )}
+        </ChoiceRow>
+        <ChoiceRow label={PROGRAM.move} sub={PROGRAM.moveSub} checked={choice === "move"} onSelect={() => setChoice("move")}>
+          {choice === "move" && (
+            <div className="grid grid-cols-2 gap-3">
+              <DatePickerField id="date-new" label={PROGRAM.newDate} value={newDate} onChange={setNewDate} variant="card" />
+              <TimeDuration time={newTime} onTime={setNewTime} />
+            </div>
+          )}
+        </ChoiceRow>
+        <ChoiceRow label={PROGRAM.remove} sub={PROGRAM.removeSub} checked={choice === "remove"} onSelect={() => setChoice("remove")} />
+        {changed && <ChoiceRow label={PROGRAM.keepChoice} sub={PROGRAM.keepSub} checked={choice === "keep"} onSelect={() => setChoice("keep")} />}
       </div>
     </Sheet>
   );
