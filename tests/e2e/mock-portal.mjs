@@ -254,6 +254,13 @@ function nextAndWeek(todo) {
   };
 }
 
+/** Saved classes of another coach's group where the coach stood in (the backend lists them in today's groups with standIn). */
+function savedStandIns(date) {
+  return Object.entries(world.saved)
+    .filter(([, rec]) => rec.date === date && !groupOf(rec.groupId).own && rec.coachIds.includes(ME))
+    .map(([key, rec]) => ({ ...classRow(groupOf(rec.groupId), date), occurrenceKey: key, sessionId: rec.sessionId, startTime: rec.startTime, done: true, standIn: true }));
+}
+
 function todayData(date) {
   if (state.emptyToday) { const todo = date === today ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : []; return { date, today, groups: [], lessons: [], todo, ...nextAndWeek(todo) }; }
   const own = Object.values(world.groups).filter((g) => g.own);
@@ -261,7 +268,7 @@ function todayData(date) {
   const todo = isToday ? [classRow(world.groups["gavansati"], addDays(today, -6), false)] : [];
   return {
     date, today,
-    groups: isToday ? own.map((g) => classRow(g, date)) : [],
+    groups: isToday ? [...own.map((g) => classRow(g, date)), ...savedStandIns(date)] : [],
     lessons: Object.values(world.lessons).filter((l) => l.date === date).map(lessonRow),
     todo, ...nextAndWeek(todo),
   };

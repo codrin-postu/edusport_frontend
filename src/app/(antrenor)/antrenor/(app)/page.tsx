@@ -30,7 +30,7 @@ const ROW1 = "portal:min-h-(--portal-tap) portal:items-center";
 
 function groupRow(c: CoachClassRow): SessionRowData {
   return {
-    kind: "grup", date: c.date, startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done,
+    kind: "grup", date: c.date, startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done, standIn: c.standIn,
     sessionId: c.sessionId, occurrenceKey: c.occurrenceKey, lessonId: null,
   };
 }

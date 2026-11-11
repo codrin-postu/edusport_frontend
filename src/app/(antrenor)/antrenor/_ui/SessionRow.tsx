@@ -3,7 +3,7 @@ import { withFrom, type PresenceFrom } from "@/lib/portal/presence";
 import { roCount } from "@/lib/ro-plural";
 import { weekdayShort } from "@/lib/portal/format";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
-import { IndividualTag } from "@/app/_portal/ui/IndividualTag";
+import { IndividualTag, StandInTag } from "@/app/_portal/ui/IndividualTag";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 
@@ -20,6 +20,8 @@ export type SessionRowData = {
   durationMin: number | null;
   done: boolean;
   cancelled?: boolean;
+  /** A group session the coach takes as a stand-in (Azi marks it with a tag). */
+  standIn?: boolean;
   sessionId: string | null;
   occurrenceKey: string | null;
   lessonId: string | null;
@@ -42,7 +44,10 @@ export function SessionRow({ row, now, from = null }: { row: SessionRowData; now
         {AZI.minutes(row.durationMin ?? 0)}
       </>
     ) : (
-      AZI.groupSub(roCount(row.children ?? 0, "copil", "copii"), row.location)
+      <>
+        {row.standIn === true && <StandInTag />}
+        {AZI.groupSub(roCount(row.children ?? 0, "copil", "copii"), row.location)}
+      </>
     );
   return (
     <ListRow

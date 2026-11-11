@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockReset, mockState } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -314,4 +314,14 @@ test.describe("Azi week column", () => {
     await expect(row.locator("[data-date-time]")).toHaveText("09:00");
     await expect(row.locator("[data-date-word]")).toHaveText("Vin");
   });
+});
+
+test("Azi tags a class where you stood in", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/prezenta?occurrence=" + encodeURIComponent("occ:guscat:" + TODAY));
+  await page.getByLabel(/^Grup, /).first().evaluate((el) => (el as HTMLInputElement).click());
+  await page.getByRole("button", { name: "Salvează", exact: true }).click();
+  await expect(page).toHaveURL(/\/prezenta\?id=/);
+  await page.goto("/");
+  await expect(page.locator("[data-stand-in-tag]")).toHaveText("Înlocuitor");
 });
