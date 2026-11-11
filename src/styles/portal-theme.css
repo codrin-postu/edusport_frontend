@@ -130,7 +130,8 @@
   --portal-brand-word: 22px;       /* 23 phone brand block */
   --portal-brand-kicker-tracking: 0.28em; /* 23 brand kicker tracking */
   --portal-login-brand: 62px;      /* 23 28 login wordmark on the desktop navy panel */
-  --portal-band-on-dark-line: rgb(246 249 253 / 0.35); /* 25 account button border on the sidebar */
+  --portal-account-menu-pad: 6px;  /* desktop account menu: panel padding and separator margin */
+  --portal-account-menu-shadow: 0 8px 24px rgb(14 26 60 / 0.18); /* desktop account menu panel shadow */
   /* Kit layout sizes (Tasks 6 to 8) */
   --portal-band-pad-y: 28px;       /* layout top band block padding */
   --portal-head-pt: 18px;          /* layout phone header top padding */

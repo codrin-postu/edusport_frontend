@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import { PROFILE } from "@/lib/portal/copy";
-import { portalApi } from "@/app/_portal/lib/api";
+import { logout } from "@/app/_portal/lib/logout";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
@@ -12,10 +12,6 @@ import { useMe } from "../../_lib/me-context";
 
 export function ProfileView() {
   const me = useMe();
-  async function logout() {
-    await portalApi("POST", "auth/logout");
-    window.location.assign("/login");
-  }
   if (me === null) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   return (
     <>

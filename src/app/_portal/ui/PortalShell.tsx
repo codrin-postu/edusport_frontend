@@ -1,5 +1,5 @@
 import { BottomNav } from "@/app/_portal/ui/BottomNav";
-import { Sidebar } from "@/app/_portal/ui/Sidebar";
+import { Sidebar, type SidebarAccount } from "@/app/_portal/ui/Sidebar";
 import { EntryReveal } from "@/app/_portal/ui/EntryReveal";
 import { ToastProvider } from "@/app/_portal/ui/Toast";
 import type { NavItem } from "@/app/_portal/lib/nav";
@@ -19,7 +19,7 @@ export function PortalShell({
   children,
 }: {
   nav: NavItem[];
-  account: { label: string; href: string; ariaLabel?: string };
+  account: SidebarAccount;
   brandHref: string;
   phoneNav?: boolean;
   children: React.ReactNode;
