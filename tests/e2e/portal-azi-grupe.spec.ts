@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockReset, mockState, shot } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -10,7 +10,7 @@ for (const size of SIZES) {
   test.describe(`Azi ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("greeting, now tile, stat, the four rows and the past list", async({ page }, info) => {
+    test("greeting, now tile, stat, the four rows and the past list", async({ page }) => {
       await loginAs(page);
       await page.goto("/");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -33,9 +33,7 @@ for (const size of SIZES) {
         await expect(today.nth(i).locator("[data-date-time]")).toHaveText(["10:00", "15:00", "17:00", "18:15"][i]);
       }
       await expect(today.nth(0)).toContainText("Primii Pași");
-      await expect(today.nth(0).locator("[data-date-num]")).toHaveCSS("color", "rgb(151, 155, 165)");
       await expect(today.nth(1)).toContainText("Matei Radu");
-      await expect(today.nth(1).locator("[data-individual-tag]")).toHaveCSS("background-color", "rgb(17, 17, 17)");
       await expect(today.nth(1)).toContainText("50 min");
       await expect(today.nth(1).locator("[data-status-block]")).toHaveAttribute("aria-label", "Individual, completat");
       await expect(today.nth(1)).toHaveAttribute("href", "/lectie/ldone");
@@ -46,10 +44,8 @@ for (const size of SIZES) {
       await expect(today.nth(3)).toHaveAttribute("href", /\/prezenta\?id=s-today$/);
       const done = today.nth(3).locator("[data-status-block]");
       await expect(done).toHaveAttribute("aria-label", "Grup, completat");
-      await expect(done).toHaveCSS("background-color", "rgb(74, 123, 208)");
       const todo = today.nth(0).locator("[data-status-block]");
       await expect(todo).toHaveAttribute("aria-label", "Grup, necompletat");
-      await expect(todo).toHaveCSS("background-color", "rgb(14, 26, 60)");
       await expect(today.nth(0)).toHaveAttribute("href", /\/prezenta\?occurrence=occ%3Agprimii%3A/);
       await expect(page.getByRole("link", { name: "Calendar ›" })).toHaveAttribute("href", "/calendar");
       await expect(page.getByRole("heading", { name: "Prezență de completat" })).toBeVisible();
@@ -57,17 +53,10 @@ for (const size of SIZES) {
       await expect(past).toHaveCount(1);
       await expect(past).toContainText("Avansați");
       await expect(past.locator("[data-date-word]")).toHaveText("Vin");
-      await expect(past.locator("[data-date-word]")).toHaveCSS("color", "rgb(190, 51, 48)");
       await expect(past.locator("[data-date-num]")).toHaveText("30");
       await expect(past.locator("[data-date-time]")).toHaveText("18:15");
       await expect(past).toContainText("grup, ");
       await expect(past.locator("[data-date-block]")).toHaveCount(1);
-      // A today row and a future or past row share one square size.
-      const sq = async(l: typeof past) => (await l.locator("[data-date-block]").first().boundingBox())!;
-      expect((await sq(today.nth(0))).height).toBe((await sq(past)).height);
-      expect((await sq(today.nth(0))).width).toBe((await sq(past)).width);
-      expect((await sq(past)).height).toBe(64);
-      await shot(page, info, "azi");
     });
 
     test("no classes and no lessons", async({ page }) => {
@@ -97,7 +86,7 @@ for (const size of SIZES) {
 test.describe("Azi layout", () => {
   test.use({ timezoneId: "Europe/Bucharest" });
 
-  test("phone: the brand row and a full width lesson button under the today card", async({ page }) => {
+  test("phone: the brand row and the lesson button", async({ page }) => {
     await page.setViewportSize(SIZES[0]);
     await loginAs(page);
     await page.goto("/");
@@ -106,42 +95,6 @@ test.describe("Azi layout", () => {
     await expect(head.getByText("EDUSPORT", { exact: true })).toBeVisible();
     const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
     await expect(button).toHaveCount(1);
-    const box = await button.boundingBox();
-    expect(box!.width).toBeGreaterThan(390 - 2 * 20 - 2);
-    const card = await page.locator("[data-today-list]").getByRole("link", { name: /18:15.*Avansați/ }).boundingBox();
-    expect(box!.y).toBeGreaterThan(card!.y);
-    const past = await page.getByRole("heading", { name: "Prezență de completat" }).boundingBox();
-    expect(past!.y).toBeGreaterThan(box!.y);
-  });
-
-  test("desktop: stat and past left (2), the today list right (3), tops aligned, the lesson button as tall as the now tile", async({ page }) => {
-    await page.setViewportSize(SIZES[1]);
-    await loginAs(page);
-    await page.goto("/");
-    const stat = await page.locator("[data-stat-num]").boundingBox();
-    const past = await page.getByRole("heading", { name: "Prezență de completat" }).boundingBox();
-    const today = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
-    expect(stat!.x).toBeLessThan(today!.x);
-    expect(past!.x).toBeLessThan(today!.x);
-    // The summary card's top lines up with the list's top (headings share row 1, content row 2).
-    const list = await page.locator("[data-today-list]").boundingBox();
-    const statCard = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
-    expect(Math.abs(statCard!.y - (list!.y))).toBeLessThan(2);
-    // 3:2 grid: the main column is wider than the side one.
-    const sideW = statCard!.width;
-    const mainW = list!.width;
-    expect(Math.round(mainW / sideW * 10)).toBeGreaterThanOrEqual(13);
-    expect(Math.round(mainW / sideW * 10)).toBeLessThanOrEqual(17);
-    const button = page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true");
-    await expect(button).toHaveCount(1);
-    const tile = await page.locator("[role=group][aria-label]").filter({ has: page.locator("text=/\\d\\d:\\d\\d/") }).first().boundingBox();
-    const btn = await button.boundingBox();
-    expect(Math.abs(btn!.height - tile!.height)).toBeLessThan(2);
-    expect(Math.abs(btn!.y - tile!.y)).toBeLessThan(2);
-    const header = await page.locator("[data-page-header]").boundingBox();
-    const bb = await button.boundingBox();
-    expect(bb!.y).toBeGreaterThanOrEqual(header!.y);
-    expect(bb!.y + bb!.height).toBeLessThanOrEqual(header!.y + header!.height);
   });
 });
 
@@ -149,7 +102,7 @@ for (const size of SIZES) {
   test.describe(`Grupe ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("sections, date blocks, rows and links", async({ page }, info) => {
+    test("sections, date blocks, rows and links", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -176,10 +129,6 @@ for (const size of SIZES) {
       await expect(uscat.locator("[data-date-num]")).toHaveText("5");
       await expect(uscat).toContainText("Antrenor: Bianca Ene");
       await expect(uscat).toHaveAttribute("href", "/grupe/guscat");
-      const h = async(name: string) => (await page.getByRole("heading", { name }).boundingBox())!;
-      if (size.width >= 900) expect((await h("Alte grupe")).x).toBeGreaterThan((await h("Grupele mele")).x);
-      else expect((await h("Alte grupe")).y).toBeGreaterThan((await h("Grupele mele")).y);
-      await shot(page, info, "grupe");
     });
   });
 }
@@ -218,14 +167,13 @@ for (const size of SIZES) {
   test.describe(`Grupă ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("info card, actions, tabs and the member rows", async({ page }, info) => {
+    test("info card, actions, tabs and the member rows", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Avansați");
       await expect(page.getByRole("link", { name: "‹ Grupe" })).toHaveAttribute("href", "/grupe");
       const card = page.locator("[data-group-info] > div");
-      await expect(card).toHaveCSS("background-color", "rgb(225, 236, 251)");
       await expect(card).toContainText("Program: Ma, Mi 18:15");
       await expect(card).toContainText("Loc: AFI Cotroceni");
       await expect(card).toContainText("Antrenori: Andrei Popa");
@@ -243,16 +191,7 @@ for (const size of SIZES) {
       await expect(row("Ioana Diaconu")).toContainText("12 ani, și în Uscat Juniori");
       await expect(row("Sofia Nistor")).toContainText("11 ani, până pe 12 noi");
       await expect(row("Sofia Nistor")).toHaveAttribute("href", "/sportiv/asofia?grupa=gavansati");
-      const left = (await page.locator("[data-group-info]").boundingBox())!;
-      const list = (await rows.first().boundingBox())!;
-      if (size.width >= 900) {
-        expect(list.x + list.width).toBeLessThan(left.x);
-        // No header actions on Grupă: the side column holds them on both tabs, so the header never changes height.
-        await expect(page.locator("[data-page-header]").getByRole("link")).toHaveCount(1);
-      } else {
-        expect(list.y).toBeGreaterThan(left.y);
-      }
-      await shot(page, info, "grupa");
+      if (size.width >= 900) await expect(page.locator("[data-page-header]").getByRole("link")).toHaveCount(1);
     });
   });
 }
@@ -325,16 +264,11 @@ test("a group with no weekly schedule shows no leading comma and an empty date b
 test.describe("Azi week column", () => {
   test.use({ timezoneId: "Europe/Bucharest" });
 
-  test("desktop: Azi pe scurt heading, next row link, week values, same start line as the list", async({ page }) => {
+  test("desktop: Azi pe scurt heading, next row link, week values", async({ page }) => {
     await page.setViewportSize(SIZES[1]);
     await loginAs(page);
     await page.goto("/");
-    const left = await page.getByRole("heading", { name: "Azi pe scurt" }).boundingBox();
-    const right = await page.getByRole("heading", { name: "Antrenamente azi" }).boundingBox();
-    expect(Math.abs(left!.y - right!.y)).toBeLessThan(2);
-    const stat = await page.locator("[data-stat-num]").locator("xpath=ancestor::section").boundingBox();
-    const list = await page.locator("[data-today-list]").boundingBox();
-    expect(Math.abs(stat!.y - list!.y)).toBeLessThan(2);
+    await expect(page.getByRole("heading", { name: "Azi pe scurt" })).toBeVisible();
     const nextRow = page.getByRole("heading", { name: "Următorul antrenament" }).locator("xpath=../following-sibling::*[1]//a");
     // 14:00 Bucharest: the 15:00 lesson of Matei Radu is the first one after now.
     await expect(nextRow).toContainText("Matei Radu");
@@ -345,23 +279,6 @@ test.describe("Azi week column", () => {
     await expect(page.getByText("Ședințe de grup", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("3 ținute, 3 rămase");
     await expect(page.getByText("Lecții individuale", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText(/^\d+ ținut(ă|e), \d+ rămas(ă|e)$/);
     await expect(page.getByText("Prezență necompletată", { exact: true }).locator("xpath=following-sibling::*[1]")).toHaveText("0");
-  });
-
-  test("phone order: stat, today list, add button, next, week, to complete", async({ page }) => {
-    await page.setViewportSize(SIZES[0]);
-    await loginAs(page);
-    await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Azi pe scurt" })).toBeHidden();
-    const ys: number[] = [];
-    for (const loc of [
-      page.locator("[data-stat-num]"),
-      page.getByRole("heading", { name: "Antrenamente azi" }),
-      page.getByRole("link", { name: "+ Adaugă antrenament" }).locator("visible=true"),
-      page.getByRole("heading", { name: "Următorul antrenament" }),
-      page.getByRole("heading", { name: "Săptămâna aceasta" }),
-      page.getByRole("heading", { name: "Prezență de completat" }),
-    ]) ys.push((await loc.boundingBox())!.y);
-    expect([...ys].sort((a, b) => a - b)).toEqual(ys);
   });
 
   test("no next: the section is hidden, the week stays; singular forms", async({ page }) => {

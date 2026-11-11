@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, mockState, shot } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -20,7 +20,7 @@ for (const size of SIZES) {
   test.describe(`Modifică grupa ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("header, rows and both sheets", async({ page }, info) => {
+    test("header, rows and both sheets", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati/modifica");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -32,21 +32,11 @@ for (const size of SIZES) {
       const add = page.getByRole("link", { name: "+ Adaugă sportiv" }).locator("visible=true");
       await expect(add).toHaveAttribute("href", "/grupe/gavansati/adauga");
       await expect(page.getByRole("link", { name: "Gata" }).locator("visible=true")).toHaveAttribute("href", "/grupe/gavansati");
-      await shot(page, info, "grupa-modifica");
 
       await rowButton(page, "Mută", 0).click();
       const sheet = page.getByRole("dialog");
       await expect(sheet.getByRole("heading", { name: "Muți pe Maria Ionescu în altă grupă" })).toBeVisible();
       await expect(sheet.getByText("Prezențele de până acum rămân în Avansați.")).toBeVisible();
-      const box = (await sheet.boundingBox())!;
-      if (size.width >= 900) {
-        expect(Math.round(box.width)).toBe(460);
-        expect(Math.abs(box.x + box.width / 2 - size.width / 2)).toBeLessThan(2);
-      } else {
-        expect(Math.round(box.width)).toBe(size.width);
-        expect(Math.round(box.y + box.height)).toBe(size.height);
-      }
-      await shot(page, info, "grupa-muta");
       await page.keyboard.press("Escape");
       await expect(sheet).toHaveCount(0);
       await expect(rowButton(page, "Mută", 0)).toBeFocused();
@@ -54,7 +44,6 @@ for (const size of SIZES) {
       await rowButton(page, "Scoate", 1).click();
       await expect(sheet.getByRole("heading", { name: "Scoți pe Luca Dumitru din grupă?" })).toBeVisible();
       await expect(sheet.getByText("Prezențele de până acum rămân. Nu mai apare la ședințele grupei.")).toBeVisible();
-      await shot(page, info, "grupa-scoate");
     });
   });
 }

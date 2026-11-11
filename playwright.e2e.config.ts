@@ -43,8 +43,6 @@ export default defineConfig({
         // The production build accepts antrenor.localhost only through this setting.
         PORTAL_HOST_ANTRENOR: "antrenor.localhost:3200",
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: "e2e-umami",
-        // The kit preview page (tests/e2e/portal-kit.spec.ts); deploys never set this.
-        PORTAL_KIT_PREVIEW: "1",
       },
       reuseExistingServer: false,
       timeout: 300_000,

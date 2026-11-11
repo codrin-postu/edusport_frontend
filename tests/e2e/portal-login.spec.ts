@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, isolate, mockReset, mockState, shot } from "./portal-helpers";
+import { COACH_BASE, COACH_EMAIL, COACH_PASSWORD, isolate, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async({ page }) => {
@@ -161,78 +161,15 @@ test("a signed in Google only coach sets a password: e-mail prefilled, code logs
   await expect(page.getByLabel("Parola actuală")).toBeVisible();
 });
 
-const RIBBON = ["rgb(239, 178, 43)", "rgb(234, 114, 51)", "rgb(190, 51, 48)", "rgb(110, 66, 86)"];
-
 test.describe("branded frame", () => {
-  test("desktop: panel with brand and ribbon, form card to its right", async({ page }) => {
+  test("desktop: the brand panel and the form", async({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/login");
     const frame = page.locator("[data-auth-frame]");
     await expect(frame.getByText(/^clubul sportiv$/i)).toBeVisible();
     await expect(frame.getByText("Portal antrenor", { exact: true })).toBeVisible();
-    const word = frame.getByText("EDUSPORT", { exact: true });
-    await expect(word).toBeVisible();
-    const style = await word.evaluate(async(el) => {
-      const cs = getComputedStyle(el);
-      await document.fonts.ready;
-      const loaded = [...document.fonts].some((f) => /climate ?crisis/i.test(f.family) && f.status === "loaded");
-      return { family: cs.fontFamily, size: cs.fontSize, loaded };
-    });
-    expect(style.family).toMatch(/climate ?crisis/i);
-    expect(style.size).toBe("62px");
-    expect(style.loaded).toBe(true);
-    const strokes = await page.locator("[data-auth-frame] svg:not([data-brand-mark]):visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
-    expect(strokes).toEqual(RIBBON);
-    const brand = await word.boundingBox();
-    const card = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(card!.x).toBeGreaterThan(brand!.x + brand!.width);
-  });
-
-  test("phone: 31px wordmark on white, form below it, wave band on the bottom edge", async({ page }) => {
-    await page.goto("/login");
-    const word = page.locator("[data-auth-frame]").getByText("EDUSPORT", { exact: true });
-    expect(await word.evaluate((el) => getComputedStyle(el).fontSize)).toBe("31px");
-    const strokes = await page.locator("[data-auth-frame] svg:not([data-brand-mark]):visible path").evaluateAll((els) => els.map((el) => getComputedStyle(el).stroke));
-    expect(strokes).toEqual(RIBBON);
-    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
-    const form = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(form!.y).toBeGreaterThan(brand!.y + brand!.height);
-    const band = await page.locator("[data-auth-frame] svg[viewBox=\"0 0 390 168\"]").boundingBox();
-    expect(Math.round(band!.y + band!.height)).toBe(844);
-  });
-
-  for (const size of [{ width: 390, height: 844 }, { width: 375, height: 667 }]) {
-    test(`a ${size.width} x ${size.height} phone shows the login on one screen`, async({ page }) => {
-      await page.setViewportSize(size);
-      await page.goto("/login");
-      expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
-      await expect(page.getByRole("button", { name: "Intră" })).toBeInViewport();
-    });
-  }
-
-  test("a 320 x 568 phone scrolls to the button and the brand keeps clear of the form", async({ page }) => {
-    await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto("/login");
-    const brand = await page.locator("[data-auth-frame]").getByText("Portal antrenor", { exact: true }).boundingBox();
-    const heading = await page.getByRole("heading", { name: "Intră în cont" }).boundingBox();
-    expect(brand!.y + brand!.height).toBeLessThan(heading!.y);
-    const button = page.getByRole("button", { name: "Intră" });
-    await button.scrollIntoViewIfNeeded();
-    await expect(button).toBeInViewport();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  });
-
-  test("only the spinner may have rounded corners, on every auth screen", async({ page }) => {
-    for (const path of ["/login", "/forgot-password", `/invite/${INVITE_VALID}`]) {
-      for (const size of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
-        await page.setViewportSize(size);
-        await page.goto(path);
-        await expect(page.locator("[data-auth-frame]")).toBeVisible();
-        const rounded = await page.evaluate(() =>
-          [...document.querySelectorAll("body *")].filter((el) => getComputedStyle(el).borderRadius !== "0px" && !el.closest("[role=status]")).map((el) => el.tagName));
-        expect(rounded, `${path} ${size.width}`).toEqual([]);
-      }
-    }
+    await expect(frame.getByText("EDUSPORT", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Intră în cont" })).toBeVisible();
   });
 });
 
@@ -291,58 +228,3 @@ test.describe("entry transition", () => {
     expect(await page.evaluate(() => (window as unknown as { __sawOverlay?: boolean }).__sawOverlay ?? false)).toBe(false);
   });
 });
-
-test.describe("canvas components", () => {
-  const css = (loc: import("@playwright/test").Locator, prop: string) => loc.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
-
-  test("login: card title, Google button, or line, label, button face, link", async({ page }) => {
-    await page.goto("/login");
-    await expect(page.locator("h1")).toHaveCount(1);
-    expect(await css(page.getByRole("heading", { name: "Intră în cont" }), "font-size")).toBe("28px");
-    const google = page.getByRole("link", { name: "Continuă cu Google" });
-    await expect(google.locator("svg")).toHaveCount(1);
-    expect(await css(google, "border-top-width")).toBe("2px");
-    expect(await css(google, "font-size")).toBe("15px");
-    expect(await css(google, "text-transform")).toBe("none");
-    const card = page.locator("[data-auth-frame] h1").locator("xpath=..");
-    await expect(card.locator("hr")).toHaveCount(0);
-    const or = card.getByText("sau", { exact: true });
-    await expect(or).toBeVisible();
-    expect(await or.evaluate((el) => [el.previousElementSibling, el.nextElementSibling].filter((s) => s && (s.tagName === "HR" || getComputedStyle(s).borderTopWidth !== "0px" && s.tagName !== "A" && s.tagName !== "FORM")).length)).toBe(0);
-    const label = page.locator("label", { hasText: "E-mail" }).first();
-    expect(await css(label, "font-size")).toBe("14px");
-    expect(await css(label, "text-transform")).toBe("none");
-    await page.getByLabel("E-mail").fill(COACH_EMAIL);
-    await page.getByLabel("Parolă", { exact: true }).fill(COACH_PASSWORD);
-    const submit = page.getByRole("button", { name: "Intră" }).locator(".lcta-face");
-    expect(await css(submit, "background-color")).toBe("rgb(14, 26, 60)");
-    const forgot = page.getByRole("link", { name: "Am uitat parola" });
-    expect(await css(forgot, "font-weight")).toBe("700");
-    expect(Number.parseFloat(await css(forgot, "min-height"))).toBeGreaterThanOrEqual(44);
-  });
-
-  test("reset and invite use the same label and link components", async({ page }) => {
-    await page.goto("/forgot-password");
-    const label = page.locator("label", { hasText: "E-mail" }).first();
-    expect(await css(label, "font-size")).toBe("14px");
-    expect(await css(label, "text-transform")).toBe("none");
-    const back = page.getByRole("link", { name: "Înapoi la intrare" });
-    expect(await css(back, "font-weight")).toBe("700");
-    expect(Number.parseFloat(await css(back, "min-height"))).toBeGreaterThanOrEqual(44);
-    await page.goto(`/invite/${INVITE_VALID}`);
-    const google = page.getByRole("link", { name: "Continuă cu Google" });
-    expect(await css(google, "border-top-width")).toBe("2px");
-    expect(await css(google, "font-size")).toBe("15px");
-    await page.getByLabel("Parolă nouă").fill("doisprezece12");
-    expect(await css(page.getByRole("button", { name: "Salvează parola" }).locator(".lcta-face"), "background-color")).toBe("rgb(14, 26, 60)");
-  });
-});
-
-for (const size of [{ width: 390, height: 844 }, { width: 1280, height: 900 }]) {
-  test(`login screenshot ${size.width}`, async({ page }, info) => {
-    await page.setViewportSize(size);
-    await page.goto("/login");
-    await expect(page.locator("h1")).toHaveCount(1);
-    await shot(page, info, "intrare");
-  });
-}

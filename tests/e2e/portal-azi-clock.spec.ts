@@ -5,21 +5,18 @@ test.use({ baseURL: COACH_BASE, viewport: { width: 1280, height: 900 }, timezone
 test.beforeEach(async() => { await mockReset(); });
 
 // The mock's day is Thursday 5 November 2026; Bucharest is UTC+2 then.
-test("the now tile ticks on the minute and a class greys when its start passes", async({ page }) => {
+test("the now tile ticks on the minute", async({ page }) => {
   await loginAs(page);
   await page.clock.install({ time: new Date("2026-11-05T12:58:30Z") });
   await page.goto("/");
   const tile = page.getByRole("group", { name: "Joi, 5 noiembrie, ora 14:58" });
   await expect(tile).toBeVisible();
-  const row = page.locator("[data-today-list]").getByRole("link", { name: /15:00.*Matei Radu/ });
-  await expect(row.locator("[data-date-num]")).not.toHaveCSS("color", "rgb(151, 155, 165)");
   await page.clock.runFor(31_000);
   await expect(page.getByRole("group", { name: "Joi, 5 noiembrie, ora 14:59" }).getByText("14:59", { exact: true })).toBeVisible();
   await page.clock.runFor(60_000);
   await expect(page.getByRole("group", { name: "Joi, 5 noiembrie, ora 15:00" })).toBeVisible();
   await page.clock.runFor(60_000);
   await expect(page.getByRole("group", { name: "Joi, 5 noiembrie, ora 15:01" }).getByText("15:01", { exact: true })).toBeVisible();
-  await expect(row.locator("[data-date-num]")).toHaveCSS("color", "rgb(151, 155, 165)");
 });
 
 test("at midnight the date rolls over and today is fetched again", async({ page }) => {

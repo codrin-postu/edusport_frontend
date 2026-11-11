@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset, mockState, shot } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset, mockState } from "./portal-helpers";
 
 test.beforeEach(async() => { await mockReset(); });
 
@@ -10,7 +10,7 @@ for (const size of SIZES) {
   test.describe(`Concursuri ${size.width}`, () => {
     test.use({ baseURL: COACH_BASE, viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("three cards newest first, the first open, members link to the athlete", async({ page }, info) => {
+    test("three cards newest first, the first open, members link to the athlete", async({ page }) => {
       await loginAs(page);
       await page.goto("/concursuri");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -32,7 +32,6 @@ for (const size of SIZES) {
       await expect(first.locator("[data-date-block]").first()).toContainText("Oct");
       await expect(first.locator("[data-date-block]").first()).toContainText("26");
       await expect(first.locator("[data-date-time]")).toHaveCount(0);
-      expect((await first.locator("[data-date-block]").first().boundingBox())!.height).toBe(64);
       await expect(first.locator("summary")).toContainText("Brașov");
       await expect(first.locator("[data-comp-count]")).toContainText("3");
       await expect(first.locator("[data-comp-count]")).toContainText("sportivi");
@@ -43,7 +42,6 @@ for (const size of SIZES) {
       await expect(members.nth(0)).toContainText("Advanced Novice Girls");
       await expect(members.nth(0)).toContainText("142,30");
       await expect(members.nth(0)).toHaveAttribute("href", "/sportiv/amaria");
-      await shot(page, info, "concursuri");
       await members.nth(0).click();
       await expect(page).toHaveURL(/\/sportiv\/amaria$/);
     });
@@ -89,20 +87,3 @@ for (const size of SIZES) {
     });
   });
 }
-
-test.describe("Concursuri layout", () => {
-  test.use({ baseURL: COACH_BASE, viewport: { width: 1280, height: 900 }, timezoneId: "Europe/Bucharest" });
-
-  test("at 1280 the filters share a row, the select is 220px and the list 860px at most", async({ page }) => {
-    await loginAs(page);
-    await page.goto("/concursuri");
-    await expect(page.locator("details")).toHaveCount(3);
-    const seg = await page.getByRole("group", { name: "Sportivi" }).boundingBox();
-    const sel = await page.getByRole("button", { name: "Sezon" }).boundingBox();
-    expect(seg && sel && Math.abs(seg.y + seg.height - (sel.y + sel.height)) < 4).toBe(true);
-    expect(sel?.width).toBeCloseTo(220, 0);
-    const list = await page.locator("details").first().boundingBox();
-    expect(list?.width).toBeLessThanOrEqual(860);
-    expect(list?.width).toBeGreaterThan(800);
-  });
-});

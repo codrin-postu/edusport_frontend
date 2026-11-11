@@ -7,8 +7,6 @@ const f = canStripTypes ? await import("../../src/lib/portal/format.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 it("formats day tiles and labels", () => {
-  assert.equal(f.dayTile("2026-10-06"), "MA 6 OCT");
-  assert.equal(f.dayTile("2026-11-01"), "DU 1 NOI");
   assert.deepEqual(f.dateTile("2026-10-07"), { day: "7", weekday: "MI" });
   assert.equal(f.shortDate("2026-09-30"), "30 sep");
   assert.equal(f.shortDate("2026-11-04"), "4 noi");

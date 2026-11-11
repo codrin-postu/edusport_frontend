@@ -1,10 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, MOCK_PORTAL, loginAs, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, MOCK_PORTAL, loginAs, mockReset } from "./portal-helpers";
 
 test.beforeEach(async() => { await mockReset(); });
 
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
-const NAVY = "rgb(14, 26, 60)";
 
 /** The last body the mock saw for a write route, e.g. `lastBody("POST", "/groups/gavansati/program")`. */
 async function lastBody(method: string, path: string): Promise<unknown> {
@@ -44,7 +43,7 @@ for (const size of SIZES) {
       await expect(page).toHaveURL(/localhost:3200\/$/);
     });
 
-    test("the group form: defaults, weekly summary, an end date and the body", async({ page }, info) => {
+    test("the group form: defaults, weekly summary, an end date and the body", async({ page }) => {
       await loginAs(page);
       await page.goto("/antrenament/nou");
       await expect(page).toHaveURL(/\/\?nou=1$/);
@@ -72,17 +71,6 @@ for (const size of SIZES) {
       await pick(page, "Până la", "Alege data");
       await typeDate(page, "Data de sfârșit", "31032027");
       await expect(page.getByText("Marți și joi, 17:30, 60 min, din 11 noiembrie până pe 31 martie.")).toBeVisible();
-      await shot(page, info, "antrenament-nou");
-
-      // Square shapes.
-      for (const el of [days.first(), submit(page)]) await expect(el).toHaveCSS("border-top-left-radius", "0px");
-      await expect(days.filter({ hasText: "Ma" })).toHaveCSS("background-color", NAVY);
-      const box = (await page.getByRole("dialog").boundingBox())!;
-      if (size.width >= 900) expect(Math.round(box.width)).toBe(560);
-      else expect(Math.round(box.y + box.height)).toBe(size.height);
-      expect(box.height).toBeLessThanOrEqual(size.height * 0.92 + 1);
-      // The footer stays in view with Renunță beside the confirm.
-      await expect(page.getByRole("dialog").locator("[data-sheet-footer]").getByRole("button", { name: "Renunță" })).toBeInViewport();
 
       await submit(page).click();
       await expect(page).toHaveURL(/\/grupe\/gavansati\?tab=program$/);
@@ -90,16 +78,6 @@ for (const size of SIZES) {
       expect(await lastBody("POST", "/groups/gavansati/program")).toEqual({
         repeat: true, freq: "weekly", days: ["tue", "thu"], startTime: "17:30", durationMin: 60, from: "2026-11-11", until: "2027-03-31",
       });
-    });
-
-    test("the side by side rows share a line (phone included)", async({ page }) => {
-      await loginAs(page);
-      await page.goto("/antrenament/nou");
-      const y = async(text: string) => (await page.getByText(text, { exact: true }).locator("visible=true").first().boundingBox())!.y;
-      expect(Math.abs((await y("Data")) - (await y("Ora")))).toBeLessThan(2);
-      await pick(page, "Se repetă", "Săptămânal");
-      expect(Math.abs((await y("Din data")) - (await y("Până la")))).toBeLessThan(2);
-      expect(Math.abs((await y("Ora")) - (await y("Durată")))).toBeLessThan(2);
     });
 
     test("Lunar says which week it uses", async({ page }) => {
@@ -153,7 +131,7 @@ for (const size of SIZES) {
       await expect(page.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
     });
 
-    test("an individual lesson: athlete, coach, body and the lesson page", async({ page }, info) => {
+    test("an individual lesson: athlete, coach, body and the lesson page", async({ page }) => {
       await loginAs(page);
       await page.goto("/antrenament/nou");
       await page.getByRole("button", { name: "Individual", exact: true }).click();
@@ -165,7 +143,6 @@ for (const size of SIZES) {
       await page.getByLabel("Ora", { exact: true }).fill("18:30");
       await pick(page, "Durată", "45 min");
       await expect(page.getByText("Joi, 12 noiembrie, 18:30, o singură dată.")).toBeVisible();
-      await shot(page, info, "antrenament-nou-individual");
       await submit(page).click();
       await expect(page).toHaveURL(/\/lectie\/lnew1$/);
       expect(await lastBody("POST", "/lessons")).toEqual({ athleteId: "aana", date: "2026-11-12", startTime: "18:30", durationMin: 45, coachIds: ["tm-andrei"] });

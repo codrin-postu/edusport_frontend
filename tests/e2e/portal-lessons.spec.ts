@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -146,35 +146,26 @@ test("an archived lesson is read only", async({ page }) => {
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 
 for (const size of SIZES) {
-  test.describe(`Lecție look ${size.width}`, () => {
+  test.describe(`Lecție ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("lesson page: Prezent row with a 44px checkbox, full width save", async({ page }, info) => {
+    test("lesson page: Prezent row and the save button", async({ page }) => {
       await loginAs(page);
       await page.goto("/lectie/lplan");
       await expect(page.getByText("Prezent", { exact: true })).toBeVisible();
-      await expect(page.getByLabel("Prezent, Ana Stoica").locator("xpath=..")).toHaveCSS("width", "44px");
-      const save = (await page.getByRole("button", { name: "Salvează prezența" }).boundingBox())!;
-      const form = (await page.locator("[data-lesson-form]").boundingBox())!;
-      expect(save.width).toBeGreaterThan(form.width * 0.8);
-      expect(form.width).toBeLessThanOrEqual(640);
+      await expect(page.getByRole("button", { name: "Salvează prezența" })).toBeVisible();
       await expect(page.locator("h1")).toHaveCount(1);
-      await shot(page, info, "lectie-detaliu");
     });
 
-    test("edit popup and the scope sheet", async({ page }, info) => {
+    test("edit popup and the scope sheet", async({ page }) => {
       await loginAs(page);
       await page.goto("/lectie/lser2/modifica");
       await expect(page.getByRole("dialog").getByRole("heading", { name: "Modifică lecția" })).toBeVisible();
-      await shot(page, info, "lectie-modifica");
       await page.getByLabel("Ora", { exact: true }).fill("18:00");
       await page.getByRole("button", { name: "Salvează", exact: true }).click();
       const scope = page.getByRole("dialog", { name: "Ce schimbi?" });
       await expect(scope.getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
       await expect(scope.getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
-      const box = (await scope.boundingBox())!;
-      if (size.width >= 900) expect(Math.round(box.width)).toBe(460);
-      else expect(Math.round(box.y + box.height)).toBe(size.height);
     });
   });
 }

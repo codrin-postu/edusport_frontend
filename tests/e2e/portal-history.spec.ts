@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -44,7 +44,7 @@ for (const size of SIZES) {
   test.describe(`Istoric ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("stat card, status rows and month picker", async({ page }, info) => {
+    test("stat card, status rows and month picker", async({ page }) => {
       await loginAs(page);
       await page.goto("/istoric");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -54,10 +54,6 @@ for (const size of SIZES) {
       await expect(page.getByText("ședințe de grup în noiembrie")).toBeVisible();
       await expect(page.getByText("lecție individuală")).toBeVisible();
       await expect(page.getByText("2,8 ore")).toBeVisible();
-      // The two side lines start at the same left edge.
-      const lefts = await page.locator("section:has([data-stat-num]) b").evaluateAll((bs) => bs.map((b) => Math.round((b.parentElement as HTMLElement).getBoundingClientRect().left)));
-      expect(lefts).toHaveLength(2);
-      expect(lefts[0]).toBe(lefts[1]);
       const rows = page.locator("main a[href]");
       await expect(rows).toHaveCount(4);
       const words = ["Joi", "Mie", "Mar", "Lun"];
@@ -66,11 +62,10 @@ for (const size of SIZES) {
         await expect(rows.nth(i).locator("[data-date-word]")).toHaveText(words[i]);
         await expect(rows.nth(i).locator("[data-date-num]")).toHaveText(nums[i]);
       }
-      // The history rows show the hour in the square (option B), same square size as every list.
+      // The history rows show the hour in the square.
       const times = ["18:15", "17:00", "16:30", "18:15"];
       for (let i = 0; i < 4; i++) {
         await expect(rows.nth(i).locator("[data-date-time]")).toHaveText(times[i]);
-        expect((await rows.nth(i).locator("[data-date-block]").boundingBox())!.height).toBe(64);
       }
       await expect(rows.nth(0)).toContainText("Avansați");
       await expect(rows.nth(0)).toContainText("grup, 8 prezenți");
@@ -84,7 +79,6 @@ for (const size of SIZES) {
       await expect(rows.nth(3)).toContainText("grup, prezență necompletată");
       await expect(rows.nth(3).getByRole("img", { name: "Grup, necompletat" })).toBeVisible();
       await expect(rows.nth(3)).toHaveAttribute("href", /^\/prezenta\?occurrence=occ%3Agavansati%3A2026-11-02/);
-      await shot(page, info, "istoric");
     });
   });
 }

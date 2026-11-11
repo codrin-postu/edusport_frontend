@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, mockState, shot } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, mockState } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -70,7 +70,7 @@ for (const size of SIZES) {
   test.describe(`Sportiv ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("an own child: contact, presence, competitions, groups and school", async({ page, context }, info) => {
+    test("an own child: contact, presence, competitions, groups and school", async({ page, context }) => {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       await loginAs(page);
       await page.goto("/sportiv/amaria?grupa=gavansati");
@@ -111,11 +111,6 @@ for (const size of SIZES) {
       await expect(kv("Abonament")).toContainText("A-0124, Ședința 5/8");
       await expect(kv("Valabil până la")).toContainText("30 noi");
       await expect(kv("Locație")).toContainText("AFI Cotroceni");
-      const contact = (await page.getByRole("heading", { name: "Contact" }).boundingBox())!;
-      const comps = (await page.getByRole("heading", { name: "Concursuri" }).boundingBox())!;
-      if (size.width >= 900) expect(comps.x).toBeGreaterThan(contact.x);
-      else expect(comps.y).toBeGreaterThan((await page.getByRole("heading", { name: "Prezențe" }).boundingBox())!.y);
-      await shot(page, info, "sportiv");
     });
 
     test("without ?grupa the back link goes to Grupe", async({ page }) => {

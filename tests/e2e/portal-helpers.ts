@@ -1,5 +1,4 @@
-import { mkdirSync } from "node:fs";
-import type { Page, TestInfo } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 export const COACH_BASE = "http://antrenor.localhost:3200";
 export const MOCK_PORTAL = "http://localhost:18891";
@@ -72,24 +71,4 @@ export async function mockRefreshCount(): Promise<number> {
 
 export async function mockReset(): Promise<void> {
   await fetch(`${MOCK_PORTAL}/__mock/reset`, { method: "POST" });
-}
-
-/**
- * Full-page screenshot of a built screen: always to the test output, and also to `$PORTAL_SHOTS`
- * (the canvas folder) as `built-<name>-<width>.png` when that variable is set.
- */
-export async function shot(page: Page, info: TestInfo, name: string): Promise<void> {
-  const width = page.viewportSize()?.width ?? 0;
-  // A full page capture draws a fixed element once, wherever the capture window happens to be: hide the bottom nav and the toast.
-  const hide = await page.addStyleTag({ content: "[data-bottom-nav], [role=status] { visibility: hidden !important; }" });
-  try {
-    await page.screenshot({ path: info.outputPath(`${name}-${width}.png`), fullPage: true, animations: "disabled" });
-    const dir = process.env.PORTAL_SHOTS;
-    if (dir) {
-      mkdirSync(dir, { recursive: true });
-      await page.screenshot({ path: `${dir}/built-${name}-${width}.png`, fullPage: true, animations: "disabled" });
-    }
-  } finally {
-    await hide.evaluate((el) => (el as Element).remove());
-  }
 }

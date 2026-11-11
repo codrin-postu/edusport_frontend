@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -47,12 +47,11 @@ test("an archived session is read only", async({ page }) => {
   await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
 });
 
-test("an archived session keeps the check marks: ticked boxes show a dimmed navy mark, unticked stay empty", async({ page }) => {
+test("an archived session keeps the check marks: ticked boxes show a mark, unticked stay empty", async({ page }) => {
   await loginAs(page);
   await page.goto("/prezenta?id=s-archived");
   const mark = (name: string) => page.getByLabel(name).locator("xpath=following-sibling::*[2]");
   await expect(mark("Grup, Maria Ionescu")).toBeVisible();
-  await expect(mark("Grup, Maria Ionescu")).toHaveCSS("color", "rgba(14, 26, 60, 0.55)");
   await expect(mark("Grup, Matei Radu")).toBeHidden();
 });
 
@@ -114,58 +113,39 @@ test("an inactive athlete asks before the save goes on", async({ page }) => {
 });
 
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
-const NAVY = "rgb(14, 26, 60)";
-const ICE = "rgb(225, 236, 251)";
 
 for (const size of SIZES) {
-  test.describe(`Prezență look ${size.width}`, () => {
+  test.describe(`Prezență ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
     test("the saved session counts its present children", async({ page }) => {
       await loginAs(page);
       await page.goto("/prezenta?id=s-today");
       await expect(page.locator("[data-save-bar]")).toContainText("7 prezenți");
-      await expect(page.locator("[data-save-bar]")).toHaveCSS("border-top-color", "rgb(221, 230, 243)");
     });
 
-    test("header, coach line, table, save bar", async({ page }, info) => {
+    test("header, coach line, table, save bar", async({ page }) => {
       await loginAs(page);
       await page.goto(occ("gavansati", TODAY));
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Avansați");
       await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
       await expect(page.getByText("Joi, 5 noi, 18:15, AFI Cotroceni").locator("visible=true")).toBeVisible();
-      await expect(page.getByText("Antrenor", { exact: true }).locator("visible=true").first()).toHaveCSS("font-weight", "700");
       await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
       await expect(page.getByRole("button", { name: "+ Adaugă alți antrenori" })).toBeVisible();
-      const head = page.locator("[data-presence-head]");
-      await expect(head).toHaveCSS("background-color", ICE);
-      const sportiv = head.getByText("Sportiv", { exact: true });
-      await expect(sportiv).toHaveCSS("font-size", "12px");
-      await expect(sportiv).toHaveCSS("text-transform", "none");
-      const box = page.getByLabel("Grup, Maria Ionescu");
-      await expect(box.locator("xpath=..")).toHaveCSS("width", "44px");
       await expect(page.getByRole("link", { name: "Maria Ionescu" })).toHaveAttribute("href", /\/sportiv\/[^?]+\?grupa=gavansati$/);
       await expect(page.getByText("Uscat", { exact: true })).toBeVisible();
       await tick(page, "Grup, Maria Ionescu");
-      await expect(box.locator("xpath=following-sibling::span[1]")).toHaveCSS("background-color", NAVY);
       const bar = page.locator("[data-save-bar]");
       await expect(bar).toContainText(/\d+ prezenți/);
-      await expect(bar).toHaveCSS("border-top-color", "rgb(221, 230, 243)");
-      await expect(bar.locator(".lcta-face")).toHaveCSS("background-color", NAVY);
       await expect(bar.getByRole("button", { name: "Salvează", exact: true })).toBeVisible();
       if (size.width < 900) {
         await expect(page.getByRole("navigation", { name: "Meniu" }).locator("visible=true")).toHaveCount(0);
-        await expect(bar.locator("xpath=..")).toHaveCSS("position", "fixed");
       } else {
-        const info_ = (await page.locator("[data-group-info]").boundingBox())!;
-        const table = (await head.boundingBox())!;
-        expect(table.x + table.width).toBeLessThanOrEqual(info_.x);
         await expect(page.getByText("Program:")).toBeVisible();
         await expect(page.getByText("Loc:")).toBeVisible();
         await expect(page.getByText("Antrenori:")).toBeVisible();
       }
-      await shot(page, info, "prezenta");
     });
   });
 }

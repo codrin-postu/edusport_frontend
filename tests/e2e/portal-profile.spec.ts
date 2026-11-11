@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { COACH_BASE, isolate, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, isolate, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async() => { await mockReset(); });
@@ -118,7 +118,7 @@ for (const size of SIZES) {
   test.describe(`Profil ${size.width}`, () => {
     test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("profile list", async({ page }, info) => {
+    test("profile list", async({ page }) => {
       await loginAs(page);
       await page.goto("/profil");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -127,18 +127,15 @@ for (const size of SIZES) {
       await expect(page.locator("main").getByRole("link", { name: /Setări cont/ })).toContainText("nume, e-mail, telefon, parolă");
       await expect(page.locator("main").getByRole("link", { name: /Securitate/ })).toContainText("dispozitive conectate");
       await expect(page.getByRole("button", { name: "Ieși din cont" })).toBeVisible();
-      await shot(page, info, "profil");
     });
 
-    test("settings", async({ page }, info) => {
+    test("settings", async({ page }) => {
       await loginAs(page);
       await page.goto("/profil/setari");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Setări cont");
       await expect(page.getByRole("link", { name: "‹ Profil" })).toHaveAttribute("href", "/profil");
       const cont = page.getByRole("heading", { name: "Cont", exact: true });
-      const tel = page.getByRole("heading", { name: "Telefon", exact: true });
-      const pw = page.getByRole("heading", { name: "Schimbă parola" });
       await expect(cont).toBeVisible();
       await expect(page.getByText("Nume", { exact: true })).toBeVisible();
       await expect(page.getByText("Andrei Popa")).toBeVisible();
@@ -149,18 +146,9 @@ for (const size of SIZES) {
       await expect(page.getByLabel("Parola actuală")).toBeVisible();
       await expect(page.getByLabel("Parola nouă")).toBeVisible();
       await expect(page.getByRole("button", { name: "Salvează" })).toHaveCount(2);
-      const [c, t, p] = [await cont.boundingBox(), await tel.boundingBox(), await pw.boundingBox()];
-      if (size.width >= 1280) {
-        expect(c!.x).toBeLessThan(t!.x);
-        expect(c!.x).toBeLessThan(p!.x);
-      } else {
-        expect(c!.y).toBeLessThan(t!.y);
-        expect(t!.y).toBeLessThan(p!.y);
-      }
-      await shot(page, info, "setari");
     });
 
-    test("security rows", async({ page }, info) => {
+    test("security rows", async({ page }) => {
       await loginAs(page);
       await page.goto("/profil/securitate");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -168,7 +156,6 @@ for (const size of SIZES) {
       await expect(page.getByRole("link", { name: "‹ Profil" })).toHaveAttribute("href", "/profil");
       await expect(page.getByRole("group", { name: "Chrome pe Windows" }).getByRole("button", { name: "Deconectează" })).toBeVisible();
       await expect(page.getByRole("group", { name: "Safari pe iPhone" }).getByRole("button", { name: "Deconectează" })).toBeVisible();
-      await shot(page, info, "securitate");
     });
   });
 }

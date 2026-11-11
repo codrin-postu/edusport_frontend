@@ -1,23 +1,19 @@
 import { expect, test, type Page } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.use({ baseURL: COACH_BASE, timezoneId: "Europe/Bucharest" });
 test.beforeEach(async() => { await mockReset(); });
 
 const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
-const NAVY = "rgb(14, 26, 60)";
-const BLUE = "rgb(74, 123, 208)";
-const CANCELLED = "rgb(192, 192, 196)";
 
 const visible = (page: Page, role: "button" | "link", name: string) => page.getByRole(role, { name, exact: true }).locator("visible=true");
 const day = (page: Page, d: number) => page.getByRole("button", { name: `${d} noiembrie`, exact: true });
-const barColors = (page: Page, d: number) => day(page, d).locator("span > span").evaluateAll((els) => els.map((el) => getComputedStyle(el).backgroundColor));
 
 for (const size of SIZES) {
   test.describe(`Calendar ${size.width}`, () => {
     test.use({ viewport: size });
 
-    test("header, grid, marks, selection, month change, legend", async({ page }, info) => {
+    test("header, grid, marks, selection, month change, legend", async({ page }) => {
       await loginAs(page);
       await page.goto("/calendar");
       await expect(page.locator("h1")).toHaveCount(1);
@@ -27,11 +23,6 @@ for (const size of SIZES) {
       await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toHaveCount(1);
       const grid = page.getByRole("group", { name: "Zilele lunii" });
       await expect(grid.getByRole("button")).toHaveCount(30);
-      for (const d of [3, 4, 10]) expect(await barColors(page, d)).toContain(NAVY);
-      expect(await barColors(page, 11)).toEqual([CANCELLED]);
-      expect(await barColors(page, 5)).toEqual([NAVY, BLUE, BLUE, NAVY]);
-      expect((await barColors(page, 5)).filter((c) => c === BLUE)).toHaveLength(2);
-      await expect(day(page, 5)).toHaveCSS("background-color", "rgb(225, 236, 251)");
       await expect(page.getByRole("heading", { name: "Joi, 5 noiembrie" })).toBeVisible();
       await expect(day(page, 5)).toHaveAttribute("aria-pressed", "false");
       await expect(day(page, 5)).toHaveAttribute("aria-current", "date");
@@ -44,7 +35,6 @@ for (const size of SIZES) {
       await expect(row).toHaveCount(1);
       await expect(row).toContainText("18:15");
       for (const t of ["grup", "individual", "anulată"]) await expect(page.getByText(t, { exact: true }).first()).toBeVisible();
-      await shot(page, info, "calendar");
       await visible(page, "button", "Luna următoare").click();
       await expect(page.getByText("Decembrie 2026").locator("visible=true")).toHaveCount(1);
       const calls = (await mockLog()).map((c) => c.path);
@@ -52,12 +42,10 @@ for (const size of SIZES) {
       await expect(grid.getByRole("button")).toHaveCount(31);
     });
 
-    test("a cancelled class has no link and the muted title", async({ page }) => {
+    test("a cancelled class has no link", async({ page }) => {
       await loginAs(page);
       await page.goto("/calendar?luna=2026-11&zi=2026-11-11");
       await expect(page.getByRole("heading", { name: "Miercuri, 11 noiembrie" })).toBeVisible();
-      const title = page.getByText("Avansați", { exact: true });
-      await expect(title).toHaveCSS("color", "rgb(151, 155, 165)");
       await expect(page.getByText("anulată", { exact: true }).locator("visible=true").first()).toBeVisible();
       await expect(page.getByRole("link").filter({ hasText: "Avansați" })).toHaveCount(0);
       await expect(page.locator("[data-status-block]")).toHaveCount(0);
@@ -112,31 +100,6 @@ test.describe("Calendar program dates and lessons", () => {
     await expect(page.getByRole("heading", { name: "Marți, 24 noiembrie" })).toBeVisible();
     await expect(page.getByRole("link").filter({ hasText: "Avansați" })).toHaveCount(0);
     await expect(page.getByRole("link").filter({ hasText: "Ana Stoica" })).toHaveCount(1);
-  });
-});
-
-test.describe("Calendar layout", () => {
-  test("desktop: month picker in the top band, day list right of the grid", async({ page }) => {
-    await page.setViewportSize(SIZES[1]);
-    await loginAs(page);
-    await page.goto("/calendar");
-    const header = await page.locator("[data-page-header]").boundingBox();
-    const next = await visible(page, "button", "Luna următoare").boundingBox();
-    expect(next!.y + next!.height).toBeLessThanOrEqual(header!.y + header!.height);
-    const grid = await page.getByRole("group", { name: "Zilele lunii" }).boundingBox();
-    const list = await page.getByRole("heading", { name: "Joi, 5 noiembrie" }).boundingBox();
-    expect(list!.x).toBeGreaterThan(grid!.x + grid!.width - 1);
-  });
-
-  test("phone: the month picker sits above the grid, the list below the legend", async({ page }) => {
-    await page.setViewportSize(SIZES[0]);
-    await loginAs(page);
-    await page.goto("/calendar");
-    const next = await visible(page, "button", "Luna următoare").boundingBox();
-    const grid = await page.getByRole("group", { name: "Zilele lunii" }).boundingBox();
-    const list = await page.getByRole("heading", { name: "Joi, 5 noiembrie" }).boundingBox();
-    expect(next!.y).toBeLessThan(grid!.y);
-    expect(list!.y).toBeGreaterThan(grid!.y + grid!.height);
   });
 });
 

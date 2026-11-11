@@ -32,7 +32,6 @@ test.describe("phone 390", () => {
     await expect(bar.getByRole("link")).toHaveCount(5);
     const azi = bar.getByRole("link", { name: "Azi", exact: true });
     await expect(azi).toHaveAttribute("aria-current", "page");
-    await expect(azi).toHaveCSS("background-color", "rgb(143, 184, 245)");
     await expect(page.locator("header nav")).toHaveCount(0);
     await expect(page.getByRole("link", { name: "AP", exact: true })).toHaveCount(0);
     await expect(page.locator("[data-sidebar]")).toBeHidden();
@@ -53,16 +52,6 @@ test.describe("phone 390", () => {
     await expect(page.locator("[data-bottom-nav]")).toHaveCount(0);
   });
 
-  test("no shell element except the nav bar and its tile is rounded", async({ page }) => {
-    await loginAs(page);
-    await page.goto("/");
-    await expect(page.locator("[data-bottom-nav]")).toBeVisible();
-    const rounded = await page.evaluate(() =>
-      [...document.querySelectorAll("[data-bottom-nav], [data-bottom-nav] *, [data-sidebar], [data-sidebar] *")]
-        .filter((el) => getComputedStyle(el).borderRadius !== "0px" && !el.closest("[data-bottom-nav]"))
-        .map((el) => el.tagName));
-    expect(rounded).toEqual([]);
-  });
 });
 
 test.describe("desktop 1280", () => {

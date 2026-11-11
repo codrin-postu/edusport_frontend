@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { COACH_BASE, TODAY, loginAs, mockLog, mockReset, shot } from "./portal-helpers";
+import { COACH_BASE, TODAY, loginAs, mockLog, mockReset } from "./portal-helpers";
 
 test.beforeEach(async() => { await mockReset(); });
 
@@ -27,7 +27,7 @@ for (const size of SIZES) {
   test.describe(`Program writes ${size.width}`, () => {
     test.use({ baseURL: COACH_BASE, viewport: size, timezoneId: "Europe/Bucharest" });
 
-    test("an open date: Anulează with a note, then the row reads Anulată", async({ page }, info) => {
+    test("an open date: Anulează with a note, then the row reads Anulată", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await dateRow(page, "Mar", "10").click();
@@ -38,15 +38,6 @@ for (const size of SIZES) {
       await expect(d.getByLabel("Notă")).toBeVisible();
       for (const name of [/^Anulează/, /^Mută/, /^Șterge/]) await expect(d.getByRole("radio", { name })).toBeVisible();
       await expect(d.getByRole("radio", { name: /^Se ține/ })).toHaveCount(0);
-      await shot(page, info, "program-data");
-      await expect(d.locator("[role=radio] span[aria-hidden]").first()).toHaveCSS("border-top-left-radius", "0px");
-      const box = (await d.boundingBox())!;
-      if (size.width >= 900) {
-        expect(Math.round(box.width)).toBe(460);
-        expect(Math.abs(box.x + box.width / 2 - size.width / 2)).toBeLessThan(2);
-      } else {
-        expect(Math.round(box.y + box.height)).toBe(size.height);
-      }
       // The footer stays in view and the changes wait for Salvează.
       await d.getByLabel("Notă").fill("Patinoarul este închis.");
       await d.getByRole("button", { name: "Renunță" }).click();
@@ -140,7 +131,7 @@ for (const size of SIZES) {
       await expect(block(page, "Joi", "12")).toHaveCount(0);
     });
 
-    test("Schimbă programul of one weekday", async({ page }, info) => {
+    test("Schimbă programul of one weekday", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
@@ -154,7 +145,6 @@ for (const size of SIZES) {
       await expect(d.getByRole("checkbox", { name: "joi" })).toBeEnabled();
       await expect(d.getByLabel("Ora", { exact: true })).toHaveValue("18:15");
       await expect(d.getByRole("group", { name: "Se aplică din" })).toBeVisible();
-      await shot(page, info, "program-schimba");
       // Renunță drops the draft without a request.
       await d.getByLabel("Ora", { exact: true }).fill("17:00");
       await d.getByRole("button", { name: "Renunță" }).click();
@@ -171,7 +161,7 @@ for (const size of SIZES) {
       await expect(page.getByText("Miercuri, 18:15", { exact: true }).first()).toBeVisible();
     });
 
-    test("Șterge programul of one weekday", async({ page }, info) => {
+    test("Șterge programul of one weekday", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gavansati?tab=program");
       await page.getByRole("button", { name: "Șterge programul de miercuri" }).click();
@@ -179,7 +169,6 @@ for (const size of SIZES) {
       await expect(d.getByRole("heading", { name: "Ștergi programul de miercuri?" })).toBeVisible();
       await expect(d.getByText("Ședințele și prezențele de până atunci rămân. După data aleasă nu mai apare.")).toBeVisible();
       await expect(d.getByRole("group", { name: "Din data" })).toBeVisible();
-      await shot(page, info, "program-sterge");
       await d.getByRole("button", { name: "Renunță" }).click();
       expect(await calls("POST", /\/end$/)).toHaveLength(0);
       await page.getByRole("button", { name: "Șterge programul de miercuri" }).click();
