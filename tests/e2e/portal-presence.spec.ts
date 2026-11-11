@@ -157,3 +157,15 @@ for (const size of SIZES) {
     });
   });
 }
+
+test("a saved presence shows the completed card with the present count", async({ page }) => {
+  await loginAs(page);
+  await page.goto(occ("gavansati", FREE_DAY));
+  await expect(page.getByText(/^Completat,/)).toHaveCount(0);
+  await tick(page, "Grup, Maria Ionescu");
+  await tick(page, "Uscat, Luca Dumitru");
+  await page.getByRole("button", { name: "Salvează", exact: true }).click();
+  await expect(page).toHaveURL(/\/prezenta\?id=s-new/);
+  await expect(page.getByText("Completat, 2 prezenți")).toBeVisible();
+  await expect(page.getByText(/^Salvată de /)).toBeVisible();
+});

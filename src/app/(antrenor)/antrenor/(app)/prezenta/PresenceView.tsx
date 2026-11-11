@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
 import { CALENDAR, NAV, PRESENCE } from "@/lib/portal/copy";
 import { shortWhen } from "@/lib/portal/format";
 import { fromOf, presentCount, saveBody, sessionQuery, withFrom } from "@/lib/portal/presence";
@@ -17,6 +18,7 @@ import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
+import { PortalCard } from "@/app/_portal/ui/PortalCard";
 import { SaveBar } from "@/app/_portal/ui/SaveBar";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
@@ -83,6 +85,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
   const now = useNow();
   const future = readOnly && now !== null && session.date > now.date;
   const count = presentCount([...ticks.values()]);
+  const savedCount = presentCount(session.rows);
   const meId = me?.coachId ?? "";
 
   // The group page gives the location and info card.
@@ -157,10 +160,18 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
       />
       <PageBody>
         <PageSub>{sub}</PageSub>
-        {(session.savedLine || session.outsideSchedule || session.archived || future) && (
+        {session.savedLine && (
+          <PortalCard tone="navy" pad="card" className="flex-row items-center gap-3">
+            <span data-saved-check className="flex size-9 shrink-0 items-center justify-center bg-ice-blue text-white"><Icon name="portal-status-done" size="20" /></span>
+            <div className="flex min-w-0 flex-col">
+              <p className="text-(length:--portal-text-16) font-bold">{PRESENCE.completed(savedCount)}</p>
+              <p className="text-(length:--portal-text-14) text-secondary-on-dark">{session.savedLine}</p>
+            </div>
+          </PortalCard>
+        )}
+        {(session.outsideSchedule || session.archived || future) && (
           <div className="flex flex-col gap-1 text-(length:--portal-text-14) text-muted">
             {future && <p>{PRESENCE.future}</p>}
-            {session.savedLine && <p>{session.savedLine}</p>}
             {session.outsideSchedule && <p>{PRESENCE.outside}</p>}
             {session.archived && <p>{PRESENCE.archived}</p>}
           </div>

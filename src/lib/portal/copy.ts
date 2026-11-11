@@ -155,9 +155,9 @@ export const GROUP = {
   isNew: "nou",
   alsoIn: (names: string) => `și în ${names}`,
   addAthlete: "+ Adaugă sportiv",
-  otherCoach: "Grupa altui antrenor",
+  otherCoach: "Grupa altui antrenor. Poți ține antrenamentul de azi ca înlocuitor.",
   programLine: (program: string) => `Program: ${program}`,
-  standIn: "Înlocuiesc azi",
+  standIn: (time: string | null) => (time ? `Înlocuiesc azi, ${time}` : "Înlocuiesc azi"),
   standInPresence: "Fă prezența ca înlocuitor",
 } as const;
 
@@ -198,6 +198,7 @@ export const PRESENCE = {
   headDry: "Uscat",
   present: (n: string) => `${n} prezenți`,
   presentCount: (n: number) => count(n, "prezent", "prezenți"),
+  completed: (n: number) => `Completat, ${count(n, "prezent", "prezenți")}`,
   save: "Salvează",
   willAppear: "Vei apărea ca antrenor la această ședință.",
   archived: "Arhivată. Nu mai poate fi modificată.",

@@ -14,7 +14,7 @@ import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
-import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Segmented } from "@/app/_portal/ui/Segmented";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Spinner } from "@/app/_portal/ui/Spinner";
@@ -48,6 +48,20 @@ export function GroupView({ id }: { id: string }) {
   return loaded.page.own ? <OwnGroup page={loaded.page} /> : <OtherGroup page={loaded.page} />;
 }
 
+function GroupTabs({ tab, count, onChange }: { tab: Tab; count: number; onChange: (t: Tab) => void }) {
+  // One page for both tabs: the info card and the buttons above, then the tabs, then only the tab body changes (no layout jump). On a phone the tabs stick under the compact top bar.
+  return (
+    <div data-group-tabs className="sticky top-(--portal-tap) z-raised -mx-(--portal-page-x) bg-surface px-(--portal-page-x) py-2 portal:static portal:mx-0 portal:p-0">
+      <Segmented<Tab>
+        label={GROUP.members}
+        options={[{ value: "members", label: GROUP.tabAthletes(count) }, { value: "program", label: GROUP.tabProgram }]}
+        value={tab}
+        onChange={onChange}
+      />
+    </div>
+  );
+}
+
 const BACK = { href: "/grupe", label: GRUPE.title };
 
 function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
@@ -59,17 +73,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const members = page.members;
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
-  // One page for both tabs: the info card and the buttons above, then the tabs, then only the tab body changes (no layout jump). On a phone the tabs stick under the compact top bar.
-  const tabs = (
-    <div data-group-tabs className="sticky top-(--portal-tap) z-raised -mx-(--portal-page-x) bg-surface px-(--portal-page-x) py-2 portal:static portal:mx-0 portal:p-0">
-      <Segmented<Tab>
-        label={GROUP.members}
-        options={[{ value: "members", label: GROUP.tabAthletes(members.length) }, { value: "program", label: GROUP.tabProgram }]}
-        value={tab}
-        onChange={setTab}
-      />
-    </div>
-  );
+  const tabs = <GroupTabs tab={tab} count={members.length} onChange={setTab} />;
   // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (Club groups only: the admin changes Școala programs).
   const addProgram = page.kind === "club" ? `${pathname}?tab=program&nou=1` : null;
   return (
@@ -111,35 +115,49 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   );
 }
 
+/** Today's start time for the stand-in label: the stand-in slot of today's key, else the time at the end of the key (`event|date|HH:MM`). */
+function todayTime(page: Extract<CoachGroupPage, { own: false }>): string | null {
+  if (!page.todayKey) return null;
+  return page.standIn.find((s) => s.occurrenceKey === page.todayKey)?.startTime ?? /\|(\d\d:\d\d)$/.exec(page.todayKey)?.[1] ?? null;
+}
+
 function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const tab: Tab = params.get("tab") === "program" ? "program" : "members";
   const [open, setOpen] = useState(false);
+  const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   return (
     <>
       <PageHeader back={BACK} title={page.name} />
-      <PageBody narrow>
-        <PortalCard tone="subtle" pad="card">
-          <p className="text-(length:--portal-text-14) font-bold">{GROUP.otherCoach}</p>
-        </PortalCard>
-        <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
-        <Segmented<"members">
-          label={GROUP.members}
-          options={[{ value: "members", label: GROUP.tabAthletes(page.members.length) }]}
-          value="members"
-          onChange={() => undefined}
-        />
-        <ListCard>
-          {page.members.map((m, i) => (
-            <ListRow key={`${i}:${m.name}`} title={m.name} sub={m.age === null ? undefined : GROUP.age(m.age)} end={null} />
-          ))}
-        </ListCard>
-        <div className="flex flex-col gap-3">
-          {page.todayKey ? (
-            <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa`} className="w-full">{GROUP.standIn}</Button>
-          ) : page.standIn.length > 0 ? (
-            <Button onClick={() => setOpen(true)} className="w-full">{GROUP.standInPresence}</Button>
-          ) : null}
-          <Button variant="secondary" href={`/grupe/${encodeURIComponent(page.groupId)}/sportiv-nou`} className="w-full">{GROUP.addAthlete}</Button>
-        </div>
+      <PageBody>
+        <Columns>
+          <Column grow={1} sticky>
+            <p data-other-coach className="text-(length:--portal-text-14) text-muted">{GROUP.otherCoach}</p>
+            <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
+            <div className="flex flex-col gap-3">
+              {page.todayKey ? (
+                <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa`} className="w-full">{GROUP.standIn(todayTime(page))}</Button>
+              ) : page.standIn.length > 0 ? (
+                <Button onClick={() => setOpen(true)} className="w-full">{GROUP.standInPresence}</Button>
+              ) : null}
+              <Button variant="secondary" href={`/grupe/${encodeURIComponent(page.groupId)}/sportiv-nou`} className="w-full">{GROUP.addAthlete}</Button>
+            </div>
+          </Column>
+          <Column grow={2}>
+            <GroupTabs tab={tab} count={page.members.length} onChange={setTab} />
+            {tab === "program" ? (
+              <ProgramTab groupId={page.groupId} own={false} addHref={`${pathname}?tab=program&nou=1`} />
+            ) : (
+              <ListCard>
+                {page.members.map((m, i) => (
+                  <ListRow key={`${i}:${m.name}`} title={m.name} sub={m.age === null ? undefined : GROUP.age(m.age)} end={null} />
+                ))}
+              </ListCard>
+            )}
+          </Column>
+        </Columns>
       </PageBody>
       <Sheet open={open} onOpenChange={setOpen} title={GROUP.standInPresence}>
         <ListCard>

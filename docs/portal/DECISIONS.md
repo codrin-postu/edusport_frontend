@@ -345,3 +345,5 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Prezență on a future date: read only with the line "Prezența se poate face din ziua antrenamentului." (coaches are not changed ahead of time).
 - A dimmed date block mutes the weekday word too.
 - Azi: button "Toate antrenamentele de azi din club" under today's list opens the club's sessions of the day (?club=1); group rows open the group page, others' lessons show only the coach.
+- Another coach's group: same layout as an own group; stand-in button on top of the side column; Program tab read only.
+- Prezență saved: navy card "Completat, n prezenți" with the saved line (option C).

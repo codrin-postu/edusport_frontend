@@ -220,9 +220,9 @@ test("own group: the program tab", async({ page }) => {
 test("other group: banner, names and ages read only, stand-in today", async({ page }) => {
   await loginAs(page);
   await page.goto("/grupe/guscat");
-  await expect(page.getByText("Grupa altui antrenor")).toBeVisible();
+  await expect(page.getByText("Grupa altui antrenor. Poți ține antrenamentul de azi ca înlocuitor.")).toBeVisible();
   await expect(page.getByText("Program: Lu, Jo 17:00")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Înlocuiesc azi" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /^Înlocuiesc azi, \d\d:\d\d$/ })).toBeVisible();
   await expect(page.getByText("Ioana Diaconu")).toBeVisible();
   await expect(page.getByText("12 ani")).toBeVisible();
   await expect(page.locator("a[href^='/sportiv/']")).toHaveCount(0);
@@ -230,6 +230,15 @@ test("other group: banner, names and ages read only, stand-in today", async({ pa
   await expect(page.getByRole("button", { name: "Scoate" })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Modifică grupa" })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "+ Adaugă sportiv" })).toHaveAttribute("href", "/grupe/guscat/sportiv-nou");
+});
+
+test("other group: the Program tab shows the weekly rules read only", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/grupe/guscat?tab=program");
+  await expect(page.getByText("Program săptămânal").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: /^(Schimbă|Șterge) programul/ })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "+ Adaugă program" })).toHaveCount(0);
+  await expect(page.getByRole("checkbox", { name: "Arată programul pe site" })).toHaveCount(0);
 });
 
 test("other group without a class today: the stand-in sheet lists the recent slots", async({ page }) => {

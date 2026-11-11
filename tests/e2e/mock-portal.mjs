@@ -918,7 +918,7 @@ const coachRoutes = [
   ["POST", /^\/groups\/([^/]+)\/members\/([^/]+)\/move$/, (ctx) => changeMember(ctx, true)],
   ["POST", /^\/groups\/([^/]+)\/members\/([^/]+)\/remove$/, (ctx) => changeMember(ctx, false)],
   ["GET", /^\/history$/, ({ res, query }) => ok(res, historyData(query.get("month")))],
-  ["GET", /^\/groups\/([^/]+)\/program$/, ownOnly(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
+  ["GET", /^\/groups\/([^/]+)\/program$/, withGroup(({ res, query }, g) => ok(res, programData(g, query.get("month"))))],
   ["POST", /^\/groups\/([^/]+)\/program$/, ownClub(programAdd)],
   ["PUT", /^\/groups\/([^/]+)\/program-public$/, ownClub(({ res, body }, g) => { g.programPublic = Boolean(body.value); ok(res, { toast: MSG.saved }); })],
   ["PUT", /^\/program\/([^/]+)$/, eventGuard((ctx) => programRuleWrite(ctx, false))],
