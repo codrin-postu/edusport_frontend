@@ -12,9 +12,9 @@ export function PageBody({ children, narrow }: { children: React.ReactNode; narr
   );
 }
 
-/** Phone: one column. Desktop: a fixed 3:2 grid (main left, summary or side right). */
-export function Columns({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("flex flex-col gap-(--portal-cols-gap) portal:grid portal:grid-cols-(--portal-cols) portal:items-start", className)}>{children}</div>;
+/** Phone: one column. Desktop: a fixed 3:2 grid (main left, summary or side right), or 1:1 with `half` (Azi, Istoric). */
+export function Columns({ children, className, half }: { children: React.ReactNode; className?: string; half?: boolean }) {
+  return <div className={cn("flex flex-col gap-(--portal-cols-gap) portal:grid portal:items-start", half ? "portal:grid-cols-(--portal-cols-half)" : "portal:grid-cols-(--portal-cols)", className)}>{children}</div>;
 }
 
 /** `grow` 2 is the main part (left on the desktop), 1 the side part (right). `className` lets a page flatten a column on the phone (`contents portal:flex`) to reorder its blocks with `order-*`. */

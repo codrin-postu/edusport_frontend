@@ -51,7 +51,7 @@ export function HistoryView() {
         {history.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
         {history.state === "error" && <LoadError onRetry={history.reload} />}
         {history.state === "ready" && data && (
-          <Columns>
+          <Columns half>
             <Column grow={1} sticky>
               <StatCard
                 big={String(data.sessions)}

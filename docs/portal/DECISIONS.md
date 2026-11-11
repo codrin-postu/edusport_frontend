@@ -337,3 +337,10 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 
 ## 2026-11-11 Desktop account menu (user)
 - 2026-11-11: desktop account button: no outline; hover menu A (white) with Setări cont, Ieși din cont. Opens upward on hover and focus-within; Escape closes. The sidebar takes the menu items from the layout (`account.menu`), so the student site can reuse it. Decided by Claude: 160ms (`--motion-base`) instead of 150ms, to stay on the motion tokens.
+
+## 2026-11-11 Azi, Istoric, Prezență (user)
+- Azi desktop: today's list left, "Azi pe scurt" column (dark card, Următorul antrenament, Săptămâna aceasta) right.
+- Azi and Istoric desktop: half and half (`--portal-cols-half`), so the dark card is not squeezed. Other two-column pages keep 3:2.
+- Istoric stops at the current month: the next arrow is disabled there, a later `?luna=` falls back to the current month.
+- Prezență on a future date: read only with the line "Prezența se poate face din ziua antrenamentului." (coaches are not changed ahead of time).
+- A dimmed date block mutes the weekday word too.

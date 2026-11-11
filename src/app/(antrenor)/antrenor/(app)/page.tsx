@@ -130,8 +130,8 @@ export default function AziPage() {
         actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
-        {/* Desktop: list left (3), summary column right (2, user 2026-11-11); headings on grid row 1, content on row 2, so both columns start on the same line. */}
-        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
+        {/* Desktop: list left, summary right, half each (user 2026-11-11); headings on grid row 1, content on row 2, so both columns start on the same line. */}
+        <div className="flex flex-col gap-(--portal-section-gap) portal:grid portal:grid-cols-(--portal-cols-half) portal:gap-x-(--portal-cols-gap) portal:gap-y-3 portal:items-start">
           <div className="hidden portal:col-start-2 portal:row-start-1 portal:block"><SectionHeading title={AZI.summaryHeading} className={ROW1} /></div>
           <div className="contents portal:col-start-2 portal:row-start-2 portal:flex portal:flex-col portal:gap-(--portal-section-gap)">
             <div className="order-1 portal:order-none">{stat}</div>
