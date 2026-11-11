@@ -1,59 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import Button from "@/components/ui/button";
-import { LESSON, PROGRAM } from "@/lib/portal/copy";
-import { shortDate } from "@/lib/portal/format";
-import type { ProgramRow } from "@/lib/portal/api-types";
-import { portalApi } from "../../../../_lib/api";
-import { useNoAccess } from "../../../../_lib/use-portal";
-import { Sheet } from "../../../../_ui/Sheet";
-import { useToast } from "../../../../_ui/Toast";
-import { ProgramFields, changeBody, formOfRow, formReady } from "./ProgramForm";
+import DatePickerField from "@/components/ui/date-picker-field";
+import { PROGRAM } from "@/lib/portal/copy";
+import { capitalize, weekdayOfDay } from "@/lib/portal/format";
+import type { CoachProgramRule, DayKey, ProgramChangeBody } from "@/lib/portal/api-types";
+import { DaySquares } from "@/app/_portal/ui/DaySquares";
+import { Sheet } from "@/app/_portal/ui/Sheet";
+import { eventForDate } from "./rules";
+import { SheetFooter } from "../../../../_ui/SheetFooter";
+import { TimeDuration } from "./TimeDuration";
+import { useSend } from "./useSend";
 
-type Props = { row: ProgramRow; today: string; onClose: () => void; onDone: () => void };
+type Props = { rule: CoachProgramRule; rules: CoachProgramRule[]; today: string; onClose: () => void; onDone: () => void };
 
-/** "Schimbă" on a series row: new fields from a date, or "Șterge programul" from that date. */
-export function ChangeSheet({ row, today, onClose, onDone }: Props) {
-  const toast = useToast();
-  const noAccess = useNoAccess();
-  const [form, setForm] = useState(() => formOfRow(row, row.nextDate && row.nextDate >= today ? row.nextDate : today));
-  const [confirming, setConfirming] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const path = `coach/program/${encodeURIComponent(row.eventId)}`;
+/** "Schimbă" on one weekday of the program: new days, time and length from a date. Nothing is sent before "Schimbă". */
+export function ChangeSheet({ rule, rules, today, onClose, onDone }: Props) {
+  const { busy, message, send } = useSend(onDone);
+  const [days, setDays] = useState<DayKey[]>([rule.day]);
+  const [time, setTime] = useState(rule.startTime);
+  const [duration, setDuration] = useState(rule.durationMin);
+  const [from, setFrom] = useState(rule.nextDate && rule.nextDate >= today ? rule.nextDate : today);
+  // The event's other weekdays are changed on their own rows; the backend refuses them here.
+  const taken = rules.filter((r) => r.eventId === rule.eventId && r.day !== rule.day).map((r) => r.day);
+  const ready = days.length > 0 && time !== "" && from >= today;
 
-  async function send(method: "PUT" | "POST", url: string, body: unknown, done: string) {
-    setBusy(true);
-    setMessage(null);
-    const r = await portalApi<{ eventId: string }>(method, url, body);
-    setBusy(false);
-    if (noAccess(r)) return;
-    if (!r.ok) {
-      setMessage(r.message);
-      return;
-    }
-    toast.show(done);
-    onDone();
+  function submit() {
+    const body: ProgramChangeBody = {
+      freq: rule.freq, days, startTime: time, durationMin: duration, from, day: rule.day,
+      ...(rule.freq === "monthly" && rule.weekOfMonth ? { weekOfMonth: rule.weekOfMonth } : {}),
+    };
+    void send("PUT", `coach/program/${encodeURIComponent(eventForDate(rules, rule, from))}`, body, PROGRAM.toasts.programChanged);
   }
 
   return (
-    <Sheet open onOpenChange={(o) => { if (!o) onClose(); }} title={PROGRAM.drawerChange}>
-      {confirming ? (
-        <div className="flex flex-col gap-4">
-          <p className="text-body text-primary">{PROGRAM.endConfirm(shortDate(form.from))}</p>
-          <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
-          <Button onClick={() => void send("POST", `${path}/end`, { from: form.from }, PROGRAM.toasts.programEnded)} disabled={busy} className="w-full">{PROGRAM.endProgram}</Button>
-          <Button variant="secondary" onClick={() => setConfirming(false)} disabled={busy} className="w-full">{LESSON.giveUp}</Button>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-6">
-          <ProgramFields form={form} onChange={setForm} today={today} />
-          <p role="alert" className="text-body-sm text-accent min-h-6">{message}</p>
-          <Button onClick={() => void send("PUT", path, changeBody(form), PROGRAM.toasts.programChanged)} disabled={busy || !formReady(form)} className="w-full">{PROGRAM.save}</Button>
-          <Button variant="secondary" onClick={() => setConfirming(true)} disabled={busy} className="w-full">{PROGRAM.endProgram}</Button>
-        </div>
-      )}
+    <Sheet
+      open
+      onOpenChange={(o) => { if (!o && !busy) onClose(); }}
+      title={PROGRAM.drawerChange}
+      description={PROGRAM.changeSub(PROGRAM.ruleTitle(capitalize(weekdayOfDay(rule.day)), rule.startTime))}
+      footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={PROGRAM.change} onClose={onClose} onConfirm={submit} />}
+    >
+      <DaySquares label={PROGRAM.days} value={days} onChange={setDays} disabled={taken} />
+      <TimeDuration time={time} onTime={setTime} duration={duration} onDuration={setDuration} />
+      <DatePickerField id="program-from" label={PROGRAM.appliesFrom} value={from} onChange={setFrom} variant="card" />
     </Sheet>
   );
 }

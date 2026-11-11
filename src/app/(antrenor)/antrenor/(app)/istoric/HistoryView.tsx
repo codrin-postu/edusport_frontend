@@ -1,26 +1,34 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import IconButton from "@/components/ui/icon-button";
-import { A11Y, HISTORY } from "@/lib/portal/copy";
-import { addMonths, dateTile, durationText, monthName } from "@/lib/portal/format";
+import { AZI, CALENDAR, HISTORY } from "@/lib/portal/copy";
+import { addMonths, monthName, weekdayShort } from "@/lib/portal/format";
+import { monthTitle } from "@/lib/portal/month-grid";
 import type { CoachHistory, CoachHistoryRow } from "@/lib/portal/api-types";
+import { DateBlock } from "@/app/_portal/ui/DateBlock";
+import { IndividualTag } from "@/app/_portal/ui/IndividualTag";
+import { ListRow } from "@/app/_portal/ui/ListRow";
+import { LoadError } from "@/app/_portal/ui/LoadError";
+import { MonthPicker } from "@/app/_portal/ui/MonthPicker";
+import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
+import { ListCard } from "@/app/_portal/ui/PortalCard";
+import { Spinner } from "@/app/_portal/ui/Spinner";
+import { StatCard } from "@/app/_portal/ui/StatCard";
+import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 import { bucharestToday } from "../../_lib/today";
+import { ShowMoreButton, useShowMore } from "../../_lib/show-more";
 import { usePortal } from "../../_lib/use-portal";
-import { ListCard } from "../../_ui/ListCard";
-import { LoadError } from "../../_ui/LoadError";
-import { Row } from "../../_ui/Row";
-import { Spinner } from "../../_ui/Spinner";
+import { presenceHref } from "../../_ui/SessionRow";
 
-function sub(r: CoachHistoryRow): string {
-  if (r.kind === "individuala") return HISTORY.lesson(durationText(r.durationMin ?? 0));
-  return r.kind === "inlocuitor" ? HISTORY.standIn(r.present ?? 0) : HISTORY.group(r.present ?? 0);
+function sub(r: CoachHistoryRow): React.ReactNode {
+  if (r.kind === "individuala") return <><IndividualTag />{AZI.minutes(r.durationMin ?? 0)}</>;
+  if (!r.done) return HISTORY.notDoneSub;
+  return r.kind === "inlocuitor" ? HISTORY.standInSub(r.present ?? 0) : HISTORY.presentSub(r.present ?? 0);
 }
 
-function href(r: CoachHistoryRow): string {
-  if (r.kind === "individuala") return `/lectie/${encodeURIComponent(r.lessonId ?? "")}`;
-  return `/prezenta?id=${encodeURIComponent(r.sessionId ?? "")}`;
-}
+const href = (r: CoachHistoryRow): string =>
+  r.kind === "individuala" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r, "istoric");
 
 export function HistoryView() {
   const router = useRouter();
@@ -28,25 +36,50 @@ export function HistoryView() {
   const month = raw !== null && /^\d{4}-(0[1-9]|1[0-2])$/.test(raw) ? raw : bucharestToday().slice(0, 7);
   const history = usePortal<CoachHistory>(`coach/history?month=${month}`);
   const go = (n: number) => router.replace(`/istoric?luna=${addMonths(month, n)}`);
+  const picker = (
+    <MonthPicker title={monthTitle(month)} onPrev={() => go(-1)} onNext={() => go(1)} prevLabel={CALENDAR.prev} nextLabel={CALENDAR.next} />
+  );
+  const data = history.data;
+  const more = useShowMore(month, data?.rows.length ?? 0);
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <IconButton icon="chevron-left" label={A11Y.prevMonth} onClick={() => go(-1)} />
-        <h1 className="text-title text-primary">{monthName(month)}</h1>
-        <IconButton icon="chevron-right" label={A11Y.nextMonth} onClick={() => go(1)} />
-      </div>
-      {history.state === "loading" && <div className="py-6 flex justify-center"><Spinner /></div>}
-      {history.state === "error" && <LoadError />}
-      {history.state === "ready" && history.data && (
-        <>
-          <p className="text-body-sm text-secondary mb-4">{HISTORY.summary(history.data.sessions, history.data.lessons, history.data.hours)}</p>
-          <ListCard>
-            {history.data.rows.map((r) => (
-              <Row key={`${r.sessionId ?? r.lessonId}`} href={href(r)} tile={dateTile(r.date)} title={r.name} sub={sub(r)} />
-            ))}
-          </ListCard>
-        </>
-      )}
-    </div>
+    <>
+      <PageHeader brand title={HISTORY.title} />
+      <PageBody>
+        <div className="portal:hidden">{picker}</div>
+        {history.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
+        {history.state === "error" && <LoadError onRetry={history.reload} />}
+        {history.state === "ready" && data && (
+          <Columns>
+            <Column grow={1} sticky>
+              <StatCard
+                big={String(data.sessions)}
+                label={HISTORY.statLabel(data.sessions, monthName(month).toLowerCase())}
+                side={[{ value: String(data.lessons), label: HISTORY.lessons(data.lessons) }, { value: data.hours, label: HISTORY.hours(data.hours) }]}
+              />
+            </Column>
+            <Column grow={2}>
+              {/* Desktop: the month picker heads the list it controls, not the page header. */}
+              <div className="hidden portal:block">{picker}</div>
+              <div ref={more.box} className="flex flex-col gap-3">
+              <ListCard>
+                {data.rows.slice(0, more.n).map((r) => (
+                  <ListRow
+                    focusable
+                    key={`${r.sessionId ?? r.lessonId ?? r.occurrenceKey}`}
+                    href={href(r)}
+                    lead={<DateBlock word={weekdayShort(r.date)} day={String(Number(r.date.slice(8)))} time={r.startTime} />}
+                    title={r.name}
+                    sub={sub(r)}
+                    end={<StatusBlock kind={r.kind === "individuala" ? "Individual" : "Grup"} done={r.done} popId={r.sessionId} />}
+                  />
+                ))}
+              </ListCard>
+              {more.hasMore && <ShowMoreButton onClick={more.more} />}
+              </div>
+            </Column>
+          </Columns>
+        )}
+      </PageBody>
+    </>
   );
 }

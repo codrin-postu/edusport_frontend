@@ -1,3 +1,5 @@
+import { GroupsList } from "./GroupsList";
+
 export default function GrupePage() {
-  return null;
+  return <GroupsList />;
 }

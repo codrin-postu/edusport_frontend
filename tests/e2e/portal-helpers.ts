@@ -13,6 +13,7 @@ export type MockCall = {
 };
 
 export type MockState = {
+  inactiveGroups?: string[];
   accessTtlSec?: number;
   cutAccount?: boolean;
   revokeAll?: boolean;
@@ -21,6 +22,9 @@ export type MockState = {
   emptyToday?: boolean;
   refreshStatus?: number;
   refuseSecret?: boolean;
+  competitionsDown?: boolean;
+  coachDown?: boolean;
+  unscheduledGroup?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */

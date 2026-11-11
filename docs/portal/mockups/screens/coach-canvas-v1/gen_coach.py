@@ -300,7 +300,7 @@ def azi_parts():
     hero = stat_card('4', 'antrenamente azi', side_lines([('1', 'completat')]))
     today = section('Antrenamente azi', link=('Calendar', 'Calendar.dc.html'), body=card(''.join(today_row(*r, last=(i == len(TODAY_ROWS) - 1)) for i, r in enumerate(TODAY_ROWS))))
     past = section('Antrenamente fără prezență', card(''.join(row(*p[:4], type_block('Grup', 'Necompletat'), last=(i == len(PAST) - 1)) for i, p in enumerate(PAST))))
-    add = btn('+ Lecție individuală', 'Lectie.dc.html', primary=False, full=True)
+    add = btn('+ Adaugă antrenament', 'Adauga.dc.html', primary=False, full=True)
     return hero, today, past, add
 
 ATHLETES = [
@@ -499,7 +499,7 @@ def build():
     pages.append(phone('Azi.dc.html', 'Azi', azi_head(), hero + today + add + past, 'azi'))
     pages.append(desktop('DesktopAzi.dc.html', 'Azi, desktop', 'azi', 'Bună, Alina', 'Azi', '',
                          f'<div class="dt-cols">{col(hero, past, flex="1 1 300px", gap=32)}{col(today, flex="2 1 420px", gap=32)}</div>',
-                         topextra=f'<div style="display: flex; align-items: center; gap: 20px">{now_tile()}{btn("+ Lecție individuală", "DesktopLectie.dc.html", primary=False)}</div>'))
+                         topextra=f'<div style="display: flex; align-items: center; gap: 20px">{now_tile()}{btn("+ Adaugă antrenament", "DesktopAdauga.dc.html", primary=False)}</div>'))
 
 
     mp, cg, lg_, dy = coach_calendar()
@@ -521,7 +521,7 @@ def build():
     pages.append(desktop('DesktopGrupe.dc.html', 'Grupe, desktop', 'grupe', '', 'Grupe', '3 grupe, 34 de copii',
                          f'<div class="dt-cols">{col(mine, flex="1 1 380px")}{col(others, flex="1 1 380px")}</div>'))
 
-    gtabs = seg([('Sportivi (14)', '#'), ('Program', '#')], 0)
+    gtabs = seg([('Sportivi (14)', 'Grupa.dc.html'), ('Program', 'GrupaProgram.dc.html')], 0)
     gactions = col(btn('Fă prezența', 'Prezenta.dc.html', full=True), btn('Modifică grupa', 'GrupaModifica.dc.html', primary=False, full=True), gap=12)
     pages.append(phone('Grupa.dc.html', 'Grupă', phone_head(back=('Grupe', 'Grupe.dc.html'), h1='Intermediari Bronze', sub='Școala de patinaj'),
                        group_info() + gactions + col(gtabs, members(), gap=14), 'grupe'))
@@ -586,6 +586,115 @@ def build():
     pages.append(phone('Lectie.dc.html', 'Lecție individuală', phone_head(back=('Azi', 'Azi.dc.html'), h1='Lecție individuală'), lesson_form(), None))
     pages.append(desktop('DesktopLectie.dc.html', 'Lecție individuală, desktop', 'azi', '', 'Lecție individuală', '',
                          f'<div style="max-width: 520px">{card(lesson_form(), pad="24px")}</div>', back=('Azi', 'DesktopAzi.dc.html')))
+
+
+    # ---------- antrenament nou, program, o dată, lecție ----------
+    def days(on):
+        out = ''
+        for d in ['Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ', 'Du']:
+            a = d in on
+            st = f'background: {NAVY}; color: #ffffff; border: 2px solid {NAVY}' if a else f'background: #ffffff; color: {NAVY}; border: 1px solid #b9c6da'
+            out += f'<span role="checkbox" aria-checked="{"true" if a else "false"}" style="height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; {st}; font-weight: 700; font-size: 14px">{d}</span>'
+        return (f'<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-weight: 700; font-size: 14px">Zile</span>'
+                f'<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">{out}</div></div>')
+    def summary(text):
+        return f'<div style="background: {ICE_L}; padding: 12px 14px; font-size: 14px; font-weight: 600">{text}</div>'
+    two = lambda a, b: f'<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">{a}{b}</div>'
+    def add_form(kind, repeat):
+        tabs = seg([('Grup', 'Adauga.dc.html'), ('Individual', 'AdaugaIndividual.dc.html')], 0 if kind == 'grup' else 1)
+        who = field('Grupa', 'Intermediari Bronze', kind='select') if kind == 'grup' else field('Sportiv', 'Maria Ionescu', kind='select')
+        rep = field('Se repetă', repeat, kind='select')
+        parts = [tabs, who]
+        if repeat == 'Nu se repetă':
+            parts += [two(field('Data', '12.11.2026'), field('Ora', '18:30')), field('Durată', '45 min' if kind != 'grup' else '60 min', kind='select'), rep]
+            sm = 'Miercuri, 12 noiembrie, 18:30, o singură dată.'
+        else:
+            parts += [rep, days(['Ma', 'Jo']), two(field('Ora', '17:30'), field('Durată', '60 min', kind='select')),
+                      two(field('Din data', '11.11.2026'), field('Până la', 'Sfârșitul sezonului', kind='select'))]
+            sm = 'Marți și joi, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului.'
+        if kind != 'grup':
+            parts.append(field('Antrenor', 'Alina Gheorghe', kind='select'))
+        parts += [summary(sm), btn('Adaugă antrenamentul', full=True)]
+        return col(*parts, gap=18)
+    for nm_, kind, repeat in [('Adauga', 'grup', 'Săptămânal'), ('AdaugaIndividual', 'individual', 'Nu se repetă')]:
+        f_ = add_form(kind, repeat)
+        pages.append(phone(f'{nm_}.dc.html', 'Antrenament nou', phone_head(back=('Azi', 'Azi.dc.html'), h1='Antrenament nou'), f_, None))
+        pages.append(desktop(f'Desktop{nm_}.dc.html', 'Antrenament nou, desktop', 'azi', '', 'Antrenament nou', '',
+                             f'<div style="max-width: 560px">{card(f_.replace(".dc.html", ".dc.html").replace("href=" + chr(34) + "Adauga", "href=" + chr(34) + "DesktopAdauga"), pad="24px")}</div>', back=('Azi', 'DesktopAzi.dc.html')))
+
+    RULES = [('Marți, 17:30', '60 min, săptămânal, din 1 septembrie'), ('Joi, 17:30', '60 min, săptămânal, din 1 septembrie')]
+    def rules_card():
+        out = ''
+        for i, (t, sub) in enumerate(RULES):
+            b = '' if i == len(RULES) - 1 else f'border-bottom: 1px solid {LINE}; '
+            out += (f'<div style="{b}display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 8px 14px">'
+                    f'<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700; font-size: 15px">{t}</span>'
+                    f'<span style="font-size: 13px; color: {MUTED}">{sub}</span></span>'
+                    f'<span style="display: flex; gap: 6px; flex: none"><a href="ProgramSchimba.dc.html" style="min-height: 44px; box-sizing: border-box; padding: 0 12px; display: flex; align-items: center; border: 2px solid {NAVY}; background: #ffffff; font-weight: 700; font-size: 14px">Schimbă</a>'
+                    f'<a href="ProgramSterge.dc.html" style="min-height: 44px; box-sizing: border-box; padding: 0 12px; display: flex; align-items: center; border: 2px solid {NAVY}; background: #ffffff; font-weight: 700; font-size: 14px">Șterge</a></span></div>')
+        return card(out)
+    DATES = [('Mar', '11', 'Marți, 17:30', '60 min', None), ('Joi', '13', 'Joi, 17:30', '60 min', ('Anulată', 'soft')),
+             ('Mar', '18', 'Marți, 17:30', '60 min', None), ('Vin', '21', 'Vineri, 18:00', 'mutată din joi, 20 noiembrie', ('Mutată', 'soft')),
+             ('Mar', '25', 'Marți, 17:30', '60 min', None)]
+    def dates_card():
+        items = [('ProgramData.dc.html', tblock(m, d), t, sub, endblock(*e) if e else None) for m, d, t, sub, e in DATES]
+        return rows(items)
+    ptabs = seg([('Sportivi (14)', 'Grupa.dc.html'), ('Program', 'GrupaProgram.dc.html')], 1)
+    pview = seg([('Listă', '#'), ('Lună', '#')], 0)
+    padd = btn('+ Adaugă program', 'Adauga.dc.html', primary=False, full=True)
+    ppub = (f'<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 56px">'
+            f'<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700; font-size: 15px">Arată programul pe site</span>'
+            f'<span style="font-size: 13px; color: {MUTED}">Programul este public, îl vede oricine pe site.</span></span>{check(True, "Arată programul pe site")}</div>')
+    prog_body = col(ptabs, section('Program săptămânal', rules_card()), padd, ppub,
+                    col(h2('Următoarele date'), pview, dates_card(), gap=12), gap=22)
+    pages.append(phone('GrupaProgram.dc.html', 'Program grupă', phone_head(back=('Grupe', 'Grupe.dc.html'), h1='Intermediari Bronze', sub='Școala de patinaj'), prog_body, 'grupe'))
+    pages.append(desktop('DesktopGrupaProgram.dc.html', 'Program grupă, desktop', 'grupe', '', 'Intermediari Bronze', 'Școala de patinaj',
+                         f'<div class="dt-cols">{col(ptabs, section("Program săptămânal", rules_card()), padd, ppub, flex="1 1 380px", gap=20)}{col(h2("Următoarele date"), pview, dates_card(), flex="1 1 380px", gap=12)}</div>',
+                         back=('Grupe', 'DesktopGrupe.dc.html'), topextra=btn('+ Adaugă program', 'DesktopAdauga.dc.html', primary=False)))
+
+    def overlay_phone(nm_, title, body, inner):
+        nm2, html = phone(nm_, title, phone_head(back=('Grupe', 'Grupe.dc.html'), h1='Intermediari Bronze', sub='Școala de patinaj'), body, 'grupe')
+        html = html.replace('<div class="ph-root" style="', '<div class="ph-root" style="position: relative; ', 1).replace('\n</div>\n', '\n' + over(f'<div style="width: 100%">{inner}</div>', 'align-items: flex-end; padding: 0') + '</div>\n', 1)
+        return (nm2, html)
+    def overlay_desktop(nm_, title, inner):
+        nm2, html = desktop(nm_, title, 'grupe', '', 'Intermediari Bronze', 'Școala de patinaj',
+                            f'<div class="dt-cols">{col(ptabs, section("Program săptămânal", rules_card()), flex="1 1 380px")}{col(h2("Următoarele date"), dates_card(), flex="1 1 380px", gap=12)}</div>', back=('Grupe', 'DesktopGrupe.dc.html'))
+        html = html.replace('<div class="dt-root">', '<div class="dt-root" style="position: relative">', 1).replace('</div>\n</div>\n', '</div>\n' + over(f'<div style="width: 460px">{inner}</div>', 'align-items: center; justify-content: center') + '</div>\n', 1)
+        return (nm2, html)
+    choice = lambda label, sub, on: (f'<a href="#" style="display: flex; gap: 12px; align-items: center; min-height: 60px; padding: 8px 12px; border: {"2px solid " + NAVY if on else "1px solid #b9c6da"}; background: #ffffff; text-decoration: none; color: {NAVY}">'
+                                     f'<span style="width: 20px; height: 20px; box-sizing: border-box; border: 2px solid {NAVY}; background: {NAVY if on else "#ffffff"}; flex: none"></span>'
+                                     f'<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700; font-size: 15px">{label}</span><span style="font-size: 13px; color: {MUTED}">{sub}</span></span></a>')
+    dsheet = card(col(f'<h2 style="margin: 0; {LS}; font-size: 22px">Joi, 13 noiembrie, 17:30</h2>',
+                      f'<span style="font-size: 14px; color: {MUTED}">Schimbi doar această dată. Programul săptămânal rămâne.</span>',
+                      choice('Anulează', 'Părinții văd data anulată și nota.', True), field('Notă', 'Patinoarul este închis.'),
+                      choice('Mută', 'Alegi altă zi sau oră pentru această dată.', False),
+                      choice('Șterge', 'Data dispare din program, fără notă.', False),
+                      two(btn('Renunță', 'GrupaProgram.dc.html', primary=False, full=True), btn('Salvează', 'GrupaProgram.dc.html', full=True)), gap=12), pad='20px')
+    pages.append(overlay_phone('ProgramData.dc.html', 'O dată din program', prog_body, dsheet))
+    pages.append(overlay_desktop('DesktopProgramData.dc.html', 'O dată din program, desktop', dsheet))
+    csheet = card(col(f'<h2 style="margin: 0; {LS}; font-size: 22px">Schimbă programul</h2>',
+                      f'<span style="font-size: 14px; color: {MUTED}">Marți, 17:30. Datele de dinainte rămân cum au fost.</span>',
+                      days(['Ma']), two(field('Ora', '18:00'), field('Durată', '60 min', kind='select')), field('Se aplică din', '17.11.2026'),
+                      two(btn('Renunță', 'GrupaProgram.dc.html', primary=False, full=True), btn('Schimbă', 'GrupaProgram.dc.html', full=True)), gap=14), pad='20px')
+    pages.append(overlay_phone('ProgramSchimba.dc.html', 'Schimbă programul', prog_body, csheet))
+    pages.append(overlay_desktop('DesktopProgramSchimba.dc.html', 'Schimbă programul, desktop', csheet))
+    ssheet = card(col(f'<h2 style="margin: 0; {LS}; font-size: 22px">Ștergi programul de marți?</h2>',
+                      f'<span style="font-size: 14px; color: {MUTED}">Ședințele și prezențele de până atunci rămân. După data aleasă nu mai apare.</span>',
+                      field('Din data', '17.11.2026'),
+                      two(btn('Renunță', 'GrupaProgram.dc.html', primary=False, full=True), btn('Șterge programul', 'GrupaProgram.dc.html', full=True)), gap=14), pad='20px')
+    pages.append(overlay_phone('ProgramSterge.dc.html', 'Șterge programul', prog_body, ssheet))
+    pages.append(overlay_desktop('DesktopProgramSterge.dc.html', 'Șterge programul, desktop', ssheet))
+
+    def lesson_detail():
+        present = (f'<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 56px">'
+                   f'<span style="font-weight: 700; font-size: 15px">Prezent</span>{check(True, "Prezent")}</div>')
+        info = kv([('Data', 'Miercuri, 12 noiembrie'), ('Ora', '18:30, 45 min'), ('Antrenor', 'Alina Gheorghe'), ('Se repetă', 'Nu')])
+        return col(info, card(present, pad='4px 14px'),
+                   btn('Salvează prezența', full=True), btn('Modifică lecția', 'AdaugaIndividual.dc.html', primary=False, full=True),
+                   f'<a href="#" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px">Șterge lecția</a>', gap=16)
+    pages.append(phone('LectieDetaliu.dc.html', 'Lecție individuală', phone_head(back=('Azi', 'Azi.dc.html'), kicker='Lecție individuală', h1='Maria Ionescu'), lesson_detail(), 'azi'))
+    pages.append(desktop('DesktopLectieDetaliu.dc.html', 'Lecție individuală, desktop', 'azi', 'Lecție individuală', 'Maria Ionescu', '',
+                         f'<div style="max-width: 520px">{lesson_detail()}</div>', back=('Azi', 'DesktopAzi.dc.html')))
 
     hh, hl = hist_hero(), rows(HIST)
     pages.append(phone('Istoric.dc.html', 'Istoric', phone_head(h1='Istoric'), month_picker() + hh + hl, 'istoric'))

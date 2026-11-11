@@ -169,7 +169,7 @@ Batch A (Tasks 1 and 2) gets its own review before Task 3 starts, because a mist
 ### Task 4: Shared portal folder and copy split (low, Sonnet)
 
 **Files:**
-- Move with `git mv`: `src/app/(antrenor)/antrenor/_ui/{AuthFrame,AuthRibbon,AuthBits,EntryReveal,PasswordField,Sheet,Toast,Spinner,LoadError}.tsx` -> `src/app/_portal/ui/`; `src/app/(antrenor)/antrenor/_lib/entry-transition.ts` -> `src/app/_portal/lib/entry-transition.ts`; `intrare/LoginForm.tsx`, `am-uitat-parola/ResetForm.tsx`, `invitatie/InviteForm.tsx` -> `src/app/_portal/auth/`
+- Move with `git mv`: `src/app/(antrenor)/antrenor/_ui/{AuthFrame,AuthRibbon,AuthBits,EntryReveal,PasswordField,Sheet,Toast,Spinner,LoadError}.tsx` -> `src/app/_portal/ui/`; `src/app/(antrenor)/antrenor/_lib/entry-transition.ts` -> `src/app/_portal/lib/entry-transition.ts`; `login/LoginForm.tsx`, `forgot-password/ResetForm.tsx`, `invite/InviteForm.tsx` -> `src/app/_portal/auth/`
 - Create: `src/lib/portal/copy-shared.ts`, `src/app/_portal/lib/nav.ts`
 - Modify: every import of the moved files; `src/lib/portal/copy.ts` (auth strings, `PORTAL_LABEL`, `STATES`, `A11Y` move to `copy-shared.ts` and are re-exported from `copy.ts` so coach code compiles unchanged)
 - Test: existing `tests/e2e/portal-*.spec.ts`

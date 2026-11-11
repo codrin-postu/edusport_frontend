@@ -28,7 +28,7 @@ const COACH_OPTIONS = [
   { id: "tm-radu", name: "Radu Matei" },
 ];
 
-const person = (id, name, age, extra = {}) => ({ athleteId: id, name, age, isNew: false, alsoIn: [], inactive: false, ...extra });
+const person = (id, name, age, extra = {}) => ({ athleteId: id, name, age, isNew: false, alsoIn: [], inactive: false, leavesOn: null, ...extra });
 
 export function buildWorld(today) {
   const accounts = {
@@ -37,16 +37,16 @@ export function buildWorld(today) {
     "antrenor3@example.invalid": { coachId: "tm-cezar", name: "Cezar Lungu", firstName: "Cezar", initials: "CL", phone: null, password: null, google: true },
   };
   const groups = {
-    "gavansati": { id: "gavansati", name: "Avansați", kind: "club", own: true, coaches: ["Andrei Popa"], days: [2, 3], start: "18:15", dur: 60, program: ["Ma, Mi 18:15"], programPublic: true, eventId: "evavansati" },
-    "gprimii": { id: "gprimii", name: "Primii Pași", kind: "school", own: true, coaches: ["Andrei Popa"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evprimii" },
-    "gsilver": { id: "gsilver", name: "Intermediari Silver", kind: "school", own: false, coaches: ["Bianca Ene"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evsilver" },
-    "guscat": { id: "guscat", name: "Uscat Juniori", kind: "club", own: false, coaches: ["Bianca Ene"], days: [1, 4], start: "17:00", dur: 60, program: ["Lu, Jo 17:00"], programPublic: false, eventId: "evuscat" },
+    "gavansati": { id: "gavansati", name: "Avansați", kind: "club", own: true, coaches: ["Andrei Popa"], days: [2, 3], start: "18:15", dur: 60, program: ["Ma, Mi 18:15"], programPublic: true, eventId: "evavansati", location: "AFI Cotroceni" },
+    "gprimii": { id: "gprimii", name: "Primii Pași", kind: "school", own: true, coaches: ["Andrei Popa"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evprimii", location: "AFI Cotroceni" },
+    "gsilver": { id: "gsilver", name: "Intermediari Silver", kind: "school", own: false, coaches: ["Bianca Ene"], days: [6, 0], start: "10:00", dur: 50, program: ["Sâ, Du 10:00"], programPublic: null, eventId: "evsilver", location: "Patinoar Nord" },
+    "guscat": { id: "guscat", name: "Uscat Juniori", kind: "club", own: false, coaches: ["Bianca Ene"], days: [1, 4], start: "17:00", dur: 60, program: ["Lu, Jo 17:00"], programPublic: false, eventId: "evuscat", location: "Patinoar Nord" },
   };
   const members = {
     "gavansati": [
       person("amaria", "Maria Ionescu", 11), person("aluca", "Luca Dumitru", 10), person("aana", "Ana Stoica", 12),
       person("amatei", "Matei Radu", 9), person("aelena", "Elena Barbu", 13), person("adavid", "David Marin", 10),
-      person("asofia", "Sofia Nistor", 11), person("atudor", "Tudor Pavel", 8, { isNew: true }),
+      person("asofia", "Sofia Nistor", 11, { leavesOn: "2026-11-12" }), person("atudor", "Tudor Pavel", 8, { isNew: true }),
       person("aioana", "Ioana Diaconu", 12, { alsoIn: ["Uscat Juniori"] }),
     ],
     "gprimii": [person("apaul", "Paul Enache", 6), person("asara", "Sara Voicu", 7), person("aeric", "Eric Mocanu", 6), person("alia", "Lia Tănase", 7)],
@@ -65,12 +65,26 @@ export function buildWorld(today) {
   const lessons = {
     "ldone": { lessonId: "ldone", athleteId: "amatei", athleteName: "Matei Radu", date: today, startTime: "15:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
     "larchived": { lessonId: "larchived", athleteId: "aana", athleteName: "Ana Stoica", date: addDays(today, -9), startTime: "16:00", durationMin: 50, coachIds: ["tm-andrei"], state: "saved", present: true },
+    "lser1": { lessonId: "lser1", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-10", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
+    "lser2": { lessonId: "lser2", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-17", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
+    "lser3": { lessonId: "lser3", athleteId: "aana", athleteName: "Ana Stoica", date: "2026-11-24", startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null, seriesId: "sl-ana" },
     "lplan": { lessonId: "lplan", athleteId: "aana", athleteName: "Ana Stoica", date: today, startTime: "17:00", durationMin: 60, coachIds: ["tm-andrei"], state: "planned", present: null },
   };
+  // Lesson series (contract LessonSeriesView), keyed by seriesId.
+  const series = { "sl-ana": { seriesId: "sl-ana", freq: "weekly", days: ["tue"], weekOfMonth: null, startTime: "17:00", durationMin: 60, from: "2026-11-10", to: "2027-06-30", untilSeasonEnd: true } };
+  // Program rules per group (one per weekday, contract CoachProgramRule without nextDate), from the groups' events.
+  const DAY = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const season = { from: `${today.slice(0, 4)}-10-01`, to: `${Number(today.slice(0, 4)) + 1}-05-31` };
+  const rules = Object.fromEntries(Object.values(groups).map((g) => [g.id, g.days.slice().sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7)).map((d) => ({
+    eventId: g.eventId, day: DAY[d], freq: "weekly", weekOfMonth: null, startTime: g.start, durationMin: g.dur, from: season.from, to: season.to, untilSeasonEnd: true,
+  }))]));
+  // Date exceptions: cancelled (with a note), moved (original date -> new date and time), removed; one-off classes.
+  const cancelled = { gavansati: [{ date: "2026-11-11", note: null }] };
+  const moved = { gavansati: [{ date: "2026-11-17", newDate: "2026-11-19", newStartTime: "18:15", note: null }] };
   const devices = [
     { id: "dev1", key: SEED_DEVICE_KEY, label: "Chrome pe Windows", lastSeenAt: new Date().toISOString() },
     { id: "dev2", key: OTHER_DEVICE_KEY, label: "Safari pe iPhone", lastSeenAt: new Date(Date.now() - 5 * 86_400_000).toISOString() },
   ];
   const pool = [person("apool1", "Teodora Anghel", 9), person("apool2", "Rareș Cojocaru", 11), person("apool3", "Irina Munteanu", 8), person("apool4", "Ana Bălan", 9), person("apool5", "Diana Ilie", 10)];
-  return { accounts, groups, members, inactive, saved, lessons, devices, pool, coachOptions: COACH_OPTIONS, counters: { athlete: 0, lesson: 0, event: 0 } };
+  return { accounts, groups, members, inactive, saved, lessons, series, rules, cancelled, moved, removed: {}, oneOffs: {}, requests: {}, devices, pool, coachOptions: COACH_OPTIONS, counters: { athlete: 0, lesson: 0, event: 0 } };
 }

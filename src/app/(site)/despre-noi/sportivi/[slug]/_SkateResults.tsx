@@ -337,7 +337,7 @@ export default function SkateResults({ results }: { results: SkateResult[] }) {
                   onClick={() => setOpenKey((cur) => (cur === key ? null : key))}
                   className={cn(
                     rowClass,
-                    "py-4 outline-none transition-colors hover:text-accent",
+                    "py-4 outline-none transition-colors",
                     "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
                   )}
                 >

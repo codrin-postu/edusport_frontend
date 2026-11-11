@@ -57,7 +57,7 @@ const VARIANT = {
     cardTitle: "text-primary",
     cardDesc: "text-secondary",
     cardLink: "link inline-flex items-center gap-2 text-xs font-semibold text-accent",
-    cardExternal: "text-secondary group-hover:text-accent",
+    cardExternal: "text-secondary",
   },
   navy: {
     onDark: true as const,

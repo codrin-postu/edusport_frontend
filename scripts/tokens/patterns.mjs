@@ -2,6 +2,8 @@
 const V = "(?:^|[\\s\"'`:])"; // start of a class token, after any variant prefix
 
 export const PATTERNS = [
+  { id: "canvas-hex", why: "canvas colours live in src/styles/portal-theme.css", regex: /#(?:f6f9fd|dde6f3|b9c6da|8fb8f5|e1ecfb|4a7bd0|c9d6ee|111111)\b/gi },
+  { id: "theme-branch", why: "components never branch on the site", regex: /data-theme/g },
   // Any colour, not a fixed list: `text-edusport-blue/60` slipped past the old
   // list. `text-sm/6` style size/line-height shorthands are not colours.
   { id: "text-opacity", why: "text and borders never use opacity", regex: new RegExp(`${V}(?:text|border(?:-[trblxy])?|divide|ring|placeholder:text)-(?!(?:xs|sm|base|lg|[2-9]?xl)\\/)[a-z][a-z-]*\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
@@ -45,6 +47,10 @@ export const FROZEN = [
 // still checked normally. Do not add to this list without a reason tied to
 // a real spec decision; prefer fixing the violation instead.
 export const ALLOWLIST = [
+  { file: "src/styles/portal-theme.css", id: "canvas-hex", reason: "the portal theme file is the single list of differences" },
+  { file: "src/styles/portal-theme.css", id: "theme-branch", reason: "the selector of the portal theme" },
+  { file: "src/app/(antrenor)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
+  { file: "src/app/(sportiv)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
   {
     file: "src/components/blocks/announcement-popup/AnnouncementCard.tsx",
     id: "arbitrary-shadow",
@@ -126,7 +132,7 @@ export const ALLOWLIST = [
     reason: "the loading spinner in the submit button is a spinning ring; a square would wobble.",
   },
   {
-    file: "src/app/(antrenor)/antrenor/_ui/Spinner.tsx",
+    file: "src/app/_portal/ui/Spinner.tsx",
     id: "radius",
     reason: "the coach app spinner is the only round element (portal spec 9.11); a square would wobble.",
   },

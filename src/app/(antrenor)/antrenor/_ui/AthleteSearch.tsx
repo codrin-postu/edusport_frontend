@@ -6,7 +6,7 @@ import type { CoachSearchRow } from "@/lib/portal/api-types";
 import { Input } from "@/components/ui/form-field";
 import Icon from "@/components/ui/icon";
 import { cn } from "@/utils/cn";
-import { portalApi } from "../_lib/api";
+import { portalApi } from "@/app/_portal/lib/api";
 
 type AthleteSearchProps = {
   group?: string;
@@ -46,10 +46,10 @@ export function AthleteSearch({ group, multiple, selected, onToggle }: AthleteSe
   const rows = query !== null && found?.query === query ? found.rows : [];
   return (
     <div>
-      <label htmlFor={id} className="text-label text-secondary block mb-2">{ADD_ATHLETE.search}</label>
-      <Input id={id} type="search" value={q} autoComplete="off" onChange={(e) => setQ(e.target.value)} />
+      <label htmlFor={id} className="text-field-label text-label-ink block mb-(--field-gap)">{ADD_ATHLETE.search}</label>
+      <Input id={id} type="search" value={q} autoComplete="off" surface="card" onChange={(e) => setQ(e.target.value)} />
       {rows.length > 0 && (
-        <ul className="mt-2 border-retro border-line bg-surface-raised divide-y divide-line-subtle">
+        <ul className="mt-2 border border-card-line bg-surface-raised divide-y divide-line-subtle">
           {rows.map((row) => {
             const on = selected.includes(row.athleteId);
             return (
@@ -59,7 +59,7 @@ export function AthleteSearch({ group, multiple, selected, onToggle }: AthleteSe
                   aria-pressed={multiple ? on : undefined}
                   onClick={() => onToggle(row)}
                   className={cn(
-                    "flex w-full items-center justify-between gap-4 p-4 text-left text-body outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary",
+                    "flex w-full items-center justify-between gap-4 min-h-(--portal-tap) p-4 text-left text-(length:--portal-text-15) font-bold outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus",
                     on ? "bg-surface-highlight text-primary" : "text-primary",
                   )}
                 >

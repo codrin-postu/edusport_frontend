@@ -2,6 +2,7 @@
 
 import React, { useId } from "react";
 import { cn } from "@/utils/cn";
+import Icon from "./icon";
 
 // ---------------------------------------------------------------------------
 // Shared form field: a Field wrapper (label + hint + error) around a single
@@ -13,17 +14,17 @@ import { cn } from "@/utils/cn";
 
 /** Keyboard AND mouse focus for text controls (a click into a field should
  * show the ring too, unlike Button/IconButton which are focus-visible only). */
-const FOCUS_LIGHT = "outline-none focus:outline-2 focus:outline-offset-3 focus:outline-primary";
+const FOCUS_LIGHT = "outline-none focus:outline-2 focus:outline-offset-(--focus-offset) focus:outline-focus";
 const FOCUS_DARK = "outline-none focus:outline-2 focus:outline-offset-3 focus:outline-primary-on-dark";
 
 export type Surface = "page" | "card";
 
 const CONTROL_BASE =
-  "w-full text-body-sm border-retro transition-[color,box-shadow,border-color] disabled:cursor-not-allowed";
+  "w-full text-input border-input transition-[color,box-shadow,border-color] disabled:cursor-not-allowed";
 
 const CONTROL_LIGHT: Record<Surface, string> = {
-  page: "bg-surface border-line text-primary placeholder:text-muted",
-  card: "bg-surface-raised border-line text-primary placeholder:text-muted",
+  page: "bg-input-bg border-input-line text-primary placeholder:text-muted",
+  card: "bg-surface-raised border-input-line text-primary placeholder:text-muted",
 };
 
 const CONTROL_DARK =
@@ -32,7 +33,7 @@ const CONTROL_DARK =
 const DISABLED_LIGHT = "disabled:text-disabled disabled:border-line-subtle";
 const DISABLED_DARK = "disabled:text-disabled disabled:border-line-subtle-on-dark";
 
-const INVALID_LIGHT = "aria-invalid:border-accent";
+const INVALID_LIGHT = "aria-invalid:border-input-invalid";
 const INVALID_DARK = "aria-invalid:border-accent-on-dark";
 
 interface ControlProps {
@@ -62,12 +63,12 @@ export const Input: React.FC<InputProps> = ({
     ref={ref}
     className={cn(
       CONTROL_BASE,
-      "h-12 px-4",
+      "h-12 px-(--input-pad-x)",
       onDark ? CONTROL_DARK : CONTROL_LIGHT[surface],
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
       onDark ? DISABLED_DARK : DISABLED_LIGHT,
       onDark ? INVALID_DARK : INVALID_LIGHT,
-      invalid && (onDark ? "border-accent-on-dark" : "border-accent"),
+      invalid && (onDark ? "border-accent-on-dark" : "border-input-invalid"),
       className,
     )}
     {...props}
@@ -94,12 +95,12 @@ export const Textarea: React.FC<TextareaProps> = ({
     rows={rows}
     className={cn(
       CONTROL_BASE,
-      "min-h-32 py-3 px-4 resize-y",
+      "min-h-32 py-3 px-(--input-pad-x) resize-y",
       onDark ? CONTROL_DARK : CONTROL_LIGHT[surface],
       onDark ? FOCUS_DARK : FOCUS_LIGHT,
       onDark ? DISABLED_DARK : DISABLED_LIGHT,
       onDark ? INVALID_DARK : INVALID_LIGHT,
-      invalid && (onDark ? "border-accent-on-dark" : "border-accent"),
+      invalid && (onDark ? "border-accent-on-dark" : "border-input-invalid"),
       className,
     )}
     {...props}
@@ -160,7 +161,7 @@ export const Field: React.FC<FieldProps> = ({
     <div className={className}>
       <label
         htmlFor={controlId}
-        className={cn("text-label block mb-2", onDark ? "text-secondary-on-dark" : "text-secondary")}
+        className={cn("text-field-label block mb-(--field-gap)", onDark ? "text-secondary-on-dark" : "text-label-ink")}
       >
         {label}
         {required ? " *" : ""}
@@ -169,7 +170,7 @@ export const Field: React.FC<FieldProps> = ({
       {hint && (
         <p
           id={hintId}
-          className={cn("text-caption mt-2", onDark ? "text-secondary-on-dark" : "text-secondary")}
+          className={cn("text-field-hint mt-(--field-gap)", onDark ? "text-secondary-on-dark" : "text-hint-ink")}
         >
           {hint}
         </p>
@@ -178,8 +179,9 @@ export const Field: React.FC<FieldProps> = ({
         <p
           id={errorId}
           aria-live="polite"
-          className={cn("text-caption mt-2", onDark ? "text-accent-on-dark" : "text-accent")}
+          className={cn("text-caption mt-2 items-start gap-2 [display:var(--alert-line-display)]", onDark ? "text-accent-on-dark" : "text-alert-ink")}
         >
+          <Icon name="shield-alert" className="mt-0.5 [display:var(--alert-icon-display)]" />
           {error}
         </p>
       )}
@@ -201,7 +203,7 @@ export const FieldLabel: React.FC<{
 }> = ({ htmlFor, children, tone = "light" }) => (
   <label
     htmlFor={htmlFor}
-    className={cn("text-label block mb-2", tone === "dark" ? "text-secondary-on-dark" : "text-secondary")}
+    className={cn("text-field-label block mb-(--field-gap)", tone === "dark" ? "text-secondary-on-dark" : "text-label-ink")}
   >
     {children}
   </label>

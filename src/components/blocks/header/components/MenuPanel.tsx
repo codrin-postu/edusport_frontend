@@ -96,7 +96,7 @@ const RetroPanel: React.FC<{
           key={item.label}
           href={item.href}
           onClick={onClose}
-          className="text-body-sm block px-3 py-2 text-primary border-l-[3px] border-transparent transition-colors hover:border-rust hover:text-accent"
+          className="text-body-sm block px-3 py-2 text-primary border-l-[3px] border-transparent transition-colors hover:border-rust"
           data-umami-event="nav"
           data-umami-event-url={item.href}
         >
@@ -137,7 +137,7 @@ const RetroPanel: React.FC<{
       >
         <span className="w-[34px] h-[34px] shrink-0 bg-[linear-gradient(135deg,var(--color-rust),var(--color-orange),var(--color-mustard))]" />
         <span>
-          <span className="text-caption block text-primary transition-colors group-hover:text-accent">Instagram</span>
+          <span className="text-caption block text-primary transition-colors">Instagram</span>
           <span className="text-caption block text-secondary">{igHandle}</span>
         </span>
       </a>,

@@ -34,7 +34,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const q = req.nextUrl.searchParams;
   const state = q.get("state");
   const code = q.get("code");
-  const back = saved?.invite ? "/invitatie" : "/intrare";
+  const back = saved?.invite ? "/invite" : "/login";
   if (!saved || !state || state !== saved.state || q.has("error") || !code) return go(back, [clearGoogle]);
   const invite = saved.invite ? req.cookies.get(ctx.names.invite)?.value : undefined;
   const redirectUri = googleRedirectUri(process.env.PORTAL_HOST_ANTRENOR, ctx.host, ctx.secure);

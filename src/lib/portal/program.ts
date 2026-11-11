@@ -19,3 +19,10 @@ export function dateState(o: Occurrence, today: string): DateState {
 
 /** The Strapi documentId the date routes take; never the numeric `eventId`. */
 export const eventDocumentId = (o: Occurrence): string | null => o.documentId ?? null;
+
+/** Minutes from `startTime` to `endTime` of an occurrence, null without an end time (or across midnight). */
+export function occurrenceMinutes(o: Pick<Occurrence, "startTime" | "endTime" | "endsNextDay">): number | null {
+  if (!o.startTime || !o.endTime) return null;
+  const at = (t: string): number => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  return at(o.endTime) - at(o.startTime) + (o.endsNextDay ? 24 * 60 : 0);
+}

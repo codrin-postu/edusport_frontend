@@ -22,8 +22,10 @@ test.describe("coach host", () => {
   test("an unknown URL shows the coach 404, not the site one", async({ page }) => {
     const res = await page.goto("/xyz/abc");
     expect(res?.status()).toBe(404);
-    await expect(page.getByText("Pagina nu există.")).toBeVisible();
-    await expect(page.getByRole("banner")).toHaveCount(0);
+    // The coach 404 sits in the portal frame (nav, page header, a way back), not the site's.
+    await expect(page.getByRole("heading", { name: "Pagina nu există" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Înapoi la Azi" })).toHaveAttribute("href", "/");
+    await expect(page.getByRole("link", { name: "Despre noi" })).toHaveCount(0);
   });
 
   test("site pages and sitemap answer 404", async({ request }) => {

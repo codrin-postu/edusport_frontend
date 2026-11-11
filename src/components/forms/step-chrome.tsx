@@ -30,7 +30,7 @@ const NAVIGATION_VARIANT = {
   card: {
     container:
       "flex items-center justify-between mt-8 pt-6 border-t-retro border-line-subtle",
-    back: "text-body-sm text-secondary hover:text-accent transition-colors",
+    back: "text-body-sm text-secondary transition-colors",
     face: "black" as const,
   },
   navy: {

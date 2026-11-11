@@ -15,8 +15,8 @@ test("tick two, the counter, save, and what the server received", async({ page }
   await expect(page.getByRole("heading", { name: "Avansați" })).toBeVisible();
   await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
   await expect(page.getByText("0 prezenți")).toBeVisible();
-  await tick(page, "Maria Ionescu, Grup");
-  await tick(page, "Luca Dumitru, Uscat");
+  await tick(page, "Grup, Maria Ionescu");
+  await tick(page, "Uscat, Luca Dumitru");
   await expect(page.getByText("2 prezenți")).toBeVisible();
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
   await expect(page.getByText("Prezență salvată: Avansați, 3 noi.")).toBeVisible();
@@ -42,9 +42,39 @@ test("the own coach row cannot be removed, others can", async({ page }) => {
 test("an archived session is read only", async({ page }) => {
   await loginAs(page);
   await page.goto("/prezenta?id=s-archived");
-  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.")).toBeVisible();
+  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.").locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează", exact: true })).toHaveCount(0);
-  await expect(page.getByLabel("Maria Ionescu, Grup")).toBeDisabled();
+  await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
+});
+
+test("an archived session keeps the check marks: ticked boxes show a mark, unticked stay empty", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/prezenta?id=s-archived");
+  const mark = (name: string) => page.getByLabel(name).locator("xpath=following-sibling::*[2]");
+  await expect(mark("Grup, Maria Ionescu")).toBeVisible();
+  await expect(mark("Grup, Matei Radu")).toBeHidden();
+});
+
+test("no date button or day sheet: the date is plain text in the subline", async({ page }) => {
+  await loginAs(page);
+  await page.goto(occ("gavansati", FREE_DAY));
+  await expect(page.getByText(/^Mar(ți|ti)?, 3 noi/).locator("visible=true")).toBeVisible();
+  await expect(page.locator("[data-page-header] button")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^MA 3 NOI/ })).toHaveCount(0);
+});
+
+test("the back link goes where the coach came from, Azi by default", async({ page }) => {
+  await loginAs(page);
+  await page.goto("/prezenta?id=s-today");
+  await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
+  await page.goto("/prezenta?id=s-today&from=istoric");
+  await expect(page.getByRole("link", { name: "‹ Istoric" })).toHaveAttribute("href", "/istoric");
+  await page.goto("/prezenta?id=s-today&from=calendar");
+  await expect(page.getByRole("link", { name: "‹ Calendar" })).toHaveAttribute("href", "/calendar");
+  await page.goto("/prezenta?id=s-today&from=grupa");
+  await expect(page.getByRole("link", { name: "‹ Avansați" })).toHaveAttribute("href", "/grupe/gavansati");
+  await page.goto("/prezenta?id=s-today&from=nimic");
+  await expect(page.getByRole("link", { name: "‹ Azi" })).toBeVisible();
 });
 
 test("Școala: no Uscat column, a line under each name; Club: no line", async({ page }) => {
@@ -57,31 +87,6 @@ test("Școala: no Uscat column, a line under each name; Club: no line", async({ 
   await page.goto(occ("gavansati", FREE_DAY));
   await expect(page.getByText("Uscat", { exact: true })).toBeVisible();
   await expect(page.getByText("Abonament 8 ședințe")).toHaveCount(0);
-});
-
-test("the day sheet marks saved days, blocks the future and opens the existing dialog", async({ page }) => {
-  await loginAs(page);
-  await page.goto(occ("gavansati", FREE_DAY));
-  await page.getByRole("button", { name: "MA 3 NOI" }).click();
-  await expect(page.getByText("Alege ziua pentru care faci prezența.")).toBeVisible();
-  await expect(page.locator("td.bg-surface-highlight")).toHaveCount(1);
-  await expect(page.getByText("are prezență salvată")).toBeVisible();
-  await expect(page.getByRole("button", { name: /, 6 noiembrie/ })).toBeDisabled();
-  await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
-  await page.getByRole("button", { name: "Alege joi 5 noi" }).click();
-  await expect(page.getByText("Există deja o ședință salvată")).toBeVisible();
-  await expect(page.getByText("18:15, 7 prezenți, Salvată de Andrei Popa")).toBeVisible();
-  await page.getByRole("link", { name: "Deschide prezența salvată" }).click();
-  await expect(page).toHaveURL(/\/prezenta\?id=s-today$/);
-});
-
-test("picking a day without a saved session opens its class", async({ page }) => {
-  await loginAs(page);
-  await page.goto(occ("gavansati", TODAY));
-  await page.getByRole("button", { name: "JO 5 NOI" }).click();
-  await page.getByRole("button", { name: /, 4 noiembrie/ }).click();
-  await page.getByRole("button", { name: "Alege miercuri 4 noi" }).click();
-  await expect(page).toHaveURL(/\/prezenta\?occurrence=occ%3Agavansati%3A2026-11-04$/);
 });
 
 test("the stand-in session says the coach will appear", async({ page }) => {
@@ -100,30 +105,47 @@ test("a stand-in read refused with no access lands on Grupe with that toast", as
 test("an inactive athlete asks before the save goes on", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gavansati", FREE_DAY));
-  await tick(page, "Robert Toma, Grup");
+  await tick(page, "Grup, Robert Toma");
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
   await expect(page.getByText("Robert Toma are statusul Inactiv. Reactivezi sportivul?")).toBeVisible();
   await page.getByRole("button", { name: "Reactivează și salvează" }).click();
   await expect(page).toHaveURL(/\/prezenta\?id=s-new/);
 });
 
-test("a stand-in sees no add button, and Deschide only on a session that lists them", async({ page }) => {
-  await loginAs(page);
-  await page.goto(occ("gsilver", TODAY));
-  await page.getByRole("button", { name: /^JO 5 NOI/ }).click();
-  await page.getByRole("button", { name: /, 2 noiembrie/ }).click();
-  await page.getByRole("button", { name: "Alege luni 2 noi" }).click();
-  await expect(page.getByText("Există deja o ședință salvată")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toHaveCount(1);
-  await expect(page.getByRole("link", { name: "Adaugă încă o ședință în ziua asta" })).toHaveCount(0);
-});
+const SIZES = [{ width: 390, height: 844 }, { width: 1280, height: 900 }];
 
-test("an own group still offers the add button, and Deschide where the coach is listed", async({ page }) => {
-  await loginAs(page);
-  await page.goto(occ("gavansati", FREE_DAY));
-  await page.getByRole("button", { name: "MA 3 NOI" }).click();
-  await page.getByRole("button", { name: /, 5 noiembrie/ }).click();
-  await page.getByRole("button", { name: "Alege joi 5 noi" }).click();
-  await expect(page.getByRole("link", { name: "Deschide prezența salvată" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Adaugă încă o ședință în ziua asta" })).toBeVisible();
-});
+for (const size of SIZES) {
+  test.describe(`Prezență ${size.width}`, () => {
+    test.use({ viewport: size, timezoneId: "Europe/Bucharest" });
+
+    test("the saved session counts its present children", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/prezenta?id=s-today");
+      await expect(page.locator("[data-save-bar]")).toContainText("7 prezenți");
+    });
+
+    test("header, coach line, table, save bar", async({ page }) => {
+      await loginAs(page);
+      await page.goto(occ("gavansati", TODAY));
+      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.locator("h1")).toHaveText("Avansați");
+      await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
+      await expect(page.getByText("Joi, 5 noi, 18:15, AFI Cotroceni").locator("visible=true")).toBeVisible();
+      await expect(page.getByText("Andrei Popa (tu)")).toBeVisible();
+      await expect(page.getByRole("button", { name: "+ Adaugă alți antrenori" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "Maria Ionescu" })).toHaveAttribute("href", /\/sportiv\/[^?]+\?grupa=gavansati$/);
+      await expect(page.getByText("Uscat", { exact: true })).toBeVisible();
+      await tick(page, "Grup, Maria Ionescu");
+      const bar = page.locator("[data-save-bar]");
+      await expect(bar).toContainText(/\d+ prezenți/);
+      await expect(bar.getByRole("button", { name: "Salvează", exact: true })).toBeVisible();
+      if (size.width < 900) {
+        await expect(page.getByRole("navigation", { name: "Meniu" }).locator("visible=true")).toHaveCount(0);
+      } else {
+        await expect(page.getByText("Program:")).toBeVisible();
+        await expect(page.getByText("Loc:")).toBeVisible();
+        await expect(page.getByText("Antrenori:")).toBeVisible();
+      }
+    });
+  });
+}

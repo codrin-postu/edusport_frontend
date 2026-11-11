@@ -34,7 +34,8 @@ async function handle(req: NextRequest, { params }: Ctx): Promise<NextResponse> 
       }
     }
   }
-  const target = req.method === "GET" ? `${path}${forwardedQuery(path, req.nextUrl.searchParams)}` : path;
+  // GET reads the allowed names; DELETE /lessons/:id carries `scope`. Other writes forward nothing.
+  const target = req.method === "GET" || req.method === "DELETE" ? `${path}${forwardedQuery(path, req.nextUrl.searchParams)}` : path;
   const res = await coachCall(ctx, req.method, target, body);
   const data = typeof res.body === "object" && res.body !== null ? (res.body as { data?: unknown }).data : null;
   const revokedCurrent = req.method === "DELETE" && typeof data === "object" && data !== null && (data as { revokedCurrent?: unknown }).revokedCurrent === true;

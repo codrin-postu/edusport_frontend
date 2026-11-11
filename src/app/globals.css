@@ -133,6 +133,12 @@ h1.text-branding-font {
   --color-secondary: #495269;
   --color-muted: #5f657a;
   --color-accent: #be3330;
+  /* Error and alert lines. Red here; the portals override it (portal-theme.css). */
+  --color-alert-ink: #be3330;
+  --color-select-open-ink: #be3330; /* select chevron while its menu is open (the accent on the public site) */
+  --select-open-rotate: 180deg; /* select chevron while its menu is open */
+  /* Border of an invalid input. Red here; the portals override it (portal-theme.css). */
+  --color-input-invalid: #be3330;
   --color-primary-on-dark: #fbf8f1;
   --color-secondary-on-dark: #c0c0c4;
   --color-muted-on-dark: #979ba5;
@@ -156,6 +162,26 @@ h1.text-branding-font {
   --color-line-subtle: #dfdddb;
   --color-line-on-dark: #fbf8f1;
   --color-line-subtle-on-dark: #3d4660;
+
+  /* Component colour tokens. The values here are the public site's; the
+     portal theme overrides them (see Interfaces in the portal theme plan). */
+  --color-card-line: #0e1a3c;
+  --color-input-line: #0e1a3c;
+  --color-input-bg: var(--color-surface);
+  --color-label-ink: #495269;
+  --color-hint-ink: #495269;
+  --color-button-face: #000000;
+  --color-button-face-text: #fbf8f1;
+  --color-button-secondary-bg: transparent;
+  --color-checkbox-line: #0e1a3c;
+  --color-checkbox-on: #be3330;
+  --color-checkbox-mark: #fbf8f1;
+  --color-checkbox-on-disabled: var(--color-disabled);
+  --color-checkbox-line-disabled: var(--color-disabled);
+  --color-checkbox-mark-disabled: var(--color-disabled);
+  --color-focus: #0e1a3c;
+  --color-link-bar: #be3330;
+  --color-dialog-bg: var(--color-surface);
 
   --shadow-retro-sm: 4px 4px 0 rgb(14 26 60 / 0.16);
   --shadow-retro: 8px 8px 0 rgb(14 26 60 / 0.16);
@@ -188,7 +214,69 @@ h1.text-branding-font {
 @utility z-dialog { z-index: 300; }
 @utility z-popup { z-index: 400; }
 
+/* Component tokens, public values. Component styles read these; the portal
+   theme overrides them under [data-theme="portal"]. */
+:root {
+  --card-border-width: 1.5px;
+  --input-border-width: 1.5px;
+  --input-pad-x: 1rem;
+  --text-input-size: 0.875rem;
+  --text-input-leading: 1.55;
+  --field-label-weight: 600;
+  --field-label-size: 0.75rem;
+  --field-label-tracking: 0.14em;
+  --field-label-case: uppercase;
+  --field-label-leading: 1.1;
+  --field-hint-size: 0.75rem;
+  --field-hint-leading: 1.4;
+  --field-gap: 0.5rem;
+  --alert-line-display: block;
+  --alert-icon-display: none;
+  --text-button-weight: 600;
+  --text-button-size: 0.8125rem;
+  --text-button-tracking: 0.06em;
+  --text-button-case: uppercase;
+  --button-pad-x: 1.5rem;
+  --control-border-width: 1.5px;
+  --button-layers: block;
+  --button-face-shadow: none;
+  --button-press-shift: 4px;
+  --button-press-shadow: none;
+  --button-face-transition: transform .04s steps(1);
+  --button-secondary-press-shift: 0px;
+  --button-transition-props: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+  --button-transition-duration: 150ms;
+  --button-transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --checkbox-mark-anim: none;
+  --checkbox-size: 1.25rem;
+  --checkbox-border-width: 1.5px;
+  --checkbox-mark-size: 14px;
+  --focus-offset: 3px;
+  --link-weight: 600;
+  --link-bar-size: 2px;
+  --link-hover-decoration: none;
+  --link-hover-animation: link-slide;
+  --dialog-title-size: 1.25rem;
+  --dialog-title-leading: 1.2;
+  --dialog-title-tracking: -0.01em;
+  --dialog-pad: 1.5rem;
+  --dialog-max-w: 28rem;
+  --icon-18: 18px;
+  --icon-20: 20px;
+  --icon-26: 26px;
+}
+@media (width >= 48rem) {
+  :root {
+    --dialog-title-size: 1.5rem;
+  }
+}
+
+@import "../styles/portal-theme.css";
+
 @utility border-retro { border-width: 1.5px; }
+@utility border-control { border-width: var(--control-border-width); }
+@utility border-input { border-width: var(--input-border-width); }
+@utility border-card { border-width: var(--card-border-width); }
 @utility border-t-retro { border-top-width: 1.5px; }
 @utility border-b-retro { border-bottom-width: 1.5px; }
 @utility border-l-retro { border-left-width: 1.5px; }
@@ -405,11 +493,11 @@ h1.text-branding-font {
 }
 
 @utility link {
-  font-weight: 600;
+  font-weight: var(--link-weight);
   color: var(--color-primary);
-  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-image: linear-gradient(var(--color-link-bar), var(--color-link-bar));
   background-repeat: no-repeat;
-  background-size: 100% 2px;
+  background-size: 100% var(--link-bar-size);
   background-position: right bottom;
   padding-bottom: 4px;
   /* Long URLs used as link text wrap instead of widening the page. */
@@ -417,7 +505,7 @@ h1.text-branding-font {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color var(--duration-fast, 150ms) ease;
-  &:hover { color: var(--color-accent); animation: link-slide var(--duration-long) var(--ease-in-out); }
+  &:hover { text-decoration-line: var(--link-hover-decoration); animation: var(--link-hover-animation) var(--duration-long) var(--ease-in-out); }
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     &:hover { animation: none; }
@@ -444,10 +532,10 @@ h1.text-branding-font {
 }
 
 @keyframes link-slide {
-  0% { background-size: 100% 2px; background-position: right bottom; }
-  49% { background-size: 0% 2px; background-position: right bottom; }
-  50% { background-size: 0% 2px; background-position: left bottom; }
-  100% { background-size: 100% 2px; background-position: left bottom; }
+  0% { background-size: 100% var(--link-bar-size); background-position: right bottom; }
+  49% { background-size: 0% var(--link-bar-size); background-position: right bottom; }
+  50% { background-size: 0% var(--link-bar-size); background-position: left bottom; }
+  100% { background-size: 100% var(--link-bar-size); background-position: left bottom; }
 }
 
 /* Type roles: each sets size, weight, line-height and letter-spacing. */
@@ -457,6 +545,9 @@ h1.text-branding-font {
 @utility text-title {
   font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em;
   @media (width >= 48rem) { font-size: 1.5rem; }
+}
+@utility text-dialog-title {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--dialog-title-size); line-height: var(--dialog-title-leading); letter-spacing: var(--dialog-title-tracking);
 }
 @utility text-body { font-weight: 400; font-size: 1rem; line-height: 1.6; letter-spacing: 0; }
 @utility text-subtitle {
@@ -469,7 +560,10 @@ h1.text-branding-font {
 @utility text-body-sm { font-weight: 400; font-size: 0.875rem; line-height: 1.55; letter-spacing: 0; }
 @utility text-caption { font-weight: 400; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0; }
 @utility text-label { font-weight: 600; font-size: 0.75rem; line-height: 1.1; letter-spacing: 0.14em; text-transform: uppercase; }
-@utility text-button { font-weight: 600; font-size: 0.8125rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+@utility text-button { font-weight: var(--text-button-weight); font-size: var(--text-button-size); line-height: 1; letter-spacing: var(--text-button-tracking); text-transform: var(--text-button-case); }
+@utility text-field-label { font-weight: var(--field-label-weight); font-size: var(--field-label-size); line-height: var(--field-label-leading); letter-spacing: var(--field-label-tracking); text-transform: var(--field-label-case); }
+@utility text-field-hint { font-weight: 400; font-size: var(--field-hint-size); line-height: var(--field-hint-leading); letter-spacing: 0; }
+@utility text-input { font-weight: 400; font-size: var(--text-input-size); line-height: var(--text-input-leading); letter-spacing: 0; }
 /* Named exceptions for the athlete pages (Sportivi spotlight + athlete page):
    the name, the outlined rank watermark and the big stat numbers keep their
    pre-SP1 sizes. */
@@ -536,9 +630,11 @@ html.lv2-nav footer a:not([data-button]) {
      wrapper got its width (auto → shrink-to-content, w-full, or flex-stretch).
      In @layer components so a fixed size utility (the burger's size-12) wins. */
   .lcta-face { width: 100%; }
+  /* In the components layer so `group-disabled:hidden` still wins. */
+  .lcta-layer { display: var(--button-layers); }
 }
 .lcta-layer {
-  position: absolute; inset: 0; border: 1.5px solid var(--color-navy);
+  position: absolute; inset: 0; border: var(--control-border-width) solid var(--color-navy);
   pointer-events: none;
   /* return (hover-out): plain ease, no bounce */
   transition: transform .26s ease;
@@ -552,16 +648,26 @@ html.lv2-nav footer a:not([data-button]) {
 .lcta-face {
   position: relative; z-index: 3;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1.5px solid var(--color-navy);
-  transition: transform .04s steps(1);
+  border: var(--control-border-width) solid var(--color-navy);
+  box-shadow: var(--button-face-shadow);
+  transition: var(--button-face-transition);
 }
-.lcta:active .lcta-face { transform: translate(4px, 4px); }
+.lcta:active .lcta-face { transform: translate(var(--button-press-shift), var(--button-press-shift)); box-shadow: var(--button-press-shadow); }
+/* Disabled never moves. */
+.lcta:disabled:active .lcta-face { transform: none; box-shadow: var(--button-face-shadow); }
 /* Disabled: flat solid face (colour comes from group-disabled: Tailwind
    classes on the face span), no border, no layered stack. */
 .lcta:disabled .lcta-face { border-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   .lcta-layer, .lcta-face { transition: none; }
 }
+/* Secondary button motion: colours as before on the public site; the portals add the press move (tokens). */
+.btn-motion {
+  transition-property: var(--button-transition-props);
+  transition-duration: var(--button-transition-duration);
+  transition-timing-function: var(--button-transition-ease);
+}
+.btn-motion:active:not(:disabled) { transform: translate(var(--button-secondary-press-shift), var(--button-secondary-press-shift)); }
 
 /* Retro NAV. Restyles the global Header via lv2-nav on <html>: cream bar,
    uppercase Inter links with a brick underline, and a square dropdown panel
@@ -576,8 +682,6 @@ html.lv2-nav [data-nav-row] > a {
   color: var(--color-navy);
   position: relative;
 }
-html.lv2-nav [data-nav-row] > button:hover,
-html.lv2-nav [data-nav-row] > a:hover { color: var(--color-rust); }
 html.lv2-nav [data-nav-row] > button::after,
 html.lv2-nav [data-nav-row] > a::after {
   content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
@@ -616,10 +720,9 @@ html.lv2-nav .nav-dropdown-panel p { display: none !important; }
 html.lv2-nav .nav-dropdown-panel a { border-radius: 0 !important; border-left: 3px solid transparent; }
 html.lv2-nav .nav-dropdown-panel a svg { display: none !important; }
 html.lv2-nav .nav-dropdown-panel a:hover { background: #ffffff !important; border-left-color: var(--color-rust); }
-/* title tints to brick on hover; description stays muted navy (below the title) */
+/* title stays navy on hover (the brick left bar is the cue); description stays muted navy */
 html.lv2-nav .nav-dropdown-panel a > div > span:first-child { color: var(--color-navy); }
 html.lv2-nav .nav-dropdown-panel a > div > span + span { color: var(--color-secondary) !important; font-weight: 400; }
-html.lv2-nav .nav-dropdown-panel a:hover > div > span:first-child { color: var(--color-rust) !important; }
 
 /* Dropdown promo tile (image + gradient + title/description) */
 html.lv2-nav .nav-promo {
@@ -641,9 +744,7 @@ html.lv2-nav .nav-promo .nav-promo-d { font-size: 0.75rem; margin-top: 4px; line
 
 /* Mobile menu panel → square + cream + brick hover (light pass) */
 html.lv2-nav .z-menu { border-radius: 0 !important; }
-/* Row links tint rust on hover — but NOT the layers CTA button (.lcta), whose
-   face text must stay white. */
-html.lv2-nav .z-menu a:not(.lcta):hover span { color: var(--color-rust) !important; }
+/* Mobile menu row links keep their text colour on hover (no red text in interactive states). */
 
 /* Black contact strip: hidden by default, shown only when we KNOW we are at
    the top of the page.
@@ -764,7 +865,7 @@ html[data-entry] body::before {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #8fb8f5;
+  color: var(--color-ice);
 }
 .entry-mark-w {
   margin: 0;

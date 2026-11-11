@@ -3,13 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { STATES } from "@/lib/portal/copy";
-import { useToast } from "../_ui/Toast";
-import { portalApi, type ApiResult } from "./api";
+import { useToast } from "@/app/_portal/ui/Toast";
+import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
 
 type Loaded<T> = { key: string; ok: boolean; data: T | null };
 
-/** GET of a BFF path. A null path is idle (stays "loading", no request). */
-export function usePortal<T>(path: string | null): { state: "loading" | "error" | "ready"; data: T | null; reload: () => void } {
+/** GET of a BFF path. A null path is idle (stays "loading", no request). `previous` is the last good answer, kept while a reload runs so a screen can stay on it. */
+export function usePortal<T>(path: string | null): { state: "loading" | "error" | "ready"; data: T | null; previous: T | null; reload: () => void } {
   const [tick, setTick] = useState(0);
   const [loaded, setLoaded] = useState<Loaded<T> | null>(null);
   const key = path === null ? null : `${tick}:${path}`;
@@ -26,8 +26,9 @@ export function usePortal<T>(path: string | null): { state: "loading" | "error" 
   }, [path, key]);
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
-  if (key === null || loaded === null || loaded.key !== key) return { state: "loading", data: null, reload };
-  return { state: loaded.ok ? "ready" : "error", data: loaded.data, reload };
+  const previous = loaded?.data ?? null;
+  if (key === null || loaded === null || loaded.key !== key) return { state: "loading", data: null, previous, reload };
+  return { state: loaded.ok ? "ready" : "error", data: loaded.data, previous, reload };
 }
 
 /** True (after a toast and a move to Grupe) when the answer says the coach lost access to the group. */
