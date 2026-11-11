@@ -344,3 +344,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Istoric stops at the current month: the next arrow is disabled there, a later `?luna=` falls back to the current month.
 - Prezență on a future date: read only with the line "Prezența se poate face din ziua antrenamentului." (coaches are not changed ahead of time).
 - A dimmed date block mutes the weekday word too.
+- Azi: button "Toate antrenamentele de azi din club" under today's list opens the club's sessions of the day (?club=1); group rows open the group page, others' lessons show only the coach.

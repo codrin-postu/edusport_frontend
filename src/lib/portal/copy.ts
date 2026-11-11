@@ -60,6 +60,16 @@ export const AZI = {
 
 const WEEK_WORD = { first: "prima", second: "a doua", third: "a treia", fourth: "a patra", last: "ultima" } as const;
 
+export const CLUB_TODAY = {
+  button: "Toate antrenamentele de azi din club",
+  title: "Antrenamentele clubului azi",
+  hint: (day: string) => `${day}. Atinge o grupă ca să vezi copiii sau să faci prezența ca înlocuitor.`,
+  lesson: "Lecție individuală",
+  you: (name: string) => `${name} (tu)`,
+  none: "Azi nu are loc niciun antrenament în club.",
+  close: "Închide",
+} as const;
+
 export const TRAINING = {
   title: "Antrenament nou",
   close: "Închide",

@@ -4,7 +4,7 @@ const DATE = "\\d{4}-\\d{2}-\\d{2}";
 
 const ROUTES: [string, string][] = [
   ["GET", "/me"], ["PUT", "/me"], ["POST", "/me/password"], ["GET", "/me/devices"], ["DELETE", `/me/devices/${ID}`],
-  ["GET", "/today"], ["GET", "/groups"], ["GET", `/groups/${ID}`], ["GET", `/groups/${ID}/program`], ["GET", `/groups/${ID}/saved-days`],
+  ["GET", "/today"], ["GET", "/today/club"], ["GET", "/groups"], ["GET", `/groups/${ID}`], ["GET", `/groups/${ID}/program`], ["GET", `/groups/${ID}/saved-days`],
   ["POST", `/groups/${ID}/program`], ["PUT", `/groups/${ID}/program-public`], ["POST", `/groups/${ID}/members`],
   ["GET", "/session"], ["POST", "/session/check"], ["PUT", "/session"],
   ["POST", "/lessons"], ["GET", `/lessons/${ID}`], ["PUT", `/lessons/${ID}`], ["DELETE", `/lessons/${ID}`], ["PUT", `/lessons/${ID}/plan`],

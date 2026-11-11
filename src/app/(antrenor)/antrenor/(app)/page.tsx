@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
-import { AZI, LIST } from "@/lib/portal/copy";
+import { AZI, CLUB_TODAY, LIST } from "@/lib/portal/copy";
 import { weekdayShort } from "@/lib/portal/format";
 import { roCount } from "@/lib/ro-plural";
 import type { CoachClassRow, CoachToday } from "@/lib/portal/api-types";
@@ -21,6 +21,7 @@ import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
 import { useNow } from "@/app/_portal/lib/use-now";
 import { usePortal } from "../_lib/use-portal";
 import { NewTrainingPopup } from "./antrenament/NewTrainingPopup";
+import { ClubTodayPopup } from "./club/ClubTodayPopup";
 import { useMe } from "../_lib/me-context";
 import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow";
 
@@ -37,7 +38,9 @@ function groupRow(c: CoachClassRow): SessionRowData {
 export default function AziPage() {
   const me = useMe();
   const router = useRouter();
-  const nou = useSearchParams().get("nou");
+  const params = useSearchParams();
+  const nou = params.get("nou");
+  const club = params.get("club");
   const today = usePortal<CoachToday>("coach/today");
   const clock = useNow();
   // At midnight the day changes: ask for today's lists again (the old ones stay on screen meanwhile).
@@ -141,11 +144,12 @@ export default function AziPage() {
           </div>
           <div className="order-2 flex flex-col gap-3 portal:contents">
             <div className="portal:col-start-1 portal:row-start-1"><SectionHeading title={AZI.todayHeading} link={{ href: "/calendar", label: AZI.calendarLink }} className={ROW1} /></div>
-            <div data-today-list className="flex flex-col gap-3 portal:col-start-1 portal:row-start-2">{todayCard}{todayMore}</div>
+            <div data-today-list className="flex flex-col gap-3 portal:col-start-1 portal:row-start-2">{todayCard}{todayMore}<Button variant="secondary" href="/?club=1" className="w-full">{CLUB_TODAY.button}</Button></div>
           </div>
           <div className="order-3 portal:col-start-1">{addLesson}</div>
         </div>
       </PageBody>
+      {club && <ClubTodayPopup onClose={() => router.replace("/")} />}
       {nou && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
     </>
   );

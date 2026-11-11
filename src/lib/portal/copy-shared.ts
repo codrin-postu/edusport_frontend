@@ -58,6 +58,7 @@ export const KIT = {
   completat: "completat",
   necompletat: "necompletat",
   individual: "Individual",
+  school: "Școala",
   copied: "Numărul a fost copiat.",
   copyFailed: "Nu am putut copia numărul.",
   place: "Loc",

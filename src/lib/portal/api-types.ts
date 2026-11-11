@@ -119,6 +119,10 @@ export type CoachNext = { kind: "grup" | "individual"; date: string; startTime: 
 /** Monday to Sunday of today: held (start time passed) and left, and held classes still without saved presence. */
 export type CoachWeek = { groupsHeld: number; groupsLeft: number; lessonsHeld: number; lessonsLeft: number; missing: number };
 export type CoachToday = { date: string; today: string; groups: CoachClassRow[]; lessons: CoachLessonRow[]; todo: CoachClassRow[]; next: CoachNext | null; week: CoachWeek };
+export type ClubTodayRow =
+  | { kind: "group"; groupId: string; name: string; school: boolean; startTime: string; durationMin: number; coaches: string[]; location: string | null; own: boolean }
+  | { kind: "lesson"; lessonId: string | null; startTime: string; durationMin: number; coach: string; own: boolean };
+export type CoachClubToday = { date: string; rows: ClubTodayRow[] };
 export type NextClass = { date: string; startTime: string };
 export type CoachGroupRow = { groupId: string; name: string; kind: SectionKind; program: string[]; children: number; next: NextClass | null };
 export type OtherGroupRow = { groupId: string; name: string; coaches: string[]; program: string[]; children: number; next: NextClass | null };

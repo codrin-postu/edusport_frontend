@@ -865,6 +865,15 @@ const coachRoutes = [
   ["GET", /^\/me\/devices$/, ({ res, req }) => ok(res, devicesOf(req))],
   ["DELETE", /^\/me\/devices\/([^/]+)$/, removeDevice],
   ["GET", /^\/today$/, ({ res, query }) => ok(res, todayData(query.get("date") ?? today))],
+  ["GET", /^\/today\/club$/, ({ res }) => ok(res, {
+    date: today,
+    rows: [
+      { kind: "group", groupId: "gprimii", name: "Primii Pași", school: true, startTime: "10:00", durationMin: 50, coaches: ["Ioana Dinu", "Mihai Stan"], location: "AFI Cotroceni", own: false },
+      { kind: "lesson", lessonId: null, startTime: "13:00", durationMin: 45, coach: "Ioana Dinu", own: false },
+      { kind: "lesson", lessonId: "ldone", startTime: "15:00", durationMin: 50, coach: "Andrei Popa", own: true },
+      { kind: "group", groupId: "gavansati", name: "Avansați", school: false, startTime: "18:15", durationMin: 60, coaches: ["Andrei Popa"], location: "AFI Cotroceni", own: true },
+    ],
+  })],
   ["GET", /^\/groups$/, ({ res }) => {
     const all = Object.values(world.groups);
     ok(res, {
