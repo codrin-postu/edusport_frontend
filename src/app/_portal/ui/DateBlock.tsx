@@ -17,7 +17,7 @@ export function EmptyDateBlock({ label }: { label: string }) {
   );
 }
 
-/** Date block, one size everywhere: red weekday word, day number and (when the row has one) the hour, stacked in an ice square with a 6px radius (a named round exception). */
+/** Date block, one size everywhere: red weekday word (muted with the rest when `dim`), day number and (when the row has one) the hour, stacked in an ice square with a 6px radius (a named round exception). */
 export function DateBlock({ word, day, time, dim, tip }: { word: string; day: string; time?: string; dim?: boolean; tip?: string }) {
   const block = (
     <span
@@ -25,7 +25,7 @@ export function DateBlock({ word, day, time, dim, tip }: { word: string; day: st
       tabIndex={tip ? 0 : undefined}
       className="flex h-(--portal-dateblock-h) w-(--portal-dateblock-w) shrink-0 flex-col items-center justify-center rounded-(--portal-dateblock-radius) bg-ice-light outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus"
     >
-      <span data-date-word className="text-(length:--portal-dateblock-word) font-bold uppercase leading-tight text-accent">
+      <span data-date-word className={cn("text-(length:--portal-dateblock-word) font-bold uppercase leading-tight", dim ? "text-muted-on-dark" : "text-accent")}>
         {word}
       </span>
       <span data-date-num className={cn("font-display text-(length:--portal-dateblock-num) font-extrabold leading-none", dim && "text-muted-on-dark")}>
