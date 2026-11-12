@@ -14,7 +14,7 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Section } from "@/app/_portal/ui/SectionHeading";
-import { PasswordField } from "@/app/_portal/ui/PasswordField";
+import { PasswordForm } from "@/app/_portal/ui/PasswordForm";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 
@@ -45,38 +45,6 @@ function PhoneForm({ phone }: { phone: string | null }) {
   );
 }
 
-function PasswordForm({ email }: { email: string }) {
-  const toast = useToast();
-  const [current, setCurrent] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  async function save(e: React.FormEvent) {
-    e.preventDefault();
-    if (busy) return;
-    setBusy(true);
-    setMessage(null);
-    const r = await portalApi<{ toast: string }>("POST", "coach/me/password", { current, password });
-    setBusy(false);
-    if (!r.ok) {
-      setMessage(r.message);
-      return;
-    }
-    setCurrent("");
-    setPassword("");
-    toast.show(r.data.toast);
-  }
-  return (
-    <form onSubmit={(e) => void save(e)} className="flex flex-col gap-4">
-      <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
-      <PasswordField label={SETTINGS.currentPassword} value={current} onChange={setCurrent} autoComplete="current-password" />
-      <PasswordField label={SETTINGS.newPassword} value={password} onChange={setPassword} autoComplete="new-password" />
-      <AlertLine message={message} />
-      <Button type="submit" disabled={busy || current === "" || password === ""} className="w-full">{SETTINGS.save}</Button>
-    </form>
-  );
-}
-
 export function SettingsView() {
   const me = usePortal<CoachMe>("coach/me");
   if (me.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
@@ -97,7 +65,7 @@ export function SettingsView() {
               <PhoneForm phone={me.data.phone} />
             </Section>
             <Section title={SETTINGS.changePassword}>
-              {me.data.hasPassword ? <PasswordForm email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
+              {me.data.hasPassword ? <PasswordForm apiPath="coach/me/password" email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
             </Section>
           </Column>
         </Columns>

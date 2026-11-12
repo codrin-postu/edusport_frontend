@@ -1,7 +1,7 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
 // State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
-// moneyMismatch, advance (a number), manyPayments, unlisted (an athlete id that is not in the picker, `inPicker: false`).
+// moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
   ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, pathOf, paymentsOf, profileOf, subscriptionsOf,
 } from "./sportiv-fixtures.mjs";
@@ -21,12 +21,15 @@ export function sportivRoutes(h) {
   return [
     ["GET", /^\/me$/, ({ res, sess }) => {
       const a = SPORTIV_ACCOUNTS[sess.email];
-      h.ok(res, { email: sess.email, name: a.name, phone: a.phone, hasPassword: Boolean(a.password), google: a.google, passwordChangedAt: null, notifySchedule: true, devices: 1 });
+      h.ok(res, { email: sess.email, name: a.name, phone: a.phone, hasPassword: Boolean(a.password) && !h.state().noPassword, google: a.google, passwordChangedAt: h.state().noPassword ? null : "2026-08-05T09:00:00.000Z", notifySchedule: h.state().notifySchedule !== false, devices: 2 });
     }],
     ["PUT", /^\/me$/, ({ res }) => h.ok(res, { toast: "Salvat." })],
-    ["PUT", /^\/me\/notifications$/, ({ res }) => h.ok(res, { toast: "Salvat." })],
+    ["PUT", /^\/me\/notifications$/, ({ res, body }) => { h.state().notifySchedule = body.schedule; h.ok(res, { toast: "Salvat." }); }],
     ["POST", /^\/me\/password$/, ({ res }) => h.ok(res, { toast: "Parola a fost schimbată." })],
-    ["GET", /^\/me\/devices$/, ({ res }) => h.ok(res, [{ id: "devsportiv1", label: "Chrome pe Mac", lastSeenAt: `${FROZEN_TODAY}T09:00:00.000Z`, current: true, twoFactorUntil: null }])],
+    ["GET", /^\/me\/devices$/, ({ res }) => h.ok(res, [
+      { id: "devsportiv1", label: "Chrome pe Mac", lastSeenAt: `${FROZEN_TODAY}T09:00:00.000Z`, current: true, twoFactorUntil: null },
+      { id: "devsportiv2", label: "Safari pe iPhone", lastSeenAt: `${addDays(FROZEN_TODAY, -2)}T09:00:00.000Z`, current: false, twoFactorUntil: null },
+    ])],
     ["DELETE", /^\/me\/devices\/([A-Za-z0-9]+)$/, ({ res }) => h.ok(res, { revokedCurrent: false })],
     ["GET", /^\/athletes$/, ({ res, sess }) => {
       const state = h.state();

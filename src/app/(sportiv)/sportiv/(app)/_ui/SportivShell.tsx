@@ -10,7 +10,7 @@ import { athleteIdOf, useAthletes } from "../_lib/athletes-context";
 import { sportivNav } from "../_lib/nav";
 
 /**
- * The kit shell with the nav of the athlete in the URL. On `/` and `/setari` (no athlete) the nav stays on the
+ * The kit shell with the nav of the athlete in the URL. On `/` and `/setari` (no athlete; neither has the phone nav) the nav stays on the
  * last athlete seen in this tab, else the first listed one; the picker itself has no phone nav.
  */
 export function SportivShell({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export function SportivShell({ children }: { children: React.ReactNode }) {
       nav={nav}
       account={{ label: current?.firstName ?? ACCOUNT.sheet.settings, href: "/setari", menu }}
       brandHref="/"
-      phoneNav={pathname !== "/" && nav.length > 0}
+      phoneNav={pathname !== "/" && !pathname.startsWith("/setari") && nav.length > 0}
     >
       {children}
     </PortalShell>

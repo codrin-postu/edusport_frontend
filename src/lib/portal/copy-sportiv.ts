@@ -129,9 +129,9 @@ export const MONEY = {
 export const SETARI = {
   title: "Setări",
   account: (email: string) => `Cont: ${email}`,
-  back: "‹ Înapoi",
+  back: "Înapoi",
   me: { title: "Contul meu", name: "Nume", email: "E-mail", emailNote: "îl schimbă clubul", phone: "Telefon", saved: "Salvat." },
-  athletes: { title: "Sportivi", school: "Școala", ageLine: (group: string, age: number) => `${group}, ${age} ani` },
+  athletes: { title: "Sportivi", school: "Școala", club: "Club", ageLine: (group: string, age: number) => `${group}, ${age} ani` },
   athleteData: { title: "Date sportiv", name: "Nume", birthDate: "Data nașterii", age: "Vârsta", contact: "Persoană de contact", phone: "Telefon", email: "E-mail", note: "Le schimbă clubul." },
   security: {
     title: "Securitate",
