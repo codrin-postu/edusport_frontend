@@ -6,7 +6,7 @@
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
 import {
-  FROZEN_TODAY, INVITE_OLD, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
+  FROZEN_TODAY, INVITE_OLD, INVITE_SPORTIV, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
 } from "./portal-fixtures.mjs";
 import { sportivAccount, sportivRoutes } from "./mock-sportiv.mjs";
 
@@ -163,6 +163,8 @@ function resetConfirm(ctx) {
 
 function inviteAccept(ctx) {
   const { body, res, req } = ctx;
+  // A sportiv invite is accepted without a session: the account cannot enter this host yet.
+  if (body.secret === INVITE_SPORTIV) return ok(res, { session: null });
   if (body.secret !== INVITE_VALID) return club(res, 410, MSG.expired);
   const refusal = passwordRefusal(body.password);
   if (refusal) return club(res, 400, refusal);
@@ -189,7 +191,7 @@ const authRoutes = [
   ["POST", /^\/api\/portal\/auth\/reset\/request$/, ({ res }) => ok(res, { message: "Dacă adresa are cont, am trimis un cod." })],
   ["POST", /^\/api\/portal\/auth\/reset\/confirm$/, resetConfirm],
   ["POST", /^\/api\/portal\/auth\/invite\/read$/, ({ body, res }) =>
-    ok(res, body.secret === INVITE_VALID ? { state: "valid", email: "antrenor2@example.invalid" } : { state: "expired", email: null })],
+    ok(res, body.secret === INVITE_VALID ? { state: "valid", email: "antrenor2@example.invalid" } : body.secret === INVITE_SPORTIV ? { state: "valid", email: "parinte1@example.invalid" } : { state: "expired", email: null })],
   ["POST", /^\/api\/portal\/auth\/invite\/accept$/, inviteAccept],
 ];
 

@@ -4,8 +4,8 @@
 
 import { LOGIN, RESET, INVITE, type AuthCopy } from "./copy-shared.ts";
 
-/** The sportiv sign-in copy: the coach strings, shared by the login, reset and invite forms. */
-export const SPORTIV_AUTH: AuthCopy = { login: LOGIN, reset: RESET, invite: INVITE };
+/** The sportiv sign-in copy: the coach strings shared by the login, reset and invite forms; the invite heading is "Bine ai venit". */
+export const SPORTIV_AUTH: AuthCopy = { login: LOGIN, reset: RESET, invite: { ...INVITE, title: "Bine ai venit" } };
 
 /** Bottom nav and sidebar labels (`sportivNav`). */
 export const NAV_SPORTIV = {

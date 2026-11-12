@@ -44,12 +44,12 @@ export function decodeGoogleCookie(raw: string | null, nowMs: number): GoogleCoo
 const CALLBACK_PATH = "/api/portal/google/callback";
 
 /**
- * The redirect URI Google gets, from the PORTAL_HOST_ANTRENOR setting, never from the request's Host header.
- * Without the setting only the local dev host antrenor.localhost is accepted; anything else answers null.
+ * The redirect URI Google gets, from the site's PORTAL_HOST_* setting, never from the request's Host header.
+ * Without the setting only the local dev host <site>.localhost is accepted; anything else answers null.
  */
-export function googleRedirectUri(configuredHost: string | undefined, requestHost: string | null, secure: boolean): string | null {
+export function googleRedirectUri(configuredHost: string | undefined, requestHost: string | null, secure: boolean, site: "antrenor" | "sportiv" = "antrenor"): string | null {
   const configured = configuredHost?.trim();
   if (configured) return `https://${configured}${CALLBACK_PATH}`;
-  if (process.env.NODE_ENV !== "production" && requestHost && /^antrenor\.localhost(:\d+)?$/i.test(requestHost)) return `${secure ? "https" : "http"}://${requestHost}${CALLBACK_PATH}`;
+  if (process.env.NODE_ENV !== "production" && requestHost && new RegExp(`^${site}\\.localhost(:\\d+)?$`, "i").test(requestHost)) return `${secure ? "https" : "http"}://${requestHost}${CALLBACK_PATH}`;
   return null;
 }

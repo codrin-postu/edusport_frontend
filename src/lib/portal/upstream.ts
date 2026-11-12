@@ -64,6 +64,12 @@ export function readSession(body: unknown): PortalSession | null {
   return { accessToken, refreshToken, accessExpiresAt, deviceKey };
 }
 
+/** A success with no session: the invite was accepted but the account cannot enter this host, so the login page shows. */
+export function isSessionless(body: unknown): boolean {
+  const data = typeof body === "object" && body !== null ? (body as { data?: unknown }).data : null;
+  return typeof data === "object" && data !== null && (data as { session?: unknown }).session === null;
+}
+
 const SECRET_KEYS = "secret|password|current|code|refreshToken|accessToken";
 
 export function maskSecrets(text: string): string {

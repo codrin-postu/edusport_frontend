@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
 import type { CoachMe } from "@/lib/portal/api-types";
-import type { AuthCopy } from "@/lib/portal/copy-shared";
+import type { AuthCopy, PORTAL_LABEL } from "@/lib/portal/copy-shared";
 import { portalApi } from "@/app/_portal/lib/api";
 import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
 import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
 import { AlertLine, BackLink } from "@/app/_portal/ui/AuthBits";
 import { PasswordField } from "@/app/_portal/ui/PasswordField";
 
-export function ResetForm({ copy, homePath, signedIn }: { copy: AuthCopy; homePath: string; signedIn: boolean }) {
+export function ResetForm({ copy, portal, homePath, signedIn }: { copy: AuthCopy; homePath: string; signedIn: boolean; portal?: keyof typeof PORTAL_LABEL }) {
   const RESET = copy.reset;
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -62,7 +62,7 @@ export function ResetForm({ copy, homePath, signedIn }: { copy: AuthCopy; homePa
   }
 
   return (
-    <AuthFrame title={RESET.title}>
+    <AuthFrame portal={portal} title={RESET.title}>
       {sent === null ? (
         <form onSubmit={(e) => void request(e)} className="flex flex-col gap-4">
           {known ? (
