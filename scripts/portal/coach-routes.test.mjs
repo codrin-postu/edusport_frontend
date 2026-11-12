@@ -55,3 +55,9 @@ it("allows the lesson plan route and forwards the delete scope", () => {
   assert.equal(a("PUT", "/lessons/../plan"), false);
   assert.equal(r.forwardedQuery("/lessons/lser1", new URLSearchParams("scope=following&x=1")), "?scope=following");
 });
+
+it("refuses the sportiv routes", () => {
+  for (const [m, p] of [["GET", "/sportiv/me"], ["GET", "/athletes/a1/home"], ["GET", "/athletes/a1/calendar.ics"], ["GET", "/athletes"], ["PUT", "/me/notifications"]]) {
+    assert.equal(r.allowedCoachRoute(m, p), false, `${m} ${p}`);
+  }
+});

@@ -10,6 +10,7 @@ export function MonthPicker({
   prevLabel,
   nextLabel,
   nextDisabled,
+  prevDisabled,
 }: {
   title: string;
   onPrev: () => void;
@@ -18,10 +19,12 @@ export function MonthPicker({
   nextLabel: string;
   /** No next step (Istoric stops at the current month). */
   nextDisabled?: boolean;
+  /** No earlier month (the sportiv calendar stops at the season start). */
+  prevDisabled?: boolean;
 }) {
   return (
     <div className="flex items-center gap-(--portal-gap-10)">
-      <button type="button" aria-label={prevLabel} onClick={onPrev} className={STEP}>‹</button>
+      <button type="button" aria-label={prevLabel} onClick={onPrev} disabled={prevDisabled} className={STEP}>‹</button>
       <span className="min-w-(--portal-monthtitle-w) text-center font-display font-extrabold text-(length:--portal-text-20)">{title}</span>
       <button type="button" aria-label={nextLabel} onClick={onNext} disabled={nextDisabled} className={STEP}>›</button>
     </div>

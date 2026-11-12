@@ -7,7 +7,7 @@ import { CoachShell } from "../_ui/CoachShell";
 export const dynamic = "force-dynamic";
 
 export default async function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { ctx, get } = await serverContext();
+  const { ctx, get } = await serverContext("antrenor");
   if (!get(ctx.names.refresh)) redirect("/login");
   return (
     <MeProvider>

@@ -19,7 +19,7 @@ async function handle(req: NextRequest, { params }: Ctx): Promise<NextResponse> 
   const { path: segments } = await params;
   const path = `/${segments.join("/")}`;
   if (!allowedCoachRoute(req.method, path)) return respond(404, refusal(404, NOT_FOUND), []);
-  const ctx = bffContext(req);
+  const ctx = bffContext(req, "antrenor");
   if (!originAllowed(req.method, req.headers.get("origin"), ctx.host, ctx.secure)) return respond(403, refusal(403, STATES.invalid), []);
   if (!secretReady()) return respond(503, refusal(503, STATES.loadFailed), []);
   let body: unknown;

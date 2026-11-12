@@ -5,7 +5,7 @@ import { KIT } from "@/lib/portal/copy-shared";
 import { monthCells, monthTitle } from "@/lib/portal/month-grid";
 import { cn } from "@/utils/cn";
 
-export type DayMarks = ("grup" | "individual" | "anulata")[];
+export type DayMarks = ("grup" | "individual" | "concurs" | "anulata")[];
 
 export function MonthGrid({
   month,
@@ -60,6 +60,7 @@ export function MonthGrid({
                         "h-(--portal-mark-h) w-2",
                         m === "grup" && (on ? "bg-ice" : "bg-surface-dark"),
                         m === "individual" && "bg-ice-blue",
+                        m === "concurs" && "bg-ice",
                         m === "anulata" && "bg-cancelled",
                       )}
                     />

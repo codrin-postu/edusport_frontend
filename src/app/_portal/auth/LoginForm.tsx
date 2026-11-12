@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/form-field";
-import type { AuthCopy } from "@/lib/portal/copy-shared";
+import type { AuthCopy, PORTAL_LABEL } from "@/lib/portal/copy-shared";
 import { portalApi } from "@/app/_portal/lib/api";
 import { playEntryAndGo } from "@/app/_portal/lib/entry-transition";
 import { AuthFrame } from "@/app/_portal/ui/AuthFrame";
@@ -11,7 +11,7 @@ import { AlertLine, GoogleBlock, useFlash } from "@/app/_portal/ui/AuthBits";
 import { PasswordField } from "@/app/_portal/ui/PasswordField";
 import { PortalLink } from "@/app/_portal/ui/PortalLink";
 
-export function LoginForm({ copy, homePath, google }: { copy: AuthCopy; homePath: string; google: boolean }) {
+export function LoginForm({ copy, portal, homePath, google }: { copy: AuthCopy; homePath: string; google: boolean; portal?: keyof typeof PORTAL_LABEL }) {
   const LOGIN = copy.login;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ export function LoginForm({ copy, homePath, google }: { copy: AuthCopy; homePath
   }
 
   return (
-    <AuthFrame title={LOGIN.title}>
+    <AuthFrame portal={portal} title={LOGIN.title}>
       {google && <GoogleBlock href="/api/portal/google/start" label={LOGIN.google} or={LOGIN.or} />}
       <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-4">
         <Field label={LOGIN.email}>

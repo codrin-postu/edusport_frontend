@@ -48,3 +48,10 @@ it("builds the redirect URI from the setting, not the Host header", () => {
   assert.equal(g.googleRedirectUri(undefined, "evil.example", true), null);
   assert.equal(g.googleRedirectUri("  ", null, true), null);
 });
+
+it("keeps each site's dev host to itself", () => {
+  assert.equal(g.googleRedirectUri(undefined, "sportiv.localhost:3200", false, "sportiv"), "http://sportiv.localhost:3200/api/portal/google/callback");
+  assert.equal(g.googleRedirectUri(undefined, "antrenor.localhost:3200", false, "sportiv"), null);
+  assert.equal(g.googleRedirectUri(undefined, "sportiv.localhost:3200", false), null);
+  assert.equal(g.googleRedirectUri("sportiv.example.ro", "evil.example", true, "sportiv"), "https://sportiv.example.ro/api/portal/google/callback");
+});

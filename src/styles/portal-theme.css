@@ -162,7 +162,13 @@
   --motion-overlay-out: motion-fade-out var(--motion-slow) var(--motion-ease) both; /* motion */
   --motion-count: motion-count-in var(--motion-fast) var(--motion-ease) both; /* motion */
   --motion-pop: motion-check-in var(--motion-fast) var(--motion-ease) both; /* motion: status block flip */
+  --motion-promo-card: motion-sheet-in 400ms 100ms var(--motion-ease) both; /* motion: promotion card */
+  --motion-promo-old: promo-out 1.6s 500ms ease-in-out both; /* motion: promotion old level leaves */
+  --motion-promo-new: promo-in 1.6s 500ms var(--motion-ease) both; /* motion: promotion new level arrives */
+  --motion-promo-line: promo-line 2s 500ms var(--motion-ease) both; /* motion: promotion underline grows */
   --motion-flash: var(--motion-slow); /* motion: presence row flash */
+  --motion-zoom: es-zoom 320ms var(--motion-ease) both; /* motion: Progres badge zoom in */
+  --motion-dim: es-dim 200ms var(--motion-ease) both; /* motion: Progres backdrop dim */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
   --portal-gap-12: 12px;           /* layout competitions filter column gap */
@@ -189,6 +195,7 @@
   --portal-popup-max-h: 92svh;     /* layout form popup height cap (bottom sheet on a phone) */
   --portal-cols: minmax(0, 3fr) minmax(0, 2fr); /* layout two-part pages: main 3, side 2 */
   --portal-cols-half: minmax(0, 1fr) minmax(0, 1fr); /* layout Azi and Istoric: list and summary half each (user 2026-11-11) */
+  --portal-cols-wide: minmax(0, 2fr) minmax(0, 1fr); /* layout sportiv Plăți: table 2, documents 1 */
   --portal-side-top: calc(var(--portal-header-h, 0px) + var(--portal-cols-gap)); /* layout sticky side column: under the sticky header */
   --portal-sheet-gap: 14px;        /* layout sheet child gap */
   --portal-band-h: 112px;          /* layout desktop page header band, one height on every page */
@@ -217,6 +224,42 @@
   --portal-tracking-month: 0.08em; /* layout now tile month */
   --portal-tracking-place: 0.06em; /* layout place block word */
   --portal-tracking-phone: 0.02em; /* layout contact phone number */
+  --portal-bar-w: 8px;             /* layout presence month bar width */
+  --portal-bar-h: 40px;            /* layout presence month bar full height */
+  --portal-bar-min: 2px;           /* layout presence month bar floor */
+  --portal-bar-col-w: 22px;        /* layout presence month column */
+  --portal-bar-gap: 4px;           /* layout presence month column gap */
+  --portal-place-box: 72px;        /* layout last competition place box */
+  --portal-text-36: 36px;          /* layout last competition place number */
+  --portal-promo-w: 300px;         /* layout promotion card width */
+  --portal-promo-line: 56px;       /* layout promotion underline length */
+  --portal-promo-h: 34px;          /* layout promotion level line height */
+  /* Progres: badge tiers (spec 7). The shine is the frame mixed half and half with the light colour, so no opacity is needed. */
+  --portal-tier-bronze-frame: #b87333;
+  --portal-tier-bronze-shine: color-mix(in srgb, #e3b48a 50%, #b87333);
+  --portal-tier-bronze-inner: #0e1a3c;
+  --portal-tier-silver-frame: #9ca3af;
+  --portal-tier-silver-shine: color-mix(in srgb, #e5e7eb 50%, #9ca3af);
+  --portal-tier-silver-inner: #0e1a3c;
+  --portal-tier-gold-frame: #c9a227;
+  --portal-tier-gold-shine: color-mix(in srgb, #f1dc8a 50%, #c9a227);
+  --portal-tier-gold-inner: #0e1a3c;
+  --portal-tier-platinum-frame: #7f8ea3;
+  --portal-tier-platinum-shine: color-mix(in srgb, #dfe5ee 50%, #7f8ea3);
+  --portal-tier-platinum-inner: #0e1a3c;
+  --portal-tier-ice-frame: #8fb8f5;
+  --portal-tier-ice-shine: color-mix(in srgb, #e1ecfb 50%, #8fb8f5);
+  --portal-tier-ice-inner: #0e1a3c;
+  --portal-tier-locked-frame: #d5dbe5;
+  --portal-tier-locked-shine: color-mix(in srgb, #eef1f6 50%, #d5dbe5);
+  --portal-tier-locked-inner: #c3cad6;
+  --portal-tier-locked-ink: #eef1f6;
+  --portal-badge-w: 92px;          /* Progres badge in the grid */
+  --portal-badge-h: 100px;         /* Progres badge in the grid */
+  --portal-badge-zoom-w: 184px;    /* Progres badge zoomed */
+  --portal-badge-zoom-h: 200px;    /* Progres badge zoomed */
+  --portal-badge-grid-min: 110px;  /* Progres badge grid column */
+  --portal-zoom-w: 320px;          /* Progres badge zoom card width */
   --portal-text-10: 10px;          /* layout type size */
   --portal-text-11: 11px;          /* layout type size */
   --portal-text-12: 12px;          /* layout type size */
@@ -267,6 +310,11 @@
 @keyframes motion-sheet-in { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
 @keyframes motion-sheet-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(var(--motion-rise)); } }
 @keyframes motion-count-in { from { opacity: 0; transform: translateY(var(--motion-rise-sm)); } to { opacity: 1; transform: none; } }
+@keyframes promo-out { 0%, 30% { opacity: 1; transform: none; } 60%, 100% { opacity: 0; transform: translateY(-18px); } }
+@keyframes promo-in { 0%, 45% { opacity: 0; transform: translateY(18px); } 75%, 100% { opacity: 1; transform: none; } }
+@keyframes es-dim { from { opacity: 0; } to { opacity: 1; } }
+@keyframes es-zoom { from { opacity: 0; transform: scale(0.55); } to { opacity: 1; transform: scale(1); } }
+@keyframes promo-line { 0%, 70% { width: 0; } 100% { width: var(--portal-promo-line); } }
 @keyframes motion-flash-a { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
 @keyframes motion-flash-b { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
 
@@ -288,6 +336,12 @@
     --motion-overlay-out: none;
     --motion-count: none;
     --motion-pop: none;
+    --motion-promo-card: none;
+    --motion-promo-old: none;
+    --motion-promo-new: none;
+    --motion-promo-line: none;
+    --motion-zoom: none;
+    --motion-dim: none;
     --checkbox-mark-anim: none;
   }
   [data-theme="portal"] [data-flash] { animation: none; }

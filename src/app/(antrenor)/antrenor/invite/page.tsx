@@ -8,7 +8,7 @@ import { InviteForm } from "@/app/_portal/auth/InviteForm";
 export const dynamic = "force-dynamic";
 
 export default async function InvitePage() {
-  const invite = await readInviteState();
+  const invite = await readInviteState("antrenor");
   if (invite.state !== "valid") {
     return (
       <AuthFrame title={COACH_AUTH.invite.title}>
@@ -17,5 +17,5 @@ export default async function InvitePage() {
       </AuthFrame>
     );
   }
-  return <InviteForm copy={COACH_AUTH} homePath="/" email={invite.email} google={await googleEnabled()} />;
+  return <InviteForm copy={COACH_AUTH} homePath="/" email={invite.email} google={await googleEnabled("antrenor")} />;
 }

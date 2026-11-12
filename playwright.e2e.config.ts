@@ -42,6 +42,7 @@ export default defineConfig({
         PORTAL_STRAPI_URL: PORTAL_URL,
         // The production build accepts antrenor.localhost only through this setting.
         PORTAL_HOST_ANTRENOR: "antrenor.localhost:3200",
+        PORTAL_HOST_SPORTIV: "sportiv.localhost:3200",
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: "e2e-umami",
       },
       reuseExistingServer: false,

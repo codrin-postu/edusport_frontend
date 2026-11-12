@@ -1,13 +1,14 @@
 // A stand-in for the Strapi portal routes (auth and coach), for the coach app e2e.
 // Synthetic data only (tests/e2e/portal-fixtures.mjs). Plain Node http, as mock-strapi.mjs.
 // Usage: node tests/e2e/mock-portal.mjs <port>
-//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret?, competitionsDown? }
+//   POST /__mock/state  { (sportiv switches: see mock-sportiv.mjs) accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret?, competitionsDown? }
 //   GET  /__mock/log    { calls: [{ method, path, headers, body }], refreshes: number }
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
 import {
-  FROZEN_TODAY, INVITE_OLD, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
+  FROZEN_TODAY, INVITE_OLD, INVITE_SPORTIV, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
 } from "./portal-fixtures.mjs";
+import { sportivAccount, sportivRoutes } from "./mock-sportiv.mjs";
 
 const PORT = Number(process.argv[2] ?? 18891);
 const GRACE_MS = 30_000;
@@ -31,7 +32,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, unscheduledGroup: false, inactiveGroups: [] };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [] };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -123,6 +124,12 @@ const lower = (v) => (typeof v === "string" ? v.trim().toLowerCase() : "");
 
 function login(ctx) {
   const { body, res, req } = ctx;
+  if (body.host === "sportiv") {
+    // A coach account has no athlete access: it never enters the sportiv host.
+    const sportiv = sportivAccount(lower(body.email));
+    if (!sportiv || sportiv.password !== body.password) return club(res, 401, MSG.badLogin);
+    return ok(res, issue(lower(body.email), body.deviceKey, req.headers["x-portal-user-agent"]));
+  }
   const account = world.accounts[lower(body.email)];
   if (body.host !== "antrenor" || !account) return club(res, body.host !== "antrenor" ? 400 : 401, body.host !== "antrenor" ? MSG.invalid : MSG.badLogin);
   if (!account.password || account.password !== body.password) return club(res, 401, MSG.badLogin);
@@ -156,6 +163,8 @@ function resetConfirm(ctx) {
 
 function inviteAccept(ctx) {
   const { body, res, req } = ctx;
+  // A sportiv invite is accepted without a session: the account cannot enter this host yet.
+  if (body.secret === INVITE_SPORTIV) return ok(res, { session: null });
   if (body.secret !== INVITE_VALID) return club(res, 410, MSG.expired);
   const refusal = passwordRefusal(body.password);
   if (refusal) return club(res, 400, refusal);
@@ -182,7 +191,7 @@ const authRoutes = [
   ["POST", /^\/api\/portal\/auth\/reset\/request$/, ({ res }) => ok(res, { message: "Dacă adresa are cont, am trimis un cod." })],
   ["POST", /^\/api\/portal\/auth\/reset\/confirm$/, resetConfirm],
   ["POST", /^\/api\/portal\/auth\/invite\/read$/, ({ body, res }) =>
-    ok(res, body.secret === INVITE_VALID ? { state: "valid", email: "antrenor2@example.invalid" } : { state: "expired", email: null })],
+    ok(res, body.secret === INVITE_VALID ? { state: "valid", email: "antrenor2@example.invalid" } : body.secret === INVITE_SPORTIV ? { state: "valid", email: "parinte1@example.invalid" } : { state: "expired", email: null })],
   ["POST", /^\/api\/portal\/auth\/invite\/accept$/, inviteAccept],
 ];
 
@@ -942,6 +951,8 @@ const coachRoutes = [
 
 // ---------- dispatch ----------
 const PREFIX = "/api/portal/coach";
+const SPORTIV_PREFIX = "/api/portal/sportiv";
+const sportivTable = sportivRoutes({ ok, club, send, state: () => state });
 
 function record(req, url, body) {
   calls.push({
@@ -975,6 +986,7 @@ function handleMock(req, res, url, body) {
 function handlePortal(req, res, url, body) {
   const wanted = !state.refuseSecret && req.headers["x-portal-secret"] === SECRET;
   const isCoach = url.pathname.startsWith(`${PREFIX}/`);
+  if (url.pathname.startsWith(`${SPORTIV_PREFIX}/`)) return handleSportiv(req, res, url, body, wanted);
   const route = isCoach ? find(coachRoutes, req.method, url.pathname.slice(PREFIX.length)) : find(authRoutes, req.method, url.pathname);
   if (!route) return send(res, 404, { data: null, error: { status: 404, name: "NotFoundError", message: "Not Found" } });
   if (!wanted) return isCoach ? policy403(res) : club(res, 403, "Forbidden");
@@ -985,6 +997,17 @@ function handlePortal(req, res, url, body) {
   if (state.cutAccount) return policy403(res);
   if (state.coachDown && req.method === "GET") return club(res, 500, "Nu am putut încărca datele.");
   return route.fn({ ...ctx, sess });
+}
+
+function handleSportiv(req, res, url, body, wanted) {
+  const route = find(sportivTable, req.method, url.pathname.slice(SPORTIV_PREFIX.length));
+  if (!route) return send(res, 404, { data: null, error: { status: 404, name: "NotFoundError", message: "Not Found" } });
+  if (!wanted) return policy403(res);
+  const sess = coachSession(req);
+  if (!sess) return unauthorized(res);
+  // The sportiv policy: only an account with athlete access passes (a coach session is refused).
+  if (!sportivAccount(sess.email) || state.cutAccount) return policy403(res);
+  return route.fn({ req, res, body, query: url.searchParams, params: route.params, method: req.method, sess });
 }
 
 createServer(async(req, res) => {

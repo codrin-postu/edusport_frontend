@@ -1,11 +1,12 @@
 // Server only (the invite page). Reads the invite state for the secret held in the invite cookie.
 import { callStrapi } from "./bff";
+import type { PortalSite } from "./site";
 import { serverContext } from "./server-ctx";
 
 export type InviteState = { state: "valid"; email: string } | { state: "expired"; email: null } | { state: "none" } | { state: "failed"; email: null };
 
-export async function readInviteState(): Promise<InviteState> {
-  const { ctx, get } = await serverContext();
+export async function readInviteState(site: PortalSite): Promise<InviteState> {
+  const { ctx, get } = await serverContext(site);
   const secret = get(ctx.names.invite);
   if (!secret) return { state: "none" };
   const res = await callStrapi("auth/invite/read", { method: "POST", body: { secret } }, ctx);

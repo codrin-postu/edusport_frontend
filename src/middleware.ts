@@ -10,7 +10,10 @@ function withPortalHeaders(res: NextResponse): NextResponse {
 }
 
 export function middleware(req: NextRequest): NextResponse {
-  const site = siteForHost(req.headers.get("host"), process.env.PORTAL_HOST_ANTRENOR);
+  const site = siteForHost(req.headers.get("host"), {
+    antrenor: process.env.PORTAL_HOST_ANTRENOR,
+    sportiv: process.env.PORTAL_HOST_SPORTIV,
+  });
   const route = routeRequest(site, req.nextUrl.pathname);
   const portal = site !== "site";
   let res: NextResponse;

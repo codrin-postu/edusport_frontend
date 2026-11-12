@@ -65,5 +65,5 @@ export const KIT = {
   place: "Loc",
   points: "puncte",
   weekdays: ["L", "Ma", "Mi", "J", "V", "S", "D"],
-  legend: { grup: "grup", individual: "individual", anulata: "anulată" },
+  legend: { grup: "grup", individual: "individual", concurs: "concurs", anulata: "anulată" },
 } as const;

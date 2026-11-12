@@ -5,6 +5,6 @@ import { COACH_AUTH } from "@/lib/portal/copy";
 export const dynamic = "force-dynamic";
 
 export default async function ResetPage() {
-  const { ctx, get } = await serverContext();
+  const { ctx, get } = await serverContext("antrenor");
   return <ResetForm copy={COACH_AUTH} homePath="/" signedIn={Boolean(get(ctx.names.refresh))} />;
 }

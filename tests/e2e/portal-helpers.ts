@@ -25,6 +25,29 @@ export type MockState = {
   competitionsDown?: boolean;
   coachDown?: boolean;
   unscheduledGroup?: boolean;
+  lostAthlete?: string | null;
+  athletesDown?: boolean;
+  listPerformance?: string[];
+  skateDown?: boolean;
+  stale?: boolean;
+  noCompetitions?: boolean;
+  noOfficialUrl?: boolean;
+  promotion?: boolean | string;
+  inactive?: boolean | string;
+  emptyHistory?: boolean;
+  nothingOwed?: boolean;
+  noDocument?: boolean;
+  noPathNow?: boolean;
+  moneyMismatch?: boolean;
+  advance?: number | null;
+  manyPayments?: boolean;
+  unlisted?: string | null;
+  noPassword?: boolean;
+  noUpcoming?: boolean;
+  noPrevMonth?: boolean;
+  noAthletes?: boolean;
+  documentFile?: string | null;
+  documentForbidden?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */
