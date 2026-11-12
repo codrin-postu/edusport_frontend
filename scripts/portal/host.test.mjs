@@ -8,11 +8,13 @@ const it = canStripTypes ? test : (name) => test.skip(name);
 
 it("routes hosts", () => {
   const { siteForHost } = lib;
-  assert.equal(siteForHost("antrenor.localhost:3200", undefined), "antrenor");
-  assert.equal(siteForHost("ANTRENOR.scoaladepatinaj.com", "antrenor.scoaladepatinaj.com"), "antrenor");
-  assert.equal(siteForHost("antrenor.evil.com", "antrenor.scoaladepatinaj.com"), "site");
-  assert.equal(siteForHost("sportiv.scoaladepatinaj.com", "antrenor.scoaladepatinaj.com"), "reserved");
-  assert.equal(siteForHost(null, undefined), "site");
+  assert.equal(siteForHost("antrenor.localhost:3200", {}), "antrenor");
+  assert.equal(siteForHost("ANTRENOR.scoaladepatinaj.com", { antrenor: "antrenor.scoaladepatinaj.com" }), "antrenor");
+  assert.equal(siteForHost("antrenor.evil.com", { antrenor: "antrenor.scoaladepatinaj.com" }), "site");
+  assert.equal(siteForHost("sportiv.codrin.space", { sportiv: "sportiv.codrin.space" }), "sportiv");
+  assert.equal(siteForHost("sportiv.localhost:3218", {}), "sportiv");
+  assert.equal(siteForHost("sportiv.other.ro", { sportiv: "sportiv.codrin.space" }), "site");
+  assert.equal(siteForHost(null, {}), "site");
 });
 
 it("accepts antrenor.localhost only outside production", () => {
@@ -20,8 +22,9 @@ it("accepts antrenor.localhost only outside production", () => {
   const prev = process.env.NODE_ENV;
   try {
     process.env.NODE_ENV = "production";
-    assert.equal(siteForHost("antrenor.localhost:3200", undefined), "site");
-    assert.equal(siteForHost("antrenor.localhost", "antrenor.localhost"), "antrenor");
+    assert.equal(siteForHost("antrenor.localhost:3200", {}), "site");
+    assert.equal(siteForHost("sportiv.localhost:3218", {}), "site");
+    assert.equal(siteForHost("antrenor.localhost", { antrenor: "antrenor.localhost" }), "antrenor");
   } finally {
     process.env.NODE_ENV = prev;
   }
@@ -38,7 +41,20 @@ it("keeps each host to its pages", () => {
   assert.deepEqual(routeRequest("antrenor", "/sitemap.xml"), { action: "notFound" });
   assert.deepEqual(routeRequest("antrenor", "/antrenor/grupe"), { action: "notFound" });
   assert.deepEqual(routeRequest("antrenor", "/logo.png"), { action: "next" });
-  assert.deepEqual(routeRequest("reserved", "/"), { action: "notFound" });
+  assert.deepEqual(routeRequest("site", "/sportiv"), { action: "notFound" });
+  assert.deepEqual(routeRequest("antrenor", "/sportiv"), { action: "rewrite", pathname: "/antrenor/sportiv" });
+});
+
+it("routes the sportiv host like the coach host", () => {
+  const { routeRequest } = lib;
+  assert.deepEqual(routeRequest("sportiv", "/"), { action: "rewrite", pathname: "/sportiv" });
+  assert.deepEqual(routeRequest("sportiv", "/abc/istoric"), { action: "rewrite", pathname: "/sportiv/abc/istoric" });
+  assert.deepEqual(routeRequest("sportiv", "/antrenor"), { action: "notFound" });
+  assert.deepEqual(routeRequest("sportiv", "/sportiv"), { action: "notFound" });
+  assert.deepEqual(routeRequest("sportiv", "/robots.txt"), { action: "rewrite", pathname: "/sportiv/robots.txt" });
+  assert.deepEqual(routeRequest("sportiv", "/sitemap.xml"), { action: "notFound" });
+  assert.deepEqual(routeRequest("sportiv", "/logo.png"), { action: "next" });
+  assert.deepEqual(routeRequest("sportiv", "/%2e%2e/noutati"), { action: "notFound" });
 });
 
 it("passes only real static files on the coach host", () => {
