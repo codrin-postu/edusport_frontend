@@ -41,7 +41,7 @@ const iso = (date) => `${date}T09:00:00.000Z`;
 
 export function athleteRow(id, state) {
   const a = SPORTIV_ATHLETES[id];
-  return { id, name: a.name, firstName: a.firstName, groupName: a.groupName, age: a.age, section: a.section, inPicker: state.unlisted !== id, performance: a.performance };
+  return { id, name: a.name, firstName: a.firstName, groupName: a.groupName, age: a.age, section: a.section, inPicker: state.unlisted !== id, performance: a.performance || (state.listPerformance ?? []).includes(id) };
 }
 
 const session = (a, offset, start, end) => ({

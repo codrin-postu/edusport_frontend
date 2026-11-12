@@ -122,3 +122,22 @@ test("a school athlete gets the 404 page and no competitions request", async({ p
   await page.waitForTimeout(500);
   expect((await mockLog()).filter((c) => c.path.includes("/competitions"))).toHaveLength(0);
 });
+
+test.describe("desktop", () => {
+  test.use({ viewport: { width: 1280, height: 900 } });
+
+  test("the list is a table of linked rows under the filter row", async({ page }) => {
+    await page.goto(`/${IOANA}/concursuri`);
+    const table = page.getByRole("table");
+    for (const h of ["Data", "Concurs", "Oraș", "Categorie", "Loc", "Total"]) await expect(table.getByRole("columnheader", { name: h })).toBeVisible();
+    await expect(page.locator("[data-comp-table-row]")).toHaveCount(20);
+    const link = table.getByRole("row").nth(1).getByRole("link");
+    await expect(link).toHaveAttribute("href", new RegExp(`^/${IOANA}/concursuri/.+`));
+    await expect(page.getByLabel("Caută")).toBeVisible();
+    await expect(page.getByLabel("Sezon")).toBeVisible();
+    await expect(page.getByLabel("Ordine")).toBeVisible();
+    await expect(page.getByText("1 - 20 din 41")).toBeVisible();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`/${IOANA}/concursuri/.+`));
+  });
+});

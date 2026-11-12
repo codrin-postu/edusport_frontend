@@ -1,5 +1,5 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
-// State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
+// State switches (POST /__mock/state): athletesDown (the athletes list answers 500), listPerformance (athlete ids the athletes list marks as performance), cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
 // moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
@@ -33,6 +33,7 @@ export function sportivRoutes(h) {
     ["DELETE", /^\/me\/devices\/([A-Za-z0-9]+)$/, ({ res }) => h.ok(res, { revokedCurrent: false })],
     ["GET", /^\/athletes$/, ({ res, sess }) => {
       const state = h.state();
+      if (state.athletesDown) return h.club(res, 500, "Eroare.");
       const ids = SPORTIV_ACCOUNTS[sess.email].athletes.filter((id) => state.lostAthlete !== id);
       h.ok(res, { athletes: ids.map((id) => athleteRow(id, state)) });
     }],

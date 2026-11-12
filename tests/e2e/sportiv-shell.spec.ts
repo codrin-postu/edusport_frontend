@@ -163,3 +163,44 @@ test("an athlete outside the picker is not listed but still opens", async({ page
   await page.goto("/");
   await expect(page).toHaveURL(`${SPORTIV_BASE}/${ANA}`);
 });
+
+test("Concursuri with the athletes list down offers a retry, not the 404 page", async({ page }) => {
+  await loginSportiv(page, ADULT_EMAIL);
+  await mockState({ athletesDown: true });
+  await page.goto(`/${IOANA}/concursuri`);
+  await expect(page.getByText("Nu am putut încărca datele.")).toBeVisible();
+  await expect(page.getByText("Pagina nu a fost găsită")).toHaveCount(0);
+  await mockState({ athletesDown: false });
+  await page.getByRole("button", { name: "Încearcă din nou" }).click();
+  await expect(page.getByRole("heading", { name: "Concursuri", level: 1 })).toBeVisible();
+});
+
+test.describe("desktop shell", () => {
+  test.use({ viewport: { width: 1280, height: 900 } });
+
+  test("after the last athlete is lost the sidebar has no links to it", async({ page }) => {
+    await loginSportiv(page, ADULT_EMAIL);
+    await page.goto(`/${IOANA}/istoric`);
+    await expect(page.locator(`a[href^="/${IOANA}"]`).first()).toBeVisible();
+    await mockState({ lostAthlete: IOANA });
+    await page.getByRole("link", { name: "Plăți" }).first().click();
+    await expect(page.getByText(LOST)).toBeVisible();
+    await expect(page.locator(`a[href^="/${IOANA}"]`)).toHaveCount(0);
+  });
+
+  test("switching athlete keeps the section root only when the other athlete has it", async({ page }) => {
+    await loginSportiv(page);
+    const matei = () => page.getByRole("menuitem", { name: "Matei Ionescu" });
+    await page.goto(`/${ANA}/istoric`);
+    await page.locator("[data-sidebar-account]").hover();
+    await expect(matei()).toHaveAttribute("href", `/${MATEI}/istoric`);
+    await mockState({ listPerformance: [ANA] });
+    await page.goto(`/${ANA}/concursuri/abc123`);
+    await page.locator("[data-sidebar-account]").hover();
+    await expect(matei()).toHaveAttribute("href", `/${MATEI}`);
+    await mockState({ listPerformance: [ANA, MATEI] });
+    await page.goto(`/${ANA}/concursuri/abc123`);
+    await page.locator("[data-sidebar-account]").hover();
+    await expect(matei()).toHaveAttribute("href", `/${MATEI}/concursuri`);
+  });
+});

@@ -25,7 +25,7 @@ test("Abonament si plati shows the owed money, the abonament, the payments and t
   await expect(page.getByText("Școala noiembrie, 1 noi - 30 noi")).toBeVisible();
   await expect(page.getByText("Ședința 5 din 8")).toBeVisible();
 
-  await expect(page.getByText("Abonament noiembrie")).toBeVisible();
+  await expect(page.getByText("Abonament noiembrie").locator("visible=true")).toBeVisible();
   await expect(page.getByText("2 noi, numerar")).toBeVisible();
   await expect(page.getByText("320 RON").first()).toBeVisible();
   await expect(page.getByText("22 oct, card")).toBeVisible();
@@ -107,7 +107,7 @@ test("payments page by 20 and the pager appears only above 20", async({ page }) 
 test("without a registration form there is no document row, and an athlete without an abonament has no abonament card", async({ page }) => {
   await mockState({ noDocument: true });
   await page.goto(`/${ANA}/plati`);
-  await expect(page.getByText("Abonament noiembrie")).toBeVisible();
+  await expect(page.getByText("Abonament noiembrie").locator("visible=true")).toBeVisible();
   await expect(page.getByText("Fișa de înscriere")).toHaveCount(0);
   await page.goto(`/${MATEI}/plati`);
   await expect(page.getByText("Nimic de plată.")).toBeVisible();
@@ -124,4 +124,28 @@ test("a foreign athlete id ends on the access removed flow", async({ page }) => 
   await expect(page.getByText(LOST)).toBeVisible();
   await expect(page).not.toHaveURL(/plati/);
   await expect(page.getByText("Rămas de plată")).toHaveCount(0);
+});
+
+test("the PDF download of an athlete whose access ended takes the access removed flow", async({ page }) => {
+  await page.goto(`/${ANA}/plati`);
+  await expect(page.getByRole("link", { name: "Descarcă" })).toBeVisible();
+  await mockState({ lostAthlete: ANA });
+  await page.getByRole("link", { name: "Descarcă" }).click();
+  await expect(page.getByText(LOST)).toBeVisible();
+  await expect(page).not.toHaveURL(/plati/);
+});
+
+test.describe("desktop", () => {
+  test.use({ viewport: { width: 1280, height: 900 } });
+
+  test("payments are a table and the registration form sits under a Documente heading", async({ page }) => {
+    await page.goto(`/${ANA}/plati`);
+    const table = page.getByRole("table");
+    for (const h of ["Plată", "Data", "Metodă", "Sumă"]) await expect(table.getByRole("columnheader", { name: h })).toBeVisible();
+    await expect(table.getByRole("row", { name: /Abonament noiembrie.*numerar.*320 RON/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Documente", level: 2 })).toBeVisible();
+    await expect(page.getByText("Fișa de înscriere 2026-2027")).toBeVisible();
+    await expect(page.getByText("PDF", { exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Descarcă" })).toBeVisible();
+  });
 });

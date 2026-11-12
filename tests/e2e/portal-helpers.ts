@@ -26,6 +26,8 @@ export type MockState = {
   coachDown?: boolean;
   unscheduledGroup?: boolean;
   lostAthlete?: string | null;
+  athletesDown?: boolean;
+  listPerformance?: string[];
   skateDown?: boolean;
   stale?: boolean;
   noCompetitions?: boolean;

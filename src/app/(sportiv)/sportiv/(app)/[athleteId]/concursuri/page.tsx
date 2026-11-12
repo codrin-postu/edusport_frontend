@@ -10,7 +10,7 @@ import { bucharestDay } from "@/lib/portal/sportiv-format";
 import { roCount } from "@/lib/ro-plural";
 import type { CompetitionSort, SportivCompetitions } from "@/lib/portal/sportiv-types";
 import { LoadError } from "@/app/_portal/ui/LoadError";
-import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Pager } from "@/app/_portal/ui/Pager";
 import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
@@ -18,11 +18,13 @@ import { PlaceBlock } from "@/app/_portal/ui/PlaceBlock";
 import { PointsCell } from "@/app/_portal/ui/PointsCell";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
+import { DataTable, Td } from "../../_ui/DataTable";
 import { useAthletes } from "../../_lib/athletes-context";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
 import { PerformanceGate } from "./_parts/Gate";
 
+const C = COMP.columns;
 const DEBOUNCE_MS = 300;
 const CONTROL = "min-h-11 border border-input-line bg-surface-raised px-3 text-(length:--portal-text-14) text-primary";
 const LABEL = "flex flex-col gap-(--portal-gap-6) text-(length:--portal-text-12) font-bold text-muted";
@@ -82,64 +84,66 @@ function Competitions() {
         {result.state === "ready" && data && !data.available && <p className="text-(length:--portal-text-14) text-muted">{COMP_DOWN}</p>}
         {available?.stale && <p className="text-(length:--portal-sub-size) text-muted">{HOME.lastCompetition.stale(shortDate(bucharestDay(available.updatedAt)))}</p>}
         {(available || (seasons !== null && result.state !== "error")) && (
-          <Columns half>
-            <Column grow={1} sticky>
-              {available?.category && (
-                <PortalCard as="section" tone="subtle" pad="sheet" className="flex-row flex-wrap items-end justify-between gap-3">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-(length:--portal-text-12) font-bold text-muted">{COMP.category.title(available.category.seasonLabel)}</span>
-                    <span className="font-display font-extrabold text-(length:--portal-h2-size)">{available.category.current}</span>
-                  </div>
-                  {available.category.previous && (
-                    <div className="flex flex-col text-right text-(length:--portal-text-12) text-muted">
-                      <span>{COMP.category.since(available.category.previous.sinceYear)}</span>
-                      <span>{COMP.category.before(available.category.previous.short)}</span>
+          <>
+            {available && (available.category || available.records.best !== null) && (
+              <div className="flex flex-col gap-(--portal-section-gap) portal:flex-row portal:items-stretch portal:*:flex-1">
+                {available.category && (
+                  <PortalCard as="section" tone="subtle" pad="sheet" className="flex-row flex-wrap items-end justify-between gap-3">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-(length:--portal-text-12) font-bold text-muted">{COMP.category.title(available.category.seasonLabel)}</span>
+                      <span className="font-display font-extrabold text-(length:--portal-h2-size)">{available.category.current}</span>
                     </div>
-                  )}
-                </PortalCard>
-              )}
-              {available && available.records.best !== null && (
-                <StatCard
-                  big={pointsText(available.records.best)}
-                  label={COMP.records.best}
-                  side={[
-                    { value: String(available.records.podiums), label: COMP.records.podiums },
-                    { value: String(available.records.wins), label: COMP.records.wins },
-                  ]}
-                />
-              )}
-            </Column>
-            <Column grow={2}>
-              <div className="flex flex-col gap-3 portal:flex-row portal:flex-wrap portal:items-end">
-                <label className={`${LABEL} portal:flex-[2_1_260px]`}>
-                  {COMP.search.label}
-                  <input
-                    type="search"
-                    className={CONTROL}
-                    placeholder={COMP.search.placeholder}
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
+                    {available.category.previous && (
+                      <div className="flex flex-col text-right text-(length:--portal-text-12) text-muted">
+                        <span>{COMP.category.since(available.category.previous.sinceYear)}</span>
+                        <span>{COMP.category.before(available.category.previous.short)}</span>
+                      </div>
+                    )}
+                  </PortalCard>
+                )}
+                {available.records.best !== null && (
+                  <StatCard
+                    big={pointsText(available.records.best)}
+                    label={COMP.records.best}
+                    side={[
+                      { value: String(available.records.podiums), label: COMP.records.podiums },
+                      { value: String(available.records.wins), label: COMP.records.wins },
+                    ]}
                   />
-                </label>
-                <label className={`${LABEL} portal:flex-[1_1_180px]`}>
-                  {COMP.seasonLabel}
-                  <select className={CONTROL} value={state.season ?? ""} onChange={(e) => go({ ...state, season: e.target.value || null, page: 1 })}>
-                    <option value="">{COMP.seasons}</option>
-                    {(seasons ?? []).map((s) => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </label>
-                <label className={`${LABEL} portal:flex-[1_1_180px]`}>
-                  {COMP.sortLabel}
-                  <select className={CONTROL} value={state.sort} onChange={(e) => go({ ...state, sort: e.target.value as CompetitionSort, page: 1 })}>
-                    {(Object.keys(COMP.sort) as CompetitionSort[]).map((k) => <option key={k} value={k}>{COMP.sort[k]}</option>)}
-                  </select>
-                </label>
+                )}
               </div>
-              {result.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
-              {available && (available.rows.length === 0 ? (
-                <p className="text-(length:--portal-text-14) text-muted">{COMP.empty}</p>
-              ) : (
-                <>
+            )}
+            <div className="flex flex-col gap-3 portal:flex-row portal:flex-wrap portal:items-end">
+              <label className={`${LABEL} portal:flex-[2_1_260px]`}>
+                {COMP.search.label}
+                <input
+                  type="search"
+                  className={CONTROL}
+                  placeholder={COMP.search.placeholder}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </label>
+              <label className={`${LABEL} portal:flex-[1_1_180px]`}>
+                {COMP.seasonLabel}
+                <select className={CONTROL} value={state.season ?? ""} onChange={(e) => go({ ...state, season: e.target.value || null, page: 1 })}>
+                  <option value="">{COMP.seasons}</option>
+                  {(seasons ?? []).map((s) => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </label>
+              <label className={`${LABEL} portal:flex-[1_1_180px]`}>
+                {COMP.sortLabel}
+                <select className={CONTROL} value={state.sort} onChange={(e) => go({ ...state, sort: e.target.value as CompetitionSort, page: 1 })}>
+                  {(Object.keys(COMP.sort) as CompetitionSort[]).map((k) => <option key={k} value={k}>{COMP.sort[k]}</option>)}
+                </select>
+              </label>
+            </div>
+            {result.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
+            {available && (available.rows.length === 0 ? (
+              <p className="text-(length:--portal-text-14) text-muted">{COMP.empty}</p>
+            ) : (
+              <>
+                <div className="portal:hidden">
                   <ListCard>
                     {available.rows.map((r) => (
                       <NextLink
@@ -159,19 +163,38 @@ function Competitions() {
                       </NextLink>
                     ))}
                   </ListCard>
-                  <Pager
-                    from={from}
-                    to={to}
-                    total={available.filtered}
-                    onPrev={() => go({ ...state, page: state.page - 1 })}
-                    onNext={() => go({ ...state, page: state.page + 1 })}
-                    prevDisabled={available.page <= 1}
-                    nextDisabled={to >= available.filtered}
-                  />
-                </>
-              ))}
-            </Column>
-          </Columns>
+                </div>
+                <DataTable columns={[C.date, C.event, C.city, C.category, C.place, C.total]}>
+                  {available.rows.map((r) => (
+                    <tr key={r.resultId} data-comp-table-row>
+                      <Td>{r.date ? dayMonthYear(r.date) : ""}</Td>
+                      <Td>
+                        <NextLink
+                          href={`/${athleteId}/concursuri/${r.resultId}`}
+                          className="inline-flex min-h-11 items-center font-bold text-primary no-underline hover:underline focus-visible:outline-2 focus-visible:outline-focus"
+                        >
+                          {r.eventName}
+                        </NextLink>
+                      </Td>
+                      <Td>{r.location ?? ""}</Td>
+                      <Td>{r.categoryShort ?? ""}</Td>
+                      <Td className="font-display font-extrabold">{r.placement ?? ""}</Td>
+                      <Td className="font-bold">{r.total !== null ? pointsText(r.total) : ""}</Td>
+                    </tr>
+                  ))}
+                </DataTable>
+                <Pager
+                  from={from}
+                  to={to}
+                  total={available.filtered}
+                  onPrev={() => go({ ...state, page: state.page - 1 })}
+                  onNext={() => go({ ...state, page: state.page + 1 })}
+                  prevDisabled={available.page <= 1}
+                  nextDisabled={to >= available.filtered}
+                />
+              </>
+            ))}
+          </>
         )}
       </PageBody>
     </>

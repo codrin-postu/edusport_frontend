@@ -7,7 +7,7 @@ import type { SportivMoney, SportivPayments, SportivSubscriptions } from "@/lib/
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
-import { Section } from "@/app/_portal/ui/SectionHeading";
+import { Section, SectionHeading } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "../../_lib/athletes-context";
 import { useSportiv } from "../../_lib/use-sportiv";
@@ -43,7 +43,12 @@ export default function MoneyPage() {
                   <PaymentsList payments={payments.data} onPage={setPage} />
                 </Section>
               )}
-              {m.document && <DocumentRow athleteId={athleteId} seasonLabel={m.document.seasonLabel} />}
+              {m.document && (
+                <div className="flex flex-col gap-3">
+                  <SectionHeading title={MONEY.documents} className="hidden portal:flex" />
+                  <DocumentRow athleteId={athleteId} seasonLabel={m.document.seasonLabel} />
+                </div>
+              )}
             </Column>
           </Columns>
         )}
