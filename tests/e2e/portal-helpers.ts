@@ -27,6 +27,7 @@ export type MockState = {
   unscheduledGroup?: boolean;
   lostAthlete?: string | null;
   skateDown?: boolean;
+  stale?: boolean;
   noCompetitions?: boolean;
   promotion?: boolean | string;
   inactive?: boolean | string;

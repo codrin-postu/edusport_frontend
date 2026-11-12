@@ -28,7 +28,7 @@ export function range(from: number, to: number, total: number): string {
 }
 
 /** The calendar day of an instant in Bucharest, "YYYY-MM-DD". */
-function bucharestDay(value: Date | string): string {
+export function bucharestDay(value: Date | string): string {
   return new Intl.DateTimeFormat("sv-SE", { timeZone: BUCHAREST }).format(new Date(value));
 }
 

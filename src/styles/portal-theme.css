@@ -162,6 +162,10 @@
   --motion-overlay-out: motion-fade-out var(--motion-slow) var(--motion-ease) both; /* motion */
   --motion-count: motion-count-in var(--motion-fast) var(--motion-ease) both; /* motion */
   --motion-pop: motion-check-in var(--motion-fast) var(--motion-ease) both; /* motion: status block flip */
+  --motion-promo-card: motion-sheet-in 400ms 100ms var(--motion-ease) both; /* motion: promotion card */
+  --motion-promo-old: promo-out 1.6s 500ms ease-in-out both; /* motion: promotion old level leaves */
+  --motion-promo-new: promo-in 1.6s 500ms var(--motion-ease) both; /* motion: promotion new level arrives */
+  --motion-promo-line: promo-line 2s 500ms var(--motion-ease) both; /* motion: promotion underline grows */
   --motion-flash: var(--motion-slow); /* motion: presence row flash */
   --portal-gap-10: 10px;           /* layout month picker and Google button gap */
   --portal-gap-14: 14px;           /* layout calendar column gap (grid and legend) */
@@ -217,6 +221,16 @@
   --portal-tracking-month: 0.08em; /* layout now tile month */
   --portal-tracking-place: 0.06em; /* layout place block word */
   --portal-tracking-phone: 0.02em; /* layout contact phone number */
+  --portal-bar-w: 8px;             /* layout presence month bar width */
+  --portal-bar-h: 40px;            /* layout presence month bar full height */
+  --portal-bar-min: 2px;           /* layout presence month bar floor */
+  --portal-bar-col-w: 22px;        /* layout presence month column */
+  --portal-bar-gap: 4px;           /* layout presence month column gap */
+  --portal-place-box: 72px;        /* layout last competition place box */
+  --portal-text-36: 36px;          /* layout last competition place number */
+  --portal-promo-w: 300px;         /* layout promotion card width */
+  --portal-promo-line: 56px;       /* layout promotion underline length */
+  --portal-promo-h: 34px;          /* layout promotion level line height */
   --portal-text-10: 10px;          /* layout type size */
   --portal-text-11: 11px;          /* layout type size */
   --portal-text-12: 12px;          /* layout type size */
@@ -267,6 +281,9 @@
 @keyframes motion-sheet-in { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
 @keyframes motion-sheet-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(var(--motion-rise)); } }
 @keyframes motion-count-in { from { opacity: 0; transform: translateY(var(--motion-rise-sm)); } to { opacity: 1; transform: none; } }
+@keyframes promo-out { 0%, 30% { opacity: 1; transform: none; } 60%, 100% { opacity: 0; transform: translateY(-18px); } }
+@keyframes promo-in { 0%, 45% { opacity: 0; transform: translateY(18px); } 75%, 100% { opacity: 1; transform: none; } }
+@keyframes promo-line { 0%, 70% { width: 0; } 100% { width: var(--portal-promo-line); } }
 @keyframes motion-flash-a { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
 @keyframes motion-flash-b { from { background-color: var(--color-row-hover); } to { background-color: transparent; } }
 
@@ -288,6 +305,10 @@
     --motion-overlay-out: none;
     --motion-count: none;
     --motion-pop: none;
+    --motion-promo-card: none;
+    --motion-promo-old: none;
+    --motion-promo-new: none;
+    --motion-promo-line: none;
     --checkbox-mark-anim: none;
   }
   [data-theme="portal"] [data-flash] { animation: none; }

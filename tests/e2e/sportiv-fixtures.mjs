@@ -13,7 +13,7 @@ export const SPORTIV_ACCOUNTS = {
   "sportiv18@example.invalid": { name: "Ioana Marin", phone: null, password: SPORTIV_PASSWORD, google: false, athletes: [ADULT_ID] },
 };
 
-const SCHOOL = { section: "school", sectionName: "Școala", location: "AFI Cotroceni" };
+const SCHOOL = { section: "school", sectionName: "Școala de patinaj", location: "AFI Cotroceni" };
 
 /** Per athlete: the row of `athletes`, the level and what Acasă shows. */
 export const SPORTIV_ATHLETES = {
@@ -28,8 +28,8 @@ export const SPORTIV_ATHLETES = {
     abonament: null, presences: 4,
   },
   [ADULT_ID]: {
-    name: "Ioana Marin", firstName: "Ioana", groupName: "Club Performanță", age: 18, section: "club", performance: true,
-    level: { groupId: "grpperform01", groupName: "Club Performanță", section: "club", sectionName: "Club", location: "Patinoar Floreasca" }, coach: "Alina Gheorghe",
+    name: "Ioana Marin", firstName: "Ioana", groupName: "Club Performanță", age: 13, section: "club", performance: true,
+    level: { groupId: "grpperform01", groupName: "Club Performanță", section: "club", sectionName: "Club", location: "Patinoar Nord" }, coach: "Alina Gheorghe",
     abonament: null, presences: 61,
   },
 };
@@ -48,21 +48,21 @@ const session = (a, offset, start, end) => ({
   date: addDays(FROZEN_TODAY, offset), startTime: start, endTime: end, kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null,
 });
 
-const competitionRow = { resultId: "res-0001", eventName: "Cupa Primăverii", date: addDays(FROZEN_TODAY, -20), location: "București", category: "Novice B", categoryShort: "NB", placement: 3, total: 24 };
+const competitionRow = { resultId: "res-0001", eventName: "Cupa României 2026", date: addDays(FROZEN_TODAY, -20), location: "București", category: "Advanced Novice Girls", categoryShort: "ANG", placement: 2, total: 98.42 };
 
 export function homeOf(id, state) {
   const a = SPORTIV_ATHLETES[id];
   const comps = a.performance;
   let lastCompetition = null;
   if (comps && !state.noCompetitions) {
-    lastCompetition = state.skateDown ? { available: false } : { available: true, stale: false, updatedAt: iso(FROZEN_TODAY), row: competitionRow, field: 24 };
+    lastCompetition = state.skateDown ? { available: false } : { available: true, stale: state.stale === true, updatedAt: iso(FROZEN_TODAY), row: competitionRow, field: 18 };
   }
   return {
     athlete: { id, name: a.name, firstName: a.firstName, age: a.age, inactive: state.inactive === id || state.inactive === true },
-    level: a.level, category: comps ? "Novice B" : null, seasonLabel: "2026-2027",
-    presences: { total: a.presences, months: [{ month: "2026-10", count: 9, state: "past" }, { month: "2026-11", count: 2, state: "current" }, { month: "2026-12", count: null, state: "future" }] },
-    upcoming: [session(a, 0, "17:30", "18:30"), session(a, 2, "17:30", "18:30"), session(a, 7, "17:30", "18:30")],
-    abonament: a.abonament ? { ...a.abonament, validUntil: addDays(FROZEN_TODAY, 30) } : null,
+    level: a.level, category: comps ? "Advanced Novice Girls" : null, seasonLabel: "2026-2027",
+    presences: { total: a.presences, months: [{ month: "2026-09", count: 7, state: "past" }, { month: "2026-10", count: 8, state: "past" }, { month: "2026-11", count: 6, state: "current" }, { month: "2026-12", count: null, state: "future" }, { month: "2027-01", count: null, state: "future" }, { month: "2027-02", count: null, state: "future" }] },
+    upcoming: [session(a, 0, "17:30", "18:30"), { ...session(a, 2, "17:30", "18:30"), kind: "individual" }, { ...session(a, 7, "17:30", "18:30"), ...(comps ? { kind: "concurs" } : {}) }],
+    abonament: a.abonament ? { ...a.abonament, validUntil: addDays(FROZEN_TODAY, 25) } : null,
     lastCompetition,
     promotion: state.promotion === id || state.promotion === true ? { from: "Intermediari Bronze", to: "Intermediari Silver" } : null,
   };
@@ -103,7 +103,7 @@ export function competitionsOf(id, state, query) {
 export function competitionOf(state) {
   if (state.skateDown) return { available: false };
   return {
-    available: true, stale: false, updatedAt: iso(FROZEN_TODAY), row: competitionRow, field: 24, best: 24, officialUrl: null,
+    available: true, stale: false, updatedAt: iso(FROZEN_TODAY), row: competitionRow, field: 18, best: 98.42, officialUrl: null,
     segments: [{ name: "Program scurt", isShort: true, score: 24, tes: 12, pcs: 12, deductions: 0, elements: [{ name: "Piruetă", base: 3, score: 3.2 }] }],
   };
 }

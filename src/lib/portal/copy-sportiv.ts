@@ -37,10 +37,11 @@ export const ACCOUNT = {
 export const HOME = {
   greeting: (firstName: string) => `Bună, ${firstName}`,
   presences: "prezențe în sezon",
+  months: "Prezențe pe lună",
   upcoming: "Următoarele ședințe",
   calendarLink: "Calendar ›",
   abonament: { details: "Detalii ›", session: (next: number, slots: number) => `Ședința ${next}/${slots}`, validUntil: (date: string) => `valabil până la ${date}` },
-  lastCompetition: { title: "Ultimul concurs", place: "Locul", all: "Toate ›", stale: (date: string) => `Rezultatele pot fi mai vechi. Actualizate ${date}.` },
+  lastCompetition: { title: "Ultimul concurs", place: "Locul", all: "Toate ›", field: (category: string, place: number, field: number) => `${category}, ${place} din ${field}`, total: "Total", stale: (date: string) => `Rezultatele pot fi mai vechi. Actualizate ${date}.` },
   promotion: { title: "Nivel nou", text: (firstName: string) => `Felicitări, ${firstName}! Ai trecut la nivelul următor.`, done: "Mai departe" },
 } as const;
 

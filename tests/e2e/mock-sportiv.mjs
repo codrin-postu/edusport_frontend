@@ -1,5 +1,5 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
-// State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown,
+// State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument,
 // unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
@@ -34,7 +34,7 @@ export function sportivRoutes(h) {
       h.ok(res, { athletes: ids.map((id) => athleteRow(id, state)) });
     }],
     ["GET", new RegExp(`${A}\\/home$`), data((id, state) => homeOf(id, state))],
-    ["POST", new RegExp(`${A}\\/promotion\\/seen$`), mine((_id, { res }) => h.ok(res, {}))],
+    ["POST", new RegExp(`${A}\\/promotion\\/seen$`), mine((id, { res }) => { if (h.state().promotion === true || h.state().promotion === id) h.state().promotion = false; h.ok(res, {}); })],
     ["GET", new RegExp(`${A}\\/profile$`), data((id) => profileOf(id))],
     ["GET", new RegExp(`${A}\\/history$`), data((id, state, query) => historyOf(id, state, Math.max(1, Number(query.get("page") ?? 1))))],
     ["GET", new RegExp(`${A}\\/calendar\\.ics$`), mine((id, { res }) => {

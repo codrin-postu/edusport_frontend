@@ -1,6 +1,6 @@
 import { PortalCard } from "@/app/_portal/ui/PortalCard";
 
-export function StatCard({ big, label, side }: { big: string; label: string; side?: { value: string; label: string }[] }) {
+export function StatCard({ big, label, side, aside }: { big: string; label: string; side?: { value: string; label: string }[]; aside?: React.ReactNode }) {
   return (
     <PortalCard as="section" tone="navy" pad="sheet" className="flex-wrap items-end justify-between gap-4 flex-row">
       <div className="flex flex-col gap-2">
@@ -18,6 +18,7 @@ export function StatCard({ big, label, side }: { big: string; label: string; sid
           ))}
         </div>
       )}
+      {aside}
     </PortalCard>
   );
 }
