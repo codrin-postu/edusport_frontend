@@ -20,5 +20,5 @@ export function DataTable({ columns, children, className }: { columns: string[];
 }
 
 export function Td({ children, className }: { children?: React.ReactNode; className?: string }) {
-  return <td className={cn("border-b border-line-subtle px-4 py-2.5 align-middle", className)}>{children}</td>;
+  return <td className={cn("border-b border-line-subtle px-4 py-3 align-middle", className)}>{children}</td>;
 }

@@ -23,8 +23,10 @@ export function LastCompetitionCard({ last, allHref }: { last: LastCompetition; 
             </div>
             <div className="flex min-w-0 flex-col gap-0.5">
               <span className="text-(length:--portal-row-title) font-bold">{last.row.eventName}</span>
-              {last.row.placement !== null && last.field !== null && (
+              {last.row.placement !== null && last.field !== null ? (
                 <span className="text-(length:--portal-sub-size) text-muted">{L.field(last.row.category, last.row.placement, last.field)}</span>
+              ) : (
+                <span className="text-(length:--portal-sub-size) text-muted">{last.row.category}</span>
               )}
               {last.row.total !== null && (
                 <span className="text-(length:--portal-sub-size)">{L.total} <b>{pointsText(last.row.total)}</b> {KIT.points}</span>

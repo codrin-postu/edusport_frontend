@@ -30,7 +30,7 @@ export default function AthleteDataPage() {
     : [];
   return (
     <>
-      <PageHeader back={{ href: "/setari", label: SETARI.back }} title={D.title} sub={p?.name} />
+      <PageHeader noTile back={{ href: "/setari", label: SETARI.back }} title={D.title} sub={p?.name} />
       <PageBody narrow>
         {profile.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
         {profile.state === "error" && <LoadError onRetry={profile.reload} />}

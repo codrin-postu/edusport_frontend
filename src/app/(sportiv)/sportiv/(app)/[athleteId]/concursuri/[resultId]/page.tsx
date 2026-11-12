@@ -34,7 +34,7 @@ function SegmentCard({ segment }: { segment: Segment }) {
   return (
     <PortalCard as="section" pad="card" className="gap-3">
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="font-display font-extrabold text-(length:--portal-h2-size)">{segment.isShort ? COMP.detail.short : COMP.detail.free}</h2>
+        <h2 className="font-display font-extrabold text-(length:--portal-h2-size)">{segment.isShort ? COMP.detail.short : segment.name || COMP.detail.free}</h2>
         {segment.score !== null && <span className="font-display font-extrabold text-(length:--portal-text-18)">{num(segment.score)}</span>}
       </div>
       <div className="flex flex-wrap gap-x-6 gap-y-1 text-(length:--portal-text-14)">

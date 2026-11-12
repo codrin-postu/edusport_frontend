@@ -8,7 +8,7 @@ import { monthTitle } from "@/lib/portal/month-grid";
 import { itemsOnDay, sportivMarks } from "@/lib/portal/sportiv-calendar";
 import { bucharestDay } from "@/lib/portal/sportiv-format";
 import type { SportivCalendar } from "@/lib/portal/sportiv-types";
-import { CalendarLegend } from "@/app/_portal/ui/CalendarLegend";
+import { CalendarLegend, type LegendItem } from "@/app/_portal/ui/CalendarLegend";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { MonthGrid } from "@/app/_portal/ui/MonthGrid";
 import { MonthPicker } from "@/app/_portal/ui/MonthPicker";
@@ -21,6 +21,13 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "../../_lib/athletes-context";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
+
+const LEGEND: LegendItem[] = [
+  { bar: "bg-surface-dark", text: CAL.legend.grup },
+  { bar: "bg-ice-blue", text: CAL.legend.individual },
+  { bar: "bg-ice", text: CAL.legend.concurs },
+  { bar: "bg-cancelled", text: CAL.legend.anulata },
+];
 
 const LINK =
   "flex min-h-(--portal-tap) items-center justify-center border-control border-line bg-surface-raised px-(--portal-small-btn-pad-x) text-(length:--portal-text-14) font-bold text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus";
@@ -54,6 +61,7 @@ export default function CalendarPage() {
       onNext={() => go(cal.nextMonth)}
       prevLabel={CAL.prevMonth}
       nextLabel={CAL.nextMonth}
+      prevDisabled={cal.prevMonth === null}
       nextDisabled={cal.nextMonth === null}
     />
   );
@@ -71,15 +79,19 @@ export default function CalendarPage() {
             <Column grow={1} className="gap-(--portal-gap-14)">
               <div className="portal:hidden">{picker}</div>
               <MonthGrid month={cal.month} marks={sportivMarks(cal.items)} selected={inMonth} today={today} onSelect={setPicked} label={CAL.title} />
-              <CalendarLegend withCompetition />
+              <CalendarLegend items={LEGEND} />
               <a href={`/api/portal/sportiv/athletes/${athleteId}/calendar.ics`} download className={LINK}>{CAL.addToPhone}</a>
             </Column>
             <Column grow={1}>
               {shown && (
                 <Section title={longDay(shown)}>
-                  <ListCard>
-                    {items.map((i, n) => <SessionRow key={`${i.startTime}${i.title}${n}`} item={i} now={now} />)}
-                  </ListCard>
+                  {items.length === 0 ? (
+                    <p className="text-(length:--portal-text-14) text-muted">{CAL.emptyDay}</p>
+                  ) : (
+                    <ListCard>
+                      {items.map((i, n) => <SessionRow key={`${i.startTime}${i.title}${n}`} item={i} now={now} />)}
+                    </ListCard>
+                  )}
                 </Section>
               )}
             </Column>

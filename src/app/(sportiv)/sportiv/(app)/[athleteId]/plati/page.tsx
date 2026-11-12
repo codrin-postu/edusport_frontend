@@ -5,11 +5,12 @@ import { useParams } from "next/navigation";
 import { MONEY } from "@/lib/portal/copy-sportiv";
 import type { SportivMoney, SportivPayments, SportivSubscriptions } from "@/lib/portal/sportiv-types";
 import { LoadError } from "@/app/_portal/ui/LoadError";
-import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
+import { Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Section, SectionHeading } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "../../_lib/athletes-context";
+import { useKept } from "../../_lib/use-kept";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
 import { DocumentRow } from "./_parts/DocumentRow";
@@ -25,6 +26,7 @@ export default function MoneyPage() {
   const payments = useSportiv<SportivPayments>(`athletes/${athleteId}/payments?page=${page}`);
   const subscriptions = useSportiv<SportivSubscriptions>(`athletes/${athleteId}/subscriptions`);
   const m = money.data;
+  const paid = useKept(payments.data, athleteId);
   return (
     <>
       <PageHeader brand noTile title={MONEY.title} sub={current?.name} phoneEnd={<AccountButton />} />
@@ -32,25 +34,27 @@ export default function MoneyPage() {
         {money.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
         {money.state === "error" && <LoadError onRetry={money.reload} />}
         {money.state === "ready" && m && (
-          <Columns>
-            <Column grow={1}>
+          <>
+            <Columns half className="portal:items-stretch">
               <LeftCard money={m} subscriptions={subscriptions} />
-            </Column>
-            <Column grow={2}>
-              {payments.state === "error" && <LoadError onRetry={payments.reload} />}
-              {payments.data && payments.data.total > 0 && (
-                <Section title={MONEY.payments.title}>
-                  <PaymentsList payments={payments.data} onPage={setPage} />
-                </Section>
-              )}
+            </Columns>
+            <Columns wide>
+              <div className="flex min-w-0 flex-col gap-(--portal-section-gap)">
+                {payments.state === "error" && <LoadError onRetry={payments.reload} />}
+                {payments.state !== "error" && paid && paid.total > 0 && (
+                  <Section title={MONEY.payments.title}>
+                    <PaymentsList payments={paid} onPage={setPage} />
+                  </Section>
+                )}
+              </div>
               {m.document && (
-                <div className="flex flex-col gap-3">
+                <div className="flex min-w-0 flex-col gap-3">
                   <SectionHeading title={MONEY.documents} className="hidden portal:flex" />
                   <DocumentRow athleteId={athleteId} seasonLabel={m.document.seasonLabel} />
                 </div>
               )}
-            </Column>
-          </Columns>
+            </Columns>
+          </>
         )}
       </PageBody>
     </>

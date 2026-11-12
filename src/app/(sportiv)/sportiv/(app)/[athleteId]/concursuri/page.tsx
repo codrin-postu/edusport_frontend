@@ -20,6 +20,7 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { DataTable, Td } from "../../_ui/DataTable";
 import { useAthletes } from "../../_lib/athletes-context";
+import { useKept } from "../../_lib/use-kept";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
 import { PerformanceGate } from "./_parts/Gate";
@@ -47,7 +48,8 @@ function Competitions() {
   const state = readQuery(new URLSearchParams(search.toString()));
   const qs = competitionQuery(state);
   const result = useSportiv<SportivCompetitions>(`athletes/${athleteId}/competitions${qs ? `?${qs}` : ""}`);
-  const data = result.data;
+  const kept = useKept(result.data, athleteId);
+  const data = result.state === "error" ? null : kept;
 
   const go = (next: CompetitionState) => {
     const q = competitionQuery(next);

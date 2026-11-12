@@ -6,5 +6,5 @@ export const dynamic = "force-dynamic";
 
 export default async function ResetPage() {
   const { ctx, get } = await serverContext("sportiv");
-  return <ResetForm copy={SPORTIV_AUTH} portal="sportiv" homePath="/" signedIn={Boolean(get(ctx.names.refresh))} />;
+  return <ResetForm copy={SPORTIV_AUTH} portal="sportiv" homePath="/" meApi="sportiv/me" signedIn={Boolean(get(ctx.names.refresh))} />;
 }

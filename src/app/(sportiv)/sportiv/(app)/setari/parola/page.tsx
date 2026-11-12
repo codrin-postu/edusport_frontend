@@ -27,7 +27,7 @@ export default function PasswordPage() {
   }, [tick]);
   return (
     <>
-      <PageHeader back={{ href: "/setari", label: SETARI.back }} title={SETARI.security.password.label} />
+      <PageHeader noTile back={{ href: "/setari", label: SETARI.back }} title={SETARI.security.password.label} />
       <PageBody narrow>
         {me === undefined && <div className="flex justify-center py-6"><Spinner /></div>}
         {me === null && <LoadError onRetry={() => { setMe(undefined); setTick((n) => n + 1); }} />}

@@ -15,10 +15,9 @@ import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { StatCard } from "@/app/_portal/ui/StatCard";
 import { useAthletes } from "../../_lib/athletes-context";
+import { useKept } from "../../_lib/use-kept";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
-
-const PRESENCES = (n: number) => (n === 1 ? "prezență" : "prezențe");
 
 function subOf(r: HistoryRow): string {
   const what = r.kind === "Individual" ? HISTORY.lesson : r.groupName;
@@ -31,7 +30,7 @@ export default function HistoryPage() {
   const { current } = useAthletes();
   const [page, setPage] = useState(1);
   const history = useSportiv<SportivHistory>(`athletes/${athleteId}/history?page=${page}`);
-  const data = history.data;
+  const data = useKept(history.data, athleteId);
   const sub = current && data?.seasonLabel ? HISTORY.sub(current.name, data.seasonLabel) : undefined;
   const from = data ? (data.page - 1) * data.pageSize + 1 : 0;
   const to = data ? from + data.rows.length - 1 : 0;
@@ -41,12 +40,12 @@ export default function HistoryPage() {
       <PageBody>
         {history.state === "loading" && data === null && <div className="flex justify-center py-6"><Spinner /></div>}
         {history.state === "error" && <LoadError onRetry={history.reload} />}
-        {history.state === "ready" && data && (
+        {history.state !== "error" && data && (
           <Columns half>
             <Column grow={1} sticky>
               <StatCard
                 big={String(data.total)}
-                label={PRESENCES(data.total)}
+                label={HISTORY.presences(data.total)}
                 side={[{ value: String(data.group), label: HISTORY.group }, { value: String(data.individual), label: HISTORY.individual }]}
               />
             </Column>

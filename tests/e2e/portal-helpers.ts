@@ -43,6 +43,11 @@ export type MockState = {
   manyPayments?: boolean;
   unlisted?: string | null;
   noPassword?: boolean;
+  noUpcoming?: boolean;
+  noPrevMonth?: boolean;
+  noAthletes?: boolean;
+  documentFile?: string | null;
+  documentForbidden?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */

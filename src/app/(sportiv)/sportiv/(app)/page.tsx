@@ -28,6 +28,7 @@ export default function PickerPage() {
       <PageHeader brand noTile title={ACCOUNT.picker.title} sub={ACCOUNT.picker.sub} />
       <PageBody narrow>
         <PageSub>{ACCOUNT.picker.sub}</PageSub>
+        {picker.length === 0 && <p className="text-(length:--portal-text-14) text-muted">{ACCOUNT.picker.empty}</p>}
         <ListCard>
           {picker.map((a) => (
             <ListRow key={a.id} href={`/${a.id}`} title={a.name} sub={ACCOUNT.row(a.groupName ?? "", a.age)} />

@@ -26,7 +26,7 @@ export default function HomePage() {
   if (home.data === null) return <PageBody><LoadError onRetry={home.reload} /></PageBody>;
   const { athlete, level, category, presences, upcoming, abonament, lastCompetition, promotion } = home.data;
   const where = [category ?? level?.sectionName, level?.location].filter(Boolean).join(", ");
-  const sub = athlete.inactive ? INACTIVE : [where, athlete.age === null ? "" : `${athlete.age} ani`].filter(Boolean).join(", ");
+  const sub = [where, athlete.age === null ? "" : `${athlete.age} ani`].filter(Boolean).join(", ");
   const promoKey = promotion ? `${athleteId}:${promotion.from}:${promotion.to}` : null;
   const markSeen = () => {
     setSeen(promoKey);
@@ -37,6 +37,7 @@ export default function HomePage() {
       <PageHeader brand noTile kicker={HOME.greeting(athlete.firstName)} title={level?.groupName ?? athlete.name} sub={sub} phoneEnd={<AccountButton />} />
       <PageBody>
         <PageSub>{sub}</PageSub>
+        {athlete.inactive && <p className="text-(length:--portal-sub-size) text-muted">{INACTIVE}</p>}
         <Columns>
           <Column grow={2} className="contents portal:flex">
             <div className="order-1 portal:order-none"><PresenceCard total={presences.total} months={presences.months} /></div>
@@ -44,7 +45,7 @@ export default function HomePage() {
             {abonament !== null && <div className="order-4 portal:order-none"><AbonamentCard abonament={abonament} detailsHref={`/${athleteId}/plati`} /></div>}
           </Column>
           <Column grow={1} className="contents portal:flex">
-            {upcoming.length > 0 && <div className="order-3 portal:order-none"><UpcomingList items={upcoming} calendarHref={`/${athleteId}/calendar`} /></div>}
+            {(upcoming.length > 0 || !athlete.inactive) && <div className="order-3 portal:order-none"><UpcomingList items={upcoming} calendarHref={`/${athleteId}/calendar`} /></div>}
           </Column>
         </Columns>
       </PageBody>

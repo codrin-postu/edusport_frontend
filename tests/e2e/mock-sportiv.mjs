@@ -1,6 +1,7 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
 // State switches (POST /__mock/state): athletesDown (the athletes list answers 500), listPerformance (athlete ids the athletes list marks as performance), cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
+// noUpcoming, noPrevMonth, noAthletes (the athletes list is empty), documentFile (the PDF file name; null = no Content-Disposition), documentForbidden (a 403 that is not the lost-access one),
 // moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
   ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, pathOf, paymentsOf, profileOf, subscriptionsOf,
@@ -34,7 +35,7 @@ export function sportivRoutes(h) {
     ["GET", /^\/athletes$/, ({ res, sess }) => {
       const state = h.state();
       if (state.athletesDown) return h.club(res, 500, "Eroare.");
-      const ids = SPORTIV_ACCOUNTS[sess.email].athletes.filter((id) => state.lostAthlete !== id);
+      const ids = state.noAthletes ? [] : SPORTIV_ACCOUNTS[sess.email].athletes.filter((id) => state.lostAthlete !== id);
       h.ok(res, { athletes: ids.map((id) => athleteRow(id, state)) });
     }],
     ["GET", new RegExp(`${A}\\/home$`), data((id, state) => homeOf(id, state))],
@@ -61,7 +62,7 @@ export function sportivRoutes(h) {
         group(15, { startTime: null, endTime: null, kind: "concurs", title: "Cupa României 2026", location: "București", coaches: [] }),
       ];
       const items = all.filter((i) => i.date.startsWith(month));
-      return { month, prevMonth: "2026-10", nextMonth: month >= "2026-12" ? null : "2026-12", items };
+      return { month, prevMonth: h.state().noPrevMonth ? null : "2026-10", nextMonth: month >= "2026-12" ? null : "2026-12", items };
     })],
     ["GET", new RegExp(`${A}\\/competitions$`), data((id, state, query) => competitionsOf(id, state, query))],
     ["GET", new RegExp(`${A}\\/competitions\\/([A-Za-z0-9_-]+)$`), mine((id, { res, params }) => {
@@ -74,7 +75,9 @@ export function sportivRoutes(h) {
     ["GET", new RegExp(`${A}\\/subscriptions$`), data((id) => subscriptionsOf(id))],
     ["GET", new RegExp(`${A}\\/documents\\/acord$`), mine((_id, { res }) => {
       if (h.state().noDocument) return h.club(res, 404, "Nu a fost găsit.");
-      res.writeHead(200, { "content-type": "application/pdf", "content-disposition": "attachment; filename=\"fisa-inscriere.pdf\"", "cache-control": "private, no-store" });
+      if (h.state().documentForbidden) return h.club(res, 403, "Nu ai voie.");
+      const file = h.state().documentFile === undefined ? "fisa-inscriere.pdf" : h.state().documentFile;
+      res.writeHead(200, { "content-type": "application/pdf", ...(file === null ? {} : { "content-disposition": `attachment; filename="${file}"` }), "cache-control": "private, no-store" });
       res.end(PDF_BODY);
     })],
   ];

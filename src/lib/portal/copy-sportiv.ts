@@ -27,7 +27,7 @@ export const INACTIVE = "Sportiv inactiv.";
 
 /** Picker (`/`), account sheet and sidebar account menu. */
 export const ACCOUNT = {
-  picker: { title: "Sportivi", sub: "Alege sportivul." },
+  picker: { title: "Sportivi", sub: "Alege sportivul.", empty: "Niciun sportiv în cont." },
   sheet: { title: "Alege sportivul", list: "Sportivi în cont", settings: "Setări", logout: "Ieșire" },
   menu: { settingsAccount: "Setări cont", logout: "Ieși din cont" },
   row: (group: string, age: number | null) => (age === null ? group : `${group}, ${age} ani`),
@@ -39,6 +39,7 @@ export const HOME = {
   presences: "prezențe în sezon",
   months: "Prezențe pe lună",
   upcoming: "Următoarele ședințe",
+  noUpcoming: "Nicio ședință programată.",
   calendarLink: "Calendar ›",
   abonament: { details: "Detalii ›", session: (next: number, slots: number) => `Ședința ${next}/${slots}`, validUntil: (date: string) => `valabil până la ${date}` },
   lastCompetition: { title: "Ultimul concurs", place: "Locul", all: "Toate ›", field: (category: string, place: number, field: number) => `${category}, ${place} din ${field}`, total: "Total", stale: (date: string) => `Rezultatele pot fi mai vechi. Actualizate ${date}.` },
@@ -56,7 +57,14 @@ export const HISTORY = {
   lesson: "Lecție",
   coachedBy: (names: string) => `cu ${names}`,
   empty: "Nicio prezență în acest sezon.",
+  presences: (n: number) => (n === 1 ? "prezență" : "prezențe"),
 } as const;
+
+/** The page controls under a server paged list (`Pager`). */
+export const PAGER = { prev: "Înapoi", next: "Înainte" } as const;
+
+/** The sportiv BFF answer for a route it does not proxy. */
+export const API_NOT_FOUND = "Nu a fost găsit.";
 
 /** Calendar. */
 export const CAL = {
@@ -66,6 +74,7 @@ export const CAL = {
   nextMonth: "Luna viitoare",
   legend: { grup: "grupă", individual: "individual", concurs: "concurs", anulata: "anulată" },
   addToPhone: "Adaugă în calendarul telefonului",
+  emptyDay: "Nicio ședință în această zi.",
 } as const;
 
 /** Session rows (`SessionRow`) on Acasă and the calendar day list. */
@@ -83,7 +92,7 @@ export const SESSION = {
 export const PATH = {
   title: "Parcurs",
   sub: (name: string, school: string) => `${name}, ${school}`,
-  now: { title: "Nivelul tău acum", since: (date: string, location: string) => `din ${date}, ${location}` },
+  now: { title: "Nivelul tău acum", since: (date: string, location: string | null) => (location === null ? `din ${date}` : `din ${date}, ${location}`) },
   next: { title: "Următorul nivel", hint: "Antrenorul decide când treci mai departe." },
   before: { title: "Până acum", range: (from: string, to: string) => `${from} - ${to}` },
   badges: { title: "Realizări" },
@@ -133,7 +142,7 @@ export const SETARI = {
   account: (email: string) => `Cont: ${email}`,
   back: "Înapoi",
   me: { title: "Contul meu", name: "Nume", email: "E-mail", emailNote: "îl schimbă clubul", phone: "Telefon", saved: "Salvat." },
-  athletes: { title: "Sportivi", school: "Școala", club: "Club", ageLine: (group: string, age: number) => `${group}, ${age} ani` },
+  athletes: { title: "Sportivi", school: "Școala", club: "Club" },
   athleteData: { title: "Date sportiv", name: "Nume", birthDate: "Data nașterii", age: "Vârsta", contact: "Persoană de contact", phone: "Telefon", email: "E-mail", note: "Le schimbă clubul." },
   security: {
     title: "Securitate",

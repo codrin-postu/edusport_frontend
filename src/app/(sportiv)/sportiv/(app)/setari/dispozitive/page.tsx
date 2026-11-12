@@ -8,7 +8,7 @@ import { PageHeader } from "@/app/_portal/ui/PageHeader";
 export default function DevicesPage() {
   return (
     <>
-      <PageHeader back={{ href: "/setari", label: SETARI.back }} title={SETARI.security.devices.label} />
+      <PageHeader noTile back={{ href: "/setari", label: SETARI.back }} title={SETARI.security.devices.label} />
       <PageBody narrow>
         <DeviceList apiBase="sportiv/me" />
       </PageBody>

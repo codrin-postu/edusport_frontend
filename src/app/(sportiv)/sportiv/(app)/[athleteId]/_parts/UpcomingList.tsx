@@ -9,9 +9,13 @@ export function UpcomingList({ items, calendarHref }: { items: CalendarItem[]; c
   return (
     <div className="flex flex-col gap-3">
       <SectionHeading title={HOME.upcoming} link={{ href: calendarHref, label: HOME.calendarLink.replace(" ›", "") }} />
-      <ListCard>
-        {items.map((item) => <SessionRow key={`${item.date}${item.startTime}${item.title}`} item={item} />)}
-      </ListCard>
+      {items.length === 0 ? (
+        <p className="text-(length:--portal-text-14) text-muted">{HOME.noUpcoming}</p>
+      ) : (
+        <ListCard>
+          {items.map((item) => <SessionRow key={`${item.date}${item.startTime}${item.title}`} item={item} />)}
+        </ListCard>
+      )}
     </div>
   );
 }

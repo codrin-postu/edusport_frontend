@@ -1,15 +1,15 @@
 import { KIT } from "@/lib/portal/copy-shared";
-import { CAL } from "@/lib/portal/copy-sportiv";
 
-const GRUP = { bar: "bg-surface-dark", text: KIT.legend.grup };
-const GRUPA = { bar: "bg-surface-dark", text: CAL.legend.grup };
-const INDIVIDUAL = { bar: "bg-ice-blue", text: KIT.legend.individual };
-const CONCURS = { bar: "bg-ice", text: KIT.legend.concurs };
-const ANULATA = { bar: "bg-cancelled", text: KIT.legend.anulata };
+export type LegendItem = { bar: string; text: string };
 
-/** `withCompetition` is the sportiv calendar: "grupă" (its own copy) and "concurs" added. */
-export function CalendarLegend({ withCompetition }: { withCompetition?: boolean }) {
-  const items = withCompetition ? [GRUPA, INDIVIDUAL, CONCURS, ANULATA] : [GRUP, INDIVIDUAL, ANULATA];
+const COACH_ITEMS: LegendItem[] = [
+  { bar: "bg-surface-dark", text: KIT.legend.grup },
+  { bar: "bg-ice-blue", text: KIT.legend.individual },
+  { bar: "bg-cancelled", text: KIT.legend.anulata },
+];
+
+/** The coach legend unless a page passes its own items (the sportiv calendar adds "concurs" and says "grupă"). */
+export function CalendarLegend({ items = COACH_ITEMS }: { items?: LegendItem[] }) {
   return (
     <div className="flex flex-wrap gap-4">
       {items.map((i) => (

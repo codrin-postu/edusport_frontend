@@ -39,7 +39,7 @@ export default function PathPage() {
                     <span className="text-(length:--portal-sub-size) text-secondary-on-dark">{PATH.now.title}</span>
                     <span className="font-display font-extrabold text-(length:--portal-h2-size) text-ice">{data.now.groupName}</span>
                     <span className="text-(length:--portal-text-14) text-secondary-on-dark">
-                      {PATH.now.since(monthYear(data.now.since), data.now.location ?? "")}
+                      {PATH.now.since(monthYear(data.now.since), data.now.location)}
                     </span>
                     {data.now.program && <span className="text-(length:--portal-text-14)">{data.now.program}</span>}
                   </PortalCard>

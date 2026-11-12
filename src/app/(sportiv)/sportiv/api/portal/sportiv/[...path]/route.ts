@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { bffContext, refusal, respond, secretReady, sportivCall } from "@/lib/portal/bff";
 import { readLimitedText } from "@/lib/portal/body-limit";
 import { STATES } from "@/lib/portal/copy";
+import { API_NOT_FOUND } from "@/lib/portal/copy-sportiv";
 import { clearSessionCookies, type CookieSpec } from "@/lib/portal/cookies";
 import { originAllowed } from "@/lib/portal/origin";
 import { allowedSportivRoute, sportivQuery } from "@/lib/portal/sportiv-routes";
@@ -12,7 +13,6 @@ import { allowedSportivRoute, sportivQuery } from "@/lib/portal/sportiv-routes";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const NOT_FOUND = "Nu a fost găsit.";
 const FILE_HEADERS = ["Content-Type", "Content-Disposition", "Cache-Control"];
 
 type Ctx = { params: Promise<{ path: string[] }> };
@@ -33,7 +33,7 @@ function fileResponse(file: Response, cookies: CookieSpec[]): NextResponse {
 async function handle(req: NextRequest, { params }: Ctx): Promise<NextResponse> {
   const { path: segments } = await params;
   const path = `/${segments.join("/")}`;
-  if (!allowedSportivRoute(req.method, path)) return respond(404, refusal(404, NOT_FOUND), []);
+  if (!allowedSportivRoute(req.method, path)) return respond(404, refusal(404, API_NOT_FOUND), []);
   const ctx = bffContext(req, "sportiv");
   if (!originAllowed(req.method, req.headers.get("origin"), ctx.host, ctx.secure)) return respond(403, refusal(403, STATES.invalid), []);
   if (!secretReady()) return respond(503, refusal(503, STATES.loadFailed), []);

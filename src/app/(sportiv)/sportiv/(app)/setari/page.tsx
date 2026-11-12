@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/button";
-import { SETARI } from "@/lib/portal/copy-sportiv";
+import { ACCOUNT, SETARI } from "@/lib/portal/copy-sportiv";
 import { sinceText } from "@/lib/portal/sportiv-format";
 import type { SportivMe } from "@/lib/portal/sportiv-types";
 import { logout } from "@/app/_portal/lib/logout";
@@ -20,7 +20,7 @@ import { NotificationRows } from "./_parts/NotificationRows";
 
 /** Setări: the account (name, phone), its athletes, security, notifications and Ieșire. */
 export default function SetariPage() {
-  const { picker } = useAthletes();
+  const { athletes } = useAthletes();
   const [tick, setTick] = useState(0);
   const [me, setMe] = useState<SportivMe | null | undefined>(undefined);
   useEffect(() => {
@@ -34,13 +34,13 @@ export default function SetariPage() {
   }, [tick]);
 
   const back = { href: "/", label: SETARI.back };
-  if (me === undefined) return <><PageHeader back={back} title={SETARI.title} /><PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody></>;
-  if (me === null) return <><PageHeader back={back} title={SETARI.title} /><PageBody><LoadError onRetry={() => { setMe(undefined); setTick((n) => n + 1); }} /></PageBody></>;
+  if (me === undefined) return <><PageHeader noTile back={back} title={SETARI.title} /><PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody></>;
+  if (me === null) return <><PageHeader noTile back={back} title={SETARI.title} /><PageBody><LoadError onRetry={() => { setMe(undefined); setTick((n) => n + 1); }} /></PageBody></>;
 
   const sec = SETARI.security;
   return (
     <>
-      <PageHeader back={back} title={SETARI.title} sub={SETARI.account(me.email)} />
+      <PageHeader noTile back={back} title={SETARI.title} sub={SETARI.account(me.email)} />
       <PageBody>
         <Columns half>
           <Column grow={1}>
@@ -49,12 +49,12 @@ export default function SetariPage() {
             </Section>
             <Section title={SETARI.athletes.title}>
               <ListCard>
-                {picker.map((a) => (
+                {athletes.map((a) => (
                   <ListRow
                     key={a.id}
                     href={`/setari/sportiv/${a.id}`}
                     title={a.name}
-                    sub={SETARI.athletes.ageLine(a.groupName ?? "", a.age ?? 0)}
+                    sub={ACCOUNT.row(a.groupName ?? "", a.age)}
                     extra={a.section === null ? undefined : <span className="text-(length:--portal-row-sub) text-muted">{a.section === "school" ? SETARI.athletes.school : SETARI.athletes.club}</span>}
                   />
                 ))}
