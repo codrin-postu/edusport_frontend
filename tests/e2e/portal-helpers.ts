@@ -34,6 +34,7 @@ export type MockState = {
   emptyHistory?: boolean;
   nothingOwed?: boolean;
   noDocument?: boolean;
+  noPathNow?: boolean;
   unlisted?: string | null;
 };
 

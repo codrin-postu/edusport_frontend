@@ -30,3 +30,9 @@ it("says how long ago a date was, in months then days", () => {
   assert.equal(f.sinceText("2026-11-12T08:00:00Z", now), "azi");
   assert.equal(f.sinceText(null, now), "nesetată");
 });
+
+it("writes a month with its year, long and short", () => {
+  assert.equal(f.monthYear("2026-09"), "septembrie 2026");
+  assert.equal(f.monthYearShort("2025-09"), "sep 2025");
+  assert.equal(f.monthYearShort("2026-06"), "iun 2026");
+});

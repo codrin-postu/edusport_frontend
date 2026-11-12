@@ -32,7 +32,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [] };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [] };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };

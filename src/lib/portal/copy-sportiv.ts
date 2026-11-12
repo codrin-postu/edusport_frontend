@@ -85,7 +85,7 @@ export const PATH = {
   sub: (name: string, school: string) => `${name}, ${school}`,
   now: { title: "Nivelul tău acum", since: (date: string, location: string) => `din ${date}, ${location}` },
   next: { title: "Următorul nivel", hint: "Antrenorul decide când treci mai departe." },
-  before: { title: "Până acum" },
+  before: { title: "Până acum", range: (from: string, to: string) => `${from} - ${to}` },
   badges: { title: "Realizări" },
   dialog: { close: "Închide", notYet: "încă nu", progress: (count: number, next: number) => `${count} din ${next}` },
 } as const;

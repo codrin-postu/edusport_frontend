@@ -114,12 +114,19 @@ export function competitionOf(state) {
   };
 }
 
-export function pathOf(id) {
+export function pathOf(id, state = {}) {
   const a = SPORTIV_ATHLETES[id];
+  const rung = (threshold, tier, reachedOn) => ({ threshold, tier, reachedOn });
   return {
-    now: { groupName: a.groupName, since: addDays(FROZEN_TODAY, -120), location: a.level.location, program: null },
-    next: { groupName: "Intermediari Silver" }, before: [{ groupName: "Începători", from: addDays(FROZEN_TODAY, -300), to: addDays(FROZEN_TODAY, -120) }],
-    badges: [{ key: "antrenamente", tier: "bronze", label: "Antrenamente", count: a.presences, next: 50, tiers: [{ threshold: 25, tier: "bronze", reachedOn: addDays(FROZEN_TODAY, -10) }, { threshold: 50, tier: "silver", reachedOn: null }] }],
+    now: state.noPathNow ? null : { groupName: a.groupName, since: "2026-09", location: a.level.location, program: `Marți și joi, 17:30, cu ${a.coach}` },
+    next: { groupName: "Intermediari Silver" },
+    before: [{ groupName: "Începători", from: "2025-09", to: "2026-06" }, { groupName: "Primii Pași", from: "2024-09", to: "2025-06" }],
+    badges: [
+      { key: "antrenamente", tier: "silver", label: "50 antrenamente", count: 63, next: 100, tiers: [rung(25, "bronze", "2026-03-10"), rung(50, "silver", "2026-09-22"), rung(100, "gold", null), rung(250, "platinum", null)] },
+      { key: "sezon", tier: "bronze", label: "Sezon complet", count: 1, next: 2, tiers: [rung(1, "bronze", "2026-06-30"), rung(2, "silver", null), rung(3, "gold", null), rung(4, "platinum", null), rung(5, "ice", null)] },
+      { key: "prima", tier: "bronze", label: "Prima lecție", count: 1, next: null, tiers: [rung(1, "bronze", "2024-09-12")] },
+      { key: "concursuri", tier: null, label: "Concursuri", count: 0, next: 1, tiers: [rung(1, "bronze", null), rung(2, "silver", null), rung(5, "gold", null), rung(10, "platinum", null), rung(25, "ice", null)] },
+    ],
   };
 }
 

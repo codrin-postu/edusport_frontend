@@ -1,6 +1,6 @@
 // Date, money and range texts of the sportiv app. Pure, type imports only (loaded by Node tests).
 import { roCount } from "../ro-plural.ts";
-import { shortDate, weekdayShort } from "./format.ts";
+import { monthName, shortDate, weekdayShort } from "./format.ts";
 
 const BUCHAREST = "Europe/Bucharest";
 const DAY_MS = 86_400_000;
@@ -51,4 +51,14 @@ export function sinceText(iso: string | null, now: Date): string {
   const days = dayNumber(to) - dayNumber(from);
   if (days <= 0) return "azi";
   return `acum ${roCount(days, "zi", "zile")}`;
+}
+
+/** "2026-09" -> "septembrie 2026" */
+export function monthYear(month: string): string {
+  return `${monthName(month).toLowerCase()} ${month.slice(0, 4)}`;
+}
+
+/** "2025-09" -> "sep 2025" */
+export function monthYearShort(month: string): string {
+  return `${shortDate(`${month.slice(0, 7)}-01`).split(" ")[1]} ${month.slice(0, 4)}`;
 }
