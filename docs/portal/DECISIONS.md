@@ -348,3 +348,16 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - Another coach's group: same layout as an own group; stand-in button on top of the side column; Program tab read only.
 - Prezență saved: navy card "Completat, n prezenți" with the saved line (option C).
 - Azi: stand-in sessions carry an "Înlocuitor" tag on ice blue (A2).
+
+## 2026-11-12 phase 7 frontend, decided by Claude (low impact)
+- URLs `/<athleteId>/{istoric,calendar,parcurs,concursuri,plati}`, Setări at `/setari` (no athlete), Date sportiv at `/setari/sportiv/<athleteId>`.
+- `/` is the picker with two or more `inPicker` athletes; with one it redirects to `/<id>`. Athletes with `inPicker: false` are not in the picker or the menus, stay reachable by URL and listed under Setări "Sportivi".
+- `.ics` and PDF are plain links to the BFF; no client-side blob.
+- Desktop container is the kit's 1040px (the boards draw 1200): one shell for both portals.
+- Desktop account button: label the athlete's first name, `href` `/setari`; its hover menu lists the other `inPicker` athletes (go to `/<id>` of the same page), then "Setări cont" and "Ieși din cont" (coach `PROFILE` copy). Phone: the header button opens `AccountSheet` (board Cont: "Setări", "Ieșire").
+- Nav icons: Acasă `portal-azi`, Istoric `portal-istoric`, Concursuri `portal-concursuri`, new `portal-parcurs` and `portal-plati` drawn from the boards' nav icons.
+- Calendar: no month in the URL; the first load sends none, the arrows use `prevMonth` / `nextMonth` and are disabled when null.
+- Istoric, Plăți list and Concursuri page on the server (20) with a `Pager` ("Înapoi" / "Înainte", "1 - 20 din 26").
+- No now tile in the sportiv header (no board draws one).
+- The board's 2FA row of Setări is not built (user: no portal 2FA).
+- Acasă competition card second line `<category>, <placement> din <field>` as the MainPerf board draws it; without `field` only the category.
