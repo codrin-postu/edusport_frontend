@@ -23,6 +23,7 @@ function fileResponse(file: Response, cookies: CookieSpec[]): NextResponse {
     const value = file.headers.get(name);
     if (value) res.headers.set(name, value);
   }
+  res.headers.set("X-Content-Type-Options", "nosniff");
   for (const c of cookies) {
     res.cookies.set({ name: c.name, value: c.value, maxAge: c.maxAge, httpOnly: c.httpOnly, secure: c.secure, sameSite: c.sameSite, path: c.path });
   }

@@ -1,7 +1,7 @@
 // A stand-in for the Strapi portal routes (auth and coach), for the coach app e2e.
 // Synthetic data only (tests/e2e/portal-fixtures.mjs). Plain Node http, as mock-strapi.mjs.
 // Usage: node tests/e2e/mock-portal.mjs <port>
-//   POST /__mock/state  { accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret?, competitionsDown? }
+//   POST /__mock/state  { (sportiv switches: see mock-sportiv.mjs) accessTtlSec?, cutAccount?, revokeAll?, failGoogle?, googleClientId?, emptyToday?, refreshStatus?, refuseSecret?, competitionsDown? }
 //   GET  /__mock/log    { calls: [{ method, path, headers, body }], refreshes: number }
 //   POST /__mock/reset  fresh state and an empty log
 import { createServer } from "node:http";
@@ -32,7 +32,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, unscheduledGroup: false, inactiveGroups: [] };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [] };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -952,7 +952,7 @@ const coachRoutes = [
 // ---------- dispatch ----------
 const PREFIX = "/api/portal/coach";
 const SPORTIV_PREFIX = "/api/portal/sportiv";
-const sportivTable = sportivRoutes({ ok, club, send });
+const sportivTable = sportivRoutes({ ok, club, send, state: () => state });
 
 function record(req, url, body) {
   calls.push({
@@ -1006,7 +1006,7 @@ function handleSportiv(req, res, url, body, wanted) {
   const sess = coachSession(req);
   if (!sess) return unauthorized(res);
   // The sportiv policy: only an account with athlete access passes (a coach session is refused).
-  if (!sportivAccount(sess.email)) return policy403(res);
+  if (!sportivAccount(sess.email) || state.cutAccount) return policy403(res);
   return route.fn({ req, res, body, query: url.searchParams, params: route.params, method: req.method, sess });
 }
 

@@ -9,10 +9,10 @@ test.beforeEach(async() => { await mockReset(); });
 
 const sportivCalls = async() => (await mockLog()).filter((c) => c.path.startsWith("/api/portal/sportiv"));
 
-async function get(page: Page, path: string): Promise<{ status: number; type: string | null; disposition: string | null; text: string }> {
+async function get(page: Page, path: string): Promise<{ status: number; type: string | null; disposition: string | null; nosniff: string | null; text: string }> {
   return page.evaluate(async(p) => {
     const res = await fetch(`/api/portal/sportiv${p}`);
-    return { status: res.status, type: res.headers.get("content-type"), disposition: res.headers.get("content-disposition"), text: await res.text() };
+    return { status: res.status, type: res.headers.get("content-type"), disposition: res.headers.get("content-disposition"), nosniff: res.headers.get("x-content-type-options"), text: await res.text() };
   }, path);
 }
 
@@ -73,6 +73,15 @@ test("the calendar file streams with its headers", async({ page }) => {
   expect(r.type).toContain("text/calendar");
   expect(r.disposition).toBe("attachment; filename=\"edusport-ana.ics\"");
   expect(r.text).toContain("BEGIN:VCALENDAR");
+  expect(r.nosniff).toBe("nosniff");
+});
+
+test("the agreement PDF streams with nosniff", async({ page }) => {
+  await loginSportiv(page);
+  const r = await get(page, `/athletes/${ANA_ID}/documents/acord`);
+  expect(r.status).toBe(200);
+  expect(r.type).toContain("application/pdf");
+  expect(r.nosniff).toBe("nosniff");
 });
 
 test("an athlete the holder does not hold passes the ClubAdminError through", async({ page }) => {

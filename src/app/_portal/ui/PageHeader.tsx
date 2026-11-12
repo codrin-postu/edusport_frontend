@@ -14,13 +14,17 @@ type PageHeaderProps = {
   /** Show the now tile on the phone too (Azi). It is always shown from the desktop breakpoint. */
   tileOnPhone?: boolean;
   actions?: React.ReactNode;
+  /** Phone only: a control at the far end of the brand row (the sportiv account button). */
+  phoneEnd?: React.ReactNode;
+  /** Leave the now tile out (the sportiv app has none). */
+  noTile?: boolean;
 };
 
 /**
  * One header for both layouts. Phone: plain, brand row or back link above the title block.
  * From `portal:` it is the ice top band (the sidebar carries the brand).
  */
-export function PageHeader({ title, back, kicker, sub, brand, tileOnPhone, actions }: PageHeaderProps) {
+export function PageHeader({ title, back, kicker, sub, brand, tileOnPhone, actions, phoneEnd, noTile }: PageHeaderProps) {
   return (
     <>
     <PhoneBar title={title} back={back} brand={brand} />
@@ -40,6 +44,7 @@ export function PageHeader({ title, back, kicker, sub, brand, tileOnPhone, actio
           brand && (
             <div className="flex min-h-(--portal-tap) items-center justify-between portal:hidden">
               <BrandBlock href="/" />
+              {phoneEnd}
             </div>
           )
         )}
@@ -56,7 +61,7 @@ export function PageHeader({ title, back, kicker, sub, brand, tileOnPhone, actio
           <div data-header-end className="flex items-stretch gap-(--portal-actions-gap) portal:col-start-3 portal:row-span-2 portal:row-start-1 portal:ml-4 portal:items-center">
             {/* Actions take the height of the now tile, so they line up as one row; the tile is the far right item on every page. */}
             {actions && <div className="hidden h-(--portal-nowtile-h) items-stretch gap-3 portal:flex">{actions}</div>}
-            <NowTile className={tileOnPhone ? undefined : "hidden portal:flex"} />
+            {!noTile && <NowTile className={tileOnPhone ? undefined : "hidden portal:flex"} />}
           </div>
         </div>
       </div>

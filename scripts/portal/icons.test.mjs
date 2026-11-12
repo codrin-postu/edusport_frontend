@@ -9,6 +9,8 @@ const ICONS = {
   "portal-concursuri": ["2", "round"],
   "portal-istoric": ["2", "round"],
   "portal-profil": ["2", "round"],
+  "portal-parcurs": ["2", "round"],
+  "portal-plati": ["2", "round"],
   "portal-chevron-right": ["2.5", "square"],
   "portal-chevron-down": ["2.5", "square"],
   "portal-check": ["3", "square"],

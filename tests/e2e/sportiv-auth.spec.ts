@@ -90,7 +90,8 @@ test("robots.txt disallows everything and every page says noindex", async({ page
 });
 
 test("an unknown path shows the 404 page", async({ page }) => {
-  const res = await page.goto("/nope");
+  // One segment would be an athlete id (the signed-in app), so the unknown path has two.
+  const res = await page.goto("/nope/nope");
   expect(res?.status()).toBe(404);
   await expect(page.getByText("Pagina nu există").first()).toBeVisible();
 });

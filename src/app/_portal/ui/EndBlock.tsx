@@ -6,6 +6,8 @@ const KIND = {
   done: "bg-ice-light text-primary",
   soft: "bg-ice-light text-primary",
   lesson: "bg-ice-blue text-surface-raised",
+  competition: "bg-ice text-primary",
+  cancelled: "bg-line-subtle text-muted",
 } as const;
 
 /** The full-height block at the end of a row: an action ("Fă prezența"), a state or a group tag. */
