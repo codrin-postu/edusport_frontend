@@ -88,10 +88,33 @@ export function historyOf(id, state, page) {
 export function moneyOf(id, state) {
   const a = SPORTIV_ATHLETES[id];
   const owes = !state.nothingOwed && a.abonament !== null;
+  // moneyMismatch: `left` differs from the sum of `lines` (the page shows what is sent, never a sum).
+  const lines = !owes ? [] : state.moneyMismatch ? [{ text: "Lecție 12 noi", amount: 100 }, { text: "Abonament A-0124", amount: 50 }] : [{ text: "Lecție 12 noi", amount: 150 }];
   return {
-    left: owes ? 150 : 0, lines: owes ? [{ text: "Abonament A-0124", amount: 150 }] : [], advance: null,
-    abonament: a.abonament ? { ...a.abonament, validUntil: addDays(FROZEN_TODAY, 30), itemName: "Abonament 8 ședințe", startsOn: addDays(FROZEN_TODAY, -30) } : null,
+    left: !owes ? 0 : state.moneyMismatch ? 170 : 150, lines, advance: state.advance ?? null,
+    abonament: a.abonament ? { ...a.abonament, validUntil: "2026-11-30", itemName: "Școala noiembrie", startsOn: "2026-11-01" } : null,
     document: state.noDocument ? null : { seasonLabel: "2026-2027" },
+  };
+}
+
+const PAYMENT_ROWS = [
+  { what: "Abonament noiembrie", paidOn: "2026-11-02", method: "numerar", amount: 320 },
+  { what: "Lecție 22 oct", paidOn: "2026-10-22", method: "card", amount: 180 },
+  { what: "Abonament octombrie", paidOn: "2026-10-01", method: "transfer", amount: 320 },
+];
+
+/** Never a cancelled payment and never who recorded one (the backend leaves both out). manyPayments: 26 rows, 20 to a page. */
+export function paymentsOf(state, page) {
+  const all = state.manyPayments ? Array.from({ length: 26 }, (_, i) => ({ ...PAYMENT_ROWS[i % 3], what: `${PAYMENT_ROWS[i % 3].what} ${i + 1}` })) : PAYMENT_ROWS;
+  return { page, pageSize: 20, total: all.length, rows: all.slice((page - 1) * 20, page * 20) };
+}
+
+export function subscriptionsOf(id) {
+  const a = SPORTIV_ATHLETES[id].abonament;
+  if (!a) return { active: null, earlier: [] };
+  return {
+    active: { code: a.code, itemName: "Școala noiembrie", startsOn: "2026-11-01", validUntil: "2026-11-30", slots: a.slots, used: ["2026-11-01", "2026-11-03", "2026-11-04", "2026-11-05"], left: 4 },
+    earlier: [{ itemName: "Școala octombrie", used: 8, slots: 8, validUntil: "2026-10-31" }],
   };
 }
 

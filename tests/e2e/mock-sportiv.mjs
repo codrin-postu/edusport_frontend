@@ -1,9 +1,9 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
 // State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
-// unlisted (an athlete id that is not in the picker, `inPicker: false`).
+// moneyMismatch, advance (a number), manyPayments, unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
-  ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, pathOf, profileOf,
+  ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, pathOf, paymentsOf, profileOf, subscriptionsOf,
 } from "./sportiv-fixtures.mjs";
 import { FROZEN_TODAY, addDays } from "./portal-fixtures.mjs";
 
@@ -66,11 +66,8 @@ export function sportivRoutes(h) {
     })],
     ["GET", new RegExp(`${A}\\/path$`), data((id, state) => pathOf(id, state))],
     ["GET", new RegExp(`${A}\\/money$`), data((id, state) => moneyOf(id, state))],
-    ["GET", new RegExp(`${A}\\/payments$`), data(() => ({ page: 1, pageSize: 20, total: 1, rows: [{ what: "Abonament A-0124", paidOn: addDays(FROZEN_TODAY, -30), method: "numerar", amount: 400 }] }))],
-    ["GET", new RegExp(`${A}\\/subscriptions$`), data((id) => {
-      const a = SPORTIV_ATHLETES[id].abonament;
-      return { active: a ? { code: a.code, itemName: "Abonament 8 ședințe", startsOn: addDays(FROZEN_TODAY, -30), validUntil: addDays(FROZEN_TODAY, 30), slots: a.slots, used: [], left: a.slots - a.next + 1 } : null, earlier: [] };
-    })],
+    ["GET", new RegExp(`${A}\\/payments$`), data((_id, state, query) => paymentsOf(state, Math.max(1, Number(query.get("page") ?? 1))))],
+    ["GET", new RegExp(`${A}\\/subscriptions$`), data((id) => subscriptionsOf(id))],
     ["GET", new RegExp(`${A}\\/documents\\/acord$`), mine((_id, { res }) => {
       if (h.state().noDocument) return h.club(res, 404, "Nu a fost găsit.");
       res.writeHead(200, { "content-type": "application/pdf", "content-disposition": "attachment; filename=\"fisa-inscriere.pdf\"", "cache-control": "private, no-store" });

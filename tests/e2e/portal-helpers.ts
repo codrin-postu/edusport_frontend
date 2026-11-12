@@ -36,6 +36,9 @@ export type MockState = {
   nothingOwed?: boolean;
   noDocument?: boolean;
   noPathNow?: boolean;
+  moneyMismatch?: boolean;
+  advance?: number | null;
+  manyPayments?: boolean;
   unlisted?: string | null;
 };
 

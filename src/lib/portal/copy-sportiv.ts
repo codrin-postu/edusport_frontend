@@ -119,8 +119,8 @@ export const COMP = {
 export const MONEY = {
   title: "Abonament și plăți",
   owed: { label: "Rămas de plată", payAtClub: "Plata se face la club.", nothing: "Nimic de plată.", advance: (amount: string) => `Avans: ${amount}` },
-  ticket: { seeDays: "Vezi zilele ›", next: "următoarea", left: (n: number) => `${n} rămase`, slotsOf: (next: number, slots: number) => `Ședința ${next} din ${slots}` },
-  sheet: { validUntil: (date: string) => `Valabil până la ${date}`, mayExtend: "Data se poate prelungi dacă școala are un weekend liber.", others: "Alte abonamente" },
+  ticket: { title: "Abonament", seeDays: "Vezi zilele ›", next: "următoarea", left: (n: number) => `${n} rămase`, slotsOf: (next: number, slots: number) => `Ședința ${next} din ${slots}` },
+  sheet: { validUntil: (date: string) => `Valabil până la ${date}`, mayExtend: "Data se poate prelungi dacă școala are un weekend liber.", others: "Alte abonamente", earlier: (name: string, used: number, slots: number, date: string) => `${name}, ${used}/${slots}, valabil până la ${date}` },
   payments: { title: "Plăți", method: { numerar: "numerar", card: "card", transfer: "transfer" } },
   document: { title: (season: string) => `Fișa de înscriere ${season}`, pdf: "PDF", download: "Descarcă" },
 } as const;
