@@ -21,6 +21,8 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
       "docs/**",
+      // Verbatim copy of the backend contract (single quotes there); kept byte-identical.
+      "src/lib/portal/sportiv-types.ts",
     ],
   },
 ];
