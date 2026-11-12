@@ -48,10 +48,16 @@ export function sportivRoutes(h) {
     ["GET", new RegExp(`${A}\\/calendar$`), data((id, _state, query) => {
       const month = query.get("month") ?? FROZEN_TODAY.slice(0, 7);
       const a = SPORTIV_ATHLETES[id];
-      const items = [0, 2, 7].map((n) => addDays(FROZEN_TODAY, n)).filter((d) => d.startsWith(month)).map((date) => ({
-        date, startTime: "17:30", endTime: "18:30", kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null,
-      }));
-      return { month, prevMonth: "2026-10", nextMonth: "2026-12", items };
+      const group = (n, over = {}) => ({
+        date: addDays(FROZEN_TODAY, n), startTime: "17:30", endTime: "18:30", kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null, ...over,
+      });
+      const all = [
+        group(0), group(2, { cancelled: true }), group(7),
+        group(7, { startTime: "16:00", endTime: "16:45", kind: "individual", title: "Lecție individuală", coaches: ["Andrei Pop"] }),
+        group(15, { startTime: null, endTime: null, kind: "concurs", title: "Cupa României 2026", location: "București", coaches: [] }),
+      ];
+      const items = all.filter((i) => i.date.startsWith(month));
+      return { month, prevMonth: "2026-10", nextMonth: month >= "2026-12" ? null : "2026-12", items };
     })],
     ["GET", new RegExp(`${A}\\/competitions$`), data((id, state, query) => competitionsOf(id, state, query))],
     ["GET", new RegExp(`${A}\\/competitions\\/([A-Za-z0-9_-]+)$`), data((_id, state) => competitionOf(state))],
