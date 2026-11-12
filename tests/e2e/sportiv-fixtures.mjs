@@ -73,10 +73,16 @@ export function historyOf(id, state, page) {
   const empty = state.emptyHistory;
   const total = empty ? 0 : a.presences;
   const from = (page - 1) * 20;
-  const rows = Array.from({ length: Math.max(0, Math.min(20, total - from)) }, (_, i) => ({
-    date: addDays(FROZEN_TODAY, -(from + i) * 2), startTime: "17:30", kind: "Grup", groupName: a.groupName, coaches: [a.coach],
-  }));
-  return { seasonLabel: "2026-2027", total, group: total, individual: 0, page, pageSize: 20, rows };
+  // Every sixth presence is an individual lesson.
+  const isLesson = (n) => n % 6 === 5;
+  const individual = Array.from({ length: total }, (_, n) => n).filter(isLesson).length;
+  const rows = Array.from({ length: Math.max(0, Math.min(20, total - from)) }, (_, i) => {
+    const date = addDays(FROZEN_TODAY, -(from + i) * 2);
+    return isLesson(from + i)
+      ? { date, startTime: "17:30", kind: "Individual", groupName: null, coaches: ["Andrei Pop"] }
+      : { date, startTime: "17:30", kind: "Grup", groupName: a.groupName, coaches: [a.coach] };
+  });
+  return { seasonLabel: "2026-2027", total, group: total - individual, individual, page, pageSize: 20, rows };
 }
 
 export function moneyOf(id, state) {
