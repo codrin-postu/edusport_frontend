@@ -1,6 +1,6 @@
 // The sportiv half of the mock portal (registered from mock-portal.mjs): every route of backend 04-sportiv.ts.
 // State switches (POST /__mock/state): cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
-// noCompetitions, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
+// noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
 // unlisted (an athlete id that is not in the picker, `inPicker: false`).
 import {
   ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, pathOf, profileOf,
@@ -60,7 +60,10 @@ export function sportivRoutes(h) {
       return { month, prevMonth: "2026-10", nextMonth: month >= "2026-12" ? null : "2026-12", items };
     })],
     ["GET", new RegExp(`${A}\\/competitions$`), data((id, state, query) => competitionsOf(id, state, query))],
-    ["GET", new RegExp(`${A}\\/competitions\\/([A-Za-z0-9_-]+)$`), data((_id, state) => competitionOf(state))],
+    ["GET", new RegExp(`${A}\\/competitions\\/([A-Za-z0-9_-]+)$`), mine((id, { res, params }) => {
+      const body = competitionOf(id, h.state(), params[1]);
+      return body === null ? h.club(res, 404, "Nu a fost găsit.") : h.ok(res, body);
+    })],
     ["GET", new RegExp(`${A}\\/path$`), data((id, state) => pathOf(id, state))],
     ["GET", new RegExp(`${A}\\/money$`), data((id, state) => moneyOf(id, state))],
     ["GET", new RegExp(`${A}\\/payments$`), data(() => ({ page: 1, pageSize: 20, total: 1, rows: [{ what: "Abonament A-0124", paidOn: addDays(FROZEN_TODAY, -30), method: "numerar", amount: 400 }] }))],

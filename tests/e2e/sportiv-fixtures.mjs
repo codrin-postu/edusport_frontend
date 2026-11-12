@@ -95,22 +95,46 @@ export function moneyOf(id, state) {
   };
 }
 
+const CITIES = ["București", "Brașov", "Cluj-Napoca", "Iași", "Timișoara", "Sibiu"];
+const plain = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const seasonOf = (date) => { const y = Number(date.slice(0, 4)); const start = Number(date.slice(5, 7)) >= 9 ? y : y - 1; return `${start}-${start + 1}`; };
+
+/** 41 results, newest first; the first is `competitionRow` (res-0001). Another skater's name is only in the event, never in a row. */
+const allResults = Array.from({ length: 41 }, (_, i) => (i === 0 ? competitionRow : {
+  resultId: `res-${String(i + 1).padStart(4, "0")}`, eventName: `Trofeul ${CITIES[i % CITIES.length]} ${i}`, date: addDays(FROZEN_TODAY, -20 - 9 * i), location: CITIES[i % CITIES.length],
+  category: "Advanced Novice Girls", categoryShort: "ANG", placement: i % 7 === 0 ? null : (i % 5) + 1, total: 60 + (i % 13) * 3.1,
+}));
+
 export function competitionsOf(id, state, query) {
   const a = SPORTIV_ATHLETES[id];
   if (state.skateDown) return { available: false };
-  const rows = a.performance && !state.noCompetitions ? [competitionRow] : [];
+  const all = a.performance && !state.noCompetitions ? allResults : [];
+  const q = plain(query.get("q") ?? "");
+  const season = query.get("season");
+  const sort = query.get("sort") ?? "recent";
+  const rows = all.filter((r) => plain(`${r.eventName} ${r.location ?? ""}`).includes(q) && (!season || seasonOf(r.date) === season));
+  if (sort === "place") rows.sort((x, y) => (x.placement ?? 99) - (y.placement ?? 99));
+  if (sort === "points") rows.sort((x, y) => (y.total ?? 0) - (x.total ?? 0));
+  const page = Math.max(1, Number(query.get("page") ?? 1));
   return {
-    available: true, stale: false, updatedAt: iso(FROZEN_TODAY), total: rows.length,
-    category: rows.length ? { current: "Novice B", seasonLabel: "2026-2027", previous: null } : null,
-    records: { best: rows.length ? 24 : null, podiums: rows.length, wins: 0 }, seasons: ["2026-2027"], page: Number(query.get("page") ?? 1), pageSize: 20, filtered: rows.length, rows,
+    available: true, stale: state.stale === true, updatedAt: iso(FROZEN_TODAY), total: all.length,
+    category: all.length ? { current: "Advanced Novice Girls", seasonLabel: "2026-2027", previous: { short: "Basic Novice", sinceYear: 2025 } } : null,
+    records: { best: all.length ? 101.07 : null, podiums: all.length ? 12 : 0, wins: all.length ? 5 : 0 },
+    seasons: ["2026-2027", "2025-2026", "2024-2025"], page, pageSize: 20, filtered: rows.length, rows: rows.slice((page - 1) * 20, page * 20),
   };
 }
 
-export function competitionOf(state) {
+/** null: a result id that is not this athlete's (the route answers 404). */
+export function competitionOf(id, state, resultId) {
   if (state.skateDown) return { available: false };
+  const row = (SPORTIV_ATHLETES[id].performance ? allResults : []).find((r) => r.resultId === resultId);
+  if (!row) return null;
   return {
-    available: true, stale: false, updatedAt: iso(FROZEN_TODAY), row: competitionRow, field: 18, best: 98.42, officialUrl: null,
-    segments: [{ name: "Program scurt", isShort: true, score: 24, tes: 12, pcs: 12, deductions: 0, elements: [{ name: "Piruetă", base: 3, score: 3.2 }] }],
+    available: true, stale: state.stale === true, updatedAt: iso(FROZEN_TODAY), row, field: 18, best: 101.07, officialUrl: state.noOfficialUrl ? null : "https://results.example.invalid/cupa-2026",
+    segments: [
+      { name: "Program scurt", isShort: true, score: 34.1, tes: 18.2, pcs: 16.4, deductions: 0.5, elements: [{ name: "Piruetă", base: 3, score: 3.2 }, { name: "Salt dublu", base: 4.2, score: null }] },
+      { name: "Program liber", isShort: false, score: 64.32, tes: 33.1, pcs: 31.7, deductions: 0, elements: [{ name: "Secvență de pași", base: 3.3, score: 3.5 }] },
+    ],
   };
 }
 

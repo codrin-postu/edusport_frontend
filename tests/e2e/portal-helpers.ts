@@ -29,6 +29,7 @@ export type MockState = {
   skateDown?: boolean;
   stale?: boolean;
   noCompetitions?: boolean;
+  noOfficialUrl?: boolean;
   promotion?: boolean | string;
   inactive?: boolean | string;
   emptyHistory?: boolean;

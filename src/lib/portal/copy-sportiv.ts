@@ -98,6 +98,8 @@ export const COMP = {
   records: { best: "record total", podiums: "podiumuri", wins: "victorii" },
   search: { label: "Caută", placeholder: "Nume concurs sau oraș" },
   seasons: "Toate sezoanele",
+  seasonLabel: "Sezon",
+  sortLabel: "Ordine",
   sort: { recent: "Cele mai noi", place: "Cel mai bun loc", points: "Cele mai multe puncte" },
   empty: "Niciun rezultat în acest sezon.",
   detail: {
