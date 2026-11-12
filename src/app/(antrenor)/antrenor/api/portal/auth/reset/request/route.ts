@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const g = await guardPost(req, { limited: true, readBody: true });
+  const g = await guardPost(req, "antrenor", { limited: true, readBody: true });
   if (!("ctx" in g)) return g;
   const email = text(g.body, "email");
   if (!email) return invalid();

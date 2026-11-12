@@ -1,4 +1,4 @@
-// Server only (route handlers of the coach app). The package "server-only" is not a
+// Server only (route handlers of the coach and sportiv apps). The package "server-only" is not a
 // dependency, so this module must never be imported from a client component.
 // Never logs a token, a secret or an invite secret: a call logs method, masked path, status.
 import { NextResponse, type NextRequest } from "next/server";
@@ -8,15 +8,18 @@ import { STATES } from "./copy";
 import { clearSessionCookies, cookieNames, isSecureRequest, sessionCookies, type CookieNames, type CookieSpec } from "./cookies";
 import { cleanIp } from "./client-ip";
 import { createRefresher, type RefreshResult } from "./refresh";
-import { bffHeaders, classifyCoach, maskSecrets, readSession, refreshFailure } from "./upstream";
+import type { PortalSite } from "./site";
+import { isSportivFile } from "./sportiv-routes";
+import { bffHeaders, classifyCoach, classifySportiv, maskSecrets, readSession, refreshFailure } from "./upstream";
 
 export type BffContext = {
-  secure: boolean; names: CookieNames; host: string | null; ip: string | null; userAgent: string | null;
+  site: PortalSite; secure: boolean; names: CookieNames; host: string | null; ip: string | null; userAgent: string | null;
   access: string | null; refresh: string | null; device: string | null;
 };
-type StrapiInit = { method: string; body?: unknown; access?: string | null; device?: string | null; userAgent?: boolean };
-type Answer = { status: number; body: unknown };
-type CoachAnswer = Answer & { cookies: CookieSpec[] };
+// `file`: a 2xx answer is not read, it comes back as `file` to be streamed on (calendar.ics, the signed agreement).
+type StrapiInit = { method: string; body?: unknown; access?: string | null; device?: string | null; userAgent?: boolean; file?: boolean };
+type Answer = { status: number; body: unknown; file?: Response };
+type SessionAnswer = Answer & { cookies: CookieSpec[] };
 
 const TIMEOUT_MS = 10_000;
 const MIN_SECRET = 32;
@@ -26,12 +29,12 @@ export function refusal(status: number, message: string): ApiRefusal {
   return { data: null, error: { status, name: "PortalBffError", message } };
 }
 
-export function bffContext(req: NextRequest): BffContext {
+export function bffContext(req: NextRequest, site: PortalSite): BffContext {
   const secure = isSecureRequest(req.url, req.headers.get("x-forwarded-proto"));
   const names = cookieNames(secure);
   const cookie = (name: string): string | null => req.cookies.get(name)?.value ?? null;
   return {
-    secure, names, host: req.headers.get("host"), ip: cleanIp(req.headers.get("x-real-ip")), userAgent: req.headers.get("user-agent"),
+    site, secure, names, host: req.headers.get("host"), ip: cleanIp(req.headers.get("x-real-ip")), userAgent: req.headers.get("user-agent"),
     access: cookie(names.access), refresh: cookie(names.refresh), device: cookie(names.device),
   };
 }
@@ -71,6 +74,7 @@ export async function callStrapi(path: string, init: StrapiInit, ctx: BffContext
       body: init.body === undefined ? undefined : JSON.stringify(init.body),
     });
     console.log(`portal-bff ${init.method} ${maskSecrets(logPath(path))} ${res.status}`);
+    if (init.file && res.ok) return { status: res.status, body: null, file: res };
     return { status: res.status, body: await readAnswer(res) };
   } catch {
     console.log(`portal-bff ${init.method} ${maskSecrets(logPath(path))} 502`);
@@ -95,13 +99,13 @@ function refreshOnce(ctx: BffContext): Promise<RefreshResult> {
   return refresher(ctx.refresh, ctx.device, ctx);
 }
 
-const ended = (ctx: BffContext): CoachAnswer => ({
+const ended = (ctx: BffContext): SessionAnswer => ({
   status: 401, body: { data: null, error: { status: 401, name: "SessionEnded", message: "" } }, cookies: clearSessionCookies(ctx.secure),
 });
 
-// The backend answers a refused BFF secret and a cut coach account the same way (403 ForbiddenError
-// "Forbidden", both thrown by global::is-coach), so the coach answer cannot tell them apart. A BFF-only
-// route that needs no session says which one it is: it answers 403 only for a refused secret.
+// The backend answers a refused BFF secret and a cut account the same way (403 ForbiddenError
+// "Forbidden", both thrown by the global::is-coach and global::is-sportiv policies), so the answer cannot tell them
+// apart. A BFF-only route that needs no session says which one it is: it answers 403 only for a refused secret.
 // An outage during the probe also keeps the session: a cut is never assumed from silence.
 async function secretRefused(ctx: BffContext): Promise<boolean> {
   const probe = await callStrapi("auth/google/config", { method: "GET" }, ctx);
@@ -109,17 +113,39 @@ async function secretRefused(ctx: BffContext): Promise<boolean> {
   return probe.status === 403 || probe.status >= 500;
 }
 
-function coachInit(method: string, path: string, body: unknown, access: string, ctx: BffContext): StrapiInit {
+type Verdict = "refresh" | "cut" | "pass";
+type Area = { prefix: "coach" | "sportiv"; verdict: (status: number, body: unknown) => Verdict; file: (path: string) => boolean };
+
+const COACH: Area = {
+  prefix: "coach",
+  verdict: (status, body) => {
+    const o = classifyCoach(status, body);
+    return o === "refresh" || o === "cut" ? o : "pass";
+  },
+  file: () => false,
+};
+
+// "lost-athlete" and "show" both go through unchanged: the page reads the 403 ClubAdminError itself.
+const SPORTIV: Area = {
+  prefix: "sportiv",
+  verdict: (status, body) => {
+    const o = classifySportiv(status, body);
+    return o === "refresh" || o === "cut" ? o : "pass";
+  },
+  file: isSportivFile,
+};
+
+function areaInit(area: Area, method: string, path: string, body: unknown, access: string, ctx: BffContext): StrapiInit {
   const device = method === "GET" && path.startsWith("/me/devices") ? ctx.device : null;
-  return { method, body: method === "GET" ? undefined : body, access, device };
+  return { method, body: method === "GET" ? undefined : body, access, device, file: method === "GET" && area.file(path) };
 }
 
-export async function coachCall(ctx: BffContext, method: string, path: string, body: unknown): Promise<CoachAnswer> {
+async function areaCall(area: Area, ctx: BffContext, method: string, path: string, body: unknown): Promise<SessionAnswer> {
   if (!ctx.refresh) return ended(ctx);
   let access = ctx.access;
   let cookies: CookieSpec[] = [];
   // Only a backend 401 ends the session; an outage or a refused secret leaves the cookies alone.
-  const renew = async(): Promise<CoachAnswer | null> => {
+  const renew = async(): Promise<SessionAnswer | null> => {
     const r = await refreshOnce(ctx);
     if (!r.ok) {
       if (r.transient === null) return ended(ctx);
@@ -131,18 +157,22 @@ export async function coachCall(ctx: BffContext, method: string, path: string, b
   };
   const first = access ? null : await renew();
   if (first) return first;
-  let res = await callStrapi(`coach${path}`, coachInit(method, path, body, access ?? "", ctx), ctx);
-  let outcome = classifyCoach(res.status, res.body);
-  if (outcome === "refresh") {
+  const ask = (): Promise<Answer> => callStrapi(`${area.prefix}${path}`, areaInit(area, method, path, body, access ?? "", ctx), ctx);
+  let res = await ask();
+  let verdict = area.verdict(res.status, res.body);
+  if (verdict === "refresh") {
     const again = await renew();
     if (again) return again;
-    res = await callStrapi(`coach${path}`, coachInit(method, path, body, access ?? "", ctx), ctx);
-    outcome = classifyCoach(res.status, res.body);
-    if (outcome === "refresh") return ended(ctx);
+    res = await ask();
+    verdict = area.verdict(res.status, res.body);
+    if (verdict === "refresh") return ended(ctx);
   }
-  if (outcome === "cut") return (await secretRefused(ctx)) ? { status: 503, body: refusal(503, STATES.loadFailed), cookies } : ended(ctx);
-  return { status: res.status, body: res.body, cookies };
+  if (verdict === "cut") return (await secretRefused(ctx)) ? { status: 503, body: refusal(503, STATES.loadFailed), cookies } : ended(ctx);
+  return { status: res.status, body: res.body, file: res.file, cookies };
 }
+
+export const coachCall = (ctx: BffContext, method: string, path: string, body: unknown): Promise<SessionAnswer> => areaCall(COACH, ctx, method, path, body);
+export const sportivCall = (ctx: BffContext, method: string, path: string, body: unknown): Promise<SessionAnswer> => areaCall(SPORTIV, ctx, method, path, body);
 
 export function respond(status: number, body: unknown, cookies: CookieSpec[]): NextResponse {
   const res = NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });

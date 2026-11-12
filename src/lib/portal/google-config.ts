@@ -1,5 +1,6 @@
 // Server only. The Google client id lives on Strapi; the BFF asks for it.
 import { callStrapi, type BffContext } from "./bff";
+import type { PortalSite } from "./site";
 import { serverContext } from "./server-ctx";
 
 export async function googleClientId(ctx: BffContext): Promise<string | null> {
@@ -9,9 +10,9 @@ export async function googleClientId(ctx: BffContext): Promise<string | null> {
   return res.status === 200 && typeof id === "string" && id.length > 0 ? id : null;
 }
 
-export async function googleEnabled(): Promise<boolean> {
+export async function googleEnabled(site: PortalSite): Promise<boolean> {
   try {
-    const { ctx } = await serverContext();
+    const { ctx } = await serverContext(site);
     return (await googleClientId(ctx)) !== null;
   } catch {
     return false;

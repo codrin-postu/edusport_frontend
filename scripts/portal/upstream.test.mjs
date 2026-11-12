@@ -27,6 +27,17 @@ it("classifies coach answers", () => {
   assert.equal(u.classifyCoach(404, {}), "refusal");
 });
 
+it("classifies sportiv answers", () => {
+  const lost = { error: { name: "ClubAdminError", message: "Nu mai ai acces la acest sportiv." } };
+  assert.equal(u.classifySportiv(403, lost), "lost-athlete");
+  assert.equal(u.classifySportiv(403, { error: { name: "ForbiddenError", message: "Forbidden" } }), "cut");
+  assert.equal(u.classifySportiv(403, {}), "cut");
+  assert.equal(u.classifySportiv(403, { error: { name: "ClubAdminError", message: "altceva" } }), "show");
+  assert.equal(u.classifySportiv(401, {}), "refresh");
+  assert.equal(u.classifySportiv(404, {}), "show");
+  assert.equal(u.classifySportiv(200, {}), "show");
+});
+
 it("reads a session only when it is whole", () => {
   const ok = { accessToken: "a", refreshToken: "r", accessExpiresAt: "2026-11-06T10:00:00Z", deviceKey: null };
   assert.deepEqual(u.readSession({ data: ok }), ok);

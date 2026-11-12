@@ -1,5 +1,6 @@
 // Header, outcome and masking rules for calls from the BFF to Strapi. Pure.
 import type { PortalSession } from "./api-types";
+import { LOST_ATHLETE } from "./copy-sportiv.ts";
 
 export type Outcome = "ok" | "refresh" | "cut" | "refusal";
 
@@ -32,6 +33,24 @@ export function classifyCoach(status: number, body: unknown): Outcome {
   if (status === 401) return "refresh";
   if (status === 403 && errorName(body) !== "ClubAdminError") return "cut";
   return "refusal";
+}
+
+function errorMessage(body: unknown): string | null {
+  const error = typeof body === "object" && body !== null ? (body as { error?: unknown }).error : null;
+  const message = typeof error === "object" && error !== null ? (error as { message?: unknown }).message : null;
+  return typeof message === "string" ? message : null;
+}
+
+/**
+ * What a sportiv answer asks of the BFF: "refresh" (401: renew once, then the login), "cut" (a policy 403: the account
+ * or its access ended, clear the cookies), "lost-athlete" (the holder no longer holds this athlete: the page goes to `/`
+ * with the toast), "show" (anything else goes through as it is).
+ */
+export function classifySportiv(status: number, body: unknown): "refresh" | "cut" | "lost-athlete" | "show" {
+  if (status === 401) return "refresh";
+  if (status !== 403) return "show";
+  if (errorName(body) !== "ClubAdminError") return "cut";
+  return errorMessage(body) === LOST_ATHLETE ? "lost-athlete" : "show";
 }
 
 export function readSession(body: unknown): PortalSession | null {

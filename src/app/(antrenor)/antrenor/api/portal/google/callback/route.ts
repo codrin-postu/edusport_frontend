@@ -28,7 +28,7 @@ function refusalMessage(status: number, body: unknown): string {
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const ctx = bffContext(req);
+  const ctx = bffContext(req, "antrenor");
   const clearGoogle = shortCookie(ctx.names.google, "", 0, ctx.secure);
   const saved = decodeGoogleCookie(req.cookies.get(ctx.names.google)?.value ?? null, Date.now());
   const q = req.nextUrl.searchParams;
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!redirectUri) return go(back, [clearGoogle]);
   const res = await callStrapi(
     "auth/google",
-    { method: "POST", body: { host: "antrenor", code, codeVerifier: saved.verifier, redirectUri, nonce: saved.nonce, ...(invite ? { invite } : {}), ...(ctx.device ? { deviceKey: ctx.device } : {}) }, userAgent: true },
+    { method: "POST", body: { host: ctx.site, code, codeVerifier: saved.verifier, redirectUri, nonce: saved.nonce, ...(invite ? { invite } : {}), ...(ctx.device ? { deviceKey: ctx.device } : {}) }, userAgent: true },
     ctx,
   );
   const session = res.status === 200 ? readSession(res.body) : null;

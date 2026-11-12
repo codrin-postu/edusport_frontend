@@ -13,7 +13,7 @@ const go = (to: string): NextResponse =>
   new NextResponse(null, { status: 303, headers: { Location: to, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const ctx = bffContext(req);
+  const ctx = bffContext(req, "antrenor");
   const invite = req.nextUrl.searchParams.get("invite") === "1";
   const redirectUri = googleRedirectUri(process.env.PORTAL_HOST_ANTRENOR, ctx.host, ctx.secure);
   const clientId = redirectUri ? await googleClientId(ctx) : null;
