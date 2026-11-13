@@ -88,6 +88,13 @@ for (const size of SIZES) {
       await expect(page.getByRole("checkbox")).toHaveCount(0);
     });
 
+    test("another coach's Club group does not show the Școala locked note", async({ page }) => {
+      await loginAs(page);
+      await page.goto("/grupe/guscat?tab=program");
+      await expect(page.getByRole("heading", { name: "Program săptămânal" })).toBeVisible();
+      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toHaveCount(0);
+    });
+
     test("an own Școala group the backend marks editable shows the edit controls", async({ page }) => {
       await mockState({ schoolEditable: true });
       await loginAs(page);

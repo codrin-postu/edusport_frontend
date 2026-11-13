@@ -117,7 +117,7 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
         <div className="flex flex-col gap-(--portal-section-gap)">
           {data === null ? spinner : (
             <>
-              {!data.editable && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
+              {data.kind === "school" && !data.editable && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
               {data.rules.length > 0 && (
                 <Section title={PROGRAM.weeklyHeading}>
                   <ListCard>

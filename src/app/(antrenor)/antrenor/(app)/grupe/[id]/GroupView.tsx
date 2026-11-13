@@ -75,6 +75,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   const tabs = <GroupTabs tab={tab} count={members.length} onChange={setTab} />;
   // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (editable groups only: the backend sets programPublic for them).
+  // Contract (backend groups.ts): programPublic is non-null only when the caller may edit the group's program.
   const addProgram = page.programPublic !== null ? `${pathname}?tab=program&nou=1` : null;
   return (
     <>
@@ -108,6 +109,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
           </Column>
         </Columns>
       </PageBody>
+      {/* Same contract: a non-null programPublic means the program is editable. */}
       {tab === "program" && params.get("nou") && page.programPublic !== null && (
         <NewTrainingPopup group={page.groupId} individual={false} onClose={() => router.replace(`${pathname}?tab=program`)} onDone={() => setRev((n) => n + 1)} />
       )}

@@ -680,7 +680,7 @@ function programData(g, month) {
     durationMin: g.dur, from: `${today.slice(0, 4)}-10-01`, to: `${Number(today.slice(0, 4)) + 1}-05-31`, text: g.program[0], fromText: "1 oct", nextDate: today,
   };
   return {
-    kind: g.kind, editable: g.kind === "club" || (state.schoolEditable && g.own), programPublic: g.kind === "club" ? g.programPublic : state.schoolEditable && g.own ? false : null,
+    kind: g.kind, editable: g.own && (g.kind === "club" || state.schoolEditable), programPublic: g.kind === "club" ? g.programPublic : state.schoolEditable && g.own ? false : null,
     program: { season: { documentId: "season-1", label: "2026-2027", past: false }, series: [row] }, occurrences: occurrencesOf(g, m),
     rules: rulesOf(g.id).filter((r) => r.to >= today).map((r) => ruleView({ ...r, gid: g.id })),
   };
