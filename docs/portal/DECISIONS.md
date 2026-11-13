@@ -632,3 +632,9 @@ Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase
 - 2026-11-10 (user): a coach may add a one-off group class ('Nu se repetă') for today or the last 7 days (make-up class already held), then record its presence; older dates stay admin only. Repeating programs start today or later.
 - 2026-11-10 (user): in another coach's group the Sportivi tab shows the children's names (and age) read only, no contacts, no Mută/Scoate, no presence, rows not clickable, with the banner 'Grupa altui antrenor'.
 - 2026-11-10 (user feedback, decided by Claude): the Prezență page has no date picker (the phase 6 'change day' sheet is removed; another day goes through Antrenament nou or the Program date sheet); archived presence shows dimmed check marks; the back link returns to the page the coach came from.
+
+## 2026-11-13 plan 6b-3, decided by Claude (low impact)
+- Non-club route areas of T25 follow the plan's route table (one area per route through `has-role`).
+- Restanțe, Abonamente and Plăți need `club`, not `money`, per redesign S1.
+- Bootstrap of the two EduSport roles logs role ids only, never names or e-mails.
+- T30 scope: a coach edits the Program of his own Școala groups because his portal e-mail matches an active, non-blocked admin with `club`. No switch (user decision, 2026-11-13).
