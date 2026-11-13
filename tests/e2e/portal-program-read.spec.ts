@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { COACH_BASE, loginAs, mockLog, mockReset } from "./portal-helpers";
+import { COACH_BASE, loginAs, mockLog, mockReset, mockState } from "./portal-helpers";
 
 test.beforeEach(async() => { await mockReset(); });
 
@@ -86,6 +86,17 @@ for (const size of SIZES) {
       await expect(page.getByRole("button", { name: /^(Schimbă|Șterge) programul/ })).toHaveCount(0);
       await expect(page.getByRole("link", { name: "+ Adaugă program" })).toHaveCount(0);
       await expect(page.getByRole("checkbox")).toHaveCount(0);
+    });
+
+    test("an own Școala group the backend marks editable shows the edit controls", async({ page }) => {
+      await mockState({ schoolEditable: true });
+      await loginAs(page);
+      await page.goto("/grupe/gprimii?tab=program");
+      await expect(page.getByRole("heading", { name: "Program săptămânal" })).toBeVisible();
+      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Schimbă programul de sâmbătă" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "Șterge programul de duminică" })).toBeVisible();
+      await expect(page.getByRole("checkbox")).toHaveCount(1);
     });
   });
 }

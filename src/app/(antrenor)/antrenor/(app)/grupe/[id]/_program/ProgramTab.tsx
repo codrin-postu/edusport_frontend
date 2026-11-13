@@ -71,7 +71,7 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
   }
 
   const done = () => { setOpen(null); reload(); };
-  const canEdit = own && data !== null && data.kind === "club" && data.editable;
+  const canEdit = own && data !== null && data.editable;
   const openDate = (o: Occurrence) => {
     const state = dateState(o, today);
     return canEdit && (state === "open" || state === "cancelled" || state === "moved") && eventDocumentId(o) !== null ? () => setOpen({ kind: "date", occurrence: o }) : undefined;
@@ -117,7 +117,7 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
         <div className="flex flex-col gap-(--portal-section-gap)">
           {data === null ? spinner : (
             <>
-              {data.kind === "school" && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
+              {!data.editable && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
               {data.rules.length > 0 && (
                 <Section title={PROGRAM.weeklyHeading}>
                   <ListCard>
@@ -125,7 +125,7 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
                   </ListCard>
                 </Section>
               )}
-              {own && data.kind === "club" && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
+              {own && data.programPublic !== null && <PublicSwitch value={data.programPublic} busy={busy} onChange={(v) => void setPublic(v)} />}
             </>
           )}
         </div>

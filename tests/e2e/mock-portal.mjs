@@ -32,7 +32,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [] };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [], schoolEditable: false };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -291,7 +291,7 @@ function groupPage(g) {
     membersReadOnly: !g.own,
     standIn: g.own ? [] : slots,
     todayKey: hasClass(g, today) ? keyOf(g.id, today) : null,
-    programPublic: g.own && g.kind === "club" ? g.programPublic : null,
+    programPublic: g.own && (g.kind === "club" || state.schoolEditable) ? (g.kind === "club" ? g.programPublic : false) : null,
     location: g.location ?? null,
   };
 }
@@ -680,7 +680,7 @@ function programData(g, month) {
     durationMin: g.dur, from: `${today.slice(0, 4)}-10-01`, to: `${Number(today.slice(0, 4)) + 1}-05-31`, text: g.program[0], fromText: "1 oct", nextDate: today,
   };
   return {
-    kind: g.kind, editable: g.kind === "club", programPublic: g.kind === "club" ? g.programPublic : null,
+    kind: g.kind, editable: g.kind === "club" || (state.schoolEditable && g.own), programPublic: g.kind === "club" ? g.programPublic : state.schoolEditable && g.own ? false : null,
     program: { season: { documentId: "season-1", label: "2026-2027", past: false }, series: [row] }, occurrences: occurrencesOf(g, m),
     rules: rulesOf(g.id).filter((r) => r.to >= today).map((r) => ruleView({ ...r, gid: g.id })),
   };
@@ -827,13 +827,13 @@ const withGroup = (fn) => (ctx) => {
   const g = groupOf(ctx.params[0]);
   return g ? fn(ctx, g) : notFound(ctx.res);
 };
-const ownClub = (fn) => withGroup((ctx, g) => (g.own && g.kind === "club" ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
+const ownClub = (fn) => withGroup((ctx, g) => (g.own && (g.kind === "club" || state.schoolEditable) ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
 const ownOnly = (fn) => withGroup((ctx, g) => (g.own ? fn(ctx, g) : club(ctx.res, 403, MSG.noAccess)));
 // Backend writeRight: the event's group must be an own Club group; an unknown event is 404.
 const eventGuard = (fn) => (ctx) => {
   const g = groupOfEvent(ctx.params[0]);
   if (!g) return fn(ctx);
-  return g.own && g.kind === "club" ? fn(ctx) : club(ctx.res, 403, MSG.noAccess);
+  return g.own && (g.kind === "club" || state.schoolEditable) ? fn(ctx) : club(ctx.res, 403, MSG.noAccess);
 };
 
 function savedDays({ res, query }, g) {

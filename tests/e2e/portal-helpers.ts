@@ -14,6 +14,7 @@ export type MockCall = {
 
 export type MockState = {
   inactiveGroups?: string[];
+  schoolEditable?: boolean;
   accessTtlSec?: number;
   cutAccount?: boolean;
   revokeAll?: boolean;

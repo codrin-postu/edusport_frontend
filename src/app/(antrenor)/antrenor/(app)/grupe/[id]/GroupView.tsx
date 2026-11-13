@@ -74,8 +74,8 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   const tabs = <GroupTabs tab={tab} count={members.length} onChange={setTab} />;
-  // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (Club groups only: the admin changes Școala programs).
-  const addProgram = page.kind === "club" ? `${pathname}?tab=program&nou=1` : null;
+  // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (editable groups only: the backend sets programPublic for them).
+  const addProgram = page.programPublic !== null ? `${pathname}?tab=program&nou=1` : null;
   return (
     <>
       <PageHeader back={BACK} title={page.name} />
@@ -108,7 +108,7 @@ function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
           </Column>
         </Columns>
       </PageBody>
-      {tab === "program" && params.get("nou") && page.kind === "club" && (
+      {tab === "program" && params.get("nou") && page.programPublic !== null && (
         <NewTrainingPopup group={page.groupId} individual={false} onClose={() => router.replace(`${pathname}?tab=program`)} onDone={() => setRev((n) => n + 1)} />
       )}
     </>

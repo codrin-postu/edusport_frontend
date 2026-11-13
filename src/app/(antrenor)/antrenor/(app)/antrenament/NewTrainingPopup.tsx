@@ -27,7 +27,7 @@ export function NewTrainingPopup({ group, individual, onClose, onDone }: { group
   if (groups.state === "error") return <Sheet open onOpenChange={(o) => { if (!o) onClose(); }} title={TRAINING.title} popup={{ closeLabel: TRAINING.close }}><LoadError onRetry={groups.reload} /></Sheet>;
   if (groups.state === "loading" || !me || !groups.data) return null;
 
-  const club = groups.data.mine.filter((g) => g.kind === "club");
+  const club = groups.data.mine.filter((g) => g.kind === "club" || g.groupId === group);
   const preset = club.find((g) => g.groupId === group) ?? null;
 
   async function submit(v: TrainingValue): Promise<string | null> {
