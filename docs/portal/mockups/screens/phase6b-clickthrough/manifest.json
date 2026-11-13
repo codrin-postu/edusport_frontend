@@ -1,0 +1,594 @@
+[
+  {
+    "id": "01",
+    "name": "login",
+    "vp": "desktop",
+    "file": "01-login-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "01",
+    "name": "login",
+    "vp": "phone",
+    "file": "01-login-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "02",
+    "name": "parola-gresita",
+    "vp": "desktop",
+    "file": "02-parola-gresita-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "02",
+    "name": "parola-gresita",
+    "vp": "phone",
+    "file": "02-parola-gresita-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "03",
+    "name": "pauza",
+    "vp": "desktop",
+    "file": "03-pauza-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "03",
+    "name": "pauza",
+    "vp": "phone",
+    "file": "03-pauza-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "04",
+    "name": "al-doilea-pas-aplicatie",
+    "vp": "desktop",
+    "file": "04-al-doilea-pas-aplicatie-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "04",
+    "name": "al-doilea-pas-aplicatie",
+    "vp": "phone",
+    "file": "04-al-doilea-pas-aplicatie-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "05",
+    "name": "al-doilea-pas-email",
+    "vp": "desktop",
+    "file": "05-al-doilea-pas-email-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "05",
+    "name": "al-doilea-pas-email",
+    "vp": "phone",
+    "file": "05-al-doilea-pas-email-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "06",
+    "name": "al-doilea-pas-rezerva",
+    "vp": "desktop",
+    "file": "06-al-doilea-pas-rezerva-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "06",
+    "name": "al-doilea-pas-rezerva",
+    "vp": "phone",
+    "file": "06-al-doilea-pas-rezerva-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "07",
+    "name": "alta-metoda",
+    "vp": "desktop",
+    "file": "07-alta-metoda-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "07",
+    "name": "alta-metoda",
+    "vp": "phone",
+    "file": "07-alta-metoda-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "08",
+    "name": "pending-expirat",
+    "vp": "desktop",
+    "file": "08-pending-expirat-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "08",
+    "name": "pending-expirat",
+    "vp": "phone",
+    "file": "08-pending-expirat-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "09",
+    "name": "oferta-cheie",
+    "vp": "desktop",
+    "file": "09-oferta-cheie-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "09",
+    "name": "oferta-cheie",
+    "vp": "phone",
+    "file": "09-oferta-cheie-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "10",
+    "name": "invitatie",
+    "vp": "desktop",
+    "file": "10-invitatie-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "10",
+    "name": "invitatie",
+    "vp": "phone",
+    "file": "10-invitatie-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11a",
+    "name": "parola-uitata-email",
+    "vp": "desktop",
+    "file": "11a-parola-uitata-email-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11a",
+    "name": "parola-uitata-email",
+    "vp": "phone",
+    "file": "11a-parola-uitata-email-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11b",
+    "name": "parola-uitata-trimitere-esuata",
+    "vp": "desktop",
+    "file": "11b-parola-uitata-trimitere-esuata-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11b",
+    "name": "parola-uitata-trimitere-esuata",
+    "vp": "phone",
+    "file": "11b-parola-uitata-trimitere-esuata-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11c",
+    "name": "parola-uitata-cod-simulat",
+    "vp": "desktop",
+    "file": "11c-parola-uitata-cod-simulat-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11c",
+    "name": "parola-uitata-cod-simulat",
+    "vp": "phone",
+    "file": "11c-parola-uitata-cod-simulat-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11d",
+    "name": "parola-uitata-cod-gresit",
+    "vp": "desktop",
+    "file": "11d-parola-uitata-cod-gresit-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "11d",
+    "name": "parola-uitata-cod-gresit",
+    "vp": "phone",
+    "file": "11d-parola-uitata-cod-gresit-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "12",
+    "name": "securitate-2fa-oprit",
+    "vp": "desktop",
+    "file": "12-securitate-2fa-oprit-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "12",
+    "name": "securitate-2fa-oprit",
+    "vp": "phone",
+    "file": "12-securitate-2fa-oprit-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "13",
+    "name": "aplicatie-qr",
+    "vp": "desktop",
+    "file": "13-aplicatie-qr-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "13",
+    "name": "aplicatie-qr",
+    "vp": "phone",
+    "file": "13-aplicatie-qr-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "14",
+    "name": "coduri-rezerva",
+    "vp": "desktop",
+    "file": "14-coduri-rezerva-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "15",
+    "name": "securitate-chei-acces",
+    "vp": "desktop",
+    "file": "15-securitate-chei-acces-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "15",
+    "name": "securitate-chei-acces",
+    "vp": "phone",
+    "file": "15-securitate-chei-acces-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "16",
+    "name": "dispozitive",
+    "vp": "desktop",
+    "file": "16-dispozitive-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "16",
+    "name": "dispozitive",
+    "vp": "phone",
+    "file": "16-dispozitive-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "17",
+    "name": "administratori-resetare",
+    "vp": "desktop",
+    "file": "17-administratori-resetare-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "17",
+    "name": "administratori-resetare",
+    "vp": "phone",
+    "file": "17-administratori-resetare-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "17a",
+    "name": "administratori",
+    "vp": "desktop",
+    "file": "17a-administratori-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "17a",
+    "name": "administratori",
+    "vp": "phone",
+    "file": "17a-administratori-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "19",
+    "name": "meniu-super-admin",
+    "vp": "desktop",
+    "file": "19-meniu-super-admin-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "19",
+    "name": "meniu-super-admin",
+    "vp": "phone",
+    "file": "19-meniu-super-admin-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "20",
+    "name": "meniu-administrator-club",
+    "vp": "desktop",
+    "file": "20-meniu-administrator-club-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "20",
+    "name": "meniu-administrator-club",
+    "vp": "phone",
+    "file": "20-meniu-administrator-club-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "21",
+    "name": "meniu-editor-site",
+    "vp": "desktop",
+    "file": "21-meniu-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "21",
+    "name": "meniu-editor-site",
+    "vp": "phone",
+    "file": "21-meniu-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "22",
+    "name": "fara-acces-editor-site",
+    "vp": "desktop",
+    "file": "22-fara-acces-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "22",
+    "name": "fara-acces-editor-site",
+    "vp": "phone",
+    "file": "22-fara-acces-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "23",
+    "name": "contabilitate-administrator-club",
+    "vp": "desktop",
+    "file": "23-contabilitate-administrator-club-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "23",
+    "name": "contabilitate-administrator-club",
+    "vp": "phone",
+    "file": "23-contabilitate-administrator-club-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "23",
+    "name": "contabilitate-super-admin",
+    "vp": "desktop",
+    "file": "23-contabilitate-super-admin-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "23",
+    "name": "contabilitate-super-admin",
+    "vp": "phone",
+    "file": "23-contabilitate-super-admin-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "24",
+    "name": "email-cod",
+    "vp": "desktop",
+    "file": "24-email-cod-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "24",
+    "name": "email-cod",
+    "vp": "phone",
+    "file": "24-email-cod-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "25",
+    "name": "email-blocare",
+    "vp": "desktop",
+    "file": "25-email-blocare-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "25",
+    "name": "email-blocare",
+    "vp": "phone",
+    "file": "25-email-blocare-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "26",
+    "name": "email-resetare",
+    "vp": "desktop",
+    "file": "26-email-resetare-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "26",
+    "name": "email-resetare",
+    "vp": "phone",
+    "file": "26-email-resetare-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "27",
+    "name": "email-schimbare",
+    "vp": "desktop",
+    "file": "27-email-schimbare-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "27",
+    "name": "email-schimbare",
+    "vp": "phone",
+    "file": "27-email-schimbare-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "30",
+    "name": "tabele-administrator-club",
+    "vp": "desktop",
+    "file": "30-tabele-administrator-club-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "30",
+    "name": "tabele-administrator-club",
+    "vp": "phone",
+    "file": "30-tabele-administrator-club-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "30",
+    "name": "tabele-super-admin",
+    "vp": "desktop",
+    "file": "30-tabele-super-admin-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "30",
+    "name": "tabele-super-admin",
+    "vp": "phone",
+    "file": "30-tabele-super-admin-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "31",
+    "name": "tabele-editor-site",
+    "vp": "desktop",
+    "file": "31-tabele-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "31",
+    "name": "tabele-editor-site",
+    "vp": "phone",
+    "file": "31-tabele-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "31b",
+    "name": "contabilitate-editor-site",
+    "vp": "desktop",
+    "file": "31b-contabilitate-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "31b",
+    "name": "contabilitate-editor-site",
+    "vp": "phone",
+    "file": "31b-contabilitate-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "32",
+    "name": "panou-editor-site",
+    "vp": "desktop",
+    "file": "32-panou-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "32",
+    "name": "panou-editor-site",
+    "vp": "phone",
+    "file": "32-panou-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "33",
+    "name": "content-manager-editor-site",
+    "vp": "desktop",
+    "file": "33-content-manager-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "33",
+    "name": "content-manager-editor-site",
+    "vp": "phone",
+    "file": "33-content-manager-editor-site-phone.png",
+    "ok": true,
+    "note": ""
+  },
+  {
+    "id": "33b",
+    "name": "content-manager-salvat-editor-site",
+    "vp": "desktop",
+    "file": "33b-content-manager-salvat-editor-site-desktop.png",
+    "ok": true,
+    "note": ""
+  }
+]
