@@ -17,8 +17,9 @@ const PATHISH = /https?:\/\/[^\s"'<>)]+|\/(?:sportiv|antrenor)\/[^\s"'<>)?#]*(?:
 
 const portalOfHost = (host: string): "sportiv" | "antrenor" | null => /^(sportiv|antrenor)\./i.exec(host)?.[1]?.toLowerCase() as "sportiv" | "antrenor" | null ?? null;
 
-/** Ids the route patterns do not cover: a segment that mixes in a digit is an id. */
-const maskIdSegments = (path: string): string => path.replace(/[^/]*\d[^/]*/g, (seg) => (seg.length >= 6 ? "[id]" : seg));
+/** Ids the route patterns do not cover: a segment that mixes in a digit, or 20+ alphanumerics (Strapi documentIds), is an id. */
+const maskIdSegments = (path: string): string =>
+  path.replace(/[^/]+/g, (seg) => (/^[A-Za-z0-9]{20,}$/.test(seg) || (/\d/.test(seg) && seg.length >= 6) ? "[id]" : seg));
 
 function scrubPathPart(path: string, portal: "sportiv" | "antrenor" | null): string {
   if (portal) {

@@ -91,3 +91,9 @@ it("tracesSampler is 0 on portal paths and 0.1 elsewhere", () => {
   assert.equal(s.tracesSampler({ name: "GET /x", normalizedRequest: { url: "https://www.example.ro/abc" } }), 0.1);
   assert.equal(s.isPortalTransaction(undefined, undefined), false);
 });
+
+it("masks a 24-char documentId without digits in an uncovered portal path", () => {
+  const out = s.scrubUrl("https://sportiv.example/zzz/abcdefghijklmnopqrstuvwx/x");
+  assert.ok(!out.includes("abcdefghijklmnopqrstuvwx"), out);
+  assert.ok(out.includes("[id]"), out);
+});
