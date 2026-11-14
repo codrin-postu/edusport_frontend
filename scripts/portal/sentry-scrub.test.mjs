@@ -45,3 +45,49 @@ it("masks code, state and secret parameters in free text", async() => {
   const { maskSecrets } = await import("../../src/lib/portal/upstream.ts");
   assert.equal(maskSecrets("a?code=1&state=2&x=3"), "a?code=***&state=***&x=3");
 });
+
+const ID = "k2j3h4g5f6d7s8a9q0w1e2r3";
+
+it("scrubs personal data from an event", () => {
+  const e = s.scrubEvent({
+    message: "fail for ana@example.com",
+    user: { email: "ana@example.com", ip_address: "1.2.3.4" },
+    extra: { name: "Ana Pop" },
+    request: { url: `https://sportiv.example/${ID}/istoric?page=2`, cookies: { s: "x" }, headers: { cookie: "s=x" }, data: { name: "Ana Pop" } },
+    exception: { values: [{ value: `athlete ${ID} not held by ana@example.com` }] },
+    breadcrumbs: [{ category: "ui.click", message: "button Ana Pop" }, { category: "console", message: "x ana@example.com" }],
+  });
+  assert.equal(e.user, undefined);
+  assert.equal(e.extra, undefined);
+  assert.equal(e.request.url, "https://sportiv.example/[athlete]/istoric?***");
+  assert.equal(e.request.cookies, undefined);
+  assert.equal(e.request.headers.cookie, "***");
+  assert.equal(e.request.data, undefined);
+  assert.equal(e.breadcrumbs[0].message, undefined);
+  const out = JSON.stringify(e);
+  for (const leak of ["ana@example.com", ID, "Ana Pop"]) assert.ok(!out.includes(leak), leak);
+});
+
+it("scrubText masks e-mails, ids, portal paths and invite secrets", () => {
+  assert.equal(s.scrubText("mail ana@example.com now"), "mail ***@*** now");
+  assert.equal(s.scrubText(`id ${ID}.`), "id [id].");
+  assert.equal(s.scrubText("GET https://antrenor.example/grupe/abc123/modifica?x=1 failed"), "GET https://antrenor.example/grupe/[group]/modifica?*** failed");
+  assert.equal(s.scrubText("https://www.example.ro/cursuri?x=1"), "https://www.example.ro/cursuri?***");
+  assert.ok(!s.scrubText(`https://sportiv.example/invite/${SECRET}`).includes(SECRET));
+  assert.equal(s.scrubText("plain words stay"), "plain words stay");
+});
+
+it("scrubs breadcrumbs: clicks and inputs lose their message", () => {
+  assert.equal(s.scrubBreadcrumb({ category: "ui.click", message: "button Ana Pop" }).message, undefined);
+  assert.equal(s.scrubBreadcrumb({ category: "ui.input", message: "input name" }).message, undefined);
+  assert.equal(s.scrubBreadcrumb({ category: "console", message: "to ana@example.com" }).message, "to ***@***");
+});
+
+it("tracesSampler is 0 on portal paths and 0.1 elsewhere", () => {
+  assert.equal(s.tracesSampler({ name: "GET /sportiv/[athleteId]/calendar" }), 0);
+  assert.equal(s.tracesSampler({ name: "GET /antrenor/api/portal/coach/[...path]" }), 0);
+  assert.equal(s.tracesSampler({ name: "GET /cursuri" }), 0.1);
+  assert.equal(s.tracesSampler({ name: "GET /x", normalizedRequest: { url: "https://sportiv.example/abc" } }), 0);
+  assert.equal(s.tracesSampler({ name: "GET /x", normalizedRequest: { url: "https://www.example.ro/abc" } }), 0.1);
+  assert.equal(s.isPortalTransaction(undefined, undefined), false);
+});

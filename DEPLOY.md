@@ -137,6 +137,14 @@ See `ARCHITECTURE.md` for the cache strategy.
 - **Old revalidations not firing** — confirm the Strapi webhook secret
   matches `REVALIDATE_SECRET` exactly.
 
+## Errors (GlitchTip)
+
+One GlitchTip project covers the site and both portals (`NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`). Errors only on
+the portals: `sendDefaultPii` is off, there is no session replay, no traces leave portal paths (the site keeps
+its 0.1 sampling), and `beforeSend` removes the user, cookies, request body and extras, masks e-mails and ids,
+and turns portal URLs into route patterns. Tag the deploy with `NEXT_PUBLIC_SENTRY_RELEASE` /
+`NEXT_PUBLIC_SENTRY_ENVIRONMENT` (build args) and `SENTRY_RELEASE` / `SENTRY_ENVIRONMENT` (runtime, optional).
+
 ## Analytics (Umami)
 
 Privacy-friendly, cookieless analytics (no consent banner needed). The loader is

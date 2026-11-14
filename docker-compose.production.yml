@@ -22,6 +22,8 @@ services:
         NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV: ${NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV:-}
         NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR: ${NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR:-}
         NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
+        NEXT_PUBLIC_SENTRY_RELEASE: ${NEXT_PUBLIC_SENTRY_RELEASE:-}
+        NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${NEXT_PUBLIC_SENTRY_ENVIRONMENT:-}
     restart: unless-stopped
     # --- Hardening, added 2026-09-16 after the Next.js RCE compromise ---------
     # On 15 Sep an unauthenticated request exploited CVE GHSA-9qr9-h5gf-34mp in
