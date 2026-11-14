@@ -181,3 +181,18 @@ export function profileOf(id) {
   const a = SPORTIV_ATHLETES[id];
   return { name: a.name, birthDate: "2017-03-14", age: a.age, contactName: "Elena Ionescu", phone: "0722 000 222", email: "parinte1@example.invalid" };
 }
+
+/** Mesaje of an account: one automatic notice with two rows (a cancelled class, a moved one) and one hand-written. Ids are stable. */
+export function noticesOf(email) {
+  if (email !== "parinte1@example.invalid") return [];
+  return [
+    {
+      id: "ntcauto0001", date: addDays(FROZEN_TODAY, 0), title: "Modificări în program", body: null,
+      rows: [
+        { date: addDays(FROZEN_TODAY, 2), text: "Ana: Intermediari Bronze, anulată", reason: "Vacanță" },
+        { date: addDays(FROZEN_TODAY, 4), text: "Matei: Începători, mutată", reason: null },
+      ],
+    },
+    { id: "ntchand0001", date: addDays(FROZEN_TODAY, -1), title: "Ședință cu părinții", body: "Vă așteptăm sâmbătă la ora 10.", rows: [] },
+  ];
+}

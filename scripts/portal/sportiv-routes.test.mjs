@@ -8,7 +8,7 @@ const it = canStripTypes ? test : (name) => test.skip(name);
 
 const TABLE = [
   ["GET", "/me"], ["PUT", "/me"], ["PUT", "/me/notifications"], ["POST", "/me/password"], ["GET", "/me/devices"], ["DELETE", "/me/devices/d1"],
-  ["GET", "/athletes"],
+  ["GET", "/athletes"], ["GET", "/me/notices"], ["POST", "/me/notices/abc123/dismiss"],
   ["GET", "/athletes/a1/home"], ["POST", "/athletes/a1/promotion/seen"], ["GET", "/athletes/a1/profile"], ["GET", "/athletes/a1/history"],
   ["GET", "/athletes/a1/calendar.ics"], ["GET", "/athletes/a1/calendar"], ["GET", "/athletes/a1/competitions"], ["GET", "/athletes/a1/competitions/res-1"],
   ["GET", "/athletes/a1/path"], ["GET", "/athletes/a1/money"], ["GET", "/athletes/a1/payments"], ["GET", "/athletes/a1/subscriptions"],
@@ -32,6 +32,15 @@ it("refuses everything else", () => {
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/home/x"), false);
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/competitions/a/b"), false);
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/competitions/.."), false);
+});
+
+it("allows only the notices list and dismiss", () => {
+  assert.equal(r.allowedSportivRoute("GET", "/me/notices"), true);
+  assert.equal(r.allowedSportivRoute("POST", "/me/notices/abc123/dismiss"), true);
+  assert.equal(r.allowedSportivRoute("POST", "/me/notices/../x/dismiss"), false);
+  assert.equal(r.allowedSportivRoute("DELETE", "/me/notices/abc123"), false);
+  assert.equal(r.allowedSportivRoute("GET", "/me/notices/abc123"), false);
+  assert.equal(r.sportivQuery("/me/notices", "?x=1"), "");
 });
 
 it("marks the two file routes", () => {

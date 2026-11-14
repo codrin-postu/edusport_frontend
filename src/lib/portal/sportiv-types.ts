@@ -5,7 +5,13 @@ export type PortalDevice = { id: string; label: string; lastSeenAt: string; curr
 export type SportivAthleteRow = { id: string; name: string; firstName: string; groupName: string | null; age: number | null; section: SectionKind | null; inPicker: boolean; performance: boolean };
 export type SportivAthletes = { athletes: SportivAthleteRow[] };
 export type CalendarKind = 'grupa' | 'individual' | 'concurs';
-export type CalendarItem = { date: string; startTime: string | null; endTime: string | null; kind: CalendarKind; title: string; location: string | null; coaches: string[]; cancelled: boolean; note: string | null };
+/** The date and start time a moved class or lesson had before it was moved. */
+export type MovedFrom = { date: string; startTime: string };
+/** `reason` only on a cancelled item (a break name, a calendar note, null for a deleted lesson); `movedFrom` only on a moved one. */
+export type CalendarItem = {
+  date: string; startTime: string | null; endTime: string | null; kind: CalendarKind; title: string; location: string | null; coaches: string[];
+  cancelled: boolean; reason: string | null; movedFrom: MovedFrom | null;
+};
 export type MonthBar = { month: string; count: number | null; state: 'past' | 'current' | 'future' };
 export type Level = { groupId: string; groupName: string; sectionName: string; section: SectionKind; location: string | null };
 export type AbonamentShort = { code: string | null; next: number; slots: number; validUntil: string };
@@ -45,3 +51,9 @@ export type Segment = { name: string; isShort: boolean; score: number | null; te
 export type SportivCompetition = { available: false } | {
   available: true; stale: boolean; updatedAt: string; row: CompetitionRow; field: number | null; best: number | null; segments: Segment[]; officialUrl: string | null;
 };
+
+/** Mesaje: the automatic and hand-written notices of the account, newest `date` first. `body` is null on an automatic one; `rows` is empty on a hand-written one. */
+export type NoticeRow = { date: string; text: string; reason: string | null };
+export type SportivNotice = { id: string; date: string; title: string; body: string | null; rows: NoticeRow[] };
+export type SportivNotices = { count: number; notices: SportivNotice[] };
+export type NoticeDismissed = { count: number };

@@ -33,7 +33,7 @@ export function SessionRow({ item, now }: { item: CalendarItem; now?: string }) 
         {item.startTime !== null && item.endTime !== null && <span>{SESSION.time(item.startTime, item.endTime)}</span>}
         {item.location !== null && <span>{SESSION.place(item.location)}</span>}
         {item.cancelled && <span>{SESSION.cancelled}</span>}
-        {item.note !== null && <span>{item.note}</span>}
+        {item.reason !== null && <span>{item.reason}</span>}
       </div>
     </details>
   );

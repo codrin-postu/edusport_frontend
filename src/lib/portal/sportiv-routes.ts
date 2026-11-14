@@ -5,7 +5,7 @@ const A = `/athletes/${ID}`;
 
 const ROUTES: [string, string][] = [
   ["GET", "/me"], ["PUT", "/me"], ["PUT", "/me/notifications"], ["POST", "/me/password"], ["GET", "/me/devices"], ["DELETE", `/me/devices/${ID}`],
-  ["GET", "/athletes"],
+  ["GET", "/athletes"], ["GET", "/me/notices"], ["POST", `/me/notices/${ID}/dismiss`],
   ["GET", `${A}/home`], ["POST", `${A}/promotion/seen`], ["GET", `${A}/profile`], ["GET", `${A}/history`],
   ["GET", `${A}/calendar.ics`], ["GET", `${A}/calendar`],
   ["GET", `${A}/competitions`], ["GET", `${A}/competitions/${RESULT}`],
