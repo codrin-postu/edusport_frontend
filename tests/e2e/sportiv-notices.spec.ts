@@ -121,10 +121,14 @@ test.describe("phone", () => {
     await page.getByRole("dialog", { name: "Alege sportivul" }).getByRole("button", { name: /^Mesaje/ }).click();
     const list = page.getByRole("dialog", { name: "Mesaje" });
     await expect(list.getByRole("heading", { level: 3 })).toHaveCount(2);
+    // The account sheet closed first, so the sheets do not stack.
+    await expect(page.getByRole("dialog", { name: "Alege sportivul" })).toHaveCount(0);
     await list.getByRole("button", { name: "Închide" }).first().click();
     await expect(list.getByRole("heading", { level: 3 })).toHaveCount(1);
     await expect(page.locator("header button").filter({ hasText: "Ana" })).toContainText("1");
     await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog", { name: "Mesaje" })).toHaveCount(0);
+    await page.getByRole("button", { name: /^Ana/ }).click();
     await expect(page.getByRole("dialog", { name: "Alege sportivul" }).getByRole("button", { name: /^Mesaje/ })).toContainText("1");
   });
 });

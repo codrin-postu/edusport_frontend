@@ -25,7 +25,7 @@ export function AccountSheet({ open, onOpenChange }: { open: boolean; onOpenChan
       <button
         type="button"
         aria-haspopup="dialog"
-        onClick={() => setNoticesOpen(true)}
+        onClick={() => { onOpenChange(false); setNoticesOpen(true); }}
         className={cn(LINE, "cursor-pointer gap-3 border-b border-line-subtle", FOCUS)}
       >
         <Icon name="bell" size="20" />
