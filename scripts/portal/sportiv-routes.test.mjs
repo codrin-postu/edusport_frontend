@@ -41,6 +41,11 @@ it("allows only the notices list and dismiss", () => {
   assert.equal(r.allowedSportivRoute("DELETE", "/me/notices/abc123"), false);
   assert.equal(r.allowedSportivRoute("GET", "/me/notices/abc123"), false);
   assert.equal(r.sportivQuery("/me/notices", "?x=1"), "");
+  assert.equal(r.sportivQuery("/me/notices", "?seen=1"), "?seen=1");
+  assert.equal(r.sportivQuery("/me/notices", "?seen=1&x=2"), "?seen=1");
+  assert.equal(r.sportivQuery("/me/notices", "?seen=0"), "");
+  assert.equal(r.sportivQuery("/me/notices", "?seen=true"), "");
+  assert.equal(r.sportivQuery("/athletes", "?seen=1"), "");
 });
 
 it("marks the two file routes", () => {

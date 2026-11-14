@@ -2,7 +2,7 @@
 // State switches (POST /__mock/state): athletesDown (the athletes list answers 500), listPerformance (athlete ids the athletes list marks as performance), cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
 // noUpcoming, noPrevMonth, noAthletes (the athletes list is empty), documentFile (the PDF file name; null = no Content-Disposition), documentForbidden (a 403 that is not the lost-access one),
-// moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`), noticesDismissed (per account e-mail, the dismissed notice ids; reset with the state), noticesDown (the notices list answers 500), dismissFailsOnce (the next dismiss answers 500, then the switch clears).
+// moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`), noticesDismissed (per account e-mail, the dismissed notice ids; reset with the state), noticesDown (the notices list answers 500), dismissFailsOnce (the next dismiss answers 500, then the switch clears), dismissGoneOnce (the next dismiss answers 404 and the notice is gone from the list, then the switch clears). The seen call is read from /__mock/log (path carries the query).
 import {
   ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, noticesOf, pathOf, paymentsOf, profileOf, subscriptionsOf,
 } from "./sportiv-fixtures.mjs";
@@ -39,6 +39,11 @@ export function sportivRoutes(h) {
     ["GET", /^\/me\/notices$/, ({ res, sess }) => { if (h.state().noticesDown) return h.club(res, 500, "Eroare."); const notices = open(sess.email); h.ok(res, { count: notices.length, notices }); }],
     ["POST", /^\/me\/notices\/([A-Za-z0-9]+)\/dismiss$/, ({ res, sess, params }) => {
       if (h.state().dismissFailsOnce) { h.state().dismissFailsOnce = false; return h.club(res, 500, "Eroare."); }
+      if (h.state().dismissGoneOnce) {
+        h.state().dismissGoneOnce = false;
+        (h.state().noticesDismissed ??= {})[sess.email] = [...(h.state().noticesDismissed[sess.email] ?? []), params[0]];
+        return h.club(res, 404, "Mesajul nu mai există.");
+      }
       (h.state().noticesDismissed ??= {})[sess.email] = [...(h.state().noticesDismissed[sess.email] ?? []), params[0]];
       h.ok(res, { count: open(sess.email).length });
     }],

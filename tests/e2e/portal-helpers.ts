@@ -52,6 +52,7 @@ export type MockState = {
   documentForbidden?: boolean;
   noticesDown?: boolean;
   dismissFailsOnce?: boolean;
+  dismissGoneOnce?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */

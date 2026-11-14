@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { mockReset, mockState } from "./portal-helpers";
+import { mockLog, mockReset, mockState } from "./portal-helpers";
 import { SPORTIV_BASE, loginSportiv } from "./sportiv-helpers";
 
 const ANA = "athana0001";
@@ -66,9 +66,34 @@ test.describe("desktop", () => {
     const panel = page.getByRole("dialog", { name: "Mesaje" });
     await mockState({ dismissFailsOnce: true });
     await panel.getByRole("button", { name: "Închide" }).first().click();
-    await expect(page.getByText(FAILED)).toBeVisible();
+    await expect(panel.getByRole("status").filter({ hasText: FAILED })).toBeVisible();
+    await expect(page.getByRole("status", { includeHidden: true }).filter({ hasText: FAILED })).toHaveCount(2);
     await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(2);
     await expect(item(page)).toContainText("2");
+  });
+
+  test("a dismiss answered 404 drops the card without a message", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    await item(page).click();
+    const panel = page.getByRole("dialog", { name: "Mesaje" });
+    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(2);
+    await mockState({ dismissGoneOnce: true });
+    await panel.getByRole("button", { name: "Închide" }).first().click();
+    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(1);
+    await expect(item(page)).toContainText("1");
+    await expect(page.getByText(FAILED)).toHaveCount(0);
+  });
+
+  test("opening the panel reads the list with seen=1, the mount-time load does not", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    await expect(item(page)).toContainText("2");
+    const lists = async() => (await mockLog()).filter((c) => c.method === "GET" && c.path.startsWith("/api/portal/sportiv/me/notices")).map((c) => c.path);
+    expect((await lists()).some((p) => p.includes("seen"))).toBe(false);
+    await item(page).click();
+    await expect(page.getByRole("dialog", { name: "Mesaje" }).getByRole("heading", { level: 3 })).toHaveCount(2);
+    await expect.poll(async() => (await lists()).filter((p) => p.endsWith("?seen=1")).length).toBe(1);
   });
 
   test("a failed list load keeps the shell", async({ page }) => {

@@ -27,6 +27,7 @@ export function isSportivFile(path: string): boolean {
 
 // The query names the backend's sportiv controller reads (history, calendar, competitions, payments). Nothing else is forwarded.
 const QUERY: [RegExp, string[]][] = [
+  [/^\/me\/notices$/, ["seen"]],
   [new RegExp(`^${A}/(history|payments)$`), ["page"]],
   [new RegExp(`^${A}/calendar$`), ["month"]],
   [new RegExp(`^${A}/competitions$`), ["q", "season", "sort", "page"]],
@@ -39,7 +40,8 @@ export function sportivQuery(path: string, incoming: URLSearchParams | string): 
   const out = new URLSearchParams();
   for (const name of names) {
     const value = q.get(name);
-    if (value !== null) out.set(name, value);
+    // `seen` only means "record this view" when it is exactly 1; anything else is dropped.
+    if (value !== null && (name !== "seen" || value === "1")) out.set(name, value);
   }
   const text = out.toString();
   return text ? `?${text}` : "";

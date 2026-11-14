@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { NOTICES } from "@/lib/portal/copy-sportiv";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { SidePanel } from "@/app/_portal/ui/SidePanel";
@@ -10,16 +11,26 @@ import { NoticeCard } from "./NoticeCard";
 
 /** The cards, with the loading, error and empty states. Shared by the desktop panel and the phone sheet. */
 export function NoticeList() {
-  const { state, notices, dismiss, reload } = useNotices();
+  const { state, notices, dismiss, reload, markSeen } = useNotices();
   const toast = useToast();
+  const [failed, setFailed] = useState(false);
+  // The list is only mounted while the panel or sheet is open: each open records the view.
+  useEffect(() => { markSeen(); }, [markSeen]);
   if (state === "loading") return <Spinner />;
   if (state === "error") return <LoadError onRetry={reload} />;
-  if (notices.length === 0) return <p className="text-(length:--portal-text-14) text-muted">{NOTICES.empty}</p>;
+  const onDismiss = (id: string) => {
+    setFailed(false);
+    void dismiss(id).then((ok) => {
+      if (ok) return;
+      // The toast sits behind the modal dialog, hidden from screen readers: the same text is also announced inside it.
+      setFailed(true);
+      toast.show(NOTICES.dismissFailed);
+    });
+  };
   return (
     <div className="flex flex-col gap-4">
-      {notices.map((n) => (
-        <NoticeCard key={n.id} notice={n} onDismiss={() => void dismiss(n.id).then((ok) => { if (!ok) toast.show(NOTICES.dismissFailed); })} />
-      ))}
+      <p role="status" className="text-(length:--portal-text-14) text-alert-ink empty:hidden">{failed ? NOTICES.dismissFailed : ""}</p>
+      {notices.length === 0 ? <p className="text-(length:--portal-text-14) text-muted">{NOTICES.empty}</p> : notices.map((n) => <NoticeCard key={n.id} notice={n} onDismiss={() => onDismiss(n.id)} />)}
     </div>
   );
 }
