@@ -112,7 +112,7 @@ export const WeekendRow: React.FC<{
           collisionPadding={12}
           className="text-caption z-sticky max-w-[320px] bg-surface text-secondary border-retro border-line shadow-retro px-3 py-3 space-y-2 animate-in fade-in-0 zoom-in-95"
         >
-          <p className="text-label uppercase text-accent">
+          <p className="text-label uppercase text-primary">
             {stateLabel}
           </p>
           <div className="space-y-2 [&_p]:m-0 [&_p]:text-inherit [&_strong]:font-semibold [&_strong]:text-primary">

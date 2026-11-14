@@ -477,7 +477,7 @@ const ContactPage: React.FC<{
             {/* Left - contact info */}
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-3">
-                <p className="text-label uppercase text-accent">
+                <p className="text-label uppercase text-primary">
                   Datele noastre
                 </p>
                 <h2 className="text-heading text-primary">

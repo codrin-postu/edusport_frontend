@@ -112,7 +112,7 @@ export function AnnouncementModal({ announcement }: AnnouncementModalProps) {
             transition={{ duration: reducedMotion ? DURATION.fast : DURATION.base, ease: EASE.out }}
           >
             {announcement.eyebrow && (
-              <p className="text-label uppercase text-accent mb-2">
+              <p className="text-label uppercase text-primary mb-2">
                 {announcement.eyebrow}
               </p>
             )}

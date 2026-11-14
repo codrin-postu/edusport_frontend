@@ -75,7 +75,7 @@ function Dialog({
               <IconButton icon="close" label={closeLabel} className="absolute top-2 right-2" />
             </DialogPrimitive.Close>
           )}
-          {eyebrow && <p className="text-label text-accent mb-2">{eyebrow}</p>}
+          {eyebrow && <p className="text-label text-primary mb-2">{eyebrow}</p>}
           <DialogPrimitive.Title className="text-dialog-title text-primary">
             {title}
           </DialogPrimitive.Title>

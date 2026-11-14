@@ -14,7 +14,7 @@ import type { CustomVariant } from "@/components/ui/custom-questions";
 const INDICATOR_VARIANT = {
   card: {
     title: "text-body-sm text-primary",
-    counter: "text-label uppercase text-accent whitespace-nowrap",
+    counter: "text-label uppercase text-primary whitespace-nowrap",
     bar: "relative h-2 border-retro border-line bg-surface-subtle overflow-hidden",
     fill: "absolute inset-y-0 left-0 bg-surface-dark transition-[width] duration-slow ease-out",
   },

@@ -174,7 +174,7 @@ export default async function SportiviIndexPage({ searchParams }: Props) {
               <h2 className="text-display text-primary">
                 {isSearching ? "Rezultate căutare" : "Toți sportivii"}
               </h2>
-              <div className="text-label mt-3 uppercase text-accent">
+              <div className="text-label mt-3 uppercase text-primary">
                 {isSearching ? (
                   <>
                     {totalAthletes} {totalAthletes === 1 ? "rezultat" : "rezultate"} pentru

@@ -187,7 +187,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             <div>
               {/* Meta */}
               <div className="text-caption flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-label text-accent">
+                <span className="text-label text-primary">
                   {CATEGORY_LABELS[article.category]}
                 </span>
                 <span className="text-line-subtle">·</span>
@@ -247,7 +247,7 @@ const ArticleDetailPage: React.FC<Props> = ({ article }) => {
             {/* Sidebar */}
             <aside className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-24">
               <Card className="flex flex-col gap-4">
-                <p className="text-label uppercase text-accent">
+                <p className="text-label uppercase text-primary">
                   {SIDEBAR_HEADER[article.category] ?? "Detalii articol"}
                 </p>
                 <MetaList

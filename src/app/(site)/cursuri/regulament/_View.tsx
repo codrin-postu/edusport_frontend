@@ -44,7 +44,7 @@ const RegulamentPage: React.FC<Props> = ({ categories, currentSeason }) => {
       <section className="relative z-raised bg-surface section">
         <div className="w-full max-w-content mx-auto gutter">
           <div className="flex flex-col gap-3 mb-16">
-            {currentSeason && <span className="text-label uppercase text-accent">{currentSeason}</span>}
+            {currentSeason && <span className="text-label uppercase text-primary">{currentSeason}</span>}
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <h2 className="text-heading text-primary max-w-narrow">
                 Regulament Școala de Patinaj EduSport
@@ -141,7 +141,7 @@ const RegulamentPage: React.FC<Props> = ({ categories, currentSeason }) => {
           {/* Acceptance card */}
           <Card padding="lg" className="mt-12 flex flex-col md:flex-row md:items-center gap-6">
             <div className="flex-1">
-              <p className="text-label uppercase text-accent">Acceptare</p>
+              <p className="text-label uppercase text-primary">Acceptare</p>
               <p className="text-body text-primary mt-2">
                 Prin înscrierea la cursurile Școlii de Patinaj EduSport,
                 părinții/tutorii confirmă că au citit, înțeles și acceptat în

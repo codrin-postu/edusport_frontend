@@ -44,7 +44,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
         <div className="w-full max-w-content mx-auto gutter">
           {/* Introduction */}
           <div className="max-w-prose mb-16">
-            <p className="text-label uppercase text-accent mb-4">
+            <p className="text-label uppercase text-primary mb-4">
               Antrenori & Instructori
             </p>
             <p className="text-body text-secondary">
@@ -124,7 +124,7 @@ const TeamPage: React.FC<Props> = ({ bannerTitle, bannerSubtitle, introText, mem
                       <p
                         className={cn(
                           "text-label uppercase mt-0.5",
-                          featured ? "text-mustard" : "text-accent",
+                          featured ? "text-mustard" : "text-primary",
                         )}
                       >
                         {trainer.role}

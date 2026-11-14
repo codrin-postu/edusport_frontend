@@ -315,7 +315,7 @@ const SeasonCalendarViewV2: React.FC<SeasonCalendarViewV2Props> = ({
         {/* Header: eyebrow + title left, description right */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-8">
           <div>
-            <span className="text-label uppercase text-accent">
+            <span className="text-label uppercase text-primary">
               Calendar sezon
             </span>
             {seasonLabel && (

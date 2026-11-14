@@ -247,7 +247,7 @@ const SportspersonView: React.FC<Props> = ({
         <section className="relative overflow-hidden bg-surface section">
           <SectionWatermark>DESPRE</SectionWatermark>
           <div className="relative mx-auto w-full max-w-content gutter">
-            <div className="text-label uppercase text-accent">
+            <div className="text-label uppercase text-primary">
               Despre mine
             </div>
             {hasItems(sportsperson.story) ? (
@@ -588,7 +588,7 @@ function DespreCell({
 }) {
   return (
     <div className="min-w-0">
-      <div className="text-label mb-3 uppercase text-accent">
+      <div className="text-label mb-3 uppercase text-primary">
         {title}
       </div>
       {children}

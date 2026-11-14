@@ -126,7 +126,7 @@ const HistoryPage: React.FC<Props> = ({
         <div className="w-full max-w-content mx-auto gutter">
           {/* Section header */}
           <div className="flex flex-col gap-3 mb-16">
-            <p className="text-label uppercase text-accent">
+            <p className="text-label uppercase text-primary">
               Despre Club
             </p>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">

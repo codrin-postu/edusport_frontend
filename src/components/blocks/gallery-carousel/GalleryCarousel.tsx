@@ -105,7 +105,7 @@ export function GalleryCarousel({
       {hasHeader && (
         <div className="flex flex-col gap-3 mb-8">
           {eyebrow && (
-            <p className="text-label uppercase text-accent">
+            <p className="text-label uppercase text-primary">
               {eyebrow}
             </p>
           )}

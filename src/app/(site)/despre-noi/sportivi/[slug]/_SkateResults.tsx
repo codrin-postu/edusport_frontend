@@ -78,7 +78,7 @@ function Segment({ seg }: { seg: SkateSegment }) {
   );
   return (
     <div className="min-w-0">
-      <div className="text-label uppercase text-accent">
+      <div className="text-label uppercase text-primary">
         {seg.is_short ? "Program scurt" : "Program liber"}
       </div>
       <dl className="mt-2 space-y-1">

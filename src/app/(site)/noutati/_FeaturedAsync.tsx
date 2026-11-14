@@ -45,7 +45,7 @@ export default async function FeaturedAsync() {
 
         <div className="flex flex-col gap-4">
           <div className="text-caption flex flex-wrap items-center gap-2">
-            <span className="text-label text-accent">
+            <span className="text-label text-primary">
               {CATEGORY_LABELS[featured.category]}
             </span>
             <span className="text-line-subtle">·</span>

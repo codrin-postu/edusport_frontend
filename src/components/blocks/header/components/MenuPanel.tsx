@@ -105,7 +105,7 @@ const RetroPanel: React.FC<{
       );
     } else {
       rows.push(
-        <div key={item.label} className="text-label px-3 pt-3 pb-1 uppercase text-accent">
+        <div key={item.label} className="text-label px-3 pt-3 pb-1 uppercase text-primary">
           {item.label}
         </div>,
       );

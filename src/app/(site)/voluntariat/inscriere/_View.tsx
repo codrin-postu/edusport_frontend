@@ -35,7 +35,7 @@ const VolunteerInscriereView: React.FC<{ formConfig?: FormConfig | null }> = ({
         <div className="max-w-content mx-auto gutter section">
           <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">
-              <p className="text-label uppercase text-accent">
+              <p className="text-label uppercase text-primary">
                 Formular de voluntariat
               </p>
               <h2 className="text-heading text-primary">

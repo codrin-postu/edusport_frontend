@@ -60,7 +60,7 @@ const InscrieriView: React.FC<InscrieriViewProps> = ({
           <div className="max-w-narrow mx-auto">
             <div className="flex flex-col gap-3">
               {club?.season && (
-                <p className="text-label uppercase text-accent">
+                <p className="text-label uppercase text-primary">
                   {club.season.label}
                 </p>
               )}

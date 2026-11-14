@@ -51,7 +51,7 @@ const VolunteerView: React.FC<VolunteerViewProps> = ({
       <section className="relative z-raised bg-surface section">
         <div className="mx-auto w-full max-w-content gutter">
           <div className="flex flex-col gap-3">
-            <p className="text-label uppercase text-accent">
+            <p className="text-label uppercase text-primary">
               {introEyebrow}
             </p>
             <h2 className="text-heading max-w-lg text-primary">
