@@ -137,6 +137,27 @@ See `ARCHITECTURE.md` for the cache strategy.
 - **Old revalidations not firing** — confirm the Strapi webhook secret
   matches `REVALIDATE_SECRET` exactly.
 
+## Portal notices and tracking (deploy order and env)
+
+**Deploy order.** The backend (`feat/admin-sat`) and this frontend deploy together. The frontend reads `reason`,
+`movedFrom` and the notices routes from the backend; neither side works alone. Deploy the backend first or in
+the same window.
+
+**New env vars for the portals** (build args, set in `.env.production`, see `.env.example`):
+
+| Variable                                  | Purpose                                              |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV`    | Umami website id for `sportiv.` (unset: no script)   |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR`   | Umami website id for `antrenor.` (unset: no script)  |
+| `NEXT_PUBLIC_UMAMI_URL`                   | Umami script URL, shared with the site               |
+| `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_DSN`   | GlitchTip DSN, same project as the site              |
+| `NEXT_PUBLIC_SENTRY_RELEASE`              | release tag (build arg)                              |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`          | environment name (build arg)                         |
+| `SENTRY_RELEASE` / `SENTRY_ENVIRONMENT`   | runtime equivalents, optional                        |
+
+**Umami websites to create** (two, in the shared Umami instance, owned by the right team): one for the
+`sportiv.` host and one for the `antrenor.` host. Copy each Website ID into the matching variable above.
+
 ## Errors (GlitchTip)
 
 One GlitchTip project covers the site and both portals (`NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`). Errors only on
