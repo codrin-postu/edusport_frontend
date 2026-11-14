@@ -50,6 +50,8 @@ export type MockState = {
   noAthletes?: boolean;
   documentFile?: string | null;
   documentForbidden?: boolean;
+  noticesDown?: boolean;
+  dismissFailsOnce?: boolean;
 };
 
 /** The mock portal's fixed "today" (a Thursday); see FROZEN_TODAY in portal-fixtures.mjs. */

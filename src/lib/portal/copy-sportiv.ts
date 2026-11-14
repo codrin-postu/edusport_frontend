@@ -33,6 +33,15 @@ export const ACCOUNT = {
   row: (group: string, age: number | null) => (age === null ? group : `${group}, ${age} ani`),
 } as const;
 
+/** Mesaje: the notices panel (desktop) and sheet (phone). The load error is the shared STATES.loadFailed. */
+export const NOTICES = {
+  title: "Mesaje",
+  close: "Închide",
+  closePanel: "Ascunde mesajele",
+  empty: "Niciun mesaj.",
+  dismissFailed: "Nu s-a putut închide. Încearcă din nou.",
+} as const;
+
 /** Acasă, with the performance variant and the promotion moment. */
 export const HOME = {
   greeting: (firstName: string) => `Bună, ${firstName}`,

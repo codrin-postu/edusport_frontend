@@ -2,6 +2,7 @@
 export const ICON_VERSION = {
   "arrow-up-right": "967bf10d",
   "award": "fa62beed",
+  "bell": "d277e647",
   "book-open": "01ee3547",
   "calendar": "c030fbde",
   "calendar-check": "40539819",

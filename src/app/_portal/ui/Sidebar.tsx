@@ -22,11 +22,14 @@ export function Sidebar({
   account,
   label,
   brandHref,
+  above,
 }: {
   items: NavItem[];
   account: SidebarAccount;
   label: string;
   brandHref: string;
+  /** Sits directly above the account row, under a thin line. */
+  above?: React.ReactNode;
 }) {
   const pathname = usePathname();
   const [closed, setClosed] = useState(false);
@@ -65,8 +68,10 @@ export function Sidebar({
             );
           })}
       </nav>
+      <div className="mt-auto flex flex-col">
+      {above && <div className="border-t border-line">{above}</div>}
       <div
-        className="group/acct relative mt-auto"
+        className="group/acct relative"
         data-closed={closed ? "" : undefined}
         onMouseLeave={() => setClosed(false)}
         onFocus={() => { if (skipFocus.current) skipFocus.current = false; else setClosed(false); }}
@@ -125,6 +130,7 @@ export function Sidebar({
             className={cn("transition-transform duration-(--motion-base) ease-(--motion-ease)", open("group-hover/acct:-rotate-90 group-focus-within/acct:-rotate-90"))}
           />
         </Link>
+      </div>
       </div>
     </aside>
   );

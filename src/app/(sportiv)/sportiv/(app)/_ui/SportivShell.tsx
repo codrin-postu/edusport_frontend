@@ -9,6 +9,8 @@ import type { AccountMenuItem } from "@/app/_portal/ui/Sidebar";
 import { PortalShell } from "@/app/_portal/ui/PortalShell";
 import { athleteIdOf, useAthletes } from "../_lib/athletes-context";
 import { sportivNav } from "../_lib/nav";
+import { NoticesButton } from "./NoticesButton";
+import { NoticesPanel } from "./NoticesPanel";
 
 const SECTIONS = new Set(["calendar", "istoric", "concursuri", "parcurs", "plati"]);
 
@@ -31,6 +33,7 @@ export function SportivShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { athletes, picker, current } = useAthletes();
   const fromUrl = athleteIdOf(pathname);
+  const [noticesOpen, setNoticesOpen] = useState(false);
   const [last, setLast] = useState<string | null>(null);
   if (fromUrl !== null && fromUrl !== last) setLast(fromUrl);
   // The remembered athlete counts only while the account still lists it.
@@ -51,9 +54,11 @@ export function SportivShell({ children }: { children: React.ReactNode }) {
       nav={nav}
       account={{ label: current?.firstName ?? ACCOUNT.sheet.settings, href: "/setari", menu }}
       brandHref="/"
+      sidebarAbove={<NoticesButton onOpen={() => setNoticesOpen(true)} />}
       phoneNav={pathname !== "/" && !pathname.startsWith("/setari") && nav.length > 0}
     >
       {children}
+      <NoticesPanel open={noticesOpen} onOpenChange={setNoticesOpen} />
     </PortalShell>
   );
 }

@@ -192,6 +192,8 @@
   --portal-monthtitle-w: 150px;    /* layout month picker title */
   --portal-points-w: 84px;         /* layout points cell */
   --portal-sheet-w: 460px;         /* layout sheet width from the desktop breakpoint */
+  --portal-panel-w: 420px;         /* layout notices side panel width */
+  --portal-panel-shadow: -8px 0 24px rgb(14 26 60 / 0.18); /* notices side panel edge shadow (the panel only, never its cards) */
   --portal-popup-w: 560px;         /* layout form popup width from the desktop breakpoint */
   --portal-popup-max-h: 92svh;     /* layout form popup height cap (bottom sheet on a phone) */
   --portal-cols: minmax(0, 3fr) minmax(0, 2fr); /* layout two-part pages: main 3, side 2 */

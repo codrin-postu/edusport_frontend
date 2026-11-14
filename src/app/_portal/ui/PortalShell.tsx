@@ -16,12 +16,15 @@ export function PortalShell({
   account,
   brandHref,
   phoneNav,
+  sidebarAbove,
   children,
 }: {
   nav: NavItem[];
   account: SidebarAccount;
   brandHref: string;
   phoneNav?: boolean;
+  /** Rendered in the sidebar directly above the account row. */
+  sidebarAbove?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const showPhoneNav = phoneNav !== false;
@@ -29,7 +32,7 @@ export function PortalShell({
     <ToastProvider>
       <EntryReveal />
       <div className="min-h-svh bg-surface text-primary portal:flex">
-        <Sidebar items={nav} account={account} label={MENU} brandHref={brandHref} />
+        <Sidebar items={nav} account={account} label={MENU} brandHref={brandHref} above={sidebarAbove} />
         <div className={cn("min-w-0 flex-1", showPhoneNav && "pb-(--portal-nav-safe) portal:pb-0")}>{children}</div>
         {showPhoneNav && <BottomNav items={nav} label={MENU} />}
       </div>
