@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/ui/icon";
-import { ACCOUNT } from "@/lib/portal/copy-sportiv";
+import { ACCOUNT, NOTICES } from "@/lib/portal/copy-sportiv";
 import { logout } from "@/app/_portal/lib/logout";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { cn } from "@/utils/cn";
 import { useAthletes } from "../_lib/athletes-context";
+import { NoticeCount } from "./NoticesButton";
+import { NoticeList } from "./NoticesPanel";
 
 const FOCUS = "outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus";
 const LINE = "flex min-h-12 w-full items-center text-left text-(length:--portal-text-15) font-semibold text-primary no-underline hover:no-underline";
@@ -16,8 +18,20 @@ const LINE = "flex min-h-12 w-full items-center text-left text-(length:--portal-
 /** Phone: who is signed in as whom. The account's athletes (the current one marked), then Setări and Ieșire (board Cont). */
 export function AccountSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const { picker, current } = useAthletes();
+  const [noticesOpen, setNoticesOpen] = useState(false);
   return (
+    <>
     <Sheet open={open} onOpenChange={onOpenChange} title={ACCOUNT.sheet.title}>
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        onClick={() => setNoticesOpen(true)}
+        className={cn(LINE, "cursor-pointer gap-3 border-b border-line-subtle", FOCUS)}
+      >
+        <Icon name="bell" size="20" />
+        {NOTICES.title}
+        <NoticeCount className="ml-auto" />
+      </button>
       <h3 className="text-(length:--portal-text-14) font-bold text-muted">{ACCOUNT.sheet.list}</h3>
       <ListCard>
         {picker.map((a) => (
@@ -41,6 +55,10 @@ export function AccountSheet({ open, onOpenChange }: { open: boolean; onOpenChan
         <button type="button" onClick={() => void logout()} className={cn(LINE, "cursor-pointer", FOCUS)}>{ACCOUNT.sheet.logout}</button>
       </div>
     </Sheet>
+    <Sheet open={noticesOpen} onOpenChange={setNoticesOpen} title={NOTICES.title}>
+      <NoticeList />
+    </Sheet>
+    </>
   );
 }
 
@@ -57,6 +75,7 @@ export function AccountButton() {
         className="flex min-h-(--portal-tap) cursor-pointer items-center gap-2 bg-surface-dark px-3 text-(length:--portal-text-14) font-bold text-surface-raised outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus"
       >
         {current?.firstName ?? ACCOUNT.sheet.settings}
+        <NoticeCount />
         <Icon name="chevron-down" size="sm" />
       </button>
       <AccountSheet open={open} onOpenChange={setOpen} />

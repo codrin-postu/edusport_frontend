@@ -81,3 +81,50 @@ test.describe("desktop", () => {
     await expect(page.getByRole("dialog", { name: "Mesaje" })).toContainText("Nu am putut încărca datele.");
   });
 });
+
+test.describe("phone", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("no bell in the header", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    await expect(page.getByRole("button", { name: /^Ana/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Mesaje/ })).toHaveCount(0);
+  });
+
+  test("the account button shows the count", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    const button = page.getByRole("button", { name: /^Ana/ });
+    await expect(button).toContainText("2");
+  });
+
+  test("the sheet's first row is Mesaje with the counter, then the athletes", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    await page.getByRole("button", { name: /^Ana/ }).click();
+    const sheet = page.getByRole("dialog", { name: "Alege sportivul" });
+    const row = sheet.getByRole("button", { name: /^Mesaje/ });
+    await expect(row).toContainText("2");
+    const first = await sheet.evaluate((el) => {
+      const all = [...el.querySelectorAll("button, a")];
+      return all[0]?.textContent?.startsWith("Mesaje") ?? false;
+    });
+    expect(first).toBe(true);
+    await expect(sheet.getByRole("link", { name: /Ana/ })).toBeVisible();
+  });
+
+  test("Mesaje opens the list as a sheet and closing a card updates both counters", async({ page }) => {
+    await loginSportiv(page);
+    await page.goto(`/${ANA}`);
+    await page.getByRole("button", { name: /^Ana/ }).click();
+    await page.getByRole("dialog", { name: "Alege sportivul" }).getByRole("button", { name: /^Mesaje/ }).click();
+    const list = page.getByRole("dialog", { name: "Mesaje" });
+    await expect(list.getByRole("heading", { level: 3 })).toHaveCount(2);
+    await list.getByRole("button", { name: "Închide" }).first().click();
+    await expect(list.getByRole("heading", { level: 3 })).toHaveCount(1);
+    await expect(page.locator("header button").filter({ hasText: "Ana" })).toContainText("1");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog", { name: "Alege sportivul" }).getByRole("button", { name: /^Mesaje/ })).toContainText("1");
+  });
+});
