@@ -44,6 +44,10 @@ export default defineConfig({
         PORTAL_HOST_ANTRENOR: "antrenor.localhost:3200",
         PORTAL_HOST_SPORTIV: "sportiv.localhost:3200",
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: "e2e-umami",
+        // The portal ids and a script URL the spec intercepts with a stub (no real Umami in e2e).
+        NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV: "test-sportiv",
+        NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR: "test-antrenor",
+        NEXT_PUBLIC_UMAMI_URL: "http://tracker.invalid/script.js",
       },
       reuseExistingServer: false,
       timeout: 300_000,

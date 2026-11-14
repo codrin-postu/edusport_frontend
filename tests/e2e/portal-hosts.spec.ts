@@ -15,7 +15,7 @@ test.describe("coach host", () => {
   test("pages are noindex and carry no site extras", async({ page }) => {
     const res = await page.goto("/");
     expect(res?.headers()["x-robots-tag"]).toBe("noindex, nofollow");
-    await expect(page.locator("script[src*=\"umami\"]")).toHaveCount(0);
+    await expect(page.locator("script[data-website-id=\"e2e-umami\"]")).toHaveCount(0);
     await expect(page.locator("meta[name=\"robots\"][content*=\"noindex\"]")).toHaveCount(1);
   });
 

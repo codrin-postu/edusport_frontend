@@ -169,6 +169,12 @@ already wired in `src/app/layout.tsx` and only activates when the env var is set
 3. Redeploy. Pageviews (incl. SPA route changes) track automatically → covers pages
    visited and user flows (Umami "Journeys").
 
+**Portals (sportiv. and antrenor.):** one Umami website per portal host. Create two websites and set
+`NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV` and `NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR` (build args, like the
+others; same `NEXT_PUBLIC_UMAMI_URL`). Unset id: no script on that portal. Only page views are sent, with the
+route pattern as the URL (for example `/[athlete]/concursuri/[result]`; invite links are `/invite`) and an empty
+title and referrer: no names, e-mails, ids or query strings reach Umami. No custom events there.
+
 **Custom events** (via `src/lib/analytics.ts` `track()`): `inscriere.step_next`,
 `inscriere.submit_success` (enrollment funnel), `contact.submit`, `voluntariat.submit`,
 `parteneri.submit`. Add more with `track("section.action", { ...data })`.

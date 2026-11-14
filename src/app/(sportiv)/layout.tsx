@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "../globals.css";
+import { PortalUmami } from "@/app/_portal/ui/PortalUmami";
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
@@ -31,7 +32,10 @@ export const metadata: Metadata = {
 export default function SportivRootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${inter.variable} ${leagueSpartan.variable} ${climateCrisis.variable}`}>
-      <body data-theme="portal" className="bg-surface">{children}</body>
+      <body data-theme="portal" className="bg-surface">
+        {children}
+        <PortalUmami portal="sportiv" websiteId={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV} />
+      </body>
     </html>
   );
 }
