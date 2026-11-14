@@ -102,10 +102,12 @@ const BIRTH_MONTH_NAMES = [
 /** "Lună" options; value is zero-padded so it composes straight into ZZ.LL.AAAA. */
 export const BIRTH_MONTH_OPTIONS = BIRTH_MONTH_NAMES.map((label, i) => ({ value: pad2(i + 1), label }));
 
-/** 25 years ago to 2 years ago, by the calendar year at `now` [SPEC 9]. */
+/** The earliest birth year the form offers: adults can join Școala too. */
+export const EARLIEST_BIRTH_YEAR = 1980;
+
+/** 1980 to 2 years ago, by the calendar year at `now`. */
 export function birthYearRange(now: Date = new Date()): { minYear: number; maxYear: number } {
-  const year = now.getFullYear();
-  return { minYear: year - 25, maxYear: year - 2 };
+  return { minYear: EARLIEST_BIRTH_YEAR, maxYear: now.getFullYear() - 2 };
 }
 
 /** "An" options from birthYearRange, oldest first. */
