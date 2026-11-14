@@ -45,7 +45,7 @@ export function athleteRow(id, state) {
 }
 
 const session = (a, offset, start, end) => ({
-  date: addDays(FROZEN_TODAY, offset), startTime: start, endTime: end, kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null, reason: null, movedFrom: null,
+  date: addDays(FROZEN_TODAY, offset), startTime: start, endTime: end, kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, reason: null, movedFrom: null,
 });
 
 const competitionRow = { resultId: "res-0001", eventName: "Cupa României 2026", date: addDays(FROZEN_TODAY, -20), location: "București", category: "Advanced Novice Girls", categoryShort: "ANG", placement: 2, total: 98.42 };
