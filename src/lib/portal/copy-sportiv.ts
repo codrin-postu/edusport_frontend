@@ -83,6 +83,8 @@ export const SESSION = {
   lesson: "Individual",
   competition: "Concurs",
   cancelled: "anulată",
+  cancelledBand: "Anulată",
+  movedFrom: (date: string, time: string | null) => (time === null ? `Mutată de pe ${date}` : `Mutată de pe ${date}, ${time}`),
   coaches: (names: string) => `Antrenor: ${names}`,
   time: (start: string, end: string) => `Ora: ${start} - ${end}`,
   place: (location: string) => `Loc: ${location}`,

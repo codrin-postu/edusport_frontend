@@ -8,6 +8,7 @@
   --color-nav-on-dark: #c9d6ee;    /* 23 25 sidebar links, kicker on navy */
   --color-tag-ink: #111111;        /* 12 Individual tag */
   --color-cancelled: #c0c0c4;      /* 33 calendar cancelled bar */
+  --color-cancelled-band: #ccd5e3; /* 33 cancelled session end band, one step darker than the line subtle so it reads as a state */
   --color-row-hover: #e1ecfb;      /* motion: link row hover, presence flash (same ice light) */
   --color-row-press: #cfe0f8;      /* motion: link row pressed, a slightly darker ice */
   --breakpoint-portal: 56.25rem;   /* 34 900 px phone / desktop switch */

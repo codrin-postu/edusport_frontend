@@ -45,7 +45,7 @@ export function athleteRow(id, state) {
 }
 
 const session = (a, offset, start, end) => ({
-  date: addDays(FROZEN_TODAY, offset), startTime: start, endTime: end, kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null,
+  date: addDays(FROZEN_TODAY, offset), startTime: start, endTime: end, kind: "grupa", title: a.groupName, location: a.level.location, coaches: [a.coach], cancelled: false, note: null, reason: null, movedFrom: null,
 });
 
 const competitionRow = { resultId: "res-0001", eventName: "Cupa României 2026", date: addDays(FROZEN_TODAY, -20), location: "București", category: "Advanced Novice Girls", categoryShort: "ANG", placement: 2, total: 98.42 };
@@ -61,7 +61,7 @@ export function homeOf(id, state) {
     athlete: { id, name: a.name, firstName: a.firstName, age: a.age, inactive: state.inactive === id || state.inactive === true },
     level: a.level, category: comps ? "Advanced Novice Girls" : null, seasonLabel: "2026-2027",
     presences: { total: a.presences, months: [{ month: "2026-09", count: 7, state: "past" }, { month: "2026-10", count: 8, state: "past" }, { month: "2026-11", count: 6, state: "current" }, { month: "2026-12", count: null, state: "future" }, { month: "2027-01", count: null, state: "future" }, { month: "2027-02", count: null, state: "future" }] },
-    upcoming: state.noUpcoming ? [] : [session(a, 0, "17:30", "18:30"), { ...session(a, 2, "17:30", "18:30"), kind: "individual" }, { ...session(a, 7, "17:30", "18:30"), ...(comps ? { kind: "concurs" } : {}) }],
+    upcoming: state.noUpcoming ? [] : state.sessionNotices ? [{ ...session(a, 2, "17:30", "18:30"), cancelled: true, reason: "Vacanță" }, { ...session(a, 4, "18:00", "19:00"), movedFrom: { date: addDays(FROZEN_TODAY, 3), startTime: "17:30" } }] : [session(a, 0, "17:30", "18:30"), { ...session(a, 2, "17:30", "18:30"), kind: "individual" }, { ...session(a, 7, "17:30", "18:30"), ...(comps ? { kind: "concurs" } : {}) }],
     abonament: a.abonament ? { ...a.abonament, validUntil: addDays(FROZEN_TODAY, 25) } : null,
     lastCompetition,
     promotion: state.promotion === id || state.promotion === true ? { from: "Intermediari Bronze", to: "Intermediari Silver" } : null,

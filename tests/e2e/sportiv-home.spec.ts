@@ -36,6 +36,20 @@ test("Acasă of a school athlete: presences, sessions and the abonament", async(
   await expect(page.getByRole("link", { name: "Detalii ›" })).toHaveAttribute("href", `/${ANA}/plati`);
 });
 
+test("Acasă keeps a cancelled session", async({ page }) => {
+  await mockState({ sessionNotices: true });
+  await loginSportiv(page);
+  await page.goto(`/${ANA}`);
+  const rows = page.locator("details.group\\/session");
+  await expect(rows).toHaveCount(2);
+  await expect(rows.nth(0).locator("summary")).toContainText("Anulată");
+  await expect(rows.nth(0).locator("summary")).toContainText("Vacanță");
+  await expect(rows.nth(0).locator("summary s")).toHaveText("17:30");
+  await expect(rows.nth(1).locator("summary")).toContainText("Mutată de pe Dum 8 noi, 17:30");
+  await expect(rows.nth(1).locator("summary")).not.toContainText("Anulată");
+  await expect(rows.nth(1).locator("summary s")).toHaveCount(0);
+});
+
 test("Acasă of a performance athlete shows the last competition", async({ page }) => {
   await loginSportiv(page, ADULT_EMAIL);
   await page.goto(`/${IOANA}`);

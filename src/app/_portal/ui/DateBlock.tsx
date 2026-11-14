@@ -17,8 +17,8 @@ export function EmptyDateBlock({ label }: { label: string }) {
   );
 }
 
-/** Date block, one size everywhere: red weekday word (muted with the rest when `dim`), day number and (when the row has one) the hour, stacked in an ice square with a 6px radius (a named round exception). */
-export function DateBlock({ word, day, time, dim, tip }: { word: string; day: string; time?: string; dim?: boolean; tip?: string }) {
+/** Date block, one size everywhere: red weekday word (muted with the rest when `dim`; `struck` strikes the hour through, for a cancelled session), day number and (when the row has one) the hour, stacked in an ice square with a 6px radius (a named round exception). */
+export function DateBlock({ word, day, time, dim, struck, tip }: { word: string; day: string; time?: string; dim?: boolean; struck?: boolean; tip?: string }) {
   const block = (
     <span
       data-date-block
@@ -33,7 +33,7 @@ export function DateBlock({ word, day, time, dim, tip }: { word: string; day: st
       </span>
       {time && (
         <span data-date-time className={cn("text-(length:--portal-dateblock-time) font-bold leading-tight", dim && "text-muted-on-dark")}>
-          {time}
+          {struck ? <s>{time}</s> : time}
         </span>
       )}
     </span>

@@ -39,13 +39,23 @@ test("Calendar shows a cancelled session and a competition", async({ page }) => 
   await page.getByRole("button", { name: "7 noiembrie", exact: true }).click();
   const row = page.locator("details");
   const body = row.locator(":scope > div").getByText("anulată", { exact: true });
-  await expect(row.locator("summary").getByText("anulată", { exact: true })).toBeVisible();
+  await expect(row.locator("summary").getByText("Anulată", { exact: true })).toBeVisible();
   await expect(body).toBeHidden();
   await row.locator("summary").click();
   await expect(row.getByText("Antrenor: Alina Gheorghe")).toBeVisible();
   await expect(body).toBeVisible();
   await page.getByRole("button", { name: "20 noiembrie", exact: true }).click();
   await expect(page.getByText("Concurs", { exact: true })).toBeVisible();
+});
+
+test("the day list shows the reason of a cancelled session without opening it", async({ page }) => {
+  await page.goto(`/${ANA}/calendar`);
+  await page.getByRole("button", { name: "7 noiembrie", exact: true }).click();
+  const row = page.locator("details");
+  await expect(row.locator("summary").getByText("Vacanță", { exact: true })).toBeVisible();
+  await expect(row).not.toHaveAttribute("open", "");
+  await page.getByRole("button", { name: "9 noiembrie", exact: true }).click();
+  await expect(page.locator("details summary").getByText("Mutată de pe Dum 8 noi, 17:30", { exact: true })).toBeVisible();
 });
 
 test("Calendar next month is disabled when the answer has none, and the phone calendar link downloads the file", async({ page }) => {

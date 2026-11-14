@@ -45,6 +45,7 @@ export type MockState = {
   unlisted?: string | null;
   noPassword?: boolean;
   noUpcoming?: boolean;
+  sessionNotices?: boolean;
   noPrevMonth?: boolean;
   noAthletes?: boolean;
   documentFile?: string | null;
