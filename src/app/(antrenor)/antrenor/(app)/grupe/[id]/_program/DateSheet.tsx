@@ -13,15 +13,16 @@ import { SheetFooter } from "../../../../_ui/SheetFooter";
 import { TimeDuration } from "./TimeDuration";
 import { useSend } from "./useSend";
 
-type Choice = "cancel" | "move" | "remove" | "keep";
-type Props = { occurrence: Occurrence; today: string; onClose: () => void; onDone: () => void };
+export type DateChoice = "cancel" | "move" | "remove" | "keep";
+type Choice = DateChoice;
+type Props = { occurrence: Occurrence; today: string; initial?: DateChoice; onClose: () => void; onDone: () => void };
 
 /** One date of the program: "Anulează" with a note, "Mută", "Șterge", and "Se ține" on a date that was cancelled or moved. */
-export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
+export function DateSheet({ occurrence: o, today, initial, onClose, onDone }: Props) {
   const { busy, message, send } = useSend(onDone);
   const state = dateState(o, today);
   const changed = state === "cancelled" || state === "moved";
-  const [choice, setChoice] = useState<Choice>(state === "moved" ? "move" : "cancel");
+  const [choice, setChoice] = useState<Choice>(initial ?? (state === "moved" ? "move" : "cancel"));
   const [reason, setReason] = useState(o.note ?? "");
   const [newDate, setNewDate] = useState(o.date);
   const [newTime, setNewTime] = useState(o.startTime ?? "");
@@ -48,11 +49,10 @@ export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
       open
       onOpenChange={(open) => { if (!open && !busy) onClose(); }}
       title={`${capitalize(longDay(o.date))}, ${o.startTime ?? ""}`}
-      description={PROGRAM.dateOnly}
       footer={<SheetFooter message={message} busy={busy} disabled={!ready} confirm={choice === "remove" ? PROGRAM.remove : PROGRAM.save} onClose={onClose} onConfirm={submit} />}
     >
       <div role="radiogroup" aria-label={PROGRAM.thisDate} className="flex flex-col gap-3">
-        <ChoiceRow label={PROGRAM.cancel} sub={PROGRAM.cancelSub} checked={choice === "cancel"} onSelect={() => setChoice("cancel")}>
+        <ChoiceRow label={PROGRAM.cancel} checked={choice === "cancel"} onSelect={() => setChoice("cancel")}>
           {choice === "cancel" && (
             <div>
               <label htmlFor="date-note" className="text-field-label text-label-ink mb-(--field-gap) block">{PROGRAM.note}</label>
@@ -60,7 +60,7 @@ export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
             </div>
           )}
         </ChoiceRow>
-        <ChoiceRow label={PROGRAM.move} sub={PROGRAM.moveSub} checked={choice === "move"} onSelect={() => setChoice("move")}>
+        <ChoiceRow label={PROGRAM.move} checked={choice === "move"} onSelect={() => setChoice("move")}>
           {choice === "move" && (
             <div className="grid grid-cols-2 gap-3">
               <DatePickerField id="date-new" label={PROGRAM.newDate} value={newDate} onChange={setNewDate} variant="card" />
@@ -68,8 +68,8 @@ export function DateSheet({ occurrence: o, today, onClose, onDone }: Props) {
             </div>
           )}
         </ChoiceRow>
-        <ChoiceRow label={PROGRAM.remove} sub={PROGRAM.removeSub} checked={choice === "remove"} onSelect={() => setChoice("remove")} />
-        {changed && <ChoiceRow label={PROGRAM.keepChoice} sub={PROGRAM.keepSub} checked={choice === "keep"} onSelect={() => setChoice("keep")} />}
+        <ChoiceRow label={PROGRAM.remove} checked={choice === "remove"} onSelect={() => setChoice("remove")} />
+        {changed && <ChoiceRow label={PROGRAM.keepChoice} checked={choice === "keep"} onSelect={() => setChoice("keep")} />}
       </div>
     </Sheet>
   );

@@ -127,6 +127,19 @@ export const CALENDAR = {
   grid: "Zilele lunii",
 } as const;
 
+/** The calendar session sheet. COPY NEEDED: the two toasts and the lesson cancel name are proposals pending the user. */
+export const SESSION_SHEET = {
+  presence: "Prezență",
+  cancel: "Anulează",
+  move: "Mută",
+  remove: "Șterge",
+  reason: "Motiv",
+  giveUp: "Renunță",
+  lessonCancelled: "Lecție anulată.",
+  lessonDeleted: "Lecție ștearsă.",
+  deleteTitle: (date: string) => `Ștergi lecția din ${date}?`,
+} as const;
+
 export const GRUPE = {
   title: "Grupe",
   groupsCount: (n: number) => count(n, "grupă", "grupe"),
@@ -303,7 +316,7 @@ export const PROGRAM = {
   appliesFrom: "Se aplică din",
   change: "Schimbă",
   drawerChange: "Schimbă programul",
-  note: "Notă",
+  note: "Motiv",
   endProgram: "Șterge programul",
   thisDate: "Această dată",
   cancel: "Anulează",
@@ -326,14 +339,9 @@ export const PROGRAM = {
   ruleSub: (min: number, freq: string, from: string, until: string | null) => (until ? `${min} min, ${freq}, din ${from}, până pe ${until}` : `${min} min, ${freq}, din ${from}`),
   movedFromSub: (when: string) => `mutată din ${when}`,
   moved: "Mutată",
-  dateOnly: "Schimbi doar această dată. Programul săptămânal rămâne.",
-  cancelSub: "Părinții văd data anulată și nota.",
-  moveSub: "Alegi altă zi sau oră pentru această dată.",
   remove: "Șterge",
-  removeSub: "Data dispare din program, fără notă.",
   giveUp: "Renunță",
   keepChoice: "Se ține",
-  keepSub: "Data revine în program cum era.",
   endFrom: "Din data",
   changeSub: (rule: string) => `${rule}. Datele de dinainte rămân cum au fost.`,
   endTitle: (weekday: string) => `Ștergi programul de ${weekday}?`,

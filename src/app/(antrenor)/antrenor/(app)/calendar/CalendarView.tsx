@@ -6,7 +6,7 @@ import { CALENDAR, NAV } from "@/lib/portal/copy";
 import { itemsOn, marksOf } from "@/lib/portal/calendar";
 import { longDay } from "@/lib/portal/format";
 import { monthTitle, shiftMonth } from "@/lib/portal/month-grid";
-import type { CoachCalendar } from "@/lib/portal/api-types";
+import type { CoachCalendar, CoachCalendarItem } from "@/lib/portal/api-types";
 import { CalendarLegend } from "@/app/_portal/ui/CalendarLegend";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { MonthGrid } from "@/app/_portal/ui/MonthGrid";
@@ -19,6 +19,7 @@ import { Spinner } from "@/app/_portal/ui/Spinner";
 import { bucharestToday } from "../../_lib/today";
 import { usePortal } from "../../_lib/use-portal";
 import { SessionRow } from "../../_ui/SessionRow";
+import { SessionSheet } from "./SessionSheet";
 
 const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -50,6 +51,7 @@ export function CalendarView() {
       nextLabel={CALENDAR.next}
     />
   );
+  const [open, setOpen] = useState<CoachCalendarItem | null>(null);
   const cal = calendar.data;
   const shown = cal ? (picked ?? defaultDay(cal)) : null;
   const items = cal && shown ? itemsOn(cal, shown) : [];
@@ -77,6 +79,7 @@ export function CalendarView() {
                       {items.map((i) => (
                         <SessionRow
                           from="calendar"
+                          onOpen={() => setOpen(i)}
                           key={i.lessonId ?? i.occurrenceKey ?? i.sessionId ?? `${i.startTime}${i.title}`}
                           row={{
                             kind: i.kind, date: shown, startTime: i.startTime, title: i.title, children: i.children, location: i.location, durationMin: i.durationMin,
@@ -92,6 +95,7 @@ export function CalendarView() {
           </Columns>
         )}
       </PageBody>
+      {open && cal && <SessionSheet item={open} today={cal.today} onClose={() => setOpen(null)} onDone={() => { setOpen(null); calendar.reload(); }} />}
     </>
   );
 }

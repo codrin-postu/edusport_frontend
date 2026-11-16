@@ -33,8 +33,8 @@ export const presenceHref = (r: { sessionId: string | null; occurrenceKey: strin
 const hrefOf = (r: SessionRowData, from: PresenceFrom | null): string =>
   r.kind === "individual" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r, from);
 
-/** One row of the today and day lists: date square (weekday, day, hour), title, sub line, and the Grup or Individual status block. `now` is HH:mm; earlier rows are dimmed. */
-export function SessionRow({ row, now, from = null }: { row: SessionRowData; now?: string; from?: PresenceFrom | null }) {
+/** One row of the today and day lists (with `onOpen` a button that opens a sheet instead of a link): date square (weekday, day, hour), title, sub line, and the Grup or Individual status block. `now` is HH:mm; earlier rows are dimmed. */
+export function SessionRow({ row, now, from = null, onOpen }: { row: SessionRowData; now?: string; from?: PresenceFrom | null; onOpen?: () => void }) {
   const cancelled = row.cancelled === true;
   const dim = cancelled || (now !== undefined && row.startTime < now);
   const sub =
@@ -51,7 +51,8 @@ export function SessionRow({ row, now, from = null }: { row: SessionRowData; now
     );
   return (
     <ListRow
-      href={cancelled ? undefined : hrefOf(row, from)}
+      href={onOpen || cancelled ? undefined : hrefOf(row, from)}
+      onClick={onOpen}
       lead={<DateBlock word={weekdayShort(row.date)} day={String(Number(row.date.slice(8)))} time={row.startTime} dim={dim} />}
       title={row.title}
       sub={cancelled ? CALENDAR.legendCancelled : sub}

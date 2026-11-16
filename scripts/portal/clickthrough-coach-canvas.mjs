@@ -133,7 +133,7 @@ await page.waitForTimeout(500);
 if ((await timed().count()) !== before - 1) note(`remove date: ${before} rows before, ${await timed().count()} after`); else step("removed one date");
 await timed().first().click();
 await dialog.getByRole("radio", { name: /^Anulează/ }).click();
-await dialog.getByLabel("Notă").fill("Patinoar închis.");
+await dialog.getByLabel("Motiv").fill("Patinoar închis.");
 await dialog.getByRole("button", { name: "Salvează" }).click();
 await toast("a fost anulată.");
 await timed().first().click();

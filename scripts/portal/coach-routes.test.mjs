@@ -51,6 +51,8 @@ it("allows the canvas routes", () => {
 it("allows the lesson plan route and forwards the delete scope", () => {
   const a = r.allowedCoachRoute;
   assert.equal(a("PUT", "/lessons/lser1/plan"), true);
+  assert.equal(a("POST", "/lessons/lser1/cancel"), true);
+  assert.equal(a("PUT", "/lessons/lser1/cancel"), false);
   assert.equal(a("POST", "/lessons/lser1/plan"), false);
   assert.equal(a("PUT", "/lessons/../plan"), false);
   assert.equal(r.forwardedQuery("/lessons/lser1", new URLSearchParams("scope=following&x=1")), "?scope=following");

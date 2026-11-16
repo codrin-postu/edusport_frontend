@@ -7,7 +7,7 @@ const ROUTES: [string, string][] = [
   ["GET", "/today"], ["GET", "/today/club"], ["GET", "/groups"], ["GET", `/groups/${ID}`], ["GET", `/groups/${ID}/program`], ["GET", `/groups/${ID}/saved-days`],
   ["POST", `/groups/${ID}/program`], ["PUT", `/groups/${ID}/program-public`], ["POST", `/groups/${ID}/members`],
   ["GET", "/session"], ["POST", "/session/check"], ["PUT", "/session"],
-  ["POST", "/lessons"], ["GET", `/lessons/${ID}`], ["PUT", `/lessons/${ID}`], ["DELETE", `/lessons/${ID}`], ["PUT", `/lessons/${ID}/plan`],
+  ["POST", "/lessons"], ["GET", `/lessons/${ID}`], ["PUT", `/lessons/${ID}`], ["DELETE", `/lessons/${ID}`], ["PUT", `/lessons/${ID}/plan`], ["POST", `/lessons/${ID}/cancel`],
   ["GET", "/athletes/search"], ["POST", "/athletes"], ["GET", `/athletes/${ID}`], ["GET", "/history"],
   ["GET", "/calendar"], ["GET", "/competitions"],
   ["POST", `/groups/${ID}/members/${ID}/move`], ["POST", `/groups/${ID}/members/${ID}/remove`],

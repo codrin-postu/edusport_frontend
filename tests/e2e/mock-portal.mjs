@@ -21,6 +21,7 @@ const MSG = {
   badLogin: "E-mailul sau parola nu sunt corecte.",
   expired: "Invitația a expirat. Cere administratorului una nouă.",
   saved: "Salvat.",
+  stale: "Datele s-au schimbat. Reîncarcă pagina.",
 };
 
 let today;
@@ -324,7 +325,7 @@ function calendarData(month) {
         const { cancelled } = o;
         items.push({
           kind: "grup", cancelled, date, startTime: o.start, durationMin: o.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
-          location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null,
+          location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null, reason: null,
         });
       }
     }
@@ -333,13 +334,13 @@ function calendarData(month) {
       if (rec.date !== date || g.own || !rec.coachIds.includes(ME)) continue;
       items.push({
         kind: "grup", cancelled: false, date, startTime: rec.startTime, durationMin: rec.durationMin, title: g.name, children: rec.ticks.length,
-        location: g.location ?? null, done: true, standIn: true, sessionId: rec.sessionId, occurrenceKey: key, lessonId: null,
+        location: g.location ?? null, done: true, standIn: true, sessionId: rec.sessionId, occurrenceKey: key, lessonId: null, reason: null,
       });
     }
     for (const l of Object.values(world.lessons).filter((x) => x.date === date && x.coachIds.includes(ME))) {
       items.push({
-        kind: "individual", cancelled: false, date, startTime: l.startTime, durationMin: l.durationMin, title: l.athleteName, children: null,
-        location: null, done: l.state === "saved", standIn: false, sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
+        kind: "individual", cancelled: l.cancelled === true, date, startTime: l.startTime, durationMin: l.durationMin, title: l.athleteName, children: null,
+        location: null, done: l.state === "saved", standIn: false, sessionId: null, occurrenceKey: null, lessonId: l.lessonId, reason: l.cancelReason ?? null,
       });
     }
     items.sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -571,6 +572,17 @@ function lessonPlan({ body, res, params }) {
   }
   for (const id of gone) delete world.lessons[id];
   ok(res, writeLessons({ athlete, body }));
+}
+
+/** POST /lessons/:id/cancel: the lesson stays, marked cancelled with the optional reason (backend cancelCoachLesson). */
+function lessonCancel({ body, res, params }) {
+  const l = world.lessons[params[0]];
+  if (!l || !l.coachIds.includes(ME)) return notFound(res);
+  const reason = body.reason ?? null;
+  if (reason !== null && (typeof reason !== "string" || reason.length > 120)) return club(res, 400, MSG.invalid);
+  if (l.state === "saved" || l.date < today || l.cancelled) return club(res, 409, MSG.stale);
+  Object.assign(l, { cancelled: true, cancelReason: reason });
+  ok(res, { cancelled: true });
 }
 
 /** DELETE /lessons/:id?scope=one|following. */
@@ -920,6 +932,7 @@ const coachRoutes = [
   ["GET", /^\/lessons\/([^/]+)$/, ({ res, params }) => { const l = world.lessons[params[0]]; return l && l.coachIds.includes(ME) ? ok(res, lessonView(l)) : notFound(res); }],
   ["POST", /^\/lessons$/, lessonCreate],
   ["PUT", /^\/lessons\/([^/]+)\/plan$/, lessonPlan],
+  ["POST", /^\/lessons\/([^/]+)\/cancel$/, lessonCancel],
   ["PUT", /^\/lessons\/([^/]+)$/, lessonWrite],
   ["DELETE", /^\/lessons\/([^/]+)$/, lessonDelete],
   ["GET", /^\/athletes\/search$/, searchAthletes],

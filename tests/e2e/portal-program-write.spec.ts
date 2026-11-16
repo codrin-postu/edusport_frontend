@@ -33,19 +33,18 @@ for (const size of SIZES) {
       await dateRow(page, "Mar", "10").click();
       const d = dialog(page);
       await expect(d.getByRole("heading", { name: "Marți, 10 noiembrie, 18:15" })).toBeVisible();
-      await expect(d.getByText("Schimbi doar această dată. Programul săptămânal rămâne.")).toBeVisible();
       await expect(d.getByRole("radio", { name: /^Anulează/ })).toHaveAttribute("aria-checked", "true");
-      await expect(d.getByLabel("Notă")).toBeVisible();
+      await expect(d.getByLabel("Motiv")).toBeVisible();
       for (const name of [/^Anulează/, /^Mută/, /^Șterge/]) await expect(d.getByRole("radio", { name })).toBeVisible();
       await expect(d.getByRole("radio", { name: /^Se ține/ })).toHaveCount(0);
       // The footer stays in view and the changes wait for Salvează.
-      await d.getByLabel("Notă").fill("Patinoarul este închis.");
+      await d.getByLabel("Motiv").fill("Patinoarul este închis.");
       await d.getByRole("button", { name: "Renunță" }).click();
       await expect(d).toHaveCount(0);
       expect(await calls("PUT", /\/dates\//)).toHaveLength(0);
       await dateRow(page, "Mar", "10").click();
-      await expect(d.getByLabel("Notă")).toHaveValue("");
-      await d.getByLabel("Notă").fill("Patinoarul este închis.");
+      await expect(d.getByLabel("Motiv")).toHaveValue("");
+      await d.getByLabel("Motiv").fill("Patinoarul este închis.");
       await expect(d.getByRole("button", { name: "Salvează" })).toBeInViewport();
       await d.getByRole("button", { name: "Salvează" }).click();
       await expect(page.getByText("Ședința din 10 noiembrie a fost anulată.")).toBeVisible();
@@ -56,7 +55,7 @@ for (const size of SIZES) {
       // A cancelled row opens again with its note, and "Se ține" brings the date back.
       await dateRow(page, "Mar", "10").click();
       await expect(d.getByRole("radio", { name: /^Anulează/ })).toHaveAttribute("aria-checked", "true");
-      await expect(d.getByLabel("Notă")).toHaveValue("Patinoarul este închis.");
+      await expect(d.getByLabel("Motiv")).toHaveValue("Patinoarul este închis.");
       await d.getByRole("radio", { name: /^Se ține/ }).click();
       await d.getByRole("button", { name: "Salvează" }).click();
       await expect(page.getByText("Ședința din 10 noiembrie se ține.")).toBeVisible();
