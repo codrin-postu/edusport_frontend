@@ -38,7 +38,6 @@ export function NotificationRows({ schedule }: { schedule: boolean }) {
           </span>
         }
       />
-      <ListRow title={N.device.label} sub={N.device.always} end={null} />
     </ListCard>
   );
 }

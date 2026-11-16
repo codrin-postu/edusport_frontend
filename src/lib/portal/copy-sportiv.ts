@@ -163,7 +163,6 @@ export const SETARI = {
   notifications: {
     title: "Notificări",
     schedule: { label: "E-mail la schimbări de program", on: "pornit", off: "oprit" },
-    device: { label: "E-mail la dispozitiv nou", always: "mereu pornit" },
   },
   logout: "Ieșire",
 } as const;
