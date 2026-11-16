@@ -23,18 +23,19 @@ for (const size of SIZES) {
       await expect(page.getByRole("group", { name: "Sportivi" })).toBeVisible();
       await expect(page.getByText("Sezon", { exact: true })).toBeVisible();
       await expect(page.getByRole("button", { name: "Sezon" })).toHaveText("2026-2027");
-      const cards = page.locator("details");
+      const cards = page.locator("[data-comp-card]");
       await expect(cards).toHaveCount(3);
-      await expect(cards.nth(0).locator("summary")).toContainText("Cupa României");
-      await expect(cards.nth(1).locator("summary")).toContainText("Edu Sport Trophy");
-      await expect(cards.nth(2).locator("summary")).toContainText("Cupa Patinoarului Nord");
-      await expect(cards.nth(0)).toHaveAttribute("open", "");
-      await expect(cards.nth(1)).not.toHaveAttribute("open", "");
+      await expect(cards.nth(0).getByRole("button", { expanded: true })).toContainText("Cupa României");
+      await expect(cards.nth(1).getByRole("button")).toContainText("Edu Sport Trophy");
+      await expect(cards.nth(2).getByRole("button")).toContainText("Cupa Patinoarului Nord");
+      await expect(cards.nth(0).locator("button[aria-expanded]")).toHaveAttribute("aria-expanded", "true");
+      await expect(cards.nth(1).locator("button[aria-expanded]")).toHaveAttribute("aria-expanded", "false");
+      await expect(cards.nth(1).locator("[data-comp-member]")).toHaveCount(0);
       const first = cards.nth(0);
       await expect(first.locator("[data-date-block]").first()).toContainText("Oct");
       await expect(first.locator("[data-date-block]").first()).toContainText("26");
       await expect(first.locator("[data-date-time]")).toHaveCount(0);
-      await expect(first.locator("summary")).toContainText("Brașov");
+      await expect(first.locator("button[aria-expanded]")).toContainText("Brașov");
       await expect(first.locator("[data-comp-count]")).toContainText("2");
       await expect(first.locator("[data-comp-count]")).toContainText("sportivi");
       const members = first.locator("[data-comp-member]");
@@ -51,12 +52,12 @@ for (const size of SIZES) {
     test("Toți sportivii asks for scope=all with the season and shows every athlete", async({ page }) => {
       await loginAs(page);
       await page.goto("/concursuri");
-      await expect(page.locator("details")).toHaveCount(3);
-      await expect(page.locator("details").first().locator("[data-comp-member]")).toHaveCount(2);
-      await expect(page.locator("details").first()).not.toContainText("Dara Constantin");
+      await expect(page.locator("[data-comp-card]")).toHaveCount(3);
+      await expect(page.locator("[data-comp-card]").first().locator("[data-comp-member]")).toHaveCount(2);
+      await expect(page.locator("[data-comp-card]").first()).not.toContainText("Dara Constantin");
       await page.getByRole("button", { name: "Toți sportivii" }).click();
       await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "true");
-      await expect(page.locator("details").first().locator("[data-comp-member]")).toHaveCount(3);
+      await expect(page.locator("[data-comp-card]").first().locator("[data-comp-member]")).toHaveCount(3);
       expect(await calls()).toContain("/api/portal/coach/competitions?scope=all&season=2026-2027");
     });
 
@@ -66,18 +67,20 @@ for (const size of SIZES) {
       await page.getByRole("button", { name: "Sezon" }).click();
       await page.getByRole("menuitemradio", { name: "2025-2026" }).click();
       await expect(page.getByText("Niciun rezultat în acest sezon.")).toBeVisible();
-      await expect(page.locator("details")).toHaveCount(0);
+      await expect(page.locator("[data-comp-card]")).toHaveCount(0);
       expect((await calls()).some((p) => p.includes("season=2025-2026"))).toBe(true);
     });
 
-    test("a closed card opens with Enter on its summary", async({ page }) => {
+    test("a closed card opens with Enter on its header", async({ page }) => {
       await loginAs(page);
       await page.goto("/concursuri");
-      const second = page.locator("details").nth(1);
-      await expect(second).not.toHaveAttribute("open", "");
-      await second.locator("summary").focus();
+      const second = page.locator("[data-comp-card]").nth(1);
+      const header = second.locator("button[aria-expanded]");
+      await expect(header).toHaveAttribute("aria-expanded", "false");
+      await header.focus();
       await page.keyboard.press("Enter");
-      await expect(second).toHaveAttribute("open", "");
+      await expect(header).toHaveAttribute("aria-expanded", "true");
+      await expect(second.locator("[data-comp-member]")).toHaveCount(2);
     });
 
     test("a source that is down shows the notice and no card", async({ page }) => {
@@ -85,7 +88,7 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/concursuri");
       await expect(page.getByText("Rezultatele nu sunt disponibile acum.")).toBeVisible();
-      await expect(page.locator("details")).toHaveCount(0);
+      await expect(page.locator("[data-comp-card]")).toHaveCount(0);
     });
   });
 }

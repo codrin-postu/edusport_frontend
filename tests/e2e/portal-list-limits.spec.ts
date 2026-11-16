@@ -58,14 +58,14 @@ test("Istoric: 20 rows, Arată mai multe adds 20 and focuses the first new row",
 test("Concursuri: 20 cards, Arată mai multe adds 20 and focuses the first new one", async({ page }) => {
   await loginAs(page);
   const events = Array.from({ length: 30 }, (_, i) => ({
-    eventId: `e${i + 1}`, name: `Concurs ${i + 1}`, date: "2026-11-02", location: "Bucuresti", members: [{ athleteId: "a1", name: "Ana", category: "Novice", placement: 1, total: 50 }],
+    eventId: `e${i + 1}`, name: `Concurs ${i + 1}`, date: "2026-11-02", location: "Bucuresti", members: [{ athleteId: "a1", name: "Ana", category: "Novice", placement: 1, total: 50, resultId: null }],
   }));
   await page.route("**/api/portal/coach/competitions*", (route) => route.fulfill({ json: { available: true, stale: false, seasons: ["2026-2027"], season: "2026-2027", events } }));
   await page.goto("/concursuri");
-  const cards = page.locator("details");
+  const cards = page.locator("[data-comp-card]");
   await expect(cards).toHaveCount(20);
   await page.getByRole("button", { name: "Arată mai multe" }).click();
   await expect(cards).toHaveCount(30);
-  await expect(cards.nth(20).locator("summary")).toBeFocused();
+  await expect(cards.nth(20).locator("button[aria-expanded]")).toBeFocused();
   await expect(page.getByRole("button", { name: "Arată mai multe" })).toHaveCount(0);
 });

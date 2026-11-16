@@ -31,6 +31,16 @@ it("forwards only the query parameters a route reads", () => {
   assert.equal(forwardedQuery("/groups", q("filters=1")), "");
 });
 
+it("allows the score sheet route of an athlete result and nothing around it", () => {
+  const a = r.allowedCoachRoute;
+  assert.equal(a("GET", "/athletes/amaria/competitions/101/protocol"), true);
+  assert.equal(a("POST", "/athletes/amaria/competitions/101/protocol"), false);
+  assert.equal(a("GET", "/athletes/amaria/competitions/101"), false);
+  assert.equal(a("GET", "/athletes/amaria/competitions/../protocol"), false);
+  assert.equal(a("GET", "/athletes/amaria/competitions/1%2F2/protocol"), false);
+  assert.equal(r.forwardedQuery("/athletes/amaria/competitions/101/protocol", new URLSearchParams("x=1")), "");
+});
+
 it("allows the canvas routes", () => {
   const a = r.allowedCoachRoute;
   assert.equal(a("GET", "/calendar"), true);

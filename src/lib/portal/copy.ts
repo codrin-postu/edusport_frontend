@@ -293,6 +293,22 @@ export const CARD = {
   ageSection: (age: string, section: string | null) => (section ? `${age}, ${section}` : age),
 } as const;
 
+/** The score sheet's column names. Words are the Romanian of the brief's English names; the segment names come from the source. */
+export const SHEET = {
+  order: "#",
+  element: "Element",
+  info: "Info",
+  baseValue: "BV",
+  goe: "GOE",
+  score: "Scor",
+  component: "Componentă",
+  factor: "Factor",
+  tss: "TSS",
+  tes: "TES",
+  pcs: "PCS",
+  deductions: "Deduceri",
+} as const;
+
 export const COMPETITIONS = {
   title: "Concursuri",
   sub: "Rezultatele sportivilor clubului",

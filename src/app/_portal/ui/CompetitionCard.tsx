@@ -1,10 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import NextLink from "next/link";
+import { CollapseHeader } from "@/app/_portal/ui/CollapseHeader";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
 import { PlaceBlock } from "@/app/_portal/ui/PlaceBlock";
 
 type Member = { href: string; name: string; category: string; placement: number | null; points: string };
 
-/** One competition: a native details element, date and name in the summary, the club's athletes below. */
+/** One competition: a collapsible header with date and name, the club's athletes below. */
 export function CompetitionCard({
   month,
   day,
@@ -24,9 +28,10 @@ export function CompetitionCard({
   members: Member[];
   defaultOpen?: boolean;
 }) {
+  const [open, setOpen] = useState(Boolean(defaultOpen));
   return (
-    <details open={defaultOpen} className="border-card border-card-line bg-surface-raised shadow-retro">
-      <summary data-more-row className="flex min-h-(--portal-row-min-h) cursor-pointer list-none items-stretch outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden">
+    <div data-comp-card className="border-card border-card-line bg-surface-raised shadow-retro">
+      <CollapseHeader open={open} onToggle={() => setOpen((o) => !o)} moreRow>
         <span className="flex min-w-0 flex-1 items-center gap-(--portal-row-gap) px-(--portal-row-pad-x) py-(--portal-row-pad-y)">
           <DateBlock word={month} day={day} />
           <span className="flex flex-col gap-0.5">
@@ -38,8 +43,8 @@ export function CompetitionCard({
           <span className="font-display font-extrabold text-(length:--portal-text-22) leading-none">{count}</span>
           <span className="text-(length:--portal-text-11) font-bold">{countLabel}</span>
         </span>
-      </summary>
-      {members.map((m) => (
+      </CollapseHeader>
+      {open && members.map((m) => (
         <NextLink
           key={m.href + m.name}
           href={m.href}
@@ -54,6 +59,6 @@ export function CompetitionCard({
           <span className="font-display font-extrabold text-(length:--portal-text-16)">{m.points}</span>
         </NextLink>
       ))}
-    </details>
+    </div>
   );
 }

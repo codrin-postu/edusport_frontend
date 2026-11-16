@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { CARD, COMPETITIONS, GRUPE, GROUP } from "@/lib/portal/copy";
-import { dayMonthShort, dayMonthYear, phoneLinks, pointsText, shortWhen } from "@/lib/portal/format";
+import { dayMonthShort, phoneLinks, shortWhen } from "@/lib/portal/format";
 import type { CoachAthleteCard } from "@/lib/portal/api-types";
 import { usePortal } from "../../../_lib/use-portal";
 import { ContactButton } from "@/app/_portal/ui/ContactButton";
@@ -13,10 +13,9 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { ListCard, PortalCard } from "@/app/_portal/ui/PortalCard";
-import { PlaceBlock } from "@/app/_portal/ui/PlaceBlock";
-import { PointsCell } from "@/app/_portal/ui/PointsCell";
 import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
+import { ResultRow } from "./ResultRow";
 
 type Comp = Extract<CoachAthleteCard["competitions"], { available: true }>;
 
@@ -47,7 +46,7 @@ function ContactSection({ contact }: { contact: { name: string | null; phone: st
   );
 }
 
-function CompetitionsSection({ competitions }: { competitions: CoachAthleteCard["competitions"] }) {
+function CompetitionsSection({ athleteId, competitions }: { athleteId: string; competitions: CoachAthleteCard["competitions"] }) {
   if (!competitions.available) {
     return (
       <Section title={CARD.competitions}>
@@ -77,13 +76,7 @@ function CompetitionsSection({ competitions }: { competitions: CoachAthleteCard[
           </span>
         </div>
         {c.recent.slice(0, 3).map((r) => (
-          <ListRow
-            key={`${r.eventName}:${r.date}`}
-            lead={<PlaceBlock placement={r.placement} />}
-            title={r.eventName}
-            sub={[r.date ? dayMonthYear(r.date) : null, r.location].filter((p): p is string => !!p).join(", ")}
-            end={r.total === null ? null : <PointsCell points={pointsText(r.total)} />}
-          />
+          <ResultRow key={r.resultId ?? `${r.eventName}:${r.date}`} athleteId={athleteId} row={r} />
         ))}
       </PortalCard>
     </Section>
@@ -132,7 +125,7 @@ export function AthleteCard({ id }: { id: string }) {
             )}
           </Column>
           <Column grow={1} className="contents portal:flex">
-            <div className="order-3 portal:order-none"><CompetitionsSection competitions={a.competitions} /></div>
+            <div className="order-3 portal:order-none"><CompetitionsSection athleteId={a.athleteId} competitions={a.competitions} /></div>
             {ab && (
               <div className="order-5 portal:order-none">
                 <Section title={CARD.school}>

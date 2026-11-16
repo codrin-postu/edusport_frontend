@@ -382,6 +382,9 @@ const EVENTS = [
   { eventId: "ev-trophy", name: "Edu Sport Trophy", date: "2026-09-13", location: "București", picks: [["amaria", "Advanced Novice Girls", 2, 138.0], ["aluca", "Basic Novice", 1, 40.2]] },
   { eventId: "ev-nord", name: "Cupa Patinoarului Nord", date: "2026-06-15", location: "București", picks: [["amaria", "Advanced Novice Girls", 3, 120.5], ["avlad", "Basic Novice", 4, 35.0]] },
 ];
+// Cupa and Trophy have a score sheet (skate-results); the Nord event is hand-entered, so its row has none.
+const RESULT_IDS = { "ev-cupa": "101", "ev-trophy": "102" };
+const resultIdOf = (e) => RESULT_IDS[e.eventId] ?? null;
 const allMembers = () => [...new Map(Object.values(world.members).flat().map((m) => [m.athleteId, m])).values()];
 
 function competitionsData(query) {
@@ -392,7 +395,7 @@ function competitionsData(query) {
   const events = EVENTS.map((e) => ({
     eventId: e.eventId, name: e.name, date: e.date, location: e.location,
     members: e.picks.filter(([id]) => names.has(id) && (!mine || ownIds.has(id)))
-      .map(([id, category, placement, total]) => ({ athleteId: id, name: names.get(id), category, placement, total })),
+      .map(([id, category, placement, total]) => ({ athleteId: id, name: names.get(id), category, placement, total, resultId: resultIdOf(e) })),
   })).filter((e) => e.members.length > 0);
   const seasons = ["2026-2027", "2025-2026"];
   const season = seasons.includes(query.get("season")) ? query.get("season") : seasons[0];
@@ -801,7 +804,7 @@ function athleteCard(id) {
     ? { available: false }
     : {
       available: true, category: "Advanced Novice Girls", season: "2026-2027", count: 3, podiums: 3,
-      recent: EVENTS.map((e) => ({ eventName: e.name, date: e.date, location: e.location, placement: 1, total: 100 })),
+      recent: EVENTS.map((e) => ({ eventName: e.name, date: e.date, location: e.location, placement: 1, total: 100, resultId: resultIdOf(e) })),
     };
   return {
     athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null,
@@ -810,6 +813,28 @@ function athleteCard(id) {
     abonament: own ? { code: "A-0124", next: 5, slots: 8, validUntil: "2026-11-30", location: "AFI Cotroceni" } : null,
     competitions,
   };
+}
+
+const SHEET = {
+  segments: [
+    {
+      name: "Free Skating", placement: 1, tss: 142.3, tes: 74.1, pcs: 68.2, deductions: 0,
+      elements: [
+        { order: 1, name: "3Lz+2T", baseValue: 6.5, goe: 0.7, judges: [1, 2, 1, 0, 1, 1, 2], score: 7.2, info: null, bonus: false },
+        { order: 2, name: "FSSp4", baseValue: 3.0, goe: 0.4, judges: [1, 1, 0, 1, 1, 0, 1], score: 3.4, info: "<", bonus: true },
+      ],
+      components: [
+        { name: "Skating Skills", factor: 1.6, judges: [7.5, 8, 7.75, 8.25, 7.5, 8, 7.75], score: 12.4 },
+        { name: "Performance", factor: 1.6, judges: [7.25, 7.5, 7.5, 8, 7.25, 7.75, 7.5], score: 11.9 },
+      ],
+    },
+  ],
+};
+
+function protocolData(athleteId, resultId) {
+  if (athleteCard(athleteId) === "none" || !athleteCard(athleteId)) return null;
+  if (!Object.values(RESULT_IDS).includes(resultId)) return null;
+  return state.competitionsDown ? { available: false } : { available: true, ...SHEET };
 }
 
 function changePassword({ body, res, email }) {
@@ -938,6 +963,12 @@ const coachRoutes = [
   ["GET", /^\/athletes\/search$/, searchAthletes],
   ["POST", /^\/athletes$/, newAthlete],
   ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c === "none" ? club(res, 403, MSG.noAccess) : c ? ok(res, c) : notFound(res); }],
+  ["GET", /^\/athletes\/([^/]+)\/competitions\/([^/]+)\/protocol$/, ({ res, params }) => {
+    const card = athleteCard(params[0]);
+    if (card === "none") return club(res, 403, MSG.noAccess);
+    const data = protocolData(params[0], params[1]);
+    return data ? ok(res, data) : notFound(res);
+  }],
   ["POST", /^\/groups\/([^/]+)\/members$/, ownOnly(addMembers)],
   ["GET", /^\/calendar$/, ({ res, query }) => {
     const month = query.get("month") ?? "";
