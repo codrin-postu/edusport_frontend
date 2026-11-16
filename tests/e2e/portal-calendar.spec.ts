@@ -19,7 +19,6 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Calendar");
       await expect(page.getByRole("link", { name: "‹ Azi" })).toHaveAttribute("href", "/");
-      await expect(page.getByText("Ședințele și lecțiile tale").locator("visible=true")).toBeVisible();
       await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toHaveCount(1);
       const grid = page.getByRole("group", { name: "Zilele lunii" });
       await expect(grid.getByRole("button")).toHaveCount(30);
@@ -56,7 +55,7 @@ for (const size of SIZES) {
     test("a quiet day shows the empty line and a reload keeps the day", async({ page }) => {
       await loginAs(page);
       await page.goto("/calendar?luna=2026-11&zi=2026-11-09");
-      await expect(page.getByText("Nicio ședință în această zi.")).toBeVisible();
+      await expect(page.getByText("Nicio ședință.")).toBeVisible();
       await page.reload();
       await expect(page.getByRole("heading", { name: "Luni, 9 noiembrie" })).toBeVisible();
     });

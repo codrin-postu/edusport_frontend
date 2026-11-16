@@ -47,7 +47,7 @@ for (const size of SIZES) {
       await d.getByLabel("Motiv").fill("Patinoarul este închis.");
       await expect(d.getByRole("button", { name: "Salvează" })).toBeInViewport();
       await d.getByRole("button", { name: "Salvează" }).click();
-      await expect(page.getByText("Ședința din 10 noiembrie a fost anulată.")).toBeVisible();
+      await expect(page.getByText("Ședința din 10 noiembrie anulată.")).toBeVisible();
       const put = (await calls("PUT", /\/program\/[^/]+\/dates\//))[0];
       expect(put?.path).toMatch(/\/program\/evavansati\/dates\/2026-11-10$/);
       expect(put?.body).toEqual({ mode: "cancel", reason: "Patinoarul este închis." });
@@ -74,7 +74,7 @@ for (const size of SIZES) {
       await typeDate(page, "Data nouă", "12112026");
       await d.getByLabel("Ora", { exact: true }).fill("18:15");
       await d.getByRole("button", { name: "Salvează" }).click();
-      await expect(page.getByText("Ședința din 10 noiembrie a fost mutată.")).toBeVisible();
+      await expect(page.getByText("Ședința din 10 noiembrie mutată.")).toBeVisible();
       expect((await calls("PUT", /\/dates\//))[0]?.body).toEqual({ mode: "move", newDate: "2026-11-12", newStartTime: "18:15", reason: null });
       await expect(dateRow(page, "Joi", "12")).toContainText("mutată din marți, 10 noiembrie");
       // A moved row is clickable and opens on Mută with its values.
@@ -90,7 +90,7 @@ for (const size of SIZES) {
       await dateRow(page, "Mar", "10").click();
       await dialog(page).getByRole("radio", { name: /^Șterge/ }).click();
       await dialog(page).getByRole("button", { name: "Șterge", exact: true }).click();
-      await expect(page.getByText("Ședința din 10 noiembrie a fost ștearsă.")).toBeVisible();
+      await expect(page.getByText("Ședința din 10 noiembrie ștearsă.")).toBeVisible();
       expect((await calls("PUT", /\/dates\//))[0]?.body).toEqual({ mode: "remove" });
       await expect(block(page, "Mar", "10")).toHaveCount(0);
     });
@@ -136,7 +136,7 @@ for (const size of SIZES) {
       await page.getByRole("button", { name: "Schimbă programul de marți" }).click();
       const d = dialog(page);
       await expect(d.getByRole("heading", { name: "Schimbă programul" })).toBeVisible();
-      await expect(d.getByText("Marți, 18:15. Datele de dinainte rămân cum au fost.")).toBeVisible();
+      await expect(d.getByText("Marți, 18:15. Datele trecute rămân.")).toBeVisible();
       await expect(d.getByRole("checkbox", { name: "marți" })).toHaveAttribute("aria-checked", "true");
       // Miercuri belongs to the same event: changed on its own row, not here.
       await expect(d.getByRole("checkbox", { name: "miercuri" })).toHaveAttribute("aria-checked", "false");
@@ -166,7 +166,7 @@ for (const size of SIZES) {
       await page.getByRole("button", { name: "Șterge programul de miercuri" }).click();
       const d = dialog(page);
       await expect(d.getByRole("heading", { name: "Ștergi programul de miercuri?" })).toBeVisible();
-      await expect(d.getByText("Ședințele și prezențele de până atunci rămân. După data aleasă nu mai apare.")).toBeVisible();
+      await expect(d.getByText("Ședințele și prezențele de până atunci rămân.")).toBeVisible();
       await expect(d.getByRole("group", { name: "Din data" })).toBeVisible();
       await d.getByRole("button", { name: "Renunță" }).click();
       expect(await calls("POST", /\/end$/)).toHaveLength(0);
@@ -282,7 +282,7 @@ for (const size of SIZES) {
     test("the Scoala group has no program buttons", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gprimii?tab=program");
-      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toBeVisible();
+      await expect(page.getByRole("button", { name: "Îl schimbă administratorul" })).toBeVisible();
       await expect(page.getByRole("link", { name: "+ Adaugă program" })).toHaveCount(0);
       await expect(page.getByRole("button", { name: /^Mar\s*\d+\s/i })).toHaveCount(0);
     });

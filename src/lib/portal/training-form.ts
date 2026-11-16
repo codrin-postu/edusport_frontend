@@ -1,7 +1,7 @@
 // State of the "Antrenament nou" / "Modifică lecția" form: value, readiness, request bodies, summary. Pure, loaded by Node tests.
 import type { CoachLesson, CoachLessonBody, CoachLessonPlanBody, DayKey, LessonRepeat, ProgramAddBody, RepeatFreq, WeekOfMonth } from "./api-types";
 import { TRAINING } from "./copy.ts";
-import { capitalize, dayMonthLong, daysSpoken, longDay, weekdayLong, weekOfMonthOf } from "./format.ts";
+import { capitalize, dayMonthLong, daysSpoken, weekOfMonthOf } from "./format.ts";
 
 export type TrainingKind = "grup" | "individual";
 export type RepeatChoice = "none" | "weekly" | "biweekly" | "monthly";
@@ -85,7 +85,7 @@ const WEEK_WORD: Record<WeekOfMonth, string> = TRAINING.weekWord;
 /** The ice band above the button; null while there is nothing to say yet (no time, no day). */
 export function trainingSummary(v: TrainingValue): string | null {
   if (!/^\d{2}:\d{2}$/.test(v.startTime)) return null;
-  if (v.repeat === "none") return v.date === "" ? null : TRAINING.summaryOnce(longDay(v.date), v.startTime);
+  if (v.repeat === "none") return null;
   if (v.days.length === 0 || v.from === "") return null;
   const until = v.until ? dayMonthLong(v.until) : null;
   const from = dayMonthLong(v.from);
@@ -93,9 +93,4 @@ export function trainingSummary(v: TrainingValue): string | null {
   if (v.repeat === "monthly") return TRAINING.summaryMonthly(WEEK_WORD[weekFor(v)], days, v.startTime, v.durationMin, from, until);
   const lead = v.repeat === "biweekly" ? `${TRAINING.biweekly}, ` : "";
   return TRAINING.summarySeries(lead, lead ? days : capitalize(days), v.startTime, v.durationMin, from, until);
-}
-
-/** "11 noiembrie este a doua marți." for the grey line under the date row of a monthly repeat. */
-export function monthlyNote(from: string, week: WeekOfMonth | null = null): string {
-  return TRAINING.monthlyNote(dayMonthLong(from), `${WEEK_WORD[week ?? weekOfMonthOf(from)]} ${weekdayLong(from)}`);
 }

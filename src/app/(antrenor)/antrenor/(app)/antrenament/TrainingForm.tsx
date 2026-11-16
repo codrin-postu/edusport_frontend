@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/form-field";
 import { Select } from "@/components/ui/select";
 import { TRAINING } from "@/lib/portal/copy";
 import type { CoachGroupRow, CoachMe } from "@/lib/portal/api-types";
-import { dayKeyOf, initialValue, monthlyNote, ready, trainingSummary, type RepeatChoice, type TrainingKind, type TrainingMode, type TrainingValue } from "@/lib/portal/training-form";
+import { dayKeyOf, initialValue, ready, trainingSummary, type RepeatChoice, type TrainingKind, type TrainingMode, type TrainingValue } from "@/lib/portal/training-form";
 import { AthleteSearch } from "../../_ui/AthleteSearch";
 import { DaySquares } from "@/app/_portal/ui/DaySquares";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -150,7 +150,6 @@ export function TrainingForm({ mode, title, onClose, today, me, groups, startKin
             </div>
           </div>
           {v.until !== null && <DatePickerField id="training-until" label={TRAINING.untilDateField} value={v.until} onChange={(until) => set({ until })} variant="card" />}
-          {v.repeat === "monthly" && v.from !== "" && <p className="text-(length:--portal-sub-size) text-muted">{monthlyNote(v.from, v.week)}</p>}
         </>
       ) : (
         <>

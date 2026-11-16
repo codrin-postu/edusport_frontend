@@ -24,7 +24,6 @@ test("Setări: the account, athletes, security and notifications, with no bottom
   await expect(page.getByRole("link", { name: /Parolă/ })).toHaveAttribute("href", "/setari/parola");
   await expect(page.getByText("2 dispozitive conectate")).toBeVisible();
   await expect(page.getByRole("link", { name: /Dispozitive/ })).toHaveAttribute("href", "/setari/dispozitive");
-  await expect(page.getByText("mereu pornit")).toBeVisible();
   const body = await page.locator("body").innerText();
   for (const word of ["2FA", "passkey", "chei de acces"]) expect(body).not.toContain(word);
 });

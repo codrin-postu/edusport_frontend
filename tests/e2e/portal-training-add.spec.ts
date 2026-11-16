@@ -86,7 +86,6 @@ for (const size of SIZES) {
       await pick(page, "Se repetă", "Lunar");
       await typeDate(page, "Din data", "11112026");
       await page.getByLabel("Ora", { exact: true }).fill("17:30");
-      await expect(page.getByText("Săptămâna din lună se ia din \"Din data\": 11 noiembrie este a doua miercuri.")).toBeVisible();
       await expect(page.getByText("Lunar, în a doua miercuri a lunii, 17:30, 60 min, din 11 noiembrie până la sfârșitul sezonului.")).toBeVisible();
       await submit(page).click();
       await expect(page).toHaveURL(/tab=program$/);
@@ -99,7 +98,6 @@ for (const size of SIZES) {
       await pick(page, "Se repetă", "Nu se repetă");
       await typeDate(page, "Data", "12112026");
       await page.getByLabel("Ora", { exact: true }).fill("18:30");
-      await expect(page.getByText("Joi, 12 noiembrie, 18:30, o singură dată.")).toBeVisible();
       await submit(page).click();
       await expect(page).toHaveURL(/\/grupe\/gavansati\?tab=program$/);
       await expect(page.getByText("Ședință adăugată: 12 noiembrie.")).toBeVisible();
@@ -142,7 +140,6 @@ for (const size of SIZES) {
       await typeDate(page, "Data", "12112026");
       await page.getByLabel("Ora", { exact: true }).fill("18:30");
       await pick(page, "Durată", "45 min");
-      await expect(page.getByText("Joi, 12 noiembrie, 18:30, o singură dată.")).toBeVisible();
       await submit(page).click();
       await expect(page).toHaveURL(/\/lectie\/lnew1$/);
       expect(await lastBody("POST", "/lessons")).toEqual({ athleteId: "aana", date: "2026-11-12", startTime: "18:30", durationMin: 45, coachIds: ["tm-andrei"] });

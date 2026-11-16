@@ -36,14 +36,14 @@ for (const size of SIZES) {
       await rowButton(page, "Mută", 0).click();
       const sheet = page.getByRole("dialog");
       await expect(sheet.getByRole("heading", { name: "Muți pe Maria Ionescu în altă grupă" })).toBeVisible();
-      await expect(sheet.getByText("Prezențele de până acum rămân în Avansați.")).toBeVisible();
+      await expect(sheet.getByText("Prezențele rămân în Avansați.")).toBeVisible();
       await page.keyboard.press("Escape");
       await expect(sheet).toHaveCount(0);
       await expect(rowButton(page, "Mută", 0)).toBeFocused();
 
       await rowButton(page, "Scoate", 1).click();
       await expect(sheet.getByRole("heading", { name: "Scoți pe Luca Dumitru din grupă?" })).toBeVisible();
-      await expect(sheet.getByText("Prezențele de până acum rămân. Nu mai apare la ședințele grupei.")).toBeVisible();
+      await expect(sheet.getByText("Prezențele rămân.")).toBeVisible();
     });
   });
 }
@@ -144,7 +144,7 @@ test("without another own group the sheet says so", async({ page }) => {
   await page.goto("/grupe/gavansati/modifica");
   await rowButton(page, "Mută", 0).click();
   const sheet = page.getByRole("dialog");
-  await expect(sheet.getByText("Nu ai altă grupă în care să-l muți.")).toBeVisible();
+  await expect(sheet.getByText("Nu ai altă grupă.")).toBeVisible();
   await expect(sheet.getByRole("button", { name: "Mută", exact: true })).toHaveCount(0);
   await expect(sheet.getByRole("button", { name: "Renunță" })).toBeVisible();
 });

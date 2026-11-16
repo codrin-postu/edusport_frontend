@@ -124,8 +124,7 @@ test("Șterge lecția on a series lesson asks which lessons", async({ page }) =>
   await page.getByRole("button", { name: "Șterge lecția" }).click();
   const dialog = page.getByRole("dialog");
   await expect(dialog.getByRole("heading", { name: "Ce ștergi din lecția din 17 noiembrie?" })).toBeVisible();
-  await expect(dialog.getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
-  await expect(dialog.getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei. Cele ținute sau plătite rămân.")).toBeVisible();
+  await expect(dialog.getByText("Din 17 noiembrie până la sfârșitul seriei. Cele ținute sau plătite rămân.")).toBeVisible();
   await dialog.getByRole("radio", { name: "Și lecțiile următoare" }).click();
   await dialog.getByRole("button", { name: "Șterge lecția" }).click();
   await expect(page.getByText("Lecții șterse.")).toBeVisible();
@@ -138,7 +137,7 @@ test("Șterge lecția on a series lesson asks which lessons", async({ page }) =>
 test("an archived lesson is read only", async({ page }) => {
   await loginAs(page);
   await page.goto("/lectie/larchived");
-  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.").locator("visible=true")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Arhivată" }).locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează prezența" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Șterge lecția" })).toHaveCount(0);
 });
@@ -164,8 +163,7 @@ for (const size of SIZES) {
       await page.getByLabel("Ora", { exact: true }).fill("18:00");
       await page.getByRole("button", { name: "Salvează", exact: true }).click();
       const scope = page.getByRole("dialog", { name: "Ce schimbi?" });
-      await expect(scope.getByText("Doar lecția din 17 noiembrie.")).toBeVisible();
-      await expect(scope.getByText("Lecțiile din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
+      await expect(scope.getByText("Din 17 noiembrie până la sfârșitul seriei.", { exact: true })).toBeVisible();
     });
   });
 }

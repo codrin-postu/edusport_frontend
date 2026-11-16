@@ -189,7 +189,7 @@ const steps = [
     await shot();
   } },
   { slug: "prezenta-arhivata", caption: "Ședință veche: arhivată, doar de citit.", mock: true, note: "Imagine din serverul fals (mock): fereastra de 7 zile nu lasă fixtura reală să creeze o ședință arhivată.", run: async({ page, shot }) => {
-    await page.goto("/prezenta?id=s-archived"); await page.getByText("Arhivată. Nu mai poate fi modificată.").waitFor(); await settle(page); await shot();
+    await page.goto("/prezenta?id=s-archived"); await page.getByRole("button", { name: "Arhivată" }).waitFor(); await settle(page); await shot();
   } },
   { slug: "prezenta-ziua", caption: "Alegerea zilei: zilele cu prezență salvată sunt marcate.", run: async({ page, shot }) => {
     await page.goto(shared.sessionUrl); await settle(page);

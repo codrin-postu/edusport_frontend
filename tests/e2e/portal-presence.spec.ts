@@ -42,7 +42,7 @@ test("the own coach row cannot be removed, others can", async({ page }) => {
 test("an archived session is read only", async({ page }) => {
   await loginAs(page);
   await page.goto("/prezenta?id=s-archived");
-  await expect(page.getByText("Arhivată. Nu mai poate fi modificată.").locator("visible=true")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Arhivată" }).locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează", exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
 });
@@ -50,7 +50,7 @@ test("an archived session is read only", async({ page }) => {
 test("a future date says when presence opens and stays read only", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gavansati", "2026-11-10"));
-  await expect(page.getByText("Prezența se poate face din ziua antrenamentului.").locator("visible=true")).toBeVisible();
+  await expect(page.getByText("Din ziua antrenamentului.").locator("visible=true")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salvează", exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Grup, Maria Ionescu")).toBeDisabled();
 });
@@ -97,12 +97,6 @@ test("Școala: no Uscat column, a line under each name; Club: no line", async({ 
   await expect(page.getByText("Abonament 8 ședințe")).toHaveCount(0);
 });
 
-test("the stand-in session says the coach will appear", async({ page }) => {
-  await loginAs(page);
-  await page.goto(occ("gsilver", TODAY));
-  await expect(page.getByText("Vei apărea ca antrenor la această ședință.")).toBeVisible();
-});
-
 test("a stand-in read refused with no access lands on Grupe with that toast", async({ page }) => {
   await loginAs(page);
   await page.goto(occ("gsilver", "2026-11-06"));
@@ -115,7 +109,7 @@ test("an inactive athlete asks before the save goes on", async({ page }) => {
   await page.goto(occ("gavansati", FREE_DAY));
   await tick(page, "Grup, Robert Toma");
   await page.getByRole("button", { name: "Salvează", exact: true }).click();
-  await expect(page.getByText("Robert Toma are statusul Inactiv. Reactivezi sportivul?")).toBeVisible();
+  await expect(page.getByText("Îl reactivezi pe Robert Toma?")).toBeVisible();
   await page.getByRole("button", { name: "Reactivează și salvează" }).click();
   await expect(page).toHaveURL(/\/prezenta\?id=s-new/);
 });

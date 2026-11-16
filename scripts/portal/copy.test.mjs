@@ -49,9 +49,9 @@ it("agrees counts in Romanian", () => {
 
 it("names the training copy", () => {
   assert.equal(copy.AZI.addTraining, "+ Adaugă antrenament");
-  assert.equal(copy.PROGRAM.publicHint, "Programul este public, îl vede oricine pe site.");
+  assert.ok(!("publicHint" in copy.PROGRAM));
   assert.equal(copy.TRAINING.title, "Antrenament nou");
-  assert.equal(copy.TRAINING.summaryOnce("Miercuri, 12 noiembrie", "18:30"), "Miercuri, 12 noiembrie, 18:30, o singură dată.");
+  assert.ok(!("summaryOnce" in copy.TRAINING));
   const curly = /[\u2014\u2013\u00B7\u201E\u201C\u201D\u2018\u2019]/;
   const all = [];
   for (const [name, area] of Object.entries({ TRAINING: copy.TRAINING, PROGRAM: copy.PROGRAM, LESSON: copy.LESSON, AZI: copy.AZI })) strings(area, name, all);
@@ -104,4 +104,44 @@ it("shows a failed notice dismiss once, as a toast only", () => {
   const src = read("src/app/(sportiv)/sportiv/(app)/_ui/NoticesPanel.tsx");
   assert.equal(src.match(/NOTICES\.dismissFailed/g).length, 1);
   assert.ok(!/role="status"/.test(src));
+});
+
+it("uses the short coach forms", () => {
+  assert.equal(copy.PRESENCE.archived, "Arhivată");
+  assert.equal(copy.CLUB_TODAY.none, "Niciun antrenament azi.");
+  assert.ok(!("hint" in copy.CLUB_TODAY));
+  assert.equal(copy.CALENDAR.empty, "Nicio ședință.");
+  assert.ok(!("sub" in copy.CALENDAR) && !("sub" in copy.COMPETITIONS));
+  assert.equal(copy.PROGRAM.nothingThisMonth, "Nimic programat.");
+  assert.equal(copy.CARD.copied, "Copiat.");
+  assert.equal(copy.CARD.copyFailed, "Nu s-a putut copia.");
+  assert.equal(copy.COMPETITIONS.unavailable, "Rezultate indisponibile.");
+  assert.equal(copy.PROGRAM.toasts.dateCancelled("marți"), "Ședința din marți anulată.");
+  assert.equal(copy.PROGRAM.toasts.dateMoved("marți"), "Ședința din marți mutată.");
+  assert.equal(copy.PROGRAM.toasts.dateKept("marți"), "Ședința din marți se ține.");
+  assert.equal(copy.PROGRAM.toasts.dateRemoved("marți"), "Ședința din marți ștearsă.");
+  assert.equal(copy.TRAINING.scopeFollowingSub("3 nov"), "Din 3 nov până la sfârșitul seriei.");
+  assert.equal(copy.TRAINING.scopeFollowingDeleteSub("3 nov"), "Din 3 nov până la sfârșitul seriei. Cele ținute sau plătite rămân.");
+  assert.equal(copy.TRAINING.scopeFollowingEndsSub(), "Următoarele se șterg. Aceasta nu se mai repetă.");
+  assert.ok(!("scopeOneSub" in copy.TRAINING) && !("monthlyNote" in copy.TRAINING));
+  assert.equal(copy.GROUP.otherCoach, "Grupa altui antrenor.");
+  assert.equal(copy.EDIT_GROUP.moveText("Grupa 2"), "Prezențele rămân în Grupa 2.");
+  assert.equal(copy.EDIT_GROUP.removeText, "Prezențele rămân.");
+  assert.equal(copy.EDIT_GROUP.noOtherGroup, "Nu ai altă grupă.");
+  assert.equal(copy.PRESENCE.future, "Din ziua antrenamentului.");
+  assert.equal(copy.PRESENCE.reactivate.text("Ana"), "Îl reactivezi pe Ana?");
+  assert.ok(!("willAppear" in copy.PRESENCE) && !("optional" in copy.NEW_ATHLETE));
+  assert.equal(copy.PROGRAM.changeSub("R"), "R. Datele trecute rămân.");
+  assert.equal(copy.PROGRAM.endText, "Ședințele și prezențele de până atunci rămân.");
+  assert.ok(!("showingNext" in copy.PROGRAM));
+  assert.ok(!("settingsSub" in copy.PROFILE) && !("securitySub" in copy.PROFILE));
+  assert.equal(copy.SETTINGS.adminNote, "Le schimbă administratorul.");
+});
+
+it("renders the coach archived and school-program rules as lock icons", () => {
+  const C = "src/app/(antrenor)/antrenor/(app)";
+  assert.match(read(`${C}/prezenta/PresenceView.tsx`), /<HintIcon icon="lock" text=\{PRESENCE\.archived\}/);
+  assert.match(read(`${C}/lectie/[id]/LessonView.tsx`), /<HintIcon icon="lock" text=\{PRESENCE\.archived\}/);
+  assert.match(read(`${C}/grupe/[id]/_program/ProgramTab.tsx`), /<HintIcon icon="lock" text=\{PROGRAM\.schoolLocked\}/);
+  assert.equal(copy.PROGRAM.schoolLocked, "Îl schimbă administratorul");
 });

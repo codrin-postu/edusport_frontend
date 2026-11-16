@@ -12,6 +12,7 @@ import { bucharestToday } from "../../../_lib/today";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
@@ -98,12 +99,13 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
     return r.message;
   }
 
-  const sub = [lesson.cancelled ? [CALENDAR.legendCancelled, lesson.cancelReason].filter(Boolean).join(", ") : null, lesson.savedLine, lesson.archived ? PRESENCE.archived : null].filter((p): p is string => Boolean(p)).join(" ");
+  const sub = [lesson.cancelled ? [CALENDAR.legendCancelled, lesson.cancelReason].filter(Boolean).join(", ") : null, lesson.savedLine].filter((p): p is string => Boolean(p)).join(" ");
   return (
     <>
       <PageHeader back={{ href: "/", label: NAV.today }} kicker={LESSON.title} title={lesson.athleteName} sub={sub || undefined} />
       <PageBody narrow>
         <PageSub>{sub}</PageSub>
+        {lesson.archived && <div><HintIcon icon="lock" text={PRESENCE.archived} /></div>}
         <div data-lesson-form className="flex flex-col gap-(--portal-form-gap)">
           <KeyValueCard
             rows={[
@@ -126,7 +128,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
         </div>
       </PageBody>
       {lesson.planEditable && wantsEdit && <EditLessonPopup lesson={lesson} onSaved={reload} onClose={() => router.replace(lessonHref)} />}
-      {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle(dayMonth(lesson.date))} oneSub={TRAINING.scopeOneSub(dayMonth(lesson.date))} followingSub={TRAINING.scopeFollowingDeleteSub(dayMonth(lesson.date))} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
+      {asking && series && <ScopeSheet title={TRAINING.scopeDeleteTitle(dayMonth(lesson.date))} followingSub={TRAINING.scopeFollowingDeleteSub(dayMonth(lesson.date))} confirm={LESSON.delete} onClose={() => setAsking(false)} onConfirm={remove} />}
       {asking && !series && <PlainDelete date={shortDate(lesson.date)} onClose={() => setAsking(false)} onConfirm={() => remove(null)} />}
     </>
   );

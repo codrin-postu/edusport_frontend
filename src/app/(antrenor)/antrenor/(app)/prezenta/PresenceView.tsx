@@ -15,6 +15,7 @@ import { useMe } from "../../_lib/me-context";
 import { useNoAccess } from "../../_lib/use-portal";
 import { GroupInfoCard } from "../../_ui/GroupInfoCard";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
@@ -173,7 +174,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
           <div className="flex flex-col gap-1 text-(length:--portal-text-14) text-muted">
             {future && <p>{PRESENCE.future}</p>}
             {session.outsideSchedule && <p>{PRESENCE.outside}</p>}
-            {session.archived && <p>{PRESENCE.archived}</p>}
+            {session.archived && <HintIcon icon="lock" text={PRESENCE.archived} />}
           </div>
         )}
         <Columns>
@@ -181,7 +182,6 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
             <div className="portal:border-card portal:border-card-line portal:bg-surface-raised portal:p-(--portal-card-pad) portal:shadow-retro">
               <CoachPicker me={meId} options={session.coachOptions} value={coachIds} onChange={setCoachIds} locked={readOnly} />
             </div>
-            {session.standIn && <p className="text-(length:--portal-text-14) text-muted">{PRESENCE.willAppear}</p>}
             {group && <div className="hidden portal:block"><GroupInfoCard program={group.program} location={group.location} coaches={group.coaches} /></div>}
           </Column>
           <Column grow={2}>

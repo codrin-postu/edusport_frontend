@@ -9,8 +9,7 @@ import { SheetFooter } from "../../../_ui/SheetFooter";
 export type Scope = "one" | "following";
 type Props = {
   title: string;
-  /** What each choice does, with the lesson's date in it. */
-  oneSub: string;
+  /** What the second choice does, with the lesson's date in it. */
   followingSub: string;
   confirm: string;
   onClose: () => void;
@@ -19,7 +18,7 @@ type Props = {
 };
 
 /** "Ce schimbi?" / "Ce ștergi?" on a repeating lesson: this one or the following ones. The choice applies on confirm only. */
-export function ScopeSheet({ title, oneSub, followingSub, confirm, onClose, onConfirm }: Props) {
+export function ScopeSheet({ title, followingSub, confirm, onClose, onConfirm }: Props) {
   const [scope, setScope] = useState<Scope>("one");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -42,7 +41,7 @@ export function ScopeSheet({ title, oneSub, followingSub, confirm, onClose, onCo
       footer={<SheetFooter message={message} busy={busy} confirm={confirm} onClose={onClose} onConfirm={() => void submit()} />}
     >
       <div role="radiogroup" aria-label={title} className="flex flex-col gap-3">
-        <ChoiceRow label={TRAINING.scopeOne} sub={oneSub} checked={scope === "one"} onSelect={() => setScope("one")} />
+        <ChoiceRow label={TRAINING.scopeOne} checked={scope === "one"} onSelect={() => setScope("one")} />
         <ChoiceRow label={TRAINING.scopeFollowing} sub={followingSub} checked={scope === "following"} onSelect={() => setScope("following")} />
       </div>
     </Sheet>

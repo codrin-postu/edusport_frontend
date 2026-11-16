@@ -19,7 +19,7 @@ test("settings: e-mail is read only and the phone is saved", async({ page }) => 
   await loginAs(page);
   await page.goto("/profil/setari");
   await expect(page.getByText("antrenor1@example.invalid")).toBeVisible();
-  await expect(page.getByText("Numele și e-mailul le schimbă administratorul.")).toBeVisible();
+  await expect(page.getByText("Le schimbă administratorul.")).toBeVisible();
   await expect(page.getByLabel("E-mail")).toHaveCount(0);
   await expect(page.getByLabel("Nume", { exact: true })).toHaveCount(0);
   await page.getByLabel("Telefon").fill("0700000000");
@@ -124,8 +124,6 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Andrei Popa");
       await expect(page.getByText("Antrenor", { exact: true }).locator("visible=true")).toBeVisible();
-      await expect(page.locator("main").getByRole("link", { name: /Setări cont/ })).toContainText("nume, e-mail, telefon, parolă");
-      await expect(page.locator("main").getByRole("link", { name: /Securitate/ })).toContainText("dispozitive conectate");
       await expect(page.getByRole("button", { name: "Ieși din cont" })).toBeVisible();
     });
 
@@ -141,7 +139,7 @@ for (const size of SIZES) {
       await expect(page.getByText("Andrei Popa")).toBeVisible();
       await expect(page.getByText("E-mail", { exact: true })).toBeVisible();
       await expect(page.getByText("antrenor1@example.invalid")).toBeVisible();
-      await expect(page.getByText("Numele și e-mailul le schimbă administratorul. După schimbarea e-mailului, intri cu adresa nouă.")).toBeVisible();
+      await expect(page.getByText("Le schimbă administratorul.")).toBeVisible();
       await expect(page.getByLabel("Telefon")).toBeVisible();
       await expect(page.getByLabel("Parola actuală")).toBeVisible();
       await expect(page.getByLabel("Parola nouă")).toBeVisible();

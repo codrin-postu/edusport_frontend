@@ -13,10 +13,11 @@ export function SeeAllLink({ href, label }: LinkProp) {
 }
 
 /** `className` lets a page give two side by side headings the same box (Azi: both `portal:min-h-(--portal-tap) portal:items-center`). */
-export function SectionHeading({ title, link, className }: { title: string; link?: LinkProp; className?: string }) {
+export function SectionHeading({ title, link, after, className }: { title: string; link?: LinkProp; after?: React.ReactNode; className?: string }) {
   return (
     <div className={cn("flex items-baseline justify-between gap-3", className)}>
       <h2 className="font-display font-extrabold text-(length:--portal-h2-size)">{title}</h2>
+      {after && <span className="mr-auto flex items-center">{after}</span>}
       {link && (
         <Link href={link.href} tone="plain" className="inline-flex min-h-(--portal-tap) items-center text-(length:--portal-text-14) font-bold text-primary no-underline">
           {link.label} ›
@@ -26,10 +27,10 @@ export function SectionHeading({ title, link, className }: { title: string; link
   );
 }
 
-export function Section({ title, link, children }: { title: string; link?: LinkProp; children: React.ReactNode }) {
+export function Section({ title, link, after, children }: { title: string; link?: LinkProp; after?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-3">
-      <SectionHeading title={title} link={link} />
+      <SectionHeading title={title} link={link} after={after} />
       {children}
     </div>
   );

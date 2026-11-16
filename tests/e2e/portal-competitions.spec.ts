@@ -15,7 +15,6 @@ for (const size of SIZES) {
       await page.goto("/concursuri");
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Concursuri");
-      await expect(page.getByText("Rezultatele sportivilor clubului").locator("visible=true")).toBeVisible();
       await expect(page.getByRole("group", { name: "Sportivi" }).getByRole("button").first()).toHaveText("Grupele mele");
       await expect(page.getByRole("button", { name: "Grupele mele" })).toHaveAttribute("aria-pressed", "true");
       await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "false");
@@ -87,7 +86,7 @@ for (const size of SIZES) {
       await mockState({ competitionsDown: true });
       await loginAs(page);
       await page.goto("/concursuri");
-      await expect(page.getByText("Rezultatele nu sunt disponibile acum.")).toBeVisible();
+      await expect(page.getByText("Rezultate indisponibile.")).toBeVisible();
       await expect(page.locator("[data-comp-card]")).toHaveCount(0);
     });
   });

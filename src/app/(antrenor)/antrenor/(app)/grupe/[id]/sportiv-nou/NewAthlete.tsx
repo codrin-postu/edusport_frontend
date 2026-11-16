@@ -16,13 +16,13 @@ import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useToast } from "@/app/_portal/ui/Toast";
 
-function Field({ label, optional, children }: { label: string; optional?: boolean; children: (id: string) => React.ReactNode }) {
+function Field({ label, required, children }: { label: string; required?: boolean; children: (id: string) => React.ReactNode }) {
   const id = useId();
   return (
     <div>
       <label htmlFor={id} className="text-field-label text-label-ink mb-(--field-gap) block">
         {label}
-        {optional && <span className="ml-2 font-normal">({NEW_ATHLETE.optional})</span>}
+        {required && <span aria-hidden="true"> *</span>}
       </label>
       {children(id)}
     </div>
@@ -75,17 +75,17 @@ export function NewAthlete({ id }: { id: string }) {
     <>
       <PageHeader back={{ href: `${back}/adauga`, label: ADD_ATHLETE.title(group.data.name) }} title={NEW_ATHLETE.title} />
       <PageBody narrow>
-        <Field label={NEW_ATHLETE.name}>
+        <Field label={NEW_ATHLETE.name} required>
           {(fid) => <Input id={fid} value={name} autoComplete="off" onChange={(e) => setName(e.target.value)} surface="card" />}
         </Field>
-        <DatePickerField id="new-birth" label={`${NEW_ATHLETE.birthDate} (${NEW_ATHLETE.optional})`} value={birthDate} onChange={setBirthDate} variant="card" />
-        <Field label={NEW_ATHLETE.parent} optional>
+        <DatePickerField id="new-birth" label={NEW_ATHLETE.birthDate} value={birthDate} onChange={setBirthDate} variant="card" />
+        <Field label={NEW_ATHLETE.parent}>
           {(fid) => <Input id={fid} value={parent} autoComplete="off" onChange={(e) => setParent(e.target.value)} surface="card" />}
         </Field>
-        <Field label={NEW_ATHLETE.phone} optional>
+        <Field label={NEW_ATHLETE.phone}>
           {(fid) => <Input id={fid} type="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} surface="card" />}
         </Field>
-        <Field label={NEW_ATHLETE.email} optional>
+        <Field label={NEW_ATHLETE.email}>
           {(fid) => <Input id={fid} type="email" value={email} onChange={(e) => setEmail(e.target.value)} surface="card" />}
         </Field>
         <AlertLine message={message} reserve />

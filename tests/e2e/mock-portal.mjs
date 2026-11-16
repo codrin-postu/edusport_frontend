@@ -15,7 +15,7 @@ const GRACE_MS = 30_000;
 const ARCHIVE_DAYS = 7;
 const MSG = {
   noAccess: "Nu mai ai acces la această grupă.",
-  archived: "Arhivată. Nu mai poate fi modificată.",
+  archived: "Arhivată",
   notFound: "Nu a fost găsit.",
   invalid: "Cerere invalidă.",
   badLogin: "E-mailul sau parola nu sunt corecte.",

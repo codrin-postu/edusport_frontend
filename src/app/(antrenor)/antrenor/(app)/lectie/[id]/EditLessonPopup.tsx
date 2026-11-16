@@ -51,8 +51,7 @@ export function EditLessonPopup({ lesson, onClose, onSaved }: { lesson: CoachLes
       {asking && (
         <ScopeSheet
           title={TRAINING.scopeTitle}
-          oneSub={TRAINING.scopeOneSub(dayMonth(lesson.date))}
-          followingSub={asking.repeat === "none" ? TRAINING.scopeFollowingEndsSub(dayMonth(lesson.date)) : TRAINING.scopeFollowingSub(dayMonth(lesson.date))}
+          followingSub={asking.repeat === "none" ? TRAINING.scopeFollowingEndsSub() : TRAINING.scopeFollowingSub(dayMonth(lesson.date))}
           confirm={TRAINING.save}
           onClose={() => setAsking(null)}
           onConfirm={(scope) => write(asking, scope)}

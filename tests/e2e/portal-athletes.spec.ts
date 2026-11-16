@@ -83,7 +83,7 @@ for (const size of SIZES) {
       await expect(page.getByText("Părinte Exemplu")).toBeVisible();
       await expect(page.getByText("0722 000 222")).toBeVisible();
       await page.getByRole("button", { name: "Copiază numărul" }).click();
-      await expect(page.getByText("Numărul a fost copiat.")).toBeVisible();
+      await expect(page.getByText("Copiat.")).toBeVisible();
       expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("0722 000 222");
       await expect(page.getByRole("link", { name: "Sună" })).toHaveAttribute("href", "tel:+40722000222");
       const wa = page.getByRole("link", { name: "WhatsApp" });
@@ -136,7 +136,7 @@ for (const size of SIZES) {
       await mockState({ competitionsDown: true });
       await loginAs(page);
       await page.goto("/sportiv/amaria");
-      await expect(page.getByText("Rezultatele nu sunt disponibile acum.")).toBeVisible();
+      await expect(page.getByText("Rezultate indisponibile.")).toBeVisible();
       await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Școala" })).toBeVisible();
     });
@@ -146,7 +146,7 @@ for (const size of SIZES) {
       await page.goto("/sportiv/amaria");
       await page.evaluate(() => { navigator.clipboard.writeText = () => Promise.reject(new Error("denied")); });
       await page.getByRole("button", { name: "Copiază numărul" }).click();
-      await expect(page.getByText("Nu am putut copia numărul.")).toBeVisible();
+      await expect(page.getByText("Nu s-a putut copia.")).toBeVisible();
     });
   });
 }

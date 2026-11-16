@@ -32,7 +32,6 @@ for (const size of SIZES) {
       await expect(add).toHaveCount(1);
       for (const link of await add.all()) await expect(link).toHaveAttribute("href", "/grupe/gavansati?tab=program&nou=1");
 
-      await expect(page.getByText("Programul este public, îl vede oricine pe site.")).toBeVisible();
       await expect(page.getByRole("checkbox", { name: "Arată programul pe site" })).toBeChecked();
 
       await expect(page.getByRole("heading", { name: "Următoarele date" })).toBeVisible();
@@ -50,7 +49,6 @@ for (const size of SIZES) {
       // Only the next 4 dates, then the footer with "Vezi toate" (the calendar).
       await expect(dates.locator("[data-date-block]")).toHaveCount(4);
       const footer = dates.locator("[data-dates-footer]");
-      await expect(footer).toContainText("Se arată următoarele 4 date");
       await expect(footer.getByRole("link", { name: "Vezi toate ›" })).toHaveAttribute("href", "/calendar");
       // No row before today.
       await expect(page.locator("[data-date-block]").filter({ hasText: /^Mie\s*4(\s*\d\d:\d\d)?$/i })).toHaveCount(0);
@@ -80,7 +78,7 @@ for (const size of SIZES) {
     test("a Școala group shows the rules read only", async({ page }) => {
       await loginAs(page);
       await page.goto("/grupe/gprimii?tab=program");
-      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toBeVisible();
+      await expect(page.getByRole("button", { name: "Îl schimbă administratorul" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Program săptămânal" })).toBeVisible();
       await expect(page.getByText("Sâmbătă, 10:00", { exact: true }).first()).toBeVisible();
       await expect(page.getByRole("button", { name: /^(Schimbă|Șterge) programul/ })).toHaveCount(0);
@@ -92,7 +90,7 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/grupe/guscat?tab=program");
       await expect(page.getByRole("heading", { name: "Program săptămânal" })).toBeVisible();
-      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Îl schimbă administratorul" })).toHaveCount(0);
     });
 
     test("an own Școala group the backend marks editable shows the edit controls", async({ page }) => {
@@ -100,7 +98,7 @@ for (const size of SIZES) {
       await loginAs(page);
       await page.goto("/grupe/gprimii?tab=program");
       await expect(page.getByRole("heading", { name: "Program săptămânal" })).toBeVisible();
-      await expect(page.getByText("Programul Școlii îl schimbă administratorul.")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Îl schimbă administratorul" })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Schimbă programul de sâmbătă" })).toBeVisible();
       await expect(page.getByRole("button", { name: "Șterge programul de duminică" })).toBeVisible();
       await expect(page.getByRole("checkbox")).toHaveCount(1);

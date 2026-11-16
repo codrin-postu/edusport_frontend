@@ -19,8 +19,8 @@ export function ProfileView() {
       <PageBody narrow>
         <PageSub>{PROFILE.role}</PageSub>
         <ListCard>
-          <ListRow href="/profil/setari" title={PROFILE.settings} sub={PROFILE.settingsSub} />
-          <ListRow href="/profil/securitate" title={PROFILE.security} sub={PROFILE.securitySub} />
+          <ListRow href="/profil/setari" title={PROFILE.settings} />
+          <ListRow href="/profil/securitate" title={PROFILE.security} />
         </ListCard>
         <Button variant="secondary" onClick={() => void logout()} className="w-full">{PROFILE.logout}</Button>
       </PageBody>

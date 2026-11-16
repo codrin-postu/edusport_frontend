@@ -12,6 +12,7 @@ import { bucharestToday } from "../../../../_lib/today";
 import { useNoAccess, usePortal } from "../../../../_lib/use-portal";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import Link from "@/components/ui/link";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Segmented } from "@/app/_portal/ui/Segmented";
@@ -84,8 +85,7 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
     <ListCard>
       {rows.map((o) => <DateRow key={`${o.documentId ?? o.eventId}:${o.date}:${o.startTime}`} occurrence={o} today={today} onOpen={openDate(o)} />)}
       {more && (
-        <div data-dates-footer className="flex min-h-(--portal-tap) items-center justify-between gap-3 px-(--portal-row-pad-x) text-(length:--portal-text-13) text-muted">
-          <span>{PROGRAM.showingNext(NEXT_DATES)}</span>
+        <div data-dates-footer className="flex min-h-(--portal-tap) items-center justify-end gap-3 px-(--portal-row-pad-x) text-(length:--portal-text-13) text-muted">
           <Link href="/calendar" tone="plain" className="inline-flex min-h-(--portal-tap) items-center text-(length:--portal-text-14) font-bold text-primary no-underline">{PROGRAM.seeAll} ›</Link>
         </div>
       )}
@@ -117,9 +117,8 @@ export function ProgramTab({ groupId, own, addHref }: ProgramTabProps) {
         <div className="flex flex-col gap-(--portal-section-gap)">
           {data === null ? spinner : (
             <>
-              {data.kind === "school" && !data.editable && <p className="text-body-sm text-secondary">{PROGRAM.schoolLocked}</p>}
               {data.rules.length > 0 && (
-                <Section title={PROGRAM.weeklyHeading}>
+                <Section title={PROGRAM.weeklyHeading} after={data.kind === "school" && !data.editable ? <HintIcon icon="lock" text={PROGRAM.schoolLocked} /> : undefined}>
                   <ListCard>
                     {byWeekday(data.rules).map((r) => <RulesCard key={`${r.eventId}:${r.day}`} rule={r} later={r.from > today} editable={canEdit} onChange={() => setOpen({ kind: "change", rule: r })} onEnd={() => setOpen({ kind: "end", rule: r })} />)}
                   </ListCard>

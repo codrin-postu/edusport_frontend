@@ -12,7 +12,7 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { MonthGrid } from "@/app/_portal/ui/MonthGrid";
 import { MonthPicker } from "@/app/_portal/ui/MonthPicker";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Section } from "@/app/_portal/ui/SectionHeading";
 import { Spinner } from "@/app/_portal/ui/Spinner";
@@ -57,9 +57,8 @@ export function CalendarView() {
   const items = cal && shown ? itemsOn(cal, shown) : [];
   return (
     <>
-      <PageHeader back={{ href: "/", label: NAV.today }} title={CALENDAR.title} sub={CALENDAR.sub} actions={picker} />
+      <PageHeader back={{ href: "/", label: NAV.today }} title={CALENDAR.title} actions={picker} />
       <PageBody>
-        <PageSub>{CALENDAR.sub}</PageSub>
         {calendar.state === "loading" && <div className="flex justify-center py-6"><Spinner /></div>}
         {calendar.state === "error" && <LoadError onRetry={calendar.reload} />}
         {calendar.state === "ready" && cal && (
