@@ -164,4 +164,15 @@ test.describe("Calendar session sheet", () => {
     await page.getByRole("dialog").getByRole("button", { name: "Mută" }).click();
     await expect(page.getByRole("dialog").getByRole("radio", { name: "Mută" })).toHaveAttribute("aria-checked", "true");
   });
+
+  test("a cancelled lesson shows cancelled with its reason in Azi-style lists and on the lesson page", async({ page }) => {
+    await openLesson(page);
+    await page.getByRole("dialog").getByRole("button", { name: "Anulează" }).click();
+    await page.getByLabel("Motiv").fill("bolnav");
+    await page.getByRole("dialog").getByRole("button", { name: "Anulează", exact: true }).last().click();
+    await expect(page.getByRole("button").filter({ hasText: "Ana Stoica" })).toContainText("anulată, bolnav");
+    await page.goto("/lectie/lser3");
+    await expect(page.getByText("anulată, bolnav").first()).toBeVisible();
+    await expect(page.getByRole("button", { name: "Salvează prezența" })).toHaveCount(0);
+  });
 });

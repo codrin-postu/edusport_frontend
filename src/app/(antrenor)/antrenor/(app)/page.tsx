@@ -61,7 +61,7 @@ export default function AziPage() {
   const rows: SessionRowData[] = [
     ...data.groups.map(groupRow),
     ...data.lessons.map((l): SessionRowData => ({
-      kind: "individual", date: data.today, startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done,
+      kind: "individual", date: data.today, startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done, cancelled: l.cancelled, reason: l.reason,
       sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
     })),
   ].sort((a, b) => a.startTime.localeCompare(b.startTime));

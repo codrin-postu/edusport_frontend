@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import Checkbox from "@/components/ui/checkbox";
-import { LESSON, NAV, PRESENCE, PROGRAM, TRAINING } from "@/lib/portal/copy";
+import { CALENDAR, LESSON, NAV, PRESENCE, PROGRAM, TRAINING } from "@/lib/portal/copy";
 import { capitalize, dayMonth, dayMonthLong, daysSpoken, longDay, shortDate } from "@/lib/portal/format";
 import type { CoachLesson, LessonSaved } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
@@ -98,7 +98,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
     return r.message;
   }
 
-  const sub = [lesson.savedLine, lesson.archived ? PRESENCE.archived : null].filter((p): p is string => Boolean(p)).join(" ");
+  const sub = [lesson.cancelled ? [CALENDAR.legendCancelled, lesson.cancelReason].filter(Boolean).join(", ") : null, lesson.savedLine, lesson.archived ? PRESENCE.archived : null].filter((p): p is string => Boolean(p)).join(" ");
   return (
     <>
       <PageHeader back={{ href: "/", label: NAV.today }} kicker={LESSON.title} title={lesson.athleteName} sub={sub || undefined} />
@@ -120,7 +120,7 @@ function LessonBody({ lesson, reload }: { lesson: CoachLesson; reload: () => voi
             </div>
           </PortalCard>
           <AlertLine message={message} />
-          {!lesson.archived && <Button onClick={() => void save()} disabled={busy || readOnly} className="w-full">{LESSON.savePresence}</Button>}
+          {!lesson.archived && !lesson.cancelled && <Button onClick={() => void save()} disabled={busy || readOnly} className="w-full">{LESSON.savePresence}</Button>}
           {lesson.planEditable && <Button variant="secondary" href={`${lessonHref}?modifica=1`} className="w-full">{LESSON.edit}</Button>}
           {lesson.deletable && <PortalLink center onClick={() => setAsking(true)}>{LESSON.delete}</PortalLink>}
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/button";
-import { CLUB_TODAY } from "@/lib/portal/copy";
+import { CALENDAR, CLUB_TODAY } from "@/lib/portal/copy";
 import { longDay, weekdayShort } from "@/lib/portal/format";
 import type { ClubTodayRow, CoachClubToday } from "@/lib/portal/api-types";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
@@ -36,12 +36,15 @@ export function ClubTodayPopup({ onClose }: { onClose: () => void }) {
         />
       );
     }
-    const sub = <><IndividualTag />{`${r.own ? CLUB_TODAY.you(r.coach) : r.coach}, ${r.durationMin} min`}</>;
+    const sub = r.cancelled
+      ? [CALENDAR.legendCancelled, r.reason].filter(Boolean).join(", ")
+      : <><IndividualTag />{`${r.own ? CLUB_TODAY.you(r.coach) : r.coach}, ${r.durationMin} min`}</>;
     return (
       <ListRow
         key={`l${r.lessonId ?? ""}${r.startTime}${i}`}
-        {...(r.own && r.lessonId ? { href: `/lectie/${encodeURIComponent(r.lessonId)}` } : { end: null })}
-        lead={lead}
+        {...(r.own && r.lessonId && !r.cancelled ? { href: `/lectie/${encodeURIComponent(r.lessonId)}` } : { end: null })}
+        lead={r.cancelled ? <DateBlock word={weekdayShort(date)} day={String(Number(date.slice(8)))} time={r.startTime} dim /> : lead}
+        dim={r.cancelled}
         title={CLUB_TODAY.lesson}
         sub={sub}
       />

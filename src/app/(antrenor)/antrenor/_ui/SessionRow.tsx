@@ -20,6 +20,8 @@ export type SessionRowData = {
   durationMin: number | null;
   done: boolean;
   cancelled?: boolean;
+  /** Why it was cancelled; shown after the cancelled word. */
+  reason?: string | null;
   /** A group session the coach takes as a stand-in (Azi marks it with a tag). */
   standIn?: boolean;
   sessionId: string | null;
@@ -55,7 +57,7 @@ export function SessionRow({ row, now, from = null, onOpen }: { row: SessionRowD
       onClick={onOpen}
       lead={<DateBlock word={weekdayShort(row.date)} day={String(Number(row.date.slice(8)))} time={row.startTime} dim={dim} />}
       title={row.title}
-      sub={cancelled ? CALENDAR.legendCancelled : sub}
+      sub={cancelled ? [CALENDAR.legendCancelled, row.reason].filter(Boolean).join(", ") : sub}
       dim={dim}
       end={cancelled ? null : <StatusBlock kind={row.kind === "grup" ? "Grup" : "Individual"} done={row.done} popId={row.sessionId} />}
     />

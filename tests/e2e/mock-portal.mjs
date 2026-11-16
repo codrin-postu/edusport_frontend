@@ -243,7 +243,7 @@ function classRow(g, date, done) {
   };
 }
 
-const lessonRow = (l) => ({ lessonId: l.lessonId, athleteName: l.athleteName, date: l.date, startTime: l.startTime, durationMin: l.durationMin, done: l.state === "saved" });
+const lessonRow = (l) => ({ lessonId: l.lessonId, athleteName: l.athleteName, date: l.date, startTime: l.startTime, durationMin: l.durationMin, done: l.state === "saved", cancelled: l.cancelled === true, reason: l.cancelReason ?? null });
 
 /** Backend nextAndWeek: the browser clock stands at 14:00 Bucharest; own classes and lessons, no cancelled, no stand-in. */
 const MOCK_NOW = "14:00";
@@ -478,8 +478,8 @@ function saveSession({ body, res }) {
 
 function lessonView(l) {
   const archived = archivedDate(l.date);
-  return { ...withoutSeries(l), coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Antrenor Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived, archived, deletable: !archived,
-    series: l.seriesId ? world.series[l.seriesId] ?? null : null, planEditable: l.state === "planned" && l.date >= today && l.coachIds.includes(ME) };
+  return { ...withoutSeries(l), coachOptions: world.coachOptions, savedLine: l.state === "saved" ? `Salvată de Antrenor Andrei Popa, ${longDay(l.date)} 15:55` : null, editable: !archived && !l.cancelled, archived, deletable: !archived, cancelled: l.cancelled === true, cancelReason: l.cancelReason ?? null,
+    series: l.seriesId ? world.series[l.seriesId] ?? null : null, planEditable: l.state === "planned" && l.date >= today && l.coachIds.includes(ME) && !l.cancelled };
 }
 
 const withoutSeries = (l) => { const copy = { ...l }; delete copy.seriesId; return copy; };
@@ -897,8 +897,8 @@ const coachRoutes = [
     date: today,
     rows: [
       { kind: "group", groupId: "gprimii", name: "Primii Pași", school: true, startTime: "10:00", durationMin: 50, coaches: ["Ioana Dinu", "Mihai Stan"], location: "AFI Cotroceni", own: false },
-      { kind: "lesson", lessonId: null, startTime: "13:00", durationMin: 45, coach: "Ioana Dinu", own: false },
-      { kind: "lesson", lessonId: "ldone", startTime: "15:00", durationMin: 50, coach: "Andrei Popa", own: true },
+      { kind: "lesson", lessonId: null, startTime: "13:00", durationMin: 45, coach: "Ioana Dinu", own: false, cancelled: false, reason: null },
+      { kind: "lesson", lessonId: "ldone", startTime: "15:00", durationMin: 50, coach: "Andrei Popa", own: true, cancelled: false, reason: null },
       { kind: "group", groupId: "gavansati", name: "Avansați", school: false, startTime: "18:15", durationMin: 60, coaches: ["Andrei Popa"], location: "AFI Cotroceni", own: true },
     ],
   })],

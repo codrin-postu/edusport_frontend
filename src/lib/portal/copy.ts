@@ -127,7 +127,7 @@ export const CALENDAR = {
   grid: "Zilele lunii",
 } as const;
 
-/** The calendar session sheet. COPY NEEDED: the two toasts and the lesson cancel name are proposals pending the user. */
+/** The calendar session sheet. */
 export const SESSION_SHEET = {
   presence: "Prezență",
   cancel: "Anulează",
