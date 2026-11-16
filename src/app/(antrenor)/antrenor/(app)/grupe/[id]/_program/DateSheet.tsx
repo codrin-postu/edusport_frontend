@@ -5,8 +5,8 @@ import DatePickerField from "@/components/ui/date-picker-field";
 import { Input } from "@/components/ui/form-field";
 import { PROGRAM } from "@/lib/portal/copy";
 import { capitalize, dayMonth, longDay } from "@/lib/portal/format";
-import { dateKey, dateState, eventDocumentId } from "@/lib/portal/program";
-import type { DateBody, Occurrence } from "@/lib/portal/api-types";
+import { dateKey, dateState, eventDocumentId, type DateTarget } from "@/lib/portal/program";
+import type { DateBody } from "@/lib/portal/api-types";
 import { ChoiceRow } from "@/app/_portal/ui/ChoiceRow";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { SheetFooter } from "../../../../_ui/SheetFooter";
@@ -15,7 +15,7 @@ import { useSend } from "./useSend";
 
 export type DateChoice = "cancel" | "move" | "remove" | "keep";
 type Choice = DateChoice;
-type Props = { occurrence: Occurrence; today: string; initial?: DateChoice; onClose: () => void; onDone: () => void };
+type Props = { occurrence: DateTarget; today: string; initial?: DateChoice; onClose: () => void; onDone: () => void };
 
 /** One date of the program: "Anulează" with a note, "Mută", "Șterge", and "Se ține" on a date that was cancelled or moved. */
 export function DateSheet({ occurrence: o, today, initial, onClose, onDone }: Props) {

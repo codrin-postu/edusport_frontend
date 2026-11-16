@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/form-field";
 import { SESSION_SHEET } from "@/lib/portal/copy";
 import { capitalize, dayMonth, longDay } from "@/lib/portal/format";
-import type { CoachCalendarItem, Occurrence } from "@/lib/portal/api-types";
+import type { CoachCalendarItem } from "@/lib/portal/api-types";
+import { dateTargetOf } from "@/lib/portal/calendar";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -18,26 +19,18 @@ type Props = { item: CoachCalendarItem; today: string; onClose: () => void; onDo
 
 const DATE_CHOICE: Partial<Record<SessionAction, DateChoice>> = { anuleaza: "cancel", muta: "move", sterge: "remove" };
 
-/** The class date a calendar item stands for, as the program's date sheet takes it (the series date is the one in the occurrence key). */
-function occurrenceOf(item: CoachCalendarItem): Occurrence {
-  const [documentId, keyDate] = (item.occurrenceKey ?? "").split("|");
-  return {
-    documentId, eventId: 0, date: item.date, startTime: item.startTime, endTime: null, endsNextDay: false, endDate: null,
-    status: item.cancelled ? "cancelled" : "scheduled", cancelReason: item.cancelled ? "exception" : null, note: item.reason,
-    groupId: null, groupName: item.title, oneOff: false, originalDate: keyDate && keyDate !== item.date ? keyDate : null, originalStartTime: null,
-  } as Occurrence;
-}
-
 const LABEL: Record<SessionAction, string> = { prezenta: SESSION_SHEET.presence, anuleaza: SESSION_SHEET.cancel, muta: SESSION_SHEET.move, sterge: SESSION_SHEET.remove };
 
 /** One session of the calendar: Prezență, Anulează (a lesson: with an optional Motiv), Mută and Șterge. A group date is carried out by the program's date sheet. */
 export function SessionSheet({ item, today, onClose, onDone }: Props) {
   const [step, setStep] = useState<SessionAction | null>(null);
   const lesson = item.kind === "individual";
-  const actions = sessionActions({
+  const target = dateTargetOf(item);
+  const all = sessionActions({
     kind: lesson ? "lesson" : "group", archived: isArchived(item.date, today, item.done), future: item.date >= today, cancelled: item.cancelled, done: item.done,
   });
-  if (!lesson && step !== null && step !== "prezenta") return <DateSheet occurrence={occurrenceOf(item)} today={today} initial={DATE_CHOICE[step]} onClose={() => setStep(null)} onDone={onDone} />;
+  const actions = lesson || target !== null ? all : all.filter((a) => a === "prezenta");
+  if (target !== null && step !== null && step !== "prezenta") return <DateSheet occurrence={target} today={today} initial={DATE_CHOICE[step]} onClose={() => setStep(null)} onDone={onDone} />;
   if (lesson && (step === "anuleaza" || step === "sterge")) return <LessonStep action={step} item={item} onBack={() => setStep(null)} onDone={onDone} />;
   const href = lesson ? `/lectie/${encodeURIComponent(item.lessonId ?? "")}` : presenceHref(item, "calendar");
   return (

@@ -318,14 +318,14 @@ function calendarData(month) {
     const items = [];
     // Own classes come from the group's rules with moved, cancelled and removed dates applied; today keeps its class (the Azi fixture).
     for (const g of Object.values(world.groups).filter((x) => x.own)) {
-      let occ = occurrencesOf(g, month).filter((o) => o.date === date).map((o) => ({ start: o.startTime, dur: o.durationMin ?? g.dur, cancelled: o.status === "cancelled" }));
-      if (!occ.length && date === today) occ = [{ start: g.start, dur: g.dur, cancelled: false }];
+      let occ = occurrencesOf(g, month).filter((o) => o.date === date).map((o) => ({ start: o.startTime, dur: o.durationMin ?? g.dur, cancelled: o.status === "cancelled", eventId: o.documentId, oneOff: o.oneOff }));
+      if (!occ.length && date === today) occ = [{ start: g.start, dur: g.dur, cancelled: false, eventId: g.eventId, oneOff: false }];
       for (const o of occ) {
         const rec = world.saved[keyOf(g.id, date)];
         const { cancelled } = o;
         items.push({
           kind: "grup", cancelled, date, startTime: o.start, durationMin: o.dur, title: g.name, children: cancelled ? null : childrenOf(g.id),
-          location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null, reason: null,
+          location: g.location ?? null, done: !cancelled && Boolean(rec), standIn: false, sessionId: cancelled ? null : rec?.sessionId ?? null, occurrenceKey: keyOf(g.id, date), lessonId: null, eventId: o.eventId, oneOff: o.oneOff, reason: null,
         });
       }
     }
@@ -334,13 +334,13 @@ function calendarData(month) {
       if (rec.date !== date || g.own || !rec.coachIds.includes(ME)) continue;
       items.push({
         kind: "grup", cancelled: false, date, startTime: rec.startTime, durationMin: rec.durationMin, title: g.name, children: rec.ticks.length,
-        location: g.location ?? null, done: true, standIn: true, sessionId: rec.sessionId, occurrenceKey: key, lessonId: null, reason: null,
+        location: g.location ?? null, done: true, standIn: true, sessionId: rec.sessionId, occurrenceKey: key, lessonId: null, eventId: null, oneOff: false, reason: null,
       });
     }
     for (const l of Object.values(world.lessons).filter((x) => x.date === date && x.coachIds.includes(ME))) {
       items.push({
         kind: "individual", cancelled: l.cancelled === true, date, startTime: l.startTime, durationMin: l.durationMin, title: l.athleteName, children: null,
-        location: null, done: l.state === "saved", standIn: false, sessionId: null, occurrenceKey: null, lessonId: l.lessonId, reason: l.cancelReason ?? null,
+        location: null, done: l.state === "saved", standIn: false, sessionId: null, occurrenceKey: null, lessonId: l.lessonId, eventId: null, oneOff: false, reason: l.cancelReason ?? null,
       });
     }
     items.sort((a, b) => a.startTime.localeCompare(b.startTime));

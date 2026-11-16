@@ -164,6 +164,26 @@ test.describe("Calendar session sheet", () => {
     await expect(page.getByRole("dialog").getByRole("radio", { name: "Mută" })).toHaveAttribute("aria-checked", "true");
   });
 
+  test("Șterge on a one-off group class from the calendar deletes the class, as the Program tab does", async({ page }) => {
+    await loginAs(page);
+    const added = await page.evaluate(async() => {
+      const res = await fetch("/api/portal/coach/groups/gavansati/program", {
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ repeat: false, date: "2026-11-12", startTime: "19:00", durationMin: 60 }),
+      });
+      return res.status;
+    });
+    expect(added).toBe(200);
+    await page.goto("/calendar?luna=2026-11&zi=2026-11-12");
+    await page.getByRole("button").filter({ hasText: "Avansați" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Șterge" }).click();
+    await page.getByRole("dialog").getByRole("radio", { name: /^Șterge/ }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Șterge", exact: true }).click();
+    await expect(page.getByText("Ședință ștearsă.")).toBeVisible();
+    const del = (await mockLog()).filter((c) => c.method === "DELETE" && /\/program\/[^/]+$/.test(c.path));
+    expect(del[0]?.path).toMatch(/\/program\/evnew\d+$/);
+    expect((await mockLog()).some((c) => c.method === "PUT" && /\/dates\//.test(c.path))).toBe(false);
+  });
+
   test("a cancelled lesson shows cancelled with its reason in Azi-style lists and on the lesson page", async({ page }) => {
     await openLesson(page);
     await page.getByRole("dialog").getByRole("button", { name: "Anulează" }).click();

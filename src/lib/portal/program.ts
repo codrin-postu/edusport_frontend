@@ -1,15 +1,18 @@
 // Pure helpers of the Program tab. Type-only import: loaded by Node tests through type stripping.
 import type { Occurrence } from "./api-types";
 
+/** What a date action needs of an occurrence: the Program tab sends whole occurrences, the calendar only these fields. */
+export type DateTarget = Pick<Occurrence, "documentId" | "date" | "startTime" | "status" | "cancelReason" | "note" | "oneOff" | "originalDate">;
+
 export type DateState = "past" | "pause" | "cancelled" | "moved" | "open";
 
 /** The date a date action addresses: a moved date by the series date it came from (as the admin `dateKey`). */
-export const dateKey = (o: Pick<Occurrence, "date" | "originalDate">): string => o.originalDate ?? o.date;
+export const dateKey = (o: Pick<DateTarget, "date" | "originalDate">): string => o.originalDate ?? o.date;
 
 /** A break date: cancelled by a blackout (the admin `isBreak`). */
 export const isPause = (o: Pick<Occurrence, "status" | "cancelReason">): boolean => o.status === "cancelled" && o.cancelReason === "blackout";
 
-export function dateState(o: Occurrence, today: string): DateState {
+export function dateState(o: DateTarget, today: string): DateState {
   if (o.date < today) return "past";
   if (isPause(o)) return "pause";
   if (o.status === "cancelled") return "cancelled";
@@ -18,7 +21,7 @@ export function dateState(o: Occurrence, today: string): DateState {
 }
 
 /** The Strapi documentId the date routes take; never the numeric `eventId`. */
-export const eventDocumentId = (o: Occurrence): string | null => o.documentId ?? null;
+export const eventDocumentId = (o: DateTarget): string | null => o.documentId ?? null;
 
 /** Minutes from `startTime` to `endTime` of an occurrence, null without an end time (or across midnight). */
 export function occurrenceMinutes(o: Pick<Occurrence, "startTime" | "endTime" | "endsNextDay">): number | null {
