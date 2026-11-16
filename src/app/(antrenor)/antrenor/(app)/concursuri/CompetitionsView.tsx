@@ -19,10 +19,10 @@ type Scope = "all" | "mine";
 type Available = Extract<CoachCompetitions, { available: true }>;
 
 export function CompetitionsView() {
-  const [scope, setScope] = useState<Scope>("all");
+  const [scope, setScope] = useState<Scope>("mine");
   const [season, setSeason] = useState<string | null>(null);
-  const query = [scope === "mine" ? "scope=mine" : null, season ? `season=${encodeURIComponent(season)}` : null].filter(Boolean).join("&");
-  const result = usePortal<CoachCompetitions>(`coach/competitions${query === "" ? "" : `?${query}`}`);
+  const query = [`scope=${scope}`, season ? `season=${encodeURIComponent(season)}` : null].filter(Boolean).join("&");
+  const result = usePortal<CoachCompetitions>(`coach/competitions?${query}`);
   // The controls stay on screen while the next answer loads: keep the last available answer.
   const [seen, setSeen] = useState<Available | null>(null);
   const data = result.data;
@@ -47,7 +47,7 @@ export function CompetitionsView() {
                 label={COMPETITIONS.filter}
                 value={scope}
                 onChange={onScope}
-                options={[{ value: "all", label: COMPETITIONS.all }, { value: "mine", label: COMPETITIONS.mine }]}
+                options={[{ value: "mine", label: COMPETITIONS.mine }, { value: "all", label: COMPETITIONS.all }]}
               />
             </div>
             <div className="w-full portal:w-(--portal-season-w)">

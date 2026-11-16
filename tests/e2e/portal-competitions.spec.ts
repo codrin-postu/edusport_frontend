@@ -16,8 +16,10 @@ for (const size of SIZES) {
       await expect(page.locator("h1")).toHaveCount(1);
       await expect(page.locator("h1")).toHaveText("Concursuri");
       await expect(page.getByText("Rezultatele sportivilor clubului").locator("visible=true")).toBeVisible();
-      await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "true");
-      await expect(page.getByRole("button", { name: "Grupele mele" })).toHaveAttribute("aria-pressed", "false");
+      await expect(page.getByRole("group", { name: "Sportivi" }).getByRole("button").first()).toHaveText("Grupele mele");
+      await expect(page.getByRole("button", { name: "Grupele mele" })).toHaveAttribute("aria-pressed", "true");
+      await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "false");
+      await expect.poll(calls).toContain("/api/portal/coach/competitions?scope=mine");
       await expect(page.getByRole("group", { name: "Sportivi" })).toBeVisible();
       await expect(page.getByText("Sezon", { exact: true })).toBeVisible();
       await expect(page.getByRole("button", { name: "Sezon" })).toHaveText("2026-2027");
@@ -33,10 +35,10 @@ for (const size of SIZES) {
       await expect(first.locator("[data-date-block]").first()).toContainText("26");
       await expect(first.locator("[data-date-time]")).toHaveCount(0);
       await expect(first.locator("summary")).toContainText("Brașov");
-      await expect(first.locator("[data-comp-count]")).toContainText("3");
+      await expect(first.locator("[data-comp-count]")).toContainText("2");
       await expect(first.locator("[data-comp-count]")).toContainText("sportivi");
       const members = first.locator("[data-comp-member]");
-      await expect(members).toHaveCount(3);
+      await expect(members).toHaveCount(2);
       await expect(members.nth(0)).toContainText("Loc");
       await expect(members.nth(0)).toContainText("Maria Ionescu");
       await expect(members.nth(0)).toContainText("Advanced Novice Girls");
@@ -46,16 +48,16 @@ for (const size of SIZES) {
       await expect(page).toHaveURL(/\/sportiv\/amaria$/);
     });
 
-    test("Grupele mele asks for scope=mine with the season and shows own children only", async({ page }) => {
+    test("Toți sportivii asks for scope=all with the season and shows every athlete", async({ page }) => {
       await loginAs(page);
       await page.goto("/concursuri");
       await expect(page.locator("details")).toHaveCount(3);
-      await expect(page.locator("details").first().locator("[data-comp-member]")).toHaveCount(3);
-      await page.getByRole("button", { name: "Grupele mele" }).click();
-      await expect(page.getByRole("button", { name: "Grupele mele" })).toHaveAttribute("aria-pressed", "true");
       await expect(page.locator("details").first().locator("[data-comp-member]")).toHaveCount(2);
       await expect(page.locator("details").first()).not.toContainText("Dara Constantin");
-      expect(await calls()).toContain("/api/portal/coach/competitions?scope=mine&season=2026-2027");
+      await page.getByRole("button", { name: "Toți sportivii" }).click();
+      await expect(page.getByRole("button", { name: "Toți sportivii" })).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator("details").first().locator("[data-comp-member]")).toHaveCount(3);
+      expect(await calls()).toContain("/api/portal/coach/competitions?scope=all&season=2026-2027");
     });
 
     test("another season is requested; an empty season says so", async({ page }) => {
