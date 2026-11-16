@@ -4,7 +4,7 @@ import { ADULT_EMAIL, SPORTIV_BASE, loginSportiv } from "./sportiv-helpers";
 
 const ANA = "athana0001";
 const IOANA = "athadult01";
-const DOWN = "Rezultatele nu sunt disponibile acum.";
+const DOWN = "Rezultate indisponibile.";
 
 test.use({ baseURL: SPORTIV_BASE, viewport: { width: 390, height: 844 } });
 test.beforeEach(async({ page }) => {
@@ -77,7 +77,7 @@ test("a row opens the competition", async({ page }) => {
   for (const h of ["Program scurt", "Program liber"]) await expect(page.getByRole("heading", { name: h })).toBeVisible();
   for (const t of ["TES", "PCS", "Deduceri"]) await expect(page.getByText(t, { exact: true }).first()).toBeVisible();
   for (const t of ["Element", "Bază", "Scor"]) await expect(page.getByRole("columnheader", { name: t }).first()).toBeVisible();
-  const official = page.getByRole("link", { name: "Clasamentul complet (pagina oficială) ›" });
+  const official = page.getByRole("link", { name: "Clasament oficial ›" });
   await expect(official).toHaveAttribute("target", "_blank");
   await expect(official).toHaveAttribute("rel", "noopener noreferrer");
   expect(await page.locator("body").innerText()).not.toContain("Ionescu");
@@ -87,7 +87,7 @@ test("no official link when there is none", async({ page }) => {
   await mockState({ noOfficialUrl: true });
   await page.goto(`/${IOANA}/concursuri/res-0001`);
   await expect(page.getByRole("heading", { name: "Cupa României 2026", level: 1 })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Clasamentul complet/ })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Clasament oficial/ })).toHaveCount(0);
 });
 
 test("an unknown result id is the not-found page", async({ page }) => {
@@ -109,9 +109,9 @@ test("results source down: both pages say so", async({ page }) => {
 test("stale results say how old they are", async({ page }) => {
   await mockState({ stale: true });
   await page.goto(`/${IOANA}/concursuri`);
-  await expect(page.getByText("Rezultatele pot fi mai vechi. Actualizate 5 noi.")).toBeVisible();
+  await expect(page.getByText("Actualizat 5 noi.")).toBeVisible();
   await page.goto(`/${IOANA}/concursuri/res-0001`);
-  await expect(page.getByText("Rezultatele pot fi mai vechi. Actualizate 5 noi.")).toBeVisible();
+  await expect(page.getByText("Actualizat 5 noi.")).toBeVisible();
 });
 
 test("a school athlete gets the 404 page and no competitions request", async({ page }) => {

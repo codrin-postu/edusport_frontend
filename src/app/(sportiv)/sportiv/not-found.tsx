@@ -9,7 +9,6 @@ export default function SportivNotFound() {
     <>
       <PageHeader brand noTile title={NOT_FOUND.title} />
       <PageBody narrow>
-        <p className="text-(length:--portal-text-15) text-secondary">{NOT_FOUND.text}</p>
         <Button href="/" className="w-full">{RESET.backSigned}</Button>
       </PageBody>
     </>

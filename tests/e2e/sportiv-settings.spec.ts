@@ -15,7 +15,7 @@ test("Setări: the account, athletes, security and notifications, with no bottom
   await expect(page.getByText(`Cont: ${PARENT_EMAIL}`).locator("visible=true")).toBeVisible();
   await expect(page.locator("[data-bottom-nav]")).toHaveCount(0);
   await expect(page.getByText("E-mail", { exact: true })).toBeVisible();
-  await expect(page.getByText("îl schimbă clubul")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Îl schimbă clubul" })).toBeVisible();
   await expect(page.getByLabel("E-mail", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("link", { name: /Ana Ionescu/ })).toBeVisible();
   await expect(page.getByText("Intermediari Bronze, 9 ani")).toBeVisible();
@@ -53,7 +53,7 @@ test("Date sportiv shows the athlete's data read only", async({ page }) => {
   for (const label of ["Nume", "Data nașterii", "Vârsta", "Persoană de contact", "Telefon", "E-mail"]) {
     await expect(page.getByText(label, { exact: true })).toBeVisible();
   }
-  await expect(page.getByText("Le schimbă clubul.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Le schimbă clubul" })).toBeVisible();
   await expect(page.getByRole("textbox")).toHaveCount(0);
 });
 

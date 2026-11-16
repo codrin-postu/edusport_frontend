@@ -20,7 +20,7 @@ test("Abonament si plati shows the owed money, the abonament, the payments and t
   await expect(page.getByText("Rămas de plată")).toBeVisible();
   await expect(page.getByText("150 RON", { exact: true })).toBeVisible();
   await expect(page.getByText("Lecție 12 noi")).toBeVisible();
-  await expect(page.getByText("Plata se face la club.")).toBeVisible();
+  await expect(page.getByText("Plata la club.")).toBeVisible();
   await expect(page.getByText("A-0124", { exact: true })).toBeVisible();
   await expect(page.getByText("Școala noiembrie, 1 noi - 30 noi")).toBeVisible();
   await expect(page.getByText("Ședința 5 din 8")).toBeVisible();
@@ -67,7 +67,7 @@ test("nothing owed says so and leaves out the pay at the club line", async({ pag
   await mockState({ nothingOwed: true });
   await page.goto(`/${ANA}/plati`);
   await expect(page.getByText("Nimic de plată.")).toBeVisible();
-  await expect(page.getByText("Plata se face la club.")).toHaveCount(0);
+  await expect(page.getByText("Plata la club.")).toHaveCount(0);
 });
 
 test("an advance is shown as sent", async({ page }) => {
@@ -85,7 +85,7 @@ test("Vezi zilele opens the days sheet and Escape returns focus to it", async({ 
   await expect(sheet.getByText("următoarea")).toHaveCount(1);
   await expect(sheet.getByText(/^\d+ noi$/)).toHaveCount(4);
   await expect(sheet.getByText("Valabil până la 30 noi, 4 rămase")).toBeVisible();
-  await expect(sheet.getByText("Data se poate prelungi dacă școala are un weekend liber.")).toBeVisible();
+  await expect(sheet.getByRole("button", { name: "Se poate prelungi dacă școala are weekend liber." })).toBeVisible();
   await expect(sheet.getByText("Alte abonamente")).toBeVisible();
   await expect(sheet.getByText("Școala octombrie, 8/8, valabil până la 31 oct")).toBeVisible();
   await page.keyboard.press("Escape");

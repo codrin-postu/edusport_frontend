@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 // name -> [stroke-width, stroke-linecap]
 const ICONS = {
+  "lock": ["2", "round"],
   "portal-azi": ["2", "round"],
   "portal-grupe": ["2", "round"],
   "portal-concursuri": ["2", "round"],

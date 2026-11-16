@@ -3,6 +3,7 @@
 import { MONEY } from "@/lib/portal/copy-sportiv";
 import { shortDate } from "@/lib/portal/format";
 import type { SportivSubscriptions } from "@/lib/portal/sportiv-types";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { Spinner } from "@/app/_portal/ui/Spinner";
@@ -23,8 +24,10 @@ export function TicketSheet({ open, onOpenChange, subscriptions }: { open: boole
           {active && (
             <div className="flex flex-col gap-3">
               <TicketGrid ticket={active} />
-              <p className="m-0 text-(length:--portal-text-14) font-bold">{`${MONEY.sheet.validUntil(shortDate(active.validUntil))}, ${MONEY.ticket.left(active.left)}`}</p>
-              <p className="m-0 text-(length:--portal-text-14) text-muted">{MONEY.sheet.mayExtend}</p>
+              <p className="m-0 flex items-center gap-2 text-(length:--portal-text-14) font-bold">
+                {`${MONEY.sheet.validUntil(shortDate(active.validUntil))}, ${MONEY.ticket.left(active.left)}`}
+                <HintIcon icon="info" text={MONEY.sheet.mayExtend} />
+              </p>
             </div>
           )}
           {data.earlier.length > 0 && (

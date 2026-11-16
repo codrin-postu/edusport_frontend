@@ -98,7 +98,7 @@ const steps = [
 
   // ---- picker and account menu (the account with two athletes)
   { slug: "picker", caption: "Alegerea sportivului (două sportive în cont).", user: "parent", run: async({ page }) => {
-    await page.goto("/"); await visible(page.getByText("Alege sportivul.")).waitFor({ timeout: 15000 }); await settle(page);
+    await page.goto("/"); await visible(page.getByRole("heading", { name: "Sportivi" })).waitFor({ timeout: 15000 }); await settle(page);
   } },
   { slug: "meniu-cont", caption: "Meniul contului: sportivii, Setări, Ieșire (telefon: foaia de jos, desktop: meniul din bara laterală).", user: "parent", run: async({ page, vp }) => {
     await page.goto(`/${ids.Ana}/istoric`); await heading(page, "Istoric prezență");
@@ -169,7 +169,7 @@ const steps = [
   } },
   { slug: "concursuri-oprit", caption: "Concursuri când serviciul de rezultate nu răspunde (răspuns { available: false } pus în browser).", user: "adult", run: async({ page }) => {
     await page.route("**/api/portal/sportiv/athletes/*/competitions*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ data: { available: false } }) }));
-    await page.goto(`/${ids.Ioana}/concursuri`); await visible(page.getByText("Rezultatele nu sunt disponibile acum.")).waitFor({ timeout: 20000 }); await settle(page);
+    await page.goto(`/${ids.Ioana}/concursuri`); await visible(page.getByText("Rezultate indisponibile.")).waitFor({ timeout: 20000 }); await settle(page);
     await page.unroute("**/api/portal/sportiv/athletes/*/competitions*");
   } },
 

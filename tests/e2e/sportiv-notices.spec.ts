@@ -3,7 +3,7 @@ import { mockLog, mockReset, mockState } from "./portal-helpers";
 import { SPORTIV_BASE, loginSportiv } from "./sportiv-helpers";
 
 const ANA = "athana0001";
-const FAILED = "Nu s-a putut închide. Încearcă din nou.";
+const FAILED = "Nu s-a putut închide.";
 
 test.use({ baseURL: SPORTIV_BASE });
 test.beforeEach(async() => { await mockReset(); });
@@ -66,8 +66,7 @@ test.describe("desktop", () => {
     const panel = page.getByRole("dialog", { name: "Mesaje" });
     await mockState({ dismissFailsOnce: true });
     await panel.getByRole("button", { name: "Închide" }).first().click();
-    await expect(panel.getByRole("status").filter({ hasText: FAILED })).toBeVisible();
-    await expect(page.getByRole("status", { includeHidden: true }).filter({ hasText: FAILED })).toHaveCount(2);
+    await expect(page.getByText(FAILED)).toHaveCount(1);
     await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(2);
     await expect(item(page)).toContainText("2");
   });

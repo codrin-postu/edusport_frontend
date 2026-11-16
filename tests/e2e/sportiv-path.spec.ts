@@ -20,7 +20,7 @@ test("Parcurs shows the level now, the next one, the earlier ones and the badges
   await expect(page.getByText("Marți și joi, 17:30, cu Alina Gheorghe")).toBeVisible();
   await expect(page.getByText("Următorul nivel")).toBeVisible();
   await expect(page.getByText("Intermediari Silver", { exact: true })).toBeVisible();
-  await expect(page.getByText("Antrenorul decide când treci mai departe.")).toBeVisible();
+  await expect(page.getByText("Decide antrenorul.")).toBeVisible();
 
   await expect(page.getByRole("heading", { name: "Până acum" })).toBeVisible();
   await expect(page.getByText("Începători", { exact: true })).toBeVisible();

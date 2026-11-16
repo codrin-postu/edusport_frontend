@@ -8,6 +8,7 @@ import { SETARI } from "@/lib/portal/copy-sportiv";
 import type { SportivMe } from "@/lib/portal/sportiv-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -52,7 +53,7 @@ export function AccountRows({ me, onSaved }: { me: SportivMe; onSaved: (next: Pi
     <>
       <ListCard>
         <ListRow onClick={edit} title={SETARI.me.name} sub={me.name ?? ""} />
-        <ListRow title={SETARI.me.email} sub={me.email} extra={<span className="text-(length:--portal-row-sub) text-muted">{SETARI.me.emailNote}</span>} end={null} />
+        <ListRow title={SETARI.me.email} sub={me.email} end={<span className="flex w-(--portal-trail-w) shrink-0 items-center justify-center"><HintIcon icon="lock" text={SETARI.me.emailNote} /></span>} />
         <ListRow onClick={edit} title={SETARI.me.phone} sub={me.phone ?? ""} />
       </ListCard>
       <Sheet open={open} onOpenChange={setOpen} title={SETARI.me.title}>

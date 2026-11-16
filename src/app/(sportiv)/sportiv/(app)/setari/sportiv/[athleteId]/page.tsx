@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { SETARI } from "@/lib/portal/copy-sportiv";
 import { dayMonthYear } from "@/lib/portal/format";
 import type { SportivProfile } from "@/lib/portal/sportiv-types";
+import { HintIcon } from "@/app/_portal/ui/HintIcon";
 import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { PageBody } from "@/app/_portal/ui/PageBody";
@@ -37,7 +38,7 @@ export default function AthleteDataPage() {
         {p && (
           <>
             <KeyValueCard rows={rows} />
-            <p className="text-(length:--portal-text-13) text-muted">{D.note}</p>
+            <div className="flex justify-end"><HintIcon icon="lock" text={D.note} /></div>
           </>
         )}
       </PageBody>

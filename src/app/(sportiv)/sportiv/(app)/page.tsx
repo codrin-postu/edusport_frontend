@@ -7,7 +7,7 @@ import { logout } from "@/app/_portal/lib/logout";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { PageBody } from "@/app/_portal/ui/PageBody";
-import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
+import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "./_lib/athletes-context";
@@ -25,9 +25,8 @@ export default function PickerPage() {
   if (state === "loading" || only !== null) return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   return (
     <>
-      <PageHeader brand noTile title={ACCOUNT.picker.title} sub={ACCOUNT.picker.sub} />
+      <PageHeader brand noTile title={ACCOUNT.picker.title} />
       <PageBody narrow>
-        <PageSub>{ACCOUNT.picker.sub}</PageSub>
         {picker.length === 0 && <p className="text-(length:--portal-text-14) text-muted">{ACCOUNT.picker.empty}</p>}
         <ListCard>
           {picker.map((a) => (

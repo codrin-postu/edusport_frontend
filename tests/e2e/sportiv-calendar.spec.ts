@@ -13,7 +13,7 @@ test.beforeEach(async({ page }) => {
 test("Calendar loads without a month, follows the arrows and lists a chosen day", async({ page }) => {
   await page.goto(`/${ANA}/calendar`);
   await expect(page.getByRole("heading", { name: "Calendar", level: 1 })).toBeVisible();
-  await expect(page.getByText("Ana Ionescu, doar ședințele proprii").locator("visible=true")).toBeVisible();
+  await expect(page.getByText("Ana Ionescu", { exact: true }).locator("visible=true")).toBeVisible();
   await expect(page.getByText("Noiembrie 2026").locator("visible=true")).toBeVisible();
   const calls = (await mockLog()).filter((c) => c.path.includes(`/${ANA}/calendar`) && !c.path.includes(".ics"));
   expect(calls[0].path).toMatch(/\/calendar$/);
@@ -65,7 +65,7 @@ test("Calendar next month is disabled when the answer has none, and the phone ca
   await next.click();
   await expect(page.getByText("Decembrie 2026").locator("visible=true")).toBeVisible();
   await expect(next).toBeDisabled();
-  const link = page.getByRole("link", { name: "Adaugă în calendarul telefonului" });
+  const link = page.getByRole("link", { name: "Adaugă în telefon" });
   await expect(link).toHaveAttribute("href", `/api/portal/sportiv/athletes/${ANA}/calendar.ics`);
   const download = page.waitForEvent("download");
   await link.click();

@@ -16,7 +16,6 @@ test("the picker lists both athletes and choosing one opens it", async({ page })
   await loginSportiv(page);
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Sportivi" })).toBeVisible();
-  await expect(page.getByText("Alege sportivul.").locator("visible=true")).toBeVisible();
   await expect(page.getByRole("link", { name: /Ana Ionescu/ })).toBeVisible();
   await page.getByRole("link", { name: /Matei Ionescu/ }).click();
   await expect(page).toHaveURL(`${SPORTIV_BASE}/${MATEI}`);

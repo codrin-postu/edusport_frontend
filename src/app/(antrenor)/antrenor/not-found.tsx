@@ -11,7 +11,6 @@ export default function AntrenorNotFound() {
     <PortalShell nav={coachNav()} account={{ label: NAV.profile, href: "/profil", ariaLabel: NAV.profile }} brandHref="/">
       <PageHeader brand title={NOT_FOUND.title} />
       <PageBody narrow>
-        <p className="text-(length:--portal-text-15) text-secondary">{NOT_FOUND.text}</p>
         <Button href="/" className="w-full">{NOT_FOUND.back}</Button>
       </PageBody>
     </PortalShell>

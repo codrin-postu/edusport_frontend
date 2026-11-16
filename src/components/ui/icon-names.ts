@@ -23,6 +23,7 @@ export const ICON_VERSION = {
   "info": "1c1dc801",
   "instagram": "41a9580a",
   "layers": "91fde112",
+  "lock": "945ac5e0",
   "mail": "0ed0d8d6",
   "map-pin": "a45260b5",
   "medal-bronze": "3eef5b7e",

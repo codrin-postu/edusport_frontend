@@ -17,7 +17,7 @@ export const NAV_SPORTIV = {
 } as const;
 
 /** Shown on Concursuri, the competition detail and the Acasă card when the results are not available. */
-export const COMP_DOWN = "Rezultatele nu sunt disponibile acum.";
+export const COMP_DOWN = "Rezultate indisponibile.";
 
 /** Toast after a 403 `ClubAdminError`; the athlete leaves the menu. */
 export const LOST_ATHLETE = "Nu mai ai acces la acest sportiv.";
@@ -27,7 +27,7 @@ export const INACTIVE = "Sportiv inactiv.";
 
 /** Picker (`/`), account sheet and sidebar account menu. */
 export const ACCOUNT = {
-  picker: { title: "Sportivi", sub: "Alege sportivul.", empty: "Niciun sportiv în cont." },
+  picker: { title: "Sportivi", empty: "Niciun sportiv în cont." },
   sheet: { title: "Alege sportivul", list: "Sportivi în cont", settings: "Setări", logout: "Ieșire" },
   menu: { settingsAccount: "Setări cont", logout: "Ieși din cont" },
   row: (group: string, age: number | null) => (age === null ? group : `${group}, ${age} ani`),
@@ -39,7 +39,7 @@ export const NOTICES = {
   close: "Închide",
   closePanel: "Ascunde mesajele",
   empty: "Niciun mesaj.",
-  dismissFailed: "Nu s-a putut închide. Încearcă din nou.",
+  dismissFailed: "Nu s-a putut închide.",
 } as const;
 
 /** Acasă, with the performance variant and the promotion moment. */
@@ -51,8 +51,8 @@ export const HOME = {
   noUpcoming: "Nicio ședință programată.",
   calendarLink: "Calendar ›",
   abonament: { details: "Detalii ›", session: (next: number, slots: number) => `Ședința ${next}/${slots}`, validUntil: (date: string) => `valabil până la ${date}` },
-  lastCompetition: { title: "Ultimul concurs", place: "Locul", all: "Toate ›", field: (category: string, place: number, field: number) => `${category}, ${place} din ${field}`, total: "Total", stale: (date: string) => `Rezultatele pot fi mai vechi. Actualizate ${date}.` },
-  promotion: { title: "Nivel nou", text: (firstName: string) => `Felicitări, ${firstName}! Ai trecut la nivelul următor.`, done: "Mai departe" },
+  lastCompetition: { title: "Ultimul concurs", place: "Locul", all: "Toate ›", field: (category: string, place: number, field: number) => `${category}, ${place} din ${field}`, total: "Total", stale: (date: string) => `Actualizat ${date}.` },
+  promotion: { title: "Nivel nou", text: (firstName: string) => `Felicitări, ${firstName}!`, done: "Mai departe" },
 } as const;
 
 /** Istoric prezență. */
@@ -78,12 +78,12 @@ export const API_NOT_FOUND = "Nu a fost găsit.";
 /** Calendar. */
 export const CAL = {
   title: "Calendar",
-  sub: (name: string) => `${name}, doar ședințele proprii`,
+  sub: (name: string) => name,
   prevMonth: "Luna trecută",
   nextMonth: "Luna viitoare",
   legend: { grup: "grupă", individual: "individual", concurs: "concurs", anulata: "anulată" },
-  addToPhone: "Adaugă în calendarul telefonului",
-  emptyDay: "Nicio ședință în această zi.",
+  addToPhone: "Adaugă în telefon",
+  emptyDay: "Nicio ședință.",
 } as const;
 
 /** Session rows (`SessionRow`) on Acasă and the calendar day list. */
@@ -104,7 +104,7 @@ export const PATH = {
   title: "Parcurs",
   sub: (name: string, school: string) => `${name}, ${school}`,
   now: { title: "Nivelul tău acum", since: (date: string, location: string | null) => (location === null ? `din ${date}` : `din ${date}, ${location}`) },
-  next: { title: "Următorul nivel", hint: "Antrenorul decide când treci mai departe." },
+  next: { title: "Următorul nivel", hint: "Decide antrenorul." },
   before: { title: "Până acum", range: (from: string, to: string) => `${from} - ${to}` },
   badges: { title: "Realizări" },
   dialog: { close: "Închide", notYet: "încă nu", progress: (count: number, next: number) => `${count} din ${next}` },
@@ -132,16 +132,16 @@ export const COMP = {
     free: "Program liber",
     columns: { element: "Element", base: "Bază", score: "Scor" },
     totals: { tes: "TES", pcs: "PCS", deductions: "Deduceri" },
-    official: "Clasamentul complet (pagina oficială) ›",
+    official: "Clasament oficial ›",
   },
 } as const;
 
 /** Abonament și plăți. */
 export const MONEY = {
   title: "Abonament și plăți",
-  owed: { label: "Rămas de plată", payAtClub: "Plata se face la club.", nothing: "Nimic de plată.", advance: (amount: string) => `Avans: ${amount}` },
+  owed: { label: "Rămas de plată", payAtClub: "Plata la club.", nothing: "Nimic de plată.", advance: (amount: string) => `Avans: ${amount}` },
   ticket: { title: "Abonament", seeDays: "Vezi zilele ›", next: "următoarea", left: (n: number) => `${n} rămase`, slotsOf: (next: number, slots: number) => `Ședința ${next} din ${slots}` },
-  sheet: { validUntil: (date: string) => `Valabil până la ${date}`, mayExtend: "Data se poate prelungi dacă școala are un weekend liber.", others: "Alte abonamente", earlier: (name: string, used: number, slots: number, date: string) => `${name}, ${used}/${slots}, valabil până la ${date}` },
+  sheet: { validUntil: (date: string) => `Valabil până la ${date}`, mayExtend: "Se poate prelungi dacă școala are weekend liber.", others: "Alte abonamente", earlier: (name: string, used: number, slots: number, date: string) => `${name}, ${used}/${slots}, valabil până la ${date}` },
   payments: { title: "Plăți", columns: { what: "Plată", date: "Data", method: "Metodă", amount: "Sumă" }, method: { numerar: "numerar", card: "card", transfer: "transfer" } },
   documents: "Documente",
   document: { title: (season: string) => `Fișa de înscriere ${season}`, pdf: "PDF", download: "Descarcă" },
@@ -152,9 +152,9 @@ export const SETARI = {
   title: "Setări",
   account: (email: string) => `Cont: ${email}`,
   back: "Înapoi",
-  me: { title: "Contul meu", name: "Nume", email: "E-mail", emailNote: "îl schimbă clubul", phone: "Telefon", saved: "Salvat." },
+  me: { title: "Contul meu", name: "Nume", email: "E-mail", emailNote: "Îl schimbă clubul", phone: "Telefon", saved: "Salvat." },
   athletes: { title: "Sportivi", school: "Școala", club: "Club" },
-  athleteData: { title: "Date sportiv", name: "Nume", birthDate: "Data nașterii", age: "Vârsta", contact: "Persoană de contact", phone: "Telefon", email: "E-mail", note: "Le schimbă clubul." },
+  athleteData: { title: "Date sportiv", name: "Nume", birthDate: "Data nașterii", age: "Vârsta", contact: "Persoană de contact", phone: "Telefon", email: "E-mail", note: "Le schimbă clubul" },
   security: {
     title: "Securitate",
     password: { label: "Parolă", changed: (since: string) => `schimbată ${since}`, unset: "nesetată" },

@@ -22,7 +22,7 @@ export const INVITE = {
   save: "Salvează parola",
   or: "sau",
   google: "Continuă cu Google",
-  expired: "Invitația a expirat. Cere administratorului una nouă.",
+  expired: "Invitația a expirat. Cere una nouă.",
 } as const;
 
 export const RESET = {
@@ -60,8 +60,8 @@ export const KIT = {
   individual: "Individual",
   standIn: "Înlocuitor",
   school: "Școala",
-  copied: "Numărul a fost copiat.",
-  copyFailed: "Nu am putut copia numărul.",
+  copied: "Copiat.",
+  copyFailed: "Nu s-a putut copia.",
   place: "Loc",
   points: "puncte",
   weekdays: ["L", "Ma", "Mi", "J", "V", "S", "D"],

@@ -97,9 +97,9 @@ test("Calendar: Luna trecută is disabled without an earlier month, and an empty
   await page.goto(`/${ANA}/calendar`);
   await expect(page.getByRole("button", { name: "Luna trecută" }).locator("visible=true")).toBeDisabled();
   await page.getByRole("button", { name: "3 noiembrie", exact: true }).click();
-  await expect(page.getByText("Nicio ședință în această zi.")).toBeVisible();
+  await expect(page.getByText("Nicio ședință.")).toBeVisible();
   await page.getByRole("button", { name: "12 noiembrie", exact: true }).click();
-  await expect(page.getByText("Nicio ședință în această zi.")).toHaveCount(0);
+  await expect(page.getByText("Nicio ședință.")).toHaveCount(0);
 });
 
 test("the registration form downloads under the name the server sends, with a fixed name when it sends none", async({ page }) => {
