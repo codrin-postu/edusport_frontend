@@ -71,7 +71,7 @@ const V = {
     groupInvalid: "border-input-invalid",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
-    trigger: "border-l-retro border-line bg-surface text-primary",
+    trigger: "bg-transparent text-primary",
     popover: "bg-surface-raised border-retro border-line shadow-retro-sm",
     heading: "text-primary",
     nav: "text-primary",
@@ -88,7 +88,7 @@ const V = {
     segment:
       "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",
     literal: "text-line-subtle-on-dark",
-    trigger: "border-l-retro border-line-on-dark bg-surface-subtle-on-dark text-primary-on-dark hover:text-mustard",
+    trigger: "bg-transparent text-primary-on-dark hover:text-mustard",
     popover: "bg-surface-dark border-retro border-line-on-dark shadow-retro",
     heading: "text-primary-on-dark hover:text-mustard",
     nav: "text-primary-on-dark hover:text-mustard",
@@ -186,16 +186,14 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
                 {...(segment.type === "literal" ? { "data-date-literal": "" } : {})}
                 className={cn(
                   "py-px outline-none",
-                  // The dot needs no padding of its own; with it the field
-                  // reads as "zz . ll . aaaa" instead of "zz.ll.aaaa".
+                  // The separator is a spaced slash drawn by CSS, so it needs no padding of its own.
                   segment.type === "literal" ? cn("px-0", v.literal) : cn("px-1", v.segment),
                 )}
               />
             )}
           </DateInput>
           <Button
-            // The trigger keeps its dividing border: that line separates the
-            // button from the input, it is not decoration on the button.
+            // No separator line: the icon sits on the right like the time field's.
             className={cn(
               "flex w-[42px] shrink-0 items-center justify-center outline-none transition-colors",
               v.trigger,

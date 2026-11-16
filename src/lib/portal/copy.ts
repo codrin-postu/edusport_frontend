@@ -243,7 +243,7 @@ export const NEW_ATHLETE = {
   title: "Sportiv nou",
   name: "Nume și prenume",
   birthDate: "Data nașterii",
-  datePlaceholder: "zz.ll.aaaa",
+  datePlaceholder: "zz / ll / aaaa",
   parent: "Părinte",
   phone: "Telefon",
   email: "E-mail",

@@ -361,3 +361,4 @@ Companion screens: `edusport_backend/.superpowers/brainstorm/43332-1790846771/co
 - No now tile in the sportiv header (no board draws one).
 - The board's 2FA row of Setări is not built (user: no portal 2FA).
 - Acasă competition card second line `<category>, <placement> din <field>` as the MainPerf board draws it; without `field` only the category.
+- 2026-11-16 (user): date fields read zz / ll / aaaa everywhere (site, both portals, admin).

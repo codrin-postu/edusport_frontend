@@ -295,12 +295,12 @@
   }
 }
 
-/* Date fields read "zz / ll / aaaa" in the portals (user 2026-11-10); the public site keeps "zz.ll.aaaa".
-   The library prints the locale's dot; the portal swaps it for a spaced slash. */
-[data-theme="portal"] [data-date-literal] {
+/* Date fields read "zz / ll / aaaa" everywhere (user 2026-11-16): site and both portals.
+   The library prints the locale's dot; this swaps it for a spaced slash. */
+[data-date-literal] {
   font-size: 0;
 }
-[data-theme="portal"] [data-date-literal]::after {
+[data-date-literal]::after {
   content: "/";
   font-size: var(--text-input-size);
   padding: 0 0.35em;
