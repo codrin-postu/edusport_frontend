@@ -23,6 +23,7 @@ import BirthDateFields from "./_BirthDateFields";
 import SuccessScreen from "./_Success";
 import { PinnedSchool, SchoolPicker } from "./_SchoolPicker";
 import { PriceBoxView, ScheduleBox, UpsellBox } from "./_Abonament";
+import { phoneError } from "./_phone";
 import { clearDraft, clearLegacyDraft, loadDraft, saveDraft } from "./_draft";
 import { PUBLIC_STRAPI_URL, submitRegistration } from "./_submit";
 import { resolveSchool, showsPinnedSchool, wantedSlug } from "./_school";
@@ -290,6 +291,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ config = null, club
   const extraError = (key: string, value: CustomAnswer | undefined) => {
     if (key === "childHeight") return childHeightError(value);
     if (key === "childBirthDate") return childBirthDateError(value);
+    if (key === "phone") return phoneError(value);
     return undefined;
   };
   // A restored draft can land on the last step; every step must still be complete.
