@@ -162,7 +162,7 @@ function PresenceBody({ session, query, reload }: { session: CoachSession; query
         <PageSub>{sub}</PageSub>
         {session.savedLine && (
           <PortalCard tone="navy" pad="card" className="flex-row items-center gap-3">
-            <span data-saved-check className="flex size-9 shrink-0 items-center justify-center bg-ice-blue text-white"><Icon name="portal-status-done" size="20" /></span>
+            <span data-saved-check className="flex size-9 shrink-0 items-center justify-center bg-done-soft text-done-ink"><Icon name="portal-status-done" size="20" /></span>
             <div className="flex min-w-0 flex-col">
               <p className="text-(length:--portal-text-16) font-bold">{PRESENCE.completed(savedCount)}</p>
               <p className="text-(length:--portal-text-14) text-secondary-on-dark">{session.savedLine}</p>

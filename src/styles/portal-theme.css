@@ -5,6 +5,8 @@
   --color-ice: #8fb8f5;            /* 24 33 nav active, stat number */
   --color-ice-light: #e1ecfb;      /* 10 11 25 date block, done block, top band */
   --color-ice-blue: #4a7bd0;       /* 11 individual band, completed status */
+  --color-done-soft: #cfeedd;      /* layout: completed session square, pastel green (the one done colour in the coach portal) */
+  --color-done-ink: #1d5c3a;       /* layout: check mark on the done square, dark green (white on pastel fails contrast) */
   --color-nav-on-dark: #c9d6ee;    /* 23 25 sidebar links, kicker on navy */
   --color-tag-ink: #111111;        /* 12 Individual tag */
   --color-cancelled: #c0c0c4;      /* 33 calendar cancelled bar */
