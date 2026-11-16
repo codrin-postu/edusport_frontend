@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import { CALENDAR, CLUB_TODAY } from "@/lib/portal/copy";
-import { weekdayShort } from "@/lib/portal/format";
+import { longDay, weekdayShort } from "@/lib/portal/format";
 import type { ClubTodayRow, CoachClubToday } from "@/lib/portal/api-types";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
 import { IndividualTag, SchoolTag } from "@/app/_portal/ui/IndividualTag";
@@ -56,6 +56,7 @@ export function ClubTodayPopup({ onClose }: { onClose: () => void }) {
       open
       onOpenChange={close}
       title={CLUB_TODAY.title}
+      description={longDay(date)}
       popup={{ closeLabel: CLUB_TODAY.close }}
       footer={<Button variant="secondary" onClick={onClose} className="w-full portal:w-auto">{CLUB_TODAY.close}</Button>}
     >

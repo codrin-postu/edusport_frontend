@@ -17,6 +17,7 @@ async function openClub(page: import("@playwright/test").Page) {
 test("the button opens the club's sessions of the day", async({ page }) => {
   const dialog = await openClub(page);
   await expect(dialog.getByText("Antrenamentele clubului azi")).toBeVisible();
+  await expect(dialog).toContainText("Joi, 5 noiembrie");
   const school = dialog.getByRole("link", { name: /Primii Pași/ });
   await expect(school).toContainText("Școala");
   await expect(school).toContainText("Ioana Dinu, Mihai Stan, AFI Cotroceni");
