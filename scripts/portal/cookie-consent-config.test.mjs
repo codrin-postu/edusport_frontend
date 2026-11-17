@@ -26,3 +26,11 @@ it("exposes the category names the gates rely on", () => {
   assert.equal(mod.COOKIE_CATEGORIES.functionality, "functionality");
   assert.ok(mod.COOKIE_PREFERENCES_LABEL.length > 0);
 });
+
+it("links the privacy page relatively on the site and by absolute URL when overridden", () => {
+  const footer = (c) => c.language.translations.ro.consentModal.footer;
+  assert.match(footer(config), /href='\/protectia-datelor'/);
+  const portal = mod.configWithPrivacyHref("https://example.test/protectia-datelor");
+  assert.match(footer(portal), /href='https:\/\/example\.test\/protectia-datelor'/);
+  assert.match(footer(config), /href='\/protectia-datelor'/, "original untouched");
+});

@@ -15,6 +15,7 @@ const refuse = (page: Page) => page.locator("#cc-main .cm [data-role=\"necessary
 test("site: banner on first visit, Refuz hides it for good, the footer link reopens the preferences", async({ page }) => {
   await page.goto("/");
   await expect(banner(page)).toBeVisible();
+  await expect(page.locator("#cc-main .cm a", { hasText: "Protecția datelor" })).toHaveAttribute("href", "/protectia-datelor");
   await refuse(page);
   await expect(banner(page)).toBeHidden();
   await page.reload();
@@ -38,6 +39,7 @@ test.describe("coach portal", () => {
   test("banner on the login page, Refuz hides it", async({ page }) => {
     await page.goto("/login");
     await expect(banner(page)).toBeVisible();
+    await expect(page.locator("#cc-main .cm a", { hasText: "Protecția datelor" })).toHaveAttribute("href", /^https?:\/\/.+\/protectia-datelor$/);
     await refuse(page);
     await expect(banner(page)).toBeHidden();
   });

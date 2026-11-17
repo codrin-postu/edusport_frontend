@@ -1,4 +1,4 @@
-import type { CookieConsentConfig } from "vanilla-cookieconsent";
+import type { CookieConsentConfig, Translation } from "vanilla-cookieconsent";
 
 /**
  * Consent configuration, written against Legea 506/2004 art. 4 alin. (5) and
@@ -23,6 +23,10 @@ export const COOKIE_CATEGORIES = {
   functionality: "functionality",
   analytics: "analytics",
 } as const;
+
+export const PRIVACY_PATH = "/protectia-datelor";
+
+const privacyFooter = (href: string) => `<a href='${href}'>Protecția datelor</a>`;
 
 const config: CookieConsentConfig = {
   guiOptions: {
@@ -73,7 +77,7 @@ const config: CookieConsentConfig = {
           acceptAllBtn: "Accept tot",
           acceptNecessaryBtn: "Refuz",
           showPreferencesBtn: "Alege ce permiți",
-          footer: "<a href='/protectia-datelor'>Protecția datelor</a>",
+          footer: privacyFooter(PRIVACY_PATH),
         },
         preferencesModal: {
           title: "Preferințe de confidențialitate",
@@ -106,5 +110,19 @@ const config: CookieConsentConfig = {
     },
   },
 };
+
+/** The config with the privacy link pointed elsewhere: the portals link the public site's page by absolute URL. */
+export function configWithPrivacyHref(href: string): CookieConsentConfig {
+  const ro = config.language.translations.ro as Translation;
+  return {
+    ...config,
+    language: {
+      ...config.language,
+      translations: {
+        ro: { ...ro, consentModal: { ...ro.consentModal, footer: privacyFooter(href) } },
+      },
+    },
+  };
+}
 
 export default config;
