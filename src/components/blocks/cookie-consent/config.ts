@@ -15,6 +15,9 @@ import type { CookieConsentConfig } from "vanilla-cookieconsent";
  *   carries a permanent link that reopens this panel.
  */
 
+/** Label of the permanent link that reopens the panel (site footer, portal settings). */
+export const COOKIE_PREFERENCES_LABEL = "Preferințe cookies";
+
 export const COOKIE_CATEGORIES = {
   necessary: "necessary",
   functionality: "functionality",

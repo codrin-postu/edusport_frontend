@@ -8,6 +8,7 @@ import { NAV, PROFILE, SETTINGS } from "@/lib/portal/copy";
 import type { CoachMe } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
 import { usePortal } from "../../../_lib/use-portal";
+import { CookiePreferencesRow } from "@/app/_portal/ui/CookiePreferencesRow";
 import { AlertLine } from "@/app/_portal/ui/AuthBits";
 import { KeyValueCard } from "@/app/_portal/ui/KeyValueCard";
 import { LoadError } from "@/app/_portal/ui/LoadError";
@@ -67,6 +68,7 @@ export function SettingsView() {
             <Section title={SETTINGS.changePassword}>
               {me.data.hasPassword ? <PasswordForm apiPath="coach/me/password" email={me.data.email} /> : <Link href="/forgot-password" className="text-body-sm">{SETTINGS.setPassword}</Link>}
             </Section>
+            <CookiePreferencesRow />
           </Column>
         </Columns>
       </PageBody>

@@ -4,6 +4,7 @@ import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "../globals.css";
 import { Footer, Header } from "@/components/blocks";
+import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
 import ResumeRegistration from "@/components/blocks/resume-registration";
 import NavigationProgress from "@/components/NavigationProgress";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -165,6 +166,7 @@ export default async function RootLayout({
         {/* Offers the way back into a form already begun, on whatever page
             they wandered to. Renders nothing without a saved draft. */}
         <ResumeRegistration />
+        <CookieConsent />
         {announcement && <Announcement announcement={announcement} />}
         {/* Not gated behind consent: Umami is self-hosted, writes nothing to the
             device (its only storage touch is reading an opt-out flag) and does no

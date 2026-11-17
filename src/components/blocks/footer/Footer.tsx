@@ -1,4 +1,5 @@
 import { Link } from "@/components";
+import CookiePreferencesLink from "@/components/blocks/cookie-consent/CookiePreferencesLink";
 import Button from "@/components/ui/button";
 import Icon, { type IconName } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
@@ -143,6 +144,7 @@ const FooterContent: React.FC<{
             {section.items.map((item, itemIndex) =>
               <FooterItem key={itemIndex} {...item} />,
             )}
+            {section.title === "Informații legale" && <CookiePreferencesLink />}
           </div>
         </div>
       ))}

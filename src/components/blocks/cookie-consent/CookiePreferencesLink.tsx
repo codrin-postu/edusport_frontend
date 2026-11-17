@@ -2,6 +2,7 @@
 
 import { Link } from "@/components";
 import * as CC from "vanilla-cookieconsent";
+import { COOKIE_PREFERENCES_LABEL } from "./config";
 
 /**
  * Permanent way back into the consent panel.
@@ -25,7 +26,7 @@ export default function CookiePreferencesLink({ className }: { className?: strin
       }}
       className={className ?? "font-base"}
     >
-      Preferințe cookies
+      {COOKIE_PREFERENCES_LABEL}
     </Link>
   );
 }
