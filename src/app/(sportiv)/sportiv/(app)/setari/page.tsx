@@ -5,6 +5,7 @@ import { ACCOUNT, SETARI } from "@/lib/portal/copy-sportiv";
 import { sinceText } from "@/lib/portal/sportiv-format";
 import type { SportivMe } from "@/lib/portal/sportiv-types";
 import { logout } from "@/app/_portal/lib/logout";
+import { CookiePreferencesRow } from "@/app/_portal/ui/CookiePreferencesRow";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
@@ -75,6 +76,7 @@ export default function SetariPage() {
             <Section title={SETARI.notifications.title}>
               <NotificationRows schedule={me.notifySchedule} />
             </Section>
+            <CookiePreferencesRow />
             <Button variant="secondary" onClick={() => void logout()} className="w-full">{SETARI.logout}</Button>
           </Column>
         </Columns>

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, League_Spartan } from "next/font/google";
 import localFont from "next/font/local";
 import "../globals.css";
+import CookieConsent from "@/components/blocks/cookie-consent/CookieConsent";
+import { SITE_URL } from "@/lib/site";
+import { PRIVACY_PATH } from "@/components/blocks/cookie-consent/config";
 import { PortalUmami } from "@/app/_portal/ui/PortalUmami";
 
 const inter = Inter({
@@ -34,6 +37,7 @@ export default function AntrenorRootLayout({ children }: Readonly<{ children: Re
     <html lang="ro" className={`${inter.variable} ${leagueSpartan.variable} ${climateCrisis.variable}`}>
       <body data-theme="portal" className="bg-surface">
         {children}
+        <CookieConsent privacyHref={`${SITE_URL}${PRIVACY_PATH}`} />
         <PortalUmami portal="antrenor" websiteId={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR} />
       </body>
     </html>
