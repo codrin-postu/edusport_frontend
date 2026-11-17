@@ -1,5 +1,5 @@
 import { WeekendDate } from "@/utils/date";
-import type { CalendarEvent } from "@/app/cursuri/program/_types";
+import type { CalendarEvent } from "@/app/(site)/cursuri/program/_types";
 
 // ─── WeekendDate helpers ──────────────────────────────────────────────────────
 

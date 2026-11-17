@@ -253,22 +253,27 @@ export const CONTACT_BUILTIN_KEYS = new Set<string>([
   "message",
 ]);
 
-/** Built-in keys for the Înscriere form (everything else in config is custom). */
+/** Built-in keys for the Înscriere form (registry `inscriere`, the club's script form). */
 export const INSCRIERE_BUILTIN_KEYS = new Set<string>([
   "email",
+  "parentName",
+  "relationship",
+  "relationshipOther",
   "phone",
   "childName",
   "childBirthDate",
-  "parentName",
-  "howHeard",
-  "level",
+  "childHeight",
+  "shirtSize",
+  "lastSeason",
   "priorExperience",
   "expectations",
-  "shirtSize",
-  "clubInterest",
+  "membershipAnswer",
+  "subscriptionChoice",
+  "source",
+  "sourceOther",
+  "gdprConsent",
+  "regulationsConsent",
   "website",
-  "regulationsAgreement",
-  "privacyConsent",
 ]);
 
 /** Built-in string keys for the Voluntariat form (map to real submission columns). */

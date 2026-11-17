@@ -48,7 +48,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       <div className={cn("flex flex-col", align === "center" && "items-center")}>
         <div className={cn("flex flex-col gap-2", align === "center" && "items-center")}>
           {eyebrow && (
-            <p className={cn("text-label", onDark ? "text-accent-on-dark" : "text-accent")}>
+            <p className={cn("text-label", onDark ? "text-accent-on-dark" : "text-primary")}>
               {eyebrow}
             </p>
           )}

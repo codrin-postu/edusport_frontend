@@ -57,7 +57,7 @@ const VARIANT = {
     cardTitle: "text-primary",
     cardDesc: "text-secondary",
     cardLink: "link inline-flex items-center gap-2 text-xs font-semibold text-accent",
-    cardExternal: "text-secondary group-hover:text-accent",
+    cardExternal: "text-secondary",
   },
   navy: {
     onDark: true as const,
@@ -89,9 +89,9 @@ interface CustomQuestionsProps {
   variant?: CustomVariant;
   className?: string;
   /**
-   * Input placeholders by question key. The CMS has no placeholder concept, so
-   * these are supplied by the caller as presentation only; a question without
-   * an entry renders without one.
+   * Input and select placeholders by question key. The CMS has no placeholder
+   * concept, so these are supplied by the caller as presentation only; an input
+   * without an entry renders without one, a select shows "Selectează...".
    */
   placeholders?: Record<string, string>;
 }
@@ -320,7 +320,7 @@ const CustomQuestions: React.FC<CustomQuestionsProps> = ({
                 value={strValue}
                 onValueChange={(val) => onChange(key, val)}
                 options={optionItems(q)}
-                placeholder="Selectează..."
+                placeholder={placeholders?.[key] ?? "Selectează..."}
                 required={required}
                 onDark={v.onDark}
               />

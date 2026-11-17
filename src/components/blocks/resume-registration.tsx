@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { loadDraft } from "@/app/inscrieri/_draft";
+import { loadDraft } from "@/app/(site)/inscrieri/_draft";
 import IconButton from "@/components/ui/icon-button";
 
 /**

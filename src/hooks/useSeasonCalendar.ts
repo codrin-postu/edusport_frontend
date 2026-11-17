@@ -6,7 +6,7 @@ import {
   getAllCancelledWeekends,
   createCalendarModifiers,
 } from "@/utils/calendar-helpers";
-import type { CalendarEvent } from "@/app/cursuri/program/_types";
+import type { CalendarEvent } from "@/app/(site)/cursuri/program/_types";
 
 export const useSeasonCalendar = (calendarEvents: CalendarEvent[]) => {
   // The backend stores section-default sentinels as `meta-default` events

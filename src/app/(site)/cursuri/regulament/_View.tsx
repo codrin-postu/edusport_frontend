@@ -1,0 +1,165 @@
+"use client";
+
+import React from "react";
+import { cn } from "@/utils/cn";
+import PageHeroSection from "@/components/blocks/page-hero-section";
+import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
+import AccordionItem from "@/components/ui/accordion";
+import Icon, { type IconName } from "@/components/ui/icon";
+import { ENROL_CTA, ENROL_HREF } from "@/lib/cta";
+
+import type { RegulationCategory } from "./_types";
+
+type RuleCategory = RegulationCategory;
+
+interface Props {
+  categories: RuleCategory[];
+  /** Current Sezon label (GET /api/club/public); null when none is current. */
+  currentSeason: string | null;
+}
+
+const ICON_MAP: Record<string, IconName> = {
+  Users: "users",
+  CalendarCheck: "calendar-check",
+  Layers: "layers",
+  ShieldAlert: "shield-alert",
+  MessageCircle: "message-circle",
+};
+
+const RegulamentPage: React.FC<Props> = ({ categories, currentSeason }) => {
+  return (
+    <div className="min-h-screen bg-surface">
+      <PageHeroSection title={["REGULAMENT"]} breadcrumb={[{ label: "Cursuri", href: "/cursuri" }, { label: "Regulament" }]}>
+        <h1 className="text-display text-primary-on-dark">
+          Regulament Cursuri
+        </h1>
+        <p className="text-body text-secondary-on-dark">
+          Condițiile de participare, regulile de conduită pe gheață și
+          informațiile esențiale pentru o experiență sigură și plăcută la
+          cursurile Școlii de Patinaj EduSport.
+        </p>
+      </PageHeroSection>
+
+      <section className="relative z-raised bg-surface section">
+        <div className="w-full max-w-content mx-auto gutter">
+          <div className="flex flex-col gap-3 mb-16">
+            {currentSeason && <span className="text-label uppercase text-primary">{currentSeason}</span>}
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <h2 className="text-heading text-primary max-w-narrow">
+                Regulament Școala de Patinaj EduSport
+              </h2>
+              <p className="text-body-sm text-secondary md:text-right md:max-w-aside">
+                Vă rugăm să citiți cu atenție înainte de prima ședință.
+              </p>
+            </div>
+          </div>
+
+          {categories.length === 0 ? (
+            <div className="py-24 text-center">
+              <p className="text-body text-secondary">
+                Regulamentul nu este disponibil momentan
+              </p>
+              <p className="text-body-sm text-secondary mt-2">Reveniți în curând.</p>
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              {categories.map((category, catIndex) => {
+                const ruleOffset = categories
+                  .slice(0, catIndex)
+                  .reduce((sum, c) => sum + c.rules.length, 0);
+                return (
+                  <AccordionItem
+                    key={category.title}
+                    look="row"
+                    defaultOpen
+                    className="border-t-retro border-line-subtle"
+                    triggerClassName="border-b-0"
+                    title={
+                      <span className="flex items-center gap-3">
+                        <span className="w-8 h-8 flex items-center justify-center shrink-0 text-accent">
+                          <Icon name={ICON_MAP[category.icon] ?? "layers"} size="md" />
+                        </span>
+                        <h3 className="text-label uppercase text-primary">
+                          {category.title}
+                        </h3>
+                        <span className="text-caption ml-auto text-secondary tabular-nums">
+                          {category.rules.length}{" "}
+                          {category.rules.length === 1 ? "regulă" : "reguli"}
+                        </span>
+                      </span>
+                    }
+                  >
+                      <div className="flex flex-col pb-4">
+                        {category.rules.map((rule, ruleIndex) => {
+                          const num = String(ruleOffset + ruleIndex + 1).padStart(2, "0");
+                          // No divider line directly under a highlighted (navy) rule.
+                          const showRule =
+                            ruleIndex > 0 && !category.rules[ruleIndex - 1].highlight;
+                          return rule.highlight ? (
+                            <div
+                              key={ruleIndex}
+                              className="flex gap-4 items-start bg-surface-dark -mx-4 px-4 py-4 my-2"
+                            >
+                              <span
+                                className="text-heading w-9 shrink-0 text-mustard tabular-nums select-none"
+                                aria-hidden
+                              >
+                                {num}
+                              </span>
+                              <p className="text-body-sm text-primary-on-dark pt-1 min-w-0 [overflow-wrap:anywhere]">
+                                {rule.text}
+                              </p>
+                            </div>
+                          ) : (
+                            <div
+                              key={ruleIndex}
+                              className={cn(
+                                "flex gap-4 items-start py-4",
+                                showRule && "border-t border-line-subtle",
+                              )}
+                            >
+                              <span
+                                className="text-heading w-9 shrink-0 text-muted tabular-nums select-none"
+                                aria-hidden
+                              >
+                                {num}
+                              </span>
+                              <p className="text-body-sm text-secondary pt-1 min-w-0 [overflow-wrap:anywhere]">
+                                {rule.text}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                  </AccordionItem>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Acceptance card */}
+          <Card padding="lg" className="mt-12 flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex-1">
+              <p className="text-label uppercase text-primary">Acceptare</p>
+              <p className="text-body text-primary mt-2">
+                Prin înscrierea la cursurile Școlii de Patinaj EduSport,
+                părinții/tutorii confirmă că au citit, înțeles și acceptat în
+                totalitate prezentul regulament.
+              </p>
+            </div>
+            <Button
+              face="black"
+              href={ENROL_HREF}
+              className="shrink-0"
+            >
+              {ENROL_CTA}
+            </Button>
+          </Card>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default RegulamentPage;

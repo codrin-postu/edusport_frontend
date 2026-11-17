@@ -14,7 +14,7 @@ import type { CustomVariant } from "@/components/ui/custom-questions";
 const INDICATOR_VARIANT = {
   card: {
     title: "text-body-sm text-primary",
-    counter: "text-label uppercase text-accent whitespace-nowrap",
+    counter: "text-label uppercase text-primary whitespace-nowrap",
     bar: "relative h-2 border-retro border-line bg-surface-subtle overflow-hidden",
     fill: "absolute inset-y-0 left-0 bg-surface-dark transition-[width] duration-slow ease-out",
   },
@@ -30,7 +30,7 @@ const NAVIGATION_VARIANT = {
   card: {
     container:
       "flex items-center justify-between mt-8 pt-6 border-t-retro border-line-subtle",
-    back: "text-body-sm text-secondary hover:text-accent transition-colors",
+    back: "text-body-sm text-secondary transition-colors",
     face: "black" as const,
   },
   navy: {

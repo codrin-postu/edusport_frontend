@@ -37,7 +37,7 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
         >
           <div className="flex items-start justify-between gap-3">
             {announcement.eyebrow ? (
-              <p className="text-label uppercase text-accent">
+              <p className="text-label uppercase text-primary">
                 {announcement.eyebrow}
               </p>
             ) : (

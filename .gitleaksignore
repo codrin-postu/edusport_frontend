@@ -1,0 +1,4 @@
+# Synthetic test values (fixtures, test secrets); checked 2026-11-14.
+scripts/portal/sentry-scrub.test.mjs:generic-api-key:8
+scripts/inscrieri/rules.test.mjs:generic-api-key:117
+tests/e2e/inscriere.spec.ts:generic-api-key:41

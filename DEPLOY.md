@@ -137,6 +137,35 @@ See `ARCHITECTURE.md` for the cache strategy.
 - **Old revalidations not firing** — confirm the Strapi webhook secret
   matches `REVALIDATE_SECRET` exactly.
 
+## Portal notices and tracking (deploy order and env)
+
+**Deploy order.** The backend (`feat/admin-sat`) and this frontend deploy together. The frontend reads `reason`,
+`movedFrom` and the notices routes from the backend; neither side works alone. Deploy the backend first or in
+the same window.
+
+**New env vars for the portals** (build args, set in `.env.production`, see `.env.example`):
+
+| Variable                                  | Purpose                                              |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV`    | Umami website id for `sportiv.` (unset: no script)   |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR`   | Umami website id for `antrenor.` (unset: no script)  |
+| `NEXT_PUBLIC_UMAMI_URL`                   | Umami script URL, shared with the site               |
+| `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_DSN`   | GlitchTip DSN, same project as the site              |
+| `NEXT_PUBLIC_SENTRY_RELEASE`              | release tag (build arg)                              |
+| `NEXT_PUBLIC_SENTRY_ENVIRONMENT`          | environment name (build arg)                         |
+| `SENTRY_RELEASE` / `SENTRY_ENVIRONMENT`   | runtime equivalents, optional                        |
+
+**Umami websites to create** (two, in the shared Umami instance, owned by the right team): one for the
+`sportiv.` host and one for the `antrenor.` host. Copy each Website ID into the matching variable above.
+
+## Errors (GlitchTip)
+
+One GlitchTip project covers the site and both portals (`NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN`). Errors only on
+the portals: `sendDefaultPii` is off, there is no session replay, no traces leave portal paths (the site keeps
+its 0.1 sampling), and `beforeSend` removes the user, cookies, request body and extras, masks e-mails and ids,
+and turns portal URLs into route patterns. Tag the deploy with `NEXT_PUBLIC_SENTRY_RELEASE` /
+`NEXT_PUBLIC_SENTRY_ENVIRONMENT` (build args) and `SENTRY_RELEASE` / `SENTRY_ENVIRONMENT` (runtime, optional).
+
 ## Analytics (Umami)
 
 Privacy-friendly, cookieless analytics (no consent banner needed). The loader is
@@ -168,6 +197,12 @@ already wired in `src/app/layout.tsx` and only activates when the env var is set
    - `NEXT_PUBLIC_UMAMI_WEBSITE_ID=<website-id>`
 3. Redeploy. Pageviews (incl. SPA route changes) track automatically → covers pages
    visited and user flows (Umami "Journeys").
+
+**Portals (sportiv. and antrenor.):** one Umami website per portal host. Create two websites and set
+`NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV` and `NEXT_PUBLIC_UMAMI_WEBSITE_ID_ANTRENOR` (build args, like the
+others; same `NEXT_PUBLIC_UMAMI_URL`). Unset id: no script on that portal. Only page views are sent, with the
+route pattern as the URL (for example `/[athlete]/concursuri/[result]`; invite links are `/invite`) and an empty
+title and referrer: no names, e-mails, ids or query strings reach Umami. No custom events there.
 
 **Custom events** (via `src/lib/analytics.ts` `track()`): `inscriere.step_next`,
 `inscriere.submit_success` (enrollment funnel), `contact.submit`, `voluntariat.submit`,

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Alege sportivul</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f6f9fd}
+a{color:#0e1a3c;text-decoration:none}a:hover{text-decoration:underline}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: rgba(14,26,60,0.55); font-family: Inter, system-ui, sans-serif; color: #0e1a3c; display: flex; flex-direction: column; justify-content: flex-end">
+  <div role="dialog" aria-label="Contul meu" style="background: #f6f9fd; border-radius: 12px 12px 0 0; padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h2 style="margin: 0; font-family: 'League Spartan', sans-serif; font-weight: 800; font-size: 22px">Sportivi în cont</h2>
+      <a href="MainIce.dc.html" aria-label="Închide" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #0e1a3c">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+    </div>
+    <div style="display: flex; flex-direction: column; border: 1px solid #dde6f3; border-radius: 8px; background: #ffffff; overflow: hidden">
+      <a href="MainIce.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; text-decoration: none; color: #0e1a3c; border-bottom: 1px solid #dde6f3; background: #e1ecfb">
+        <span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px">Ana Ionescu</b><span style="font-size: 13px; color: #495269">Intermediari Bronze, 9 ani</span></span>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e1a3c" stroke-width="2.5" stroke-linecap="square"><path d="M5 12l5 5 9-10"/></svg></a>
+      <a href="MainIce.dc.html" style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; text-decoration: none; color: #0e1a3c">
+        <span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px">Matei Ionescu</b><span style="font-size: 13px; color: #5f657a">Începători, 6 ani</span></span></a>
+    </div>
+    <div style="display: flex; flex-direction: column; border-top: 1px solid #dde6f3">
+      <a href="#" style="min-height: 48px; display: flex; align-items: center; text-decoration: none; color: #0e1a3c; font-weight: 600; font-size: 15px; border-bottom: 1px solid #dde6f3">Setări cont</a>
+      <a href="#" style="min-height: 48px; display: flex; align-items: center; text-decoration: none; color: #0e1a3c; font-weight: 600; font-size: 15px">Ieșire</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

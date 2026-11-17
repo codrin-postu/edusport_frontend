@@ -2,6 +2,8 @@
 const V = "(?:^|[\\s\"'`:])"; // start of a class token, after any variant prefix
 
 export const PATTERNS = [
+  { id: "canvas-hex", why: "canvas colours live in src/styles/portal-theme.css", regex: /#(?:f6f9fd|dde6f3|b9c6da|8fb8f5|e1ecfb|4a7bd0|c9d6ee|111111)\b/gi },
+  { id: "theme-branch", why: "components never branch on the site", regex: /data-theme/g },
   // Any colour, not a fixed list: `text-edusport-blue/60` slipped past the old
   // list. `text-sm/6` style size/line-height shorthands are not colours.
   { id: "text-opacity", why: "text and borders never use opacity", regex: new RegExp(`${V}(?:text|border(?:-[trblxy])?|divide|ring|placeholder:text)-(?!(?:xs|sm|base|lg|[2-9]?xl)\\/)[a-z][a-z-]*\\/(?:\\d+|\\[[\\d.]+\\])`, "g") },
@@ -34,8 +36,8 @@ export const PATTERNS = [
 
 // Frozen or third-party files the checker and codemods never touch.
 export const FROZEN = [
-  "src/app/landing-v2/blocks/HeroSection.tsx",
-  "src/app/landing-v2/blocks/HeroWordmarkMorph.tsx",
+  "src/app/(site)/landing-v2/blocks/HeroSection.tsx",
+  "src/app/(site)/landing-v2/blocks/HeroWordmarkMorph.tsx",
   "src/components/blocks/fullcalendar/fullcalendar-overrides.css",
 ];
 
@@ -45,6 +47,10 @@ export const FROZEN = [
 // still checked normally. Do not add to this list without a reason tied to
 // a real spec decision; prefer fixing the violation instead.
 export const ALLOWLIST = [
+  { file: "src/styles/portal-theme.css", id: "canvas-hex", reason: "the portal theme file is the single list of differences" },
+  { file: "src/styles/portal-theme.css", id: "theme-branch", reason: "the selector of the portal theme" },
+  { file: "src/app/(antrenor)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
+  { file: "src/app/(sportiv)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
   {
     file: "src/components/blocks/announcement-popup/AnnouncementCard.tsx",
     id: "arbitrary-shadow",
@@ -61,17 +67,17 @@ export const ALLOWLIST = [
     reason: "mustard inset focus ring, the SP2 focus utility, needs an arbitrary inset shadow value.",
   },
   {
-    file: "src/app/despre-noi/sportivi/[slug]/_View.tsx",
+    file: "src/app/(site)/despre-noi/sportivi/[slug]/_View.tsx",
     id: "arbitrary-type",
     reason: "named exception: athlete name / decorative numbers keep custom tracking/leading.",
   },
   {
-    file: "src/app/despre-noi/sportivi/[slug]/_View.tsx",
+    file: "src/app/(site)/despre-noi/sportivi/[slug]/_View.tsx",
     id: "arbitrary-px",
     reason: "decorative big numbers: placement numeral and watermark, the named exception.",
   },
   {
-    file: "src/app/cursuri/blocks/ScheduleSection.tsx",
+    file: "src/app/(site)/cursuri/blocks/ScheduleSection.tsx",
     id: "arbitrary-px",
     reason: "notebook margin positions aligned with the 72px hole column.",
   },
@@ -81,7 +87,7 @@ export const ALLOWLIST = [
     reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
   },
   {
-    file: "src/app/cursuri/blocks/SeasonTableView.tsx",
+    file: "src/app/(site)/cursuri/blocks/SeasonTableView.tsx",
     id: "default-palette",
     reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
   },
@@ -91,38 +97,43 @@ export const ALLOWLIST = [
     reason: "calendar/map colors are redesigned in SP5 (one color source shared with admin and legend).",
   },
   {
-    file: "src/app/cursuri/blocks/ScheduleSection.tsx",
+    file: "src/app/(site)/cursuri/blocks/ScheduleSection.tsx",
     id: "css-opacity",
     reason: "notebook rail line and background doodle SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/despre-noi/sportivi/_components/SportspersonCard.tsx",
+    file: "src/app/(site)/despre-noi/sportivi/_components/SportspersonCard.tsx",
     id: "css-opacity",
     reason: "card stripe SVG paths tinted by the medal colour: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
+    file: "src/app/(site)/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
     id: "css-opacity",
     reason: "pinwheel square grid SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
+    file: "src/app/(site)/landing-v2/blocks/RegistrationPinwheelGrid.tsx",
     id: "opacity",
     reason: "pinwheel grid faded behind text on mobile: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/landing-v2/blocks/AboutUsSection.tsx",
+    file: "src/app/(site)/landing-v2/blocks/AboutUsSection.tsx",
     id: "opacity",
     reason: "mobile background ribbon SVG: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/protectia-datelor/_View.tsx",
+    file: "src/app/(site)/protectia-datelor/_View.tsx",
     id: "opacity",
     reason: "background circles in the contact card: decorative, aria-hidden shape with no text; the no-opacity rule is about text.",
   },
   {
-    file: "src/app/contact/_View.tsx",
+    file: "src/app/(site)/contact/_View.tsx",
     id: "radius",
     reason: "the loading spinner in the submit button is a spinning ring; a square would wobble.",
+  },
+  {
+    file: "src/app/_portal/ui/Spinner.tsx",
+    id: "radius",
+    reason: "the coach app spinner is the only round element (portal spec 9.11); a square would wobble.",
   },
 ];

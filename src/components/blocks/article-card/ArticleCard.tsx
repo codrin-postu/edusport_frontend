@@ -42,7 +42,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         <div className="text-caption flex flex-wrap items-center gap-2 mb-0.5">
           {category && (
             <>
-              <span className="text-label text-accent">
+              <span className="text-label text-primary">
                 {category}
               </span>
               <span className="text-line-subtle">·</span>

@@ -80,10 +80,10 @@ export default function AccordionItem({
           onClick={() => setOpen(!open)}
           className={cn(
             "w-full flex items-center justify-between gap-3 text-left transition-colors",
-            "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+            "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus",
             look === "band"
               ? "px-4 py-3 bg-surface-subtle hover-layer border-b-retro border-line"
-              : "py-4 border-b border-line-subtle hover:text-accent",
+              : "py-4 border-b border-line-subtle",
             triggerClassName,
           )}
         >

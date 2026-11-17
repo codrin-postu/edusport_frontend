@@ -1,0 +1,32 @@
+"use client";
+
+const STEP =
+  "flex size-(--portal-tap) items-center justify-center border-control border-line bg-surface-raised text-(length:--portal-text-18) font-bold text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus disabled:cursor-default disabled:border-line-subtle disabled:text-muted";
+
+export function MonthPicker({
+  title,
+  onPrev,
+  onNext,
+  prevLabel,
+  nextLabel,
+  nextDisabled,
+  prevDisabled,
+}: {
+  title: string;
+  onPrev: () => void;
+  onNext: () => void;
+  prevLabel: string;
+  nextLabel: string;
+  /** No next step (Istoric stops at the current month). */
+  nextDisabled?: boolean;
+  /** No earlier month (the sportiv calendar stops at the season start). */
+  prevDisabled?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-(--portal-gap-10)">
+      <button type="button" aria-label={prevLabel} onClick={onPrev} disabled={prevDisabled} className={STEP}>‹</button>
+      <span className="min-w-(--portal-monthtitle-w) text-center font-display font-extrabold text-(length:--portal-text-20)">{title}</span>
+      <button type="button" aria-label={nextLabel} onClick={onNext} disabled={nextDisabled} className={STEP}>›</button>
+    </div>
+  );
+}

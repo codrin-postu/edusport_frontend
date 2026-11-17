@@ -26,6 +26,8 @@ export interface FormDraft {
   step: number;
   answers: Record<string, CustomAnswer>;
   savedAt: number;
+  /** The submit's repeat key, for a form that sends one: kept so a reload sends the same key. */
+  submissionKey?: string;
 }
 
 /** True when the answers hold something worth restoring. */
@@ -42,7 +44,7 @@ export function hasContent(answers: Record<string, CustomAnswer>): boolean {
 export interface DraftStore {
   key: string;
   load(): FormDraft | null;
-  save(step: number, answers: Record<string, CustomAnswer>): void;
+  save(step: number, answers: Record<string, CustomAnswer>, submissionKey?: string): void;
   clear(): void;
 }
 
@@ -70,14 +72,14 @@ export function createDraftStore(key: string): DraftStore {
       }
     },
 
-    save(step, answers): void {
+    save(step, answers, submissionKey): void {
       if (typeof window === "undefined") return;
       try {
         if (!hasContent(answers)) {
           window.localStorage.removeItem(key);
           return;
         }
-        const draft: FormDraft = { step, answers, savedAt: Date.now() };
+        const draft: FormDraft = { step, answers, savedAt: Date.now(), submissionKey };
         window.localStorage.setItem(key, JSON.stringify(draft));
       } catch {
         // Storage full or blocked. Saving is a convenience, never a

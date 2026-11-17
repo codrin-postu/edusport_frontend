@@ -67,14 +67,14 @@ const YEARS_PER_PAGE = 16;
 const V = {
   card: {
     group:
-      "flex items-stretch w-full bg-surface-raised border-retro border-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-3 data-[focus-within]:outline-primary",
-    groupInvalid: "border-accent",
+      "flex items-stretch w-full bg-surface-raised border-input border-input-line text-primary outline-none transition-[box-shadow,border-color] data-[focus-within]:outline-2 data-[focus-within]:outline-offset-(--focus-offset) data-[focus-within]:outline-focus",
+    groupInvalid: "border-input-invalid",
     segment: "text-primary data-[placeholder]:text-secondary data-[focused]:bg-surface-dark data-[focused]:text-primary-on-dark",
     literal: "text-line-subtle",
-    trigger: "border-l-retro border-line bg-surface text-primary hover:text-accent",
+    trigger: "bg-transparent text-primary",
     popover: "bg-surface-raised border-retro border-line shadow-retro-sm",
-    heading: "text-primary hover:text-accent",
-    nav: "text-primary hover:text-accent",
+    heading: "text-primary",
+    nav: "text-primary",
     weekday: "text-secondary",
     cell:
       "text-primary data-[outside-month]:text-line-subtle data-[hovered]:bg-surface-subtle data-[selected]:bg-rust data-[selected]:text-primary-on-dark data-[selected]:font-extrabold data-[today]:shadow-[inset_0_0_0_1.5px_var(--color-mustard)] data-[disabled]:text-line-subtle",
@@ -88,7 +88,7 @@ const V = {
     segment:
       "text-primary-on-dark data-[placeholder]:text-muted-on-dark data-[focused]:bg-mustard data-[focused]:text-primary",
     literal: "text-line-subtle-on-dark",
-    trigger: "border-l-retro border-line-on-dark bg-surface-subtle-on-dark text-primary-on-dark hover:text-mustard",
+    trigger: "bg-transparent text-primary-on-dark hover:text-mustard",
     popover: "bg-surface-dark border-retro border-line-on-dark shadow-retro",
     heading: "text-primary-on-dark hover:text-mustard",
     nav: "text-primary-on-dark hover:text-mustard",
@@ -165,12 +165,12 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         isRequired={required}
         isInvalid={invalid}
         shouldCloseOnSelect
-        className={cn("w-full", className)}
+        className={cn("w-full min-w-0", className)}
       >
         <Label
           className={cn(
-            "text-label block uppercase mb-2",
-            variant === "navy" ? "text-secondary-on-dark" : "text-secondary",
+            "text-field-label block mb-(--field-gap)",
+            variant === "navy" ? "text-secondary-on-dark" : "text-label-ink",
           )}
         >
           {label}
@@ -178,23 +178,22 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
         {help && <p className={helpClassName}>{help}</p>}
         <Group className={cn(v.group, invalid && v.groupInvalid)}>
           <DateInput
-            className="text-body-sm flex flex-1 items-center px-4 py-3 tabular-nums"
+            className="text-input flex min-w-0 flex-1 items-center px-(--input-pad-x) py-3 tabular-nums"
           >
             {(segment) => (
               <DateSegment
                 segment={segment}
+                {...(segment.type === "literal" ? { "data-date-literal": "" } : {})}
                 className={cn(
                   "py-px outline-none",
-                  // The dot needs no padding of its own; with it the field
-                  // reads as "zz . ll . aaaa" instead of "zz.ll.aaaa".
+                  // The separator is a spaced slash drawn by CSS, so it needs no padding of its own.
                   segment.type === "literal" ? cn("px-0", v.literal) : cn("px-1", v.segment),
                 )}
               />
             )}
           </DateInput>
           <Button
-            // The trigger keeps its dividing border: that line separates the
-            // button from the input, it is not decoration on the button.
+            // No separator line: the icon sits on the right like the time field's.
             className={cn(
               "flex w-[42px] shrink-0 items-center justify-center outline-none transition-colors",
               v.trigger,

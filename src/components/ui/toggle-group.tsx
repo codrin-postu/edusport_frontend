@@ -110,7 +110,7 @@ function ToggleGroup<T extends string>({
             onKeyDown={handleKeyDown}
             className={cn(
               "text-label relative z-raised px-6 py-3 uppercase transition-colors duration-fast select-none",
-              "outline-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary",
+              "outline-none focus-visible:outline-2 focus-visible:outline-offset-(--focus-offset) focus-visible:outline-focus",
               disabled
                 ? value === option.value ? "text-primary-on-dark" : "text-disabled"
                 : !ready

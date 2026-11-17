@@ -1,5 +1,6 @@
-import type { CalendarEvent, CalendarEventType } from "@/app/cursuri/program/_types";
+import type { CalendarEvent, CalendarEventType } from "@/app/(site)/cursuri/program/_types";
 import type { CalendarOccurrence } from "@/lib/strapi-calendar";
+import { mergeScoalaDays } from "@/utils/scoala-days";
 import { groupForOccurrence } from "@/components/blocks/fullcalendar/calendar-colors";
 
 /**
@@ -55,6 +56,8 @@ export function occurrenceTimeSlot(o: CalendarOccurrence): string | null {
  * "Grupa A · Grupa A" and "Școala · Școala de patinaj").
  */
 export function occurrenceTitle(o: CalendarOccurrence): string {
+  // A group date (Club) is named after its group, in the month and the week view alike.
+  if (o.groupName) return o.groupName;
   return o.label && !o.title.toLowerCase().includes(o.label.toLowerCase())
     ? `${o.label} · ${o.title}`
     : o.title;
@@ -85,7 +88,7 @@ function specialType(t: string): CalendarEventType {
 export function occurrencesToCalendarEvents(
   occurrences: CalendarOccurrence[],
 ): CalendarEvent[] {
-  const scoala = occurrences.filter((o) => o.type === "scoala");
+  const scoala = mergeScoalaDays(occurrences.filter((o) => o.type === "scoala"));
   const others = occurrences.filter(
     (o) => o.type !== "scoala" && o.status !== "cancelled",
   );

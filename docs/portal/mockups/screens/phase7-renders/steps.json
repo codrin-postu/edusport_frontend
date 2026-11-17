@@ -1,0 +1,252 @@
+[
+  {
+    "nn": "01",
+    "slug": "login",
+    "caption": "Intrare: e-mail, parolă și Google.",
+    "files": {
+      "phone": "01-login-390.png",
+      "desktop": "01-login-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "02",
+    "slug": "login-eroare",
+    "caption": "Parolă greșită: mesajul de la server.",
+    "files": {
+      "phone": "02-login-eroare-390.png",
+      "desktop": "02-login-eroare-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "03",
+    "slug": "reset",
+    "caption": "Resetare parolă, pasul 1: adresa de e-mail.",
+    "files": {
+      "phone": "03-reset-390.png",
+      "desktop": "03-reset-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "04",
+    "slug": "invitatie",
+    "caption": "Invitație: pagina cu parola nouă (secret din fixtura backend) sau, fără secret, invitația necunoscută.",
+    "files": {
+      "phone": "04-invitatie-390.png",
+      "desktop": "04-invitatie-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "05",
+    "slug": "picker",
+    "caption": "Alegerea sportivului (două sportive în cont).",
+    "files": {
+      "phone": "05-picker-390.png",
+      "desktop": "05-picker-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "06",
+    "slug": "meniu-cont",
+    "caption": "Meniul contului: sportivii, Setări, Ieșire (telefon: foaia de jos, desktop: meniul din bara laterală).",
+    "files": {
+      "phone": "06-meniu-cont-390.png",
+      "desktop": "06-meniu-cont-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "07",
+    "slug": "promotie",
+    "caption": "Nivel nou: momentul de trecere (vezi precondiția din antet; se încheie pe desktop).",
+    "files": {
+      "phone": "07-promotie-390.png",
+      "desktop": "07-promotie-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "08",
+    "slug": "acasa-ana",
+    "caption": "Acasă, Ana (Școala): prezențe, ședința din abonament.",
+    "files": {
+      "phone": "08-acasa-ana-390.png",
+      "desktop": "08-acasa-ana-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "09",
+    "slug": "acasa-ioana",
+    "caption": "Acasă, Ioana (Club Performanță): cu ultimul concurs.",
+    "files": {
+      "phone": "09-acasa-ioana-390.png",
+      "desktop": "09-acasa-ioana-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "10",
+    "slug": "istoric",
+    "caption": "Istoric prezență, pagina 1.",
+    "files": {
+      "phone": "10-istoric-390.png",
+      "desktop": "10-istoric-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "11",
+    "slug": "istoric-2",
+    "caption": "Istoric prezență, pagina 2 (Înainte).",
+    "files": {
+      "phone": "11-istoric-2-390.png",
+      "desktop": "11-istoric-2-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "12",
+    "slug": "calendar",
+    "caption": "Calendar, luna curentă.",
+    "files": {
+      "phone": "12-calendar-390.png",
+      "desktop": "12-calendar-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "13",
+    "slug": "calendar-zi",
+    "caption": "Calendar, o zi aleasă (azi).",
+    "files": {
+      "phone": "13-calendar-zi-390.png",
+      "desktop": "13-calendar-zi-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "14",
+    "slug": "parcurs",
+    "caption": "Parcurs: nivelul acum, următorul, până acum, realizări.",
+    "files": {
+      "phone": "14-parcurs-390.png",
+      "desktop": "14-parcurs-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "15",
+    "slug": "parcurs-insigna",
+    "caption": "Parcurs: insigna mărită.",
+    "files": {
+      "phone": "15-parcurs-insigna-390.png",
+      "desktop": "15-parcurs-insigna-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "16",
+    "slug": "concursuri",
+    "caption": "Concursuri: categoria, recorduri, lista.",
+    "files": {
+      "phone": "16-concursuri-390.png",
+      "desktop": "16-concursuri-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "17",
+    "slug": "concursuri-filtrat",
+    "caption": "Concursuri filtrate: căutare \"brasov\", sezonul 2025-2026, cele mai multe puncte.",
+    "files": {
+      "phone": "17-concursuri-filtrat-390.png",
+      "desktop": "17-concursuri-filtrat-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "18",
+    "slug": "concurs",
+    "caption": "Un concurs: programul scurt și liber, elementele.",
+    "files": {
+      "phone": "18-concurs-390.png",
+      "desktop": "18-concurs-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "19",
+    "slug": "concursuri-oprit",
+    "caption": "Concursuri când serviciul de rezultate nu răspunde (răspuns { available: false } pus în browser).",
+    "files": {
+      "phone": "19-concursuri-oprit-390.png",
+      "desktop": "19-concursuri-oprit-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "20",
+    "slug": "plati",
+    "caption": "Abonament și plăți: rămas de plată, abonamentul, documentul.",
+    "files": {
+      "phone": "20-plati-390.png",
+      "desktop": "20-plati-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "21",
+    "slug": "plati-ioana",
+    "caption": "Abonament și plăți, Ioana (cealaltă sportivă).",
+    "files": {
+      "phone": "21-plati-ioana-390.png",
+      "desktop": "21-plati-ioana-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "22",
+    "slug": "plati-zile",
+    "caption": "Abonament: foaia cu zilele (Vezi zilele).",
+    "files": {
+      "phone": "22-plati-zile-390.png",
+      "desktop": "22-plati-zile-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "23",
+    "slug": "setari",
+    "caption": "Setări: contul, sportivii, securitate, notificări.",
+    "files": {
+      "phone": "23-setari-390.png",
+      "desktop": "23-setari-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "24",
+    "slug": "date-sportiv",
+    "caption": "Date sportiv: citire, fără editare.",
+    "files": {
+      "phone": "24-date-sportiv-390.png",
+      "desktop": "24-date-sportiv-1280.png"
+    },
+    "errors": []
+  },
+  {
+    "nn": "25",
+    "slug": "dispozitive",
+    "caption": "Dispozitive conectate.",
+    "files": {
+      "phone": "25-dispozitive-390.png",
+      "desktop": "25-dispozitive-1280.png"
+    },
+    "errors": []
+  }
+]

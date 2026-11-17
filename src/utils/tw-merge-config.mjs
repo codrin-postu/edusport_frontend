@@ -12,7 +12,7 @@ export const twMergeConfig = {
       // Registering them under the real border-width groups keeps them
       // conflicting only with other width utilities, the way `border-[1.5px]`
       // used to behave before the shape/border token migration.
-      "border-w": ["border-retro"],
+      "border-w": ["border-retro", "border-control", "border-input", "border-card"],
       "border-w-t": ["border-t-retro"],
       "border-w-b": ["border-b-retro"],
       "border-w-l": ["border-l-retro"],
@@ -40,6 +40,10 @@ export const twMergeConfig = {
         "text-caption",
         "text-label",
         "text-button",
+        "text-field-label",
+        "text-field-hint",
+        "text-input",
+        "text-dialog-title",
         "text-athlete-name",
         "text-header-logo",
         "text-athlete-watermark",
