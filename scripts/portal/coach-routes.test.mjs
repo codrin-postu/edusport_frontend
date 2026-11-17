@@ -73,3 +73,16 @@ it("refuses the sportiv routes", () => {
     assert.equal(r.allowedCoachRoute(m, p), false, `${m} ${p}`);
   }
 });
+
+it("allows the Parcurs routes of an athlete and nothing around them", () => {
+  const a = r.allowedCoachRoute;
+  assert.equal(a("GET", "/athletes/amaria/parcurs"), true);
+  assert.equal(a("POST", "/athletes/amaria/awards"), true);
+  assert.equal(a("DELETE", "/athletes/amaria/awards/aw1"), true);
+  assert.equal(a("POST", "/athletes/amaria/parcurs"), false);
+  assert.equal(a("GET", "/athletes/amaria/awards"), false);
+  assert.equal(a("PUT", "/athletes/amaria/awards/aw1"), false);
+  assert.equal(a("DELETE", "/athletes/amaria/awards"), false);
+  assert.equal(a("DELETE", "/athletes/amaria/awards/a/b"), false);
+  assert.equal(a("DELETE", "/athletes/amaria/pins/p1"), false);
+});

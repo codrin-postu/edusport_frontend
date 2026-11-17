@@ -179,7 +179,7 @@ const JUMPS = [["s", "Salchow"], ["t", "Toe loop"], ["lo", "Loop"], ["f", "Flip"
 const LEVEL_WORD = ["", "Simplu", "Dublu", "Triplu"];
 
 /** The Parcurs pins of Ana: every pin of the catalogue, a few earned. */
-function parcursOf(state = {}) {
+export function parcursOf(state = {}) {
   return {
     antrenamente: [pinOf("prima-lectie", "Prima lecție", "2025-09-12"), pinOf("antrenamente-25", "25 de antrenamente", "2026-03-10"), pinOf("antrenamente-50", "50 de antrenamente", "2026-09-22"), pinOf("antrenamente-100", "100 de antrenamente")],
     concursuri: [pinOf("concursuri-1", "Primul concurs", "2026-10-24"), pinOf("concursuri-2", "2 concursuri")],

@@ -42,6 +42,7 @@ export type MockState = {
   pinsLeft?: number;
   givePinsGone?: boolean;
   giveBroken?: boolean;
+  awardBroken?: boolean;
   moneyMismatch?: boolean;
   advance?: number | null;
   manyPayments?: boolean;

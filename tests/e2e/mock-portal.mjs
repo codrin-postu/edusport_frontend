@@ -9,6 +9,7 @@ import {
   FROZEN_TODAY, INVITE_OLD, INVITE_SPORTIV, INVITE_VALID, RESET_CODE, SECRET, addDays, buildWorld, weekdayOf,
 } from "./portal-fixtures.mjs";
 import { sportivAccount, sportivRoutes } from "./mock-sportiv.mjs";
+import { parcursOf } from "./sportiv-fixtures.mjs";
 
 const PORT = Number(process.argv[2] ?? 18891);
 const GRACE_MS = 30_000;
@@ -33,7 +34,7 @@ let auth;
 function reset() {
   today = FROZEN_TODAY;
   world = buildWorld(today);
-  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [], schoolEditable: false };
+  state = { accessTtlSec: 600, cutAccount: false, revokeAll: false, failGoogle: false, googleClientId: "e2e-google-client", emptyToday: false, refreshStatus: 0, refuseSecret: false, competitionsDown: false, coachDown: false, lostAthlete: null, skateDown: false, stale: false, noCompetitions: false, promotion: false, inactive: false, emptyHistory: false, nothingOwed: false, noDocument: false, noPathNow: false, unlisted: null, unscheduledGroup: false, inactiveGroups: [], schoolEditable: false, awards: [], awardBroken: false };
   calls = [];
   // seq survives a reset so token and device ids stay unique across tests (the BFF caches refreshes by token).
   auth = { seq: auth?.seq ?? 0, access: new Map(), sessions: new Map(), retired: new Map(), refreshes: 0 };
@@ -791,6 +792,39 @@ function meData(email) {
   return { coachId: a.coachId, name: a.name, firstName: a.firstName, initials: a.initials, email, phone: a.phone, hasPassword: Boolean(a.password), google: a.google, coachOptions: world.coachOptions };
 }
 
+/** The Parcurs a coach sees: the athlete's pins with the awards (a jump award earns its level and every lower one) and the friendship pins the athlete gave. */
+function staffParcurs() {
+  const base = parcursOf();
+  const earned = new Set(state.awards.flatMap((a) => (a.kind === "jump" ? [1, 2, 3].filter((l) => l <= a.level).map((l) => `saritura-${l}${a.jump}`) : [a.kind])));
+  const mark = (p) => (earned.has(p.pin) ? { ...p, earnedOn: today, count: 1 } : p);
+  const labels = new Map([...base.insigne, ...base.sarituri.flat()].map((p) => [p.pin, p.label]));
+  return {
+    ...base, insigne: base.insigne.map(mark), sarituri: base.sarituri.map((row) => row.map(mark)),
+    awards: state.awards.map((a) => ({ id: a.id, pin: a.pin, givenOn: today, givenBy: "Andrei Popa", label: labels.get(a.pin) })),
+    given: [{ id: "g1", design: 3, message: "Te susțin!", from: "Ana P.", to: "Luca P.", givenOn: "2026-11-05" }],
+  };
+}
+
+function awardWrite(ctx) {
+  const { res, params, body } = ctx;
+  if (athleteCard(params[0]) === "none") return club(res, 403, "NO_ACCESS");
+  if (state.awardBroken) return club(res, 500, MSG.notFound);
+  const pin = body?.kind === "jump" ? `saritura-${body.level}${body.jump}` : body?.kind;
+  if (!["steaua", "test", "jump"].includes(body?.kind)) return club(res, 400, "BAD_KIND");
+  if (body.kind === "jump" && !/^saritura-[123](s|t|lo|f|lz|a)$/.test(pin)) return club(res, 400, "BAD_JUMP");
+  state.awards.push({ id: `aw${state.awards.length + 1}`, kind: body.kind, jump: body.jump, level: body.level, pin });
+  ok(res, staffParcurs());
+}
+
+function awardRemove(ctx) {
+  const { res, params } = ctx;
+  if (athleteCard(params[0]) === "none") return club(res, 403, "NO_ACCESS");
+  const at = state.awards.findIndex((a) => a.id === params[1]);
+  if (at < 0) return club(res, 404, "NOT_FOUND");
+  state.awards.splice(at, 1);
+  ok(res, staffParcurs());
+}
+
 function athleteCard(id) {
   const all = Object.entries(world.members).flatMap(([gid, list]) => list.map((m) => ({ ...m, gid })));
   const m = all.find((x) => x.athleteId === id);
@@ -963,6 +997,9 @@ const coachRoutes = [
   ["GET", /^\/athletes\/search$/, searchAthletes],
   ["POST", /^\/athletes$/, newAthlete],
   ["GET", /^\/athletes\/([^/]+)$/, ({ res, params }) => { const c = athleteCard(params[0]); return c === "none" ? club(res, 403, MSG.noAccess) : c ? ok(res, c) : notFound(res); }],
+  ["GET", /^\/athletes\/([^/]+)\/parcurs$/, ({ res, params }) => (athleteCard(params[0]) === "none" ? club(res, 403, "NO_ACCESS") : ok(res, staffParcurs()))],
+  ["POST", /^\/athletes\/([^/]+)\/awards$/, awardWrite],
+  ["DELETE", /^\/athletes\/([^/]+)\/awards\/([^/]+)$/, awardRemove],
   ["GET", /^\/athletes\/([^/]+)\/competitions\/([^/]+)\/protocol$/, ({ res, params }) => {
     const card = athleteCard(params[0]);
     if (card === "none") return club(res, 403, MSG.noAccess);

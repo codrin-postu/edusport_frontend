@@ -111,6 +111,12 @@ export const PATH = {
     awards: "Acordate", given: "Prietenie date", remove: "Șterge", from: (name: string, date: string) => `${name}, ${date}`, to: (name: string, date: string) => `către ${name}, ${date}`,
   },
   dialog: { close: "Închide" },
+  award: {
+    button: "Acordă", title: "Acordă o insignă", kind: "Insigna", jump: "Săritura", level: "Nivelul", choose: "Selectează", cancel: "Renunță", confirm: "Acordă",
+    kinds: [{ value: "steaua", label: "Steaua antrenorului" }, { value: "test", label: "Test promovat" }, { value: "jump", label: "Săritură" }],
+    jumps: [{ value: "s", label: "Salchow" }, { value: "t", label: "Toe loop" }, { value: "lo", label: "Loop" }, { value: "f", label: "Flip" }, { value: "lz", label: "Lutz" }, { value: "a", label: "Axel" }],
+    levels: [{ value: "1", label: "Simplu" }, { value: "2", label: "Dublu" }, { value: "3", label: "Triplu" }],
+  },
   give: { button: (left: number) => `Dă o insignă (${left})`, title: "Dă o insignă", to: "Pentru", choose: "Selectează", cancel: "Renunță", send: "Trimite", design: (n: number) => `Insigna ${n}`, noPinsLeft: "Nu mai ai insigne." },
 } as const;
 

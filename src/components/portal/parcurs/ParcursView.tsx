@@ -63,16 +63,17 @@ function RemoveButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function StaffRow({ children, onRemove }: { children: ReactNode; onRemove: () => void }) {
+function StaffRow({ children, onRemove }: { children: ReactNode; onRemove?: () => void }) {
   return (
     <li className="flex min-h-(--portal-tap) items-center justify-between gap-3 py-1">
       <span className="flex min-w-0 flex-col text-(length:--portal-text-14)">{children}</span>
-      <RemoveButton onClick={onRemove} />
+      {onRemove && <RemoveButton onClick={onRemove} />}
     </li>
   );
 }
 
-function StaffLists({ data, onRemove }: { data: Staff; onRemove: (kind: RemoveKind, id: string) => void }) {
+function StaffLists({ data, onRemove, removable }: { data: Staff; onRemove: (kind: RemoveKind, id: string) => void; removable: readonly RemoveKind[] }) {
+  const removeOf = (kind: RemoveKind, id: string) => (removable.includes(kind) ? () => onRemove(kind, id) : undefined);
   const labels = new Map([...data.antrenamente, ...data.concursuri, ...data.membru, ...data.insigne, ...data.sarituri.flat()].map((p) => [p.pin, p.label]));
   return (
     <>
@@ -80,7 +81,7 @@ function StaffLists({ data, onRemove }: { data: Staff; onRemove: (kind: RemoveKi
         <Group title={P.awards}>
           <ul className="flex flex-col divide-y divide-line-subtle border-y border-card-line">
             {data.awards.map((a) => (
-              <StaffRow key={a.id} onRemove={() => onRemove("award", a.id)}>
+              <StaffRow key={a.id} onRemove={removeOf("award", a.id)}>
                 <b>{labels.get(a.pin) ?? a.pin}</b>
                 <span className="text-muted">{P.from(a.givenBy, dayMonthYear(a.givenOn))}</span>
               </StaffRow>
@@ -92,7 +93,7 @@ function StaffLists({ data, onRemove }: { data: Staff; onRemove: (kind: RemoveKi
         <Group title={P.given}>
           <ul className="flex flex-col divide-y divide-line-subtle border-y border-card-line">
             {data.given.map((g) => (
-              <StaffRow key={g.id} onRemove={() => onRemove("pin", g.id)}>
+              <StaffRow key={g.id} onRemove={removeOf("pin", g.id)}>
                 <b>{g.message}</b>
                 <span className="text-muted">{P.to(g.to, dayMonthYear(g.givenOn))}</span>
               </StaffRow>
@@ -104,8 +105,8 @@ function StaffLists({ data, onRemove }: { data: Staff; onRemove: (kind: RemoveKi
   );
 }
 
-/** The felt pins of Parcurs, shared by the athlete, coach and admin. Staff extras (who gave each award, the pins the athlete gave, remove buttons) show only when `onRemove` is passed. `actions` sits on the right of the Prietenie heading. */
-export function ParcursView({ data, actions, onRemove }: { data: Parcurs | ParcursStaff; actions?: ReactNode; onRemove?: (kind: RemoveKind, id: string) => void }) {
+/** The felt pins of Parcurs, shared by the athlete, coach and admin. Staff extras (who gave each award, the pins the athlete gave, remove buttons) show only when `onRemove` is passed; `removable` limits which kinds get a remove button (the coach removes awards only). `actions` sits on the right of the Prietenie heading. */
+export function ParcursView({ data, actions, onRemove, removable = ["award", "pin"] }: { data: Parcurs | ParcursStaff; actions?: ReactNode; onRemove?: (kind: RemoveKind, id: string) => void; removable?: readonly RemoveKind[] }) {
   const [zoom, setZoom] = useState<ZoomItem | null>(null);
   const opener = useRef<HTMLElement | null>(null);
   const open = (z: ZoomItem) => { opener.current = document.activeElement as HTMLElement | null; setZoom(z); };
@@ -119,7 +120,7 @@ export function ParcursView({ data, actions, onRemove }: { data: Parcurs | Parcu
       <Group title={P.prietenie} actions={actions}>
         <div className={ROW}>{data.received.map((r) => <FriendCell key={r.id} r={r} onOpen={() => open(friendZoom(r))} />)}</div>
       </Group>
-      {onRemove && isStaff(data) && <StaffLists data={data} onRemove={onRemove} />}
+      {onRemove && isStaff(data) && <StaffLists data={data} onRemove={onRemove} removable={removable} />}
       <PinZoom item={zoom} onClose={() => setZoom(null)} returnTo={opener} />
     </div>
   );
