@@ -2,9 +2,9 @@
 // State switches (POST /__mock/state): athletesDown (the athletes list answers 500), listPerformance (athlete ids the athletes list marks as performance), cutAccount, lostAthlete (an athlete id the holder no longer holds), skateDown, stale (the Acasă last competition is stale),
 // noCompetitions, noOfficialUrl, promotion (true or an athlete id), inactive (true or an athlete id), emptyHistory, nothingOwed, noDocument, noPathNow,
 // noUpcoming, noPrevMonth, noAthletes (the athletes list is empty), documentFile (the PDF file name; null = no Content-Disposition), documentForbidden (a 403 that is not the lost-access one),
-// moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`), noticesDismissed (per account e-mail, the dismissed notice ids; reset with the state), noticesDown (the notices list answers 500), dismissFailsOnce (the next dismiss answers 500, then the switch clears), dismissGoneOnce (the next dismiss answers 404 and the notice is gone from the list, then the switch clears). The seen call is read from /__mock/log (path carries the query).
+// moneyMismatch, advance (a number), manyPayments, noPassword (a Google only account), notifySchedule (set by PUT me/notifications), unlisted (an athlete id that is not in the picker, `inPicker: false`), noticesDismissed (per account e-mail, the dismissed notice ids; reset with the state), noticesDown (the notices list answers 500), dismissFailsOnce (the next dismiss answers 500, then the switch clears), dismissGoneOnce (the next dismiss answers 404 and the notice is gone from the list, then the switch clears). pinsLeft (friendship pins the athlete can still give, default 2; each give lowers it), givePinsGone (the give answers 409 NO_PINS_LEFT), giveBroken (the give answers 500). The seen call is read from /__mock/log (path carries the query).
 import {
-  ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, noticesOf, pathOf, paymentsOf, profileOf, subscriptionsOf,
+  ADULT_ID, ICS_BODY, PDF_BODY, SPORTIV_ACCOUNTS, SPORTIV_ATHLETES, athleteRow, competitionOf, competitionsOf, historyOf, homeOf, moneyOf, noticesOf, PIN_RECIPIENTS, pathOf, paymentsOf, profileOf, subscriptionsOf,
 } from "./sportiv-fixtures.mjs";
 import { FROZEN_TODAY, addDays } from "./portal-fixtures.mjs";
 
@@ -85,6 +85,15 @@ export function sportivRoutes(h) {
       return body === null ? h.club(res, 404, "Nu a fost găsit.") : h.ok(res, body);
     })],
     ["GET", new RegExp(`${A}\\/path$`), data((id, state) => pathOf(id, state))],
+    ["GET", new RegExp(`${A}\\/pin-recipients$`), data(() => PIN_RECIPIENTS)],
+    ["POST", new RegExp(`${A}\\/pins$`), mine((id, { res, body }) => {
+      const left = h.state().pinsLeft ?? 2;
+      if (left <= 0 || h.state().givePinsGone) return h.club(res, 409, "NO_PINS_LEFT");
+      if (h.state().giveBroken) return h.club(res, 500, "Nu am putut încărca datele.");
+      if (!PIN_RECIPIENTS.some((r) => r.id === body?.recipientId) || !Number.isInteger(body?.design)) return h.club(res, 400, "BAD_RECIPIENT");
+      h.state().pinsLeft = left - 1;
+      h.send(res, 201, { data: { id: "pin1" } });
+    })],
     ["GET", new RegExp(`${A}\\/money$`), data((id, state) => moneyOf(id, state))],
     ["GET", new RegExp(`${A}\\/payments$`), data((_id, state, query) => paymentsOf(state, Math.max(1, Number(query.get("page") ?? 1))))],
     ["GET", new RegExp(`${A}\\/subscriptions$`), data((id) => subscriptionsOf(id))],

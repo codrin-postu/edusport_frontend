@@ -39,6 +39,9 @@ export type MockState = {
   nothingOwed?: boolean;
   noDocument?: boolean;
   noPathNow?: boolean;
+  pinsLeft?: number;
+  givePinsGone?: boolean;
+  giveBroken?: boolean;
   moneyMismatch?: boolean;
   advance?: number | null;
   manyPayments?: boolean;

@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useParams } from "next/navigation";
+import Button from "@/components/ui/button";
 import { PATH } from "@/lib/portal/copy-sportiv";
 import { monthYear, monthYearShort } from "@/lib/portal/sportiv-format";
 import type { SportivHome, SportivPath } from "@/lib/portal/sportiv-types";
@@ -9,6 +11,7 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Section } from "@/app/_portal/ui/SectionHeading";
+import { GiveDialog } from "@/components/portal/parcurs/GiveDialog";
 import { ParcursView } from "@/components/portal/parcurs/ParcursView";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "../../_lib/athletes-context";
@@ -24,6 +27,9 @@ export default function PathPage() {
   const home = useSportiv<SportivHome>(`athletes/${athleteId}/home`);
   const school = home.data?.level?.sectionName;
   const data = path.data;
+  const [giving, setGiving] = useState(false);
+  const pinsLeft = data?.parcurs.pinsLeft ?? 0;
+  const given = () => { setGiving(false); path.reload(); };
   return (
     <>
       <PageHeader brand noTile title={PATH.title} sub={current && school ? PATH.sub(current.name, school) : undefined} phoneEnd={<AccountButton />} />
@@ -69,7 +75,8 @@ export default function PathPage() {
                 </Column>
               )}
             </Columns>
-            <ParcursView data={data.parcurs} />
+            <ParcursView data={data.parcurs} actions={pinsLeft > 0 ? <Button onClick={() => setGiving(true)}>{PATH.give.button(pinsLeft)}</Button> : undefined} />
+            <GiveDialog athleteId={athleteId} open={giving} onOpenChange={setGiving} onGiven={given} />
           </>
         )}
       </PageBody>

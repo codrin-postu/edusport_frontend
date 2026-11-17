@@ -111,6 +111,7 @@ export const PATH = {
     awards: "Acordate", given: "Prietenie date", remove: "Șterge", from: (name: string, date: string) => `${name}, ${date}`, to: (name: string, date: string) => `către ${name}, ${date}`,
   },
   dialog: { close: "Închide" },
+  give: { button: (left: number) => `Dă o insignă (${left})`, title: "Dă o insignă", to: "Pentru", choose: "Selectează", cancel: "Renunță", send: "Trimite", design: (n: number) => `Insigna ${n}`, noPinsLeft: "Nu mai ai insigne." },
 } as const;
 
 /** Concursuri and one competition. */

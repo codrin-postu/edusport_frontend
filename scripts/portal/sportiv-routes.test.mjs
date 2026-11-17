@@ -13,6 +13,7 @@ const TABLE = [
   ["GET", "/athletes/a1/calendar.ics"], ["GET", "/athletes/a1/calendar"], ["GET", "/athletes/a1/competitions"], ["GET", "/athletes/a1/competitions/res-1"],
   ["GET", "/athletes/a1/path"], ["GET", "/athletes/a1/money"], ["GET", "/athletes/a1/payments"], ["GET", "/athletes/a1/subscriptions"],
   ["GET", "/athletes/a1/documents/acord"],
+  ["GET", "/athletes/a1/pin-recipients"], ["POST", "/athletes/a1/pins"],
 ];
 
 it("allows every backend sportiv route with its own method", () => {
@@ -32,6 +33,13 @@ it("refuses everything else", () => {
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/home/x"), false);
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/competitions/a/b"), false);
   assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/competitions/.."), false);
+});
+
+it("allows only reading recipients and giving a pin, never removing one", () => {
+  assert.equal(r.allowedSportivRoute("DELETE", "/athletes/a1/pins/x"), false);
+  assert.equal(r.allowedSportivRoute("DELETE", "/athletes/a1/pins"), false);
+  assert.equal(r.allowedSportivRoute("GET", "/athletes/a1/pins"), false);
+  assert.equal(r.allowedSportivRoute("POST", "/athletes/a1/pins/x"), false);
 });
 
 it("allows only the notices list and dismiss", () => {

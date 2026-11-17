@@ -36,3 +36,10 @@ export function showCount(p: PinView): boolean {
 export function friendPinId(design: number): PinId {
   return `prietenie-${String(design).padStart(2, "0")}`;
 }
+
+/** One fixed message per friendship design (index = design - 1), the same list as the backend catalogue. */
+export const FRIENDSHIP_MESSAGES: readonly string[] = [
+  "Bate palma!", "Ai strălucit.", "Te susțin!", "Un gând bun pentru tine.", "Mă bucur că ești în echipă.",
+  "Crești frumos.", "Mi-ai făcut ziua mai bună.", "Cred în tine!", "Patinezi frumos.", "Prieteni pe gheață.",
+  "Echipă bună!", "Te ridici de fiecare dată.", "Ai fost o vedetă.", "Ușor ca un fluture.", "Hai la o ciocolată caldă!",
+];

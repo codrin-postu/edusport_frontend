@@ -11,6 +11,7 @@ const ROUTES: [string, string][] = [
   ["GET", `${A}/competitions`], ["GET", `${A}/competitions/${RESULT}`],
   ["GET", `${A}/path`], ["GET", `${A}/money`], ["GET", `${A}/payments`], ["GET", `${A}/subscriptions`],
   ["GET", `${A}/documents/acord`],
+  ["GET", `${A}/pin-recipients`], ["POST", `${A}/pins`],
 ];
 
 const COMPILED = ROUTES.map(([method, pattern]) => ({ method, re: new RegExp(`^${pattern}$`) }));

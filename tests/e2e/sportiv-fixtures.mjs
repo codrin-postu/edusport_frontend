@@ -167,16 +167,19 @@ export function pathOf(id, state = {}) {
     now: state.noPathNow ? null : { groupName: a.groupName, since: "2026-09", location: a.level.location, program: `Marți și joi, 17:30, cu ${a.coach}` },
     next: { groupName: "Intermediari Silver" },
     before: [{ groupName: "Începători", from: "2025-09", to: "2026-06" }, { groupName: "Primii Pași", from: "2024-09", to: "2025-06" }],
-    parcurs: parcursOf(),
+    parcurs: parcursOf(state),
   };
 }
+
+/** The friends Ana may give a pin to (the backend lists every other active athlete by short name). */
+export const PIN_RECIPIENTS = [{ id: "athmatei001", name: "Matei V." }, { id: "athanap0001", name: "Ana P." }, { id: "athluca0001", name: "Luca P." }];
 
 const pinOf = (pin, label, earnedOn = null, count = earnedOn ? 1 : 0) => ({ pin, label, earnedOn, count });
 const JUMPS = [["s", "Salchow"], ["t", "Toe loop"], ["lo", "Loop"], ["f", "Flip"], ["lz", "Lutz"], ["a", "Axel"]];
 const LEVEL_WORD = ["", "Simplu", "Dublu", "Triplu"];
 
 /** The Parcurs pins of Ana: every pin of the catalogue, a few earned. */
-function parcursOf() {
+function parcursOf(state = {}) {
   return {
     antrenamente: [pinOf("prima-lectie", "Prima lecție", "2025-09-12"), pinOf("antrenamente-25", "25 de antrenamente", "2026-03-10"), pinOf("antrenamente-50", "50 de antrenamente", "2026-09-22"), pinOf("antrenamente-100", "100 de antrenamente")],
     concursuri: [pinOf("concursuri-1", "Primul concurs", "2026-10-24"), pinOf("concursuri-2", "2 concursuri")],
@@ -184,7 +187,7 @@ function parcursOf() {
     insigne: [pinOf("locul-1", "Locul 1", "2026-11-07", 2), pinOf("podium", "Podium", "2026-11-07", 4), pinOf("prezenta", "Prezență 100% o lună", "2026-10-31"), pinOf("steaua", "Steaua antrenorului"), pinOf("test", "Test promovat"), pinOf("manusi", "Mănuși")],
     sarituri: [1, 2, 3].map((level) => JUMPS.map(([code, name]) => pinOf(`saritura-${level}${code}`, `${LEVEL_WORD[level]} ${name}`, level === 1 && code === "s" ? "2026-05-02" : null))),
     received: [{ id: "r1", design: 7, message: "Bate palma!", from: "Matei V.", givenOn: "2026-11-07" }],
-    pinsLeft: 3,
+    pinsLeft: state.pinsLeft ?? 2,
   };
 }
 
