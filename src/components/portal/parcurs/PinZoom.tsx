@@ -7,14 +7,15 @@ import { PATH } from "@/lib/portal/copy-sportiv";
 /** What the zoom dialog shows: the pin, its title, the count (only above one) and a line of text under it (the date, or "from, date"). `note` is the friendship message. */
 export type ZoomItem = { image: string; title: string; count: number | null; line: string | null; note?: string };
 
-/** The big pin in a dialog. Esc, the backdrop and Închide close it; Radix returns the focus to the pin that opened it. */
-export function PinZoom({ item, onClose }: { item: ZoomItem | null; onClose: () => void }) {
+/** The big pin in a dialog. Esc, the backdrop and Închide close it; the focus goes back to `returnTo` (the pin that opened it; Radix cannot, there is no Trigger). */
+export function PinZoom({ item, onClose, returnTo }: { item: ZoomItem | null; onClose: () => void; returnTo: React.RefObject<HTMLElement | null> }) {
   return (
     <Dialog.Root open={item !== null} onOpenChange={(open) => { if (!open) onClose(); }}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-dialog bg-overlay animate-(--motion-dim)" />
         <Dialog.Content
           aria-describedby={undefined}
+          onCloseAutoFocus={(e) => { e.preventDefault(); returnTo.current?.focus(); }}
           className="fixed top-1/2 left-1/2 z-dialog flex w-(--portal-zoom-w) max-w-[calc(100vw-2*var(--portal-page-x))] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3 border-card border-card-line bg-surface-raised p-(--portal-sheet-pad) text-center shadow-retro outline-none"
         >
           {item && (

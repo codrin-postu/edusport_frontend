@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import IconButton from "@/components/ui/icon-button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { PATH } from "@/lib/portal/copy-sportiv";
@@ -107,18 +107,20 @@ function StaffLists({ data, onRemove }: { data: Staff; onRemove: (kind: RemoveKi
 /** The felt pins of Parcurs, shared by the athlete, coach and admin. Staff extras (who gave each award, the pins the athlete gave, remove buttons) show only when `onRemove` is passed. `actions` sits on the right of the Prietenie heading. */
 export function ParcursView({ data, actions, onRemove }: { data: Parcurs | ParcursStaff; actions?: ReactNode; onRemove?: (kind: RemoveKind, id: string) => void }) {
   const [zoom, setZoom] = useState<ZoomItem | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  const open = (z: ZoomItem) => { opener.current = document.activeElement as HTMLElement | null; setZoom(z); };
   return (
     <div className="flex flex-col gap-(--portal-section-gap)">
-      <Group title={P.antrenamente}><Pins pins={data.antrenamente} onOpen={setZoom} /></Group>
-      <Group title={P.concursuri}><Pins pins={data.concursuri} onOpen={setZoom} /></Group>
-      <Group title={P.membru}><Pins pins={data.membru} onOpen={setZoom} /></Group>
-      <Group title={P.insigne}><Pins pins={data.insigne} onOpen={setZoom} /></Group>
-      <Group title={P.sarituri}><Pins pins={data.sarituri.flat()} onOpen={setZoom} className={JUMPS} /></Group>
+      <Group title={P.antrenamente}><Pins pins={data.antrenamente} onOpen={open} /></Group>
+      <Group title={P.concursuri}><Pins pins={data.concursuri} onOpen={open} /></Group>
+      <Group title={P.membru}><Pins pins={data.membru} onOpen={open} /></Group>
+      <Group title={P.insigne}><Pins pins={data.insigne} onOpen={open} /></Group>
+      <Group title={P.sarituri}><Pins pins={data.sarituri.flat()} onOpen={open} className={JUMPS} /></Group>
       <Group title={P.prietenie} actions={actions}>
-        <div className={ROW}>{data.received.map((r) => <FriendCell key={r.id} r={r} onOpen={() => setZoom(friendZoom(r))} />)}</div>
+        <div className={ROW}>{data.received.map((r) => <FriendCell key={r.id} r={r} onOpen={() => open(friendZoom(r))} />)}</div>
       </Group>
       {onRemove && isStaff(data) && <StaffLists data={data} onRemove={onRemove} />}
-      <PinZoom item={zoom} onClose={() => setZoom(null)} />
+      <PinZoom item={zoom} onClose={() => setZoom(null)} returnTo={opener} />
     </div>
   );
 }
