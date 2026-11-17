@@ -127,7 +127,7 @@ export function AthleteCard({ id }: { id: string }) {
           </Column>
           <Column grow={1} className="contents portal:flex">
             <div className="order-3 portal:order-none"><CompetitionsSection athleteId={a.athleteId} competitions={a.competitions} /></div>
-            <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>
+            {a.own && <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>}
             {ab && (
               <div className="order-5 portal:order-none">
                 <Section title={CARD.school}>

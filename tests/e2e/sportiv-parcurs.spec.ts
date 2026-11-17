@@ -40,6 +40,20 @@ test("giving a pin sends the design and the friend, and the count drops", async(
   expect(posts.map((c) => c.body)).toEqual([{ recipientId: "athanap0001", design: 5 }]);
 });
 
+test("a friend already given a pin is not offered again", async({ page }) => {
+  await page.goto(`/${ANA}/parcurs`);
+  await page.getByRole("button", { name: "Dă o insignă (2)" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Selectează" }).click();
+  await page.getByRole("menuitemradio", { name: "Ana P." }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Trimite" }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Dă o insignă (1)" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Selectează" }).click();
+  await expect(page.getByRole("menuitemradio", { name: "Matei V." })).toBeVisible();
+  await expect(page.getByRole("menuitemradio", { name: "Ana P." })).toHaveCount(0);
+});
+
 test("Renunță closes without sending", async({ page }) => {
   await page.goto(`/${ANA}/parcurs`);
   await page.getByRole("button", { name: "Dă o insignă (2)" }).click();

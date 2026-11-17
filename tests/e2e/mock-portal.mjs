@@ -841,7 +841,7 @@ function athleteCard(id) {
       recent: EVENTS.map((e) => ({ eventName: e.name, date: e.date, location: e.location, placement: 1, total: 100, resultId: resultIdOf(e) })),
     };
   return {
-    athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null,
+    own, athleteId: id, name: m.name, age: m.age, groups, school: "Școala de Patinaj AFI Cotroceni", contact: own ? { name: "Părinte Exemplu", phone: "0722 000 222" } : null,
     sectionName: "Școala de patinaj", groupRows,
     presence: { season: 26, lessons: 4, last: addDays(today, -2), missedThisMonth: 1 },
     abonament: own ? { code: "A-0124", next: 5, slots: 8, validUntil: "2026-11-30", location: "AFI Cotroceni" } : null,

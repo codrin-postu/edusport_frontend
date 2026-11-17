@@ -184,7 +184,7 @@ export function parcursOf(state = {}) {
     antrenamente: [pinOf("prima-lectie", "Prima lecție", "2025-09-12"), pinOf("antrenamente-25", "25 de antrenamente", "2026-03-10"), pinOf("antrenamente-50", "50 de antrenamente", "2026-09-22"), pinOf("antrenamente-100", "100 de antrenamente")],
     concursuri: [pinOf("concursuri-1", "Primul concurs", "2026-10-24"), pinOf("concursuri-2", "2 concursuri")],
     membru: [pinOf("membru-1", "Membru 1 an", "2026-06-30"), pinOf("membru-2", "Membru 2 ani")],
-    insigne: [pinOf("locul-1", "Locul 1", "2026-11-07", 2), pinOf("podium", "Podium", "2026-11-07", 4), pinOf("prezenta", "Prezență 100% o lună", "2026-10-31"), pinOf("steaua", "Steaua antrenorului"), pinOf("test", "Test promovat"), pinOf("manusi", "Mănuși")],
+    insigne: [pinOf("locul-1", "Locul 1", "2026-11-07", 2), pinOf("podium", "Podium", "2026-11-07", 4), pinOf("prezenta", "Prezență 100%", "2026-10-31"), pinOf("steaua", "Steaua antrenorului"), pinOf("test", "Test promovat"), pinOf("manusi", "Prima prietenie")],
     sarituri: [1, 2, 3].map((level) => JUMPS.map(([code, name]) => pinOf(`saritura-${level}${code}`, `${LEVEL_WORD[level]} ${name}`, level === 1 && code === "s" ? "2026-05-02" : null))),
     received: [{ id: "r1", design: 7, message: "Bate palma!", from: "Matei V.", givenOn: "2026-11-07" }],
     pinsLeft: state.pinsLeft ?? 2,

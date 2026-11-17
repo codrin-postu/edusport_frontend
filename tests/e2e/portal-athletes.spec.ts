@@ -130,6 +130,7 @@ for (const size of SIZES) {
       await expect(page.getByRole("button", { name: "Copiază numărul" })).toHaveCount(0);
       await expect(page.getByRole("link", { name: "Sună" })).toHaveCount(0);
       await expect(page.getByRole("heading", { name: "Școala" })).toHaveCount(0);
+      await expect(page.locator("button[aria-expanded]").filter({ hasText: "Parcurs" })).toHaveCount(0);
     });
 
     test("competitions unavailable: the line shows and the rest renders", async({ page }) => {

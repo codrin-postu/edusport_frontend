@@ -16,7 +16,7 @@ async function openParcurs(page: Page) {
 }
 
 async function awardLutzDouble(page: Page) {
-  await page.getByRole("button", { name: "Acordă", exact: true }).click();
+  await page.getByRole("button", { name: "Dă o insignă", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("button", { name: "Selectează" }).click();
   await page.getByRole("menuitemradio", { name: "Săritură" }).click();
@@ -61,7 +61,7 @@ test("awarding Săritură, Lutz, Dublu earns the double and the single Lutz; rem
 
 test("the Steaua antrenorului award sends only its kind", async({ page }) => {
   await openParcurs(page);
-  await page.getByRole("button", { name: "Acordă", exact: true }).click();
+  await page.getByRole("button", { name: "Dă o insignă", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("button", { name: "Selectează" }).click();
   await page.getByRole("menuitemradio", { name: "Steaua antrenorului" }).click();
@@ -80,7 +80,7 @@ test("the pins the athlete gave show without a remove button", async({ page }) =
 
 test("Renunță closes without sending; a failed award keeps the dialog with the generic line", async({ page }) => {
   await openParcurs(page);
-  await page.getByRole("button", { name: "Acordă", exact: true }).click();
+  await page.getByRole("button", { name: "Dă o insignă", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Renunță" }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   expect((await mockLog()).filter((c) => c.method === "POST" && c.path.endsWith("/awards"))).toHaveLength(0);

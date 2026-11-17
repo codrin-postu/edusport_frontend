@@ -181,6 +181,8 @@ export type CoachProtocol = {
 };
 export type CoachProtocolRead = ({ available: true } & CoachProtocol) | { available: false };
 export type CoachAthleteCard = {
+  /** true: the child is in one of the coach's own groups; the Parcurs is for those only. */
+  own: boolean;
   athleteId: string; name: string; age: number | null; groups: string[]; school: string | null; contact: { name: string | null; phone: string | null } | null;
   /** Section of the main group today, e.g. "Școala de patinaj". */
   sectionName: string | null;

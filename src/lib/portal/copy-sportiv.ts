@@ -112,7 +112,7 @@ export const PATH = {
   },
   dialog: { close: "Închide" },
   award: {
-    button: "Acordă", title: "Acordă o insignă", kind: "Insigna", jump: "Săritura", level: "Nivelul", choose: "Selectează", cancel: "Renunță", confirm: "Acordă",
+    button: "Dă o insignă", title: "Acordă o insignă", kind: "Insigna", jump: "Săritura", level: "Nivelul", choose: "Selectează", cancel: "Renunță", confirm: "Acordă",
     kinds: [{ value: "steaua", label: "Steaua antrenorului" }, { value: "test", label: "Test promovat" }, { value: "jump", label: "Săritură" }],
     jumps: [{ value: "s", label: "Salchow" }, { value: "t", label: "Toe loop" }, { value: "lo", label: "Loop" }, { value: "f", label: "Flip" }, { value: "lz", label: "Lutz" }, { value: "a", label: "Axel" }],
     levels: [{ value: "1", label: "Simplu" }, { value: "2", label: "Dublu" }, { value: "3", label: "Triplu" }],
