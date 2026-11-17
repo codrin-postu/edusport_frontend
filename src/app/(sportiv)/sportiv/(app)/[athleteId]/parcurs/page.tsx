@@ -9,13 +9,13 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader } from "@/app/_portal/ui/PageHeader";
 import { Section } from "@/app/_portal/ui/SectionHeading";
+import { ParcursView } from "@/components/portal/parcurs/ParcursView";
 import { Spinner } from "@/app/_portal/ui/Spinner";
 import { useAthletes } from "../../_lib/athletes-context";
 import { useSportiv } from "../../_lib/use-sportiv";
 import { AccountButton } from "../../_ui/AccountSheet";
-import { Badge } from "./_parts/Badge";
 
-/** Parcurs: the level now, the next one, the earlier ones and the badges (all time). */
+/** Parcurs: the level now, the next one, the earlier ones and the pins (all time). */
 export default function PathPage() {
   const { athleteId } = useParams<{ athleteId: string }>();
   const { current } = useAthletes();
@@ -68,14 +68,8 @@ export default function PathPage() {
                   </Section>
                 </Column>
               )}
-              <Column>
-                <Section title={PATH.badges.title}>
-                  <PortalCard pad="card" className="grid grid-cols-[repeat(auto-fit,minmax(var(--portal-badge-grid-min),1fr))] gap-y-4 gap-x-2">
-                    {data.badges.map((b) => <Badge key={b.key} badge={b} />)}
-                  </PortalCard>
-                </Section>
-              </Column>
             </Columns>
+            <ParcursView data={data.parcurs} />
           </>
         )}
       </PageBody>

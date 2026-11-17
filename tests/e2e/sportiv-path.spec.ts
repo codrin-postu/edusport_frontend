@@ -10,7 +10,7 @@ test.beforeEach(async({ page }) => {
   await loginSportiv(page);
 });
 
-test("Parcurs shows the level now, the next one, the earlier ones and the badges", async({ page }) => {
+test("Parcurs shows the level now, the next one, the earlier ones and the pins", async({ page }) => {
   await page.goto(`/${ANA}/parcurs`);
   await expect(page.getByRole("heading", { name: "Parcurs", level: 1 })).toBeVisible();
   await expect(page.getByText("Ana Ionescu, Școala de patinaj").locator("visible=true")).toBeVisible();
@@ -27,49 +27,47 @@ test("Parcurs shows the level now, the next one, the earlier ones and the badges
   await expect(page.getByText("sep 2025 - iun 2026")).toBeVisible();
   await expect(page.getByText("Primii Pași")).toBeVisible();
 
-  await expect(page.getByRole("heading", { name: "Realizări" })).toBeVisible();
-  for (const label of ["50 antrenamente", "Sezon complet", "Prima lecție", "Concursuri"]) {
-    await expect(page.getByRole("button", { name: new RegExp(label) })).toBeVisible();
+  for (const title of ["Antrenamente", "Concursuri", "Membru", "Insigne", "Sărituri", "Prietenie"]) {
+    await expect(page.getByRole("heading", { name: title, level: 2 })).toBeVisible();
   }
-  await expect(page.getByRole("img", { name: "50 de antrenamente, nivel argint" })).toBeVisible();
-  await expect(page.getByRole("img", { name: "Sezon complet, nivel bronz" })).toBeVisible();
-  await expect(page.getByRole("img", { name: "Prima lecție, nivel bronz" })).toBeVisible();
-  await expect(page.getByRole("img", { name: "Concursuri, încă niciunul (blocat)" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Podium, 4" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Locul 1, 2" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Prima lecție", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Steaua antrenorului, blocat" })).toBeVisible();
 });
 
-test("a badge zooms into its tiers, by click and by Enter, and Închide returns the focus", async({ page }) => {
+test("a pin zooms with its date, by click and by Enter, and Închide returns the focus", async({ page }) => {
   await page.goto(`/${ANA}/parcurs`);
-  const badge = page.getByRole("button", { name: /50 antrenamente/ });
+  const pin = page.getByRole("button", { name: "Podium, 4" });
   const dialog = page.getByRole("dialog");
 
-  await badge.click();
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("heading", { name: "50 antrenamente" })).toBeVisible();
-  for (const threshold of ["25", "50", "100", "250"]) await expect(dialog.getByText(threshold, { exact: true })).toBeVisible();
-  await expect(dialog.getByText("10 mar 2026")).toBeVisible();
-  await expect(dialog.getByText("încă nu")).toHaveCount(2);
-  await expect(dialog.getByText("63 din 100")).toBeVisible();
+  await pin.click();
+  await expect(dialog.getByRole("heading", { name: "Podium" })).toBeVisible();
+  await expect(dialog.getByText("4", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("7 noi 2026")).toBeVisible();
   await dialog.getByRole("button", { name: "Închide" }).click();
   await expect(dialog).toHaveCount(0);
-  await expect(badge).toBeFocused();
+  await expect(pin).toBeFocused();
 
   await page.keyboard.press("Enter");
   await expect(dialog).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
-  await expect(badge).toBeFocused();
+  await expect(pin).toBeFocused();
 });
 
-test("the top tier has no progress line", async({ page }) => {
+test("a friendship pin zooms with its message and who gave it", async({ page }) => {
   await page.goto(`/${ANA}/parcurs`);
-  await page.getByRole("button", { name: /Prima lecție/ }).click();
-  await expect(page.getByRole("dialog").getByText(/ din /)).toHaveCount(0);
+  await page.getByRole("button", { name: "Bate palma!, Matei V." }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("heading", { name: "Bate palma!" })).toBeVisible();
+  await expect(dialog.getByText("Matei V., 7 noi 2026")).toBeVisible();
 });
 
 test("without a level now the card is absent", async({ page }) => {
   await mockState({ noPathNow: true });
   await page.goto(`/${ANA}/parcurs`);
-  await expect(page.getByRole("heading", { name: "Realizări" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Insigne", level: 2 })).toBeVisible();
   await expect(page.getByText("Nivelul tău acum")).toHaveCount(0);
   await expect(page.getByText("Următorul nivel")).toBeVisible();
 });

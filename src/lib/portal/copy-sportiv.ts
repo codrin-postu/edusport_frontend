@@ -106,8 +106,11 @@ export const PATH = {
   now: { title: "Nivelul tău acum", since: (date: string, location: string | null) => (location === null ? `din ${date}` : `din ${date}, ${location}`) },
   next: { title: "Următorul nivel", hint: "Decide antrenorul." },
   before: { title: "Până acum", range: (from: string, to: string) => `${from} - ${to}` },
-  badges: { title: "Realizări" },
-  dialog: { close: "Închide", notYet: "încă nu", progress: (count: number, next: number) => `${count} din ${next}` },
+  parcurs: {
+    antrenamente: "Antrenamente", concursuri: "Concursuri", membru: "Membru", insigne: "Insigne", sarituri: "Sărituri", prietenie: "Prietenie",
+    awards: "Acordate", given: "Prietenie date", remove: "Șterge", from: (name: string, date: string) => `${name}, ${date}`, to: (name: string, date: string) => `către ${name}, ${date}`,
+  },
+  dialog: { close: "Închide" },
 } as const;
 
 /** Concursuri and one competition. */

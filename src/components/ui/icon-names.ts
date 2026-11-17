@@ -57,6 +57,7 @@ export const ICON_VERSION = {
   "shield-check": "6696d9db",
   "tag": "85b4fddf",
   "ticket": "d8b51738",
+  "trash": "87f95199",
   "user": "6b11badd",
   "users": "9347c1e9",
   "volume-2": "4811e053",
