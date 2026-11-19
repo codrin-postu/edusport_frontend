@@ -43,7 +43,7 @@ function Pins({ pins, onOpen, className = ROW }: { pins: PinView[]; onOpen: (z: 
 
 function FriendCell({ r, onOpen }: { r: ReceivedPin; onOpen: () => void }) {
   return (
-    <button type="button" onClick={onOpen} aria-label={`${r.message}, ${r.from}`} className="flex min-h-(--portal-tap) min-w-0 cursor-pointer flex-col items-center gap-1.5 bg-transparent p-0 text-center text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus">
+    <button type="button" onClick={onOpen} aria-label={`${r.message}, ${r.from}`} className="flex min-h-(--portal-tap) min-w-0 cursor-pointer flex-col items-center gap-2 bg-transparent p-0 text-center text-primary outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus">
       {/* eslint-disable-next-line @next/next/no-img-element -- a small static PNG; the button carries the label */}
       <img src={`/parcurs/${friendPinId(r.design)}.png`} alt="" className="h-(--portal-pin-h) w-full max-w-(--portal-pin-w) object-contain drop-shadow-sm" />
       <span className="text-(length:--portal-text-12) text-muted">{r.from}</span>

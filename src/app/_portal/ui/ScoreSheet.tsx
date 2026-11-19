@@ -1,7 +1,7 @@
 import { SHEET } from "@/lib/portal/copy";
 import { infoText, judgeCount, judgeLabels, markText, scoreText, segmentTotals, type SheetSegment } from "@/lib/portal/score-sheet";
 
-const CELL = "px-2 py-1.5 whitespace-nowrap";
+const CELL = "px-2 py-2 whitespace-nowrap";
 const NUM = `${CELL} text-right tabular-nums`;
 const HEAD = `${CELL} bg-ice-light text-(length:--portal-text-11) font-bold text-muted`;
 
@@ -12,9 +12,9 @@ function Segment({ seg }: { seg: SheetSegment }) {
     <section className="flex flex-col gap-2 border-t border-line-subtle px-(--portal-row-pad-x) py-3">
       <h4 className="text-(length:--portal-text-15) font-extrabold">{seg.name}</h4>
       {totals.length > 0 && (
-        <dl className="flex flex-wrap gap-x-5 gap-y-1">
+        <dl className="flex flex-wrap gap-x-6 gap-y-1">
           {totals.map((t) => (
-            <div key={t.label} className="flex items-baseline gap-1.5">
+            <div key={t.label} className="flex items-baseline gap-2">
               <dt className="text-(length:--portal-text-12) text-muted">{t.label}</dt>
               <dd className="font-display font-extrabold text-(length:--portal-text-16) tabular-nums">{scoreText(t.value)}</dd>
             </div>
