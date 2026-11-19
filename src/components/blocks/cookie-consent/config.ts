@@ -88,20 +88,17 @@ const config: CookieConsentConfig = {
           sections: [
             {
               title: "Necesare",
-              description:
-                "Cookie-urile necesare fac site-ul utilizabil, permițând funcții de bază precum navigarea în pagini. Site-ul nu poate funcționa corect fără ele.",
+              description: "Pentru funcționarea corespunzătoare.",
               linkedCategory: "necessary",
             },
             {
               title: "Statistici",
-              description:
-                "Cookie-urile statistice ajută la înțelegerea modului în care vizitatorii interacționează cu site-ul, colectând și raportând informații în mod anonim.",
+              description: "Pentru statistici și marketing.",
               linkedCategory: "analytics",
             },
             {
               title: "Funcționale",
-              description:
-                "Cookie-urile funcționale permit site-ului să ofere funcționalități suplimentare și conținut încărcat de la alți furnizori.",
+              description: "Pentru statistici și marketing.",
               linkedCategory: "functionality",
             },
           ],
