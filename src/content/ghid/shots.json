@@ -1,1 +1,18 @@
-{}
+{
+  "contabilitate-plati": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista plăților din Contabilitate, cu butonul + Plată sus",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          91.3,
+          35.2,
+          6.1,
+          5.5
+        ]
+      }
+    ]
+  }
+}
