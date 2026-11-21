@@ -27,7 +27,7 @@ const AI_TRAINING_BOTS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/" },
+      { userAgent: "*", allow: "/", disallow: "/ghid" },
       { userAgent: AI_ANSWER_BOTS, allow: "/" },
       { userAgent: AI_TRAINING_BOTS, disallow: "/" },
     ],

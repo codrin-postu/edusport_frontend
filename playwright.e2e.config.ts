@@ -43,6 +43,7 @@ export default defineConfig({
         // The production build accepts antrenor.localhost only through this setting.
         PORTAL_HOST_ANTRENOR: "antrenor.localhost:3200",
         PORTAL_HOST_SPORTIV: "sportiv.localhost:3200",
+        GHID_PASSWORD: "test-ghid-parola",
         NEXT_PUBLIC_UMAMI_WEBSITE_ID: "e2e-umami",
         // The portal ids and a script URL the spec intercepts with a stub (no real Umami in e2e).
         NEXT_PUBLIC_UMAMI_WEBSITE_ID_SPORTIV: "test-sportiv",
