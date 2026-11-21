@@ -8,8 +8,8 @@ export const pauzePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În **Calendar și serii**, apasă **Adaugă pauză**, sus în dreapta.", shot: "program-calendar" },
-        { text: "Scrie **Nume**, de exemplu Vacanța de iarnă. Apoi alege **De la** și **Până la**.", shot: "program-pauza" },
+        { text: "În **Calendar și serii**, apasă **Adaugă pauză**, sus în dreapta.", shot: "program-calendar", marks: ["adauga-pauza", "adauga", "lista"] },
+        { text: "Scrie **Nume**, de exemplu Vacanța de iarnă. Apoi alege **De la** și **Până la**.", shot: "program-pauza", marks: ["nume", "grila"] },
         {
           text: "Sub date apare **Se anulează** cu numărul de ședințe și de grupe, apoi lista grupelor, cu ședințele fiecăreia. Debifează o grupă ca ședințele ei să rămână.",
         },

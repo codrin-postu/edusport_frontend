@@ -10,10 +10,10 @@ export const completeazaPrezentaPage: GhidPage = {
       steps: [
         {
           text: "Deschide **Prezență**, în meniu, la **Club și școală**. **De completat** listează ședințele fără prezență, **Toate ședințele** arată săptămâna, **Tabel pe grupă** arată o lună pe grupă.",
-          shot: "prezenta-lista",
+          shot: "prezenta-lista", marks: ["sedinta-noua", "grupa"],
         },
         { text: "Alege **Zi**, **Săptămână** sau **Lună** și treci la alt interval cu săgețile. **Filtre** restrânge după secțiune și grupă. Starea e **Completat**, **Necompletat** sau **Urmează**." },
-        { text: "Apasă pe ședință. Panoul arată data, **Antrenor** și lista sportivilor.", shot: "prezenta-panou" },
+        { text: "Apasă pe ședință. Panoul arată data, **Antrenor** și lista sportivilor.", shot: "prezenta-panou", marks: ["grup", "salveaza"] },
         { text: "Bifează **Grup** la fiecare sportiv prezent. Jos, contorul arată câți sunt prezenți din câți sunt pe listă, de exemplu 0 din 18 prezenți." },
         { text: "Verifică **Antrenor**: trebuie ales cel puțin unul. **+ Adaugă alți antrenori** adaugă un rând." },
         { text: "Apasă **Salvează**. Apare mesajul Prezență salvată, cu grupa și data." },
@@ -36,7 +36,7 @@ export const completeazaPrezentaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă **+ Ședință nouă**. Alege **Grupă**, **Data** și **Ora**, toate obligatorii. **Durată** vine 50 min. Alege **Antrenor**.", shot: "prezenta-noua" },
+        { text: "Apasă **+ Ședință nouă**. Alege **Grupă**, **Data** și **Ora**, toate obligatorii. **Durată** vine 50 min. Alege **Antrenor**.", shot: "prezenta-noua", marks: ["continua"] },
         { text: "Apasă **Continuă**. Se deschide panoul, ca la o ședință obișnuită." },
       ],
     },

@@ -31,7 +31,7 @@ export default async function GhidPage({ params }: { params: Promise<Params> }) 
   await requireGhid();
   const entry = resolve((await params).slug);
   if (!entry) notFound();
-  const docs: SearchDoc[] = orderedPages(GHID_GROUPS).map((o) => ({ slug: o.page.slug, title: o.page.title, topic: o.topic, text: pageText(o.page) }));
+  const docs: SearchDoc[] = orderedPages(GHID_GROUPS).map((o) => ({ slug: o.page.slug, title: o.page.title, group: o.group, text: pageText(o.page) }));
   return (
     <>
       <TopBar>

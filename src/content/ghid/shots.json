@@ -5,7 +5,7 @@
     "alt": "Lista plăților din Contabilitate, cu butonul + Plată sus",
     "marks": [
       {
-        "n": 1,
+        "key": "plata",
         "box": [
           91.3,
           35.2,
@@ -21,7 +21,7 @@
     "alt": "Pagina de intrare în panou, cu E-mail, Parolă și butonul Intră",
     "marks": [
       {
-        "n": 1,
+        "key": "email",
         "box": [
           62.3,
           41.7,
@@ -30,7 +30,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "parola",
         "box": [
           62.3,
           50.9,
@@ -39,7 +39,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "intra",
         "box": [
           62.3,
           62.2,
@@ -55,7 +55,7 @@
     "alt": "Panoul de administrare cu meniul din stânga, grupa Club și școală deschisă",
     "marks": [
       {
-        "n": 1,
+        "key": "club-scoala",
         "box": [
           0,
           43.8,
@@ -64,7 +64,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "contul-meu",
         "box": [
           0.8,
           84,
@@ -80,7 +80,7 @@
     "alt": "Panoul pe telefon, cu butonul de meniu în dreapta sus",
     "marks": [
       {
-        "n": 1,
+        "key": "meniu",
         "box": [
           87.2,
           0.8,
@@ -96,7 +96,7 @@
     "alt": "Meniul Navigare pe telefon, cu grupele de pagini",
     "marks": [
       {
-        "n": 1,
+        "key": "sportivi",
         "box": [
           16.9,
           62,
@@ -112,7 +112,7 @@
     "alt": "Fereastra Plată nouă, cu Sportiv, Pentru, Sumă, Data și Metodă",
     "marks": [
       {
-        "n": 2,
+        "key": "cauta",
         "box": [
           27.6,
           20.7,
@@ -121,7 +121,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "pentru",
         "box": [
           27.6,
           29.7,
@@ -137,7 +137,7 @@
     "alt": "Meniul ... al unei plăți, cu Editează și Anulează plata",
     "marks": [
       {
-        "n": 1,
+        "key": "meniu",
         "box": [
           94.3,
           55.3,
@@ -146,7 +146,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "anuleaza-plata",
         "box": [
           78.5,
           64.8,
@@ -162,7 +162,7 @@
     "alt": "Fereastra Anulează plata, cu textul de confirmare",
     "marks": [
       {
-        "n": 3,
+        "key": "anuleaza-plata",
         "box": [
           57,
           53.5,
@@ -178,7 +178,7 @@
     "alt": "Prețuri, cu secțiunile sus și listele de prețuri ale unei secțiuni",
     "marks": [
       {
-        "n": 1,
+        "key": "club",
         "box": [
           39,
           18,
@@ -194,7 +194,7 @@
     "alt": "Panoul unui preț, cu Preț membri, Preț neafiliați și Salvează",
     "marks": [
       {
-        "n": 2,
+        "key": "pret",
         "box": [
           83.8,
           20,
@@ -203,7 +203,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "salveaza",
         "box": [
           92.8,
           93.7,
@@ -219,7 +219,7 @@
     "alt": "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
     "marks": [
       {
-        "n": 1,
+        "key": "eticheta",
         "box": [
           27.6,
           4.4,
@@ -228,7 +228,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "nume",
         "box": [
           30,
           28.2,
@@ -237,7 +237,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "documente",
         "box": [
           80.5,
           35.5,
@@ -253,7 +253,7 @@
     "alt": "Fereastra cu numărul de telefon, mesajul de editat, Status și butoanele Închide, SMS și WhatsApp",
     "marks": [
       {
-        "n": 1,
+        "key": "mesaj",
         "box": [
           33,
           35.3,
@@ -262,7 +262,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "sms",
         "box": [
           54.1,
           65.8,
@@ -271,7 +271,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "whatsapp",
         "box": [
           59.2,
           65.8,
@@ -287,7 +287,7 @@
     "alt": "Fereastra Confirmă înscrierea, cu secțiunea Sportiv, Grupa și butonul Confirmă înscrierea",
     "marks": [
       {
-        "n": 1,
+        "key": "acord",
         "box": [
           27.6,
           30.8,
@@ -296,7 +296,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "fisier",
         "box": [
           27.6,
           50.4,
@@ -305,7 +305,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "confirma-inscrierea",
         "box": [
           60.1,
           75.3,
@@ -321,7 +321,7 @@
     "alt": "Meniul ... al înscrierii, cu Mută la altă școală și Șterge înscrierea",
     "marks": [
       {
-        "n": 1,
+        "key": "meniu",
         "box": [
           94.4,
           25,
@@ -330,7 +330,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "muta-la",
         "box": [
           77,
           30.8,
@@ -346,7 +346,7 @@
     "alt": "Bara de selecție cu Sezon destinație, Mută în sezon, Mută la altă școală, Arhivează și Șterge",
     "marks": [
       {
-        "n": 1,
+        "key": "sezon",
         "box": [
           27.1,
           24.9,
@@ -355,7 +355,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "muta-in",
         "box": [
           45,
           24.9,
@@ -371,7 +371,7 @@
     "alt": "Bara de selecție, cu butonul Arhivează",
     "marks": [
       {
-        "n": 1,
+        "key": "arhiveaza",
         "box": [
           84.8,
           24.9,
@@ -387,7 +387,7 @@
     "alt": "Fereastra Mută tot sezonul, cu Din sezonul, În sezonul și Doar înscrierile arhivate",
     "marks": [
       {
-        "n": 1,
+        "key": "sezon",
         "box": [
           33,
           50.2,
@@ -396,7 +396,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "arhivate",
         "box": [
           33,
           56.2,
@@ -412,7 +412,7 @@
     "alt": "Meniul Export, cu Descarcă CSV și Formulare goale: Acord și Cerere de adeziune",
     "marks": [
       {
-        "n": 1,
+        "key": "descarca-csv",
         "box": [
           79.2,
           18.4,
@@ -421,7 +421,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "acord-pdf",
         "box": [
           79.2,
           35.9,
@@ -430,7 +430,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "cerere",
         "box": [
           79.2,
           40.6,
@@ -446,7 +446,7 @@
     "alt": "Înscrieri pe telefon, cu meniul ... deschis: Selectează și Mută tot sezonul",
     "marks": [
       {
-        "n": 1,
+        "key": "selecteaza",
         "box": [
           27.4,
           14.3,
@@ -462,7 +462,7 @@
     "alt": "Lista pe telefon în selecție: o înscriere bifată, Toate și Gata sus, Mută, Arhivează și Șterge jos",
     "marks": [
       {
-        "n": 1,
+        "key": "gata",
         "box": [
           80.3,
           9.1,
@@ -471,7 +471,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "muta",
         "box": [
           2.1,
           94.3,
@@ -480,7 +480,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "arhiveaza",
         "box": [
           34,
           94.3,
@@ -496,7 +496,7 @@
     "alt": "Fereastra Mută 1 înscriere, cu Sezon destinație și Alege școala",
     "marks": [
       {
-        "n": 1,
+        "key": "muta-in",
         "box": [
           3.1,
           76.2,
@@ -505,7 +505,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "muta-la",
         "box": [
           3.1,
           87.1,
@@ -521,7 +521,7 @@
     "alt": "Tabul Documente, cu PDF-urile înscrierii și butoanele Vezi și Descarcă",
     "marks": [
       {
-        "n": 1,
+        "key": "vezi",
         "box": [
           87.1,
           23.6,
@@ -530,7 +530,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "descarca",
         "box": [
           90.9,
           23.6,
@@ -546,7 +546,7 @@
     "alt": "Tabul Parcurs, cu selecția și butonul Acordă sus și insignele pe secțiuni",
     "marks": [
       {
-        "n": 1,
+        "key": "selecteaza",
         "box": [
           21,
           22.5,
@@ -555,7 +555,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "acorda",
         "box": [
           35.7,
           22.5,
@@ -571,7 +571,7 @@
     "alt": "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
     "marks": [
       {
-        "n": 1,
+        "key": "cauta",
         "box": [
           21,
           12.6,
@@ -580,7 +580,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "filtre",
         "box": [
           74.9,
           12.6,
@@ -589,7 +589,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "adauga-sportiv",
         "box": [
           85.7,
           4.3,
@@ -605,7 +605,7 @@
     "alt": "Fișa unui sportiv, cu taburile sus și cardul Date cu butonul Editează",
     "marks": [
       {
-        "n": 1,
+        "key": "documente",
         "box": [
           47.9,
           15.9,
@@ -614,7 +614,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "editeaza",
         "box": [
           89.2,
           24.2,
@@ -630,7 +630,7 @@
     "alt": "Cardul Date în editare, cu câmpurile și butoanele Renunță și Salvează",
     "marks": [
       {
-        "n": 1,
+        "key": "email",
         "box": [
           22.3,
           53.2,
@@ -639,7 +639,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           89.1,
           24.2,
@@ -655,7 +655,7 @@
     "alt": "Lista grupelor din Grupe, cu sezonul, secțiunile și butonul Grupă nouă",
     "marks": [
       {
-        "n": 1,
+        "key": "sezon",
         "box": [
           21,
           12.6,
@@ -664,7 +664,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "grupa-noua",
         "box": [
           88.4,
           4.3,
@@ -673,7 +673,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "grupa",
         "box": [
           21,
           53.7,
@@ -689,7 +689,7 @@
     "alt": "Fereastra Grupă nouă, cu Nume, Listă de prețuri, Antrenori și Program public",
     "marks": [
       {
-        "n": 1,
+        "key": "nume",
         "box": [
           27.6,
           36.4,
@@ -698,7 +698,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "creeaza-grupa",
         "box": [
           62.6,
           67.4,
@@ -714,7 +714,7 @@
     "alt": "Pagina unei grupe, cu antrenorii, taburile și butonul Adaugă sportivi",
     "marks": [
       {
-        "n": 1,
+        "key": "program",
         "box": [
           28.2,
           27.2,
@@ -723,7 +723,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "adauga-sportivi",
         "box": [
           86.4,
           33.8,
@@ -739,7 +739,7 @@
     "alt": "Tabul Program al unei grupe, cu programul obișnuit și calendarul lunii",
     "marks": [
       {
-        "n": 1,
+        "key": "schimba",
         "box": [
           42.8,
           43.9,
@@ -748,7 +748,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "adauga-program",
         "box": [
           22.3,
           47.3,
@@ -764,7 +764,7 @@
     "alt": "Panoul Program nou, cu Se repetă, zilele, ora și Se aplică din",
     "marks": [
       {
-        "n": 1,
+        "key": "zile",
         "box": [
           68.2,
           26,
@@ -773,7 +773,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           75.4,
           93.7,
@@ -789,7 +789,7 @@
     "alt": "Panoul unei date din calendar, cu Ține, Anulează și Mută și caseta Anunță părinții pe e-mail",
     "marks": [
       {
-        "n": 1,
+        "key": "anunta-parintii",
         "box": [
           68.2,
           32,
@@ -798,7 +798,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           75.4,
           93.7,
@@ -814,7 +814,7 @@
     "alt": "Pagina Program, cu calendarul lunii, butonul Adaugă și butonul Adaugă pauză",
     "marks": [
       {
-        "n": 1,
+        "key": "adauga-pauza",
         "box": [
           87.2,
           4.3,
@@ -823,7 +823,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "adauga",
         "box": [
           87.8,
           26.5,
@@ -832,7 +832,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "lista",
         "box": [
           82.5,
           26.9,
@@ -848,7 +848,7 @@
     "alt": "Panoul Adaugă eveniment, cu Titlu, Categorie, ora și Se repetă",
     "marks": [
       {
-        "n": 1,
+        "key": "se-repeta",
         "box": [
           71.4,
           49.5,
@@ -857,7 +857,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           89.8,
           93.7,
@@ -873,7 +873,7 @@
     "alt": "Fereastra Pauză nouă, cu Nume, De la, Până la și lista ședințelor care se anulează",
     "marks": [
       {
-        "n": 1,
+        "key": "nume",
         "box": [
           33,
           17.5,
@@ -882,7 +882,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "grila",
         "box": [
           33,
           32.8,
@@ -898,7 +898,7 @@
     "alt": "Lista Anunțuri, cu butoanele Filtre și Anunț nou",
     "marks": [
       {
-        "n": 1,
+        "key": "anunt-nou",
         "box": [
           88.8,
           4.3,
@@ -914,7 +914,7 @@
     "alt": "Formularul Anunț nou, cu Portal sportiv bifat și alegerea grupelor",
     "marks": [
       {
-        "n": 1,
+        "key": "portal-sportiv",
         "box": [
           22.3,
           29.7,
@@ -923,7 +923,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "grupe-alese",
         "box": [
           31.5,
           46.9,
@@ -939,7 +939,7 @@
     "alt": "Prezență, tabul Toate ședințele, cu ședințele săptămânii și starea fiecăreia",
     "marks": [
       {
-        "n": 1,
+        "key": "sedinta-noua",
         "box": [
           87.4,
           18.7,
@@ -948,7 +948,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "grupa",
         "box": [
           19.8,
           47.6,
@@ -964,7 +964,7 @@
     "alt": "Fereastra Ședință nouă, cu Grupă, Data, Ora, Durata și Antrenor",
     "marks": [
       {
-        "n": 1,
+        "key": "continua",
         "box": [
           65.3,
           69.4,
@@ -980,7 +980,7 @@
     "alt": "Panoul unei ședințe, cu antrenorii, lista sportivilor cu caseta Grup și butonul Salvează",
     "marks": [
       {
-        "n": 1,
+        "key": "grup",
         "box": [
           91.6,
           51.3,
@@ -989,7 +989,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           92,
           93.7,
@@ -1005,7 +1005,7 @@
     "alt": "O ședință salvată, cu rândul Salvată de și Istoricul ședinței",
     "marks": [
       {
-        "n": 1,
+        "key": "salvata",
         "box": [
           68.2,
           74.6,
@@ -1014,7 +1014,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           92,
           93.7,
@@ -1030,7 +1030,7 @@
     "alt": "Pagina de editare a unui administrator, cu Activ, Rolurile utilizatorului și bara Modificări nesalvate cu Salvează",
     "marks": [
       {
-        "n": 1,
+        "key": "rol",
         "box": [
           25,
           82.9,
@@ -1039,7 +1039,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "fals",
         "box": [
           30.3,
           61.3,
@@ -1048,7 +1048,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "salveaza",
         "box": [
           57,
           92.1,
@@ -1064,7 +1064,7 @@
     "alt": "Fereastra Editează membrul, cu blocul Cont portal, E-mail pentru cont și Trimite invitația",
     "marks": [
       {
-        "n": 1,
+        "key": "email",
         "box": [
           27.6,
           72.6,
@@ -1073,7 +1073,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "trimite-invitatia",
         "box": [
           27.6,
           77,
@@ -1089,7 +1089,7 @@
     "alt": "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă luna aceasta",
     "marks": [
       {
-        "n": 1,
+        "key": "restante",
         "box": [
           19.8,
           33.5,
@@ -1105,7 +1105,7 @@
     "alt": "Butonul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
     "marks": [
       {
-        "n": 1,
+        "key": "filtru",
         "box": [
           40.7,
           20.1,
@@ -1114,7 +1114,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "stare",
         "box": [
           41.7,
           48.9,
@@ -1130,7 +1130,7 @@
     "alt": "Lista Coloane deschisă, cu casete de bifat și săgeți sus și jos",
     "marks": [
       {
-        "n": 1,
+        "key": "coloane",
         "box": [
           88,
           27.9,
@@ -1139,7 +1139,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "varsta",
         "box": [
           75.6,
           69.6,
@@ -1155,7 +1155,7 @@
     "alt": "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
     "marks": [
       {
-        "n": 1,
+        "key": "nume",
         "box": [
           33,
           47.9,
@@ -1164,7 +1164,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           59.9,
           55.9,
@@ -1180,7 +1180,7 @@
     "alt": "Meniul ... al unui tabel salvat, cu Redenumește, Duplică și Șterge",
     "marks": [
       {
-        "n": 1,
+        "key": "meniu",
         "box": [
           35.2,
           51.9,
@@ -1189,7 +1189,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "sterge",
         "box": [
           19.5,
           66.8,
@@ -1205,7 +1205,7 @@
     "alt": "Butonul Descarcă Excel și meniul Alte formate, cu Excel și CSV",
     "marks": [
       {
-        "n": 1,
+        "key": "excel",
         "box": [
           83.1,
           4.1,
@@ -1214,7 +1214,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "csv",
         "box": [
           78.5,
           14.4,
@@ -1230,7 +1230,7 @@
     "alt": "Pagina Utilizatori din Setări, cu butonul Invită utilizator nou și lista administratorilor",
     "marks": [
       {
-        "n": 1,
+        "key": "invita",
         "box": [
           81.9,
           5.3,
@@ -1246,7 +1246,7 @@
     "alt": "Fereastra Invită utilizator nou, cu Prenume, Nume, Email și Rolurile utilizatorului",
     "marks": [
       {
-        "n": 1,
+        "key": "email",
         "box": [
           19.8,
           46.7,
@@ -1255,7 +1255,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "rol",
         "box": [
           19.8,
           62.6,
@@ -1264,7 +1264,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "invita",
         "box": [
           71,
           78,
@@ -1280,7 +1280,7 @@
     "alt": "Setări site, cardul Date personale cu câmpul Ani până la anonimizare",
     "marks": [
       {
-        "n": 1,
+        "key": "limita",
         "box": [
           22.3,
           79.2,
@@ -1296,7 +1296,7 @@
     "alt": "Filtrul Date personale, cu opțiunea Inactivi de peste 5 ani",
     "marks": [
       {
-        "n": 1,
+        "key": "inactivi",
         "box": [
           75.2,
           21,
@@ -1312,7 +1312,7 @@
     "alt": "Pagina Cursuri din Pagini site, cu un câmp modificat și bara cu Renunță și Salvează jos",
     "marks": [
       {
-        "n": 1,
+        "key": "nume",
         "box": [
           22.3,
           27.7,
@@ -1321,7 +1321,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           57,
           92.1,
@@ -1337,7 +1337,7 @@
     "alt": "Editorul de articole Strapi, cu title, slug, description, body și coverImage",
     "marks": [
       {
-        "n": 1,
+        "key": "titlu",
         "box": [
           24.5,
           36.7,
@@ -1346,7 +1346,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "salveaza",
         "box": [
           53.5,
           92.1,
@@ -1355,7 +1355,7 @@
         ]
       },
       {
-        "n": 3,
+        "key": "publica",
         "box": [
           61.2,
           92.1,
@@ -1371,7 +1371,7 @@
     "alt": "Biblioteca Media, cu butonul Adaugă resurse noi sus",
     "marks": [
       {
-        "n": 1,
+        "key": "m1",
         "box": [
           82.1,
           5.3,
@@ -1387,7 +1387,7 @@
     "alt": "Pagina Competiții, cu câmpul de căutare după nume sau URL și lista competițiilor importate",
     "marks": [
       {
-        "n": 1,
+        "key": "m1",
         "box": [
           21.1,
           22.4,
@@ -1396,7 +1396,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "m2",
         "box": [
           59.4,
           22.4,
@@ -1412,7 +1412,7 @@
     "alt": "Pagina Adaugă competiție, cu Nume, Data, Locație, Nivel, Sezon și Sportivi participanți",
     "marks": [
       {
-        "n": 1,
+        "key": "nume",
         "box": [
           22.3,
           30.6,
@@ -1421,7 +1421,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "sezon",
         "box": [
           51.2,
           49.1,
@@ -1437,7 +1437,7 @@
     "alt": "Fișa unui sportiv cu meniul de sus deschis: Exportă datele și Anonimizează",
     "marks": [
       {
-        "n": 1,
+        "key": "exporta-datele",
         "box": [
           78.5,
           19.3,
@@ -1446,7 +1446,7 @@
         ]
       },
       {
-        "n": 2,
+        "key": "anonimizeaza",
         "box": [
           78.5,
           23.8,
@@ -1462,7 +1462,7 @@
     "alt": "Fereastra Anonimizezi datele sportivului, cu ce se șterge, ce rămâne și butoanele Anulează și Anonimizează",
     "marks": [
       {
-        "n": 1,
+        "key": "anuleaza",
         "box": [
           50,
           56.8,

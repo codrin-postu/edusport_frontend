@@ -85,6 +85,28 @@ test.describe("ghid wiki", () => {
     await expect(page.getByRole("navigation", { name: "Cuprins" }).first()).toBeVisible();
   });
 
+  test("the group of the current page is open, another opens on click", async({ page }) => {
+    await page.goto("/ghid/inregistreaza-o-plata");
+    const rail = page.getByRole("navigation", { name: "Cuprins" }).first();
+    const bani = rail.locator("details", { hasText: "Bani" });
+    const inscrieri = rail.locator("details", { hasText: "Înscrieri" });
+    await expect(bani).toHaveAttribute("open", "");
+    await expect(rail.getByRole("link", { name: "Anulează o plată" })).toBeVisible();
+    await expect(inscrieri).not.toHaveAttribute("open", "");
+    await inscrieri.locator("summary").click();
+    await expect(rail.getByRole("link", { name: "Trimite un mesaj" })).toBeVisible();
+  });
+
+  test("client navigation into another group opens it", async({ page }) => {
+    await page.goto("/ghid/inregistreaza-o-plata");
+    const rail = page.getByRole("navigation", { name: "Cuprins" }).first();
+    await rail.locator("details", { hasText: "Prezență" }).locator("summary").click();
+    await rail.getByRole("link", { name: "Completează prezența" }).click();
+    await page.waitForURL((u) => u.pathname === "/ghid/completeaza-prezenta");
+    await expect(rail.locator("details", { hasText: "Prezență" })).toHaveAttribute("open", "");
+    await expect(rail.locator("details", { hasText: "Bani" })).not.toHaveAttribute("open", "");
+  });
+
   test("an unknown page is the 404 page", async({ request }) => {
     const res = await request.get("/ghid/nu-exista", { headers: { cookie: COOKIE } });
     expect(res.status()).toBe(404);

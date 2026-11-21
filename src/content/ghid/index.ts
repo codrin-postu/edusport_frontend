@@ -40,48 +40,34 @@ import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare"
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
 import { gazduirePage } from "./pages/gazduire";
 
-/** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
+/** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
+  { title: "Început", pages: [desprePage, primiiPasiPage] },
   {
-    title: "Început",
-    topics: [
-      { title: "Despre sistem", pages: [desprePage] },
-      { title: "Siguranță", pages: [sigurantaPage] },
-      { title: "Primii pași", pages: [primiiPasiPage] },
+    title: "Înscrieri",
+    pages: [primesteInscrieriPage, trimiteMesajPage, confirmaInscrierePage, mutaSezonScoalaPage, arhiveazaExportaPage, selecteazaTelefonPage],
+  },
+  { title: "Sportivi", pages: [fisaSportivuluiPage, actualizeazaDateleSportivuluiPage, documenteleSportivuluiPage, parcursInsignePage] },
+  { title: "Grupe și program", pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage] },
+  { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
+  {
+    title: "Bani",
+    pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
+  },
+  { title: "Site și anunțuri", pages: [paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
+  {
+    title: "Echipa și acces",
+    pages: [
+      adaugaAdministratorPage,
+      roluriPage,
+      accesAntrenorPortalPage,
+      exportaDateleSportivuluiPage,
+      anonimizeazaSportivPage,
+      ceRamaneDupaAnonimizarePage,
+      sportiviInactiviPage,
     ],
   },
-  {
-    title: "Club",
-    topics: [
-      {
-        title: "Înscrieri",
-        pages: [primesteInscrieriPage, trimiteMesajPage, confirmaInscrierePage, mutaSezonScoalaPage, arhiveazaExportaPage, selecteazaTelefonPage],
-      },
-      {
-        title: "Sportivi",
-        pages: [fisaSportivuluiPage, actualizeazaDateleSportivuluiPage, documenteleSportivuluiPage, parcursInsignePage],
-      },
-      {
-        title: "Grupe și program",
-        pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage],
-      },
-      { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
-      { title: "Plăți", pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage] },
-      { title: "Tabele", pages: [deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage] },
-    ],
-  },
-  {
-    title: "Administrare",
-    topics: [
-      { title: "Echipa", pages: [adaugaAdministratorPage, roluriPage, accesAntrenorPortalPage] },
-      { title: "Site", pages: [paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
-      {
-        title: "Date personale",
-        pages: [exportaDateleSportivuluiPage, anonimizeazaSportivPage, ceRamaneDupaAnonimizarePage, sportiviInactiviPage],
-      },
-      { title: "Găzduire", pages: [gazduirePage] },
-    ],
-  },
+  { title: "Despre EduSport", pages: [sigurantaPage, gazduirePage] },
 ];
 
 /** Screenshot metadata by id; the image is content/ghid/img/<id>.jpg. */

@@ -8,7 +8,7 @@ export const documenteleSportivuluiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide fișa sportivului, tabul **Documente**.", shot: "sportivi-documente" },
+        { text: "Deschide fișa sportivului, tabul **Documente**.", shot: "sportivi-documente", marks: ["vezi", "descarca"] },
         { text: "Fiecare rând e un document, de exemplu **Acord** sau **Cerere de adeziune**, cu sezonul și numărul înscrierii." },
         { text: "**Vezi** deschide documentul. **Descarcă** îl salvează pe calculator." },
       ],

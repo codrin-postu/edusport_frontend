@@ -7,9 +7,9 @@ const s = canStripTypes ? await import("../../src/lib/ghid/search.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const docs = [
-  { slug: "a", title: "Despre sistem", topic: "Început", text: "Ce face sistemul." },
-  { slug: "b", title: "Înregistrează o plată", topic: "Plăți", text: "Apasă Plată, alege sportivul și suma." },
-  { slug: "c", title: "Grupe", topic: "Club", text: "Fiecare sportiv are o grupă. Plata se leagă de sportiv." },
+  { slug: "a", title: "Despre sistem", group: "Început", text: "Ce face sistemul." },
+  { slug: "b", title: "Înregistrează o plată", group: "Plăți", text: "Apasă Plată, alege sportivul și suma." },
+  { slug: "c", title: "Grupe", group: "Club", text: "Fiecare sportiv are o grupă. Plata se leagă de sportiv." },
 ];
 
 it("normalize folds case, diacritics and both s/t forms", () => {

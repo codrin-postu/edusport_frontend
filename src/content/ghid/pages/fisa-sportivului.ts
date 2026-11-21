@@ -8,9 +8,9 @@ export const fisaSportivuluiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Sportivi**, în meniu, la **Club și școală**. Lista arată sportivii sezonului ales la **Sezon**.", shot: "sportivi-lista" },
+        { text: "Deschide **Sportivi**, în meniu, la **Club și școală**. Lista arată sportivii sezonului ales la **Sezon**.", shot: "sportivi-lista", marks: ["cauta", "filtre", "adauga-sportiv"] },
         { text: "Caută după nume, telefon, e-mail sau număr. **Filtre** deschide filtrele listei." },
-        { text: "Apasă pe un sportiv. Se deschide fișa, cu taburile **Date**, **Grupe și abonament**, **Plăți**, **Profil public**, **Documente**, **Istoric**, **Competiții** și **Parcurs**.", shot: "sportivi-fisa" },
+        { text: "Apasă pe un sportiv. Se deschide fișa, cu taburile **Date**, **Grupe și abonament**, **Plăți**, **Profil public**, **Documente**, **Istoric**, **Competiții** și **Parcurs**.", shot: "sportivi-fisa", marks: ["documente", "editeaza"] },
         { text: "Înapoi la listă te duce **Sportivi**, sus în stânga." },
       ],
     },

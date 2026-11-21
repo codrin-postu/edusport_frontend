@@ -110,7 +110,7 @@ export function Search({ docs, variant }: Props) {
                 className={cn("block px-3 py-2", i === active && "bg-surface-subtle")}
               >
                 <span className="block text-(length:--portal-text-14) font-bold">{r.title}</span>
-                <span className="block text-(length:--portal-text-12) text-muted">{r.topic}</span>
+                <span className="block text-(length:--portal-text-12) text-muted">{r.group}</span>
               </Link>
             </li>
           ))}

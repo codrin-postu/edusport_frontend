@@ -5,17 +5,18 @@ import assert from "node:assert/strict";
 const canStripTypes = Boolean(process.features?.typescript);
 const r = canStripTypes ? await import("../../src/lib/ghid/registry.ts") : {};
 const inl = canStripTypes ? await import("../../src/lib/ghid/inline.ts") : {};
+const sh = canStripTypes ? await import("../../src/lib/ghid/shots.ts") : {};
 const it = canStripTypes ? test : (name) => test.skip(name);
 
 const page = (slug, extra = {}) => ({ slug, title: slug.toUpperCase(), lead: `lead ${slug}`, blocks: [], ...extra });
 const groups = [
-  { title: "G1", topics: [{ title: "T1", pages: [page("a"), page("b")] }, { title: "T2", pages: [page("c")] }] },
-  { title: "G2", topics: [{ title: "T3", pages: [page("d")] }] },
+  { title: "G1", pages: [page("a"), page("b"), page("c")] },
+  { title: "G2", pages: [page("d")] },
 ];
 
-it("orders pages by group, topic, page", () => {
+it("orders pages by group, then page", () => {
   assert.deepEqual(r.orderedPages(groups).map((o) => o.page.slug), ["a", "b", "c", "d"]);
-  assert.deepEqual(r.orderedPages(groups).map((o) => [o.group, o.topic]).slice(2), [["G1", "T2"], ["G2", "T3"]]);
+  assert.deepEqual(r.orderedPages(groups).map((o) => o.group), ["G1", "G1", "G1", "G2"]);
 });
 
 it("findPage: undefined slug is the first page, unknown is undefined", () => {
@@ -59,4 +60,25 @@ it("renderInline bolds only **pairs**", () => {
   assert.equal(out[1].type, "b");
   assert.equal(out[1].props.children, "b");
   assert.deepEqual(inl.renderInline("fara"), ["fara"]);
+});
+
+const shot = { w: 100, h: 100, alt: "", marks: [{ key: "a", box: [1, 2, 3, 4] }, { key: "b", box: [5, 6, 7, 8] }] };
+
+it("stepMarks numbers the named keys from 1, in the order the step names them", () => {
+  assert.deepEqual(sh.stepMarks("s", shot, ["b", "a"]), [{ n: 1, box: [5, 6, 7, 8] }, { n: 2, box: [1, 2, 3, 4] }]);
+});
+
+it("stepMarks: a step with a shot and no marks shows none", () => {
+  assert.deepEqual(sh.stepMarks("s", shot, undefined), []);
+  assert.deepEqual(sh.stepMarks("s", shot, []), []);
+});
+
+it("stepMarks throws on a key the shot lacks", () => {
+  assert.throws(() => sh.stepMarks("s", shot, ["a", "zz"]), /no mark "zz"/);
+});
+
+it("renderInline bolds a lead like any text", () => {
+  const out = inl.renderInline("Apasă **Salvează** acum");
+  assert.equal(out[1].type, "b");
+  assert.equal(out[1].props.children, "Salvează");
 });

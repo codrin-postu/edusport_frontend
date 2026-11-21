@@ -9,7 +9,7 @@ export const exportaDateleSportivuluiPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Deschide fișa sportivului, din **Sportivi**." },
-        { text: "Sus, în dreapta, apasă **...**, apoi **Exportă datele**.", shot: "date-meniu" },
+        { text: "Sus, în dreapta, apasă **...**, apoi **Exportă datele**.", shot: "date-meniu", marks: ["exporta-datele", "anonimizeaza"] },
         { text: "Fișierul se descarcă și apare mesajul **Datele au fost exportate.** Dacă nu merge: **Datele nu au putut fi exportate.**" },
       ],
     },

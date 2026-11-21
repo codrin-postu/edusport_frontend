@@ -5,7 +5,7 @@
 //   alt       image description (Romanian, terse)
 //   viewport  default 1280x760; phone shots use { width: 390, height: 844 }
 //   act       optional async (page) => {}: runs after the page loads, before the shot (and is the recording with --video)
-//   marks     [{ n, selector }]: numbered boxes drawn over the first element matching the selector
+//   marks     [{ key, selector }]: boxes drawn over the first element matching the selector; a step's `marks` names the keys it shows
 //
 // Test data only (invented names). Never point --base at production.
 export const SHOTS = [
@@ -13,7 +13,7 @@ export const SHOTS = [
     id: "contabilitate-plati",
     path: "/admin/plugins/edusport-contabilitate?tab=plati",
     alt: "Lista plăților din Contabilitate, cu butonul + Plată sus",
-    marks: [{ n: 1, selector: "button:has-text('+ Plată')" }],
+    marks: [{ key: "plata", selector: "button:has-text('+ Plată')" }],
   },
   {
     id: "primii-login",
@@ -31,9 +31,9 @@ export const SHOTS = [
       });
     },
     marks: [
-      { n: 1, selector: "input[type=email]" },
-      { n: 2, selector: "input[type=password]" },
-      { n: 3, selector: "button:text-is('Intră')" },
+      { key: "email", selector: "input[type=email]" },
+      { key: "parola", selector: "input[type=password]" },
+      { key: "intra", selector: "button:text-is('Intră')" },
     ],
   },
   {
@@ -45,8 +45,8 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: "button.esd-grp-btn:visible:has-text('Club și școală')" },
-      { n: 2, selector: "text=Contul meu" },
+      { key: "club-scoala", selector: "button.esd-grp-btn:visible:has-text('Club și școală')" },
+      { key: "contul-meu", selector: "text=Contul meu" },
     ],
   },
   {
@@ -54,7 +54,7 @@ export const SHOTS = [
     path: "/admin",
     viewport: { width: 390, height: 844 },
     alt: "Panoul pe telefon, cu butonul de meniu în dreapta sus",
-    marks: [{ n: 1, selector: "[aria-label='Deschide meniul']" }],
+    marks: [{ key: "meniu", selector: "[aria-label='Deschide meniul']" }],
   },
   {
     id: "primii-telefon-meniu",
@@ -68,7 +68,7 @@ export const SHOTS = [
       await page.mouse.move(20, 300);
       await page.waitForTimeout(500);
     },
-    marks: [{ n: 1, selector: "a:text-is('Sportivi'), button:text-is('Sportivi')" }],
+    marks: [{ key: "sportivi", selector: "a:text-is('Sportivi'), button:text-is('Sportivi')" }],
   },
   {
     id: "plati-form",
@@ -79,8 +79,8 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 2, selector: "input[placeholder='Caută sportiv']" },
-      { n: 3, selector: "xpath=(//*[starts-with(normalize-space(text()),'Pentru')])[last()]/following::button[1]" },
+      { key: "cauta", selector: "input[placeholder='Caută sportiv']" },
+      { key: "pentru", selector: "xpath=(//*[starts-with(normalize-space(text()),'Pentru')])[last()]/following::button[1]" },
     ],
   },
   {
@@ -92,8 +92,8 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: "button:has-text('...')" },
-      { n: 2, selector: "[role=menuitem]:has-text('Anulează plata')" },
+      { key: "meniu", selector: "button:has-text('...')" },
+      { key: "anuleaza-plata", selector: "[role=menuitem]:has-text('Anulează plata')" },
     ],
   },
   {
@@ -105,14 +105,14 @@ export const SHOTS = [
       await page.getByRole("menuitem", { name: "Anulează plata" }).click();
       await page.waitForTimeout(800);
     },
-    marks: [{ n: 3, selector: "[role=dialog] button:text-is('Anulează plata'), [role=alertdialog] button:text-is('Anulează plata')" }],
+    marks: [{ key: "anuleaza-plata", selector: "[role=dialog] button:text-is('Anulează plata'), [role=alertdialog] button:text-is('Anulează plata')" }],
   },
   {
     id: "preturi-liste",
     path: "/admin/plugins/edusport-preturi",
     alt: "Prețuri, cu secțiunile sus și listele de prețuri ale unei secțiuni",
     marks: [
-      { n: 1, selector: "[role=tab]:has-text('Club'), button:text-is('Club')" },
+      { key: "club", selector: "[role=tab]:has-text('Club'), button:text-is('Club')" },
     ],
   },
   {
@@ -124,8 +124,8 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 2, selector: "xpath=//*[starts-with(normalize-space(text()),'Preț membri')]/following::input[1]" },
-      { n: 3, selector: "button:text-is('Salvează')" },
+      { key: "pret", selector: "xpath=//*[starts-with(normalize-space(text()),'Preț membri')]/following::input[1]" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -133,9 +133,9 @@ export const SHOTS = [
     path: "/admin/plugins/edusport-inscrieri",
     alt: "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
     marks: [
-      { n: 1, selector: ".sbt-newtag" },
-      { n: 2, selector: "tbody tr:first-child td.ins-name" },
-      { n: 3, selector: "[role=tab]:has-text('Documente')" },
+      { key: "eticheta", selector: ".sbt-newtag" },
+      { key: "nume", selector: "tbody tr:first-child td.ins-name" },
+      { key: "documente", selector: "[role=tab]:has-text('Documente')" },
     ],
   },
   {
@@ -147,9 +147,9 @@ export const SHOTS = [
       await page.waitForTimeout(900);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] textarea" },
-      { n: 2, selector: "[role=dialog] button:text-is('SMS')" },
-      { n: 3, selector: "[role=dialog] button:text-is('WhatsApp')" },
+      { key: "mesaj", selector: "[role=dialog] textarea" },
+      { key: "sms", selector: "[role=dialog] button:text-is('SMS')" },
+      { key: "whatsapp", selector: "[role=dialog] button:text-is('WhatsApp')" },
     ],
   },
   {
@@ -161,9 +161,9 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] .ins-acard" },
-      { n: 2, selector: "[role=dialog] .ins-fl" },
-      { n: 3, selector: "[role=dialog] button:text-is('Confirmă înscrierea')" },
+      { key: "acord", selector: "[role=dialog] .ins-acard" },
+      { key: "fisier", selector: "[role=dialog] .ins-fl" },
+      { key: "confirma-inscrierea", selector: "[role=dialog] button:text-is('Confirmă înscrierea')" },
     ],
   },
   {
@@ -175,8 +175,8 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: ".ins-ph button:has-text('...')" },
-      { n: 2, selector: "[role=menuitem]:has-text('Mută la altă școală')" },
+      { key: "meniu", selector: ".ins-ph button:has-text('...')" },
+      { key: "muta-la", selector: "[role=menuitem]:has-text('Mută la altă școală')" },
     ],
   },
   {
@@ -188,8 +188,8 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: ".sbt-bulk .ui-select, .sbt-bulk [aria-label='Sezon destinație']" },
-      { n: 2, selector: ".sbt-bulk button:text-is('Mută în sezon')" },
+      { key: "sezon", selector: ".sbt-bulk .ui-select, .sbt-bulk [aria-label='Sezon destinație']" },
+      { key: "muta-in", selector: ".sbt-bulk button:text-is('Mută în sezon')" },
     ],
   },
   {
@@ -200,7 +200,7 @@ export const SHOTS = [
       await page.locator("tbody tr").nth(1).locator("input[type=checkbox]").check();
       await page.waitForTimeout(600);
     },
-    marks: [{ n: 1, selector: ".sbt-bulk button:text-is('Arhivează')" }],
+    marks: [{ key: "arhiveaza", selector: ".sbt-bulk button:text-is('Arhivează')" }],
   },
   {
     id: "inscrieri-tot-sezonul",
@@ -212,8 +212,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] button:has-text('Alege sezonul...')" },
-      { n: 2, selector: "[role=dialog] label:has-text('Doar înscrierile arhivate')" },
+      { key: "sezon", selector: "[role=dialog] button:has-text('Alege sezonul...')" },
+      { key: "arhivate", selector: "[role=dialog] label:has-text('Doar înscrierile arhivate')" },
     ],
   },
   {
@@ -225,9 +225,9 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: "[role=menuitem]:has-text('Descarcă CSV')" },
-      { n: 2, selector: "[role=menuitem]:has-text('Acord (PDF)')" },
-      { n: 3, selector: "[role=menuitem]:has-text('Cerere de adeziune (PDF)')" },
+      { key: "descarca-csv", selector: "[role=menuitem]:has-text('Descarcă CSV')" },
+      { key: "acord-pdf", selector: "[role=menuitem]:has-text('Acord (PDF)')" },
+      { key: "cerere", selector: "[role=menuitem]:has-text('Cerere de adeziune (PDF)')" },
     ],
   },
   {
@@ -239,7 +239,7 @@ export const SHOTS = [
       await page.locator(".sbt-season button:text-is('...')").first().click();
       await page.waitForTimeout(600);
     },
-    marks: [{ n: 1, selector: "[role=menuitem]:text-is('Selectează')" }],
+    marks: [{ key: "selecteaza", selector: "[role=menuitem]:text-is('Selectează')" }],
   },
   {
     id: "inscrieri-tel-selectie",
@@ -254,9 +254,9 @@ export const SHOTS = [
       await page.waitForTimeout(500);
     },
     marks: [
-      { n: 1, selector: "button:text-is('Gata')" },
-      { n: 2, selector: ".sbt-pselbar button:text-is('Mută...')" },
-      { n: 3, selector: ".sbt-pselbar button:text-is('Arhivează')" },
+      { key: "gata", selector: "button:text-is('Gata')" },
+      { key: "muta", selector: ".sbt-pselbar button:text-is('Mută...')" },
+      { key: "arhiveaza", selector: ".sbt-pselbar button:text-is('Arhivează')" },
     ],
   },
   {
@@ -273,8 +273,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "button:text-is('Mută în sezon')" },
-      { n: 2, selector: "button:text-is('Mută la altă școală')" },
+      { key: "muta-in", selector: "button:text-is('Mută în sezon')" },
+      { key: "muta-la", selector: "button:text-is('Mută la altă școală')" },
     ],
   },
   {
@@ -282,9 +282,9 @@ export const SHOTS = [
     path: "/admin/plugins/edusport-sportivi",
     alt: "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
     marks: [
-      { n: 1, selector: "input[placeholder^='Nume, telefon']" },
-      { n: 2, selector: "button:has-text('Filtre')" },
-      { n: 3, selector: "button:has-text('Adaugă sportiv')" },
+      { key: "cauta", selector: "input[placeholder^='Nume, telefon']" },
+      { key: "filtre", selector: "button:has-text('Filtre')" },
+      { key: "adauga-sportiv", selector: "button:has-text('Adaugă sportiv')" },
     ],
   },
   {
@@ -297,8 +297,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=tab]:has-text('Documente')" },
-      { n: 2, selector: "button:text-is('Editează')" },
+      { key: "documente", selector: "[role=tab]:has-text('Documente')" },
+      { key: "editeaza", selector: "button:text-is('Editează')" },
     ],
   },
   {
@@ -311,8 +311,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "input[type=email]" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "email", selector: "input[type=email]" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -325,8 +325,8 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Vezi')" },
-      { n: 2, selector: "button:has-text('Descarcă')" },
+      { key: "vezi", selector: "button:has-text('Vezi')" },
+      { key: "descarca", selector: "button:has-text('Descarcă')" },
     ],
   },
   {
@@ -339,8 +339,8 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Selectează')" },
-      { n: 2, selector: "button:text-is('Acordă')" },
+      { key: "selecteaza", selector: "button:has-text('Selectează')" },
+      { key: "acorda", selector: "button:text-is('Acordă')" },
     ],
   },
   {
@@ -351,9 +351,9 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Sezon 20')" },
-      { n: 2, selector: "button:has-text('Grupă nouă')" },
-      { n: 3, selector: "td:has-text('Avansați Gold')" },
+      { key: "sezon", selector: "button:has-text('Sezon 20')" },
+      { key: "grupa-noua", selector: "button:has-text('Grupă nouă')" },
+      { key: "grupa", selector: "td:has-text('Avansați Gold')" },
     ],
   },
   {
@@ -365,8 +365,8 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] input:not([type=checkbox])" },
-      { n: 2, selector: "button:text-is('Creează grupa')" },
+      { key: "nume", selector: "[role=dialog] input:not([type=checkbox])" },
+      { key: "creeaza-grupa", selector: "button:text-is('Creează grupa')" },
     ],
   },
   {
@@ -379,8 +379,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=tab]:has-text('Program')" },
-      { n: 2, selector: "button:has-text('Adaugă sportivi')" },
+      { key: "program", selector: "[role=tab]:has-text('Program')" },
+      { key: "adauga-sportivi", selector: "button:has-text('Adaugă sportivi')" },
     ],
   },
   {
@@ -393,8 +393,8 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
-      { n: 1, selector: "button:text-is('Schimbă')" },
-      { n: 2, selector: "button:has-text('Adaugă program')" },
+      { key: "schimba", selector: "button:text-is('Schimbă')" },
+      { key: "adauga-program", selector: "button:has-text('Adaugă program')" },
     ],
   },
   {
@@ -409,8 +409,8 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 1, selector: "[role=group][aria-label='Zile']" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "zile", selector: "[role=group][aria-label='Zile']" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -424,8 +424,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "label:has-text('Anunță părinții pe e-mail')" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "anunta-parintii", selector: "label:has-text('Anunță părinții pe e-mail')" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -433,9 +433,9 @@ export const SHOTS = [
     path: "/admin/plugins/edusport-program",
     alt: "Pagina Program, cu calendarul lunii, butonul Adaugă și butonul Adaugă pauză",
     marks: [
-      { n: 1, selector: "button:has-text('Adaugă pauză')" },
-      { n: 2, selector: "button:text-is('Adaugă'), button:has-text('Adaugă'):not(:has-text('pauză'))" },
-      { n: 3, selector: "button:text-is('Listă')" },
+      { key: "adauga-pauza", selector: "button:has-text('Adaugă pauză')" },
+      { key: "adauga", selector: "button:text-is('Adaugă'), button:has-text('Adaugă'):not(:has-text('pauză'))" },
+      { key: "lista", selector: "button:text-is('Listă')" },
     ],
   },
   {
@@ -448,8 +448,8 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 1, selector: "text=Se repetă" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "se-repeta", selector: "text=Se repetă" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -466,15 +466,15 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
-      { n: 1, selector: "text=Nume >> xpath=following::input[1]" },
-      { n: 2, selector: ".gtt-box" },
+      { key: "nume", selector: "text=Nume >> xpath=following::input[1]" },
+      { key: "grila", selector: ".gtt-box" },
     ],
   },
   {
     id: "anunturi-lista",
     path: "/admin/plugins/edusport-anunturi",
     alt: "Lista Anunțuri, cu butoanele Filtre și Anunț nou",
-    marks: [{ n: 1, selector: "button:has-text('Anunț nou')" }],
+    marks: [{ key: "anunt-nou", selector: "button:has-text('Anunț nou')" }],
   },
   {
     id: "anunturi-noul",
@@ -486,8 +486,8 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 1, selector: "label:has-text('Portal sportiv')" },
-      { n: 2, selector: "button:text-is('Grupe alese')" },
+      { key: "portal-sportiv", selector: "label:has-text('Portal sportiv')" },
+      { key: "grupe-alese", selector: "button:text-is('Grupe alese')" },
     ],
   },
   {
@@ -495,8 +495,8 @@ export const SHOTS = [
     path: "/admin/plugins/edusport-prezenta",
     alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii și starea fiecăreia",
     marks: [
-      { n: 1, selector: "button:has-text('Ședință nouă')" },
-      { n: 2, selector: "tr:has-text('Avansați Gold')" },
+      { key: "sedinta-noua", selector: "button:has-text('Ședință nouă')" },
+      { key: "grupa", selector: "tr:has-text('Avansați Gold')" },
     ],
   },
   {
@@ -508,7 +508,7 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 1, selector: "button:text-is('Continuă')" },
+      { key: "continua", selector: "button:text-is('Continuă')" },
     ],
   },
   {
@@ -521,8 +521,8 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 1, selector: "input[aria-label^='Grup, Ana Georgescu']" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "grup", selector: "input[aria-label^='Grup, Ana Georgescu']" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -538,8 +538,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "text=/Salvată de/" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "salvata", selector: "text=/Salvată de/" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -550,7 +550,7 @@ export const SHOTS = [
       await page.getByRole("button", { name: "Restanțe" }).waitFor();
       await page.waitForTimeout(1000);
     },
-    marks: [{ n: 1, selector: "button.tbl-rail-item:has-text('Restanțe')" }],
+    marks: [{ key: "restante", selector: "button.tbl-rail-item:has-text('Restanțe')" }],
   },
   {
     id: "tabele-filtru",
@@ -561,8 +561,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Filtru')" },
-      { n: 2, selector: ".tbl-pop button.tbl-field:has-text('Stare')" },
+      { key: "filtru", selector: "button:has-text('Filtru')" },
+      { key: "stare", selector: ".tbl-pop button.tbl-field:has-text('Stare')" },
     ],
   },
   {
@@ -574,8 +574,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Coloane')" },
-      { n: 2, selector: "label:has-text('Vârstă')" },
+      { key: "coloane", selector: "button:has-text('Coloane')" },
+      { key: "varsta", selector: "label:has-text('Vârstă')" },
     ],
   },
   {
@@ -587,8 +587,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] input" },
-      { n: 2, selector: "[role=dialog] button:text-is('Salvează')" },
+      { key: "nume", selector: "[role=dialog] input" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
     ],
   },
   {
@@ -602,8 +602,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: ".tbl-rail-menu button" },
-      { n: 2, selector: "[role=menuitem]:text-is('Șterge')" },
+      { key: "meniu", selector: ".tbl-rail-menu button" },
+      { key: "sterge", selector: "[role=menuitem]:text-is('Șterge')" },
     ],
   },
   {
@@ -615,8 +615,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "button:has-text('Descarcă Excel')" },
-      { n: 2, selector: "[role=menuitem]:text-is('CSV')" },
+      { key: "excel", selector: "button:has-text('Descarcă Excel')" },
+      { key: "csv", selector: "[role=menuitem]:text-is('CSV')" },
     ],
   },
   {
@@ -629,7 +629,7 @@ export const SHOTS = [
       await page.getByRole("button", { name: "Invită utilizator nou" }).waitFor();
       await page.waitForTimeout(800);
     },
-    marks: [{ n: 1, selector: "button:has-text('Invită utilizator nou')" }],
+    marks: [{ key: "invita", selector: "button:has-text('Invită utilizator nou')" }],
   },
   {
     id: "echipa-invita",
@@ -643,9 +643,9 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=dialog] input[name=email]" },
-      { n: 2, selector: "[role=dialog] [role=combobox]" },
-      { n: 3, selector: "[role=dialog] button:has-text('Invită utilizator')" },
+      { key: "email", selector: "[role=dialog] input[name=email]" },
+      { key: "rol", selector: "[role=dialog] [role=combobox]" },
+      { key: "invita", selector: "[role=dialog] button:has-text('Invită utilizator')" },
     ],
   },
   {
@@ -661,9 +661,9 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "[role=combobox]" },
-      { n: 2, selector: "text=/^fals$/i" },
-      { n: 3, selector: "button:has-text('Salvează') >> nth=1" },
+      { key: "rol", selector: "[role=combobox]" },
+      { key: "fals", selector: "text=/^fals$/i" },
+      { key: "salveaza", selector: "button:has-text('Salvează') >> nth=1" },
     ],
   },
   {
@@ -676,8 +676,8 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 1, selector: "section[aria-label='Cont portal'] input[type=email]" },
-      { n: 2, selector: "button:text-is('Trimite invitația')" },
+      { key: "email", selector: "section[aria-label='Cont portal'] input[type=email]" },
+      { key: "trimite-invitatia", selector: "button:text-is('Trimite invitația')" },
     ],
   },
   {
@@ -691,8 +691,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { n: 1, selector: "input[placeholder='ex: Cursuri de Patinaj']" },
-      { n: 2, selector: "button:text-is('Salvează')" },
+      { key: "nume", selector: "input[placeholder='ex: Cursuri de Patinaj']" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -708,9 +708,9 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { n: 1, selector: "input[name=title]" },
-      { n: 2, selector: "button:text-is('Salvează')" },
-      { n: 3, selector: "button:text-is('Publică')" },
+      { key: "titlu", selector: "input[name=title]" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "publica", selector: "button:text-is('Publică')" },
     ],
   },
   {
@@ -722,8 +722,8 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
-      { n: 1, selector: "input[placeholder='Numele competiției']" },
-      { n: 2, selector: "input[placeholder='ex. 2024-2025']" },
+      { key: "nume", selector: "input[placeholder='Numele competiției']" },
+      { key: "sezon", selector: "input[placeholder='ex. 2024-2025']" },
     ],
   },
   {
@@ -738,8 +738,8 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
-      { n: 1, selector: "[role=menuitem]:text-is('Exportă datele')" },
-      { n: 2, selector: "[role=menuitem]:text-is('Anonimizează')" },
+      { key: "exporta-datele", selector: "[role=menuitem]:text-is('Exportă datele')" },
+      { key: "anonimizeaza", selector: "[role=menuitem]:text-is('Anonimizează')" },
     ],
   },
   {
@@ -755,7 +755,7 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     // Only opened; the dialog is left with Anulează by closing the page.
-    marks: [{ n: 1, selector: "button:text-is('Anulează')" }],
+    marks: [{ key: "anuleaza", selector: "button:text-is('Anulează')" }],
   },
   {
     id: "date-setari",
@@ -772,7 +772,7 @@ export const SHOTS = [
       });
       await page.waitForTimeout(800);
     },
-    marks: [{ n: 1, selector: "input[role=spinbutton][aria-valuemax='20']" }],
+    marks: [{ key: "limita", selector: "input[role=spinbutton][aria-valuemax='20']" }],
   },
   {
     id: "date-inactivi",
@@ -784,6 +784,6 @@ export const SHOTS = [
       await page.getByText(/Inactivi de peste/).first().waitFor();
       await page.waitForTimeout(600);
     },
-    marks: [{ n: 1, selector: "text=/Inactivi de peste/" }],
+    marks: [{ key: "inactivi", selector: "text=/Inactivi de peste/" }],
   },
 ];

@@ -8,15 +8,15 @@ export const selecteazaTelefonPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Sus, în dreapta, apasă **...**, apoi **Selectează**.", shot: "inscrieri-tel-meniu" },
+        { text: "Sus, în dreapta, apasă **...**, apoi **Selectează**.", shot: "inscrieri-tel-meniu", marks: ["selecteaza"] },
         {
           text: "Apasă cardurile dorite. Sus scrie câte sunt selectate. **Toate** le bifează pe toate de pe pagină, iar **Gata** iese din selecție.",
-          shot: "inscrieri-tel-selectie",
+          shot: "inscrieri-tel-selectie", marks: ["gata", "muta", "arhiveaza"],
         },
         { text: "Jos sunt **Mută...**, **Arhivează** și **Șterge**. Rămân inactive cât timp nu e bifat nimic." },
         {
           text: "**Mută...** deschide fereastra **Mută**. Alegi **Sezon destinație...** și apeși **Mută în sezon**. Cu două școli, la fel cu **Alege școala**.",
-          shot: "inscrieri-tel-muta",
+          shot: "inscrieri-tel-muta", marks: ["muta-in", "muta-la"],
         },
       ],
     },

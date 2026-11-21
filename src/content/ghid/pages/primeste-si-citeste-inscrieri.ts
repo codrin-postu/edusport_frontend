@@ -10,7 +10,7 @@ export const primesteInscrieriPage: GhidPage = {
       steps: [
         {
           text: "În meniu, în grupa **Formulare**, deschide **Înscrieri**. Eticheta de lângă titlu arată câte sunt **noi**. Apas-o ca să le vezi doar pe ele.",
-          shot: "inscrieri-lista",
+          shot: "inscrieri-lista", marks: ["eticheta", "nume", "documente"],
         },
         { text: "Apasă un rând. În dreapta se deschide panoul înscrierii: numele, statusul, **Nr.** și data trimiterii." },
         { text: "Pe telefon, înscrierea se deschide pe tot ecranul. **‹ Înscrieri**, sus, te duce înapoi la listă." },

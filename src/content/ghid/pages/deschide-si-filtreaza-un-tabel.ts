@@ -10,21 +10,21 @@ export const deschideFiltreazaTabelPage: GhidPage = {
       steps: [
         {
           text: "Deschide **Tabele**, din grupa **Club și școală**. În stânga, la **Gata făcute**, sunt tabelele pregătite, de exemplu **Restanțe** și **Date de contact**. Apasă unul.",
-          shot: "tabele-lista",
+          shot: "tabele-lista", marks: ["restante"],
         },
         {
           text: "Sus alegi ce numeri: **Sportivi**, **Plăți**, **Abonamente**, **Prezență** sau **Prezență pe ședințe**. Butonul din dreapta alege sezonul. La **Plăți**, **Abonamente** și **Prezență** poți bifa și luni, iar **Tot sezonul** le scoate.",
         },
         {
           text: "**Filtru** adaugă un filtru: alegi câmpul, de exemplu **Stare**, apoi bifezi valorile. Filtrul apare ca o etichetă, iar **x** de pe ea îl scoate.",
-          shot: "tabele-filtru",
+          shot: "tabele-filtru", marks: ["filtru", "stare"],
         },
         {
           text: "Butonul de grupare, de exemplu **Pe grupă**, împarte rândurile pe grupe, fiecare cu numărul de rânduri și cu totalul lui. **Negrupat** le arată într-o singură listă.",
         },
         {
           text: "**Coloane** deschide lista coloanelor. Bifează ce vrei să vezi, mută o coloană cu săgețile sus și jos, sau caută una după nume.",
-          shot: "tabele-coloane",
+          shot: "tabele-coloane", marks: ["coloane", "varsta"],
         },
         { text: "Câmpul **Caută** găsește un sportiv după nume în tabelul de pe ecran." },
       ],

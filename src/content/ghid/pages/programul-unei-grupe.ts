@@ -10,9 +10,9 @@ export const programulUneiGrupePage: GhidPage = {
       steps: [
         {
           text: "Deschide grupa și apasă tabul **Program**. **Program obișnuit** arată orele, de exemplu Lu și Mi, 19:00, 60 min, și data de la care se aplică.",
-          shot: "grupe-program",
+          shot: "grupe-program", marks: ["schimba", "adauga-program"],
         },
-        { text: "Apasă **Adaugă program**. Cu **Se repetă** pornit, alege **Cât de des**: **Săptămânal**, **La 2 săptămâni** sau **Lunar**. Apoi bifează **Zile**.", shot: "grupe-program-nou" },
+        { text: "Apasă **Adaugă program**. Cu **Se repetă** pornit, alege **Cât de des**: **Săptămânal**, **La 2 săptămâni** sau **Lunar**. Apoi bifează **Zile**.", shot: "grupe-program-nou", marks: ["zile", "salveaza"] },
         { text: "Completează **De la** (ora), **Durată** și **Se aplică din**, apoi apasă **Salvează**." },
         { text: "Pentru o oră unică, oprește **Se repetă**. Apar **Data**, ora, **Durată** și **Notă**." },
       ],
@@ -31,7 +31,7 @@ export const programulUneiGrupePage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Apasă o dată din calendarul grupei sau din **Calendar și serii**. Panoul arată ziua, ora și grupa." },
-        { text: "La **Această dată** alege **Ține**, **Anulează** sau **Mută**.", shot: "program-data" },
+        { text: "La **Această dată** alege **Ține**, **Anulează** sau **Mută**.", shot: "program-data", marks: ["anunta-parintii", "salveaza"] },
         { text: "La **Anulează** și **Mută** scrie **Motiv**. La **Mută** alege și **Data nouă** și ora de la **De la**." },
         { text: "Bifează **Anunță părinții pe e-mail**, dacă vrei să primească un mesaj. Mesajul pleacă la adresele de contact ale sportivilor din grupă." },
         { text: "Apasă **Salvează**." },

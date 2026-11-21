@@ -11,7 +11,7 @@ export const articolePage: GhidPage = {
         { text: "În meniu deschide **Articole și media**, apoi **Articole**. Apasă **Creează intrare nouă**." },
         {
           text: "Completează **title**, **description** (cel mult 300 de caractere), **body**, **category** și **date**. **title**, **category** și **date** sunt obligatorii; **slug** se completează din titlu.",
-          shot: "site-articol",
+          shot: "site-articol", marks: ["titlu", "salveaza", "publica"],
         },
         {
           text: "Imaginea principală se pune la **coverImage**, pozele în plus la **gallery**. **Video** primește un link YouTube sau Vimeo, sau un fișier încărcat.",

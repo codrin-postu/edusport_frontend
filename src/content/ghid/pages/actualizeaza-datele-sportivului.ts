@@ -8,10 +8,10 @@ export const actualizeazaDateleSportivuluiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide fișa sportivului, tabul **Date**. Apasă **Editează**, în dreapta cardului.", shot: "sportivi-fisa" },
+        { text: "Deschide fișa sportivului, tabul **Date**. Apasă **Editează**, în dreapta cardului.", shot: "sportivi-fisa", marks: ["documente", "editeaza"] },
         {
           text: "Schimbă **Nume și prenume**, **Data nașterii**, **Persoana de contact**, **Telefon** sau **E-mail**.",
-          shot: "sportivi-editare",
+          shot: "sportivi-editare", marks: ["email", "salveaza"],
         },
         { text: "Apasă **Salvează**. **Renunță** închide editarea fără să schimbe nimic." },
       ],

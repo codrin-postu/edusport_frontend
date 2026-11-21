@@ -10,11 +10,11 @@ export const adaugaAdministratorPage: GhidPage = {
       steps: [
         {
           text: "În meniul din stânga apasă **Comută la meniul Strapi**, apoi **Setări**. La **Panou de administrare** alege **Utilizatori**.",
-          shot: "echipa-utilizatori",
+          shot: "echipa-utilizatori", marks: ["invita"],
         },
         {
           text: "Apasă **Invită utilizator nou**. Completează **Prenume** și **Email**, iar la nevoie **Nume**. Prenumele și e-mailul sunt obligatorii.",
-          shot: "echipa-invita",
+          shot: "echipa-invita", marks: ["email", "rol", "invita"],
         },
         { text: "La **Rolurile utilizatorului** alege rolul: **Administrator club**, **Editor site** sau **Super Admin**." },
         { text: "Apasă **Invită utilizator**. Persoana nouă apare în listă." },

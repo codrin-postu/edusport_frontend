@@ -12,11 +12,11 @@ export const mutaSezonScoalaPage: GhidPage = {
         { text: "O singură înscriere: în panou, tabul **Date**, jos, alege alt sezon în câmpul **Sezon**." },
         {
           text: "Mai multe: bifează rândurile. În bara de sus alege **Sezon destinație...** și apasă **Mută în sezon**.",
-          shot: "inscrieri-selectie",
+          shot: "inscrieri-selectie", marks: ["sezon", "muta-in"],
         },
         {
           text: "Tot sezonul: apasă **...**, din dreapta sus, apoi **Mută tot sezonul...**. Alege **În sezonul** și apasă **Mută**.",
-          shot: "inscrieri-tot-sezonul",
+          shot: "inscrieri-tot-sezonul", marks: ["sezon", "arhivate"],
         },
       ],
     },
@@ -29,7 +29,7 @@ export const mutaSezonScoalaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Merge doar cu două sau mai multe școli. O singură înscriere: în panou, **...**, apoi **Mută la altă școală**.", shot: "inscrieri-panou-meniu" },
+        { text: "Merge doar cu două sau mai multe școli. O singură înscriere: în panou, **...**, apoi **Mută la altă școală**.", shot: "inscrieri-panou-meniu", marks: ["meniu", "muta-la"] },
         { text: "Alege școala la **Școala** și apasă **Mută**." },
         { text: "Mai multe: bifează rândurile, alege **Alege școala** și apasă **Mută la altă școală**." },
       ],

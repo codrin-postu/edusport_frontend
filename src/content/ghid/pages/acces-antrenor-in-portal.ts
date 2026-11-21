@@ -11,7 +11,7 @@ export const accesAntrenorPortalPage: GhidPage = {
         { text: "Deschide **Membri echipă**, din grupa **Sportivi și echipă**, și apasă pe antrenor. Se deschide **Editează membrul**." },
         {
           text: "La **Cont portal** scrie adresa la **E-mail pentru cont** și apasă **Trimite invitația**. Apare **Invitație trimisă.**",
-          shot: "echipa-cont-portal",
+          shot: "echipa-cont-portal", marks: ["email", "trimite-invitatia"],
         },
         {
           text: "Sub adresă scrie starea: **Invitație trimisă pe** data, iar după ce antrenorul și-a făcut contul, **Cont activ din** data. Cât timp contul nu e activ, **Retrimite invitația** trimite alta.",

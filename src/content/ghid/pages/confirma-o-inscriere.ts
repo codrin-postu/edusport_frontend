@@ -11,7 +11,7 @@ export const confirmaInscrierePage: GhidPage = {
         { text: "Deschide înscrierea și apasă **Confirmă înscrierea**, jos." },
         {
           text: "La **Sportiv**, dacă există deja un sportiv potrivit, alegi **Sportiv existent** sau **Sportiv nou**. Fără alegere, butonul rămâne inactiv.",
-          shot: "inscrieri-confirma",
+          shot: "inscrieri-confirma", marks: ["acord", "fisier", "confirma-inscrierea"],
         },
         { text: "La un sportiv existent, **Compară și actualizează** arată diferențele. Bifezi ce se actualizează în fișă. **Caută alt sportiv** schimbă sportivul propus." },
         { text: "La **Grupa** poți alege grupa. Poate rămâne **Fără grupă deocamdată**." },

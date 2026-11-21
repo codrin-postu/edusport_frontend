@@ -12,7 +12,7 @@ export const anonimizeazaSportivPage: GhidPage = {
         { text: "Deschide fișa sportivului. Sus, în dreapta, apasă **...**, apoi **Anonimizează**." },
         {
           text: "Fereastra **Anonimizezi datele sportivului?** spune ce se șterge și ce rămâne. Apasă **Anonimizează**. **Anulează** închide fără nicio schimbare.",
-          shot: "date-confirmare",
+          shot: "date-confirmare", marks: ["anuleaza"],
         },
         { text: "Apare **1 sportiv anonimizat.** Numele din fișă devine **Sportiv anonimizat**." },
       ],

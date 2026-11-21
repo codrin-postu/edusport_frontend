@@ -11,7 +11,7 @@ export const corecteazaPrezentaPage: GhidPage = {
         { text: "Găsește ședința în **Toate ședințele** sau în pagina grupei, la tabul **Prezență**. Acolo vezi pe lună **Data**, **Ora**, **Prezenți**, **Antrenor** și **Stare**." },
         {
           text: "Apasă pe ședință. Jos, **Salvată de** spune cine a salvat și când. Sub **Istoric** sunt liniile ședinței.",
-          shot: "prezenta-salvata",
+          shot: "prezenta-salvata", marks: ["salvata", "salveaza"],
         },
         { text: "Schimbă bifele sau antrenorii, sau adaugă un sportiv cu **+ Adaugă doar la ședința asta**." },
         { text: "Apasă **Salvează**. Istoricul primește o linie **Prezență corectată**, cu sportivii adăugați, scoși sau cu **Uscat** bifat." },

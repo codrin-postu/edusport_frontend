@@ -10,11 +10,11 @@ export const preturiPage: GhidPage = {
       steps: [
         {
           text: "Deschide **Prețuri**, din grupa **Club și școală**. Alege secțiunea sus, de exemplu **Club**. Fiecare listă are **Nume**, **Tip**, **Ședințe**, **Membri** și **Neafiliați**.",
-          shot: "preturi-liste",
+          shot: "preturi-liste", marks: ["club"],
         },
         {
           text: "Apasă un rând ca să se deschidă panoul prețului. Schimbă **Preț membri** sau **Preț neafiliați**, apoi apasă **Salvează**.",
-          shot: "preturi-editare",
+          shot: "preturi-editare", marks: ["pret", "salveaza"],
         },
         {
           text: "Pentru un preț nou apasă **Adaugă preț** la lista dorită, iar pentru o listă nouă **Listă nouă**. **Șterge** scoate prețul din listă.",

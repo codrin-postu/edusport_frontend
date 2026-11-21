@@ -8,7 +8,7 @@ export const grupelePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Grupe**, în meniu, la **Club și școală**. Alege sezonul la **Sezon** și secțiunea din taburile de sub el.", shot: "grupe-lista" },
+        { text: "Deschide **Grupe**, în meniu, la **Club și școală**. Alege sezonul la **Sezon** și secțiunea din taburile de sub el.", shot: "grupe-lista", marks: ["sezon", "grupa-noua", "grupa"] },
         { text: "Tabelul arată **Program**, **Antrenori**, **Listă de prețuri** și numărul de **Sportivi**. Apasă pe un rând ca să deschizi grupa." },
       ],
     },
@@ -20,7 +20,7 @@ export const grupelePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Alege secțiunea potrivită și apasă **Grupă nouă**, sus în dreapta.", shot: "grupe-noua" },
+        { text: "Alege secțiunea potrivită și apasă **Grupă nouă**, sus în dreapta.", shot: "grupe-noua", marks: ["nume", "creeaza-grupa"] },
         { text: "Scrie **Nume**. Alege **Listă de prețuri** și **Antrenori**, dacă le știi." },
         { text: "**Program public** vine bifat. Bifat, programul grupei apare în orarul de pe site (pentru grupele școlii)." },
         { text: "Apasă **Creează grupa**. Se deschide tabul **Program** al grupei, ca să adaugi orele." },
@@ -32,7 +32,7 @@ export const grupelePage: GhidPage = {
       steps: [
         {
           text: "Sub nume vezi **Antrenori** și **Listă de prețuri**. Numele unui antrenor deschide contul lui de portal. Tabul **Sportivi** listează membrii, cu **Vârstă**, **Principală** și **Alte grupe**.",
-          shot: "grupe-fisa",
+          shot: "grupe-fisa", marks: ["program", "adauga-sportivi"],
         },
         { text: "**Adaugă sportivi** arată sportivii fără grupă. **Toți sportivii** caută în tot clubul, de la două litere. Bifează și apasă **Adaugă în grupă**." },
         { text: "**...** de pe un rând are **Mută**, **Adaugă și în grupă** și **Scoate din grupă**. După fiecare acțiune apare un mesaj cu **Anulează**." },

@@ -1,5 +1,5 @@
 // Pure search over the wiki pages. No imports from the app: loaded by Node tests.
-export type SearchDoc = { slug: string; title: string; topic: string; text: string };
+export type SearchDoc = { slug: string; title: string; group: string; text: string };
 
 /** Lowercase, no diacritics; Romanian comma-below and cedilla forms of s and t fold to plain s and t. */
 export function normalize(s: string): string {
@@ -18,7 +18,7 @@ export function searchDocs(docs: SearchDoc[], query: string, limit = 8): SearchD
   const hits: { doc: SearchDoc; inTitle: boolean; i: number }[] = [];
   docs.forEach((doc, i) => {
     const title = normalize(doc.title);
-    const body = `${title}\n${normalize(doc.topic)}\n${normalize(doc.text)}`;
+    const body = `${title}\n${normalize(doc.group)}\n${normalize(doc.text)}`;
     if (!words.every((w) => body.includes(w))) return;
     hits.push({ doc, inTitle: words.every((w) => title.includes(w)), i });
   });

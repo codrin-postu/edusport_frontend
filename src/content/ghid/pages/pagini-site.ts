@@ -11,7 +11,7 @@ export const paginiSitePage: GhidPage = {
         { text: "În meniu deschide **Pagini site** și alege pagina: de exemplu **Cursuri**." },
         {
           text: "Schimbă textul din câmp. Jos apare **Modificări nesalvate**, cu **Renunță** și **Salvează**.",
-          shot: "site-cursuri",
+          shot: "site-cursuri", marks: ["nume", "salveaza"],
         },
         { text: "Apasă **Salvează**." },
       ],

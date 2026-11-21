@@ -8,8 +8,8 @@ export const anunturiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Anunțuri**, în meniu, sus. Lista arată anunțurile, iar **Filtre** le filtrează. Apasă pe un anunț ca să îl editezi.", shot: "anunturi-lista" },
-        { text: "Apasă **+ Anunț nou**. La **Unde apare** bifează **Portal sportiv**. Trebuie să rămână bifat cel puțin un loc.", shot: "anunturi-noul" },
+        { text: "Deschide **Anunțuri**, în meniu, sus. Lista arată anunțurile, iar **Filtre** le filtrează. Apasă pe un anunț ca să îl editezi.", shot: "anunturi-lista", marks: ["anunt-nou"] },
+        { text: "Apasă **+ Anunț nou**. La **Unde apare** bifează **Portal sportiv**. Trebuie să rămână bifat cel puțin un loc.", shot: "anunturi-noul", marks: ["portal-sportiv", "grupe-alese"] },
         { text: "La **Pentru cine** alege **Toate grupele** sau **Grupe alese**, apoi bifează grupele." },
         { text: "Scrie **Titlu** și **Mesaj**, ambele obligatorii. Mesajul e text simplu." },
         { text: "La **Programare** pune **Începe** și **Se încheie**, orele și **Stare**: **Activ** sau **Inactiv**." },

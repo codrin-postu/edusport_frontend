@@ -9,7 +9,7 @@ export const descarcaTabelPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Pregătește tabelul. Nu trebuie salvat întâi." },
-        { text: "Apasă **Descarcă Excel**, sus. Pentru CSV, apasă săgeata de lângă el (**Alte formate**) și alege **CSV**.", shot: "tabele-descarca" },
+        { text: "Apasă **Descarcă Excel**, sus. Pentru CSV, apasă săgeata de lângă el (**Alte formate**) și alege **CSV**.", shot: "tabele-descarca", marks: ["excel", "csv"] },
       ],
     },
     {

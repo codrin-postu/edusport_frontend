@@ -39,7 +39,7 @@ export const roluriPage: GhidPage = {
         },
         {
           text: "La **Rolurile utilizatorului** schimbă rolul. Pentru a opri accesul, pune **Activ** pe **FALS**. Apoi apasă **Salvează**, în bara **Modificări nesalvate** de jos.",
-          shot: "echipa-rol",
+          shot: "echipa-rol", marks: ["rol", "fals", "salveaza"],
         },
       ],
     },

@@ -8,7 +8,7 @@ export const parcursInsignePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide fișa sportivului, tabul **Parcurs**.", shot: "sportivi-parcurs" },
+        { text: "Deschide fișa sportivului, tabul **Parcurs**.", shot: "sportivi-parcurs", marks: ["selecteaza", "acorda"] },
         { text: "În **Selectează** alege insigna: **Steaua antrenorului**, **Test promovat** sau **Săritură**." },
         { text: "La **Săritură** alegi și săritura (Salchow, Toe loop, Loop, Flip, Lutz sau Axel), apoi nivelul: Simplu, Dublu sau Triplu." },
         { text: "Apasă **Acordă**. Butonul rămâne inactiv până alegerea e completă." },

@@ -1,10 +1,10 @@
 // Pure helpers over the wiki content tree. No imports from the app: loaded by Node tests.
 import type { GhidGroup, GhidPage } from "./types.ts";
 
-export type OrderedPage = { page: GhidPage; topic: string; group: string };
+export type OrderedPage = { page: GhidPage; group: string };
 
 export function orderedPages(groups: GhidGroup[]): OrderedPage[] {
-  return groups.flatMap((g) => g.topics.flatMap((t) => t.pages.map((page) => ({ page, topic: t.title, group: g.title }))));
+  return groups.flatMap((g) => g.pages.map((page) => ({ page, group: g.title })));
 }
 
 /** An undefined slug is the first page (the /ghid home). */

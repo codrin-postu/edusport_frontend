@@ -9,7 +9,7 @@ export const arhiveazaExportaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Bifează înscrierile și apasă **Arhivează**, în bara de sus. Jos apare **Am arhivat** și numărul.", shot: "inscrieri-arhiveaza" },
+        { text: "Bifează înscrierile și apasă **Arhivează**, în bara de sus. Jos apare **Am arhivat** și numărul.", shot: "inscrieri-arhiveaza", marks: ["arhiveaza"] },
         { text: "Pentru a le vedea: **Alte filtre**, la **Filtru** alege **Status**, la valoare **Arhivat**, apoi **Adaugă filtru**." },
       ],
     },
@@ -22,7 +22,7 @@ export const arhiveazaExportaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă **Export**, apoi **Descarcă CSV**. Fișierul urmează lista de pe ecran: sezonul, căutarea și filtrele.", shot: "inscrieri-export" },
+        { text: "Apasă **Export**, apoi **Descarcă CSV**. Fișierul urmează lista de pe ecran: sezonul, căutarea și filtrele.", shot: "inscrieri-export", marks: ["descarca-csv", "acord-pdf", "cerere"] },
         { text: "Tot în **Export**, la **Formulare goale**, descarci **Acord (PDF)** și **Cerere de adeziune (PDF)**, cu sezonul curent." },
       ],
     },

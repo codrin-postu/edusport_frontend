@@ -9,7 +9,7 @@ export const primiiPasiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Scrie **E-mail** și **Parolă**, apoi apasă **Intră**.", shot: "primii-login" },
+        { text: "Scrie **E-mail** și **Parolă**, apoi apasă **Intră**.", shot: "primii-login", marks: ["email", "parola", "intra"] },
         { text: "Dacă contul tău este legat de Google, apasă **Continuă cu Google**." },
         {
           text: "Dacă ai 2FA, apare pasul **2FA**: scrie codul din aplicație sau din e-mail și apasă **Verifică**. Cu **Ține minte dispozitivul 30 de zile** nu ți-l mai cere pe acel dispozitiv.",
@@ -23,7 +23,7 @@ export const primiiPasiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă o grupă din stânga, de exemplu **Club și școală**, ca să vezi paginile ei.", shot: "primii-meniu" },
+        { text: "Apasă o grupă din stânga, de exemplu **Club și școală**, ca să vezi paginile ei.", shot: "primii-meniu", marks: ["club-scoala", "contul-meu"] },
         { text: "Jos sunt **Contul meu** și **Ieși din cont**." },
       ],
     },
@@ -32,8 +32,8 @@ export const primiiPasiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă butonul de meniu din dreapta sus.", shot: "primii-telefon" },
-        { text: "Se deschide **Navigare**, cu aceleași grupe. Alege pagina, de exemplu **Sportivi**.", shot: "primii-telefon-meniu" },
+        { text: "Apasă butonul de meniu din dreapta sus.", shot: "primii-telefon", marks: ["meniu"] },
+        { text: "Se deschide **Navigare**, cu aceleași grupe. Alege pagina, de exemplu **Sportivi**.", shot: "primii-telefon-meniu", marks: ["sportivi"] },
       ],
     },
     { t: "h2", text: "Portalurile" },

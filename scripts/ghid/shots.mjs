@@ -56,7 +56,7 @@ async function shoot(browser, entry, state, base) {
       }
       const box = await el.boundingBox();
       if (!box) fail(entry.id, `selector has no box: ${m.selector}`);
-      marks.push({ n: m.n, box: markBox(box, viewport) });
+      marks.push({ key: m.key, box: markBox(box, viewport) });
     }
     await mkdir(IMG_DIR, { recursive: true });
     await page.screenshot({ path: join(IMG_DIR, `${entry.id}.jpg`), type: "jpeg", quality: 80 });
@@ -91,6 +91,8 @@ async function main() {
   for (const e of SHOTS) {
     if (ids.has(e.id)) fail(e.id, "duplicate id in shots.config.mjs");
     ids.add(e.id);
+    const keys = (e.marks ?? []).map((m) => m.key);
+    if (keys.some((k) => !k) || new Set(keys).size !== keys.length) fail(e.id, "marks need a unique key each");
   }
   const browser = await chromium.launch();
   try {
