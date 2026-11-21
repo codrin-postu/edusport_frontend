@@ -277,4 +277,70 @@ export const SHOTS = [
       { n: 2, selector: "button:text-is('Mută la altă școală')" },
     ],
   },
+  {
+    id: "sportivi-lista",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
+    marks: [
+      { n: 1, selector: "input[placeholder^='Nume, telefon']" },
+      { n: 2, selector: "button:has-text('Filtre')" },
+      { n: 3, selector: "button:has-text('Adaugă sportiv')" },
+    ],
+  },
+  {
+    id: "sportivi-fisa",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fișa unui sportiv, cu taburile sus și cardul Date cu butonul Editează",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Editează" }).waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=tab]:has-text('Documente')" },
+      { n: 2, selector: "button:text-is('Editează')" },
+    ],
+  },
+  {
+    id: "sportivi-editare",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Cardul Date în editare, cu câmpurile și butoanele Renunță și Salvează",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Editează" }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "input[type=email]" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "sportivi-documente",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Tabul Documente, cu PDF-urile înscrierii și butoanele Vezi și Descarcă",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("tab", { name: "Documente" }).click();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Vezi')" },
+      { n: 2, selector: "button:has-text('Descarcă')" },
+    ],
+  },
+  {
+    id: "sportivi-parcurs",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Tabul Parcurs, cu selecția și butonul Acordă sus și insignele pe secțiuni",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("tab", { name: "Parcurs" }).click();
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Selectează')" },
+      { n: 2, selector: "button:text-is('Acordă')" },
+    ],
+  },
 ];

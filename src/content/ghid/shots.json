@@ -514,5 +514,139 @@
         ]
       }
     ]
+  },
+  "sportivi-documente": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Tabul Documente, cu PDF-urile înscrierii și butoanele Vezi și Descarcă",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          87.1,
+          23.6,
+          4.1,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          90.9,
+          23.6,
+          6.5,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-parcurs": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Tabul Parcurs, cu selecția și butonul Acordă sus și insignele pe secțiuni",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          21,
+          22.5,
+          14.7,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          35.7,
+          22.5,
+          6.2,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          21,
+          12.6,
+          41.3,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          74.9,
+          12.6,
+          5.2,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          85.7,
+          4.3,
+          11.7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-fisa": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fișa unui sportiv, cu taburile sus și cardul Date cu butonul Editează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          47.9,
+          15.9,
+          8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          89.2,
+          24.2,
+          6.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-editare": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Cardul Date în editare, cu câmpurile și butoanele Renunță și Salvează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          22.3,
+          53.2,
+          36.3,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          89.1,
+          24.2,
+          7,
+          5.5
+        ]
+      }
+    ]
   }
 }
