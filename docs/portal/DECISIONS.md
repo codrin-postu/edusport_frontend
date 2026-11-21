@@ -756,3 +756,10 @@ Companion screens p6b-1 to p6b-5, answers in edusport_backend/.superpowers/phase
 - The board's 2FA row of Setări is not built (user: no portal 2FA).
 - Acasă competition card second line `<category>, <placement> din <field>` as the MainPerf board draws it; without `field` only the category.
 - 2026-11-16 (user): date fields read zz / ll / aaaa everywhere (site, both portals, admin).
+
+## 2026-11-19 staff guide (Ghid EduSport)
+- (user) Multi-page wiki at `/ghid` on the public site, for admins first (coaches later); pages are code files edited only by Codrin and Claude (approach A).
+- (user) Password gate, one password per device (`GHID_PASSWORD` in the server env, never in git); signed cookie, 180 days; noindex and robots Disallow.
+- (user) Găzduire page recommends staying on Codrin's server at 6 euro per month, rounded to 30 lei.
+- (user) Membership: a student becomes a member only when an admin ticks it; payments are recorded separately. The manual tick is not built yet, so the guide has no membership page.
+- (Claude) Phone layout below the portal 900px breakpoint; screenshots from the local test environment only.

@@ -6,11 +6,11 @@ export const gazduirePage: GhidPage = {
   lead: "Unde rulează site-ul și panoul, și de ce recomand să rămână acolo.",
   blocks: [
     { t: "h2", text: "Rămâne pe serverul meu" },
-    { t: "p", text: "**6 euro pe lună**, rotunjit la 30 de lei. Site-ul, panoul și portalurile rulează azi pe serverul meu și include:" },
+    { t: "p", text: "**6 euro pe lună**, rotunjit la 30 de lei. Site-ul, panoul și portalurile rulează azi aici. Prețul include:" },
     {
       t: "list",
       items: [
-        "Site-ul, panoul de administrare și baza de date, pornite pe serverul clubului.",
+        "Site-ul, panoul de administrare, portalurile și baza de date.",
         "Copie în fiecare noapte, la 03:00 UTC, a bazei de date, a imaginilor încărcate și a PDF-urilor de înscriere. Se păstrează ultimele 14, pe același server.",
         "Erorile se strâng automat în GlitchTip.",
         "Starea serverului este urmărită automat, iar un raport zilnic ajunge la mine în fiecare dimineață la 08:00.",
