@@ -680,4 +680,110 @@ export const SHOTS = [
       { n: 2, selector: "button:text-is('Trimite invitația')" },
     ],
   },
+  {
+    id: "site-cursuri",
+    path: "/admin/plugins/edusport-cursuri",
+    alt: "Pagina Cursuri din Pagini site, cu un câmp modificat și bara cu Renunță și Salvează jos",
+    act: async(page) => {
+      await page.getByPlaceholder("ex: Cursuri de Patinaj").waitFor();
+      // Typed and left unsaved on purpose: it only makes the bottom bar appear. The page is left without saving.
+      await page.getByPlaceholder("ex: Cursuri de Patinaj").fill("Titlu de probă");
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "input[placeholder='ex: Cursuri de Patinaj']" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "site-articol",
+    path: "/admin/content-manager/collection-types/api::article.article/create",
+    alt: "Editorul de articole Strapi, cu title, slug, description, body și coverImage",
+    act: async(page) => {
+      await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
+      await page.reload({ waitUntil: "networkidle" });
+      await page.getByText("Creează o intrare").first().waitFor();
+      const skip = page.getByRole("button", { name: "Sari peste" });
+      if (await skip.count()) await skip.click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 1, selector: "input[name=title]" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+      { n: 3, selector: "button:text-is('Publică')" },
+    ],
+  },
+  {
+    id: "site-competitie-noua",
+    path: "/admin/plugins/edusport-competitie-edit",
+    alt: "Pagina Adaugă competiție, cu Nume, Data, Locație, Nivel, Sezon și Sportivi participanți",
+    act: async(page) => {
+      await page.getByText("Adaugă competiție").first().waitFor();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 1, selector: "input[placeholder='Numele competiției']" },
+      { n: 2, selector: "input[placeholder='ex. 2024-2025']" },
+    ],
+  },
+  {
+    id: "date-meniu",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fișa unui sportiv cu meniul de sus deschis: Exportă datele și Anonimizează",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Editează" }).waitFor();
+      await page.getByRole("button", { name: /Mai multe acțiuni/ }).first().click();
+      await page.getByRole("menuitem", { name: "Anonimizează" }).waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { n: 1, selector: "[role=menuitem]:text-is('Exportă datele')" },
+      { n: 2, selector: "[role=menuitem]:text-is('Anonimizează')" },
+    ],
+  },
+  {
+    id: "date-confirmare",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fereastra Anonimizezi datele sportivului, cu ce se șterge, ce rămâne și butoanele Anulează și Anonimizează",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Editează" }).waitFor();
+      await page.getByRole("button", { name: /Mai multe acțiuni/ }).first().click();
+      await page.getByRole("menuitem", { name: "Anonimizează" }).click();
+      await page.getByText("Anonimizezi datele sportivului?").waitFor();
+      await page.waitForTimeout(600);
+    },
+    // Only opened; the dialog is left with Anulează by closing the page.
+    marks: [{ n: 1, selector: "button:text-is('Anulează')" }],
+  },
+  {
+    id: "date-setari",
+    path: "/admin/plugins/edusport-setari",
+    alt: "Setări site, cardul Date personale cu câmpul Ani până la anonimizare",
+    act: async(page) => {
+      await page.getByText("Ani până la anonimizare").first().waitFor();
+      await page.getByText("Ani până la anonimizare").first().scrollIntoViewIfNeeded();
+      // Hides the contact card above (the club's real address and phone); a display change only, nothing is edited.
+      await page.evaluate(() => {
+        for (const el of document.querySelectorAll(".ui-ecard")) {
+          if (el.textContent.includes("Date de contact")) el.style.visibility = "hidden";
+        }
+      });
+      await page.waitForTimeout(800);
+    },
+    marks: [{ n: 1, selector: "input[role=spinbutton][aria-valuemax='20']" }],
+  },
+  {
+    id: "date-inactivi",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Filtrul Date personale, cu opțiunea Inactivi de peste 5 ani",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Filtre" }).click();
+      await page.getByText("Date personale", { exact: true }).last().click();
+      await page.getByText(/Inactivi de peste/).first().waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [{ n: 1, selector: "text=/Inactivi de peste/" }],
+  },
 ];

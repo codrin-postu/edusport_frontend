@@ -30,6 +30,14 @@ import { descarcaTabelPage } from "./pages/descarca-un-tabel";
 import { adaugaAdministratorPage } from "./pages/adauga-un-administrator";
 import { roluriPage } from "./pages/roluri";
 import { accesAntrenorPortalPage } from "./pages/acces-antrenor-in-portal";
+import { paginiSitePage } from "./pages/pagini-site";
+import { articolePage } from "./pages/articole";
+import { imaginiInMediaPage } from "./pages/imagini-in-media";
+import { competitiiPage } from "./pages/competitii";
+import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sportiv";
+import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
+import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
+import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
 
 /** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -63,7 +71,14 @@ export const GHID_GROUPS: GhidGroup[] = [
   },
   {
     title: "Administrare",
-    topics: [{ title: "Echipa", pages: [adaugaAdministratorPage, roluriPage, accesAntrenorPortalPage] }],
+    topics: [
+      { title: "Echipa", pages: [adaugaAdministratorPage, roluriPage, accesAntrenorPortalPage] },
+      { title: "Site", pages: [paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
+      {
+        title: "Date personale",
+        pages: [exportaDateleSportivuluiPage, anonimizeazaSportivPage, ceRamaneDupaAnonimizarePage, sportiviInactiviPage],
+      },
+    ],
   },
 ];
 

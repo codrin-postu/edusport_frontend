@@ -1273,5 +1273,203 @@
         ]
       }
     ]
+  },
+  "date-setari": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Setări site, cardul Date personale cu câmpul Ani până la anonimizare",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          22.3,
+          79.2,
+          73.8,
+          5.5
+        ]
+      }
+    ]
+  },
+  "date-inactivi": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Filtrul Date personale, cu opțiunea Inactivi de peste 5 ani",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          75.2,
+          21,
+          11,
+          3.6
+        ]
+      }
+    ]
+  },
+  "site-cursuri": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Cursuri din Pagini site, cu un câmp modificat și bara cu Renunță și Salvează jos",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          22.3,
+          27.7,
+          73.8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          57,
+          92.1,
+          7.2,
+          4.7
+        ]
+      }
+    ]
+  },
+  "site-articol": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Editorul de articole Strapi, cu title, slug, description, body și coverImage",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          24.5,
+          36.7,
+          34.3,
+          6.1
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          53.5,
+          92.1,
+          7.2,
+          4.7
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          61.2,
+          92.1,
+          6.5,
+          4.7
+        ]
+      }
+    ]
+  },
+  "site-media": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Biblioteca Media, cu butonul Adaugă resurse noi sus",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          82.1,
+          5.3,
+          13.8,
+          5.3
+        ]
+      }
+    ]
+  },
+  "site-competitii": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Competiții, cu câmpul de căutare după nume sau URL și lista competițiilor importate",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          21.1,
+          22.4,
+          38,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          59.4,
+          22.4,
+          38,
+          5.5
+        ]
+      }
+    ]
+  },
+  "site-competitie-noua": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Adaugă competiție, cu Nume, Data, Locație, Nivel, Sezon și Sportivi participanți",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          22.3,
+          30.6,
+          57.3,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          51.2,
+          49.1,
+          28.5,
+          5.5
+        ]
+      }
+    ]
+  },
+  "date-meniu": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fișa unui sportiv cu meniul de sus deschis: Exportă datele și Anonimizează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          78.5,
+          19.3,
+          18.4,
+          5.6
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          78.5,
+          23.8,
+          18.4,
+          5.6
+        ]
+      }
+    ]
+  },
+  "date-confirmare": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Anonimizezi datele sportivului, cu ce se șterge, ce rămâne și butoanele Anulează și Anonimizează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          50,
+          56.8,
+          7.2,
+          5.5
+        ]
+      }
+    ]
   }
 }
