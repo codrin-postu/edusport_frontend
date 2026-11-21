@@ -38,6 +38,7 @@ import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sporti
 import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
+import { gazduirePage } from "./pages/gazduire";
 
 /** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -78,6 +79,7 @@ export const GHID_GROUPS: GhidGroup[] = [
         title: "Date personale",
         pages: [exportaDateleSportivuluiPage, anonimizeazaSportivPage, ceRamaneDupaAnonimizarePage, sportiviInactiviPage],
       },
+      { title: "Găzduire", pages: [gazduirePage] },
     ],
   },
 ];
