@@ -94,7 +94,7 @@ test.describe("ghid wiki", () => {
     await expect(rail.getByRole("link", { name: "Anulează o plată" })).toBeVisible();
     await expect(inscrieri).not.toHaveAttribute("open", "");
     await inscrieri.locator("summary").click();
-    await expect(rail.getByRole("link", { name: "Trimite un mesaj" })).toBeVisible();
+    await expect(rail.getByRole("link", { name: "Contactează părintele" })).toBeVisible();
   });
 
   test("client navigation into another group opens it", async({ page }) => {

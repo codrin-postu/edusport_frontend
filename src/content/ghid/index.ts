@@ -10,12 +10,13 @@ import { contabilitatePage } from "./pages/contabilitate";
 import { inregistreazaPlataPage } from "./pages/inregistreaza-o-plata";
 import { anuleazaPlataPage } from "./pages/anuleaza-o-plata";
 import { preturiPage } from "./pages/preturi";
-import { primesteInscrieriPage } from "./pages/primeste-si-citeste-inscrieri";
-import { trimiteMesajPage } from "./pages/trimite-un-mesaj";
+import { citesteInscrierilePage } from "./pages/citeste-inscrierile";
+import { contacteazaParintePage } from "./pages/contacteaza-parintele";
 import { confirmaInscrierePage } from "./pages/confirma-o-inscriere";
-import { mutaSezonScoalaPage } from "./pages/muta-la-alt-sezon-sau-scoala";
-import { arhiveazaExportaPage } from "./pages/arhiveaza-si-exporta";
-import { selecteazaTelefonPage } from "./pages/selecteaza-pe-telefon";
+import { mutaSezonScoalaPage } from "./pages/muta-in-alt-sezon-sau-la-alta-scoala";
+import { arhiveazaStergeInscrieriPage } from "./pages/arhiveaza-sau-sterge-inscrieri";
+import { descarcaListaFormularePage } from "./pages/descarca-lista-si-formularele-goale";
+import { alteFormularePage } from "./pages/alte-formulare-contact-voluntari-parteneri";
 import { fisaSportivuluiPage } from "./pages/fisa-sportivului";
 import { actualizeazaDateleSportivuluiPage } from "./pages/actualizeaza-datele-sportivului";
 import { documenteleSportivuluiPage } from "./pages/documentele-sportivului";
@@ -48,7 +49,15 @@ export const GHID_GROUPS: GhidGroup[] = [
   { title: "Început", pages: [ceEsteEdusportPage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
   {
     title: "Înscrieri",
-    pages: [primesteInscrieriPage, trimiteMesajPage, confirmaInscrierePage, mutaSezonScoalaPage, arhiveazaExportaPage, selecteazaTelefonPage],
+    pages: [
+      citesteInscrierilePage,
+      contacteazaParintePage,
+      confirmaInscrierePage,
+      mutaSezonScoalaPage,
+      arhiveazaStergeInscrieriPage,
+      descarcaListaFormularePage,
+      alteFormularePage,
+    ],
   },
   { title: "Sportivi", pages: [fisaSportivuluiPage, actualizeazaDateleSportivuluiPage, documenteleSportivuluiPage, parcursInsignePage] },
   { title: "Grupe și program", pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage] },

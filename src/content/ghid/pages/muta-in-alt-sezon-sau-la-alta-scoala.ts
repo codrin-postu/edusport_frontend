@@ -1,8 +1,8 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
 export const mutaSezonScoalaPage: GhidPage = {
-  slug: "muta-la-alt-sezon-sau-scoala",
-  title: "Mută la alt sezon sau altă școală",
+  slug: "muta-in-alt-sezon-sau-la-alta-scoala",
+  title: "Mută în alt sezon sau la altă școală",
   lead: "Înscrierile trec în alt sezon sau la altă școală, una câte una sau mai multe odată.",
   blocks: [
     { t: "h2", text: "Alt sezon" },
@@ -16,7 +16,7 @@ export const mutaSezonScoalaPage: GhidPage = {
         },
         {
           text: "Tot sezonul: apasă **...**, din dreapta sus, apoi **Mută tot sezonul...**. Alege **În sezonul** și apasă **Mută**.",
-          shot: "inscrieri-tot-sezonul", marks: ["sezon", "arhivate"],
+          shot: "inscrieri-tot-sezonul", marks: ["sezon", "muta"],
         },
       ],
     },
@@ -38,6 +38,25 @@ export const mutaSezonScoalaPage: GhidPage = {
       t: "p",
       text: "Înscrierile deja confirmate nu se mută. Mesajul de jos spune câte au rămas pe loc: **Nemutate (deja confirmate)**.",
     },
-    { t: "links", items: [{ slug: "arhiveaza-si-exporta" }, { slug: "selecteaza-pe-telefon" }] },
+    { t: "h2", text: "Pe telefon" },
+    {
+      t: "steps",
+      steps: [
+        { text: "Sus, în dreapta, apasă **...**, apoi **Selectează**.", shot: "inscrieri-tel-meniu", marks: ["selecteaza"] },
+        {
+          text: "Apasă cardurile dorite. Sus scrie câte sunt selectate. **Toate** le bifează pe toate de pe pagină, iar **Gata** iese din selecție.",
+          shot: "inscrieri-tel-selectie", marks: ["card", "toate", "gata"],
+        },
+        {
+          text: "Jos apasă **Mută...**. Rămâne inactiv cât timp nu e bifat nimic.",
+          shot: "inscrieri-tel-selectie", marks: ["muta"],
+        },
+        {
+          text: "În fereastra **Mută** alegi **Sezon destinație...** și apeși **Mută în sezon**. Cu două școli, la fel cu **Alege școala** și **Mută la altă școală**.",
+          shot: "inscrieri-tel-muta", marks: ["muta-in", "muta-la"],
+        },
+      ],
+    },
+    { t: "links", items: [{ slug: "arhiveaza-sau-sterge-inscrieri" }, { slug: "citeste-inscrierile" }] },
   ],
 };

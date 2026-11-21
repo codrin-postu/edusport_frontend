@@ -57,7 +57,7 @@ export const inceputDeSezonPage: GhidPage = {
         { slug: "grupele" },
         { slug: "programul-unei-grupe" },
         { slug: "pauze" },
-        { slug: "muta-la-alt-sezon-sau-scoala" },
+        { slug: "muta-in-alt-sezon-sau-la-alta-scoala" },
       ],
     },
   ],

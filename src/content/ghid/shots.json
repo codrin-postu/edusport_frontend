@@ -237,21 +237,30 @@
         ]
       },
       {
+        "key": "cauta",
+        "box": [
+          21,
+          12.6,
+          22.5,
+          5.5
+        ]
+      },
+      {
+        "key": "status",
+        "box": [
+          43.7,
+          12.6,
+          6.9,
+          5.5
+        ]
+      },
+      {
         "key": "nume",
         "box": [
           30,
           28.2,
           19.4,
           6.8
-        ]
-      },
-      {
-        "key": "documente",
-        "box": [
-          80.5,
-          35.5,
-          9.2,
-          5.5
         ]
       }
     ]
@@ -293,31 +302,67 @@
   "inscrieri-confirma": {
     "w": 1280,
     "h": 760,
-    "alt": "Fereastra Confirmă înscrierea, cu secțiunea Sportiv, Grupa și butonul Confirmă înscrierea",
+    "alt": "Fereastra Confirmă înscrierea, cu Sportiv existent și Sportiv nou, Grupa, Membru A.C.S. și butonul Confirmă înscrierea",
     "marks": [
       {
-        "key": "acord",
+        "key": "existent",
         "box": [
           27.6,
-          30.8,
-          44.8,
-          9.3
+          35.7,
+          22.3,
+          9.2
         ]
       },
       {
-        "key": "fisier",
+        "key": "nou",
+        "box": [
+          50.1,
+          35.7,
+          22.3,
+          9.2
+        ]
+      },
+      {
+        "key": "compara",
         "box": [
           27.6,
-          50.4,
+          45.2,
+          13.5,
+          3.5
+        ]
+      },
+      {
+        "key": "cauta-alt",
+        "box": [
+          41.7,
+          45.2,
+          9.8,
+          3.5
+        ]
+      },
+      {
+        "key": "grupa",
+        "box": [
+          27.6,
+          55.1,
           44.8,
           8.2
+        ]
+      },
+      {
+        "key": "acs",
+        "box": [
+          27.6,
+          63.6,
+          44.8,
+          6.7
         ]
       },
       {
         "key": "confirma-inscrierea",
         "box": [
           60.1,
-          75.3,
+          80.1,
           12.4,
           5.5
         ]
@@ -387,6 +432,15 @@
           6.8,
           5.5
         ]
+      },
+      {
+        "key": "sterge",
+        "box": [
+          91.7,
+          24.9,
+          5.3,
+          5.5
+        ]
       }
     ]
   },
@@ -405,12 +459,12 @@
         ]
       },
       {
-        "key": "arhivate",
+        "key": "muta",
         "box": [
-          33,
-          56.2,
-          33.9,
-          3.6
+          61.8,
+          62.3,
+          5.2,
+          5.5
         ]
       }
     ]
@@ -420,6 +474,15 @@
     "h": 760,
     "alt": "Meniul Export, cu Descarcă CSV și Formulare goale: Acord și Cerere de adeziune",
     "marks": [
+      {
+        "key": "export",
+        "box": [
+          90.5,
+          12.6,
+          6.9,
+          5.5
+        ]
+      },
       {
         "key": "descarca-csv",
         "box": [
@@ -471,6 +534,24 @@
     "alt": "Lista pe telefon în selecție: o înscriere bifată, Toate și Gata sus, Mută, Arhivează și Șterge jos",
     "marks": [
       {
+        "key": "card",
+        "box": [
+          2.3,
+          30.7,
+          95.4,
+          8.9
+        ]
+      },
+      {
+        "key": "toate",
+        "box": [
+          64.8,
+          9.1,
+          15.6,
+          5
+        ]
+      },
+      {
         "key": "gata",
         "box": [
           80.3,
@@ -492,6 +573,15 @@
         "key": "arhiveaza",
         "box": [
           34,
+          94.3,
+          32,
+          5
+        ]
+      },
+      {
+        "key": "sterge",
+        "box": [
+          66,
           94.3,
           32,
           5
@@ -1585,6 +1675,31 @@
           88.9,
           4.3,
           8.6,
+          5.5
+        ]
+      }
+    ]
+  },
+  "formulare-hub": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Formulare, cu cele patru formulare, numărul de noi și butoanele Rezultate și Vezi mesajele",
+    "marks": [
+      {
+        "key": "noi",
+        "box": [
+          72.1,
+          13,
+          7.8,
+          6.2
+        ]
+      },
+      {
+        "key": "vezi",
+        "box": [
+          78.5,
+          22.4,
+          8.5,
           5.5
         ]
       }

@@ -172,13 +172,23 @@ export const SHOTS = [
     ],
   },
   {
+    id: "formulare-hub",
+    path: "/admin/plugins/edusport-formulare",
+    alt: "Pagina Formulare, cu cele patru formulare, numărul de noi și butoanele Rezultate și Vezi mesajele",
+    marks: [
+      { key: "noi", selector: ".fm-counts" },
+      { key: "vezi", selector: "button:text-is('Vezi mesajele')" },
+    ],
+  },
+  {
     id: "inscrieri-lista",
     path: "/admin/plugins/edusport-inscrieri",
     alt: "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
     marks: [
       { key: "eticheta", selector: ".sbt-newtag" },
+      { key: "cauta", selector: "input[placeholder*='telefon']" },
+      { key: "status", selector: "button:has-text('Status')" },
       { key: "nume", selector: "tbody tr:first-child td.ins-name" },
-      { key: "documente", selector: "[role=tab]:has-text('Documente')" },
     ],
   },
   {
@@ -198,14 +208,20 @@ export const SHOTS = [
   {
     id: "inscrieri-confirma",
     path: "/admin/plugins/edusport-inscrieri",
-    alt: "Fereastra Confirmă înscrierea, cu secțiunea Sportiv, Grupa și butonul Confirmă înscrierea",
+    alt: "Fereastra Confirmă înscrierea, cu Sportiv existent și Sportiv nou, Grupa, Membru A.C.S. și butonul Confirmă înscrierea",
     act: async(page) => {
+      await page.locator("tbody tr:has-text('2026-0008') td.ins-name").click();
+      await page.waitForTimeout(700);
       await page.locator("button:text-is('Confirmă înscrierea')").first().click();
       await page.waitForTimeout(1500);
     },
     marks: [
-      { key: "acord", selector: "[role=dialog] .ins-acard" },
-      { key: "fisier", selector: "[role=dialog] .ins-fl" },
+      { key: "existent", selector: "[role=dialog] label:has-text('Sportiv existent')" },
+      { key: "nou", selector: "[role=dialog] label:has-text('Sportiv nou')" },
+      { key: "compara", selector: "[role=dialog] button:has-text('Compară și actualizează')" },
+      { key: "cauta-alt", selector: "[role=dialog] button:has-text('Caută alt sportiv')" },
+      { key: "grupa", selector: "[role=dialog] .ins-fl" },
+      { key: "acs", selector: "[role=dialog] .ins-acs" },
       { key: "confirma-inscrierea", selector: "[role=dialog] button:text-is('Confirmă înscrierea')" },
     ],
   },
@@ -243,7 +259,10 @@ export const SHOTS = [
       await page.locator("tbody tr").nth(1).locator("input[type=checkbox]").check();
       await page.waitForTimeout(600);
     },
-    marks: [{ key: "arhiveaza", selector: ".sbt-bulk button:text-is('Arhivează')" }],
+    marks: [
+      { key: "arhiveaza", selector: ".sbt-bulk button:text-is('Arhivează')" },
+      { key: "sterge", selector: ".sbt-bulk button:text-is('Șterge')" },
+    ],
   },
   {
     id: "inscrieri-tot-sezonul",
@@ -256,7 +275,7 @@ export const SHOTS = [
     },
     marks: [
       { key: "sezon", selector: "[role=dialog] button:has-text('Alege sezonul...')" },
-      { key: "arhivate", selector: "[role=dialog] label:has-text('Doar înscrierile arhivate')" },
+      { key: "muta", selector: "[role=dialog] button:text-is('Mută')" },
     ],
   },
   {
@@ -268,6 +287,7 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
+      { key: "export", selector: "button:has-text('Export')" },
       { key: "descarca-csv", selector: "[role=menuitem]:has-text('Descarcă CSV')" },
       { key: "acord-pdf", selector: "[role=menuitem]:has-text('Acord (PDF)')" },
       { key: "cerere", selector: "[role=menuitem]:has-text('Cerere de adeziune (PDF)')" },
@@ -297,9 +317,12 @@ export const SHOTS = [
       await page.waitForTimeout(500);
     },
     marks: [
-      { key: "gata", selector: "button:text-is('Gata')" },
+      { key: "card", selector: ".sbt-card--on" },
+      { key: "toate", selector: ".ui-ph-actions button:text-is('Toate')" },
+      { key: "gata", selector: ".ui-ph-actions button:text-is('Gata')" },
       { key: "muta", selector: ".sbt-pselbar button:text-is('Mută...')" },
       { key: "arhiveaza", selector: ".sbt-pselbar button:text-is('Arhivează')" },
+      { key: "sterge", selector: ".sbt-pselbar button:text-is('Șterge')" },
     ],
   },
   {

@@ -17,6 +17,6 @@ export const documenteleSportivuluiPage: GhidPage = {
       t: "p",
       text: "Dacă sportivul nu are încă niciun document, tabul arată **Niciun document încă.** Documentele vin din înscrieri. Dacă un document nu se poate descărca, apare **Documentul nu a putut fi descărcat.**",
     },
-    { t: "links", items: [{ slug: "arhiveaza-si-exporta" }, { slug: "fisa-sportivului" }] },
+    { t: "links", items: [{ slug: "descarca-lista-si-formularele-goale" }, { slug: "fisa-sportivului" }] },
   ],
 };
