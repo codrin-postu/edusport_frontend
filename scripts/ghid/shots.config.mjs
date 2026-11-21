@@ -542,4 +542,142 @@ export const SHOTS = [
       { n: 2, selector: "button:text-is('Salvează')" },
     ],
   },
+  {
+    id: "tabele-lista",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă luna aceasta",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Restanțe" }).waitFor();
+      await page.waitForTimeout(1000);
+    },
+    marks: [{ n: 1, selector: "button.tbl-rail-item:has-text('Restanțe')" }],
+  },
+  {
+    id: "tabele-filtru",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Butonul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Filtru" }).first().click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Filtru')" },
+      { n: 2, selector: ".tbl-pop button.tbl-field:has-text('Stare')" },
+    ],
+  },
+  {
+    id: "tabele-coloane",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Lista Coloane deschisă, cu casete de bifat și săgeți sus și jos",
+    act: async(page) => {
+      await page.getByRole("button", { name: /Coloane/ }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Coloane')" },
+      { n: 2, selector: "label:has-text('Vârstă')" },
+    ],
+  },
+  {
+    id: "tabele-salveaza",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Salvează tabelul" }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] input" },
+      { n: 2, selector: "[role=dialog] button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "tabele-actiuni",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Meniul ... al unui tabel salvat, cu Redenumește, Duplică și Șterge",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Plati Sezon 2026-2027" }).click();
+      await page.waitForTimeout(1000);
+      await page.locator(".tbl-rail-menu button").first().click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: ".tbl-rail-menu button" },
+      { n: 2, selector: "[role=menuitem]:text-is('Șterge')" },
+    ],
+  },
+  {
+    id: "tabele-descarca",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Butonul Descarcă Excel și meniul Alte formate, cu Excel și CSV",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Alte formate" }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Descarcă Excel')" },
+      { n: 2, selector: "[role=menuitem]:text-is('CSV')" },
+    ],
+  },
+  {
+    id: "echipa-utilizatori",
+    path: "/admin/settings/users",
+    alt: "Pagina Utilizatori din Setări, cu butonul Invită utilizator nou și lista administratorilor",
+    act: async(page) => {
+      await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
+      await page.reload({ waitUntil: "networkidle" });
+      await page.getByRole("button", { name: "Invită utilizator nou" }).waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [{ n: 1, selector: "button:has-text('Invită utilizator nou')" }],
+  },
+  {
+    id: "echipa-invita",
+    path: "/admin/settings/users",
+    alt: "Fereastra Invită utilizator nou, cu Prenume, Nume, Email și Rolurile utilizatorului",
+    act: async(page) => {
+      await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
+      await page.reload({ waitUntil: "networkidle" });
+      await page.getByRole("button", { name: "Invită utilizator nou" }).click();
+      await page.getByRole("dialog").waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] input[name=email]" },
+      { n: 2, selector: "[role=dialog] [role=combobox]" },
+      { n: 3, selector: "[role=dialog] button:has-text('Invită utilizator')" },
+    ],
+  },
+  {
+    id: "echipa-rol",
+    path: "/admin/settings/users/1",
+    alt: "Pagina de editare a unui administrator, cu Activ, Rolurile utilizatorului și bara Modificări nesalvate cu Salvează",
+    act: async(page) => {
+      await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
+      await page.reload({ waitUntil: "networkidle" });
+      await page.getByText("Rolurile utilizatorului").first().waitFor();
+      // Unsaved on purpose: it only makes the bottom bar with Salvează appear. The page is left without saving.
+      await page.locator("input[name=isActive]").click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=combobox]" },
+      { n: 2, selector: "text=/^fals$/i" },
+      { n: 3, selector: "button:has-text('Salvează') >> nth=1" },
+    ],
+  },
+  {
+    id: "echipa-cont-portal",
+    path: "/admin/plugins/edusport-membri",
+    alt: "Fereastra Editează membrul, cu blocul Cont portal, E-mail pentru cont și Trimite invitația",
+    act: async(page) => {
+      await page.getByText("Irina Test Antrenor").click();
+      await page.getByText("Cont portal").waitFor();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 1, selector: "section[aria-label='Cont portal'] input[type=email]" },
+      { n: 2, selector: "button:text-is('Trimite invitația')" },
+    ],
+  },
 ];

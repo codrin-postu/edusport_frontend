@@ -24,6 +24,12 @@ import { pauzePage } from "./pages/pauze";
 import { anunturiPage } from "./pages/anunturi";
 import { completeazaPrezentaPage } from "./pages/completeaza-prezenta";
 import { corecteazaPrezentaPage } from "./pages/corecteaza-o-prezenta";
+import { deschideFiltreazaTabelPage } from "./pages/deschide-si-filtreaza-un-tabel";
+import { salveazaTabelPage } from "./pages/salveaza-un-tabel";
+import { descarcaTabelPage } from "./pages/descarca-un-tabel";
+import { adaugaAdministratorPage } from "./pages/adauga-un-administrator";
+import { roluriPage } from "./pages/roluri";
+import { accesAntrenorPortalPage } from "./pages/acces-antrenor-in-portal";
 
 /** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -52,7 +58,12 @@ export const GHID_GROUPS: GhidGroup[] = [
       },
       { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
       { title: "Plăți", pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage] },
+      { title: "Tabele", pages: [deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage] },
     ],
+  },
+  {
+    title: "Administrare",
+    topics: [{ title: "Echipa", pages: [adaugaAdministratorPage, roluriPage, accesAntrenorPortalPage] }],
   },
 ];
 

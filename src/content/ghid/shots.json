@@ -1023,5 +1023,255 @@
         ]
       }
     ]
+  },
+  "echipa-rol": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina de editare a unui administrator, cu Activ, Rolurile utilizatorului și bara Modificări nesalvate cu Salvează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          25,
+          82.9,
+          33.8,
+          6.3
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          30.3,
+          61.3,
+          3,
+          3.2
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          57,
+          92.1,
+          7.2,
+          4.7
+        ]
+      }
+    ]
+  },
+  "echipa-cont-portal": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Editează membrul, cu blocul Cont portal, E-mail pentru cont și Trimite invitația",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.6,
+          72.6,
+          44.8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          27.6,
+          77,
+          10.3,
+          5.5
+        ]
+      }
+    ]
+  },
+  "tabele-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă luna aceasta",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          19.8,
+          33.5,
+          19.2,
+          5.7
+        ]
+      }
+    ]
+  },
+  "tabele-filtru": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Butonul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          40.7,
+          20.1,
+          6.8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          41.7,
+          48.9,
+          18.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "tabele-coloane": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista Coloane deschisă, cu casete de bifat și săgeți sus și jos",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          88,
+          27.9,
+          9.5,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          75.6,
+          69.6,
+          22.5,
+          3.6
+        ]
+      }
+    ]
+  },
+  "tabele-salveaza": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          33,
+          47.9,
+          33.9,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          59.9,
+          55.9,
+          7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "tabele-actiuni": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Meniul ... al unui tabel salvat, cu Redenumește, Duplică și Șterge",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          35.2,
+          51.9,
+          3.1,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          19.5,
+          66.8,
+          18.4,
+          5.6
+        ]
+      }
+    ]
+  },
+  "tabele-descarca": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Butonul Descarcă Excel și meniul Alte formate, cu Excel și CSV",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          83.1,
+          4.1,
+          11.7,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          78.5,
+          14.4,
+          18.4,
+          5.6
+        ]
+      }
+    ]
+  },
+  "echipa-utilizatori": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Utilizatori din Setări, cu butonul Invită utilizator nou și lista administratorilor",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          81.9,
+          5.3,
+          14,
+          5.3
+        ]
+      }
+    ]
+  },
+  "echipa-invita": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Invită utilizator nou, cu Prenume, Nume, Email și Rolurile utilizatorului",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          19.8,
+          46.7,
+          29.5,
+          6.1
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          19.8,
+          62.6,
+          29.6,
+          6.3
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          71,
+          78,
+          10.2,
+          5.3
+        ]
+      }
+    ]
   }
 }
