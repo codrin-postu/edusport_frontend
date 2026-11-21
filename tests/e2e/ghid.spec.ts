@@ -103,4 +103,36 @@ test.describe("ghid wiki", () => {
     await page.getByRole("button", { name: "Cuprins" }).click();
     await expect(page.getByRole("dialog").getByRole("link", { name: "Despre sistem" })).toBeVisible();
   });
+
+  test("search lists a page, says when nothing matches, and / focuses the field", async({ page }) => {
+    await page.goto("/ghid");
+    const field = page.getByRole("combobox", { name: "Caută în ghid" }).first();
+    await page.keyboard.press("/");
+    await expect(field).toBeFocused();
+    await field.fill("despre");
+    await expect(page.getByRole("option", { name: /Despre sistem/ })).toBeVisible();
+    await field.fill("zzzz");
+    await expect(page.getByText("Niciun rezultat.")).toBeVisible();
+    await field.fill("   ");
+    await expect(page.getByRole("listbox")).toHaveCount(0);
+  });
+
+  test("search opens a page with Enter", async({ page }) => {
+    await page.goto("/ghid");
+    const field = page.getByRole("combobox", { name: "Caută în ghid" }).first();
+    await field.fill("despre");
+    await field.press("Enter");
+    await page.waitForURL((u) => u.pathname === "/ghid/despre-sistem");
+  });
+
+  test("on a phone the search field sits beside Cuprins", async({ page }) => {
+    await page.setViewportSize({ width: 375, height: 760 });
+    await page.goto("/ghid");
+    const field = page.getByRole("combobox", { name: "Caută în ghid" }).filter({ visible: true });
+    await expect(field).toHaveCount(1);
+    await page.keyboard.press("/");
+    await expect(field).toBeFocused();
+    await field.fill("despre");
+    await expect(page.getByRole("option", { name: /Despre sistem/ })).toBeVisible();
+  });
 });

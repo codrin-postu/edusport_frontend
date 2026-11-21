@@ -15,6 +15,8 @@
   --color-row-press: #cfe0f8;      /* motion: link row pressed, a slightly darker ice */
   --color-warn-bg: #fff4e0;        /* ghid: Atenție block fill */
   --color-warn-line: #f1d29a;      /* ghid: Atenție block border */
+  --color-bar-field: rgb(255 255 255 / 0.1);       /* ghid: search field on the navy bar */
+  --color-bar-field-line: rgb(255 255 255 / 0.22); /* ghid: search field border on the navy bar */
   --breakpoint-portal: 56.25rem;   /* 34 900 px phone / desktop switch */
 }
 
@@ -184,6 +186,7 @@
   --portal-savebar-safe: 88px;     /* layout phone bottom padding under the fixed save bar */
   --portal-form-gap: 18px;         /* layout form field gap */
   --portal-member-min-h: 60px;     /* layout competition member row */
+  --portal-narrow-360: 360px;      /* ghid: search field max width */
   --portal-narrow-520: 520px;      /* layout narrow body */
   --portal-narrow-560: 560px;      /* layout narrow body */
   --portal-narrow-640: 640px;      /* layout narrow body */
