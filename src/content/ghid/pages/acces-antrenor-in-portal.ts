@@ -37,6 +37,6 @@ export const accesAntrenorPortalPage: GhidPage = {
       t: "warn",
       text: "**Dezactivează contul** deconectează acum toate dispozitivele antrenorului.",
     },
-    { t: "links", items: [{ slug: "roluri" }, { slug: "primii-pasi" }] },
+    { t: "links", items: [{ slug: "roluri" }, { slug: "intra-in-panou" }] },
   ],
 };

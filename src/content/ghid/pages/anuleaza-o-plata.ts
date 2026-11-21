@@ -18,18 +18,6 @@ export const anuleazaPlataPage: GhidPage = {
       ],
     },
     { t: "p", text: "Pentru o greșeală de sumă, dată sau metodă folosește **Editează** din același meniu **...**." },
-    { t: "h2", text: "Siguranța plăților" },
-    {
-      t: "list",
-      items: [
-        "Plata nu se șterge. Anularea o marchează, iar rândul rămâne în listă.",
-        "Fiecare plată arată cine a înregistrat-o, în coloana **Înregistrat de**.",
-        "Fiecare plată nouă primește un **Nr. chitanță**, an și număr, de exemplu 2026-0001.",
-        "Istoricul sportivului păstrează **Plată înregistrată** și **Plată anulată**, cu cine și când.",
-        "Aceeași plată trimisă de două ori în 10 secunde de același cont se înregistrează o singură dată.",
-        "**Contabilitate** apare în meniu la rolul Administrator club. Editor site nu o vede.",
-      ],
-    },
-    { t: "links", items: [{ slug: "inregistreaza-o-plata" }, { slug: "contabilitate" }] },
+    { t: "links", items: [{ slug: "inregistreaza-o-plata" }, { slug: "contabilitate" }, { slug: "siguranta", label: "Siguranța plăților" }] },
   ],
 };

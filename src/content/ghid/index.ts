@@ -1,8 +1,11 @@
 import type { GhidGroup, ShotData } from "@/lib/ghid/types";
 import shotsJson from "./shots.json";
-import { desprePage } from "./pages/despre-sistem";
+import { ceEsteEdusportPage } from "./pages/ce-este-edusport";
 import { sigurantaPage } from "./pages/siguranta";
-import { primiiPasiPage } from "./pages/primii-pasi";
+import { intraInPanouPage } from "./pages/intra-in-panou";
+import { meniulSiPaginaAcasaPage } from "./pages/meniul-si-pagina-acasa";
+import { contulTauPage } from "./pages/contul-tau-parola-si-2fa";
+import { inceputDeSezonPage } from "./pages/inceput-de-sezon";
 import { contabilitatePage } from "./pages/contabilitate";
 import { inregistreazaPlataPage } from "./pages/inregistreaza-o-plata";
 import { anuleazaPlataPage } from "./pages/anuleaza-o-plata";
@@ -42,7 +45,7 @@ import { gazduirePage } from "./pages/gazduire";
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
-  { title: "Început", pages: [desprePage, primiiPasiPage] },
+  { title: "Început", pages: [ceEsteEdusportPage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
   {
     title: "Înscrieri",
     pages: [primesteInscrieriPage, trimiteMesajPage, confirmaInscrierePage, mutaSezonScoalaPage, arhiveazaExportaPage, selecteazaTelefonPage],

@@ -34,6 +34,7 @@ export const SHOTS = [
       { key: "email", selector: "input[type=email]" },
       { key: "parola", selector: "input[type=password]" },
       { key: "intra", selector: "button:text-is('Intră')" },
+      { key: "uitat", selector: "text=Am uitat parola" },
     ],
   },
   {
@@ -46,7 +47,49 @@ export const SHOTS = [
     },
     marks: [
       { key: "club-scoala", selector: "button.esd-grp-btn:visible:has-text('Club și școală')" },
-      { key: "contul-meu", selector: "text=Contul meu" },
+      { key: "strapi", selector: "button.esd-switch" },
+    ],
+  },
+  {
+    id: "acasa-panou",
+    path: "/admin",
+    viewport: { width: 1280, height: 900 },
+    alt: "Pagina Acasă, cu Ce e nou, comutatorul Înscrieri pe site și Acțiuni rapide",
+    marks: [
+      { key: "ce-e-nou", selector: "text=Ce e nou" },
+      { key: "inscrieri", selector: "[aria-label='Comută înscrierile']" },
+      { key: "actiuni", selector: "text=Acțiuni rapide" },
+    ],
+  },
+  {
+    id: "sezoane-lista",
+    path: "/admin/plugins/edusport-sezoane",
+    alt: "Pagina Sezoane, cu lista sezoanelor și butonul Sezon nou",
+    marks: [{ key: "sezon-nou", selector: "button:has-text('Sezon nou')" }],
+  },
+  {
+    id: "securitate",
+    path: "/admin/plugins/edusport-securitate",
+    viewport: { width: 1280, height: 900 },
+    alt: "Pagina Securitate, cu 2FA, Chei de acces și Parolă",
+    marks: [
+      { key: "activeaza", selector: "button:text-is('Activează')" },
+      { key: "cheie", selector: "button:text-is('Creează o cheie de acces')" },
+      { key: "schimba-parola", selector: "button:text-is('Schimbă parola')" },
+    ],
+  },
+  {
+    id: "securitate-2fa",
+    path: "/admin/plugins/edusport-securitate",
+    viewport: { width: 1280, height: 900 },
+    alt: "Pornirea 2FA cu aplicație, cu codul de scanat și câmpul Cod din aplicație",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Activează" }).first().click();
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { key: "cod", selector: "text=Cod din aplicație >> xpath=following::input[1]" },
+      { key: "confirma", selector: "text=Cod din aplicație >> xpath=following::button[normalize-space()='Activează'][1]" },
     ],
   },
   {

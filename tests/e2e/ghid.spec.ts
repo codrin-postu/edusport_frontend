@@ -22,7 +22,7 @@ test.describe("ghid gate", () => {
   });
 
   test("//ghid and /GHID without the cookie never show the rail", async({ request }) => {
-    for (const url of ["http://localhost:3200//ghid", "http://localhost:3200/GHID", "http://localhost:3200/GHID/despre-sistem"]) {
+    for (const url of ["http://localhost:3200//ghid", "http://localhost:3200/GHID", "http://localhost:3200/GHID/ce-este-edusport"]) {
       const res = await request.get(url, { maxRedirects: 0 });
       expect([307, 308, 404], url).toContain(res.status());
       expect(await res.text(), url).not.toContain("Cuprins");
@@ -81,7 +81,7 @@ test.describe("ghid wiki", () => {
 
   test("/ghid shows the first page and the contents rail", async({ page }) => {
     await page.goto("/ghid");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Despre sistem");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ce este EduSport");
     await expect(page.getByRole("navigation", { name: "Cuprins" }).first()).toBeVisible();
   });
 
@@ -129,7 +129,7 @@ test.describe("ghid wiki", () => {
     await page.setViewportSize({ width: 375, height: 760 });
     await page.goto("/ghid");
     await page.getByRole("button", { name: "Cuprins" }).click();
-    await expect(page.getByRole("dialog").getByRole("link", { name: "Despre sistem" })).toBeVisible();
+    await expect(page.getByRole("dialog").getByRole("link", { name: "Ce este EduSport" })).toBeVisible();
   });
 
   test("search lists a page, says when nothing matches, and / focuses the field", async({ page }) => {
@@ -137,8 +137,8 @@ test.describe("ghid wiki", () => {
     const field = page.getByRole("combobox", { name: "Caută în ghid" }).first();
     await page.keyboard.press("/");
     await expect(field).toBeFocused();
-    await field.fill("despre");
-    await expect(page.getByRole("option", { name: /Despre sistem/ })).toBeVisible();
+    await field.fill("ce este");
+    await expect(page.getByRole("option", { name: /Ce este EduSport/ })).toBeVisible();
     await field.fill("zzzz");
     await expect(page.getByText("Niciun rezultat.")).toBeVisible();
     await field.fill("   ");
@@ -148,9 +148,9 @@ test.describe("ghid wiki", () => {
   test("search opens a page with Enter", async({ page }) => {
     await page.goto("/ghid");
     const field = page.getByRole("combobox", { name: "Caută în ghid" }).first();
-    await field.fill("despre");
+    await field.fill("ce este");
     await field.press("Enter");
-    await page.waitForURL((u) => u.pathname === "/ghid/despre-sistem");
+    await page.waitForURL((u) => u.pathname === "/ghid/ce-este-edusport");
   });
 
   test("on a phone the search field sits beside Cuprins", async({ page }) => {
@@ -160,7 +160,7 @@ test.describe("ghid wiki", () => {
     await expect(field).toHaveCount(1);
     await page.keyboard.press("/");
     await expect(field).toBeFocused();
-    await field.fill("despre");
-    await expect(page.getByRole("option", { name: /Despre sistem/ })).toBeVisible();
+    await field.fill("ce este");
+    await expect(page.getByRole("option", { name: /Ce este EduSport/ })).toBeVisible();
   });
 });

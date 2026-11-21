@@ -1,8 +1,8 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
-export const desprePage: GhidPage = {
-  slug: "despre-sistem",
-  title: "Despre sistem",
+export const ceEsteEdusportPage: GhidPage = {
+  slug: "ce-este-edusport",
+  title: "Ce este EduSport",
   lead: "Ce este EduSport și cum se leagă părțile lui.",
   blocks: [
     { t: "p", text: "EduSport ține la un loc site-ul clubului, evidența sportivilor și lucrul antrenorilor." },
@@ -21,6 +21,6 @@ export const desprePage: GhidPage = {
       t: "p",
       text: "O înscriere trimisă de pe site ajunge în panou, la **Înscrieri**. Prezența completată de antrenor se vede în portalul sportivului.",
     },
-    { t: "links", items: [{ slug: "siguranta" }, { slug: "primii-pasi" }] },
+    { t: "links", items: [{ slug: "intra-in-panou" }, { slug: "siguranta" }] },
   ],
 };
