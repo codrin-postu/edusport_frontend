@@ -348,9 +348,41 @@ export const SHOTS = [
     path: "/admin/plugins/edusport-sportivi",
     alt: "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
     marks: [
+      { key: "sezon", selector: "button:has-text('Sezon 20')" },
       { key: "cauta", selector: "input[placeholder^='Nume, telefon']" },
       { key: "filtre", selector: "button:has-text('Filtre')" },
       { key: "adauga-sportiv", selector: "button:has-text('Adaugă sportiv')" },
+    ],
+  },
+  {
+    id: "sportivi-adauga",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fereastra Adaugă sportiv, cu căutarea Caută sportiv și rândul Sportiv nou sub rezultate",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Adaugă sportiv" }).click();
+      await page.getByPlaceholder("Caută sportiv").fill("Ana Gh");
+      await page.locator(".spv-result:has-text('Sportiv nou')").waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "cauta", selector: "input[placeholder='Caută sportiv']" },
+      { key: "nou", selector: ".spv-result:has-text('Sportiv nou')" },
+    ],
+  },
+  {
+    id: "sportivi-adauga-formular",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Formularul Sportiv nou, cu Nume complet, Data nașterii, Persoana de contact, Telefon, E-mail și butonul Adaugă sportiv",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Adaugă sportiv" }).click();
+      await page.getByPlaceholder("Caută sportiv").fill("Exemplu Nou");
+      await page.locator(".spv-result:has-text('Sportiv nou')").click();
+      await page.locator(".spv-form").waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "campuri", selector: ".spv-form" },
+      { key: "adauga", selector: "[role=dialog] button:text-is('Adaugă sportiv')" },
     ],
   },
   {
@@ -363,7 +395,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { key: "documente", selector: "[role=tab]:has-text('Documente')" },
+      { key: "taburi", selector: "[role=tablist]" },
+      { key: "tab-date", selector: "[role=tab]:text-is('Date')" },
       { key: "editeaza", selector: "button:text-is('Editează')" },
     ],
   },
@@ -377,8 +410,9 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
-      { key: "email", selector: "input[type=email]" },
+      { key: "campuri", selector: ".spv-form" },
       { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "renunta", selector: "button:text-is('Renunță')" },
     ],
   },
   {
@@ -391,6 +425,7 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
+      { key: "tab-documente", selector: "[role=tab]:has-text('Documente')" },
       { key: "vezi", selector: "button:has-text('Vezi')" },
       { key: "descarca", selector: "button:has-text('Descarcă')" },
     ],
@@ -405,8 +440,77 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
+      { key: "tab-parcurs", selector: "[role=tab]:has-text('Parcurs')" },
       { key: "selecteaza", selector: "button:has-text('Selectează')" },
       { key: "acorda", selector: "button:text-is('Acordă')" },
+    ],
+  },
+  {
+    id: "sportivi-profil",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Tabul Profil public, cu fotografia, adresa, Activ din și comutatorul Vizibilitate pe site",
+    act: async(page) => {
+      await page.getByText("Andrei Popescu").first().click();
+      await page.getByRole("tab", { name: "Profil public" }).click();
+      await page.getByText("Vizibilitate pe site").waitFor();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { key: "tab-profil", selector: "[role=tab]:has-text('Profil public')" },
+      { key: "vizibilitate", selector: "[aria-labelledby=sp-vis-label]" },
+    ],
+  },
+  {
+    id: "sportivi-profil-rezultate",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Cardul Rezultate competiții din Profil public, cu căutarea sportivului în skate-results",
+    act: async(page) => {
+      await page.getByText("Andrei Popescu").first().click();
+      await page.getByRole("tab", { name: "Profil public" }).click();
+      await page.getByText("Vizibilitate pe site").waitFor();
+      await page.locator("input[aria-label='Caută sportiv după nume']").scrollIntoViewIfNeeded();
+      await page.mouse.wheel(0, 200);
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { key: "nume", selector: "input[aria-label='Caută sportiv după nume']" },
+      { key: "cauta", selector: ".sp-search button" },
+    ],
+  },
+  {
+    id: "sportivi-meniu",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fișa unui sportiv cu meniul de la butonul ... deschis: Marchează inactiv, Unește cu alt sportiv, Exportă datele, Anonimizează, Șterge sportivul",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Mai multe acțiuni" }).click();
+      await page.getByRole("menuitem", { name: "Unește cu alt sportiv" }).waitFor();
+      await page.waitForTimeout(500);
+    },
+    marks: [
+      { key: "meniu", selector: "button:has-text('Mai multe acțiuni')" },
+      { key: "uneste", selector: "[role=menuitem]:text-is('Unește cu alt sportiv')" },
+      { key: "inactiv", selector: "[role=menuitem]:text-is('Marchează inactiv')" },
+      { key: "sterge", selector: "[role=menuitem]:text-is('Șterge sportivul')" },
+    ],
+  },
+  {
+    id: "sportivi-unire",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fereastra Unește cu alt sportiv, cu cele două fișe una lângă alta, bifa Rămâne și alegerea valorii pe fiecare rând",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Mai multe acțiuni" }).click();
+      await page.getByRole("menuitem", { name: "Unește cu alt sportiv" }).click();
+      await page.getByPlaceholder("Caută sportiv").fill("Ana Gh");
+      await page.locator(".spv-result").first().click();
+      await page.locator(".spv-merge").waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "ramane", selector: ".spv-merge thead label:has-text('Rămâne')" },
+      { key: "randuri", selector: ".spv-merge tbody" },
+      { key: "uneste", selector: "[role=dialog] button:text-is('Unește')" },
     ],
   },
   {

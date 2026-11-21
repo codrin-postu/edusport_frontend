@@ -17,10 +17,14 @@ import { mutaSezonScoalaPage } from "./pages/muta-in-alt-sezon-sau-la-alta-scoal
 import { arhiveazaStergeInscrieriPage } from "./pages/arhiveaza-sau-sterge-inscrieri";
 import { descarcaListaFormularePage } from "./pages/descarca-lista-si-formularele-goale";
 import { alteFormularePage } from "./pages/alte-formulare-contact-voluntari-parteneri";
+import { gasesteUnSportivPage } from "./pages/gaseste-un-sportiv";
+import { adaugaUnSportivPage } from "./pages/adauga-un-sportiv";
 import { fisaSportivuluiPage } from "./pages/fisa-sportivului";
-import { actualizeazaDateleSportivuluiPage } from "./pages/actualizeaza-datele-sportivului";
+import { schimbaDateleUnuiSportivPage } from "./pages/schimba-datele-unui-sportiv";
 import { documenteleSportivuluiPage } from "./pages/documentele-sportivului";
 import { parcursInsignePage } from "./pages/parcurs-si-insigne";
+import { profilPublicSiRezultatePage } from "./pages/profil-public-si-rezultate";
+import { unesteMarcheazaStergePage } from "./pages/uneste-marcheaza-inactiv-sau-sterge-un-sportiv";
 import { grupelePage } from "./pages/grupele";
 import { programulUneiGrupePage } from "./pages/programul-unei-grupe";
 import { calendarSiSeriiPage } from "./pages/calendar-si-serii";
@@ -59,7 +63,19 @@ export const GHID_GROUPS: GhidGroup[] = [
       alteFormularePage,
     ],
   },
-  { title: "Sportivi", pages: [fisaSportivuluiPage, actualizeazaDateleSportivuluiPage, documenteleSportivuluiPage, parcursInsignePage] },
+  {
+    title: "Sportivi",
+    pages: [
+      gasesteUnSportivPage,
+      adaugaUnSportivPage,
+      fisaSportivuluiPage,
+      schimbaDateleUnuiSportivPage,
+      documenteleSportivuluiPage,
+      parcursInsignePage,
+      profilPublicSiRezultatePage,
+      unesteMarcheazaStergePage,
+    ],
+  },
   { title: "Grupe și program", pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage] },
   { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
   {

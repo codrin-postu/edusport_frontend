@@ -3,15 +3,15 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const parcursInsignePage: GhidPage = {
   slug: "parcurs-si-insigne",
   title: "Parcurs și insigne",
-  lead: "Tabul Parcurs arată insignele sportivului. Tu poți acorda unele dintre ele.",
+  lead: "Tabul **Parcurs** arată insignele sportivului. Tu poți acorda unele dintre ele.",
   blocks: [
     {
       t: "steps",
       steps: [
-        { text: "Deschide fișa sportivului, tabul **Parcurs**.", shot: "sportivi-parcurs", marks: ["selecteaza", "acorda"] },
-        { text: "În **Selectează** alege insigna: **Steaua antrenorului**, **Test promovat** sau **Săritură**." },
+        { text: "Deschide fișa sportivului, tabul **Parcurs**.", shot: "sportivi-parcurs", marks: ["tab-parcurs"] },
+        { text: "În **Selectează** alege insigna: **Steaua antrenorului**, **Test promovat** sau **Săritură**.", shot: "sportivi-parcurs", marks: ["selecteaza"] },
         { text: "La **Săritură** alegi și săritura (Salchow, Toe loop, Loop, Flip, Lutz sau Axel), apoi nivelul: Simplu, Dublu sau Triplu." },
-        { text: "Apasă **Acordă**. Butonul rămâne inactiv până alegerea e completă." },
+        { text: "Apasă **Acordă**. Butonul rămâne inactiv până alegerea e completă.", shot: "sportivi-parcurs", marks: ["acorda"] },
       ],
     },
     { t: "h2", text: "Ce arată tabul" },
@@ -33,6 +33,6 @@ export const parcursInsignePage: GhidPage = {
       text: "Sportivul vede aceleași insigne în portalul sportivului, la **Parcurs**.",
     },
     { t: "warn", text: "Iconița de ștergere de lângă o insignă acordată sau de prietenie o șterge imediat, fără întrebare." },
-    { t: "links", items: [{ slug: "fisa-sportivului" }] },
+    { t: "links", items: [{ slug: "fisa-sportivului" }, { slug: "profil-public-si-rezultate" }] },
   ],
 };

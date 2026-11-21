@@ -2,40 +2,59 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const fisaSportivuluiPage: GhidPage = {
   slug: "fisa-sportivului",
-  title: "Lista și fișa sportivului",
-  lead: "Din Sportivi găsești orice sportiv, adaugi unul nou și îi deschizi fișa.",
+  title: "Fișa sportivului",
+  lead: "Fișa strânge într-un loc tot ce știe sistemul despre un sportiv, în opt taburi.",
   blocks: [
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Sportivi**, în meniu, la **Club și școală**. Lista arată sportivii sezonului ales la **Sezon**.", shot: "sportivi-lista", marks: ["cauta", "filtre", "adauga-sportiv"] },
-        { text: "Caută după nume, telefon, e-mail sau număr. **Filtre** deschide filtrele listei." },
-        { text: "Apasă pe un sportiv. Se deschide fișa, cu taburile **Date**, **Grupe și abonament**, **Plăți**, **Profil public**, **Documente**, **Istoric**, **Competiții** și **Parcurs**.", shot: "sportivi-fisa", marks: ["documente", "editeaza"] },
-        { text: "Înapoi la listă te duce **Sportivi**, sus în stânga." },
+        {
+          text: "În **Sportivi** apasă pe numele sportivului. Fișa se deschide cu taburile sus.",
+          shot: "sportivi-fisa",
+          marks: ["taburi"],
+        },
+      ],
+    },
+    { t: "h2", text: "Sus, lângă nume" },
+    {
+      t: "p",
+      text: "Sub nume sunt data nașterii și grupa principală. **Date incomplete** apare când lipsesc date, iar **Inactiv** când sportivul e marcat inactiv. Butonul **...** deschide acțiunile fișei.",
+    },
+    {
+      t: "p",
+      text: "Când sistemul găsește un posibil duplicat, sub nume apare **Posibil același copil cu** numele celuilalt, cu **Unește** și **Nu e același copil**.",
+    },
+    { t: "h2", text: "Taburile" },
+    {
+      t: "list",
+      items: [
+        "**Date**: datele de contact, **Membru A.C.S.** pe sezon (doar de citit), linkurile către **Înscrieri** și cardul **Acces portal**.",
+        "**Grupe și abonament**: grupele sportivului, abonamentul curent și prezențele sezonului.",
+        "**Plăți**: plățile sportivului, cu **+ Plată**.",
+        "**Profil public**: pagina sportivului de pe site și legătura cu rezultatele.",
+        "**Documente**: PDF-urile înscrierilor.",
+        "**Istoric**: cine a schimbat ce și când. Numărul din tab arată câte intrări are.",
+        "**Competiții**: patru casete (**Competiții**, **Podiumuri**, **Cel mai bun loc**, **Cel mai bun scor**) și lista rezultatelor, cu filtru **Toate sezoanele**.",
+        "**Parcurs**: insignele sportivului.",
       ],
     },
     {
       t: "p",
-      text: "Coloana **Membru A.C.S.** arată Da, Nu sau În așteptare. Un sportiv cu date lipsă are sub nume rândul **Lipsesc:** cu ce lipsește, iar sus apare un mesaj cu **Arată-i**.",
+      text: "Fără profil public, tabul **Competiții** arată **Nicio competiție.** Sursa rezultatelor e explicată la Competiții.",
     },
-    { t: "h2", text: "Adaugă un sportiv" },
-    {
-      t: "steps",
-      steps: [
-        { text: "Apasă **Adaugă sportiv**, sus în dreapta, și caută întâi sportivul în **Caută sportiv**, ca să nu apară de două ori." },
-        { text: "Dacă nu e în listă, alege **Sportiv nou**. Completează **Nume complet** și **Data nașterii**, apoi, dacă le ai, **Persoana de contact**, **Telefon** și **E-mail**." },
-        { text: "Apasă **Adaugă sportiv**." },
-      ],
-    },
-    { t: "h2", text: "Alte acțiuni" },
     {
       t: "p",
-      text: "Butonul **...** din fișă are **Marchează inactiv**, **Unește cu alt sportiv**, **Exportă datele**, **Anonimizează** și **Șterge sportivul**. Un sportiv marcat inactiv nu mai apare în liste, dar istoricul rămâne.",
+      text: "Un sportiv anonimizat are doar **Date**, **Plăți** și **Istoric**, fără **Editează** și fără meniul **...**. Pe telefon fișa se deschide pe tot ecranul.",
     },
     {
-      t: "warn",
-      text: "**Șterge sportivul** șterge și profilul public, rezultatele și sezoanele. Înscrierile rămân, fără legătură cu fișa. Nu se poate anula.",
+      t: "links",
+      items: [
+        { slug: "schimba-datele-unui-sportiv" },
+        { slug: "documentele-sportivului" },
+        { slug: "parcurs-si-insigne" },
+        { slug: "profil-public-si-rezultate" },
+        { slug: "competitii" },
+      ],
     },
-    { t: "links", items: [{ slug: "actualizeaza-datele-sportivului" }, { slug: "confirma-o-inscriere" }] },
   ],
 };

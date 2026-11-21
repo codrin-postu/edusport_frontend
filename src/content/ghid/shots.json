@@ -620,6 +620,15 @@
     "alt": "Tabul Documente, cu PDF-urile înscrierii și butoanele Vezi și Descarcă",
     "marks": [
       {
+        "key": "tab-documente",
+        "box": [
+          47.9,
+          15.9,
+          8,
+          5.5
+        ]
+      },
+      {
         "key": "vezi",
         "box": [
           87.1,
@@ -645,6 +654,15 @@
     "alt": "Tabul Parcurs, cu selecția și butonul Acordă sus și insignele pe secțiuni",
     "marks": [
       {
+        "key": "tab-parcurs",
+        "box": [
+          69.3,
+          15.9,
+          6.2,
+          5.5
+        ]
+      },
+      {
         "key": "selecteaza",
         "box": [
           21,
@@ -669,6 +687,15 @@
     "h": 760,
     "alt": "Lista Sportivi, cu căutarea, Sezon, Filtre și butonul Adaugă sportiv",
     "marks": [
+      {
+        "key": "sezon",
+        "box": [
+          62.3,
+          12.6,
+          12.7,
+          5.5
+        ]
+      },
       {
         "key": "cauta",
         "box": [
@@ -704,11 +731,20 @@
     "alt": "Fișa unui sportiv, cu taburile sus și cardul Date cu butonul Editează",
     "marks": [
       {
-        "key": "documente",
+        "key": "taburi",
         "box": [
-          47.9,
+          19.8,
           15.9,
-          8,
+          78.9,
+          5.5
+        ]
+      },
+      {
+        "key": "tab-date",
+        "box": [
+          21,
+          15.9,
+          3.8,
           5.5
         ]
       },
@@ -729,12 +765,12 @@
     "alt": "Cardul Date în editare, cu câmpurile și butoanele Renunță și Salvează",
     "marks": [
       {
-        "key": "email",
+        "key": "campuri",
         "box": [
           22.3,
-          53.2,
-          36.3,
-          5.5
+          32.5,
+          73.8,
+          26.3
         ]
       },
       {
@@ -743,6 +779,15 @@
           89.1,
           24.2,
           7,
+          5.5
+        ]
+      },
+      {
+        "key": "renunta",
+        "box": [
+          82.3,
+          24.2,
+          6.7,
           5.5
         ]
       }
@@ -1700,6 +1745,183 @@
           78.5,
           22.4,
           8.5,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-adauga": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Adaugă sportiv, cu căutarea Caută sportiv și rândul Sportiv nou sub rezultate",
+    "marks": [
+      {
+        "key": "cauta",
+        "box": [
+          27.6,
+          40.3,
+          44.8,
+          5.5
+        ]
+      },
+      {
+        "key": "nou",
+        "box": [
+          27.6,
+          54.1,
+          44.8,
+          5.9
+        ]
+      }
+    ]
+  },
+  "sportivi-adauga-formular": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Formularul Sportiv nou, cu Nume complet, Data nașterii, Persoana de contact, Telefon, E-mail și butonul Adaugă sportiv",
+    "marks": [
+      {
+        "key": "campuri",
+        "box": [
+          27.6,
+          32.5,
+          44.8,
+          35.3
+        ]
+      },
+      {
+        "key": "adauga",
+        "box": [
+          62.3,
+          70.3,
+          10.1,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-profil": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Tabul Profil public, cu fotografia, adresa, Activ din și comutatorul Vizibilitate pe site",
+    "marks": [
+      {
+        "key": "tab-profil",
+        "box": [
+          40.1,
+          15.9,
+          8.2,
+          5.5
+        ]
+      },
+      {
+        "key": "vizibilitate",
+        "box": [
+          21,
+          81.1,
+          12.1,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-profil-rezultate": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Cardul Rezultate competiții din Profil public, cu căutarea sportivului în skate-results",
+    "marks": [
+      {
+        "key": "nume",
+        "box": [
+          44.2,
+          27,
+          46.3,
+          5.5
+        ]
+      },
+      {
+        "key": "cauta",
+        "box": [
+          90.5,
+          27,
+          5.6,
+          5.5
+        ]
+      }
+    ]
+  },
+  "sportivi-meniu": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fișa unui sportiv cu meniul de la butonul ... deschis: Marchează inactiv, Unește cu alt sportiv, Exportă datele, Anonimizează, Șterge sportivul",
+    "marks": [
+      {
+        "key": "meniu",
+        "box": [
+          94.3,
+          4.3,
+          3.1,
+          5.5
+        ]
+      },
+      {
+        "key": "uneste",
+        "box": [
+          78.5,
+          14.7,
+          18.4,
+          5.6
+        ]
+      },
+      {
+        "key": "inactiv",
+        "box": [
+          78.5,
+          10.1,
+          18.4,
+          5.6
+        ]
+      },
+      {
+        "key": "sterge",
+        "box": [
+          78.5,
+          28.4,
+          18.4,
+          5.6
+        ]
+      }
+    ]
+  },
+  "sportivi-unire": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Unește cu alt sportiv, cu cele două fișe una lângă alta, bifa Rămâne și alegerea valorii pe fiecare rând",
+    "marks": [
+      {
+        "key": "ramane",
+        "box": [
+          36.9,
+          33.2,
+          6.6,
+          3.6
+        ]
+      },
+      {
+        "key": "randuri",
+        "box": [
+          22.9,
+          36.9,
+          54.2,
+          34.3
+        ]
+      },
+      {
+        "key": "uneste",
+        "box": [
+          70.9,
+          73.8,
+          6.2,
           5.5
         ]
       }
