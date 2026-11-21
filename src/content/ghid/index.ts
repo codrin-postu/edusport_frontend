@@ -7,6 +7,12 @@ import { contabilitatePage } from "./pages/contabilitate";
 import { inregistreazaPlataPage } from "./pages/inregistreaza-o-plata";
 import { anuleazaPlataPage } from "./pages/anuleaza-o-plata";
 import { preturiPage } from "./pages/preturi";
+import { primesteInscrieriPage } from "./pages/primeste-si-citeste-inscrieri";
+import { trimiteMesajPage } from "./pages/trimite-un-mesaj";
+import { confirmaInscrierePage } from "./pages/confirma-o-inscriere";
+import { mutaSezonScoalaPage } from "./pages/muta-la-alt-sezon-sau-scoala";
+import { arhiveazaExportaPage } from "./pages/arhiveaza-si-exporta";
+import { selecteazaTelefonPage } from "./pages/selecteaza-pe-telefon";
 
 /** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -20,7 +26,13 @@ export const GHID_GROUPS: GhidGroup[] = [
   },
   {
     title: "Club",
-    topics: [{ title: "Plăți", pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage] }],
+    topics: [
+      {
+        title: "Înscrieri",
+        pages: [primesteInscrieriPage, trimiteMesajPage, confirmaInscrierePage, mutaSezonScoalaPage, arhiveazaExportaPage, selecteazaTelefonPage],
+      },
+      { title: "Plăți", pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage] },
+    ],
   },
 ];
 

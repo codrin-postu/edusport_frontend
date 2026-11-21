@@ -212,5 +212,307 @@
         ]
       }
     ]
+  },
+  "inscrieri-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.6,
+          4.4,
+          4.9,
+          4
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          30,
+          28.2,
+          19.4,
+          6.8
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          80.5,
+          35.5,
+          9.2,
+          5.5
+        ]
+      }
+    ]
+  },
+  "inscrieri-contact": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra cu numărul de telefon, mesajul de editat, Status și butoanele Închide, SMS și WhatsApp",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          33,
+          35.3,
+          33.9,
+          15.1
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          54.1,
+          65.8,
+          4.9,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          59.2,
+          65.8,
+          7.8,
+          5.5
+        ]
+      }
+    ]
+  },
+  "inscrieri-confirma": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Confirmă înscrierea, cu secțiunea Sportiv, Grupa și butonul Confirmă înscrierea",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.6,
+          30.8,
+          44.8,
+          9.3
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          27.6,
+          50.4,
+          44.8,
+          8.2
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          60.1,
+          75.3,
+          12.4,
+          5.5
+        ]
+      }
+    ]
+  },
+  "inscrieri-panou-meniu": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Meniul ... al înscrierii, cu Mută la altă școală și Șterge înscrierea",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          94.4,
+          25,
+          3.1,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          77,
+          30.8,
+          20,
+          5.7
+        ]
+      }
+    ]
+  },
+  "inscrieri-selectie": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Bara de selecție cu Sezon destinație, Mută în sezon, Mută la altă școală, Arhivează și Șterge",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.1,
+          24.9,
+          17.8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          45,
+          24.9,
+          8.6,
+          5.5
+        ]
+      }
+    ]
+  },
+  "inscrieri-arhiveaza": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Bara de selecție, cu butonul Arhivează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          84.8,
+          24.9,
+          6.8,
+          5.5
+        ]
+      }
+    ]
+  },
+  "inscrieri-tot-sezonul": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Mută tot sezonul, cu Din sezonul, În sezonul și Doar înscrierile arhivate",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          33,
+          50.2,
+          33.9,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          33,
+          56.2,
+          33.9,
+          3.6
+        ]
+      }
+    ]
+  },
+  "inscrieri-export": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Meniul Export, cu Descarcă CSV și Formulare goale: Acord și Cerere de adeziune",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          79.2,
+          18.4,
+          20,
+          5.7
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          79.2,
+          35.9,
+          20,
+          5.7
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          79.2,
+          40.6,
+          20,
+          5.7
+        ]
+      }
+    ]
+  },
+  "inscrieri-tel-meniu": {
+    "w": 390,
+    "h": 844,
+    "alt": "Înscrieri pe telefon, cu meniul ... deschis: Selectează și Mută tot sezonul",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.4,
+          14.3,
+          65.6,
+          5.2
+        ]
+      }
+    ]
+  },
+  "inscrieri-tel-selectie": {
+    "w": 390,
+    "h": 844,
+    "alt": "Lista pe telefon în selecție: o înscriere bifată, Toate și Gata sus, Mută, Arhivează și Șterge jos",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          80.3,
+          9.1,
+          14.3,
+          5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          2.1,
+          94.3,
+          32,
+          5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          34,
+          94.3,
+          32,
+          5
+        ]
+      }
+    ]
+  },
+  "inscrieri-tel-muta": {
+    "w": 390,
+    "h": 844,
+    "alt": "Fereastra Mută 1 înscriere, cu Sezon destinație și Alege școala",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          3.1,
+          76.2,
+          93.8,
+          5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          3.1,
+          87.1,
+          93.8,
+          5
+        ]
+      }
+    ]
   }
 }

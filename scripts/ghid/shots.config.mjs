@@ -128,4 +128,153 @@ export const SHOTS = [
       { n: 3, selector: "button:text-is('Salvează')" },
     ],
   },
+  {
+    id: "inscrieri-lista",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
+    marks: [
+      { n: 1, selector: ".sbt-newtag" },
+      { n: 2, selector: "tbody tr:first-child td.ins-name" },
+      { n: 3, selector: "[role=tab]:has-text('Documente')" },
+    ],
+  },
+  {
+    id: "inscrieri-contact",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Fereastra cu numărul de telefon, mesajul de editat, Status și butoanele Închide, SMS și WhatsApp",
+    act: async(page) => {
+      await page.locator("button:has-text('Contactează')").first().click();
+      await page.waitForTimeout(900);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] textarea" },
+      { n: 2, selector: "[role=dialog] button:text-is('SMS')" },
+      { n: 3, selector: "[role=dialog] button:text-is('WhatsApp')" },
+    ],
+  },
+  {
+    id: "inscrieri-confirma",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Fereastra Confirmă înscrierea, cu secțiunea Sportiv, Grupa și butonul Confirmă înscrierea",
+    act: async(page) => {
+      await page.locator("button:text-is('Confirmă înscrierea')").first().click();
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] .ins-acard" },
+      { n: 2, selector: "[role=dialog] .ins-fl" },
+      { n: 3, selector: "[role=dialog] button:text-is('Confirmă înscrierea')" },
+    ],
+  },
+  {
+    id: "inscrieri-panou-meniu",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Meniul ... al înscrierii, cu Mută la altă școală și Șterge înscrierea",
+    act: async(page) => {
+      await page.locator(".ins-ph button:has-text('...')").first().click();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { n: 1, selector: ".ins-ph button:has-text('...')" },
+      { n: 2, selector: "[role=menuitem]:has-text('Mută la altă școală')" },
+    ],
+  },
+  {
+    id: "inscrieri-selectie",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Bara de selecție cu Sezon destinație, Mută în sezon, Mută la altă școală, Arhivează și Șterge",
+    act: async(page) => {
+      await page.locator("tbody tr").nth(1).locator("input[type=checkbox]").check();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { n: 1, selector: ".sbt-bulk .ui-select, .sbt-bulk [aria-label='Sezon destinație']" },
+      { n: 2, selector: ".sbt-bulk button:text-is('Mută în sezon')" },
+    ],
+  },
+  {
+    id: "inscrieri-arhiveaza",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Bara de selecție, cu butonul Arhivează",
+    act: async(page) => {
+      await page.locator("tbody tr").nth(1).locator("input[type=checkbox]").check();
+      await page.waitForTimeout(600);
+    },
+    marks: [{ n: 1, selector: ".sbt-bulk button:text-is('Arhivează')" }],
+  },
+  {
+    id: "inscrieri-tot-sezonul",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Fereastra Mută tot sezonul, cu Din sezonul, În sezonul și Doar înscrierile arhivate",
+    act: async(page) => {
+      await page.locator(".sbt-season button:text-is('...')").first().click();
+      await page.getByRole("menuitem", { name: "Mută tot sezonul..." }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] button:has-text('Alege sezonul...')" },
+      { n: 2, selector: "[role=dialog] label:has-text('Doar înscrierile arhivate')" },
+    ],
+  },
+  {
+    id: "inscrieri-export",
+    path: "/admin/plugins/edusport-inscrieri",
+    alt: "Meniul Export, cu Descarcă CSV și Formulare goale: Acord și Cerere de adeziune",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Export" }).click();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { n: 1, selector: "[role=menuitem]:has-text('Descarcă CSV')" },
+      { n: 2, selector: "[role=menuitem]:has-text('Acord (PDF)')" },
+      { n: 3, selector: "[role=menuitem]:has-text('Cerere de adeziune (PDF)')" },
+    ],
+  },
+  {
+    id: "inscrieri-tel-meniu",
+    path: "/admin/plugins/edusport-inscrieri",
+    viewport: { width: 390, height: 844 },
+    alt: "Înscrieri pe telefon, cu meniul ... deschis: Selectează și Mută tot sezonul",
+    act: async(page) => {
+      await page.locator(".sbt-season button:text-is('...')").first().click();
+      await page.waitForTimeout(600);
+    },
+    marks: [{ n: 1, selector: "[role=menuitem]:text-is('Selectează')" }],
+  },
+  {
+    id: "inscrieri-tel-selectie",
+    path: "/admin/plugins/edusport-inscrieri",
+    viewport: { width: 390, height: 844 },
+    alt: "Lista pe telefon în selecție: o înscriere bifată, Toate și Gata sus, Mută, Arhivează și Șterge jos",
+    act: async(page) => {
+      await page.locator(".sbt-season button:text-is('...')").first().click();
+      await page.getByRole("menuitem", { name: "Selectează" }).click();
+      await page.waitForTimeout(500);
+      await page.locator("text=Luca Popa").first().click();
+      await page.waitForTimeout(500);
+    },
+    marks: [
+      { n: 1, selector: "button:text-is('Gata')" },
+      { n: 2, selector: ".sbt-pselbar button:text-is('Mută...')" },
+      { n: 3, selector: ".sbt-pselbar button:text-is('Arhivează')" },
+    ],
+  },
+  {
+    id: "inscrieri-tel-muta",
+    path: "/admin/plugins/edusport-inscrieri",
+    viewport: { width: 390, height: 844 },
+    alt: "Fereastra Mută 1 înscriere, cu Sezon destinație și Alege școala",
+    act: async(page) => {
+      await page.locator(".sbt-season button:text-is('...')").first().click();
+      await page.getByRole("menuitem", { name: "Selectează" }).click();
+      await page.waitForTimeout(500);
+      await page.locator("text=Luca Popa").first().click();
+      await page.getByRole("button", { name: "Mută..." }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "button:text-is('Mută în sezon')" },
+      { n: 2, selector: "button:text-is('Mută la altă școală')" },
+    ],
+  },
 ];
