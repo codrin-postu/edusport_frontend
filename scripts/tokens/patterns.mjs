@@ -51,6 +51,7 @@ export const ALLOWLIST = [
   { file: "src/styles/portal-theme.css", id: "theme-branch", reason: "the selector of the portal theme" },
   { file: "src/app/(antrenor)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
   { file: "src/app/(sportiv)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
+  { file: "src/app/(ghid)/layout.tsx", id: "theme-branch", reason: "the portal root layouts set the theme" },
   {
     file: "src/components/blocks/announcement-popup/AnnouncementCard.tsx",
     id: "arbitrary-shadow",

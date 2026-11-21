@@ -10,9 +10,10 @@ type PasswordFieldProps = {
   value: string;
   onChange: (value: string) => void;
   autoComplete: string;
+  name?: string;
 };
 
-export function PasswordField({ label, value, onChange, autoComplete }: PasswordFieldProps) {
+export function PasswordField({ label, value, onChange, autoComplete, name }: PasswordFieldProps) {
   const id = useId();
   const [shown, setShown] = useState(false);
   return (
@@ -21,6 +22,7 @@ export function PasswordField({ label, value, onChange, autoComplete }: Password
       <div className="relative">
         <Input
           id={id}
+          name={name}
           type={shown ? "text" : "password"}
           value={value}
           autoComplete={autoComplete}
