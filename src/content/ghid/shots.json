@@ -105,5 +105,112 @@
         ]
       }
     ]
+  },
+  "plati-form": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Plată nouă, cu Sportiv, Pentru, Sumă, Data și Metodă",
+    "marks": [
+      {
+        "n": 2,
+        "box": [
+          27.6,
+          20.7,
+          44.8,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          27.6,
+          29.7,
+          44.8,
+          5.5
+        ]
+      }
+    ]
+  },
+  "plati-meniu": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Meniul ... al unei plăți, cu Editează și Anulează plata",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          94.3,
+          55.3,
+          3.1,
+          4.7
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          78.5,
+          64.8,
+          18.4,
+          5.6
+        ]
+      }
+    ]
+  },
+  "plati-confirma": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Anulează plata, cu textul de confirmare",
+    "marks": [
+      {
+        "n": 3,
+        "box": [
+          57,
+          53.5,
+          9.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "preturi-liste": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Prețuri, cu secțiunile sus și listele de prețuri ale unei secțiuni",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          39,
+          18,
+          4.7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "preturi-editare": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul unui preț, cu Preț membri, Preț neafiliați și Salvează",
+    "marks": [
+      {
+        "n": 2,
+        "box": [
+          83.8,
+          20,
+          15.3,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          92.8,
+          93.7,
+          6.3,
+          5.5
+        ]
+      }
+    ]
   }
 }

@@ -70,4 +70,62 @@ export const SHOTS = [
     },
     marks: [{ n: 1, selector: "a:text-is('Sportivi'), button:text-is('Sportivi')" }],
   },
+  {
+    id: "plati-form",
+    path: "/admin/plugins/edusport-contabilitate?tab=plati",
+    alt: "Fereastra Plată nouă, cu Sportiv, Pentru, Sumă, Data și Metodă",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Plată" }).first().click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 2, selector: "input[placeholder='Caută sportiv']" },
+      { n: 3, selector: "xpath=(//*[starts-with(normalize-space(text()),'Pentru')])[last()]/following::button[1]" },
+    ],
+  },
+  {
+    id: "plati-meniu",
+    path: "/admin/plugins/edusport-contabilitate?tab=plati",
+    alt: "Meniul ... al unei plăți, cu Editează și Anulează plata",
+    act: async(page) => {
+      await page.locator("button:has-text('...')").first().click();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('...')" },
+      { n: 2, selector: "[role=menuitem]:has-text('Anulează plata')" },
+    ],
+  },
+  {
+    id: "plati-confirma",
+    path: "/admin/plugins/edusport-contabilitate?tab=plati",
+    alt: "Fereastra Anulează plata, cu textul de confirmare",
+    act: async(page) => {
+      await page.locator("button:has-text('...')").first().click();
+      await page.getByRole("menuitem", { name: "Anulează plata" }).click();
+      await page.waitForTimeout(800);
+    },
+    marks: [{ n: 3, selector: "[role=dialog] button:text-is('Anulează plata'), [role=alertdialog] button:text-is('Anulează plata')" }],
+  },
+  {
+    id: "preturi-liste",
+    path: "/admin/plugins/edusport-preturi",
+    alt: "Prețuri, cu secțiunile sus și listele de prețuri ale unei secțiuni",
+    marks: [
+      { n: 1, selector: "[role=tab]:has-text('Club'), button:text-is('Club')" },
+    ],
+  },
+  {
+    id: "preturi-editare",
+    path: "/admin/plugins/edusport-preturi",
+    alt: "Panoul unui preț, cu Preț membri, Preț neafiliați și Salvează",
+    act: async(page) => {
+      await page.getByText("Abonament 6 ședințe grup").first().click();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 2, selector: "xpath=//*[starts-with(normalize-space(text()),'Preț membri')]/following::input[1]" },
+      { n: 3, selector: "button:text-is('Salvează')" },
+    ],
+  },
 ];
