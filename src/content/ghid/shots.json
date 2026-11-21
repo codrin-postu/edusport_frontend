@@ -14,5 +14,96 @@
         ]
       }
     ]
+  },
+  "primii-login": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina de intrare în panou, cu E-mail, Parolă și butonul Intră",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          62.3,
+          41.7,
+          33.4,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          62.3,
+          50.9,
+          33.4,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          62.3,
+          62.2,
+          33.4,
+          5.5
+        ]
+      }
+    ]
+  },
+  "primii-meniu": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul de administrare cu meniul din stânga, grupa Club și școală deschisă",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          0,
+          43.8,
+          18.8,
+          5.8
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          0.8,
+          84,
+          16.9,
+          4.7
+        ]
+      }
+    ]
+  },
+  "primii-telefon": {
+    "w": 390,
+    "h": 844,
+    "alt": "Panoul pe telefon, cu butonul de meniu în dreapta sus",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          87.2,
+          0.8,
+          10.8,
+          5
+        ]
+      }
+    ]
+  },
+  "primii-telefon-meniu": {
+    "w": 390,
+    "h": 844,
+    "alt": "Meniul Navigare pe telefon, cu grupele de pagini",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          16.9,
+          62,
+          83.1,
+          6.3
+        ]
+      }
+    ]
   }
 }
