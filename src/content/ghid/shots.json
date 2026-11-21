@@ -648,5 +648,380 @@
         ]
       }
     ]
+  },
+  "grupe-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista grupelor din Grupe, cu sezonul, secțiunile și butonul Grupă nouă",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          21,
+          12.6,
+          12.7,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          88.4,
+          4.3,
+          9.1,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          21,
+          53.7,
+          14.9,
+          7.5
+        ]
+      }
+    ]
+  },
+  "grupe-noua": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Grupă nouă, cu Nume, Listă de prețuri, Antrenori și Program public",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          27.6,
+          36.4,
+          44.8,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          62.6,
+          67.4,
+          9.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "grupe-fisa": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina unei grupe, cu antrenorii, taburile și butonul Adaugă sportivi",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          28.2,
+          27.2,
+          6.6,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          86.4,
+          33.8,
+          11,
+          5.5
+        ]
+      }
+    ]
+  },
+  "grupe-program": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Tabul Program al unei grupe, cu programul obișnuit și calendarul lunii",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          42.8,
+          43.9,
+          4.8,
+          3.2
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          22.3,
+          47.3,
+          73.8,
+          5.5
+        ]
+      }
+    ]
+  },
+  "grupe-program-nou": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul Program nou, cu Se repetă, zilele, ora și Se aplică din",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          68.2,
+          26,
+          30.9,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          75.4,
+          93.7,
+          7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "program-data": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul unei date din calendar, cu Ține, Anulează și Mută și caseta Anunță părinții pe e-mail",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          68.2,
+          32,
+          30.9,
+          3.6
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          75.4,
+          93.7,
+          7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "program-calendar": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Pagina Program, cu calendarul lunii, butonul Adaugă și butonul Adaugă pauză",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          87.2,
+          4.3,
+          10.3,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          87.8,
+          26.5,
+          7.2,
+          5.5
+        ]
+      },
+      {
+        "n": 3,
+        "box": [
+          82.5,
+          26.9,
+          5.1,
+          4.7
+        ]
+      }
+    ]
+  },
+  "program-eveniment": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul Adaugă eveniment, cu Titlu, Categorie, ora și Se repetă",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          71.4,
+          49.5,
+          5.2,
+          3.6
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          89.8,
+          93.7,
+          9.2,
+          5.5
+        ]
+      }
+    ]
+  },
+  "program-pauza": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Pauză nouă, cu Nume, De la, Până la și lista ședințelor care se anulează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          33,
+          17.5,
+          33.9,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          33,
+          32.8,
+          33.9,
+          52.4
+        ]
+      }
+    ]
+  },
+  "anunturi-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Lista Anunțuri, cu butoanele Filtre și Anunț nou",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          88.8,
+          4.3,
+          8.7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "anunturi-noul": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Formularul Anunț nou, cu Portal sportiv bifat și alegerea grupelor",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          22.3,
+          29.7,
+          57.3,
+          3.6
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          31.5,
+          46.9,
+          8.5,
+          4.7
+        ]
+      }
+    ]
+  },
+  "prezenta-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Prezență, tabul Toate ședințele, cu ședințele săptămânii și starea fiecăreia",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          87.4,
+          18.7,
+          10,
+          5.5
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          19.8,
+          47.6,
+          78.9,
+          6.4
+        ]
+      }
+    ]
+  },
+  "prezenta-noua": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Ședință nouă, cu Grupă, Data, Ora, Durata și Antrenor",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          65.3,
+          69.4,
+          7.1,
+          5.5
+        ]
+      }
+    ]
+  },
+  "prezenta-panou": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Panoul unei ședințe, cu antrenorii, lista sportivilor cu caseta Grup și butonul Salvează",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          91.6,
+          51.3,
+          1.9,
+          3.2
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          92,
+          93.7,
+          7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "prezenta-salvata": {
+    "w": 1280,
+    "h": 760,
+    "alt": "O ședință salvată, cu rândul Salvată de și Istoricul ședinței",
+    "marks": [
+      {
+        "n": 1,
+        "box": [
+          68.2,
+          74.6,
+          30.9,
+          3.4
+        ]
+      },
+      {
+        "n": 2,
+        "box": [
+          92,
+          93.7,
+          7,
+          5.5
+        ]
+      }
+    ]
   }
 }

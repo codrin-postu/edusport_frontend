@@ -343,4 +343,203 @@ export const SHOTS = [
       { n: 2, selector: "button:text-is('Acordă')" },
     ],
   },
+  {
+    id: "grupe-lista",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Lista grupelor din Grupe, cu sezonul, secțiunile și butonul Grupă nouă",
+    act: async(page) => {
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { n: 1, selector: "button:has-text('Sezon 20')" },
+      { n: 2, selector: "button:has-text('Grupă nouă')" },
+      { n: 3, selector: "td:has-text('Avansați Gold')" },
+    ],
+  },
+  {
+    id: "grupe-noua",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Fereastra Grupă nouă, cu Nume, Listă de prețuri, Antrenori și Program public",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Grupă nouă" }).first().click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 1, selector: "[role=dialog] input:not([type=checkbox])" },
+      { n: 2, selector: "button:text-is('Creează grupa')" },
+    ],
+  },
+  {
+    id: "grupe-fisa",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Pagina unei grupe, cu antrenorii, taburile și butonul Adaugă sportivi",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByRole("button", { name: "Adaugă sportivi" }).waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "[role=tab]:has-text('Program')" },
+      { n: 2, selector: "button:has-text('Adaugă sportivi')" },
+    ],
+  },
+  {
+    id: "grupe-program",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Tabul Program al unei grupe, cu programul obișnuit și calendarul lunii",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByRole("tab", { name: "Program" }).click();
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { n: 1, selector: "button:text-is('Schimbă')" },
+      { n: 2, selector: "button:has-text('Adaugă program')" },
+    ],
+  },
+  {
+    id: "grupe-program-nou",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Panoul Program nou, cu Se repetă, zilele, ora și Se aplică din",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByRole("tab", { name: "Program" }).click();
+      await page.waitForTimeout(1200);
+      await page.getByRole("button", { name: "Adaugă program" }).click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 1, selector: "[role=group][aria-label='Zile']" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "program-data",
+    path: "/admin/plugins/edusport-program",
+    alt: "Panoul unei date din calendar, cu Ține, Anulează și Mută și caseta Anunță părinții pe e-mail",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.waitForTimeout(1000);
+      await page.getByText("Anulează", { exact: true }).first().click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "label:has-text('Anunță părinții pe e-mail')" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "program-calendar",
+    path: "/admin/plugins/edusport-program",
+    alt: "Pagina Program, cu calendarul lunii, butonul Adaugă și butonul Adaugă pauză",
+    marks: [
+      { n: 1, selector: "button:has-text('Adaugă pauză')" },
+      { n: 2, selector: "button:text-is('Adaugă'), button:has-text('Adaugă'):not(:has-text('pauză'))" },
+      { n: 3, selector: "button:text-is('Listă')" },
+    ],
+  },
+  {
+    id: "program-eveniment",
+    path: "/admin/plugins/edusport-program",
+    alt: "Panoul Adaugă eveniment, cu Titlu, Categorie, ora și Se repetă",
+    act: async(page) => {
+      await page.waitForTimeout(1500);
+      await page.locator("button:has-text('Adaugă'):not(:has-text('pauză'))").last().click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 1, selector: "text=Se repetă" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "program-pauza",
+    path: "/admin/plugins/edusport-program",
+    alt: "Fereastra Pauză nouă, cu Nume, De la, Până la și lista ședințelor care se anulează",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Adaugă pauză" }).click();
+      await page.waitForTimeout(800);
+      await page.locator("text=Nume >> xpath=following::input[1]").fill("Vacanța de iarnă");
+      const dates = page.locator("input[type=date]");
+      await dates.nth(0).fill("2026-12-24");
+      await dates.nth(1).fill("2027-01-03");
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { n: 1, selector: "text=Nume >> xpath=following::input[1]" },
+      { n: 2, selector: ".gtt-box" },
+    ],
+  },
+  {
+    id: "anunturi-lista",
+    path: "/admin/plugins/edusport-anunturi",
+    alt: "Lista Anunțuri, cu butoanele Filtre și Anunț nou",
+    marks: [{ n: 1, selector: "button:has-text('Anunț nou')" }],
+  },
+  {
+    id: "anunturi-noul",
+    path: "/admin/plugins/edusport-anunturi",
+    alt: "Formularul Anunț nou, cu Portal sportiv bifat și alegerea grupelor",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Anunț nou" }).click();
+      await page.getByText("Portal sportiv", { exact: true }).first().click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { n: 1, selector: "label:has-text('Portal sportiv')" },
+      { n: 2, selector: "button:text-is('Grupe alese')" },
+    ],
+  },
+  {
+    id: "prezenta-lista",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii și starea fiecăreia",
+    marks: [
+      { n: 1, selector: "button:has-text('Ședință nouă')" },
+      { n: 2, selector: "tr:has-text('Avansați Gold')" },
+    ],
+  },
+  {
+    id: "prezenta-noua",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Fereastra Ședință nouă, cu Grupă, Data, Ora, Durata și Antrenor",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Ședință nouă" }).click();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 1, selector: "button:text-is('Continuă')" },
+    ],
+  },
+  {
+    id: "prezenta-panou",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Panoul unei ședințe, cu antrenorii, lista sportivilor cu caseta Grup și butonul Salvează",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByText("Ana Georgescu").first().waitFor();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { n: 1, selector: "input[aria-label^='Grup, Ana Georgescu']" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "prezenta-salvata",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "O ședință salvată, cu rândul Salvată de și Istoricul ședinței",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByRole("tab", { name: /Prezență/ }).click();
+      await page.waitForTimeout(1200);
+      await page.getByText("Mie 11 noi").first().click();
+      await page.getByText("Istoric", { exact: true }).last().scrollIntoViewIfNeeded();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { n: 1, selector: "text=/Salvată de/" },
+      { n: 2, selector: "button:text-is('Salvează')" },
+    ],
+  },
 ];

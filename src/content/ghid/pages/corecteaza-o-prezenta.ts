@@ -1,0 +1,31 @@
+import type { GhidPage } from "@/lib/ghid/types";
+
+export const corecteazaPrezentaPage: GhidPage = {
+  slug: "corecteaza-o-prezenta",
+  title: "Corectează o prezență",
+  lead: "O ședință salvată se redeschide și se corectează. Istoricul ține minte schimbările.",
+  blocks: [
+    {
+      t: "steps",
+      steps: [
+        { text: "Găsește ședința în **Toate ședințele** sau în pagina grupei, la tabul **Prezență**. Acolo vezi pe lună **Data**, **Ora**, **Prezenți**, **Antrenor** și **Stare**." },
+        {
+          text: "Apasă pe ședință. Jos, **Salvată de** spune cine a salvat și când. Sub **Istoric** sunt liniile ședinței.",
+          shot: "prezenta-salvata",
+        },
+        { text: "Schimbă bifele sau antrenorii, sau adaugă un sportiv cu **+ Adaugă doar la ședința asta**." },
+        { text: "Apasă **Salvează**. Istoricul primește o linie **Prezență corectată**, cu sportivii adăugați, scoși sau cu **Uscat** bifat." },
+      ],
+    },
+    {
+      t: "p",
+      text: "Dacă apare **Prezența s-a schimbat între timp. Reîncarcă.**, ședința s-a schimbat după ce ai deschis-o. Reîncarcă pagina înainte să corectezi din nou.",
+    },
+    { t: "h2", text: "Vezi o lună întreagă" },
+    {
+      t: "p",
+      text: "**Tabel pe grupă**: alege grupa și luna. Fiecare sportiv are un x la ședințele la care a fost și un **Total**, de exemplu 2/2. Ședințele fără prezență poartă **necompletat**. **Descarcă Excel** salvează tabelul.",
+    },
+    { t: "links", items: [{ slug: "completeaza-prezenta" }] },
+  ],
+};

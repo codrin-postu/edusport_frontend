@@ -17,6 +17,13 @@ import { fisaSportivuluiPage } from "./pages/fisa-sportivului";
 import { actualizeazaDateleSportivuluiPage } from "./pages/actualizeaza-datele-sportivului";
 import { documenteleSportivuluiPage } from "./pages/documentele-sportivului";
 import { parcursInsignePage } from "./pages/parcurs-si-insigne";
+import { grupelePage } from "./pages/grupele";
+import { programulUneiGrupePage } from "./pages/programul-unei-grupe";
+import { calendarSiSeriiPage } from "./pages/calendar-si-serii";
+import { pauzePage } from "./pages/pauze";
+import { anunturiPage } from "./pages/anunturi";
+import { completeazaPrezentaPage } from "./pages/completeaza-prezenta";
+import { corecteazaPrezentaPage } from "./pages/corecteaza-o-prezenta";
 
 /** The wiki tree: group, topic, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -39,6 +46,11 @@ export const GHID_GROUPS: GhidGroup[] = [
         title: "Sportivi",
         pages: [fisaSportivuluiPage, actualizeazaDateleSportivuluiPage, documenteleSportivuluiPage, parcursInsignePage],
       },
+      {
+        title: "Grupe și program",
+        pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage],
+      },
+      { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
       { title: "Plăți", pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage] },
     ],
   },
