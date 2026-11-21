@@ -26,8 +26,7 @@ function args(argv) {
 }
 
 function fail(id, msg) {
-  console.error(`shot ${id}: ${msg}`);
-  process.exit(1);
+  throw new Error(`shot ${id}: ${msg}`);
 }
 
 async function open(browser, entry, state, base, video) {
@@ -107,9 +106,10 @@ async function main() {
     const data = JSON.parse(await readFile(JSON_PATH, "utf8"));
     for (const entry of entries) {
       data[entry.id] = await shoot(browser, entry, a.state, a.base);
+      await writeFile(`${JSON_PATH}.tmp`, `${JSON.stringify(data, null, 2)}\n`);
+      await rename(`${JSON_PATH}.tmp`, JSON_PATH);
       console.log(`shot ${entry.id}`);
     }
-    await writeFile(JSON_PATH, `${JSON.stringify(data, null, 2)}\n`);
   } finally {
     await browser.close();
   }
@@ -117,5 +117,5 @@ async function main() {
 
 main().catch((e) => {
   console.error(e);
-  process.exit(1);
+  process.exitCode = 1;
 });

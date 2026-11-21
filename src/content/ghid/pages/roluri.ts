@@ -5,6 +5,7 @@ export const roluriPage: GhidPage = {
   title: "Roluri",
   lead: "Rolul hotărăște ce meniuri și pagini vede fiecare administrator.",
   blocks: [
+    { t: "warn", text: "Rolul ascunde meniuri și pagini. Nu este încă o barieră la date: dă cont în panou doar oamenilor de încredere." },
     { t: "h2", text: "Cele trei roluri" },
     {
       t: "list",
@@ -14,7 +15,7 @@ export const roluriPage: GhidPage = {
         "**Editor site**: **Panou EduSport**, **Securitate** și paginile site-ului, de exemplu **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Sponsori**, **Membri echipă**, **Pagina Voluntariat** și **Prețuri**.",
       ],
     },
-    { t: "h2", text: "Doar pentru Administrator club și Super Admin" },
+    { t: "h2", text: "Pagini doar pentru Administrator club și Super Admin" },
     {
       t: "list",
       items: [

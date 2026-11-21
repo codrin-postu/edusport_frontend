@@ -97,6 +97,12 @@ test.describe("ghid wiki", () => {
     }
   });
 
+  test("a real screenshot is served as a jpeg with the cookie", async({ request }) => {
+    const res = await request.get("/ghid/img/contabilitate-plati.jpg", { headers: { cookie: COOKIE }, maxRedirects: 0 });
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toBe("image/jpeg");
+  });
+
   test("on a phone the contents open from the Cuprins button", async({ page }) => {
     await page.setViewportSize({ width: 375, height: 760 });
     await page.goto("/ghid");

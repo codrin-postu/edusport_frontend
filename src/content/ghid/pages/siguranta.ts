@@ -9,7 +9,7 @@ export const sigurantaPage: GhidPage = {
     {
       t: "list",
       items: [
-        "Panoul are trei roluri: Super Admin, **Administrator club** și **Editor site**. Rolul hotărăște ce meniuri și pagini vede fiecare.",
+        "Panoul are trei roluri: Super Admin, **Administrator club** și **Editor site**. Rolul hotărăște ce meniuri și pagini vede fiecare. Nu este încă o barieră la date: dă cont în panou doar oamenilor de încredere.",
         "Se intră cu e-mail și parolă sau cu Google. Se poate adăuga 2FA, cu aplicație de autentificare, cod pe e-mail sau cheie de acces.",
         "După 5 parole greșite, intrarea se oprește 15 minute.",
         "O intrare de pe un dispozitiv nou trimite un e-mail către cont.",
