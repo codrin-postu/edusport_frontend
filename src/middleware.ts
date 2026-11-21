@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { routeRequest, siteForHost } from "@/lib/portal/host";
-import { GHID_COOKIE, ghidGate, isGhidPath } from "@/lib/ghid/gate";
+import { GHID_COOKIE, ghidGate, isGhidRequest } from "@/lib/ghid/gate";
 
 export const config = { runtime: "nodejs", matcher: ["/((?!_next/static|_next/image).*)"] };
 
@@ -18,7 +18,7 @@ export function middleware(req: NextRequest): NextResponse {
   const route = routeRequest(site, req.nextUrl.pathname);
   const portal = site !== "site";
   let res: NextResponse;
-  const ghid = site === "site" && route.action === "next" && isGhidPath(req.nextUrl.pathname);
+  const ghid = site === "site" && route.action === "next" && isGhidRequest(req.nextUrl.pathname);
   const gate = ghid
     ? ghidGate(req.nextUrl.pathname, req.cookies.get(GHID_COOKIE)?.value, process.env.GHID_PASSWORD, req.nextUrl.search)
     : null;

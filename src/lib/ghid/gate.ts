@@ -23,9 +23,34 @@ export function isGhidPath(pathname: string): boolean {
   return pathname === "/ghid" || pathname.startsWith("/ghid/");
 }
 
+/**
+ * The path as Next routes it: percent-decoded (repeatedly, so double encoding is caught) and lower-cased.
+ * Returns null when it cannot be decoded; callers then treat the request as gated.
+ */
+export function normalizeGhidPath(rawPathname: string): string | null {
+  let p = rawPathname;
+  try {
+    for (let i = 0; i < 3; i++) {
+      const d = decodeURIComponent(p);
+      if (d === p) break;
+      p = d;
+    }
+  } catch {
+    return null;
+  }
+  return p.toLowerCase();
+}
+
+/** True when the raw path is, or cannot be proven not to be, under /ghid. */
+export function isGhidRequest(rawPathname: string): boolean {
+  const n = normalizeGhidPath(rawPathname);
+  return n === null || isGhidPath(n);
+}
+
 /** `search` (with its leading "?") only rides along in the `next` value. */
 export function ghidGate(pathname: string, cookie: string | undefined, password: string | undefined, search = ""): GhidGate {
-  if (pathname === GHID_LOGIN_PATH) return { action: "next" };
-  if (isGhidCookieValid(cookie, password)) return { action: "next" };
+  const path = normalizeGhidPath(pathname);
+  if (path === GHID_LOGIN_PATH) return { action: "next" };
+  if (path !== null && isGhidCookieValid(cookie, password)) return { action: "next" };
   return { action: "redirect", to: `${GHID_LOGIN_PATH}?next=${encodeURIComponent(pathname + search)}` };
 }

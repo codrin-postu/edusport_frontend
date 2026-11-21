@@ -30,3 +30,14 @@ it("matches only /ghid and below", () => {
   assert.equal(g.isGhidPath("/ghid/x"), true);
   assert.equal(g.isGhidPath("/ghidx"), false);
 });
+
+it("gates encoded and case variants of /ghid", () => {
+  for (const p of ["/%67hid", "/GHID/plati", "/ghid%2fplati", "/%2567hid", "/Ghid"]) {
+    assert.equal(g.isGhidRequest(p), true, p);
+    assert.equal(g.ghidGate(p, undefined, "a").action, "redirect", p);
+  }
+  assert.equal(g.isGhidRequest("/ghidx"), false);
+  assert.equal(g.isGhidRequest("/%E0%A4%A"), true);
+  assert.equal(g.ghidGate("/%E0%A4%A", g.ghidToken("a"), "a").action, "redirect");
+  assert.equal(g.ghidGate("/%67hid", g.ghidToken("a"), "a").action, "next");
+});
