@@ -13,6 +13,8 @@
   --color-cancelled-band: #ccd5e3; /* 33 cancelled session end band, one step darker than the line subtle so it reads as a state */
   --color-row-hover: #e1ecfb;      /* motion: link row hover, presence flash (same ice light) */
   --color-row-press: #cfe0f8;      /* motion: link row pressed, a slightly darker ice */
+  --color-warn-bg: #fff4e0;        /* ghid: Atenție block fill */
+  --color-warn-line: #f1d29a;      /* ghid: Atenție block border */
   --breakpoint-portal: 56.25rem;   /* 34 900 px phone / desktop switch */
 }
 
@@ -257,6 +259,8 @@
   --portal-text-22: 22px;          /* layout type size */
   --portal-text-24: 24px;          /* layout type size */
   --portal-text-26: 26px;          /* layout type size */
+  --ghid-bar-h: 60px;              /* ghid: top bar height */
+  --ghid-rail-w: 260px;            /* ghid: contents rail width */
 }
 
 @media (width >= 56.25rem) {

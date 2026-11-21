@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
   // Required by Dockerfile.production.
   output: "standalone",
 
+  // The wiki screenshots are read from disk at runtime: ship them in the standalone output.
+  outputFileTracingIncludes: { "/ghid/img/[...path]": ["./content/ghid/img/**/*"] },
+
   // Visual tests build into their own folder (NEXT_DIST_DIR=.next-visual) so they never touch a running dev server.
   distDir: process.env.NEXT_DIST_DIR || ".next",
 
