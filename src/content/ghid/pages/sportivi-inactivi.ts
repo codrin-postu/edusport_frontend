@@ -15,7 +15,7 @@ export const sportiviInactiviPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Un sportiv e inactiv când ultimul sezon cu activitate e cu cel puțin atâția ani în urmă. Activitate înseamnă grupă, înscriere, prezență, lecție, plată sau abonament. Fără nicio activitate, contează vechimea fișei.",
+      text: "Un sportiv e inactiv când ultimul sezon cu activitate e cu cel puțin atâția ani în urmă. Activitate înseamnă grupă, înscriere, prezență, lecție, plată sau abonament. Fără nicio activitate, contează vechimea fișei. Nu are legătură cu **Marchează inactiv** din fișă: contează doar activitatea.",
     },
     { t: "h2", text: "Avertizarea de pe Acasă" },
     {

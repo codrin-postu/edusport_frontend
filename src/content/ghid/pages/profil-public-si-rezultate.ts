@@ -18,9 +18,8 @@ export const profilPublicSiRezultatePage: GhidPage = {
           shot: "sportivi-profil",
           marks: ["vizibilitate"],
         },
-        {
-          text: "Completează cardurile: **Identitate**, **Poveste**, **Echipă și discipline**, **Mișcări și hobby-uri**, **Obiectiv de carieră**, **Galerie** și **Programe pe sezon**. **Nume** se schimbă în **Date**.",
-        },
+        { text: "Completează cardurile: **Identitate**, **Poveste**, **Echipă și discipline**, **Mișcări și hobby-uri**, **Obiectiv de carieră**, **Galerie** și **Programe pe sezon**." },
+        { text: "**Nume** se schimbă în **Date**." },
         { text: "După prima modificare apar **Renunță** și **Salvează**. Apasă **Salvează**." },
       ],
     },

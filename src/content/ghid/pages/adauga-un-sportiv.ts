@@ -8,7 +8,7 @@ export const adaugaUnSportivPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În **Sportivi** apasă **Adaugă sportiv**, sus în dreapta." },
+        { text: "În **Sportivi** apasă **Adaugă sportiv**, sus în dreapta.", shot: "sportivi-lista", marks: ["adauga-sportiv"] },
         {
           text: "Scrie numele în **Caută sportiv**. Dacă sportivul apare în rezultate, apasă pe el: se deschide fișa lui și nu se creează altul.",
           shot: "sportivi-adauga",

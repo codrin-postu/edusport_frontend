@@ -37,7 +37,7 @@ export const abonamentPage: GhidPage = {
       t: "p",
       text: "Dacă sportivul are prezențe fără abonament, apare **Acoperă prezențe fără abonament**. Bifezi rândurile pe care le acoperă abonamentul nou.",
     },
-    { t: "warn", text: "Abonamentul păstrează prețul din ziua în care a fost adăugat. O schimbare în **Prețuri** se aplică doar abonamentelor noi." },
+    { t: "warn", text: "Abonamentul păstrează prețul din ziua în care a fost adăugat. Vezi **Prețuri**." },
     { t: "h2", text: "Prelungește abonamentele" },
     {
       t: "steps",

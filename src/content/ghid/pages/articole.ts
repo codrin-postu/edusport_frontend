@@ -12,13 +12,14 @@ export const articolePage: GhidPage = {
       steps: [
         { text: "În meniu deschide **Articole și media**, apoi **Articole**. Apasă **Creează intrare nouă**." },
         {
-          text: "Completează **title** (titlul), **description** (cel mult 300 de caractere), **body** (textul), **category** și **date**. Obligatorii sunt **title**, **category** și **date**; **slug** se completează din titlu.",
+          text: "Completează **title** (titlul), **description** (cel mult 300 de caractere), **body** (textul), **category** și **date**.",
           shot: "site-articol",
           marks: ["titlu", "descriere", "body"],
         },
-        {
-          text: "Imaginea principală: la **coverImage** apasă **Apasă pentru a adăuga o resursă**. În **Adaugă resurse noi**, la **Răsfoiește**, alege imaginea și apasă **Finalizează**. Pozele în plus se pun la **gallery**.",
-        },
+        { text: "Obligatorii sunt **title**, **category** și **date**; **slug** se completează din titlu." },
+        { text: "Imaginea principală: la **coverImage** apasă **Apasă pentru a adăuga o resursă**." },
+        { text: "În **Adaugă resurse noi**, la **Răsfoiește**, alege imaginea și apasă **Finalizează**." },
+        { text: "Pozele în plus se pun la **gallery**." },
         { text: "**Video** primește un link YouTube sau Vimeo, sau un fișier încărcat." },
         {
           text: "Apasă **Salvează** ca să păstrezi ciorna, sau **Publică** ca să apară pe site.",

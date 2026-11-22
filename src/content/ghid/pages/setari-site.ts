@@ -14,9 +14,8 @@ export const setariSitePage: GhidPage = {
           shot: "date-setari",
           marks: ["inscrieri-deschise"],
         },
-        {
-          text: "La **Date de contact & rețele sociale** completezi **Număr telefon**, **Adresă email**, **Facebook**, **Instagram**, **Canal WhatsApp**, **Adresă afișată** și **Link hartă**. Dacă **Link hartă** rămâne gol, se folosește căutarea Google Maps.",
-        },
+        { text: "La **Date de contact & rețele sociale** completezi **Număr telefon**, **Adresă email**, **Facebook**, **Instagram**, **Canal WhatsApp**, **Adresă afișată** și **Link hartă**." },
+        { text: "Dacă **Link hartă** rămâne gol, se folosește căutarea Google Maps." },
         {
           text: "La cardul **Date personale** sunt **Ani până la anonimizare** și **Prezență și plăți din**.",
           shot: "date-setari",

@@ -25,9 +25,10 @@ export const calendarSiEvenimentePage: GhidPage = {
         { text: "Scrie **Titlu** și alege **Categorie**, de exemplu **Competiție**, **Cantonament** sau **Vacanță**. **Etichetă** e un nume scurt, de exemplu Grupa A.", shot: "program-eveniment", marks: ["titlu", "categorie", "eticheta"] },
         { text: "La **Când** pune **Început** și **Sfârșit**, sau pornește **Toată ziua**. **Se termină a doua zi** e pentru un eveniment care trece de miezul nopții.", shot: "program-eveniment", marks: ["ora"] },
         {
-          text: "**Se repetă** vine pornit. Pentru o serie alege **Săptămânal**, **La 2 săptămâni** sau **Lunar**, zilele și intervalul **De la** și **Până la**. Intervalul e obligatoriu, iar seria poate dura cel mult un an.",
+          text: "**Se repetă** vine pornit. Pentru o serie alege **Săptămânal**, **La 2 săptămâni** sau **Lunar**, zilele și intervalul **De la** și **Până la**.",
           shot: "program-eveniment", marks: ["se-repeta", "zile", "interval"],
         },
+        { text: "Intervalul e obligatoriu, iar seria poate dura cel mult un an." },
         { text: "Pentru un eveniment unic oprește **Se repetă**: apar **Data** și **Până la (opțional)**." },
         { text: "Apasă **Salvează**.", shot: "program-eveniment", marks: ["salveaza"] },
       ],
@@ -35,7 +36,7 @@ export const calendarSiEvenimentePage: GhidPage = {
     { t: "h2", text: "Anulează sau mută o dată dintr-o serie" },
     {
       t: "p",
-      text: "**Excepții** apare la evenimentele care se repetă, nu la ședințele din categoria **Școala de patinaj**. Pentru acelea vezi pagina despre anulat și mutat.",
+      text: "**Excepții** apare la evenimentele care se repetă, nu la ședințele din categoria **Școala de patinaj**. Pentru acelea vezi **Anulează sau mută o ședință**.",
     },
     {
       t: "steps",

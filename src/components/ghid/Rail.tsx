@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import type { GhidGroup } from "@/lib/ghid/types";
 import { RailGroup } from "./RailGroup";
 
-const ITEM = "block py-2 pr-3 pl-9 text-(length:--portal-text-14) text-muted no-underline";
+const ITEM = "block py-2 pr-3 pl-8 text-(length:--portal-text-14) text-muted no-underline";
 
 /** The contents list: one collapsible per group. The same list serves the side rail and the phone Cuprins. */
 export function Rail({ groups, current }: { groups: GhidGroup[]; current: string }) {

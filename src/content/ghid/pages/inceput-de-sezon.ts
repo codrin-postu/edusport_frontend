@@ -10,9 +10,8 @@ export const inceputDeSezonPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "În meniu apasă **Sezoane**, apoi **Sezon nou**.", shot: "sezoane-lista", marks: ["sezon-nou"] },
-        {
-          text: "Completează **Sezon** (se scrie 2026-2027, doi ani la rând), **Început**, **Sfârșit** și **Taxă de membru**, apoi apasă **Salvează**. Câmpurile vin completate după sezonul anterior: verifică-le.",
-        },
+        { text: "Completează **Sezon** (se scrie 2026-2027, doi ani la rând), **Început**, **Sfârșit** și **Taxă de membru**. Câmpurile vin completate după sezonul anterior: verifică-le." },
+        { text: "Apasă **Salvează**." },
       ],
     },
     { t: "warn", text: "Un sezon cu înscrieri nu își mai schimbă numele: **Are înscrieri, nu se mai schimbă.**" },
@@ -27,9 +26,8 @@ export const inceputDeSezonPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "În **Sezoane**, apasă **Începe sezonul** pe rândul sezonului nou." },
-        {
-          text: "Pasul 1 din 3 arată ce se schimbă: formularul de înscriere trece pe sezonul nou, **Grupe** și **Sportivi** se deschid pe el, sezonul vechi rămâne doar citire. Apasă **Continuă**.",
-        },
+        { text: "Pasul 1 din 3 arată ce se schimbă: formularul de înscriere trece pe sezonul nou, **Grupe** și **Sportivi** se deschid pe el." },
+        { text: "Sezonul vechi rămâne doar citire. Apasă **Continuă**." },
         {
           text: "Pasul 2 din 3: pentru fiecare grupă bifează **Copiază sportivii** și **Copiază programul**. **Vezi sportivii** arată lista. Sportivii inactivi nu se copiază.",
         },
@@ -44,7 +42,7 @@ export const inceputDeSezonPage: GhidPage = {
     {
       t: "list",
       items: [
-        "Adaugă din nou pauzele și vacanțele, la **Pauze**.",
+        "Adaugă din nou pauzele și vacanțele, în **Calendar și serii**, cu **Adaugă pauză**.",
         "Verifică grupele și sportivii fără grupă, la **Grupe**.",
         "Verifică programul fiecărei grupe.",
         "Mută înscrierile rămase în sezonul nou.",

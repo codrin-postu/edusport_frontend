@@ -18,13 +18,15 @@ export const confirmaInscrierePage: GhidPage = {
           shot: "inscrieri-confirma", marks: ["compara", "cauta-alt"],
         },
         {
-          text: "La **Grupa** poți alege grupa. Poate rămâne **Fără grupă deocamdată**. **Grupă principală** apare doar la un sportiv existent care are deja o grupă principală, și se bifează după ce alegi grupa.",
+          text: "La **Grupa** poți alege grupa. Poate rămâne **Fără grupă deocamdată**.",
           shot: "inscrieri-confirma", marks: ["grupa"],
         },
+        { text: "**Grupă principală** apare doar la un sportiv existent care are deja o grupă principală, și se bifează după ce alegi grupa." },
         {
-          text: "Dedesubt, **Membru A.C.S.** cu sezonul arată starea de acum și, după săgeată, starea după confirmare. **Dorește să fie membru (formular)** arată răspunsul părintelui. Sunt rânduri de citit, nu se schimbă de aici.",
+          text: "Dedesubt, **Membru A.C.S.** cu sezonul arată starea de acum și, după săgeată, starea după confirmare.",
           shot: "inscrieri-confirma", marks: ["acs"],
         },
+        { text: "**Dorește să fie membru (formular)** arată răspunsul părintelui. Ambele rânduri sunt de citit, nu se schimbă de aici." },
         {
           text: "Apasă **Confirmă înscrierea**. Jos apare **Înscriere confirmată**, cu **Anulează** timp de 8 secunde.",
           shot: "inscrieri-confirma", marks: ["confirma-inscrierea"],

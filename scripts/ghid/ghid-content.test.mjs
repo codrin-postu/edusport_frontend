@@ -37,3 +37,32 @@ it("mark keys are unique within a shot", () => {
     assert.equal(new Set(keys).size, keys.length, `${id}: repeated key`);
   }
 });
+
+// The render drops a link to an unknown slug, so the tests are what catches a renamed page.
+const pageFiles = canStripTypes ? (await readdir(PAGES)).filter((n) => n.endsWith(".ts")) : [];
+const registrySource = await readFile(new URL("../../src/content/ghid/index.ts", import.meta.url), "utf8");
+
+it("page slugs are unique and each file is named <slug>.ts", async() => {
+  for (const f of pageFiles) {
+    const mod = await import(new URL(f, PAGES).href);
+    for (const p of Object.values(mod)) assert.equal(`${p.slug}.ts`, f, `${f}: slug is ${p.slug}`);
+  }
+  const slugs = pages.map((p) => p.slug);
+  assert.equal(new Set(slugs).size, slugs.length, "repeated slug");
+});
+
+it("every links item names an existing page", () => {
+  const slugs = new Set(pages.map((p) => p.slug));
+  for (const p of pages)
+    for (const b of p.blocks.filter((x) => x.t === "links"))
+      for (const it of b.items) assert.ok(slugs.has(it.slug), `${p.slug}: link to unknown page ${it.slug}`);
+});
+
+it("every page module is imported once in the registry, and the registry lists each page once", () => {
+  const imported = [...registrySource.matchAll(/from "\.\/pages\/([^"]+)"/g)].map((m) => `${m[1]}.ts`);
+  assert.equal(new Set(imported).size, imported.length, "a page module is imported twice");
+  assert.deepEqual([...imported].sort(), [...pageFiles].sort());
+  const names = [...registrySource.matchAll(/import \{ (\w+) \} from "\.\/pages\//g)].map((m) => m[1]);
+  const body = registrySource.slice(registrySource.indexOf("GHID_GROUPS"));
+  for (const n of names) assert.equal(body.match(new RegExp(`\\b${n}\\b`, "g"))?.length, 1, `${n} must be listed exactly once`);
+});

@@ -26,7 +26,7 @@ export const lectiiIndividualePage: GhidPage = {
       steps: [
         { text: "Apasă pe lecție în listă. Bifa de lângă numele sportivului spune dacă a venit.", shot: "prezenta-lectie-panou", marks: ["sportiv"] },
         { text: "Poți schimba **Antrenor** și **Durată**.", shot: "prezenta-lectie-panou", marks: ["antrenor", "durata"] },
-        { text: "Apasă **Salvează**. Apare mesajul Salvat.", shot: "prezenta-lectie-panou", marks: ["salveaza"] },
+        { text: "Apasă **Salvează**. Apare mesajul **Salvat.**", shot: "prezenta-lectie-panou", marks: ["salveaza"] },
         {
           text: "**Șterge lecția**, sub **Durată**, cere confirmarea. Apare doar cât nicio plată neanulată nu e legată de lecție. Mesajul de după are **Anulează**.",
           shot: "prezenta-lectie-panou", marks: ["sterge"],

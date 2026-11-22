@@ -49,10 +49,11 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Pentru paginile care nu au încă ecran EduSport, apasă jos **Comută la meniul Strapi**. Meniul din stânga se schimbă cu cel al Strapi, programul pe care e făcut panoul.",
+          text: "Pentru paginile care nu au încă ecran EduSport, apasă jos **Comută la meniul Strapi**.",
           shot: "primii-meniu",
           marks: ["strapi"],
         },
+        { text: "Meniul din stânga se schimbă cu cel al Strapi, programul pe care e făcut panoul." },
         { text: "Ca să te întorci, apasă butonul **Panou EduSport**." },
       ],
     },

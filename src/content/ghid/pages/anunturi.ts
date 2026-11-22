@@ -31,7 +31,7 @@ export const anunturiPage: GhidPage = {
     { t: "h2", text: "Oprește sau șterge" },
     {
       t: "p",
-      text: "Un anunț activ pe portal are **Oprește**, sus în dreapta. Confirmarea spune: Nu mai apare pe portal. Rândurile marcate **Automat**, cum sunt ședințele anulate sau mutate, apar singure și nu se pot opri.",
+      text: "Un anunț activ pe portal are **Oprește**, sus în dreapta. Confirmarea spune: **Nu mai apare pe portal.** Rândurile marcate **Automat**, cum sunt ședințele anulate sau mutate, apar singure și nu se pot opri.",
     },
     {
       t: "warn",

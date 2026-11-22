@@ -75,9 +75,8 @@ export const unesteMarcheazaStergePage: GhidPage = {
           shot: "sportivi-meniu",
           marks: ["meniu", "sterge"],
         },
-        {
-          text: "Dacă sportivul are plăți sau abonamente, apare un mesaj că nu se poate șterge, de exemplu **Sportivul are 2 plăți și 1 abonament, deci nu se poate șterge.** Plățile anulate se numără și ele. Apasă **Renunță**.",
-        },
+        { text: "Dacă sportivul are plăți sau abonamente, apare un mesaj că nu se poate șterge, de exemplu **Sportivul are 2 plăți și 1 abonament, deci nu se poate șterge.**" },
+        { text: "Plățile anulate se numără și ele. Apasă **Renunță**." },
         { text: "Altfel apare **Ștergi sportivul?**. Apasă **Șterge definitiv**. Te întorci la listă." },
       ],
     },

@@ -25,7 +25,7 @@ export const completeazaPrezentaPage: GhidPage = {
         { text: "Bifează **Grup** la fiecare sportiv prezent. Jos, contorul arată câți sunt prezenți din câți sunt pe listă, de exemplu 0 din 11 prezenți.", shot: "prezenta-panou", marks: ["grup"] },
         { text: "La grupele de club apare și **Uscat**, pentru antrenamentul uscat. Un sportiv bifat la **Uscat** se numără prezent, ca la **Grup**. La grupele școlii coloana lipsește.", shot: "prezenta-panou", marks: ["uscat"] },
         { text: "Verifică **Antrenor**: trebuie ales cel puțin unul. **+ Adaugă alți antrenori** adaugă un rând.", shot: "prezenta-panou", marks: ["antrenor"] },
-        { text: "Apasă **Salvează**. Apare mesajul Prezență salvată, cu grupa și data.", shot: "prezenta-panou", marks: ["salveaza"] },
+        { text: "Apasă **Salvează**. Apare mesajul **Prezență salvată**, cu grupa și data.", shot: "prezenta-panou", marks: ["salveaza"] },
       ],
     },
     {
