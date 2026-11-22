@@ -25,13 +25,18 @@ import { documenteleSportivuluiPage } from "./pages/documentele-sportivului";
 import { parcursInsignePage } from "./pages/parcurs-si-insigne";
 import { profilPublicSiRezultatePage } from "./pages/profil-public-si-rezultate";
 import { unesteMarcheazaStergePage } from "./pages/uneste-marcheaza-inactiv-sau-sterge-un-sportiv";
-import { grupelePage } from "./pages/grupele";
+import { creeazaGrupaPage } from "./pages/creeaza-o-grupa";
+import { sportiviiUneiGrupePage } from "./pages/sportivii-unei-grupe";
 import { programulUneiGrupePage } from "./pages/programul-unei-grupe";
-import { calendarSiSeriiPage } from "./pages/calendar-si-serii";
-import { pauzePage } from "./pages/pauze";
+import { anuleazaSauMutaSedintaPage } from "./pages/anuleaza-sau-muta-o-sedinta";
+import { calendarSiEvenimentePage } from "./pages/calendar-si-evenimente";
+import { pauzeSiVacantePage } from "./pages/pauze-si-vacante";
 import { anunturiPage } from "./pages/anunturi";
 import { completeazaPrezentaPage } from "./pages/completeaza-prezenta";
+import { adaugaSedintaInAfaraProgramuluiPage } from "./pages/adauga-o-sedinta-in-afara-programului";
 import { corecteazaPrezentaPage } from "./pages/corecteaza-o-prezenta";
+import { prezentaPeOLunaPage } from "./pages/prezenta-pe-o-luna";
+import { lectiiIndividualePage } from "./pages/lectii-individuale";
 import { deschideFiltreazaTabelPage } from "./pages/deschide-si-filtreaza-un-tabel";
 import { salveazaTabelPage } from "./pages/salveaza-un-tabel";
 import { descarcaTabelPage } from "./pages/descarca-un-tabel";
@@ -76,13 +81,19 @@ export const GHID_GROUPS: GhidGroup[] = [
       unesteMarcheazaStergePage,
     ],
   },
-  { title: "Grupe și program", pages: [grupelePage, programulUneiGrupePage, calendarSiSeriiPage, pauzePage, anunturiPage] },
-  { title: "Prezență", pages: [completeazaPrezentaPage, corecteazaPrezentaPage] },
+  {
+    title: "Grupe și program",
+    pages: [creeazaGrupaPage, sportiviiUneiGrupePage, programulUneiGrupePage, anuleazaSauMutaSedintaPage, calendarSiEvenimentePage, pauzeSiVacantePage],
+  },
+  {
+    title: "Prezență",
+    pages: [completeazaPrezentaPage, adaugaSedintaInAfaraProgramuluiPage, corecteazaPrezentaPage, prezentaPeOLunaPage, lectiiIndividualePage],
+  },
   {
     title: "Bani",
     pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
   },
-  { title: "Site și anunțuri", pages: [paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
+  { title: "Site și anunțuri", pages: [anunturiPage, paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
   {
     title: "Echipa și acces",
     pages: [

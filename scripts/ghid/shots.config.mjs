@@ -522,8 +522,8 @@ export const SHOTS = [
     },
     marks: [
       { key: "sezon", selector: "button:has-text('Sezon 20')" },
+      { key: "sectiuni", selector: "[role=tablist][aria-label='Secțiuni']" },
       { key: "grupa-noua", selector: "button:has-text('Grupă nouă')" },
-      { key: "grupa", selector: "td:has-text('Avansați Gold')" },
     ],
   },
   {
@@ -535,22 +535,27 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
-      { key: "nume", selector: "[role=dialog] input:not([type=checkbox])" },
+      { key: "nume", selector: "[role=dialog] .ui-field:has(label:has-text('Nume'))" },
+      { key: "lista-preturi", selector: "[role=dialog] .ui-field:has(label:has-text('Listă de prețuri'))" },
+      { key: "antrenori", selector: "[role=dialog] .ui-field:has(label:has-text('Antrenori'))" },
+      { key: "program-public", selector: "[role=dialog] button[role=switch]" },
       { key: "creeaza-grupa", selector: "button:text-is('Creează grupa')" },
     ],
   },
   {
     id: "grupe-fisa",
     path: "/admin/plugins/edusport-grupe",
-    alt: "Pagina unei grupe, cu antrenorii, taburile și butonul Adaugă sportivi",
+    alt: "Pagina unei grupe, cu antrenorii, taburile Sportivi, Program, Prezență și Istoric și butonul Adaugă sportivi",
     act: async(page) => {
       await page.getByText("Avansați Gold").first().click();
       await page.getByRole("button", { name: "Adaugă sportivi" }).waitFor();
       await page.waitForTimeout(800);
     },
     marks: [
-      { key: "program", selector: "[role=tab]:has-text('Program')" },
+      { key: "antrenori", selector: "xpath=//*[normalize-space(text())='Antrenori']/.." },
+      { key: "tab-sportivi", selector: "[role=tab]:has-text('Sportivi')" },
       { key: "adauga-sportivi", selector: "button:has-text('Adaugă sportivi')" },
+      { key: "tab-prezenta", selector: "[role=tab]:has-text('Prezență')" },
     ],
   },
   {
@@ -563,14 +568,17 @@ export const SHOTS = [
       await page.waitForTimeout(1500);
     },
     marks: [
+      { key: "tab-program", selector: "[role=tab]:has-text('Program')" },
+      { key: "program-obisnuit", selector: ".ui-ecard:has(.ui-ecard-title:text-is('Program obișnuit'))" },
       { key: "schimba", selector: "button:text-is('Schimbă')" },
       { key: "adauga-program", selector: "button:has-text('Adaugă program')" },
+      { key: "calendar", selector: "xpath=//*[normalize-space(text())='Noiembrie 2026']/../.." },
     ],
   },
   {
     id: "grupe-program-nou",
     path: "/admin/plugins/edusport-grupe",
-    alt: "Panoul Program nou, cu Se repetă, zilele, ora și Se aplică din",
+    alt: "Panoul Program nou, cu Se repetă, Cât de des, zilele, ora, durata și Se aplică din",
     act: async(page) => {
       await page.getByText("Avansați Gold").first().click();
       await page.getByRole("tab", { name: "Program" }).click();
@@ -579,47 +587,94 @@ export const SHOTS = [
       await page.waitForTimeout(1200);
     },
     marks: [
+      { key: "se-repeta", selector: "[role=dialog] button[role=switch]" },
+      { key: "cat-de-des", selector: "[role=dialog] .ui-field:has(label:has-text('Cât de des'))" },
       { key: "zile", selector: "[role=group][aria-label='Zile']" },
-      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "de-la", selector: "[role=dialog] .ui-field:has(label:text-is('De la'))" },
+      { key: "durata", selector: "[role=dialog] .ui-field:has(label:text-is('Durată'))" },
+      { key: "se-aplica", selector: "[role=dialog] .ui-field:has(label:has-text('Se aplică din'))" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
     ],
   },
   {
     id: "program-data",
-    path: "/admin/plugins/edusport-program",
-    alt: "Panoul unei date din calendar, cu Ține, Anulează și Mută și caseta Anunță părinții pe e-mail",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Panoul unei date din programul grupei, cu Ține, Anulează și Mută, Motiv, Data nouă și caseta Anunță părinții pe e-mail",
     act: async(page) => {
       await page.getByText("Avansați Gold").first().click();
-      await page.waitForTimeout(1000);
-      await page.getByText("Anulează", { exact: true }).first().click();
+      await page.getByRole("tab", { name: "Program" }).click();
+      await page.waitForTimeout(1200);
+      await page.getByText("19:00 - 20:00").last().click();
+      await page.waitForTimeout(800);
+      await page.getByRole("radio", { name: "Mută" }).click();
       await page.waitForTimeout(800);
     },
     marks: [
-      { key: "anunta-parintii", selector: "label:has-text('Anunță părinții pe e-mail')" },
-      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "tine-anuleaza-muta", selector: "[role=dialog] [role=radiogroup]" },
+      { key: "motiv", selector: "[role=dialog] .ui-field:has(label:has-text('Motiv'))" },
+      { key: "data-noua", selector: "[role=dialog] .ui-field:has(label:has-text('Data nouă'))" },
+      { key: "de-la", selector: "[role=dialog] .ui-field:has(label:text-is('De la'))" },
+      { key: "anunta-parintii", selector: "[role=dialog] label:has-text('Anunță părinții pe e-mail')" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
     ],
   },
   {
     id: "program-calendar",
     path: "/admin/plugins/edusport-program",
-    alt: "Pagina Program, cu calendarul lunii, butonul Adaugă și butonul Adaugă pauză",
+    alt: "Pagina Program, cu calendarul lunii, butoanele Lună și Listă, filtrele Arată, butonul Adaugă și butonul Adaugă pauză",
     marks: [
-      { key: "adauga-pauza", selector: "button:has-text('Adaugă pauză')" },
+      { key: "meniu", selector: "text=Calendar și serii >> visible=true" },
+      { key: "afisare", selector: ".cal-viewseg" },
+      { key: "arata", selector: ".cal-filters" },
+      { key: "sedinta", selector: "text=19:00 Avansați Gold >> nth=0" },
       { key: "adauga", selector: "button:text-is('Adaugă'), button:has-text('Adaugă'):not(:has-text('pauză'))" },
-      { key: "lista", selector: "button:text-is('Listă')" },
+      { key: "adauga-pauza", selector: "button:has-text('Adaugă pauză')" },
     ],
   },
   {
     id: "program-eveniment",
     path: "/admin/plugins/edusport-program",
-    alt: "Panoul Adaugă eveniment, cu Titlu, Categorie, ora și Se repetă",
+    viewport: { width: 1280, height: 900 },
+    alt: "Panoul Adaugă eveniment, cu Titlu, Categorie, Etichetă, ora, Se repetă, zilele, intervalul și Excepții",
     act: async(page) => {
       await page.waitForTimeout(1500);
       await page.locator("button:has-text('Adaugă'):not(:has-text('pauză'))").last().click();
       await page.waitForTimeout(1200);
     },
     marks: [
-      { key: "se-repeta", selector: "text=Se repetă" },
-      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "titlu", selector: "[role=dialog] .ui-field:has(label:text-is('Titlu'))" },
+      { key: "categorie", selector: "[role=dialog] .ui-field:has(label:text-is('Categorie'))" },
+      { key: "eticheta", selector: "[role=dialog] .ui-field:has(label:has-text('Etichetă'))" },
+      { key: "ora", selector: "[role=dialog] .cal-times" },
+      { key: "se-repeta", selector: "[role=dialog] button[role=switch]:has-text('Se repetă')" },
+      { key: "zile", selector: "[role=dialog] .cal-days" },
+      { key: "interval", selector: "[role=dialog] .ui-grid2:has(label:text-is('Până la'))" },
+      { key: "exceptii", selector: "[role=dialog] button.ui-dsec-toggle:has-text('Excepții')" },
+      { key: "salveaza", selector: "[role=dialog] button.cal-save" },
+    ],
+  },
+  {
+    id: "program-exceptie",
+    path: "/admin/plugins/edusport-program",
+    viewport: { width: 1280, height: 1100 },
+    alt: "Secțiunea Excepții a unui eveniment care se repetă, cu Adaugă excepție, Anulat sau Mutat, Data și Data nouă",
+    act: async(page) => {
+      await page.waitForTimeout(1500);
+      await page.locator("button:has-text('Adaugă'):not(:has-text('pauză'))").last().click();
+      await page.waitForTimeout(1200);
+      await page.locator("[role=dialog] button.ui-dsec-toggle:has-text('Excepții')").click();
+      await page.waitForTimeout(600);
+      await page.getByRole("button", { name: "Adaugă excepție" }).click();
+      await page.waitForTimeout(600);
+      await page.locator("[role=dialog] [role=radio]:has-text('Mutat')").click();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "exceptii", selector: "[role=dialog] button.ui-dsec-toggle:has-text('Excepții')" },
+      { key: "adauga-exceptie", selector: "[role=dialog] button:has-text('Adaugă excepție')" },
+      { key: "tip", selector: "[role=dialog] [aria-label='Tip excepție']" },
+      { key: "data", selector: "[role=dialog] .ui-field:has(label:text-is('Data'))" },
+      { key: "data-noua", selector: "[role=dialog] .ui-field:has(label:text-is('Data nouă'))" },
     ],
   },
   {
@@ -629,15 +684,17 @@ export const SHOTS = [
     act: async(page) => {
       await page.getByRole("button", { name: "Adaugă pauză" }).click();
       await page.waitForTimeout(800);
-      await page.locator("text=Nume >> xpath=following::input[1]").fill("Vacanța de iarnă");
+      await page.locator("[role=dialog] .ui-field:has(label:text-is('Nume')) input").fill("Vacanța de iarnă");
       const dates = page.locator("input[type=date]");
       await dates.nth(0).fill("2026-12-24");
       await dates.nth(1).fill("2027-01-03");
       await page.waitForTimeout(1500);
     },
     marks: [
-      { key: "nume", selector: "text=Nume >> xpath=following::input[1]" },
+      { key: "nume", selector: "[role=dialog] .ui-field:has(label:text-is('Nume'))" },
+      { key: "interval", selector: "[role=dialog] .ui-grid2" },
       { key: "grila", selector: ".gtt-box" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
     ],
   },
   {
@@ -661,12 +718,27 @@ export const SHOTS = [
     ],
   },
   {
+    id: "prezenta-de-completat",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Prezență, tabul De completat, cu ședințele care așteaptă prezența",
+    act: async(page) => {
+      await page.getByRole("tab", { name: /De completat/ }).click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { key: "tab-de-completat", selector: "[role=tab]:has-text('De completat')" },
+    ],
+  },
+  {
     id: "prezenta-lista",
     path: "/admin/plugins/edusport-prezenta",
-    alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii și starea fiecăreia",
+    alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii, alegerea Zi, Săptămână sau Lună, Filtre și starea fiecărei ședințe",
     marks: [
+      { key: "tab-toate", selector: "[role=tab]:has-text('Toate ședințele')" },
+      { key: "perioada", selector: "button[role=combobox]:has-text('Săptămână')" },
+      { key: "filtre", selector: "button:has-text('Filtre')" },
       { key: "sedinta-noua", selector: "button:has-text('Ședință nouă')" },
-      { key: "grupa", selector: "tr:has-text('Avansați Gold')" },
+      { key: "stare", selector: "th:has-text('Stare')" },
     ],
   },
   {
@@ -678,21 +750,42 @@ export const SHOTS = [
       await page.waitForTimeout(1000);
     },
     marks: [
+      { key: "grupa", selector: "[role=dialog] .ui-field:has(label:has-text('Grupă'))" },
+      { key: "data", selector: "[role=dialog] .ui-field:has(label:has-text('Data'))" },
+      { key: "ora", selector: "[role=dialog] .ui-field:has(label:has-text('Ora'))" },
+      { key: "durata", selector: "[role=dialog] .ui-field:has(label:text-is('Durată'))" },
+      { key: "antrenor", selector: "[role=dialog] .pz-coaches" },
       { key: "continua", selector: "button:text-is('Continuă')" },
     ],
   },
   {
     id: "prezenta-panou",
     path: "/admin/plugins/edusport-prezenta",
-    alt: "Panoul unei ședințe, cu antrenorii, lista sportivilor cu caseta Grup și butonul Salvează",
+    alt: "Panoul unei ședințe de club, cu antrenorii, lista sportivilor, casetele Grup și Uscat și butonul Salvează",
     act: async(page) => {
-      await page.getByText("Avansați Gold").first().click();
-      await page.getByText("Ana Georgescu").first().waitFor();
+      await page.getByText("Avansați", { exact: true }).first().click();
+      await page.getByText("Cristina Radu").first().waitFor();
       await page.waitForTimeout(1000);
     },
     marks: [
-      { key: "grup", selector: "input[aria-label^='Grup, Ana Georgescu']" },
-      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "antrenor", selector: "[role=dialog] .pz-coaches" },
+      { key: "lista", selector: "[role=dialog] .pz-ticks thead" },
+      { key: "grup", selector: "[role=dialog] .pz-ticks tbody tr:first-child .pz-tick" },
+      { key: "uscat", selector: "[role=dialog] .pz-ticks tbody tr:first-child .pz-tick >> nth=1" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "grupe-prezenta",
+    path: "/admin/plugins/edusport-grupe",
+    alt: "Tabul Prezență al unei grupe, cu ședințele lunii",
+    act: async(page) => {
+      await page.getByText("Avansați Gold").first().click();
+      await page.getByRole("tab", { name: /Prezență/ }).click();
+      await page.waitForTimeout(1500);
+    },
+    marks: [
+      { key: "tab-prezenta", selector: "[role=tab]:has-text('Prezență')" },
     ],
   },
   {
@@ -709,7 +802,74 @@ export const SHOTS = [
     },
     marks: [
       { key: "salvata", selector: "text=/Salvată de/" },
-      { key: "salveaza", selector: "button:text-is('Salvează')" },
+      { key: "istoric", selector: "[role=dialog] :text-is('Istoric')" },
+    ],
+  },
+  {
+    id: "prezenta-tabel",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Prezență, tabul Tabel pe grupă, cu grupa, luna, tabelul sportivilor și butonul Descarcă Excel",
+    act: async(page) => {
+      await page.getByRole("tab", { name: /Tabel pe grupă/ }).click();
+      await page.waitForTimeout(1800);
+    },
+    marks: [
+      { key: "tab-tabel", selector: "[role=tab]:has-text('Tabel pe grupă')" },
+      { key: "grupa", selector: ".pz-group-select" },
+      { key: "luna", selector: "[aria-label='Luna anterioară'] >> xpath=.." },
+      { key: "total", selector: "th:has-text('Total')" },
+      { key: "descarca", selector: "button:has-text('Descarcă Excel')" },
+    ],
+  },
+  {
+    id: "prezenta-lectii",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Prezență, Toate ședințele, cu Lecții individuale alese, lista lecțiilor săptămânii și butonul Lecție individuală",
+    act: async(page) => {
+      await page.getByRole("radio", { name: "Lecții individuale" }).click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { key: "lectii", selector: "[role=radio]:has-text('Lecții individuale')" },
+      { key: "lectie-noua", selector: "button:has-text('Lecție individuală')" },
+      { key: "lectie", selector: "tbody tr:has-text('Eva Munteanu')" },
+    ],
+  },
+  {
+    id: "prezenta-lectie-noua",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Fereastra Lecție nouă, cu Sportiv, Data, Ora, Durata și Antrenor",
+    act: async(page) => {
+      await page.getByRole("radio", { name: "Lecții individuale" }).click();
+      await page.waitForTimeout(800);
+      await page.getByRole("button", { name: "+ Lecție individuală" }).click();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { key: "sportiv", selector: "[role=dialog] .ui-field:has(label:has-text('Sportiv'))" },
+      { key: "data", selector: "[role=dialog] .ui-field:has(label:has-text('Data'))" },
+      { key: "ora", selector: "[role=dialog] .ui-field:has(label:has-text('Ora'))" },
+      { key: "durata", selector: "[role=dialog] .ui-field:has(label:text-is('Durată'))" },
+      { key: "antrenor", selector: "[role=dialog] .pz-coaches" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "prezenta-lectie-panou",
+    path: "/admin/plugins/edusport-prezenta",
+    alt: "Panoul unei lecții individuale, cu bifa sportivului, antrenorul, durata și butonul Salvează",
+    act: async(page) => {
+      await page.getByRole("radio", { name: "Lecții individuale" }).click();
+      await page.waitForTimeout(1000);
+      await page.getByText("Eva Munteanu").first().click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { key: "sportiv", selector: "[role=dialog] .pz-lesson-row" },
+      { key: "antrenor", selector: "[role=dialog] .pz-coaches" },
+      { key: "durata", selector: "[role=dialog] .ui-field:has(label:text-is('Durată'))" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
+      { key: "sterge", selector: "[role=dialog] button:has-text('Șterge lecția')" },
     ],
   },
   {
