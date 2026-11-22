@@ -155,6 +155,15 @@
         ]
       },
       {
+        "key": "editeaza",
+        "box": [
+          78.5,
+          60.3,
+          18.4,
+          5.6
+        ]
+      },
+      {
         "key": "anuleaza-plata",
         "box": [
           78.5,
@@ -178,6 +187,15 @@
           9.9,
           5.5
         ]
+      },
+      {
+        "key": "renunta",
+        "box": [
+          50.1,
+          53.5,
+          6.7,
+          5.5
+        ]
       }
     ]
   },
@@ -194,6 +212,15 @@
           4.7,
           5.5
         ]
+      },
+      {
+        "key": "adauga",
+        "box": [
+          86.7,
+          26.4,
+          9.4,
+          5.5
+        ]
       }
     ]
   },
@@ -208,6 +235,15 @@
           83.8,
           20,
           15.3,
+          5.5
+        ]
+      },
+      {
+        "key": "pret-neafiliati",
+        "box": [
+          68.2,
+          28.7,
+          30.9,
           5.5
         ]
       },
@@ -1600,6 +1636,15 @@
           19.2,
           5.7
         ]
+      },
+      {
+        "key": "contacte",
+        "box": [
+          19.8,
+          42.8,
+          19.2,
+          5.7
+        ]
       }
     ]
   },
@@ -1656,23 +1701,14 @@
   "tabele-salveaza": {
     "w": 1280,
     "h": 760,
-    "alt": "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
+    "alt": "Pagina Tabele, cu butonul Salvează tabelul sus",
     "marks": [
       {
-        "key": "nume",
+        "key": "salveaza-tabelul",
         "box": [
-          33,
-          47.9,
-          33.9,
-          5.5
-        ]
-      },
-      {
-        "key": "salveaza",
-        "box": [
-          59.9,
-          55.9,
-          7,
+          70.5,
+          4.1,
+          12.3,
           5.5
         ]
       }
@@ -2566,6 +2602,185 @@
           45.8,
           6.7,
           3.5
+        ]
+      }
+    ]
+  },
+  "plati-edit": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Editează plata, cu Pentru, Sumă, Data, Metodă, Notă și butonul Salvează",
+    "marks": [
+      {
+        "key": "pentru",
+        "box": [
+          27.6,
+          22.5,
+          44.8,
+          8.2
+        ]
+      },
+      {
+        "key": "suma",
+        "box": [
+          27.6,
+          31.5,
+          44.8,
+          8.2
+        ]
+      },
+      {
+        "key": "data",
+        "box": [
+          27.6,
+          40.6,
+          44.8,
+          8.2
+        ]
+      },
+      {
+        "key": "metoda",
+        "box": [
+          27.6,
+          49.6,
+          44.8,
+          8.2
+        ]
+      },
+      {
+        "key": "nota",
+        "box": [
+          27.6,
+          63,
+          44.8,
+          13
+        ]
+      },
+      {
+        "key": "salveaza",
+        "box": [
+          65.4,
+          78.5,
+          7,
+          5.5
+        ]
+      }
+    ]
+  },
+  "abonamente-lista": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Tabul Abonamente din Contabilitate, cu butoanele Prelungește abonamentele și + Abonament",
+    "marks": [
+      {
+        "key": "adauga",
+        "box": [
+          88.1,
+          35.2,
+          9.3,
+          5.5
+        ]
+      },
+      {
+        "key": "prelungeste",
+        "box": [
+          72.3,
+          35.2,
+          15.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "abonament-adauga": {
+    "w": 1280,
+    "h": 900,
+    "alt": "Fereastra Adaugă abonament, cu Abonament, Data de start, Înregistrează plata acum și butonul Adaugă abonament",
+    "marks": [
+      {
+        "key": "abonament",
+        "box": [
+          27.6,
+          26.7,
+          44.8,
+          6.9
+        ]
+      },
+      {
+        "key": "start",
+        "box": [
+          27.6,
+          34.3,
+          44.8,
+          6.9
+        ]
+      },
+      {
+        "key": "plata",
+        "box": [
+          27.6,
+          50.1,
+          44.8,
+          3.1
+        ]
+      },
+      {
+        "key": "adauga",
+        "box": [
+          60.2,
+          78,
+          12.2,
+          4.7
+        ]
+      }
+    ]
+  },
+  "abonament-prelungeste": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Prelungește abonamentele Școlii de patinaj, cu Număr de săptămâni și butonul de confirmare",
+    "marks": [
+      {
+        "key": "saptamani",
+        "box": [
+          33,
+          43.9,
+          33.9,
+          8.2
+        ]
+      },
+      {
+        "key": "confirma",
+        "box": [
+          51,
+          57.1,
+          15.9,
+          5.5
+        ]
+      }
+    ]
+  },
+  "tabele-salveaza-nume": {
+    "w": 1280,
+    "h": 760,
+    "alt": "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
+    "marks": [
+      {
+        "key": "nume",
+        "box": [
+          33,
+          47.9,
+          33.9,
+          5.5
+        ]
+      },
+      {
+        "key": "salveaza",
+        "box": [
+          59.9,
+          55.9,
+          7,
+          5.5
         ]
       }
     ]

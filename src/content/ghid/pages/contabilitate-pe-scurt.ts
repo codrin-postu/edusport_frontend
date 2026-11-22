@@ -1,9 +1,9 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
 export const contabilitatePage: GhidPage = {
-  slug: "contabilitate",
-  title: "Contabilitate",
-  lead: "Încasările, restanțele și abonamentele școlii, pe luni.",
+  slug: "contabilitate-pe-scurt",
+  title: "Contabilitate pe scurt",
+  lead: "Aici vezi cât s-a încasat și cine are de plătit, pe luni.",
   blocks: [
     {
       t: "p",
@@ -19,6 +19,13 @@ export const contabilitatePage: GhidPage = {
         "**Pe grupe**: **Datorat**, **Încasat**, **Rămas** și **Încasat %**, pe secțiune și grupă, pe metodă sau pe scop.",
       ],
     },
-    { t: "links", items: [{ slug: "inregistreaza-o-plata" }, { slug: "anuleaza-o-plata" }, { slug: "preturi" }] },
+    {
+      t: "p",
+      text: "Cardul **Expiră în 14 zile** numără abonamentele active care expiră în următoarele 14 zile. Aceleași abonamente le găsești în tabul **Abonamente**, la **Stare**, alegând **Expiră în 14 zile**.",
+    },
+    {
+      t: "links",
+      items: [{ slug: "inregistreaza-o-plata" }, { slug: "corecteaza-sau-anuleaza-o-plata" }, { slug: "adauga-sau-prelungeste-un-abonament" }, { slug: "preturi" }],
+    },
   ],
 };

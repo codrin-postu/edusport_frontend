@@ -8,8 +8,9 @@ export const salveazaTabelPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Pregătește tabelul pe ecran, apoi apasă **Salvează tabelul**, sus. Se deschide **Vizualizare nouă**.", shot: "tabele-salveaza", marks: ["nume", "salveaza"] },
-        { text: "Scrie **Nume** și apasă **Salvează**. Apare **Vizualizare salvată.**, iar tabelul este în lista din stânga, la **Ale mele**." },
+        { text: "Pregătește tabelul pe ecran, apoi apasă **Salvează tabelul**, sus.", shot: "tabele-salveaza", marks: ["salveaza-tabelul"] },
+        { text: "Se deschide **Vizualizare nouă**. Scrie **Nume** și apasă **Salvează**.", shot: "tabele-salveaza-nume", marks: ["nume", "salveaza"] },
+        { text: "Apare **Vizualizare salvată.**, iar tabelul este în lista din stânga, la **Ale mele**." },
         {
           text: "Pe un tabel de la **Ale mele**, după o schimbare, **Salvează tabelul** o salvează peste tabelul existent. Apare **Salvat.**",
         },
@@ -17,7 +18,7 @@ export const salveazaTabelPage: GhidPage = {
     },
     {
       t: "p",
-      text: "La un tabel gata făcut sau al unui coleg, **Salvează tabelul** face mereu un tabel nou, cu numele tău. Numele trebuie să fie diferit de al oricărui alt tabel.",
+      text: "Pe ecran, un tabel salvat se numește vizualizare. La un tabel gata făcut sau al unui coleg, **Salvează tabelul** face mereu un tabel nou, cu numele tău. Numele trebuie să fie diferit de al oricărui alt tabel.",
     },
     { t: "h2", text: "Redenumește, duplică, șterge" },
     {

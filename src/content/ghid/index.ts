@@ -6,9 +6,10 @@ import { intraInPanouPage } from "./pages/intra-in-panou";
 import { meniulSiPaginaAcasaPage } from "./pages/meniul-si-pagina-acasa";
 import { contulTauPage } from "./pages/contul-tau-parola-si-2fa";
 import { inceputDeSezonPage } from "./pages/inceput-de-sezon";
-import { contabilitatePage } from "./pages/contabilitate";
+import { contabilitatePage } from "./pages/contabilitate-pe-scurt";
 import { inregistreazaPlataPage } from "./pages/inregistreaza-o-plata";
-import { anuleazaPlataPage } from "./pages/anuleaza-o-plata";
+import { anuleazaPlataPage } from "./pages/corecteaza-sau-anuleaza-o-plata";
+import { abonamentPage } from "./pages/adauga-sau-prelungeste-un-abonament";
 import { preturiPage } from "./pages/preturi";
 import { citesteInscrierilePage } from "./pages/citeste-inscrierile";
 import { contacteazaParintePage } from "./pages/contacteaza-parintele";
@@ -91,7 +92,7 @@ export const GHID_GROUPS: GhidGroup[] = [
   },
   {
     title: "Bani",
-    pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
+    pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, abonamentPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
   },
   { title: "Site și anunțuri", pages: [anunturiPage, paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
   {

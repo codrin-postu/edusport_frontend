@@ -136,7 +136,26 @@ export const SHOTS = [
     },
     marks: [
       { key: "meniu", selector: "button:has-text('...')" },
+      { key: "editeaza", selector: "[role=menuitem]:text-is('Editează')" },
       { key: "anuleaza-plata", selector: "[role=menuitem]:has-text('Anulează plata')" },
+    ],
+  },
+  {
+    id: "plati-edit",
+    path: "/admin/plugins/edusport-contabilitate?tab=plati",
+    alt: "Fereastra Editează plata, cu Pentru, Sumă, Data, Metodă, Notă și butonul Salvează",
+    act: async(page) => {
+      await page.locator("button:has-text('...')").first().click();
+      await page.getByRole("menuitem", { name: "Editează" }).click();
+      await page.waitForTimeout(1000);
+    },
+    marks: [
+      { key: "pentru", selector: ".ui-field:has(label:text-is('Pentru'))" },
+      { key: "suma", selector: ".ui-field:has(label:text-is('Sumă'))" },
+      { key: "data", selector: ".ui-field:has(label:text-is('Data'))" },
+      { key: "metoda", selector: ".ui-field:has(label:text-is('Metodă'))" },
+      { key: "nota", selector: ".ui-field:has(label:text-is('Notă'))" },
+      { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
@@ -148,7 +167,57 @@ export const SHOTS = [
       await page.getByRole("menuitem", { name: "Anulează plata" }).click();
       await page.waitForTimeout(800);
     },
-    marks: [{ key: "anuleaza-plata", selector: "[role=dialog] button:text-is('Anulează plata'), [role=alertdialog] button:text-is('Anulează plata')" }],
+    marks: [
+      { key: "anuleaza-plata", selector: "[role=dialog] button:text-is('Anulează plata'), [role=alertdialog] button:text-is('Anulează plata')" },
+      { key: "renunta", selector: "[role=dialog] button:text-is('Renunță'), [role=alertdialog] button:text-is('Renunță')" },
+    ],
+  },
+  {
+    id: "abonamente-lista",
+    path: "/admin/plugins/edusport-contabilitate?tab=abonamente",
+    alt: "Tabul Abonamente din Contabilitate, cu butoanele Prelungește abonamentele și + Abonament",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Abonament" }).waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "adauga", selector: "button:text-is('+ Abonament')" },
+      { key: "prelungeste", selector: "button:text-is('Prelungește abonamentele')" },
+    ],
+  },
+  {
+    id: "abonament-adauga",
+    path: "/admin/plugins/edusport-contabilitate?tab=abonamente",
+    viewport: { width: 1280, height: 900 },
+    alt: "Fereastra Adaugă abonament, cu Abonament, Data de start, Înregistrează plata acum și butonul Adaugă abonament",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Abonament" }).click();
+      await page.getByPlaceholder("Caută sportiv").fill("Ana");
+      await page.waitForTimeout(1500);
+      await page.locator("[role=option], li button").first().click();
+      await page.waitForTimeout(1500);
+      await page.getByText("Înregistrează plata acum").click();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "abonament", selector: ".ui-field:has(label:has-text('Abonament (lista'))" },
+      { key: "start", selector: ".ui-field:has(label:text-is('Data de start'))" },
+      { key: "plata", selector: "label:has-text('Înregistrează plata acum')" },
+      { key: "adauga", selector: "button:text-is('Adaugă abonament')" },
+    ],
+  },
+  {
+    id: "abonament-prelungeste",
+    path: "/admin/plugins/edusport-contabilitate?tab=abonamente",
+    alt: "Fereastra Prelungește abonamentele Școlii de patinaj, cu Număr de săptămâni și butonul de confirmare",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Prelungește abonamentele" }).click();
+      await page.waitForTimeout(1200);
+    },
+    marks: [
+      { key: "saptamani", selector: ".ui-field:has(label:text-is('Număr de săptămâni'))" },
+      { key: "confirma", selector: "button:has-text('Prelungește 3')" },
+    ],
   },
   {
     id: "preturi-liste",
@@ -156,6 +225,7 @@ export const SHOTS = [
     alt: "Prețuri, cu secțiunile sus și listele de prețuri ale unei secțiuni",
     marks: [
       { key: "club", selector: "[role=tab]:has-text('Club'), button:text-is('Club')" },
+      { key: "adauga", selector: "button:has-text('Adaugă preț')" },
     ],
   },
   {
@@ -168,6 +238,7 @@ export const SHOTS = [
     },
     marks: [
       { key: "pret", selector: "xpath=//*[starts-with(normalize-space(text()),'Preț membri')]/following::input[1]" },
+      { key: "pret-neafiliati", selector: "xpath=//*[starts-with(normalize-space(text()),'Preț neafiliați')]/following::input[1]" },
       { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
@@ -880,7 +951,10 @@ export const SHOTS = [
       await page.getByRole("button", { name: "Restanțe" }).waitFor();
       await page.waitForTimeout(1000);
     },
-    marks: [{ key: "restante", selector: "button.tbl-rail-item:has-text('Restanțe')" }],
+    marks: [
+      { key: "restante", selector: "button.tbl-rail-item:has-text('Restanțe')" },
+      { key: "contacte", selector: "button.tbl-rail-item:has-text('Date de contact')" },
+    ],
   },
   {
     id: "tabele-filtru",
@@ -910,6 +984,16 @@ export const SHOTS = [
   },
   {
     id: "tabele-salveaza",
+    path: "/admin/plugins/edusport-tabele",
+    alt: "Pagina Tabele, cu butonul Salvează tabelul sus",
+    act: async(page) => {
+      await page.getByRole("button", { name: "Salvează tabelul" }).waitFor();
+      await page.waitForTimeout(1000);
+    },
+    marks: [{ key: "salveaza-tabelul", selector: "button:has-text('Salvează tabelul')" }],
+  },
+  {
+    id: "tabele-salveaza-nume",
     path: "/admin/plugins/edusport-tabele",
     alt: "Fereastra Vizualizare nouă, cu câmpul Nume și butonul Salvează",
     act: async(page) => {

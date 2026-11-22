@@ -91,7 +91,7 @@ test.describe("ghid wiki", () => {
     const bani = rail.locator("details", { hasText: "Bani" });
     const inscrieri = rail.locator("details", { hasText: "Înscrieri" });
     await expect(bani).toHaveAttribute("open", "");
-    await expect(rail.getByRole("link", { name: "Anulează o plată" })).toBeVisible();
+    await expect(rail.getByRole("link", { name: "Corectează sau anulează o plată" })).toBeVisible();
     await expect(inscrieri).not.toHaveAttribute("open", "");
     await inscrieri.locator("summary").click();
     await expect(rail.getByRole("link", { name: "Contactează părintele" })).toBeVisible();
