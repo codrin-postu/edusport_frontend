@@ -51,6 +51,6 @@ export const profilPublicSiRezultatePage: GhidPage = {
       t: "p",
       text: "Dacă apare **Niciun rezultat**, sportivul nu e încă în skate-results: nicio competiție de-a lui nu a fost preluată.",
     },
-    { t: "links", items: [{ slug: "competitii" }, { slug: "fisa-sportivului" }] },
+    { t: "links", items: [{ slug: "competitii-si-rezultate" }, { slug: "fisa-sportivului" }] },
   ],
 };

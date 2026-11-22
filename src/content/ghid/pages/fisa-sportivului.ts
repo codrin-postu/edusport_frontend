@@ -53,7 +53,7 @@ export const fisaSportivuluiPage: GhidPage = {
         { slug: "documentele-sportivului" },
         { slug: "parcurs-si-insigne" },
         { slug: "profil-public-si-rezultate" },
-        { slug: "competitii" },
+        { slug: "competitii-si-rezultate" },
       ],
     },
   ],

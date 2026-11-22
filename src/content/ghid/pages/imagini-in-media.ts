@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const imaginiInMediaPage: GhidPage = {
   slug: "imagini-in-media",
   title: "Imagini în Media",
-  lead: "Imaginile se încarcă în **Biblioteca Media** și se aleg apoi în articole.",
+  lead: "Imaginile se încarcă în Biblioteca Media; de acolo se aleg apoi în articole.",
   blocks: [
     {
       t: "steps",
@@ -11,17 +11,20 @@ export const imaginiInMediaPage: GhidPage = {
         { text: "În meniu deschide **Sistem**, apoi **Media**." },
         {
           text: "Apasă **Adaugă resurse noi**. La **De pe calculator** trage fișierul în fereastră. La **De la URL** lipești adresa unei imagini.",
-          shot: "site-media", marks: ["m1"],
+          shot: "site-media",
+          marks: ["adauga-resurse"],
         },
-        { text: "Într-un articol, apasă zona de la **coverImage** sau **gallery**: **Apasă pentru a adăuga o resursă**." },
-        { text: "În fereastra **Adaugă resurse noi**, la **Răsfoiește**, alege imaginea și apasă **Finalizează**." },
-        { text: "Salvează articolul." },
+        {
+          text: "Pentru foldere, apasă **Adaugă folder nou**.",
+          shot: "site-media",
+          marks: ["adauga-folder"],
+        },
       ],
     },
     {
       t: "p",
-      text: "**coverImage** și **gallery** primesc doar imagini. Pentru foldere, apasă **Adaugă folder nou** în Biblioteca Media.",
+      text: "Cum pui o imagine într-un articol se vede la Articole.",
     },
-    { t: "links", items: [{ slug: "articole" }] },
+    { t: "links", items: [{ slug: "articole" }, { slug: "paginile-site-ului" }] },
   ],
 };

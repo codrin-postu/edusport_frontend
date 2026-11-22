@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const sportiviInactiviPage: GhidPage = {
   slug: "sportivi-inactivi",
   title: "Sportivi inactivi",
-  lead: "Panoul arată câți sportivi sunt inactivi de peste N ani. Nimic nu se anonimizează singur.",
+  lead: "Panoul arată câți sportivi sunt inactivi de mai mulți ani, după o limită pe care o alegi. Nimic nu se anonimizează singur.",
   blocks: [
     { t: "h2", text: "Câți ani" },
     {
@@ -20,18 +20,18 @@ export const sportiviInactiviPage: GhidPage = {
     { t: "h2", text: "Avertizarea de pe Acasă" },
     {
       t: "p",
-      text: "Pe **Acasă** apare **N sportivi inactivi de peste 5 ani.**, cu **Vezi lista**. Super Admin poate apăsa **Ascunde până la sezonul următor**.",
+      text: "Pe **Acasă** apare de exemplu **3 sportivi inactivi de peste 5 ani.**, cu **Vezi lista**. Numărul de ani urmează setarea de mai sus. Super Admin poate apăsa **Ascunde până la sezonul următor**.",
     },
     { t: "h2", text: "Anonimizează din listă" },
     {
       t: "steps",
       steps: [
-        { text: "În **Sportivi** apasă **Filtre**, la **Date personale** bifează **Inactivi de peste 5 ani**.", shot: "date-inactivi", marks: ["inactivi"] },
-        { text: "Super Admin vede casete și butonul **Anonimizează (k)**. Bifează sportivii și apasă butonul." },
-        { text: "Confirmă în **Anonimizezi datele pentru k sportivi?**. La final apare **k sportivi anonimizați.** și, dacă e cazul, **Sărite: n.** sau **Nereușite: n.**" },
+        { text: "În **Sportivi** apasă **Filtre**, la **Date personale** bifează **Inactivi de peste 5 ani** (numărul urmează setarea).", shot: "date-inactivi", marks: ["inactivi"] },
+        { text: "Super Admin vede casete și butonul **Anonimizează (2)**, cu numărul sportivilor bifați. Bifează sportivii și apasă butonul." },
+        { text: "Confirmă în **Anonimizezi datele pentru 2 sportivi?**. La final apare **2 sportivi anonimizați.** și, dacă e cazul, **Sărite: 1.** sau **Nereușite: 1.**" },
       ],
     },
     { t: "warn", text: "Anonimizarea nu se poate anula. Fiecare sportiv se face separat: o greșeală la unul nu oprește ceilalți." },
-    { t: "links", items: [{ slug: "ce-ramane-dupa-anonimizare" }, { slug: "anonimizeaza-un-sportiv" }] },
+    { t: "links", items: [{ slug: "ce-ramane-dupa-anonimizare" }, { slug: "anonimizeaza-un-sportiv" }, { slug: "setari-site" }] },
   ],
 };

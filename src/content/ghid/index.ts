@@ -44,10 +44,13 @@ import { descarcaTabelPage } from "./pages/descarca-un-tabel";
 import { adaugaAdministratorPage } from "./pages/adauga-un-administrator";
 import { roluriPage } from "./pages/roluri";
 import { accesAntrenorPortalPage } from "./pages/acces-antrenor-in-portal";
-import { paginiSitePage } from "./pages/pagini-site";
+import { paginiSitePage } from "./pages/paginile-site-ului";
 import { articolePage } from "./pages/articole";
 import { imaginiInMediaPage } from "./pages/imagini-in-media";
-import { competitiiPage } from "./pages/competitii";
+import { competitiiPage } from "./pages/competitii-si-rezultate";
+import { echipaSponsoriPage } from "./pages/echipa-sponsori-si-alte-liste";
+import { setariSitePage } from "./pages/setari-site";
+import { schimbaRolulPage } from "./pages/schimba-rolul-sau-opreste-accesul";
 import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sportiv";
 import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
@@ -94,12 +97,16 @@ export const GHID_GROUPS: GhidGroup[] = [
     title: "Bani",
     pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, abonamentPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
   },
-  { title: "Site și anunțuri", pages: [anunturiPage, paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage] },
+  {
+    title: "Site și anunțuri",
+    pages: [anunturiPage, paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage, echipaSponsoriPage, setariSitePage],
+  },
   {
     title: "Echipa și acces",
     pages: [
-      adaugaAdministratorPage,
       roluriPage,
+      adaugaAdministratorPage,
+      schimbaRolulPage,
       accesAntrenorPortalPage,
       exportaDateleSportivuluiPage,
       anonimizeazaSportivPage,

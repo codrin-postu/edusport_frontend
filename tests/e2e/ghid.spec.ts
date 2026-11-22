@@ -107,6 +107,19 @@ test.describe("ghid wiki", () => {
     await expect(rail.locator("details", { hasText: "Bani" })).not.toHaveAttribute("open", "");
   });
 
+  test("the site group lists its pages and the team group ends with the personal data pages", async({ page }) => {
+    await page.goto("/ghid/competitii-si-rezultate");
+    const rail = page.getByRole("navigation", { name: "Cuprins" }).first();
+    const site = rail.locator("details", { hasText: "Site și anunțuri" });
+    await expect(site).toHaveAttribute("open", "");
+    await expect(site.getByRole("link", { name: "Setări site" })).toBeVisible();
+    await expect(site.getByRole("link", { name: "Echipa, sponsori și alte liste" })).toBeVisible();
+    const team = rail.locator("details", { hasText: "Echipa și acces" });
+    await team.locator("summary").click();
+    await expect(team.getByRole("link", { name: "Schimbă rolul sau oprește accesul" })).toBeVisible();
+    await expect(team.getByRole("link", { name: "Sportivi inactivi" })).toBeVisible();
+  });
+
   test("an unknown page is the 404 page", async({ request }) => {
     const res = await request.get("/ghid/nu-exista", { headers: { cookie: COOKIE } });
     expect(res.status()).toBe(404);

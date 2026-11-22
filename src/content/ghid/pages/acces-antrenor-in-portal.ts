@@ -23,6 +23,10 @@ export const accesAntrenorPortalPage: GhidPage = {
       t: "p",
       text: "Același bloc se deschide și din pagina **Grupe**, de pe numele antrenorului, la **Antrenori**. Blocul **Cont portal** apare doar la Administrator club și Super Admin.",
     },
+    {
+      t: "p",
+      text: "Cu contul activ, antrenorul completează prezența grupelor lui și din portal, la **Azi**, în **Prezență de completat**. O prezență salvată se corectează cel mult 7 zile după ședință.",
+    },
     { t: "h2", text: "Pe un cont existent" },
     {
       t: "list",
@@ -37,6 +41,6 @@ export const accesAntrenorPortalPage: GhidPage = {
       t: "warn",
       text: "**Dezactivează contul** deconectează acum toate dispozitivele antrenorului.",
     },
-    { t: "links", items: [{ slug: "roluri" }, { slug: "intra-in-panou" }] },
+    { t: "links", items: [{ slug: "completeaza-prezenta" }, { slug: "roluri" }, { slug: "intra-in-panou" }] },
   ],
 };

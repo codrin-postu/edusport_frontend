@@ -1,5 +1,7 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
+// Articole is edited in the Strapi content manager. The custom ArticolePage and ArticolEditPage routes exist in the backend
+// (admin/pages/routes.ts) but the menu does not point to them yet: when it does, this page must be rewritten for those screens.
 export const articolePage: GhidPage = {
   slug: "articole",
   title: "Articole",
@@ -10,14 +12,24 @@ export const articolePage: GhidPage = {
       steps: [
         { text: "În meniu deschide **Articole și media**, apoi **Articole**. Apasă **Creează intrare nouă**." },
         {
-          text: "Completează **title**, **description** (cel mult 300 de caractere), **body**, **category** și **date**. **title**, **category** și **date** sunt obligatorii; **slug** se completează din titlu.",
-          shot: "site-articol", marks: ["titlu", "salveaza", "publica"],
+          text: "Completează **title** (titlul), **description** (cel mult 300 de caractere), **body** (textul), **category** și **date**. Obligatorii sunt **title**, **category** și **date**; **slug** se completează din titlu.",
+          shot: "site-articol",
+          marks: ["titlu", "descriere", "body"],
         },
         {
-          text: "Imaginea principală se pune la **coverImage**, pozele în plus la **gallery**. **Video** primește un link YouTube sau Vimeo, sau un fișier încărcat.",
+          text: "Imaginea principală: la **coverImage** apasă **Apasă pentru a adăuga o resursă**. În **Adaugă resurse noi**, la **Răsfoiește**, alege imaginea și apasă **Finalizează**. Pozele în plus se pun la **gallery**.",
         },
-        { text: "Apasă **Salvează** ca să păstrezi ciorna, sau **Publică** ca să apară pe site." },
+        { text: "**Video** primește un link YouTube sau Vimeo, sau un fișier încărcat." },
+        {
+          text: "Apasă **Salvează** ca să păstrezi ciorna, sau **Publică** ca să apară pe site.",
+          shot: "site-articol",
+          marks: ["salveaza", "publica"],
+        },
       ],
+    },
+    {
+      t: "p",
+      text: "**coverImage** și **gallery** primesc doar imagini. Imaginile se încarcă întâi în Media.",
     },
     {
       t: "p",
@@ -25,6 +37,6 @@ export const articolePage: GhidPage = {
     },
     { t: "warn", text: "**Salvează** nu pune articolul pe site. Fără **Publică**, el rămâne ciornă." },
     { t: "p", text: "Pe site, un articol publicat apare după câteva minute." },
-    { t: "links", items: [{ slug: "imagini-in-media" }, { slug: "pagini-site" }] },
+    { t: "links", items: [{ slug: "imagini-in-media" }, { slug: "paginile-site-ului" }] },
   ],
 };

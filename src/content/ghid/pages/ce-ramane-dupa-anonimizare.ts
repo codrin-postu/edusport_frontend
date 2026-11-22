@@ -11,7 +11,7 @@ export const ceRamaneDupaAnonimizarePage: GhidPage = {
       items: [
         "Din fișă: numele, data nașterii, persoana de contact, telefonul, e-mailul și notele.",
         "Din înscrieri: numele părintelui, e-mailul, telefonul, data nașterii copilului, înălțimea, mărimea de tricou, experiența anterioară, așteptările și nota internă.",
-        "PDF-urile înscrierilor. Dacă o ștergere eșuează, se reia la pornirea serverului.",
+        "PDF-urile înscrierilor. Dacă o ștergere eșuează, se reia automat.",
         "Profilul public. Imaginile lui se șterg din Media, dacă nu sunt folosite în altă parte.",
         "Valorile personale din Istoric.",
         "Mesajele netrimise și adresele din coada de e-mailuri. Accesul în portal se oprește.",

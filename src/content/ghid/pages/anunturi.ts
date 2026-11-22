@@ -8,9 +8,17 @@ export const anunturiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Anunțuri**, în meniu, sus. Lista arată anunțurile, iar **Filtre** le filtrează. Apasă pe un anunț ca să îl editezi.", shot: "anunturi-lista", marks: ["anunt-nou"] },
-        { text: "Apasă **+ Anunț nou**. La **Unde apare** bifează **Portal sportiv**. Trebuie să rămână bifat cel puțin un loc.", shot: "anunturi-noul", marks: ["portal-sportiv", "grupe-alese"] },
-        { text: "La **Pentru cine** alege **Toate grupele** sau **Grupe alese**, apoi bifează grupele." },
+        { text: "Deschide **Anunțuri**, în meniu, sus. Lista arată anunțurile, iar **Filtre** le filtrează. Apasă pe un anunț ca să îl editezi." },
+        {
+          text: "Apasă **+ Anunț nou**. La **Unde apare** bifează **Site**, **Portal sportiv** sau amândouă. Trebuie să rămână bifat cel puțin un loc.",
+          shot: "anunturi-noul",
+          marks: ["site", "portal-sportiv"],
+        },
+        {
+          text: "La **Pentru cine** alege **Toate grupele** sau **Grupe alese**, apoi bifează grupele. Apare doar când **Portal sportiv** e bifat.",
+          shot: "anunturi-noul",
+          marks: ["pentru-cine"],
+        },
         { text: "Scrie **Titlu** și **Mesaj**, ambele obligatorii. Mesajul e text simplu." },
         { text: "La **Programare** pune **Începe** și **Se încheie**, orele și **Stare**: **Activ** sau **Inactiv**." },
         { text: "Apasă **Salvează**, în bara de jos. **Renunță** șterge modificările." },
@@ -29,6 +37,6 @@ export const anunturiPage: GhidPage = {
       t: "warn",
       text: "**Șterge** scoate anunțul cu totul și nu se poate anula.",
     },
-    { t: "links", items: [{ slug: "programul-unei-grupe" }] },
+    { t: "links", items: [{ slug: "anuleaza-sau-muta-o-sedinta" }, { slug: "paginile-site-ului" }] },
   ],
 };

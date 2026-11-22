@@ -769,23 +769,18 @@ export const SHOTS = [
     ],
   },
   {
-    id: "anunturi-lista",
-    path: "/admin/plugins/edusport-anunturi",
-    alt: "Lista Anunțuri, cu butoanele Filtre și Anunț nou",
-    marks: [{ key: "anunt-nou", selector: "button:has-text('Anunț nou')" }],
-  },
-  {
     id: "anunturi-noul",
     path: "/admin/plugins/edusport-anunturi",
-    alt: "Formularul Anunț nou, cu Portal sportiv bifat și alegerea grupelor",
+    alt: "Formularul Anunț nou, cu Site și Portal sportiv la Unde apare și alegerea grupelor la Pentru cine",
     act: async(page) => {
       await page.getByRole("button", { name: "+ Anunț nou" }).click();
       await page.getByText("Portal sportiv", { exact: true }).first().click();
       await page.waitForTimeout(1200);
     },
     marks: [
+      { key: "site", selector: "label:has-text('Site')" },
       { key: "portal-sportiv", selector: "label:has-text('Portal sportiv')" },
-      { key: "grupe-alese", selector: "button:text-is('Grupe alese')" },
+      { key: "pentru-cine", selector: "[aria-label='Pentru cine']" },
     ],
   },
   {
@@ -1043,7 +1038,10 @@ export const SHOTS = [
       await page.getByRole("button", { name: "Invită utilizator nou" }).waitFor();
       await page.waitForTimeout(800);
     },
-    marks: [{ key: "invita", selector: "button:has-text('Invită utilizator nou')" }],
+    marks: [
+      { key: "invita", selector: "button:has-text('Invită utilizator nou')" },
+      { key: "editeaza", selector: "tbody tr a[href^='/admin/settings/users/'] >> nth=0" },
+    ],
   },
   {
     id: "echipa-invita",
@@ -1057,6 +1055,7 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
+      { key: "prenume", selector: "[role=dialog] input[name=firstname]" },
       { key: "email", selector: "[role=dialog] input[name=email]" },
       { key: "rol", selector: "[role=dialog] [role=combobox]" },
       { key: "invita", selector: "[role=dialog] button:has-text('Invită utilizator')" },
@@ -1075,8 +1074,8 @@ export const SHOTS = [
       await page.waitForTimeout(800);
     },
     marks: [
+      { key: "activ", selector: "text=/^fals$/i >> xpath=../.." },
       { key: "rol", selector: "[role=combobox]" },
-      { key: "fals", selector: "text=/^fals$/i" },
       { key: "salveaza", selector: "button:has-text('Salvează') >> nth=1" },
     ],
   },
@@ -1106,13 +1105,14 @@ export const SHOTS = [
     },
     marks: [
       { key: "nume", selector: "input[placeholder='ex: Cursuri de Patinaj']" },
+      { key: "renunta", selector: "button:text-is('Renunță')" },
       { key: "salveaza", selector: "button:text-is('Salvează')" },
     ],
   },
   {
     id: "site-articol",
     path: "/admin/content-manager/collection-types/api::article.article/create",
-    alt: "Editorul de articole Strapi, cu title, slug, description, body și coverImage",
+    alt: "Editorul de articole Strapi, cu title, slug, description, body și bara cu Renunță, Salvează și Publică",
     act: async(page) => {
       await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
       await page.reload({ waitUntil: "networkidle" });
@@ -1123,6 +1123,8 @@ export const SHOTS = [
     },
     marks: [
       { key: "titlu", selector: "input[name=title]" },
+      { key: "descriere", selector: "[name=description]" },
+      { key: "body", selector: "[data-slate-editor=true]" },
       { key: "salveaza", selector: "button:text-is('Salvează')" },
       { key: "publica", selector: "button:text-is('Publică')" },
     ],
@@ -1137,7 +1139,95 @@ export const SHOTS = [
     },
     marks: [
       { key: "nume", selector: "input[placeholder='Numele competiției']" },
+      { key: "data", selector: ".ui-field:has(label:text-is('Data'))" },
       { key: "sezon", selector: "input[placeholder='ex. 2024-2025']" },
+      { key: "locatie", selector: "input[placeholder='Oraș / arenă']" },
+      { key: "nivel", selector: "[aria-labelledby='cp-level-label']" },
+    ],
+  },
+  {
+    id: "site-meniu",
+    path: "/admin/plugins/edusport-meniu",
+    alt: "Meniu site, cu lista Secțiuni: Despre Noi și Cursuri au eticheta card",
+    act: async(page) => {
+      await page.getByText("Secțiuni", { exact: true }).first().waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "despre-noi", selector: "button.meniu-row:has-text('Despre Noi')" },
+      { key: "cursuri", selector: "button.meniu-row:has-text('Cursuri')" },
+    ],
+  },
+  {
+    id: "site-media",
+    path: "/admin/plugins/upload",
+    alt: "Biblioteca Media, cu butoanele Adaugă folder nou și Adaugă resurse noi",
+    act: async(page) => {
+      await page.evaluate(() => localStorage.setItem("strapi-admin-language", "ro"));
+      await page.reload({ waitUntil: "networkidle" });
+      await page.getByRole("button", { name: "Adaugă resurse noi" }).first().waitFor();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "adauga-resurse", selector: "button:has-text('Adaugă resurse noi') >> nth=0" },
+      { key: "adauga-folder", selector: "button:has-text('Adaugă folder nou')" },
+    ],
+  },
+  {
+    id: "site-competitii",
+    path: "/admin/plugins/edusport-competitii",
+    alt: "Pagina Competiții, cu câmpul de căutare și butonul Caută competiție",
+    act: async(page) => {
+      await page.getByText("Importă o competiție").first().waitFor();
+      // The imported list shows the competitions of the test database; it is removed from the page (display only, nothing is deleted).
+      await page.evaluate(() => {
+        for (const el of document.querySelectorAll(".ui-ecard")) {
+          if (el.textContent.includes("Competiții importate")) el.style.display = "none";
+        }
+      });
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "nume-competitie", selector: "input[placeholder^='Nume competiție']" },
+      { key: "cauta-competitie", selector: "button:has-text('Caută competiție')" },
+    ],
+  },
+  {
+    id: "site-membru-nou",
+    path: "/admin/plugins/edusport-membri",
+    alt: "Fereastra Membru nou, cu poza, Nume, Rol, Descriere și Predă la",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Adaugă membru" }).click();
+      await page.getByText("Membru nou").first().waitFor();
+      // The team grid behind the dialog is removed from the page (display only): it lists the people of the test database.
+      await page.evaluate(() => {
+        for (const el of document.querySelectorAll(".mem-grid")) el.style.display = "none";
+      });
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "nume", selector: "[role=dialog] .ui-field:has(label:text-is('Nume'))" },
+      { key: "rol", selector: "[role=dialog] .ui-field:has(label:text-is('Rol'))" },
+      { key: "descriere", selector: "[role=dialog] .ui-field:has(label:text-is('Descriere'))" },
+      { key: "preda-la", selector: "[role=dialog] .ui-field:has(label:text-is('Predă la'))" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
+    ],
+  },
+  {
+    id: "site-sponsor-nou",
+    path: "/admin/plugins/edusport-sponsori",
+    alt: "Fereastra Sponsor nou, cu Nume, Logo, Link și Ordine",
+    act: async(page) => {
+      await page.getByRole("button", { name: "+ Adaugă sponsor" }).first().click();
+      await page.getByText("Sponsor nou").first().waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [
+      { key: "nume", selector: "[role=dialog] .ui-field:has(label:text-is('Nume'))" },
+      { key: "logo", selector: "[role=dialog] .ui-field:has(label:text-is('Logo'))" },
+      { key: "link", selector: "[role=dialog] .ui-field:has(label:text-is('Link'))" },
+      { key: "ordine", selector: "[role=dialog] .ui-field:has(label:text-is('Ordine'))" },
+      { key: "salveaza", selector: "[role=dialog] button:text-is('Salvează')" },
     ],
   },
   {
@@ -1152,6 +1242,7 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     marks: [
+      { key: "mai-multe", selector: "role=button[name=/Mai multe acțiuni/] >> nth=0" },
       { key: "exporta-datele", selector: "[role=menuitem]:text-is('Exportă datele')" },
       { key: "anonimizeaza", selector: "[role=menuitem]:text-is('Anonimizează')" },
     ],
@@ -1169,24 +1260,30 @@ export const SHOTS = [
       await page.waitForTimeout(600);
     },
     // Only opened; the dialog is left with Anulează by closing the page.
-    marks: [{ key: "anuleaza", selector: "button:text-is('Anulează')" }],
+    marks: [
+      { key: "anonimizeaza", selector: "button:text-is('Anonimizează') >> nth=-1" },
+      { key: "anuleaza", selector: "button:text-is('Anulează')" },
+    ],
   },
   {
     id: "date-setari",
     path: "/admin/plugins/edusport-setari",
-    alt: "Setări site, cardul Date personale cu câmpul Ani până la anonimizare",
+    alt: "Setări site, cu cardul Înscrieri (Înscrieri deschise) și cardul Date personale (Ani până la anonimizare, Prezență și plăți din)",
     act: async(page) => {
       await page.getByText("Ani până la anonimizare").first().waitFor();
-      await page.getByText("Ani până la anonimizare").first().scrollIntoViewIfNeeded();
-      // Hides the contact card above (the club's real address and phone); a display change only, nothing is edited.
+      // Removes the contact card (the club's real address and phone) from the page; a display change only, nothing is edited.
       await page.evaluate(() => {
         for (const el of document.querySelectorAll(".ui-ecard")) {
-          if (el.textContent.includes("Date de contact")) el.style.visibility = "hidden";
+          if (el.textContent.includes("Date de contact")) el.style.display = "none";
         }
       });
       await page.waitForTimeout(800);
     },
-    marks: [{ key: "limita", selector: "input[role=spinbutton][aria-valuemax='20']" }],
+    marks: [
+      { key: "inscrieri-deschise", selector: ".ui-field:has(label:text-is('Înscrieri deschise'))" },
+      { key: "limita", selector: "input[role=spinbutton][aria-valuemax='20']" },
+      { key: "prezenta-din", selector: ".ui-field:has(label:text-is('Prezență și plăți din'))" },
+    ],
   },
   {
     id: "date-inactivi",

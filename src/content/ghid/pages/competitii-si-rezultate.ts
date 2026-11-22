@@ -1,8 +1,8 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
 export const competitiiPage: GhidPage = {
-  slug: "competitii",
-  title: "Competiții",
+  slug: "competitii-si-rezultate",
+  title: "Competiții și rezultate",
   lead: "Un sportiv are competiții dintr-o singură sursă: skate-results, sau cele introduse de mână.",
   blocks: [
     { t: "h2", text: "Ce sursă se folosește" },
@@ -15,6 +15,10 @@ export const competitiiPage: GhidPage = {
     },
     {
       t: "p",
+      text: "skate-results este locul unde sunt păstrate rezultatele competițiilor importate. Legătura cu un sportiv se face din profilul lui public.",
+    },
+    {
+      t: "p",
       text: "Sursele nu se adună. Altfel același concurs ar apărea de două ori. Pagina **Realizări** de pe site citește doar skate-results.",
     },
     { t: "h2", text: "Importă din skate-results" },
@@ -24,7 +28,8 @@ export const competitiiPage: GhidPage = {
         { text: "În meniu deschide **Sportivi și echipă**, apoi **Competiții**." },
         {
           text: "La **Importă o competiție** scrie numele sau adresa rezultatelor și apasă **Caută competiție**. Alege competiția din listă cu **Importă**.",
-          shot: "site-competitii", marks: ["m1", "m2"],
+          shot: "site-competitii",
+          marks: ["nume-competitie", "cauta-competitie"],
         },
         { text: "Competiția apare în **Competiții importate**. Un sportiv apare în rezultate după ce profilul lui are legătura cu skate-results, în editorul profilului, la cardul **Rezultate competiții**." },
       ],
@@ -36,7 +41,8 @@ export const competitiiPage: GhidPage = {
         { text: "Apasă **Comută la meniul Strapi** și alege **Editor competiție**." },
         {
           text: "Completează **Nume**, **Data** și **Sezon** (de exemplu 2024-2025), apoi **Locație** și **Nivel** (**Național** sau **Internațional**).",
-          shot: "site-competitie-noua", marks: ["nume", "sezon"],
+          shot: "site-competitie-noua",
+          marks: ["nume", "data", "sezon", "locatie", "nivel"],
         },
         { text: "La **Sportivi participanți** caută și adaugă sportivii. La **Rezultate participanți** apasă **Adaugă rezultat** și completează **Sportiv**, **Loc** și **Punctaj**." },
         { text: "Apasă **Salvează**." },
@@ -47,6 +53,6 @@ export const competitiiPage: GhidPage = {
       text: "Competițiile introduse de mână se văd și în Content Manager, la **Club / Competiție**.",
     },
     { t: "warn", text: "La **Șterge**, din **Competiții importate**, rezultatele competiției din skate-results se elimină." },
-    { t: "links", items: [{ slug: "pagini-site" }] },
+    { t: "links", items: [{ slug: "profil-public-si-rezultate" }, { slug: "paginile-site-ului" }] },
   ],
 };

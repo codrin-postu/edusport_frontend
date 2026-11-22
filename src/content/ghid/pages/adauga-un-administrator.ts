@@ -8,16 +8,27 @@ export const adaugaAdministratorPage: GhidPage = {
     {
       t: "steps",
       steps: [
+        { text: "În meniul din stânga apasă **Comută la meniul Strapi**, apoi **Setări**. La **Panou de administrare** alege **Utilizatori**." },
         {
-          text: "În meniul din stânga apasă **Comută la meniul Strapi**, apoi **Setări**. La **Panou de administrare** alege **Utilizatori**.",
-          shot: "echipa-utilizatori", marks: ["invita"],
+          text: "Apasă **Invită utilizator nou**.",
+          shot: "echipa-utilizatori",
+          marks: ["invita"],
         },
         {
-          text: "Apasă **Invită utilizator nou**. Completează **Prenume** și **Email**, iar la nevoie **Nume**. Prenumele și e-mailul sunt obligatorii.",
-          shot: "echipa-invita", marks: ["email", "rol", "invita"],
+          text: "Completează **Prenume** și **Email**, iar la nevoie **Nume**. Prenumele și e-mailul sunt obligatorii.",
+          shot: "echipa-invita",
+          marks: ["prenume", "email"],
         },
-        { text: "La **Rolurile utilizatorului** alege rolul: **Administrator club**, **Editor site** sau **Super Admin**." },
-        { text: "Apasă **Invită utilizator**. Persoana nouă apare în listă." },
+        {
+          text: "La **Rolurile utilizatorului** alege rolul: **Administrator club**, **Editor site** sau **Super Admin**.",
+          shot: "echipa-invita",
+          marks: ["rol"],
+        },
+        {
+          text: "Apasă **Invită utilizator**. Persoana nouă apare în listă.",
+          shot: "echipa-invita",
+          marks: ["invita"],
+        },
       ],
     },
     {
@@ -26,6 +37,6 @@ export const adaugaAdministratorPage: GhidPage = {
     },
     { t: "p", text: "Invitația este valabilă 7 zile. Dacă a expirat, șterge utilizatorul din **Utilizatori** și invită-l din nou." },
     { t: "p", text: "**Administrator club** și **Editor site** nu au pagina **Utilizatori**: administratorii se adaugă din Super Admin." },
-    { t: "links", items: [{ slug: "roluri" }, { slug: "siguranta" }] },
+    { t: "links", items: [{ slug: "roluri" }, { slug: "schimba-rolul-sau-opreste-accesul" }, { slug: "meniul-si-pagina-acasa" }, { slug: "siguranta" }] },
   ],
 };
