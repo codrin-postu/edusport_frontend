@@ -134,7 +134,7 @@ export const cumLucreazaImpreunaPage: GhidPage = {
     {
       t: "links",
       items: [
-        { slug: "ce-este-edusport" },
+        { slug: "ce-este-platforma" },
         { slug: "confirma-o-inscriere" },
         { slug: "invita-un-parinte-in-portal" },
         { slug: "anuleaza-sau-muta-o-sedinta" },

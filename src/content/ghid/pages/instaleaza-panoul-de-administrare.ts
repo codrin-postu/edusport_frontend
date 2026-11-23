@@ -52,7 +52,7 @@ chmod 600 .env.production`,
 docker compose -f docker-compose.production.yml --env-file .env.production logs backend | grep -i admin_gate`,
         },
         {
-          text: "Autentifică-te la **https://<gazda panoului>/login** (autentificarea proprie a panoului). Dă fiecărui administrator care nu este Super Admin un rol EduSport: jurnalul de pornire îi listează pe cei fără rol. Vezi **Roluri**.",
+          text: "Autentifică-te la **https://<gazda panoului>/login** (autentificarea proprie a panoului). Dă fiecărui administrator care nu este Super Admin un rol al platformei: jurnalul de pornire îi listează pe cei fără rol. Vezi **Roluri**.",
         },
         {
           text: "Creează tokenul pentru site: Settings, API Tokens, tip **Read-only**, durată nelimitată. Copiază valoarea imediat, se afișează o singură dată; ea devine **STRAPI_API_TOKEN** la instalarea site-ului.",

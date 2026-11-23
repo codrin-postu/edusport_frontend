@@ -1,6 +1,6 @@
 import type { GhidGroup, ShotData } from "@/lib/ghid/types";
 import shotsJson from "./shots.json";
-import { ceEsteEdusportPage } from "./pages/ce-este-edusport";
+import { ceEstePlatformaPage } from "./pages/ce-este-platforma";
 import { ceSeSchimbaFataDeAcumPage } from "./pages/ce-se-schimba-fata-de-acum";
 import { cumLucreazaImpreunaPage } from "./pages/cum-lucreaza-impreuna";
 import { siteulPublicPage } from "./pages/site-ul-public";
@@ -87,9 +87,9 @@ import { copiiSiVerificareaFinalaPage } from "./pages/copii-de-siguranta-si-veri
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
   {
-    title: "Ce este EduSport",
+    title: "Platforma EduSport",
     pages: [
-      ceEsteEdusportPage,
+      ceEstePlatformaPage,
       ceSeSchimbaFataDeAcumPage,
       cumLucreazaImpreunaPage,
       siteulPublicPage,

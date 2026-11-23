@@ -54,7 +54,7 @@ ls -l backups`,
     {
       t: "list",
       items: [
-        "Autentificarea la **/login** funcționează; jurnalul backend-ului nu mai conține **ADMIN_GATE=off in production**; fiecare administrator are un rol EduSport.",
+        "Autentificarea la **/login** funcționează; jurnalul backend-ului nu mai conține **ADMIN_GATE=off in production**; fiecare administrator are un rol al platformei.",
         "O imagine încărcată în panou apare fără eroare (fără EACCES).",
         "O pagină publicată în panou se schimbă pe site în câteva secunde.",
         "O înscriere de test de pe site: rândul apare în panou, linkul către PDF funcționează, e-mailul este trimis sau așteaptă în coadă, rândul apare în Google Sheets dacă sincronizarea este pornită.",

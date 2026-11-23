@@ -3,11 +3,11 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const ceSeSchimbaFataDeAcumPage: GhidPage = {
   slug: "ce-se-schimba-fata-de-acum",
   title: "Ce se schimbă față de acum",
-  lead: "Instrumentele folosite acum și ce face EduSport pentru fiecare.",
+  lead: "Instrumentele folosite acum și ce face platforma pentru fiecare.",
   blocks: [
     { t: "h2", text: "Tabelul de prezență" },
     { t: "p", text: "**Acum**: antrenorii notează prezența într-un tabel Google Sheets comun." },
-    { t: "p", text: "**Cu EduSport**:" },
+    { t: "p", text: "**Cu platforma**:" },
     {
       t: "list",
       items: [
@@ -22,7 +22,7 @@ export const ceSeSchimbaFataDeAcumPage: GhidPage = {
     },
     { t: "h2", text: "Formularul de înscriere" },
     { t: "p", text: "**Acum**: înscrierile vin printr-un formular Google, cu un script Apps Script." },
-    { t: "p", text: "**Cu EduSport**:" },
+    { t: "p", text: "**Cu platforma**:" },
     {
       t: "list",
       items: [
@@ -37,7 +37,7 @@ export const ceSeSchimbaFataDeAcumPage: GhidPage = {
     },
     { t: "h2", text: "Site-ul vechi" },
     { t: "p", text: "**Acum**: site-ul nu are legătură cu înscrierile, prezența sau programul grupelor." },
-    { t: "p", text: "**Cu EduSport**:" },
+    { t: "p", text: "**Cu platforma**:" },
     {
       t: "list",
       items: [
@@ -52,7 +52,7 @@ export const ceSeSchimbaFataDeAcumPage: GhidPage = {
     },
     { t: "h2", text: "Hârtia și WhatsApp" },
     { t: "p", text: "**Acum**: plățile, schimbările de program și anunțurile trec prin hârtie, telefon și WhatsApp." },
-    { t: "p", text: "**Cu EduSport**:" },
+    { t: "p", text: "**Cu platforma**:" },
     {
       t: "list",
       items: [

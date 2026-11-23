@@ -1,13 +1,13 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
-export const ceEsteEdusportPage: GhidPage = {
-  slug: "ce-este-edusport",
-  title: "Ce este EduSport",
+export const ceEstePlatformaPage: GhidPage = {
+  slug: "ce-este-platforma",
+  title: "Ce este platforma",
   lead: "Un singur sistem pentru site, înscrieri, prezență, program și plăți.",
   blocks: [
     {
       t: "p",
-      text: "EduSport adună într-un singur loc ce acum este împărțit între patru instrumente: tabelul de prezență, formularul de înscriere, site-ul vechi și hârtia, telefonul și WhatsApp-ul.",
+      text: "Platforma adună într-un singur loc ce acum este împărțit între patru instrumente: tabelul de prezență, formularul de înscriere, site-ul vechi și hârtia, telefonul și WhatsApp-ul.",
     },
     {
       t: "p",
