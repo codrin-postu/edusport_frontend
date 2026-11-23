@@ -166,7 +166,7 @@ test.describe("ghid wiki", () => {
     await page.keyboard.press("/");
     await expect(field).toBeFocused();
     await field.fill("ce este");
-    await expect(page.getByRole("option", { name: /Ce este EduSport/ })).toBeVisible();
+    await expect(page.getByRole("option", { name: /^Ce este EduSport/ })).toBeVisible();
     await field.fill("zzzz");
     await expect(page.getByText("Niciun rezultat.")).toBeVisible();
     await field.fill("   ");
@@ -189,6 +189,6 @@ test.describe("ghid wiki", () => {
     await page.keyboard.press("/");
     await expect(field).toBeFocused();
     await field.fill("ce este");
-    await expect(page.getByRole("option", { name: /Ce este EduSport/ })).toBeVisible();
+    await expect(page.getByRole("option", { name: /^Ce este EduSport/ })).toBeVisible();
   });
 });

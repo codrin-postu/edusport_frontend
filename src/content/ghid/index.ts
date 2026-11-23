@@ -1,7 +1,13 @@
 import type { GhidGroup, ShotData } from "@/lib/ghid/types";
 import shotsJson from "./shots.json";
 import { ceEsteEdusportPage } from "./pages/ce-este-edusport";
-import { cumSuntLegatePartilePage } from "./pages/cum-sunt-legate-partile";
+import { ceSeSchimbaFataDeAcumPage } from "./pages/ce-se-schimba-fata-de-acum";
+import { cumLucreazaImpreunaPage } from "./pages/cum-lucreaza-impreuna";
+import { siteulPublicPage } from "./pages/site-ul-public";
+import { panoulDeAdministrarePage } from "./pages/panoul-de-administrare";
+import { portalulAntrenoruluiPage } from "./pages/portalul-antrenorului";
+import { portalulSportivuluiPage } from "./pages/portalul-sportivului";
+import { serviciiDinSpatePage } from "./pages/servicii-din-spate";
 import { sigurantaPage } from "./pages/siguranta";
 import { intraInPanouPage } from "./pages/intra-in-panou";
 import { meniulSiPaginaAcasaPage } from "./pages/meniul-si-pagina-acasa";
@@ -80,7 +86,22 @@ import { copiiSiVerificareaFinalaPage } from "./pages/copii-de-siguranta-si-veri
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
-  { title: "Primii pași", pages: [ceEsteEdusportPage, cumSuntLegatePartilePage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
+  {
+    title: "Ce este EduSport",
+    pages: [
+      ceEsteEdusportPage,
+      ceSeSchimbaFataDeAcumPage,
+      cumLucreazaImpreunaPage,
+      siteulPublicPage,
+      panoulDeAdministrarePage,
+      portalulAntrenoruluiPage,
+      portalulSportivuluiPage,
+      serviciiDinSpatePage,
+      sigurantaPage,
+      hostingPage,
+    ],
+  },
+  { title: "Primii pași", pages: [intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
   {
     title: "Înscrieri",
     pages: [
@@ -151,7 +172,6 @@ export const GHID_GROUPS: GhidGroup[] = [
       emailuriAutomatePage,
     ],
   },
-  { title: "Despre EduSport", pages: [sigurantaPage, hostingPage] },
   {
     title: "Instalare pe un server nou",
     pages: [

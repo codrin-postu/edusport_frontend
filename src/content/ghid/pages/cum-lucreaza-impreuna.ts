@@ -1,8 +1,8 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
-export const cumSuntLegatePartilePage: GhidPage = {
-  slug: "cum-sunt-legate-partile",
-  title: "Cum sunt legate părțile",
+export const cumLucreazaImpreunaPage: GhidPage = {
+  slug: "cum-lucreaza-impreuna",
+  title: "Cum lucrează împreună",
   lead: "Drumul datelor între site, panou și portaluri, pas cu pas.",
   blocks: [
     { t: "h2", text: "Pe scurt" },

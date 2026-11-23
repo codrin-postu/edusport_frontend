@@ -1,0 +1,83 @@
+import type { GhidPage } from "@/lib/ghid/types";
+
+export const ceSeSchimbaFataDeAcumPage: GhidPage = {
+  slug: "ce-se-schimba-fata-de-acum",
+  title: "Ce se schimbă față de acum",
+  lead: "Instrumentele folosite acum și ce face EduSport pentru fiecare.",
+  blocks: [
+    { t: "h2", text: "Tabelul de prezență" },
+    { t: "p", text: "**Acum**: antrenorii notează prezența într-un tabel Google Sheets comun." },
+    { t: "p", text: "**Cu EduSport**:" },
+    {
+      t: "list",
+      items: [
+        "Antrenorul completează prezența din telefon, în portal, la **Azi**.",
+        "Aceeași prezență se vede și se poate completa în panou, la **Prezență**.",
+        "Ședințele rămase din abonament se calculează automat, de exemplu **5 ședințe rămase**.",
+        "Părintele vede prezența copilului în portal, la **Istoric**.",
+        "Prezența unei grupe pe o lună se descarcă în Excel.",
+        "Insignele de la **Antrenamente** se calculează automat din prezențe.",
+        "Fiecare schimbare de prezență rămâne în **Istoric**, cu data, ora și contul.",
+      ],
+    },
+    { t: "h2", text: "Formularul de înscriere" },
+    { t: "p", text: "**Acum**: înscrierile vin printr-un formular Google, cu un script Apps Script." },
+    { t: "p", text: "**Cu EduSport**:" },
+    {
+      t: "list",
+      items: [
+        "Formularul este pe site și se deschide sau se închide din panou.",
+        "Fiecare înscriere apare în panou, la **Înscrieri**, cu statusul **Nou**, **Contactat** sau **Confirmat**.",
+        "Părintele primește automat e-mailul **Înscrierea primită**, cu PDF-ul.",
+        "Dacă Google Sheets este conectat, înscrierea se copiază și în tabel.",
+        "**Contactează** deschide un mesaj precompletat, prin SMS sau WhatsApp.",
+        "**Confirmă înscrierea** o leagă de un sportiv existent sau nou și, opțional, de o grupă.",
+        "PDF-urile înscrierii rămân în fișa sportivului, la **Documente**.",
+      ],
+    },
+    { t: "h2", text: "Site-ul vechi" },
+    { t: "p", text: "**Acum**: un site separat de restul instrumentelor." },
+    { t: "p", text: "**Cu EduSport**:" },
+    {
+      t: "list",
+      items: [
+        "Textele paginilor se modifică din panou, la **Pagini site**.",
+        "Articolele se scriu în panou și apar pe site după **Publică**.",
+        "Prețurile din **Prețuri** apar pe site și în formularul de înscriere.",
+        "Orarul de la **Program Cursuri** urmează programul grupelor școlii, din panou.",
+        "Anunțurile apar pe site între datele alese la **Programare**.",
+        "Profilurile publice și rezultatele competițiilor apar la **Sportivi** și **Realizări**.",
+        "Echipa, sponsorii și momentele din istoric se actualizează din panou.",
+      ],
+    },
+    { t: "h2", text: "Hârtia și WhatsApp" },
+    { t: "p", text: "**Acum**: plățile, schimbările de program și anunțurile trec prin hârtie, telefon și WhatsApp." },
+    { t: "p", text: "**Cu EduSport**:" },
+    {
+      t: "list",
+      items: [
+        "O ședință anulată sau mutată apare automat în portal, la **Calendar** și la **Mesaje**.",
+        "Cu **Anunță părinții pe e-mail** bifat, părinții primesc și un e-mail.",
+        "O pauză anulează ședințele din intervalul ei, iar părinții le văd cu numele pauzei.",
+        "Un anunț ajunge la **Mesaje** doar la părinții grupelor alese.",
+        "Plata se înregistrează în **Contabilitate**, cu **Nr. chitanță** și numele celui care a înregistrat-o.",
+        "O plată nu se șterge: anularea o marchează, iar rândul rămâne în listă.",
+        "Părintele vede abonamentul și plățile la **Plăți** și poate primi e-mailul **Plată înregistrată**.",
+        "Fiecare schimbare la un sportiv, un abonament sau o plată rămâne în **Istoric**.",
+      ],
+    },
+    { t: "p", text: "Portalul nu are plată online, iar reamintirile de plată nu se trimit automat." },
+    {
+      t: "links",
+      items: [
+        { slug: "completeaza-prezenta" },
+        { slug: "citeste-inscrierile" },
+        { slug: "paginile-site-ului" },
+        { slug: "anuleaza-sau-muta-o-sedinta" },
+        { slug: "anunturi" },
+        { slug: "inregistreaza-o-plata" },
+        { slug: "cum-lucreaza-impreuna" },
+      ],
+    },
+  ],
+};
