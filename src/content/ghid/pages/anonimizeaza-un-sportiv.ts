@@ -9,7 +9,7 @@ export const anonimizeazaSportivPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Dacă părintele cere datele, fă întâi **Exportă datele**. După anonimizare exportul nu mai merge." },
-        { text: "Deschide fișa sportivului. Sus, în dreapta, apasă **...**, apoi **Anonimizează**.", shot: "date-meniu", marks: ["mai-multe", "anonimizeaza"] },
+        { text: "Deschide fișa sportivului. Sus, în dreapta, apasă **...** (1), apoi **Anonimizează** (2).", shot: "date-meniu", marks: ["mai-multe", "anonimizeaza"], numbered: true },
         {
           text: "Fereastra **Anonimizezi datele sportivului?** spune ce se șterge și ce rămâne. Apasă **Anonimizează**. **Anulează** închide fără nicio schimbare.",
           shot: "date-confirmare", marks: ["anonimizeaza", "anuleaza"],

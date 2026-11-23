@@ -11,12 +11,12 @@ export const mutaSezonScoalaPage: GhidPage = {
       steps: [
         { text: "O singură înscriere: în panou, tabul **Date**, jos, alege alt sezon în câmpul **Sezon**." },
         {
-          text: "Mai multe: bifează rândurile. În bara de sus alege **Sezon destinație...** și apasă **Mută în sezon**.",
-          shot: "inscrieri-selectie", marks: ["sezon", "muta-in"],
+          text: "Mai multe: bifează rândurile. În bara de sus alege **Sezon destinație...** (1) și apasă **Mută în sezon** (2).",
+          shot: "inscrieri-selectie", marks: ["sezon", "muta-in"], numbered: true,
         },
         {
-          text: "Tot sezonul: apasă **...**, din dreapta sus, apoi **Mută tot sezonul...**. Alege **În sezonul** și apasă **Mută**.",
-          shot: "inscrieri-tot-sezonul", marks: ["sezon", "muta"],
+          text: "Tot sezonul: apasă **...**, din dreapta sus, apoi **Mută tot sezonul...**. Alege **În sezonul** (1) și apasă **Mută** (2).",
+          shot: "inscrieri-tot-sezonul", marks: ["sezon", "muta"], numbered: true,
         },
       ],
     },
@@ -29,7 +29,7 @@ export const mutaSezonScoalaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Merge doar cu două sau mai multe școli. O singură înscriere: în panou, **...**, apoi **Mută la altă școală**.", shot: "inscrieri-panou-meniu", marks: ["meniu", "muta-la"] },
+        { text: "Merge doar cu două sau mai multe școli. O singură înscriere: în panou, **...** (1), apoi **Mută la altă școală** (2).", shot: "inscrieri-panou-meniu", marks: ["meniu", "muta-la"], numbered: true },
         { text: "Alege școala la **Școala** și apasă **Mută**." },
         { text: "Mai multe: bifează rândurile, alege **Alege școala** și apasă **Mută la altă școală**." },
       ],

@@ -9,8 +9,8 @@ export const descarcaListaFormularePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Apasă **Export**, apoi **Descarcă CSV**. Fișierul urmează lista de pe ecran: sezonul, căutarea și filtrele.",
-          shot: "inscrieri-export", marks: ["export", "descarca-csv"],
+          text: "Apasă **Export** (1), apoi **Descarcă CSV** (2). Fișierul urmează lista de pe ecran: sezonul, căutarea și filtrele.",
+          shot: "inscrieri-export", marks: ["export", "descarca-csv"], numbered: true,
         },
         {
           text: "Tot în **Export**, la **Formulare goale**, descarci **Acord (PDF)** și **Cerere de adeziune (PDF)**, cu sezonul curent.",

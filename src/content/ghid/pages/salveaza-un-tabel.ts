@@ -9,7 +9,7 @@ export const salveazaTabelPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Pregătește tabelul pe ecran, apoi apasă **Salvează tabelul**, sus.", shot: "tabele-salveaza", marks: ["salveaza-tabelul"] },
-        { text: "Se deschide **Vizualizare nouă**. Scrie **Nume** și apasă **Salvează**.", shot: "tabele-salveaza-nume", marks: ["nume", "salveaza"] },
+        { text: "Se deschide **Vizualizare nouă**. Scrie **Nume** (1) și apasă **Salvează** (2).", shot: "tabele-salveaza-nume", marks: ["nume", "salveaza"], numbered: true },
         { text: "Apare **Vizualizare salvată.**, iar tabelul este în lista din stânga, la **Ale mele**." },
         {
           text: "Pe un tabel de la **Ale mele**, după o schimbare, **Salvează tabelul** o salvează peste tabelul existent. Apare **Salvat.**",
@@ -25,8 +25,8 @@ export const salveazaTabelPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Pe rândul unui tabel din listă apasă **...**. Meniul are **Redenumește**, **Duplică** și **Șterge**.",
-          shot: "tabele-actiuni", marks: ["meniu", "sterge"],
+          text: "Pe rândul unui tabel din listă apasă **...** (1). Meniul are **Redenumește**, **Duplică** și **Șterge** (2).",
+          shot: "tabele-actiuni", marks: ["meniu", "sterge"], numbered: true,
         },
         {
           text: "**Șterge** cere confirmarea. După ștergere, mesajul de jos are **Anulează**, valabil câteva secunde.",

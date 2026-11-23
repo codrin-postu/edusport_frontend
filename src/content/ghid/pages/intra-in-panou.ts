@@ -9,7 +9,7 @@ export const intraInPanouPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Scrie **E-mail** și **Parolă**, apoi apasă **Intră**.", shot: "primii-login", marks: ["email", "parola", "intra"] },
+        { text: "Scrie **E-mail** (1) și **Parolă** (2), apoi apasă **Intră** (3).", shot: "primii-login", marks: ["email", "parola", "intra"], numbered: true },
         {
           text: "Dacă ai 2FA, apare pasul **2FA**: scrie codul și apasă **Verifică**. Cu **Altă metodă** alegi aplicația, codul pe e-mail sau un **Cod de rezervă**.",
         },

@@ -9,8 +9,8 @@ export const programulUneiGrupePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Deschide grupa și apasă tabul **Program**. **Program obișnuit** arată orele, de exemplu Lu și Mi, 19:00, 60 min, și data de la care se aplică.",
-          shot: "grupe-program", marks: ["tab-program", "program-obisnuit"],
+          text: "Deschide grupa și apasă tabul **Program** (1). **Program obișnuit** (2) arată orele, de exemplu Lu și Mi, 19:00, și data de la care se aplică.",
+          shot: "grupe-program", marks: ["tab-program", "program-obisnuit"], numbered: true,
         },
         { text: "Apasă **Adaugă program**.", shot: "grupe-program", marks: ["adauga-program"] },
         {

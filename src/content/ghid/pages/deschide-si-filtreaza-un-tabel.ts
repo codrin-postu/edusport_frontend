@@ -15,8 +15,8 @@ export const deschideFiltreazaTabelPage: GhidPage = {
         { text: "Sus alegi ce arată tabelul: **Sportivi**, **Plăți**, **Abonamente**, **Prezență** sau **Prezență pe ședințe**. Butonul din dreapta alege sezonul." },
         { text: "La **Plăți**, **Abonamente** și **Prezență** poți bifa și luni, iar **Tot sezonul** le scoate." },
         {
-          text: "**Filtru** adaugă un filtru: alegi câmpul, de exemplu **Stare**, apoi bifezi valorile. Filtrul apare ca o etichetă, iar **x** de pe ea îl scoate.",
-          shot: "tabele-filtru", marks: ["filtru", "stare"],
+          text: "**Filtru** (1) adaugă un filtru: alegi câmpul, de exemplu **Stare** (2), apoi bifezi valorile. **x** de pe etichetă îl scoate.",
+          shot: "tabele-filtru", marks: ["filtru", "stare"], numbered: true,
         },
         {
           text: "Butonul de grupare, de exemplu **Pe grupă**, împarte rândurile pe grupe, fiecare cu numărul de rânduri și cu totalul lui. **Negrupat** le arată într-o singură listă.",

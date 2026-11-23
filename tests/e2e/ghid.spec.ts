@@ -129,6 +129,12 @@ test.describe("ghid wiki", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 
+  test("an install page is one numbered list with the code inside its steps", async({ page }) => {
+    await page.goto("/ghid/pregateste-serverul");
+    await expect(page.locator("ol")).toHaveCount(1);
+    await expect(page.locator("ol > li").filter({ hasText: "Activează ufw" }).locator("pre")).toContainText("sudo ufw enable");
+  });
+
   test("an unknown page is the 404 page", async({ request }) => {
     const res = await request.get("/ghid/nu-exista", { headers: { cookie: COOKIE } });
     expect(res.status()).toBe(404);

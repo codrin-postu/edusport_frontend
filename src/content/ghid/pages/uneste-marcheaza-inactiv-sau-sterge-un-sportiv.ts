@@ -15,9 +15,9 @@ export const unesteMarcheazaStergePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Deschide fișa pe care vrei s-o păstrezi. Apasă **...**, apoi **Unește cu alt sportiv**.",
+          text: "Deschide fișa pe care vrei s-o păstrezi. Apasă **...** (1), apoi **Unește cu alt sportiv** (2).",
           shot: "sportivi-meniu",
-          marks: ["meniu", "uneste"],
+          marks: ["meniu", "uneste"], numbered: true,
         },
         { text: "Scrie numele celuilalt sportiv în **Caută sportiv** și apasă pe el." },
         {
@@ -55,9 +55,9 @@ export const unesteMarcheazaStergePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "În fișă apasă **...**, apoi **Marchează inactiv**.",
+          text: "În fișă apasă **...** (1), apoi **Marchează inactiv** (2).",
           shot: "sportivi-meniu",
-          marks: ["meniu", "inactiv"],
+          marks: ["meniu", "inactiv"], numbered: true,
         },
         { text: "La **Marchezi sportivul ca inactiv?** apasă **Marchează inactiv**." },
       ],
@@ -71,9 +71,9 @@ export const unesteMarcheazaStergePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "În fișă apasă **...**, apoi **Șterge sportivul**.",
+          text: "În fișă apasă **...** (1), apoi **Șterge sportivul** (2).",
           shot: "sportivi-meniu",
-          marks: ["meniu", "sterge"],
+          marks: ["meniu", "sterge"], numbered: true,
         },
         { text: "Dacă sportivul are plăți sau abonamente, apare un mesaj că nu se poate șterge, de exemplu **Sportivul are 2 plăți și 1 abonament, deci nu se poate șterge.**" },
         { text: "Plățile anulate se numără și ele. Apasă **Renunță**." },

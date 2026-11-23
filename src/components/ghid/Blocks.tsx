@@ -3,6 +3,7 @@ import { GHID_GROUPS } from "@/content/ghid";
 import { renderInline } from "@/lib/ghid/inline";
 import { findPage } from "@/lib/ghid/registry";
 import type { Block } from "@/lib/ghid/types";
+import { CodeBox } from "./CodeBox";
 import { Steps } from "./Steps";
 import { Video } from "./Video";
 import { Warn } from "./Warn";
@@ -24,11 +25,7 @@ function One({ block }: { block: Block }) {
     case "warn":
       return <Warn text={block.text} />;
     case "code":
-      return (
-        <pre tabIndex={0} className="m-0 max-w-(--portal-narrow-860) overflow-x-auto border-card border-card-line bg-surface-subtle p-4 font-mono text-(length:--portal-text-14)">
-          <code>{block.text}</code>
-        </pre>
-      );
+      return <CodeBox text={block.text} />;
     case "video":
       return <Video src={block.src} length={block.length} />;
     case "links":

@@ -27,9 +27,9 @@ export const competitiiPage: GhidPage = {
       steps: [
         { text: "În meniu deschide **Sportivi și echipă**, apoi **Competiții**." },
         {
-          text: "La **Importă o competiție** scrie numele sau adresa rezultatelor și apasă **Caută competiție**. Alege competiția din listă cu **Importă**.",
+          text: "La **Importă o competiție** (1) scrie numele și apasă **Caută competiție** (2). Alege-o din listă cu **Importă**.",
           shot: "site-competitii",
-          marks: ["nume-competitie", "cauta-competitie"],
+          marks: ["nume-competitie", "cauta-competitie"], numbered: true,
         },
         { text: "Competiția apare în **Competiții importate**." },
         { text: "Un sportiv apare în rezultate după ce profilul lui are legătura cu skate-results, în editorul profilului, la cardul **Rezultate competiții**." },

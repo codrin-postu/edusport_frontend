@@ -9,9 +9,9 @@ export const schimbaDateleUnuiSportivPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Deschide fișa sportivului, tabul **Date**. Apasă **Editează**, în dreapta cardului.",
+          text: "Deschide fișa sportivului, tabul **Date** (1). Apasă **Editează** (2), în dreapta cardului.",
           shot: "sportivi-fisa",
-          marks: ["tab-date", "editeaza"],
+          marks: ["tab-date", "editeaza"], numbered: true,
         },
         {
           text: "Schimbă **Nume și prenume**, **Data nașterii**, **Persoana de contact**, **Telefon** sau **E-mail**.",

@@ -18,8 +18,8 @@ export const completeazaPrezentaPage: GhidPage = {
       steps: [
         { text: "Deschide **Prezență**, în meniu, la **Club și școală**. În **De completat** sunt ședințele care așteaptă prezența.", shot: "prezenta-de-completat", marks: ["tab-de-completat"] },
         {
-          text: "Altă ședință găsești în **Toate ședințele**: alege **Zi**, **Săptămână** sau **Lună** și restrânge cu **Filtre**.",
-          shot: "prezenta-lista", marks: ["tab-toate", "perioada", "filtre"],
+          text: "Altă ședință: **Toate ședințele** (1), apoi **Zi**, **Săptămână** sau **Lună** (2) și **Filtre** (3).",
+          shot: "prezenta-lista", marks: ["tab-toate", "perioada", "filtre"], numbered: true,
         },
         { text: "Apasă pe ședință. Panoul arată data, **Antrenor** și lista sportivilor.", shot: "prezenta-panou", marks: ["antrenor", "lista"] },
         { text: "Bifează **Grup** la fiecare sportiv prezent. Jos, contorul arată câți sunt prezenți din câți sunt pe listă, de exemplu 0 din 11 prezenți.", shot: "prezenta-panou", marks: ["grup"] },

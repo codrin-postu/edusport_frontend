@@ -1,6 +1,9 @@
 // Content model of the staff wiki. Types only: loaded by Node tests and by the pages.
-/** `marks` names the keys of the shot (shots.json) this step means; the number shown is the key's position here. None: no marks. */
-export type Step = { text: string; shot?: string; marks?: string[] };
+/**
+ * `marks` names the keys of the shot (shots.json) this step means. Marks show only the box; with `numbered` each box
+ * also gets its position in `marks` (use when the order of use matters). `code` is a command shown under the text.
+ */
+export type Step = { text: string; shot?: string; marks?: string[]; numbered?: boolean; code?: string };
 
 export type Block =
   | { t: "p"; text: string }

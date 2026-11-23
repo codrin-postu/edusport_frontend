@@ -46,7 +46,7 @@ export function pageText(page: GhidPage): string {
         parts.push(...b.items);
         break;
       case "steps":
-        parts.push(...b.steps.map((s) => s.text));
+        parts.push(...b.steps.flatMap((s) => (s.code ? [s.text, s.code] : [s.text])));
         break;
       case "links":
         parts.push(...b.items.flatMap((i) => (i.label ? [i.label] : [])));

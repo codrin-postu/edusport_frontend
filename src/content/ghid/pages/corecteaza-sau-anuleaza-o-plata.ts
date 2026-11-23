@@ -9,7 +9,7 @@ export const anuleazaPlataPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În **Contabilitate**, tabul **Plăți**, apasă **...** la rândul plății. Alege **Editează**.", shot: "plati-meniu", marks: ["meniu", "editeaza"] },
+        { text: "În **Contabilitate**, tabul **Plăți**, apasă **...** (1) la rândul plății. Alege **Editează** (2).", shot: "plati-meniu", marks: ["meniu", "editeaza"], numbered: true },
         {
           text: "Se deschide **Editează plata**, cu **Pentru**, **Sumă**, **Data**, **Metodă** și **Notă**. Schimbă ce e greșit.",
           shot: "plati-edit", marks: ["pentru", "suma", "data", "metoda", "nota"],
@@ -22,7 +22,7 @@ export const anuleazaPlataPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "La același rând, apasă **...** și alege **Anulează plata**.", shot: "plati-meniu", marks: ["meniu", "anuleaza-plata"] },
+        { text: "La același rând, apasă **...** (1) și alege **Anulează plata** (2).", shot: "plati-meniu", marks: ["meniu", "anuleaza-plata"], numbered: true },
         {
           text: "Se deschide **Anulează plata**, cu suma și data. Apasă **Anulează plata** ca să confirmi sau **Renunță** ca să lași plata.",
           shot: "plati-confirma", marks: ["anuleaza-plata", "renunta"],

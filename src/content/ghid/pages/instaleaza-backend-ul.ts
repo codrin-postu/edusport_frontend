@@ -5,32 +5,45 @@ export const instaleazaBackendulPage: GhidPage = {
   title: "Instalează backend-ul",
   lead: "Codul, variabilele, pornirea, primul administrator și volumele backend-ului.",
   blocks: [
-    { t: "h2", text: "Codul" },
-    {
-      t: "code",
-      text: `cd /opt/edusport
-git clone git@github.com:<org>/edusport_backend.git`,
-    },
-    { t: "h2", text: "Fișierul de variabile" },
-    {
-      t: "steps",
-      steps: [
-        { text: "Copiază **.env.example** în **.env.production** și restrânge accesul la fișier." },
-        { text: "Generează fiecare secret cu **openssl rand -base64 32**. **APP_KEYS** este o listă de două valori, separate prin virgulă." },
-        { text: "Completează variabilele din lista de mai jos. Compose și scripturile citesc fișierul printr-un **--env-file** explicit, pentru că compose citește singur doar **.env**." },
-      ],
-    },
-    {
-      t: "code",
-      text: `cd /opt/edusport/edusport_backend
-cp .env.example .env.production
-chmod 600 .env.production`,
-    },
     {
       t: "warn",
       text: "La o mutare de pe serverul vechi, păstrează aceste variabile NEMODIFICATE: APP_KEYS, API_TOKEN_SALT, ADMIN_JWT_SECRET, TRANSFER_TOKEN_SALT, JWT_SECRET, ENCRYPTION_KEY, AUTH_SECRET_KEY, AUTH_CODE_KEY, DOCUMENT_TOKEN_SECRET, PORTAL_BFF_SECRET. Valori noi strică secretele 2FA salvate și invalidează tokenurile. Copiază fișierul vechi pe un canal securizat și nu lipi niciodată secrete în documente sau mesaje.",
     },
-    { t: "p", text: "Variabilele, după rol:" },
+    {
+      t: "steps",
+      steps: [
+        {
+          text: "Clonează codul backend-ului.",
+          code: `cd /opt/edusport
+git clone git@github.com:<org>/edusport_backend.git`,
+        },
+        {
+          text: "Copiază **.env.example** în **.env.production** și restrânge accesul la fișier.",
+          code: `cd /opt/edusport/edusport_backend
+cp .env.example .env.production
+chmod 600 .env.production`,
+        },
+        { text: "Generează fiecare secret cu **openssl rand -base64 32**. **APP_KEYS** este o listă de două valori, separate prin virgulă." },
+        { text: "Completează variabilele din lista de mai jos. Compose și scripturile citesc fișierul printr-un **--env-file** explicit, pentru că compose citește singur doar **.env**." },
+        {
+          text: "Rulează scriptul de deploy. Fazele lui: pull, build, up (postgres, așteptarea pg_isready, apoi backend; Strapi migrează schema la pornire) și health (verifică /_health în container, până la 60 de secunde). Echivalentul manual: **docker compose ... up -d postgres backend**.",
+          code: `cd /opt/edusport/edusport_backend
+./scripts/deploy.sh`,
+        },
+        {
+          text: "Repornește backend-ul încă o dată după prima pornire a unei versiuni noi. Atributele noi ale tipurilor existente sunt ignorate la salvare până la repornire.",
+          code: "docker compose -f docker-compose.production.yml --env-file .env.production restart backend",
+        },
+        { text: "Doar la instalare nouă: setează **ADMIN_GATE=off**, rulează deploy, deschide **https://<gazda panoului>/admin** și creează primul administrator. Nu s-a verificat dacă ecranul de înregistrare funcționează cu poarta pornită." },
+        { text: "Creează și autentifică doi Super Admin. Șterge toate tokenurile API și de transfer din Strapi, scoate linia **ADMIN_GATE** (sau setează **ADMIN_GATE=on**) și repornește. Jurnalul de pornire nu trebuie să mai afișeze **[security] ADMIN_GATE=off in production**." },
+        { text: "Dă fiecărui administrator care nu este Super Admin un rol EduSport (jurnalul de pornire îi listează pe cei fără rol)." },
+        { text: "În Strapi, la Settings, API Tokens, creează tokenul API doar pentru citire, pentru **STRAPI_API_TOKEN** din frontend." },
+        { text: "Creează webhook-ul **Frontend revalidation**: URL **https://<gazda site-ului>/api/revalidate**, metoda POST, antetul **x-revalidate-secret** egal cu **REVALIDATE_SECRET** din frontend, la evenimentele publicare, actualizare, depublicare și ștergere de intrare, plus creare, actualizare și ștergere de fișier media." },
+      ],
+    },
+    { t: "p", text: "La o mutare de date, tokenul și webhook-ul sunt deja în baza de date; secretul webhook-ului trebuie totuși să fie egal cu valoarea nouă din frontend." },
+    { t: "p", text: "Unelte de recuperare: **npm run admin:reset-2fa**, **admin:end-sessions**, **passkeys:cutover**." },
+    { t: "h2", text: "Variabilele, după rol" },
     {
       t: "list",
       items: [
@@ -52,41 +65,12 @@ chmod 600 .env.production`,
         "**Previzualizare în panou** (lipsește din .env.example): STRAPI_PREVIEW_SECRET, egal cu valoarea din frontend.",
       ],
     },
-    { t: "h2", text: "Prima pornire" },
-    {
-      t: "steps",
-      steps: [
-        { text: "Rulează scriptul de deploy. Fazele lui: pull, build, up (postgres, așteptarea pg_isready, apoi backend; Strapi migrează schema la pornire) și health (verifică /_health în container, până la 60 de secunde)." },
-        { text: "Repornește backend-ul încă o dată după prima pornire a unei versiuni noi. Atributele noi ale tipurilor existente sunt ignorate la salvare până la repornire." },
-      ],
-    },
-    {
-      t: "code",
-      text: `cd /opt/edusport/edusport_backend
-./scripts/deploy.sh
-docker compose -f docker-compose.production.yml --env-file .env.production restart backend`,
-    },
-    { t: "p", text: "Echivalentul manual al scriptului:" },
-    { t: "code", text: "docker compose -f docker-compose.production.yml --env-file .env.production up -d postgres backend" },
     { t: "h2", text: "Volume și proprietar" },
     {
       t: "p",
       text: "Volumul **uploads** se montează la **/opt/app/public/uploads**, iar **private_documents** la **/opt/app/private**. Volumele create prin compose primesc proprietarul 100:101. Containerul renunță la toate capabilitățile și nu poate face chown: un volum cu proprietar root face ca fiecare încărcare să eșueze cu EACCES. Creează volumele mereu prin compose și redă proprietarul 100:101 după orice copiere făcută ca root.",
     },
     { t: "p", text: "Numele volumelor urmează numele directorului: **edusport_backend_pgdata**, **edusport_backend_uploads**, **edusport_backend_private_documents**." },
-    { t: "h2", text: "Primul administrator (doar la instalare nouă)" },
-    {
-      t: "steps",
-      steps: [
-        { text: "Setează **ADMIN_GATE=off**, rulează deploy, deschide **https://<gazda panoului>/admin** și creează primul administrator. Nu s-a verificat dacă ecranul de înregistrare funcționează cu poarta pornită." },
-        { text: "Creează și autentifică doi Super Admin. Șterge toate tokenurile API și de transfer din Strapi, scoate linia **ADMIN_GATE** (sau setează **ADMIN_GATE=on**) și repornește. Jurnalul de pornire nu trebuie să mai afișeze **[security] ADMIN_GATE=off in production**." },
-        { text: "Dă fiecărui administrator care nu este Super Admin un rol EduSport (jurnalul de pornire îi listează pe cei fără rol)." },
-        { text: "În Strapi, la Settings, API Tokens, creează tokenul API doar pentru citire, pentru **STRAPI_API_TOKEN** din frontend." },
-        { text: "Creează webhook-ul **Frontend revalidation**: URL **https://<gazda site-ului>/api/revalidate**, metoda POST, antetul **x-revalidate-secret** egal cu **REVALIDATE_SECRET** din frontend, la evenimentele publicare, actualizare, depublicare și ștergere de intrare, plus creare, actualizare și ștergere de fișier media." },
-      ],
-    },
-    { t: "p", text: "La o mutare de date, tokenul și webhook-ul sunt deja în baza de date; secretul webhook-ului trebuie totuși să fie egal cu valoarea nouă din frontend." },
-    { t: "p", text: "Unelte de recuperare: **npm run admin:reset-2fa**, **admin:end-sessions**, **passkeys:cutover**." },
     { t: "links", items: [{ slug: "instaleaza-site-ul-si-portalurile" }] },
   ],
 };

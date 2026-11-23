@@ -41,7 +41,7 @@ export const calendarSiEvenimentePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă pe un eveniment care se repetă, deschide **Excepții** și apasă **Adaugă excepție**.", shot: "program-exceptie", marks: ["exceptii", "adauga-exceptie"] },
+        { text: "Apasă pe un eveniment care se repetă, deschide **Excepții** (1) și apasă **Adaugă excepție** (2).", shot: "program-exceptie", marks: ["exceptii", "adauga-exceptie"], numbered: true },
         { text: "Alege **Anulat** sau **Mutat** și **Data** ședinței.", shot: "program-exceptie", marks: ["tip", "data"] },
         { text: "La **Mutat** pune și **Data nouă**, **Început** și **Sfârșit**. Apoi apasă **Salvează**.", shot: "program-exceptie", marks: ["data-noua"] },
       ],

@@ -64,8 +64,22 @@ it("renderInline bolds only **pairs**", () => {
 
 const shot = { w: 100, h: 100, alt: "", marks: [{ key: "a", box: [1, 2, 3, 4] }, { key: "b", box: [5, 6, 7, 8] }] };
 
-it("stepMarks numbers the named keys from 1, in the order the step names them", () => {
-  assert.deepEqual(sh.stepMarks("s", shot, ["b", "a"]), [{ n: 1, box: [5, 6, 7, 8] }, { n: 2, box: [1, 2, 3, 4] }]);
+it("stepMarks: a step without numbered yields marks without numbers, in the order named", () => {
+  assert.deepEqual(sh.stepMarks("s", shot, ["b", "a"]), [{ box: [5, 6, 7, 8] }, { box: [1, 2, 3, 4] }]);
+});
+
+it("stepMarks: a numbered step yields 1..n in the order the step names the keys", () => {
+  assert.deepEqual(sh.stepMarks("s", shot, ["b", "a"], true), [{ n: 1, box: [5, 6, 7, 8] }, { n: 2, box: [1, 2, 3, 4] }]);
+});
+
+it("a badge goes outside the box unless the box is too close to the left edge", () => {
+  assert.equal(sh.badgeOutside([30, 10, 20, 5]), true);
+  assert.equal(sh.badgeOutside([2, 10, 20, 5]), false);
+});
+
+it("a step's code is part of the search text", () => {
+  const p = page("x", { blocks: [{ t: "steps", steps: [{ text: "Rulează.", code: "docker compose up -d" }] }] });
+  assert.ok(r.pageText(p).includes("docker compose up -d"));
 });
 
 it("stepMarks: a step with a shot and no marks shows none", () => {

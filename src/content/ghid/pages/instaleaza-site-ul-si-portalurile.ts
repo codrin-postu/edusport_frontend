@@ -6,14 +6,28 @@ export const instaleazaSiteulPage: GhidPage = {
   lead: "Codul, variabilele și pornirea frontend-ului, care servește site-ul și ambele portaluri.",
   blocks: [
     { t: "p", text: "Instalează întâi backend-ul. Frontend-ul citește câmpuri pe care le furnizează backend-ul, iar unele pagini se încarcă la construire." },
-    { t: "h2", text: "Codul și fișierul de variabile" },
     {
-      t: "code",
-      text: `cd /opt/edusport
+      t: "steps",
+      steps: [
+        {
+          text: "Clonează codul frontend-ului și creează fișierul de variabile.",
+          code: `cd /opt/edusport
 git clone git@github.com:<org>/edusport_frontend.git
 cd edusport_frontend
 cp .env.example .env.production
 chmod 600 .env.production`,
+        },
+        { text: "Completează variabilele de construire și de rulare din listele de mai jos. Orice variabilă de construire cere reconstruire, nu doar repornire." },
+        {
+          text: "Rulează scriptul de deploy al frontend-ului.",
+          code: `cd /opt/edusport/edusport_frontend
+./scripts/deploy.sh`,
+        },
+        {
+          text: "Verifică răspunsul de sănătate al containerului.",
+          code: "docker exec edusport-frontend wget -qO- http://localhost:3000/api/health",
+        },
+      ],
     },
     { t: "h2", text: "Variabile la construire" },
     { t: "p", text: "Sunt argumente de build ale compose. Orice schimbare cere reconstruire, nu doar repornire." },
@@ -47,20 +61,6 @@ chmod 600 .env.production`,
     {
       t: "p",
       text: "**STRAPI_INTERNAL_URL**: apelurile de pe server folosesc STRAPI_INTERNAL_URL, apoi NEXT_PUBLIC_STRAPI_URL, apoi http://localhost:1337. Cu valoarea nesetată, cererile ies prin adresa publică și nginx. O cale internă mai rapidă este **STRAPI_INTERNAL_URL=http://edusport_backend:1337**, pentru că ambele containere sunt pe **edusport_net**.",
-    },
-    { t: "h2", text: "Pornire" },
-    {
-      t: "steps",
-      steps: [
-        { text: "Rulează scriptul de deploy al frontend-ului." },
-        { text: "Verifică răspunsul de sănătate al containerului." },
-      ],
-    },
-    {
-      t: "code",
-      text: `cd /opt/edusport/edusport_frontend
-./scripts/deploy.sh
-docker exec edusport-frontend wget -qO- http://localhost:3000/api/health`,
     },
     { t: "p", text: "Containerul rulează cu sistemul de fișiere doar pentru citire, iar memoria cache ISR se pierde la fiecare repornire; webhook-ul de reîmprospătare o reface." },
     { t: "links", items: [{ slug: "nginx-si-https" }] },

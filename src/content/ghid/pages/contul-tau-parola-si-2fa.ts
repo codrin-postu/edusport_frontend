@@ -16,9 +16,9 @@ export const contulTauPage: GhidPage = {
           marks: ["activeaza"],
         },
         {
-          text: "Cu aplicația: scanează codul cu aplicația de autentificare (sau scrie cheia de sub el), scrie **Cod din aplicație** și apasă **Activează**.",
+          text: "Cu aplicația: scanează codul (sau scrie cheia de sub el), scrie **Cod din aplicație** (1) și apasă **Activează** (2).",
           shot: "securitate-2fa",
-          marks: ["cod", "confirma"],
+          marks: ["cod", "confirma"], numbered: true,
         },
         { text: "Cu e-mail: scrie **Cod din e-mail**, trimis pe adresa contului." },
         { text: "La prima metodă pornită apar **Coduri de rezervă**. Apasă **Descarcă** sau **Copiază**, apoi **Gata**." },

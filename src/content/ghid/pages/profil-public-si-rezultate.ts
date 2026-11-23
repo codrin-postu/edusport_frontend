@@ -32,9 +32,9 @@ export const profilPublicSiRezultatePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "La **Rezultate competiții** scrie numele în **Caută sportiv după nume** și apasă **Caută**.",
+          text: "La **Rezultate competiții** scrie numele în **Caută sportiv după nume** (1) și apasă **Caută** (2).",
           shot: "sportivi-profil-rezultate",
-          marks: ["nume", "cauta"],
+          marks: ["nume", "cauta"], numbered: true,
         },
         { text: "Alege sportivul din listă. Lista arată țara, clubul și numărul de competiții. Cardul arată **conectat**. Apasă **Salvează**." },
         {

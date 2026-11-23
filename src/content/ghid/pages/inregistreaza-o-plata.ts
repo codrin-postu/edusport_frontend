@@ -9,7 +9,7 @@ export const inregistreazaPlataPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Deschide **Contabilitate**, tabul **Plăți**. Apasă **+ Plată**.", shot: "contabilitate-plati", marks: ["plata"] },
-        { text: "La **Sportiv** caută și alege sportivul. La **Pentru** alege ce se plătește.", shot: "plati-form", marks: ["cauta", "pentru"] },
+        { text: "La **Sportiv** (1) caută și alege sportivul. La **Pentru** (2) alege ce se plătește.", shot: "plati-form", marks: ["cauta", "pentru"], numbered: true },
         { text: "**Suma** se completează singură când se știe. Verifică-o, verifică **Data** și alege **Metodă**: Numerar, Card (POS) sau Transfer bancar." },
         { text: "Dacă sportivul are e-mail, poți bifa **Trimite e-mail \"Plată înregistrată\"**. În **Notă** scrii ce e nevoie." },
         { text: "Apasă **Înregistrează**. Jos apare mesajul **Plată înregistrată**, cu **Anulează** timp de 8 secunde." },
