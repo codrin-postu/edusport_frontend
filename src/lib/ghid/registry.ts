@@ -39,6 +39,7 @@ export function pageText(page: GhidPage): string {
       case "p":
       case "h2":
       case "warn":
+      case "code":
         parts.push(b.text);
         break;
       case "list":

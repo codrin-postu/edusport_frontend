@@ -8,6 +8,7 @@ export type Block =
   | { t: "list"; items: string[] }
   | { t: "steps"; steps: Step[] }
   | { t: "warn"; text: string }
+  | { t: "code"; text: string }
   | { t: "video"; src: string; length?: string }
   | { t: "links"; items: { slug: string; label?: string }[] };
 

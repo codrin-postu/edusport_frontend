@@ -23,6 +23,12 @@ function One({ block }: { block: Block }) {
       return <Steps steps={block.steps} />;
     case "warn":
       return <Warn text={block.text} />;
+    case "code":
+      return (
+        <pre tabIndex={0} className="m-0 max-w-(--portal-narrow-860) overflow-x-auto border-card border-card-line bg-surface-subtle p-4 font-mono text-(length:--portal-text-14)">
+          <code>{block.text}</code>
+        </pre>
+      );
     case "video":
       return <Video src={block.src} length={block.length} />;
     case "links":

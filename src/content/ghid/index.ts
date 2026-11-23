@@ -56,6 +56,14 @@ import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
 import { hostingPage } from "./pages/hosting";
+import { inainteDeInceputPage } from "./pages/inainte-de-inceput";
+import { pregatesteServerulPage } from "./pages/pregateste-serverul";
+import { instaleazaBackendulPage } from "./pages/instaleaza-backend-ul";
+import { instaleazaSiteulPage } from "./pages/instaleaza-site-ul-si-portalurile";
+import { nginxSiHttpsPage } from "./pages/nginx-si-https";
+import { mutaDateleDePeServerulVechiPage } from "./pages/muta-datele-de-pe-serverul-vechi";
+import { copiiMonitorizareEmailPage } from "./pages/copii-de-siguranta-monitorizare-e-mail-google-si-analytics";
+import { verificareaFinalaPage } from "./pages/verificarea-finala";
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -115,6 +123,19 @@ export const GHID_GROUPS: GhidGroup[] = [
     ],
   },
   { title: "Despre EduSport", pages: [sigurantaPage, hostingPage] },
+  {
+    title: "Instalare pe un server nou",
+    pages: [
+      inainteDeInceputPage,
+      pregatesteServerulPage,
+      instaleazaBackendulPage,
+      instaleazaSiteulPage,
+      nginxSiHttpsPage,
+      mutaDateleDePeServerulVechiPage,
+      copiiMonitorizareEmailPage,
+      verificareaFinalaPage,
+    ],
+  },
 ];
 
 /** Screenshot metadata by id; the image is content/ghid/img/<id>.jpg. */

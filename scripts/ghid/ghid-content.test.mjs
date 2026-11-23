@@ -66,3 +66,9 @@ it("every page module is imported once in the registry, and the registry lists e
   const body = registrySource.slice(registrySource.indexOf("GHID_GROUPS"));
   for (const n of names) assert.equal(body.match(new RegExp(`\\b${n}\\b`, "g"))?.length, 1, `${n} must be listed exactly once`);
 });
+
+it("every code block has text and a page uses the type", () => {
+  const codes = pages.flatMap((p) => p.blocks.filter((b) => b.t === "code").map((b) => ({ slug: p.slug, ...b })));
+  assert.ok(codes.length > 0, "no page uses a code block");
+  for (const c of codes) assert.ok(c.text.trim(), `${c.slug}: empty code block`);
+});

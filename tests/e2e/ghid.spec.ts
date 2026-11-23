@@ -120,6 +120,15 @@ test.describe("ghid wiki", () => {
     await expect(team.getByRole("link", { name: "Sportivi inactivi" })).toBeVisible();
   });
 
+  test("a code block renders on an install page and scrolls inside itself", async({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/ghid/pregateste-serverul");
+    const code = page.locator("pre").filter({ hasText: "sudo ufw allow OpenSSH" });
+    await expect(code).toBeVisible();
+    await expect(code).toContainText("sudo ufw enable");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+
   test("an unknown page is the 404 page", async({ request }) => {
     const res = await request.get("/ghid/nu-exista", { headers: { cookie: COOKIE } });
     expect(res.status()).toBe(404);
