@@ -30,6 +30,6 @@ export const roluriPage: GhidPage = {
       t: "p",
       text: "Un administrator cu mai multe roluri are tot ce dă fiecare rol. Rolurile **Author** și **Editor**, din aceeași listă, sunt ale Strapi: ele nu deschid nicio pagină EduSport în afară de **Panou EduSport** și **Securitate**.",
     },
-    { t: "links", items: [{ slug: "adauga-un-administrator" }, { slug: "schimba-rolul-sau-opreste-accesul" }, { slug: "siguranta" }] },
+    { t: "links", items: [{ slug: "ce-poate-face-fiecare-rol" }, { slug: "adauga-un-administrator" }, { slug: "schimba-rolul-sau-opreste-accesul" }, { slug: "siguranta" }] },
   ],
 };

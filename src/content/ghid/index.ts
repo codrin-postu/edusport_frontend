@@ -55,6 +55,17 @@ import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sporti
 import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
+import { cumFunctioneazaContulPage } from "./pages/cum-functioneaza-contul-de-parinte";
+import { invitaParinteInPortalPage } from "./pages/invita-un-parinte-in-portal";
+import { ceVedeParinteleaPage } from "./pages/ce-vede-si-ce-poate-face-parintele";
+import { parinteleNuPoateIntraPage } from "./pages/parintele-nu-poate-intra";
+import { schimbaEmailulSportivPage } from "./pages/schimba-e-mailul-unui-sportiv";
+import { scoateAccesulParintePage } from "./pages/scoate-accesul-unui-parinte";
+import { emailuriAutomatePage } from "./pages/e-mailuri-automate";
+import { cePoateFaceFiecareRolPage } from "./pages/ce-poate-face-fiecare-rol";
+import { ceVedeAntrenorulPage } from "./pages/ce-vede-si-ce-poate-face-antrenorul";
+import { aiUitatParolaPage } from "./pages/ai-uitat-parola";
+import { parinteCereDatelePage } from "./pages/un-parinte-cere-datele-sau-stergerea";
 import { hostingPage } from "./pages/hosting";
 import { inainteDeInceputPage } from "./pages/inainte-de-inceput";
 import { pregatesteServerulPage } from "./pages/pregateste-serverul";
@@ -113,13 +124,29 @@ export const GHID_GROUPS: GhidGroup[] = [
     title: "Echipa și acces",
     pages: [
       roluriPage,
+      cePoateFaceFiecareRolPage,
       adaugaAdministratorPage,
       schimbaRolulPage,
       accesAntrenorPortalPage,
+      ceVedeAntrenorulPage,
+      aiUitatParolaPage,
+      parinteCereDatelePage,
       exportaDateleSportivuluiPage,
       anonimizeazaSportivPage,
       ceRamaneDupaAnonimizarePage,
       sportiviInactiviPage,
+    ],
+  },
+  {
+    title: "Portalul părinților",
+    pages: [
+      cumFunctioneazaContulPage,
+      invitaParinteInPortalPage,
+      ceVedeParinteleaPage,
+      parinteleNuPoateIntraPage,
+      schimbaEmailulSportivPage,
+      scoateAccesulParintePage,
+      emailuriAutomatePage,
     ],
   },
   { title: "Despre EduSport", pages: [sigurantaPage, hostingPage] },

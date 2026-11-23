@@ -1297,4 +1297,33 @@ export const SHOTS = [
     },
     marks: [{ key: "inactivi", selector: "text=/Inactivi de peste/" }],
   },
+  {
+    id: "portal-card",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Fișa unui sportiv, tabul Date, cu cardul Acces portal: adresa, starea și butoanele",
+    act: async(page) => {
+      await page.getByText("Ana Georgescu").first().click();
+      await page.getByRole("button", { name: "Editează" }).waitFor();
+      const card = page.getByText("Acces portal", { exact: true }).first();
+      await card.waitFor();
+      await card.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(800);
+    },
+    marks: [
+      { key: "stare", selector: ".spv-access-who" },
+      { key: "butoane", selector: ".spv-access-acts" },
+    ],
+  },
+  {
+    id: "portal-invitatii",
+    path: "/admin/plugins/edusport-sportivi",
+    alt: "Lista Sportivi cu un sportiv bifat și fereastra Invită în portal, cu numărul de invitații",
+    act: async(page) => {
+      await page.getByRole("checkbox", { name: "Ana Georgescu" }).check();
+      await page.getByRole("button", { name: "Invită în portal" }).click();
+      await page.getByText(/către \d+ adres/).first().waitFor();
+      await page.waitForTimeout(600);
+    },
+    marks: [{ key: "previzualizare", selector: "text=/către \\d+ adres/" }],
+  },
 ];
