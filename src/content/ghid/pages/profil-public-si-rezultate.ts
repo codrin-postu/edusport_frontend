@@ -19,7 +19,7 @@ export const profilPublicSiRezultatePage: GhidPage = {
           marks: ["vizibilitate"],
         },
         { text: "Completează cardurile: **Identitate**, **Poveste**, **Echipă și discipline**, **Mișcări și hobby-uri**, **Obiectiv de carieră**, **Galerie** și **Programe pe sezon**." },
-        { text: "**Nume** se schimbă în **Date**." },
+        { text: "**Nume** se modifică din tabul **Date**." },
         { text: "După prima modificare apar **Renunță** și **Salvează**. Apasă **Salvează**." },
       ],
     },
@@ -44,11 +44,11 @@ export const profilPublicSiRezultatePage: GhidPage = {
     },
     {
       t: "p",
-      text: "Importul rulează pe server, deci poți închide pagina. **Oprește** sau **Anulează** îl oprește, **Importă din nou** îl pornește iar. **Deconectează** scoate legătura, apoi **Salvează**.",
+      text: "Importul rulează pe server, deci poți închide pagina. **Oprește** sau **Anulează** îl oprește, **Importă din nou** îl repornește. **Deconectează** scoate legătura, apoi **Salvează**.",
     },
     {
       t: "p",
-      text: "Dacă apare **Niciun rezultat**, sportivul nu e încă în skate-results: nicio competiție de-a lui nu a fost preluată.",
+      text: "Dacă apare **Niciun rezultat**, sportivul nu există încă în skate-results, pentru că nicio competiție a lui nu a fost importată.",
     },
     { t: "links", items: [{ slug: "competitii-si-rezultate" }, { slug: "fisa-sportivului" }] },
   ],

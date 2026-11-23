@@ -3,23 +3,23 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const competitiiPage: GhidPage = {
   slug: "competitii-si-rezultate",
   title: "Competiții și rezultate",
-  lead: "Un sportiv are competiții dintr-o singură sursă: skate-results, sau cele introduse de mână.",
+  lead: "Competițiile unui sportiv provin dintr-o singură sursă: skate-results sau introducerea manuală.",
   blocks: [
     { t: "h2", text: "Ce sursă se folosește" },
     {
       t: "list",
       items: [
         "Dacă profilul public al sportivului are legătură cu skate-results, se arată doar rezultatele de acolo.",
-        "Dacă nu are, se arată competițiile introduse de mână în care e trecut.",
+        "Altfel, se arată competițiile introduse manual la care este trecut.",
       ],
     },
     {
       t: "p",
-      text: "skate-results este locul unde sunt păstrate rezultatele competițiilor importate. Legătura cu un sportiv se face din profilul lui public.",
+      text: "skate-results este serviciul care păstrează rezultatele competițiilor importate. Legătura cu un sportiv se face din profilul lui public.",
     },
     {
       t: "p",
-      text: "Sursele nu se adună. Altfel același concurs ar apărea de două ori. Pagina **Realizări** de pe site citește doar skate-results.",
+      text: "Sursele nu se combină, ca aceeași competiție să nu apară de două ori. Pagina **Realizări** de pe site citește doar skate-results.",
     },
     { t: "h2", text: "Importă din skate-results" },
     {
@@ -32,10 +32,10 @@ export const competitiiPage: GhidPage = {
           marks: ["nume-competitie", "cauta-competitie"], numbered: true,
         },
         { text: "Competiția apare în **Competiții importate**." },
-        { text: "Un sportiv apare în rezultate după ce profilul lui are legătura cu skate-results, în editorul profilului, la cardul **Rezultate competiții**." },
+        { text: "Un sportiv apare în rezultate după ce profilul lui este legat de skate-results, din cardul **Rezultate competiții** al profilului." },
       ],
     },
-    { t: "h2", text: "Introdu de mână" },
+    { t: "h2", text: "Adaugă manual" },
     {
       t: "steps",
       steps: [
@@ -51,9 +51,9 @@ export const competitiiPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Competițiile introduse de mână se văd și în Content Manager, la **Club / Competiție**.",
+      text: "Competițiile introduse manual se văd și în Content Manager, la **Club / Competiție**.",
     },
-    { t: "warn", text: "La **Șterge**, din **Competiții importate**, rezultatele competiției din skate-results se elimină." },
+    { t: "warn", text: "**Șterge**, din **Competiții importate**, elimină rezultatele competiției preluate din skate-results." },
     { t: "links", items: [{ slug: "profil-public-si-rezultate" }, { slug: "paginile-site-ului" }] },
   ],
 };

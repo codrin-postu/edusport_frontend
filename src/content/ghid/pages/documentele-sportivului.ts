@@ -3,13 +3,13 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const documenteleSportivuluiPage: GhidPage = {
   slug: "documentele-sportivului",
   title: "Documentele sportivului",
-  lead: "Fișa arată documentele PDF ale înscrierilor sportivului. Le vezi sau le descarci.",
+  lead: "Fișa conține PDF-urile înscrierilor sportivului, pe care le poți deschide sau descărca.",
   blocks: [
     {
       t: "steps",
       steps: [
         { text: "Deschide fișa sportivului, tabul **Documente**.", shot: "sportivi-documente", marks: ["tab-documente"] },
-        { text: "Fiecare rând e un document, de exemplu **Acord** sau **Cerere de adeziune**, cu sezonul și numărul înscrierii." },
+        { text: "Fiecare rând este un document, de exemplu **Acord** sau **Cerere de adeziune**, cu sezonul și numărul înscrierii." },
         { text: "**Vezi** deschide documentul. **Descarcă** îl salvează pe calculator.", shot: "sportivi-documente", marks: ["vezi", "descarca"] },
       ],
     },

@@ -3,14 +3,14 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const paginiSitePage: GhidPage = {
   slug: "paginile-site-ului",
   title: "Paginile site-ului",
-  lead: "Textele paginilor se schimbă din grupul **Pagini site** al meniului, iar meniul de sus al site-ului din **Meniu site**.",
+  lead: "Textele paginilor se modifică din grupa **Pagini site** a meniului, iar meniul de sus al site-ului din **Meniu site**.",
   blocks: [
     {
       t: "steps",
       steps: [
         { text: "În meniu deschide **Pagini site** și alege pagina: de exemplu **Cursuri**." },
         {
-          text: "Schimbă textul din câmp. Jos apare **Modificări nesalvate**, cu **Renunță** și **Salvează**.",
+          text: "Modifică textul din câmp. Jos apare **Modificări nesalvate**, cu **Renunță** și **Salvează**.",
           shot: "site-cursuri",
           marks: ["nume", "renunta", "salveaza"],
         },
@@ -19,12 +19,12 @@ export const paginiSitePage: GhidPage = {
     },
     {
       t: "p",
-      text: "În grup sunt: **Pagina principală**, **Cursuri**, **Regulament**, **Pagina Program**, **Pagina Echipă**, **Istoric**, **Realizări**, **Parteneri** și **Voluntariat**.",
+      text: "Grupa conține: **Pagina principală**, **Cursuri**, **Regulament**, **Pagina Program**, **Pagina Echipă**, **Istoric**, **Realizări**, **Parteneri** și **Voluntariat**.",
     },
-    { t: "warn", text: "Paginile nu au ciornă: ce salvezi este varianta de pe site." },
+    { t: "warn", text: "Paginile nu au ciornă: ce salvezi apare direct pe site." },
     {
       t: "p",
-      text: "Pe site, modificarea nu apare pe loc: de obicei după câteva minute, cel mult după o oră.",
+      text: "Pe site, modificarea nu apare imediat: de obicei după câteva minute, cel târziu după o oră.",
     },
     { t: "h2", text: "Meniu site" },
     {
@@ -37,7 +37,7 @@ export const paginiSitePage: GhidPage = {
           marks: ["despre-noi", "cursuri"],
         },
         { text: "La **Descriere** scrie textul de sub titlul cardului." },
-        { text: "La **Imagine** apasă **Alege** (sau **Schimbă**) și ia poza din Media. Recomandat 640 pe 400 px, sub 300 KB. **Elimină** scoate imaginea." },
+        { text: "La **Imagine** apasă **Alege** (sau **Schimbă**) și alege imaginea din Media. Dimensiunea recomandată este 640 x 400 px, sub 300 KB. **Elimină** scoate imaginea." },
         { text: "Apasă **Salvează**, în bara de jos." },
       ],
     },

@@ -11,7 +11,7 @@ export const copiiSiVerificareaFinalaPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Rulează scriptul o dată, de mână, și verifică fișierele.",
+          text: "Rulează scriptul o dată, manual, și verifică fișierele.",
           code: `cd /opt/edusport/edusport_backend
 ./scripts/backup.sh
 ls -l backups`,
@@ -28,7 +28,7 @@ ls -l backups`,
           text: "Copiază directorul **backups/** în afara serverului, zilnic, pe un al doilea server sau într-un spațiu de stocare, cu rsync sau rclone.",
         },
         {
-          text: "Testează o restaurare, pe un server de probă, după pașii de pe pagina **Mută datele de pe serverul vechi**. O copie neverificată nu este o copie.",
+          text: "Testează o restaurare, pe un server de probă, după pașii de pe pagina **Mută datele de pe serverul vechi**. O copie de siguranță netestată nu oferă nicio garanție.",
         },
       ],
     },

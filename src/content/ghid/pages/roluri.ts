@@ -3,15 +3,15 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const roluriPage: GhidPage = {
   slug: "roluri",
   title: "Roluri",
-  lead: "Rolul hotărăște ce meniuri și pagini vede fiecare administrator.",
+  lead: "Rolul stabilește ce pagini poate folosi fiecare administrator.",
   blocks: [
-    { t: "warn", text: "Rolul ascunde meniuri și pagini. Nu este încă o barieră la date: dă cont în panou doar oamenilor de încredere." },
+    { t: "p", text: "Serverul impune zonele fiecărui rol, nu doar meniul afișat." },
     { t: "h2", text: "Cele trei roluri" },
     {
       t: "list",
       items: [
-        "**Super Admin**: toate paginile. Numai el vede **Administratori**, în **Securitate**.",
-        "**Administrator club**: toate paginile, fără cele rezervate lui Super Admin.",
+        "**Super Admin**: toate paginile. Doar el vede **Administratori**, în **Securitate**.",
+        "**Administrator club**: toate paginile, cu excepția celor rezervate rolului Super Admin.",
         "**Editor site**: **Panou EduSport**, **Securitate** și paginile site-ului, de exemplu **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Sponsori**, **Membri echipă**, **Voluntariat** și **Prețuri**.",
       ],
     },
@@ -28,7 +28,7 @@ export const roluriPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Un administrator cu mai multe roluri are tot ce dă fiecare rol. Rolurile **Author** și **Editor**, din aceeași listă, sunt ale Strapi: ele nu deschid nicio pagină EduSport în afară de **Panou EduSport** și **Securitate**.",
+      text: "Un administrator cu mai multe roluri cumulează drepturile tuturor rolurilor. Rolurile **Author** și **Editor** din aceeași listă aparțin Strapi și nu dau acces la nicio pagină EduSport în afară de **Panou EduSport** și **Securitate**.",
     },
     { t: "links", items: [{ slug: "ce-poate-face-fiecare-rol" }, { slug: "adauga-un-administrator" }, { slug: "schimba-rolul-sau-opreste-accesul" }, { slug: "siguranta" }] },
   ],

@@ -3,14 +3,14 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const meniulSiPaginaAcasaPage: GhidPage = {
   slug: "meniul-si-pagina-acasa",
   title: "Meniul și pagina Acasă",
-  lead: "Cum găsești paginile din panou și ce arată pagina Acasă.",
+  lead: "Navigarea în panou și pagina Acasă.",
   blocks: [
     { t: "h2", text: "Meniul" },
     {
       t: "steps",
       steps: [
         { text: "Apasă o grupă din stânga, de exemplu **Club și școală**, ca să vezi paginile ei.", shot: "primii-meniu", marks: ["club-scoala"] },
-        { text: "Sus, sub **Acasă**, sunt paginile folosite des: **Anunțuri**, **Setări site**, **Sezoane** și **Meniu site**." },
+        { text: "Sus, sub **Acasă**, sunt paginile folosite frecvent: **Anunțuri**, **Setări site**, **Sezoane** și **Meniu site**." },
         { text: "Jos sunt **Contul meu** și **Ieși din cont**." },
       ],
     },
@@ -28,12 +28,12 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "**Ce e nou** arată ce așteaptă răspuns, de exemplu înscrieri noi. Apasă rândul ca să deschizi pagina. Fără nimic nou, scrie **La zi**.",
+          text: "**Ce e nou** arată ce necesită atenție, de exemplu înscrierile noi. Apasă un rând ca să deschizi pagina. Când nu este nimic nou, apare **La zi**.",
           shot: "acasa-panou",
           marks: ["ce-e-nou"],
         },
         {
-          text: "**Înscrieri pe site** arată dacă înscrierile sunt **Deschise** sau **Închise**. Comutatorul le schimbă și se salvează imediat.",
+          text: "**Înscrieri pe site** arată dacă înscrierile sunt **Deschise** sau **Închise**. Comutatorul schimbă starea, iar modificarea se salvează imediat.",
           shot: "acasa-panou",
           marks: ["inscrieri"],
         },
@@ -53,7 +53,7 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
           shot: "primii-meniu",
           marks: ["strapi"],
         },
-        { text: "Meniul din stânga se schimbă cu cel al Strapi, programul pe care e făcut panoul." },
+        { text: "Meniul din stânga este înlocuit cu cel al Strapi, platforma pe care este construit panoul." },
         { text: "Ca să te întorci, apasă butonul **Panou EduSport**." },
       ],
     },

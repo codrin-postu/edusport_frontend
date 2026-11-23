@@ -79,7 +79,7 @@ import { copiiSiVerificareaFinalaPage } from "./pages/copii-de-siguranta-si-veri
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
-  { title: "Început", pages: [ceEsteEdusportPage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
+  { title: "Primii pași", pages: [ceEsteEdusportPage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
   {
     title: "Înscrieri",
     pages: [
@@ -114,7 +114,7 @@ export const GHID_GROUPS: GhidGroup[] = [
     pages: [completeazaPrezentaPage, adaugaSedintaInAfaraProgramuluiPage, corecteazaPrezentaPage, prezentaPeOLunaPage, lectiiIndividualePage],
   },
   {
-    title: "Bani",
+    title: "Contabilitate",
     pages: [contabilitatePage, inregistreazaPlataPage, anuleazaPlataPage, abonamentPage, preturiPage, deschideFiltreazaTabelPage, salveazaTabelPage, descarcaTabelPage],
   },
   {
@@ -122,7 +122,7 @@ export const GHID_GROUPS: GhidGroup[] = [
     pages: [anunturiPage, paginiSitePage, articolePage, imaginiInMediaPage, competitiiPage, echipaSponsoriPage, setariSitePage],
   },
   {
-    title: "Echipa și acces",
+    title: "Echipă și acces",
     pages: [
       roluriPage,
       cePoateFaceFiecareRolPage,

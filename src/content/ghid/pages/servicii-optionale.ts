@@ -25,7 +25,7 @@ export const serviciiOptionalePage: GhidPage = {
       items: [
         "**BREVO_API_KEY**: cheia API. Doar pe server, niciodată în git.",
         "**EMAIL_FROM_ADDRESS**: adresa expeditorului, verificată în Brevo.",
-        "**EMAIL_LIVE**: **true** pentru a trimite destinatarilor reali. Altfel, totul merge la **EMAIL_TEST_RECIPIENT** (util pe un server de test).",
+        "**EMAIL_LIVE**: **true** pentru a trimite destinatarilor reali. Altfel, toate mesajele ajung la **EMAIL_TEST_RECIPIENT** (util pe un server de test).",
         "**EMAIL_FROM_NAME** și **EMAIL_REPLY_TO**: opționale, numele expeditorului și adresa de răspuns.",
       ],
     },

@@ -71,11 +71,11 @@ sudo certbot renew --dry-run`,
     },
     {
       t: "p",
-      text: "Antetele contează. **Host** trebuie trimis nemodificat: frontend-ul alege între site și portal după el. **X-Real-IP** este singurul antet din care Strapi ia adresa clientului (limita de înscrieri pe adresă); nginx îl suprascrie cu **$remote_addr**, deci nu poate fi falsificat. **X-Forwarded-Proto** este obligatoriu pentru portaluri.",
+      text: "Antetele sunt importante. **Host** trebuie trimis nemodificat: frontend-ul alege între site și portal după el. **X-Real-IP** este singurul antet din care Strapi ia adresa clientului (limita de înscrieri pe adresă); nginx îl suprascrie cu **$remote_addr**, deci nu poate fi falsificat. **X-Forwarded-Proto** este obligatoriu pentru portaluri.",
     },
     {
       t: "warn",
-      text: "Blocurile de pe serverul actual nu au antete de securitate (HSTS și celelalte), nu au limit_req și nu maschează linkurile de invitație din jurnalele de acces (**/invite/<secret>** și **?code=** apar întregi). Hotărăște pentru serverul nou: antetele, limit_req și un log_format propriu, cu map și $uri.",
+      text: "Blocurile de pe serverul actual nu au antete de securitate (HSTS și celelalte), nu au limit_req și nu maschează linkurile de invitație din jurnalele de acces (**/invite/<secret>** și **?code=** apar întregi). Pentru serverul nou, stabilește antetele, limit_req și un log_format propriu, cu map și $uri.",
     },
     { t: "p", text: "Opțional, pentru monitorizare: **/etc/nginx/conf.d/vhost-log.conf** scrie un al doilea jurnal de acces cu **$host** pe prima poziție (sursa în depozitul server-ops, **common/vhost-log.conf**)." },
     { t: "links", items: [{ slug: "instaleaza-panoul-de-administrare" }] },

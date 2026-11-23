@@ -8,7 +8,7 @@ export const descarcaTabelPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Pregătește tabelul. Nu trebuie salvat întâi." },
+        { text: "Pregătește tabelul; nu este nevoie să îl salvezi întâi." },
         { text: "Apasă **Descarcă Excel**, sus. Pentru CSV, apasă săgeata de lângă el (**Alte formate**) și alege **CSV**.", shot: "tabele-descarca", marks: ["excel", "csv"] },
       ],
     },
@@ -17,7 +17,7 @@ export const descarcaTabelPage: GhidPage = {
       items: [
         "Numele fișierului este numele tabelului și data, de exemplu restante-2026-11-21.xlsx.",
         "**Excel** păstrează gruparea, cu un total pe fiecare grupă și un **Total** la sfârșit.",
-        "**CSV** are un rând pentru fiecare înregistrare, fără totaluri. Dacă tabelul e grupat, prima coloană este grupa.",
+        "**CSV** are un rând pentru fiecare înregistrare, fără totaluri. Dacă tabelul este grupat, prima coloană este grupa.",
       ],
     },
     {

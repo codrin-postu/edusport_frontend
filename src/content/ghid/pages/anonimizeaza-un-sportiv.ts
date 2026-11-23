@@ -8,7 +8,7 @@ export const anonimizeazaSportivPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Dacă părintele cere datele, fă întâi **Exportă datele**. După anonimizare exportul nu mai merge." },
+        { text: "Dacă părintele cere o copie a datelor, folosește întâi **Exportă datele**. După anonimizare, exportul nu mai este posibil." },
         { text: "Deschide fișa sportivului. Sus, în dreapta, apasă **...** (1), apoi **Anonimizează** (2).", shot: "date-meniu", marks: ["mai-multe", "anonimizeaza"], numbered: true },
         {
           text: "Fereastra **Anonimizezi datele sportivului?** spune ce se șterge și ce rămâne. Apasă **Anonimizează**. **Anulează** închide fără nicio schimbare.",
@@ -20,7 +20,7 @@ export const anonimizeazaSportivPage: GhidPage = {
     { t: "warn", text: "**Nu se poate anula.** Datele șterse nu se mai pot recupera din panou." },
     {
       t: "p",
-      text: "**Administrator club** nu vede **Anonimizează** în meniu. În Istoric rămâne linia **Date anonimizate**.",
+      text: "**Administrator club** nu vede **Anonimizează** în meniu. În **Istoric** rămâne înregistrarea **Date anonimizate**.",
     },
     { t: "links", items: [{ slug: "ce-ramane-dupa-anonimizare" }, { slug: "sportivi-inactivi" }, { slug: "exporta-datele-unui-sportiv" }] },
   ],

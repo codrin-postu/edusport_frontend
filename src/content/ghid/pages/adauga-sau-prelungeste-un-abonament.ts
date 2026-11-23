@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const abonamentPage: GhidPage = {
   slug: "adauga-sau-prelungeste-un-abonament",
   title: "Adaugă sau prelungește un abonament",
-  lead: "Un abonament nou se adaugă sportivului, iar cele active ale școlii se prelungesc dintr-o mișcare.",
+  lead: "Un abonament nou se adaugă sportivului, iar cele active ale școlii se prelungesc toate deodată.",
   blocks: [
     { t: "h2", text: "Adaugă un abonament" },
     {
@@ -12,7 +12,7 @@ export const abonamentPage: GhidPage = {
         { text: "Deschide **Contabilitate**, tabul **Abonamente**. Apasă **+ Abonament**.", shot: "abonamente-lista", marks: ["adauga"] },
         { text: "La **Sportiv** caută și alege sportivul. Se deschide **Adaugă abonament**, cu numele lui." },
         {
-          text: "La **Abonament** alege din listă. Fiecare rând arată prețul, de membru sau de neafiliat.",
+          text: "La **Abonament** alege tipul din listă. Fiecare rând arată prețul pentru membri sau pentru neafiliați.",
           shot: "abonament-adauga", marks: ["abonament"],
         },
         {
@@ -31,11 +31,11 @@ export const abonamentPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Același **Adaugă abonament** se deschide și din **...** de pe rândul sportivului din **Prezență** (doar la grupele școlii) și din fișa sportivului, la tabul **Grupe și abonament**, cu **+ Adaugă abonament**. Sportivul e deja ales.",
+      text: "Același **Adaugă abonament** se deschide și din **...** de pe rândul sportivului din **Prezență** (doar la grupele școlii) și din fișa sportivului, la tabul **Grupe și abonament**, cu **+ Adaugă abonament**. Sportivul este deja ales.",
     },
     {
       t: "p",
-      text: "Dacă sportivul are prezențe fără abonament, apare **Acoperă prezențe fără abonament**. Bifezi rândurile pe care le acoperă abonamentul nou.",
+      text: "Dacă sportivul are prezențe fără abonament, apare **Acoperă prezențe fără abonament**. Bifează prezențele acoperite de abonamentul nou.",
     },
     { t: "warn", text: "Abonamentul păstrează prețul din ziua în care a fost adăugat. Vezi **Prețuri**." },
     { t: "h2", text: "Prelungește abonamentele" },
@@ -44,7 +44,7 @@ export const abonamentPage: GhidPage = {
       steps: [
         { text: "În tabul **Abonamente** apasă **Prelungește abonamentele**.", shot: "abonamente-lista", marks: ["prelungeste"] },
         {
-          text: "La **Număr de săptămâni** scrie de la 1 la 12. Sub câmp scrie câte abonamente se prelungesc.",
+          text: "La **Număr de săptămâni** scrie o valoare între 1 și 12. Sub câmp apare numărul de abonamente care se prelungesc.",
           shot: "abonament-prelungeste", marks: ["saptamani"],
         },
         {

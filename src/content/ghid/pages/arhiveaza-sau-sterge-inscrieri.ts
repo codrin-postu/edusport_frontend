@@ -17,7 +17,7 @@ export const arhiveazaStergeInscrieriPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Lista obișnuită nu arată înscrierile arhivate. Pe ele apare **Arhivat**, iar în panou, la **Arhivare**, scrie **Arhivat**.",
+      text: "Lista implicită nu arată înscrierile arhivate. O înscriere arhivată are eticheta **Arhivat**, iar în panoul ei, la **Arhivare**, apare **Arhivat**.",
     },
     { t: "h2", text: "Vezi înscrierile arhivate" },
     {
@@ -38,14 +38,14 @@ export const arhiveazaStergeInscrieriPage: GhidPage = {
         },
       ],
     },
-    { t: "warn", text: "**Șterge** șterge înscrierea și documentele ei, definitiv. Pentru înscrierile vechi folosește **Arhivează**." },
+    { t: "warn", text: "**Șterge** elimină definitiv înscrierea și documentele ei. Pentru înscrierile vechi folosește **Arhivează**." },
     { t: "h2", text: "Pe telefon" },
     {
       t: "steps",
       steps: [
         { text: "Apasă **...**, apoi **Selectează**, și apasă cardurile dorite." },
         {
-          text: "Jos apasă **Arhivează** sau **Șterge**. Rămân inactive cât timp nu e bifat nimic. **Șterge** cere o confirmare, apoi șterge definitiv.",
+          text: "Jos apasă **Arhivează** sau **Șterge**. Butoanele sunt inactive până bifezi cel puțin un card. **Șterge** cere o confirmare, apoi șterge definitiv.",
           shot: "inscrieri-tel-selectie", marks: ["arhiveaza", "sterge"],
         },
       ],

@@ -18,25 +18,25 @@ export const gasesteUnSportivPage: GhidPage = {
           shot: "sportivi-lista",
           marks: ["cauta", "filtre"],
         },
-        { text: "Apasă pe numele sportivului. Se deschide fișa lui. Înapoi la listă te duce **Sportivi**, sus în stânga." },
+        { text: "Apasă pe numele sportivului ca să îi deschizi fișa. **Sportivi**, sus în stânga, revine la listă." },
       ],
     },
     {
       t: "p",
-      text: "Căutarea găsește și după numele părintelui sau numărul înscrierii, și merge cu o literă greșită.",
+      text: "Căutarea ia în calcul și numele părintelui și numărul înscrierii și tolerează o literă greșită.",
     },
     { t: "h2", text: "Filtre și sortare" },
     {
       t: "p",
-      text: "**Filtre** are **Secțiune**, **Grupa**, **Abonament**, **Membru A.C.S.**, **Profil public**, **Date**, **Status** și **Posibile dubluri**. Alegerile apar ca etichete sub căutare, iar fiecare se scoate cu x.",
+      text: "**Filtre** are **Secțiune**, **Grupa**, **Abonament**, **Membru A.C.S.**, **Profil public**, **Date**, **Status** și **Posibile dubluri**. Filtrele alese apar ca etichete sub căutare; fiecare se elimină cu x.",
     },
     {
       t: "p",
-      text: "Sortezi apăsând titlul coloanei **Sportiv**, **Vârstă** sau **Grupa**. Pe telefon sortezi cu **Sortare**.",
+      text: "Pentru sortare apasă titlul coloanei **Sportiv**, **Vârstă** sau **Grupa**. Pe telefon folosește **Sortare**.",
     },
     {
       t: "p",
-      text: "Sportivii marcați inactivi și cei anonimizați nu apar în listă. Îi vezi alegând la **Filtre**, **Status**.",
+      text: "Sportivii marcați inactivi și cei anonimizați nu apar în listă. Îi afișezi din **Filtre**, la **Status**.",
     },
     { t: "h2", text: "Ce arată lista" },
     {

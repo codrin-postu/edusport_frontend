@@ -17,7 +17,7 @@ export const cumFunctioneazaContulPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Regula de lucru: o persoană are acces la un singur cont, deci un singur e-mail. Scrie pe fiecare fișă, în **Date**, e-mailul persoanei care intră în portal.",
+      text: "Regula: o persoană, un cont, un e-mail. Pe fiecare fișă, în **Date**, completează e-mailul persoanei care intră în portal.",
     },
     { t: "h2", text: "Al cui este contul" },
     {
@@ -28,8 +28,8 @@ export const cumFunctioneazaContulPage: GhidPage = {
     {
       t: "list",
       items: [
-        "Nu se întâmplă nimic singur: același cont, același e-mail, nicio invitație nouă.",
-        "Dacă sportivul major este singurul din cont, portalul se schimbă: nu mai apare lista de sportivi, iar profilul scrie **Sportiv**.",
+        "Nu se schimbă nimic automat: același cont, același e-mail, nicio invitație nouă.",
+        "Dacă sportivul major este singurul din cont, portalul se schimbă: nu mai apare lista de sportivi, iar profilul afișează **Sportiv**.",
         "Dacă e-mailul părintelui rămâne pe fișă, părintele vede în continuare sportivul.",
         "Pentru ca sportivul să aibă propriul cont, scrie e-mailul lui în **Date**. Se trimite o invitație nouă, iar accesul vechi se oprește.",
       ],
@@ -42,7 +42,7 @@ export const cumFunctioneazaContulPage: GhidPage = {
     { t: "h2", text: "O adresă greșită" },
     {
       t: "p",
-      text: "Dacă invitația pleacă la o adresă scrisă greșit, rămâne un cont invitat pe care nu-l folosește nimeni. Corectează adresa în **Date**.",
+      text: "Dacă invitația a fost trimisă la o adresă greșită, rămâne un cont invitat nefolosit. Corectează adresa în **Date**.",
     },
     {
       t: "links",

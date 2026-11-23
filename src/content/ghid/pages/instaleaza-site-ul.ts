@@ -48,7 +48,7 @@ curl -I https://<gazda site-ului>`,
     {
       t: "list",
       items: [
-        "**STRAPI_INTERNAL_URL**: **http://edusport_backend:1337**; cererile de pe server merg direct prin rețeaua Docker, nu prin adresa publică și nginx. Fără ea, totul funcționează, dar mai lent.",
+        "**STRAPI_INTERNAL_URL**: **http://edusport_backend:1337**; cererile de pe server ajung direct prin rețeaua Docker, nu prin adresa publică și nginx. Fără ea, totul funcționează, dar mai lent.",
         "**REVALIDATE_SECRET**: aceeași valoare ca în backend și în webhook. Fără ea, adresa **/api/revalidate** răspunde 500, iar paginile se reîmprospătează după 30 de minute.",
         "**GHID_PASSWORD**: parola acestui ghid, la **/ghid**, doar pe gazda site-ului. Fără ea, orice parolă este refuzată.",
         "**STRAPI_PREVIEW_SECRET**: aceeași valoare ca în backend; previzualizarea articolelor nepublicate. Fără ea, previzualizarea răspunde 500.",

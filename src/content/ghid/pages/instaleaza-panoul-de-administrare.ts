@@ -91,7 +91,7 @@ docker compose -f docker-compose.production.yml --env-file .env.production logs 
       t: "p",
       text: "Imaginile stau în volumul **edusport_backend_uploads** (montat la /opt/app/public/uploads), PDF-urile de înscriere în **edusport_backend_private_documents** (montat la /opt/app/private), baza în **edusport_backend_pgdata**. Volumele create prin compose primesc proprietarul **100:101** (utilizatorul strapi). Containerul nu poate schimba proprietarul: un volum deținut de root face ca fiecare încărcare să eșueze cu EACCES. Creează volumele mereu prin compose și, după orice copiere făcută ca root, redă proprietarul cu **chown -R 100:101**.",
     },
-    { t: "p", text: "Unelte de recuperare, din directorul backend-ului: **npm run admin:reset-2fa**, **npm run admin:end-sessions**." },
+    { t: "p", text: "Comenzi de recuperare, din directorul backend-ului: **npm run admin:reset-2fa**, **npm run admin:end-sessions**." },
     { t: "links", items: [{ slug: "roluri" }, { slug: "adauga-un-administrator" }, { slug: "instaleaza-site-ul" }] },
   ],
 };

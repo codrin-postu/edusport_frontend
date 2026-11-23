@@ -9,7 +9,7 @@ export const schimbaRolulPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Deschide **Utilizatori** ca la adăugarea unui administrator și apasă creionul de pe rândul persoanei (**Editează**).",
+          text: "Deschide **Utilizatori**, ca la adăugarea unui administrator, și apasă pictograma creion (**Editează**) de pe rândul persoanei.",
           shot: "echipa-utilizatori",
           marks: ["editeaza"],
         },
@@ -30,7 +30,7 @@ export const schimbaRolulPage: GhidPage = {
         },
       ],
     },
-    { t: "p", text: "Rolurile și ce vede fiecare sunt la Roluri." },
+    { t: "p", text: "Rolurile și drepturile fiecăruia sunt descrise în pagina Roluri." },
     { t: "links", items: [{ slug: "roluri" }, { slug: "adauga-un-administrator" }, { slug: "siguranta" }] },
   ],
 };

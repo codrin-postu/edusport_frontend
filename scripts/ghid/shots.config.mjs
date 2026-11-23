@@ -254,7 +254,7 @@ export const SHOTS = [
   {
     id: "inscrieri-lista",
     path: "/admin/plugins/edusport-inscrieri",
-    alt: "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
+    alt: "Lista Înscrieri cu eticheta noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
     marks: [
       { key: "eticheta", selector: ".sbt-newtag" },
       { key: "cauta", selector: "input[placeholder*='telefon']" },
@@ -265,7 +265,7 @@ export const SHOTS = [
   {
     id: "inscrieri-contact",
     path: "/admin/plugins/edusport-inscrieri",
-    alt: "Fereastra cu numărul de telefon, mesajul de editat, Status și butoanele Închide, SMS și WhatsApp",
+    alt: "Fereastra cu numărul de telefon, mesajul precompletat, Status și butoanele Închide, SMS și WhatsApp",
     act: async(page) => {
       await page.locator("button:has-text('Contactează')").first().click();
       await page.waitForTimeout(900);
@@ -798,7 +798,7 @@ export const SHOTS = [
   {
     id: "prezenta-lista",
     path: "/admin/plugins/edusport-prezenta",
-    alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii, alegerea Zi, Săptămână sau Lună, Filtre și starea fiecărei ședințe",
+    alt: "Prezență, tabul Toate ședințele, cu ședințele săptămânii, perioada Zi, Săptămână sau Lună, Filtre și starea fiecărei ședințe",
     marks: [
       { key: "tab-toate", selector: "[role=tab]:has-text('Toate ședințele')" },
       { key: "perioada", selector: "button[role=combobox]:has-text('Săptămână')" },
@@ -941,7 +941,7 @@ export const SHOTS = [
   {
     id: "tabele-lista",
     path: "/admin/plugins/edusport-tabele",
-    alt: "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă luna aceasta",
+    alt: "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă pe luna curentă",
     act: async(page) => {
       await page.getByRole("button", { name: "Restanțe" }).waitFor();
       await page.waitForTimeout(1000);
@@ -954,7 +954,7 @@ export const SHOTS = [
   {
     id: "tabele-filtru",
     path: "/admin/plugins/edusport-tabele",
-    alt: "Butonul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
+    alt: "Meniul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
     act: async(page) => {
       await page.getByRole("button", { name: "Filtru" }).first().click();
       await page.waitForTimeout(800);
@@ -967,7 +967,7 @@ export const SHOTS = [
   {
     id: "tabele-coloane",
     path: "/admin/plugins/edusport-tabele",
-    alt: "Lista Coloane deschisă, cu casete de bifat și săgeți sus și jos",
+    alt: "Lista Coloane deschisă, cu casete de selectare și săgeți sus și jos",
     act: async(page) => {
       await page.getByRole("button", { name: /Coloane/ }).click();
       await page.waitForTimeout(800);

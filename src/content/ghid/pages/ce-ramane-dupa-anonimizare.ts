@@ -2,7 +2,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const ceRamaneDupaAnonimizarePage: GhidPage = {
   slug: "ce-ramane-dupa-anonimizare",
-  title: "Ce se șterge și ce rămâne",
+  title: "Ce rămâne după anonimizare",
   lead: "După anonimizare rămân grupele pe sezoane, statusul A.C.S. și numărul de înscrieri, fără nume.",
   blocks: [
     { t: "h2", text: "Se șterge" },
@@ -15,7 +15,7 @@ export const ceRamaneDupaAnonimizarePage: GhidPage = {
         "Profilul public. Imaginile lui se șterg din Media, dacă nu sunt folosite în altă parte.",
         "Valorile personale din Istoric.",
         "Mesajele netrimise și adresele din coada de e-mailuri. Accesul în portal se oprește.",
-        "Lecțiile individuale planificate de azi încolo, fără plată, și notele plăților.",
+        "Lecțiile individuale programate începând de azi, fără plată, și notele plăților.",
       ],
     },
     { t: "h2", text: "Rămâne" },
@@ -23,7 +23,7 @@ export const ceRamaneDupaAnonimizarePage: GhidPage = {
       t: "list",
       items: [
         "Grupele pe sezoane și statusul A.C.S.",
-        "Înscrierile, cu numărul, sezonul, secția și statusul, dar fără datele personale.",
+        "Înscrierile, cu numărul, sezonul, secțiunea și statusul, dar fără datele personale.",
         "Plățile, cu suma, data, metoda, sezonul și legăturile lor.",
       ],
     },

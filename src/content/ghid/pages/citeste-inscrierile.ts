@@ -2,12 +2,12 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const citesteInscrierilePage: GhidPage = {
   slug: "citeste-inscrierile",
-  title: "Citește înscrierile",
+  title: "Vezi înscrierile",
   lead: "Fiecare înscriere trimisă apare în lista **Înscrieri**, cu statusul **Nou**.",
   blocks: [
     {
       t: "p",
-      text: "**Sezon**, din dreapta sus, schimbă sezonul afișat. Cu două sau mai multe școli apar și taburile **Toate** și câte unul pe școală.",
+      text: "**Sezon**, din dreapta sus, schimbă sezonul afișat. Dacă există cel puțin două școli, apar și taburile **Toate** și câte unul pentru fiecare școală.",
     },
     {
       t: "steps",
@@ -31,20 +31,20 @@ export const citesteInscrierilePage: GhidPage = {
       t: "list",
       items: [
         "**Date**: răspunsurile din formular. **Editează** le corectează.",
-        "**Abonament**: ce a ales părintele pentru abonament și acordurile date.",
+        "**Abonament**: abonamentul ales de părinte și acordurile date.",
         "**Documente**: PDF-urile înscrierii, cu **Vezi** și **Descarcă**, și **Retrimite e-mailul**.",
-        "**Istoric**: ce s-a întâmplat cu înscrierea, cele mai noi primele.",
+        "**Istoric**: modificările înscrierii, de la cea mai recentă.",
       ],
     },
     { t: "h2", text: "Statusul" },
     {
       t: "p",
-      text: "Din panou alegi **Nou**, **Contactat** sau **Respins**. **Confirmat** apare doar după **Confirmă înscrierea**, iar pe o înscriere confirmată statusul nu se mai schimbă de aici.",
+      text: "În panoul înscrierii alegi **Nou**, **Contactat** sau **Respins**. **Confirmat** apare doar după **Confirmă înscrierea**, iar pe o înscriere confirmată statusul nu se mai schimbă de aici.",
     },
     { t: "h2", text: "Pe telefon" },
     {
       t: "p",
-      text: "Înscrierea se deschide pe tot ecranul. **‹ Înscrieri**, sus, te duce înapoi la listă.",
+      text: "Înscrierea se deschide pe tot ecranul. **‹ Înscrieri**, sus, revine la listă.",
     },
     { t: "links", items: [{ slug: "contacteaza-parintele" }, { slug: "confirma-o-inscriere" }] },
   ],

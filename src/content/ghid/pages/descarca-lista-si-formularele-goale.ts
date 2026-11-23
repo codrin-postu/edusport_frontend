@@ -13,7 +13,7 @@ export const descarcaListaFormularePage: GhidPage = {
           shot: "inscrieri-export", marks: ["export", "descarca-csv"], numbered: true,
         },
         {
-          text: "Tot în **Export**, la **Formulare goale**, descarci **Acord (PDF)** și **Cerere de adeziune (PDF)**, cu sezonul curent.",
+          text: "Tot în **Export**, la **Formulare goale**, descarci **Acord (PDF)** și **Cerere de adeziune (PDF)**, pentru sezonul curent.",
           shot: "inscrieri-export", marks: ["acord-pdf", "cerere"],
         },
       ],

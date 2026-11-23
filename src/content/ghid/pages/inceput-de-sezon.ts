@@ -2,41 +2,41 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const inceputDeSezonPage: GhidPage = {
   slug: "inceput-de-sezon",
-  title: "Început de sezon: lista de pași",
-  lead: "Ce faci o dată pe an, ca să treci clubul într-un sezon nou.",
+  title: "Începe un sezon nou",
+  lead: "Pașii anuali pentru trecerea clubului într-un sezon nou.",
   blocks: [
     { t: "h2", text: "1. Creează sezonul" },
     {
       t: "steps",
       steps: [
         { text: "În meniu apasă **Sezoane**, apoi **Sezon nou**.", shot: "sezoane-lista", marks: ["sezon-nou"] },
-        { text: "Completează **Sezon** (se scrie 2026-2027, doi ani la rând), **Început**, **Sfârșit** și **Taxă de membru**. Câmpurile vin completate după sezonul anterior: verifică-le." },
+        { text: "Completează **Sezon** (în formatul 2026-2027), **Început**, **Sfârșit** și **Taxă de membru**. Câmpurile sunt precompletate după sezonul anterior: verifică-le." },
         { text: "Apasă **Salvează**." },
       ],
     },
-    { t: "warn", text: "Un sezon cu înscrieri nu își mai schimbă numele: **Are înscrieri, nu se mai schimbă.**" },
+    { t: "warn", text: "Numele unui sezon cu înscrieri nu se mai poate schimba: **Are înscrieri, nu se mai schimbă.**" },
     { t: "h2", text: "2. Verifică prețurile" },
-    { t: "p", text: "Deschide **Prețuri** și schimbă ce s-a modificat pentru noul sezon." },
+    { t: "p", text: "Deschide **Prețuri** și actualizează prețurile pentru noul sezon." },
     { t: "h2", text: "3. Începe sezonul" },
     {
       t: "p",
-      text: "Butonul **Începe sezonul** apare pe rândul sezonului de după cel curent. Până la ultimul pas nu se schimbă nimic.",
+      text: "Butonul **Începe sezonul** apare pe rândul sezonului de după cel curent. Nimic nu se modifică până la ultimul pas.",
     },
     {
       t: "steps",
       steps: [
         { text: "În **Sezoane**, apasă **Începe sezonul** pe rândul sezonului nou." },
-        { text: "Pasul 1 din 3 arată ce se schimbă: formularul de înscriere trece pe sezonul nou, **Grupe** și **Sportivi** se deschid pe el." },
-        { text: "Sezonul vechi rămâne doar citire. Apasă **Continuă**." },
+        { text: "Pasul 1 din 3 arată ce se schimbă: formularul de înscriere trece pe sezonul nou, **Grupe** și **Sportivi** se deschid implicit pe el." },
+        { text: "Sezonul vechi rămâne doar de citit. Apasă **Continuă**." },
         {
           text: "Pasul 2 din 3: pentru fiecare grupă bifează **Copiază sportivii** și **Copiază programul**. **Vezi sportivii** arată lista. Sportivii inactivi nu se copiază.",
         },
-        { text: "Pasul 3 din 3 este rezumatul. Apasă **Începe sezonul** ca să aplici." },
+        { text: "Pasul 3 din 3 arată rezumatul. Apasă **Începe sezonul** pentru a aplica schimbările." },
       ],
     },
     {
       t: "warn",
-      text: "Sezonul nou devine sezonul curent. **Membru A.C.S.** pornește de la **Nu** pentru toți. Pauzele nu se copiază.",
+      text: "Sezonul nou devine sezonul curent. **Membru A.C.S.** devine **Nu** pentru toți sportivii. Pauzele nu se copiază.",
     },
     { t: "h2", text: "4. După începerea sezonului" },
     {

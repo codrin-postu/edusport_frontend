@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const portalurileOptionalPage: GhidPage = {
   slug: "portalurile-optional",
   title: "Portalurile (opțional)",
-  lead: "Ce sunt portalurile, cum le pornești doar dacă le vrei și cum le oprești la loc.",
+  lead: "Ce sunt portalurile, cum se pornesc la nevoie și cum se opresc.",
   blocks: [
     {
       t: "p",
@@ -79,10 +79,6 @@ https://sportiv.<domeniu>/api/portal/google/callback`,
         "Frontend: comentează **PORTAL_HOST_ANTRENOR** și **PORTAL_HOST_SPORTIV**, apoi **up -d frontend**. Gazdele portalurilor sunt tratate ca site-ul public.",
         "Blocul nginx, certificatul și înregistrările DNS pot rămâne sau pot fi șterse; nu afectează site-ul și panoul.",
       ],
-    },
-    {
-      t: "warn",
-      text: "Cu portalurile oprite, sarcina zilnică de curățenie a portalurilor sare și peste curățenia pe care o cuprinde pentru alte tabele (rânduri 2FA din panou, anulări de ședințe, anunțuri). Pe o instalare fără portaluri, acele tabele cresc încet.",
     },
     { t: "links", items: [{ slug: "acces-antrenor-in-portal" }, { slug: "invita-un-parinte-in-portal" }, { slug: "servicii-optionale" }] },
   ],

@@ -31,7 +31,7 @@ export const schimbaDateleUnuiSportivPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Fără nume nu se salvează. Celelalte câmpuri pot rămâne goale, dar sportivul apare în listă cu **Lipsesc:** până se completează.",
+      text: "Numele este obligatoriu. Celelalte câmpuri pot rămâne goale, dar sportivul apare în listă cu **Lipsesc:** până se completează.",
     },
     {
       t: "p",

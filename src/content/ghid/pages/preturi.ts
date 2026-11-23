@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const preturiPage: GhidPage = {
   slug: "preturi",
   title: "Prețuri",
-  lead: "Aici schimbi prețurile școlii și ale clubului.",
+  lead: "Prețurile școlii și ale clubului se gestionează din pagina Prețuri.",
   blocks: [
     {
       t: "steps",
@@ -14,13 +14,13 @@ export const preturiPage: GhidPage = {
         },
       ],
     },
-    { t: "p", text: "**Preț membri** e prețul pentru membrii A.C.S., iar **Preț neafiliați** pentru ceilalți sportivi." },
+    { t: "p", text: "**Preț membri** este prețul pentru membrii A.C.S., iar **Preț neafiliați** pentru ceilalți sportivi." },
     { t: "h2", text: "Schimbă un preț" },
     {
       t: "steps",
       steps: [
         {
-          text: "Apasă un rând ca să se deschidă panoul prețului. Schimbă **Preț membri** sau **Preț neafiliați**.",
+          text: "Apasă un rând ca să deschizi panoul prețului. Schimbă **Preț membri** sau **Preț neafiliați**.",
           shot: "preturi-editare", marks: ["pret", "pret-neafiliati"],
         },
         { text: "Apasă **Salvează**.", shot: "preturi-editare", marks: ["salveaza"] },
@@ -42,7 +42,7 @@ export const preturiPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Jos, în secțiunea dorită, apasă **Listă nouă**. Scrie **Nume** și alege **Secțiune**." },
-        { text: "Apasă **Salvează**. Apoi adaugi prețurile în listă." },
+        { text: "Apasă **Salvează**, apoi adaugă prețurile în listă." },
       ],
     },
     { t: "h2", text: "Șterge un preț" },
@@ -54,7 +54,7 @@ export const preturiPage: GhidPage = {
       ],
     },
     { t: "warn", text: "Un abonament păstrează prețul din ziua în care a fost adăugat. O schimbare de preț se aplică abonamentelor noi, iar plățile înregistrate nu se schimbă." },
-    { t: "p", text: "Prețuri apare în meniu și la rolul Editor site, nu doar la Administrator club." },
+    { t: "p", text: "Pagina Prețuri este disponibilă și pentru Editor site, nu doar pentru Administrator club." },
     { t: "links", items: [{ slug: "contabilitate-pe-scurt" }, { slug: "adauga-sau-prelungeste-un-abonament" }, { slug: "inregistreaza-o-plata" }] },
   ],
 };

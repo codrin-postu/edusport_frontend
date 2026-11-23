@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const scoateAccesulParintePage: GhidPage = {
   slug: "scoate-accesul-unui-parinte",
   title: "Scoate accesul unui părinte",
-  lead: "Accesul se scoate pe copil. Contul părintelui și ceilalți copii rămân.",
+  lead: "Accesul se retrage separat pentru fiecare copil. Contul părintelui și ceilalți copii rămân.",
   blocks: [
     {
       t: "steps",
@@ -21,10 +21,10 @@ export const scoateAccesulParintePage: GhidPage = {
         "**Marchează inactiv**: accesul rămâne, iar părintele vede în continuare istoricul și plățile.",
         "**Șterge sportivul**: accesul se șterge.",
         "**Anonimizează** (doar Super Admin): accesul se oprește, iar adresa și numele copilului se șterg din legăturile de acces. În **Istoric** rămâne **Acces portal oprit (anonimizat)**.",
-        "Dacă vrei să oprești doar portalul, folosește **Scoate accesul**.",
+        "Pentru a opri doar accesul în portal, folosește **Scoate accesul**.",
       ],
     },
-    { t: "p", text: "Dacă același cont este și al unui antrenor, vezi **Dezactivează tot** la Acces antrenor în portal." },
+    { t: "p", text: "Dacă același cont este și al unui antrenor, vezi **Dezactivează tot** în pagina Accesul antrenorului în portal." },
     {
       t: "links",
       items: [{ slug: "acces-antrenor-in-portal" }, { slug: "anonimizeaza-un-sportiv" }, { slug: "uneste-marcheaza-inactiv-sau-sterge-un-sportiv" }],

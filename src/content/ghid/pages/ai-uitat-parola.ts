@@ -2,42 +2,42 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const aiUitatParolaPage: GhidPage = {
   slug: "ai-uitat-parola",
-  title: "Ai uitat parola",
-  lead: "Parola se schimbă cu un cod de 6 cifre trimis pe e-mail, în panou, în portalul antrenorului și în cel al părinților.",
+  title: "Resetarea parolei",
+  lead: "Parola se resetează cu un cod de 6 cifre primit pe e-mail, în panou și în ambele portaluri.",
   blocks: [
-    { t: "h2", text: "La toate trei" },
+    { t: "h2", text: "Pașii comuni" },
     {
       t: "steps",
       steps: [
         { text: "Pe pagina de intrare apasă **Am uitat parola** și scrie e-mailul." },
-        { text: "Răspunsul este același, **Dacă adresa are cont, am trimis un cod.**, chiar dacă adresa nu are cont." },
-        { text: "Codul este valabil 10 minute, iar după 5 încercări greșite nu mai merge. Un cod nou anulează codurile vechi." },
-        { text: "Scrie codul și o parolă nouă: 10 până la 128 de caractere, nu una foarte uzuală și nu e-mailul. Toate dispozitivele se deconectează." },
+        { text: "Răspunsul este mereu același, **Dacă adresa are cont, am trimis un cod.**, indiferent dacă adresa are cont." },
+        { text: "Codul este valabil 10 minute, iar după 5 încercări greșite devine invalid. Un cod nou anulează codurile vechi." },
+        { text: "Scrie codul și parola nouă: între 10 și 128 de caractere, nu o parolă des folosită și nu adresa de e-mail. Toate dispozitivele se deconectează." },
       ],
     },
-    { t: "h2", text: "Panou" },
+    { t: "h2", text: "Panoul" },
     {
       t: "list",
       items: [
-        "Primește cod doar un administrator activ.",
-        "Cu 2FA activ, după parola nouă urmează și pasul 2FA: resetarea nu îl sare.",
-        "Fără 2FA, intri direct și primești mesajul pentru dispozitiv nou.",
-        "Ai pierdut dispozitivul 2FA și codurile de rezervă: un Super Admin apasă **Resetează 2FA** la tine, în **Securitate**, **Administratori**. Primești un mesaj. Nu-ți poți reseta singur 2FA.",
+        "Codul se trimite doar administratorilor activi.",
+        "Cu 2FA activ, după parola nouă urmează pasul 2FA; resetarea nu îl ocolește.",
+        "Fără 2FA, intrarea este directă și primești e-mailul pentru dispozitiv nou.",
+        "Dacă ai pierdut dispozitivul 2FA și codurile de rezervă, un Super Admin îți resetează 2FA cu **Resetează 2FA**, în **Securitate**, **Administratori**. Primești un mesaj. Nu îți poți reseta singur 2FA.",
       ],
     },
     { t: "h2", text: "Portalul antrenorului" },
     {
       t: "list",
       items: [
-        "La fel, pe pagina portalului antrenorului. Contul dezactivat nu primește cod.",
-        "Din panou nu se resetează parola lui. Dacă nu și-a activat contul, apasă **Retrimite invitația**.",
+        "Aceiași pași, pe pagina de intrare a portalului antrenorului. Un cont dezactivat nu primește cod.",
+        "Parola antrenorului nu se poate reseta din panou. Dacă nu și-a activat contul, apasă **Retrimite invitația**.",
         "Dacă schimbi e-mailul contului, toate sesiunile se închid.",
       ],
     },
     { t: "h2", text: "Portalul părinților" },
     {
       t: "p",
-      text: "La fel, pe pagina portalului părinților. Dacă invitația nu fusese acceptată, resetarea o acceptă și activează contul.",
+      text: "Aceiași pași, pe pagina de intrare a portalului părinților. Dacă invitația nu a fost acceptată, resetarea parolei activează contul.",
     },
     { t: "warn", text: "Se pot cere cel mult 5 mesaje cu cod pe oră pentru aceeași adresă." },
     {

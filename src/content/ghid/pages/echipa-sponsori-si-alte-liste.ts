@@ -2,8 +2,8 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const echipaSponsoriPage: GhidPage = {
   slug: "echipa-sponsori-si-alte-liste",
-  title: "Echipa, sponsori și alte liste",
-  lead: "Listele de pe site au fiecare ecranul lor în meniu. **Salvează** pune modificarea pe site: listele nu au ciornă.",
+  title: "Echipă, sponsori și alte liste",
+  lead: "Fiecare listă de pe site are propria pagină în meniu. Listele nu au ciornă: **Salvează** publică modificarea pe site.",
   blocks: [
     {
       t: "p",
@@ -15,7 +15,7 @@ export const echipaSponsoriPage: GhidPage = {
       steps: [
         { text: "Deschide **Membri echipă** și apasă **+ Adaugă membru**. Pentru un membru existent apasă pe cardul lui." },
         {
-          text: "Scrie **Nume** (obligatoriu), **Rol** și **Descriere**. Poza se alege cu **Alege**.",
+          text: "Scrie **Nume** (obligatoriu), **Rol** și **Descriere**. Fotografia se alege cu **Alege**.",
           shot: "site-membru-nou",
           marks: ["nume", "rol", "descriere"],
         },
@@ -29,7 +29,7 @@ export const echipaSponsoriPage: GhidPage = {
     },
     {
       t: "p",
-      text: "Ordinea de pe site se schimbă trăgând cardurile. Merge doar când căutarea și filtrul de categorie sunt goale.",
+      text: "Ordinea de pe site se schimbă prin tragerea cardurilor, doar când căutarea și filtrul de categorie sunt goale.",
     },
     {
       t: "warn",
@@ -41,12 +41,12 @@ export const echipaSponsoriPage: GhidPage = {
       steps: [
         { text: "Deschide **Sponsori** și apasă **+ Adaugă sponsor**. Pentru unul existent apasă pe rândul lui." },
         {
-          text: "Scrie **Nume**, alege **Logo** cu **Alege** și, dacă vrei, scrie **Link**.",
+          text: "Scrie **Nume**, alege **Logo** cu **Alege** și, opțional, completează **Link**.",
           shot: "site-sponsor-nou",
           marks: ["nume", "logo", "link"],
         },
         {
-          text: "**Ordine** hotărăște locul pe site. În listă, **Sus** și **Jos** mută sponsorul cu un loc.",
+          text: "**Ordine** stabilește poziția pe site. În listă, **Sus** și **Jos** mută sponsorul cu o poziție.",
           shot: "site-sponsor-nou",
           marks: ["ordine"],
         },
@@ -67,14 +67,14 @@ export const echipaSponsoriPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Deschide **Evenimente colaborare** și apasă **+ Adaugă eveniment**. Pentru unul existent apasă pe rând." },
-        { text: "Scrie **Titlu** (obligatoriu), **Partener**, **Dată** și **Descriere**. **Dată** e text liber, de exemplu Decembrie 2024." },
-        { text: "La **Imagine** alege poza. **Ordine afișare** hotărăște locul în listă." },
+        { text: "Scrie **Titlu** (obligatoriu), **Partener**, **Dată** și **Descriere**. **Dată** este text liber, de exemplu Decembrie 2024." },
+        { text: "La **Imagine** alege poza. **Ordine afișare** stabilește poziția în listă." },
         { text: "Apasă **Salvează**, în bara de jos." },
       ],
     },
     {
       t: "p",
-      text: "Coloana **Stare** din listă arată **Fără imagine**, **Fără descriere** sau **Complet**. **Șterge** scoate evenimentul și de pe pagina Parteneri a site-ului.",
+      text: "Coloana **Stare** din listă arată **Fără imagine**, **Fără descriere** sau **Complet**. **Șterge** elimină evenimentul și de pe pagina Parteneri a site-ului.",
     },
     { t: "h2", text: "Momente istoric" },
     {
@@ -82,7 +82,7 @@ export const echipaSponsoriPage: GhidPage = {
       steps: [
         { text: "Deschide **Momente istoric** și apasă **+ Adaugă moment**." },
         { text: "Scrie **An** și **Titlu**, ambele obligatorii, apoi **Descriere**. Apasă **Salvează**." },
-        { text: "În listă, **Sus** și **Jos** mută momentul cu un loc." },
+        { text: "În listă, **Sus** și **Jos** mută momentul cu o poziție." },
       ],
     },
     { t: "links", items: [{ slug: "acces-antrenor-in-portal" }, { slug: "paginile-site-ului" }, { slug: "imagini-in-media" }] },

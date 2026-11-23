@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const emailuriAutomatePage: GhidPage = {
   slug: "e-mailuri-automate",
   title: "E-mailuri automate",
-  lead: "Ce primesc părinții și antrenorii fără să trimită nimeni nimic de mână.",
+  lead: "Mesajele trimise automat părinților și antrenorilor.",
   blocks: [
     { t: "h2", text: "Părinții" },
     {
@@ -16,13 +16,13 @@ export const emailuriAutomatePage: GhidPage = {
         "**Încercări de intrare în cont**, după 5 parole greșite.",
         "**Intrare de pe un dispozitiv nou**, cel mult unul pe oră.",
         "Un mesaj către adresa veche și către cea nouă, când se schimbă e-mailul contului.",
-        "**Plată înregistrată**: se trimite la 15 secunde după înregistrare, ca o anulare imediată să-l oprească, la e-mailul de contact al sportivului. Acesta poate fi altul decât cel al contului din portal.",
+        "**Plată înregistrată**: se trimite la e-mailul de contact al sportivului, la 15 secunde după înregistrare, ca o anulare imediată să îl poată opri. Adresa poate fi diferită de cea a contului din portal.",
       ],
     },
     { t: "h2", text: "Schimbările de program" },
     {
       t: "p",
-      text: "Un mesaj pleacă doar dacă cel care face schimbarea bifează **Anunță părinții pe e-mail**, iar contul părintelui nu a oprit **E-mail la schimbări de program**.",
+      text: "Un mesaj se trimite doar dacă cel care face schimbarea bifează **Anunță părinții pe e-mail**, iar contul părintelui nu a oprit **E-mail la schimbări de program**.",
     },
     { t: "h2", text: "Antrenorii" },
     {

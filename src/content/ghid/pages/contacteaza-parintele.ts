@@ -3,14 +3,14 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const contacteazaParintePage: GhidPage = {
   slug: "contacteaza-parintele",
   title: "Contactează părintele",
-  lead: "Din înscriere deschizi un mesaj gata scris, pe WhatsApp sau prin SMS.",
+  lead: "Din înscriere trimiți părintelui un mesaj precompletat, pe WhatsApp sau prin SMS.",
   blocks: [
     {
       t: "steps",
       steps: [
-        { text: "Deschide înscrierea și apasă **Contactează**, jos. Merge și iconița de mesaj de lângă telefon, în tabul **Date**." },
+        { text: "Deschide înscrierea și apasă **Contactează**, jos. Același efect are pictograma de mesaj de lângă telefon, în tabul **Date**." },
         {
-          text: "Se deschide fereastra cu numărul de telefon și un mesaj deja scris. Poți schimba textul.",
+          text: "Se deschide fereastra cu numărul de telefon și un mesaj precompletat, pe care îl poți modifica.",
           shot: "inscrieri-contact", marks: ["mesaj"],
         },
         {
@@ -22,11 +22,11 @@ export const contacteazaParintePage: GhidPage = {
     },
     {
       t: "p",
-      text: "**Contactează** lipsește când statusul e **Contactat** sau **Confirmat**, sau când înscrierea nu are telefon. Iconița **Copiază** de lângă număr îl copiază.",
+      text: "**Contactează** lipsește când statusul este **Contactat** sau **Confirmat**, sau când înscrierea nu are telefon. Pictograma **Copiază** de lângă număr îl copiază.",
     },
     {
       t: "p",
-      text: "Dacă numărul nu e valid, lângă el apare **Număr de telefon invalid** și butoanele **SMS** și **WhatsApp** rămân inactive.",
+      text: "Dacă numărul nu este valid, lângă el apare **Număr de telefon invalid** și butoanele **SMS** și **WhatsApp** rămân inactive.",
     },
     { t: "links", items: [{ slug: "citeste-inscrierile" }, { slug: "confirma-o-inscriere" }] },
   ],

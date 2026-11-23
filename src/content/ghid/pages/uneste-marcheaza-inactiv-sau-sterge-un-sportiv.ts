@@ -10,12 +10,12 @@ export const unesteMarcheazaStergePage: GhidPage = {
       text: "Meniul are **Marchează inactiv** (sau **Marchează activ**), **Unește cu alt sportiv**, **Exportă datele**, **Anonimizează** și **Șterge sportivul**. **Anonimizează** apare doar pentru Super Admin.",
     },
     { t: "h2", text: "Unește cu alt sportiv" },
-    { t: "p", text: "Folosește-l când același copil are două fișe. Una rămâne, cealaltă se șterge." },
+    { t: "p", text: "Se folosește când același sportiv are două fișe. Una se păstrează, cealaltă se șterge." },
     {
       t: "steps",
       steps: [
         {
-          text: "Deschide fișa pe care vrei s-o păstrezi. Apasă **...** (1), apoi **Unește cu alt sportiv** (2).",
+          text: "Deschide fișa care se păstrează. Apasă **...** (1), apoi **Unește cu alt sportiv** (2).",
           shot: "sportivi-meniu",
           marks: ["meniu", "uneste"], numbered: true,
         },
@@ -39,7 +39,7 @@ export const unesteMarcheazaStergePage: GhidPage = {
     },
     {
       t: "p",
-      text: "Dacă schimbi **Rămâne**, alegerile de pe rânduri se iau de la capăt.",
+      text: "Dacă schimbi **Rămâne**, alegerile de pe rânduri se resetează.",
     },
     {
       t: "p",
@@ -47,7 +47,7 @@ export const unesteMarcheazaStergePage: GhidPage = {
     },
     {
       t: "p",
-      text: "Un posibil duplicat apare și sub numele sportivului, ca **Posibil același copil cu** numele celuilalt. **Unește** deschide aceeași fereastră, cu celălalt sportiv ales. **Nu e același copil** scoate mesajul. La **Filtre**, **Posibile dubluri** le arată pe toate.",
+      text: "Un posibil duplicat apare și sub numele sportivului, ca **Posibil același copil cu** numele celuilalt. **Unește** deschide aceeași fereastră, cu celălalt sportiv ales. **Nu e același copil** ascunde mesajul. La **Filtre**, **Posibile dubluri** le arată pe toate.",
     },
     { t: "warn", text: "**Unește** nu se poate anula. Cealaltă fișă se șterge." },
     { t: "h2", text: "Marchează inactiv" },
@@ -64,7 +64,7 @@ export const unesteMarcheazaStergePage: GhidPage = {
     },
     {
       t: "p",
-      text: "Sportivul nu mai apare în liste, istoricul rămâne, iar lângă nume apare **Inactiv**. Îl găsești la **Filtre**, **Status**. **Marchează activ**, din același meniu, îl aduce înapoi imediat, fără întrebare.",
+      text: "Sportivul nu mai apare în liste, istoricul rămâne, iar lângă nume apare **Inactiv**. Îl găsești la **Filtre**, **Status**. **Marchează activ**, din același meniu, îl reactivează imediat, fără confirmare.",
     },
     { t: "h2", text: "Șterge sportivul" },
     {
@@ -77,7 +77,7 @@ export const unesteMarcheazaStergePage: GhidPage = {
         },
         { text: "Dacă sportivul are plăți sau abonamente, apare un mesaj că nu se poate șterge, de exemplu **Sportivul are 2 plăți și 1 abonament, deci nu se poate șterge.**" },
         { text: "Plățile anulate se numără și ele. Apasă **Renunță**." },
-        { text: "Altfel apare **Ștergi sportivul?**. Apasă **Șterge definitiv**. Te întorci la listă." },
+        { text: "În caz contrar apare **Ștergi sportivul?**. Apasă **Șterge definitiv**; se revine la listă." },
       ],
     },
     {

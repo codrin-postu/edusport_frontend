@@ -33,7 +33,7 @@ sudo mkswap /swapfile && sudo swapon /swapfile
 echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab`,
         },
         {
-          text: "Lasă accesul SSH doar cu cheie și fără root. Verifică valoarea efectivă, nu fișierul: fișierele cloud-init pot reactiva parola, iar fișierul tău de configurare trebuie să se sorteze primul (de exemplu **/etc/ssh/sshd_config.d/00-hardening.conf**).",
+          text: "Permite accesul SSH doar cu cheie și fără root. Verifică valoarea efectivă, nu fișierul: fișierele cloud-init pot reactiva parola, iar fișierul tău de configurare trebuie să se sorteze primul (de exemplu **/etc/ssh/sshd_config.d/00-hardening.conf**).",
           code: "sudo sshd -T | grep -i -E \"passwordauthentication|permitrootlogin\"",
         },
         {
@@ -70,7 +70,7 @@ dig +short <gazda panoului>`,
     },
     {
       t: "warn",
-      text: "Cele două fișiere nu se află în niciun depozit, doar pe serverul actual. Copiază-le de acolo înainte de a-l scoate din uz, dacă vrei aceeași protecție. Consecință: containerele ajung în exterior doar pe 443 (Brevo, Google, GlitchTip).",
+      text: "Cele două fișiere nu se află în niciun depozit, doar pe serverul actual. Copiază-le de acolo înainte de a-l scoate din uz, dacă vrei aceeași protecție. Efect: containerele comunică în exterior doar pe 443 (Brevo, Google, GlitchTip).",
     },
     { t: "links", items: [{ slug: "nginx-si-https" }] },
   ],

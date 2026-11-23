@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const salveazaTabelPage: GhidPage = {
   slug: "salveaza-un-tabel",
   title: "Salvează un tabel",
-  lead: "Un tabel cu filtrele și coloanele tale se salvează cu un nume și se deschide oricând din listă.",
+  lead: "Un tabel cu filtrele și coloanele alese se salvează cu un nume și se redeschide oricând din listă.",
   blocks: [
     {
       t: "steps",
@@ -12,13 +12,13 @@ export const salveazaTabelPage: GhidPage = {
         { text: "Se deschide **Vizualizare nouă**. Scrie **Nume** (1) și apasă **Salvează** (2).", shot: "tabele-salveaza-nume", marks: ["nume", "salveaza"], numbered: true },
         { text: "Apare **Vizualizare salvată.**, iar tabelul este în lista din stânga, la **Ale mele**." },
         {
-          text: "Pe un tabel de la **Ale mele**, după o schimbare, **Salvează tabelul** o salvează peste tabelul existent. Apare **Salvat.**",
+          text: "La un tabel din **Ale mele**, **Salvează tabelul** suprascrie tabelul existent cu modificările făcute. Apare **Salvat.**",
         },
       ],
     },
     {
       t: "p",
-      text: "Pe ecran, un tabel salvat se numește vizualizare. La un tabel gata făcut sau al unui coleg, **Salvează tabelul** face mereu un tabel nou, cu numele tău. Numele trebuie să fie diferit de al oricărui alt tabel.",
+      text: "În interfață, un tabel salvat se numește vizualizare. La un tabel gata făcut sau al unui coleg, **Salvează tabelul** creează întotdeauna un tabel nou, al tău. Numele trebuie să fie unic.",
     },
     { t: "h2", text: "Redenumește, duplică, șterge" },
     {
@@ -37,11 +37,11 @@ export const salveazaTabelPage: GhidPage = {
       t: "list",
       items: [
         "Tabelele colegilor apar la **Ale colegilor**. Le poți deschide și duplica. Le modifică doar autorul.",
-        "Super Admin poate șterge și tabelele altora.",
+        "Super Admin poate șterge și tabelele altor administratori.",
         "Poți avea cel mult 200 de tabele salvate. Peste limită apare **Prea multe vizualizări salvate. Șterge una.**",
       ],
     },
-    { t: "p", text: "Pagina **Tabele** apare la Administrator club, nu și la Editor site." },
+    { t: "p", text: "Pagina **Tabele** este disponibilă pentru Administrator club, nu și pentru Editor site." },
     { t: "links", items: [{ slug: "deschide-si-filtreaza-un-tabel" }, { slug: "descarca-un-tabel" }] },
   ],
 };

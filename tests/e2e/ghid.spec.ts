@@ -88,7 +88,7 @@ test.describe("ghid wiki", () => {
   test("the group of the current page is open, another opens on click", async({ page }) => {
     await page.goto("/ghid/inregistreaza-o-plata");
     const rail = page.getByRole("navigation", { name: "Cuprins" }).first();
-    const bani = rail.locator("details", { hasText: "Bani" });
+    const bani = rail.locator("details", { hasText: "Contabilitate" });
     const inscrieri = rail.locator("details", { hasText: "Înscrieri" });
     await expect(bani).toHaveAttribute("open", "");
     await expect(rail.getByRole("link", { name: "Corectează sau anulează o plată" })).toBeVisible();
@@ -104,7 +104,7 @@ test.describe("ghid wiki", () => {
     await rail.getByRole("link", { name: "Completează prezența" }).click();
     await page.waitForURL((u) => u.pathname === "/ghid/completeaza-prezenta");
     await expect(rail.locator("details", { hasText: "Prezență" })).toHaveAttribute("open", "");
-    await expect(rail.locator("details", { hasText: "Bani" })).not.toHaveAttribute("open", "");
+    await expect(rail.locator("details", { hasText: "Contabilitate" })).not.toHaveAttribute("open", "");
   });
 
   test("the site group lists its pages and the team group ends with the personal data pages", async({ page }) => {
@@ -113,8 +113,8 @@ test.describe("ghid wiki", () => {
     const site = rail.locator("details", { hasText: "Site și anunțuri" });
     await expect(site).toHaveAttribute("open", "");
     await expect(site.getByRole("link", { name: "Setări site" })).toBeVisible();
-    await expect(site.getByRole("link", { name: "Echipa, sponsori și alte liste" })).toBeVisible();
-    const team = rail.locator("details", { hasText: "Echipa și acces" });
+    await expect(site.getByRole("link", { name: "Echipă, sponsori și alte liste" })).toBeVisible();
+    const team = rail.locator("details", { hasText: "Echipă și acces" });
     await team.locator("summary").click();
     await expect(team.getByRole("link", { name: "Schimbă rolul sau oprește accesul" })).toBeVisible();
     await expect(team.getByRole("link", { name: "Sportivi inactivi" })).toBeVisible();

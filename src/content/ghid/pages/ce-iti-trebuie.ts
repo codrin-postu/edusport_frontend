@@ -2,8 +2,8 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const ceItiTrebuiePage: GhidPage = {
   slug: "ce-iti-trebuie",
-  title: "Ce îți trebuie",
-  lead: "Serverul, domeniul, conturile și uneltele necesare înainte de instalare.",
+  title: "Ce trebuie pregătit",
+  lead: "Serverul, domeniul, conturile și programele necesare înainte de instalare.",
   blocks: [
     {
       t: "warn",
@@ -11,7 +11,7 @@ export const ceItiTrebuiePage: GhidPage = {
     },
     {
       t: "p",
-      text: "Instalarea de bază cuprinde **site-ul public** și **panoul de administrare**, cu baza de date. Portalurile antrenorilor și părinților sunt oprite și se pornesc separat, doar dacă sunt dorite. Serviciile din jur (e-mail, erori, statistici, Google) sunt opționale.",
+      text: "Instalarea de bază cuprinde **site-ul public** și **panoul de administrare**, cu baza de date. Portalurile antrenorilor și părinților sunt oprite și se pornesc separat, doar dacă sunt dorite. Serviciile auxiliare (e-mail, erori, statistici, Google) sunt opționale.",
     },
     { t: "h2", text: "Ce rulează pe server" },
     { t: "p", text: "Trei containere Docker pe aceeași rețea (**edusport_net**), în fața cărora stă nginx, instalat direct pe server:" },
@@ -88,7 +88,7 @@ A    admin.exemplu.ro    <adresa IP a serverului>`,
         { href: "https://umami.is/docs", label: "Umami: documentație" },
       ],
     },
-    { t: "h2", text: "Unelte pe server" },
+    { t: "h2", text: "Programe pe server" },
     {
       t: "list",
       items: [
@@ -106,7 +106,7 @@ A    admin.exemplu.ro    <adresa IP a serverului>`,
         { href: "https://nginx.org/en/docs/", label: "nginx: documentație" },
       ],
     },
-    { t: "h2", text: "Unelte pe calculatorul tău" },
+    { t: "h2", text: "Programe pe calculatorul tău" },
     {
       t: "list",
       items: [
@@ -116,7 +116,7 @@ A    admin.exemplu.ro    <adresa IP a serverului>`,
       ],
     },
     { t: "h2", text: "Ordinea paginilor" },
-    { t: "p", text: "Pașii urmează ordinea de mai jos. Pagina portalurilor și cea a serviciilor opționale se pot sări." },
+    { t: "p", text: "Paginile se parcurg în ordinea de mai jos. Pagina portalurilor și cea a serviciilor opționale se pot sări." },
     {
       t: "links",
       items: [

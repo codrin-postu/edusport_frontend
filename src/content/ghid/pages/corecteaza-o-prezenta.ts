@@ -2,18 +2,18 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const corecteazaPrezentaPage: GhidPage = {
   slug: "corecteaza-o-prezenta",
-  title: "Corectează o prezență",
-  lead: "O ședință salvată se redeschide și se corectează. Istoricul ține minte schimbările.",
+  title: "Corectează prezența",
+  lead: "O ședință salvată se redeschide și se corectează. Istoricul păstrează fiecare modificare.",
   blocks: [
     {
       t: "steps",
       steps: [
         {
-          text: "Găsește ședința în **Toate ședințele** sau în pagina grupei, la tabul **Prezență**. Acolo vezi pe lună **Data**, **Ora**, **Prezenți**, **Antrenor** și **Stare**.",
+          text: "Găsește ședința în **Toate ședințele** sau în pagina grupei, la tabul **Prezență**. Tabul listează, pe lună, **Data**, **Ora**, **Prezenți**, **Antrenor** și **Stare**.",
           shot: "grupe-prezenta", marks: ["tab-prezenta"],
         },
         {
-          text: "Apasă pe ședință. Jos, **Salvată de** spune cine a salvat și când. Sub **Istoric** sunt liniile ședinței.",
+          text: "Apasă pe ședință. Jos, **Salvată de** spune cine a salvat și când. Sub **Istoric** sunt modificările ședinței.",
           shot: "prezenta-salvata", marks: ["salvata", "istoric"],
         },
         { text: "Schimbă bifele sau antrenorii, sau adaugă un sportiv cu **+ Adaugă doar la ședința asta**." },

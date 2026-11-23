@@ -20,7 +20,7 @@ export const pauzeSiVacantePage: GhidPage = {
     { t: "h2", text: "Editează sau șterge o pauză" },
     {
       t: "p",
-      text: "Cât există pauze, deasupra calendarului apare **Pauze**, cu **Nume**, **De la**, **Până la** și **Se anulează**. **...** de pe rând are **Editează** și **Șterge**. **Șterge** cere confirmarea.",
+      text: "Dacă există pauze, deasupra calendarului apare **Pauze**, cu **Nume**, **De la**, **Până la** și **Se anulează**. **...** de pe rând are **Editează** și **Șterge**. **Șterge** cere confirmarea.",
     },
     { t: "links", items: [{ slug: "calendar-si-evenimente" }, { slug: "anuleaza-sau-muta-o-sedinta" }] },
   ],

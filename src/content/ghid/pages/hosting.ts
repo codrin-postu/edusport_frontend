@@ -29,7 +29,7 @@ export const hostingPage: GhidPage = {
     { t: "p", text: "Pașii de instalare sunt în **Instalare pe un server nou**." },
     { t: "links", items: [{ slug: "ce-iti-trebuie", label: "Instalare pe un server nou" }] },
     { t: "h2", text: "Hosting administrat" },
-    { t: "p", text: "Site-ul, panoul și portalurile rulează azi în această variantă. Cost: **6 euro pe lună**. Include:" },
+    { t: "p", text: "Site-ul, panoul și portalurile rulează în prezent în această variantă. Cost: **6 euro pe lună**. Include:" },
     {
       t: "list",
       items: [
@@ -44,7 +44,7 @@ export const hostingPage: GhidPage = {
     { t: "h2", text: "Recomandare" },
     {
       t: "p",
-      text: "Varianta recomandată este hosting administrat. Costul este mai mic decât al unui server propriu, iar copiile de siguranță, monitorizarea și certificatele funcționează deja. Pe un server propriu, acestea trebuie configurate din nou și întreținute separat.",
+      text: "Varianta recomandată este hostingul administrat. Costul este mai mic decât al unui server propriu, iar copiile de siguranță, monitorizarea și certificatele funcționează deja. Pe un server propriu, acestea trebuie configurate din nou și întreținute separat.",
     },
   ],
 };

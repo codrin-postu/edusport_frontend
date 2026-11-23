@@ -261,7 +261,7 @@
   "inscrieri-lista": {
     "w": 1280,
     "h": 760,
-    "alt": "Lista Înscrieri cu marcajul noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
+    "alt": "Lista Înscrieri cu eticheta noi lângă titlu, un rând selectat și panoul înscrierii în dreapta",
     "marks": [
       {
         "key": "eticheta",
@@ -304,7 +304,7 @@
   "inscrieri-contact": {
     "w": 1280,
     "h": 760,
-    "alt": "Fereastra cu numărul de telefon, mesajul de editat, Status și butoanele Închide, SMS și WhatsApp",
+    "alt": "Fereastra cu numărul de telefon, mesajul precompletat, Status și butoanele Închide, SMS și WhatsApp",
     "marks": [
       {
         "key": "mesaj",
@@ -1370,7 +1370,7 @@
   "prezenta-lista": {
     "w": 1280,
     "h": 760,
-    "alt": "Prezență, tabul Toate ședințele, cu ședințele săptămânii, alegerea Zi, Săptămână sau Lună, Filtre și starea fiecărei ședințe",
+    "alt": "Prezență, tabul Toate ședințele, cu ședințele săptămânii, perioada Zi, Săptămână sau Lună, Filtre și starea fiecărei ședințe",
     "marks": [
       {
         "key": "tab-toate",
@@ -1619,7 +1619,7 @@
   "tabele-lista": {
     "w": 1280,
     "h": 760,
-    "alt": "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă luna aceasta",
+    "alt": "Pagina Tabele, cu lista Gata făcute în stânga și tabelul Plăți pe grupă pe luna curentă",
     "marks": [
       {
         "key": "restante",
@@ -1644,7 +1644,7 @@
   "tabele-filtru": {
     "w": 1280,
     "h": 760,
-    "alt": "Butonul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
+    "alt": "Meniul Filtru deschis, cu câmpurile Grupă, Secțiune, Antrenor, Membru A.C.S. și Stare",
     "marks": [
       {
         "key": "filtru",
@@ -1669,7 +1669,7 @@
   "tabele-coloane": {
     "w": 1280,
     "h": 760,
-    "alt": "Lista Coloane deschisă, cu casete de bifat și săgeți sus și jos",
+    "alt": "Lista Coloane deschisă, cu casete de selectare și săgeți sus și jos",
     "marks": [
       {
         "key": "coloane",

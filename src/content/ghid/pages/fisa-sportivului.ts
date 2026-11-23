@@ -3,7 +3,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 export const fisaSportivuluiPage: GhidPage = {
   slug: "fisa-sportivului",
   title: "Fișa sportivului",
-  lead: "Fișa strânge într-un loc tot ce știe sistemul despre un sportiv, în opt taburi.",
+  lead: "Fișa reunește toate datele unui sportiv, în opt taburi.",
   blocks: [
     {
       t: "steps",
@@ -15,10 +15,10 @@ export const fisaSportivuluiPage: GhidPage = {
         },
       ],
     },
-    { t: "h2", text: "Sus, lângă nume" },
+    { t: "h2", text: "Antetul fișei" },
     {
       t: "p",
-      text: "Sub nume sunt data nașterii și grupa principală. **Date incomplete** apare când lipsesc date, iar **Inactiv** când sportivul e marcat inactiv. Butonul **...** deschide acțiunile fișei.",
+      text: "Sub nume sunt data nașterii și grupa principală. **Date incomplete** apare când lipsesc date, iar **Inactiv** când sportivul este marcat inactiv. Butonul **...** deschide acțiunile fișei.",
     },
     {
       t: "p",
@@ -33,14 +33,14 @@ export const fisaSportivuluiPage: GhidPage = {
         "**Plăți**: plățile sportivului, cu **+ Plată**.",
         "**Profil public**: pagina sportivului de pe site și legătura cu rezultatele.",
         "**Documente**: PDF-urile înscrierilor.",
-        "**Istoric**: cine a schimbat ce și când. Numărul din tab arată câte intrări are.",
+        "**Istoric**: cine a modificat ce și când. Numărul din tab arată câte înregistrări are.",
         "**Competiții**: patru casete (**Competiții**, **Podiumuri**, **Cel mai bun loc**, **Cel mai bun scor**) și lista rezultatelor, cu filtru **Toate sezoanele**.",
         "**Parcurs**: insignele sportivului.",
       ],
     },
     {
       t: "p",
-      text: "Fără profil public, tabul **Competiții** arată **Nicio competiție.** Sursa rezultatelor e explicată la Competiții.",
+      text: "Fără profil public, tabul **Competiții** arată **Nicio competiție.** Sursa rezultatelor este explicată în pagina Competiții și rezultate.",
     },
     {
       t: "p",
