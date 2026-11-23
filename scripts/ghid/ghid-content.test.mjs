@@ -51,11 +51,16 @@ it("page slugs are unique and each file is named <slug>.ts", async() => {
   assert.equal(new Set(slugs).size, slugs.length, "repeated slug");
 });
 
-it("every links item names an existing page", () => {
+it("every links item names an existing page, or an https address with a label", () => {
   const slugs = new Set(pages.map((p) => p.slug));
   for (const p of pages)
     for (const b of p.blocks.filter((x) => x.t === "links"))
-      for (const it of b.items) assert.ok(slugs.has(it.slug), `${p.slug}: link to unknown page ${it.slug}`);
+      for (const it of b.items) {
+        if ("href" in it) {
+          assert.match(it.href, /^https:\/\/[^\s]+$/, `${p.slug}: external link must be https: ${it.href}`);
+          assert.ok(it.label?.trim(), `${p.slug}: external link without a label: ${it.href}`);
+        } else assert.ok(slugs.has(it.slug), `${p.slug}: link to unknown page ${it.slug}`);
+      }
 });
 
 it("every page module is imported once in the registry, and the registry lists each page once", () => {

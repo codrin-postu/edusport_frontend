@@ -32,6 +32,7 @@ function One({ block }: { block: Block }) {
       return (
         <ul className="m-0 flex list-none flex-col gap-2 p-0 text-(length:--portal-text-15)">
           {block.items.flatMap((it) => {
+            if ("href" in it) return [<li key={it.href}><Link href={it.href} external>{it.label}</Link></li>];
             const p = findPage(GHID_GROUPS, it.slug);
             return p ? [<li key={it.slug}><Link href={`/ghid/${it.slug}`}>{it.label ?? p.title}</Link></li>] : [];
           })}

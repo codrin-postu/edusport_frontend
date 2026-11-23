@@ -13,7 +13,10 @@ export type Block =
   | { t: "warn"; text: string }
   | { t: "code"; text: string }
   | { t: "video"; src: string; length?: string }
-  | { t: "links"; items: { slug: string; label?: string }[] };
+  | { t: "links"; items: LinkItem[] };
+
+/** A link to another wiki page by slug, or an external page by https URL (opens in a new tab). */
+export type LinkItem = { slug: string; label?: string } | { href: string; label: string };
 
 export type GhidPage = { slug: string; title: string; lead: string; blocks: Block[] };
 export type GhidGroup = { title: string; pages: GhidPage[] };

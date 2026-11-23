@@ -67,14 +67,15 @@ import { ceVedeAntrenorulPage } from "./pages/ce-vede-si-ce-poate-face-antrenoru
 import { aiUitatParolaPage } from "./pages/ai-uitat-parola";
 import { parinteCereDatelePage } from "./pages/un-parinte-cere-datele-sau-stergerea";
 import { hostingPage } from "./pages/hosting";
-import { inainteDeInceputPage } from "./pages/inainte-de-inceput";
+import { ceItiTrebuiePage } from "./pages/ce-iti-trebuie";
 import { pregatesteServerulPage } from "./pages/pregateste-serverul";
-import { instaleazaBackendulPage } from "./pages/instaleaza-backend-ul";
-import { instaleazaSiteulPage } from "./pages/instaleaza-site-ul-si-portalurile";
 import { nginxSiHttpsPage } from "./pages/nginx-si-https";
+import { instaleazaPanoulPage } from "./pages/instaleaza-panoul-de-administrare";
+import { instaleazaSiteulPage } from "./pages/instaleaza-site-ul";
+import { portalurileOptionalPage } from "./pages/portalurile-optional";
+import { serviciiOptionalePage } from "./pages/servicii-optionale";
 import { mutaDateleDePeServerulVechiPage } from "./pages/muta-datele-de-pe-serverul-vechi";
-import { copiiMonitorizareEmailPage } from "./pages/copii-de-siguranta-monitorizare-e-mail-google-si-analytics";
-import { verificareaFinalaPage } from "./pages/verificarea-finala";
+import { copiiSiVerificareaFinalaPage } from "./pages/copii-de-siguranta-si-verificarea-finala";
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -153,14 +154,15 @@ export const GHID_GROUPS: GhidGroup[] = [
   {
     title: "Instalare pe un server nou",
     pages: [
-      inainteDeInceputPage,
+      ceItiTrebuiePage,
       pregatesteServerulPage,
-      instaleazaBackendulPage,
-      instaleazaSiteulPage,
       nginxSiHttpsPage,
+      instaleazaPanoulPage,
+      instaleazaSiteulPage,
+      portalurileOptionalPage,
+      serviciiOptionalePage,
       mutaDateleDePeServerulVechiPage,
-      copiiMonitorizareEmailPage,
-      verificareaFinalaPage,
+      copiiSiVerificareaFinalaPage,
     ],
   },
 ];

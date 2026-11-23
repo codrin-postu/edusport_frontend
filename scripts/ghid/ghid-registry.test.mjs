@@ -77,6 +77,13 @@ it("a badge goes outside the box unless the box is too close to the left edge", 
   assert.equal(sh.badgeOutside([2, 10, 20, 5]), false);
 });
 
+it("an external link's label is part of the search text, its address is not", () => {
+  const p = page("x", { blocks: [{ t: "links", items: [{ href: "https://docs.docker.com/engine/install/ubuntu/", label: "Docker Engine pe Ubuntu" }] }] });
+  const t = r.pageText(p);
+  assert.ok(t.includes("Docker Engine pe Ubuntu"));
+  assert.ok(!t.includes("https://"));
+});
+
 it("a step's code is part of the search text", () => {
   const p = page("x", { blocks: [{ t: "steps", steps: [{ text: "Rulează.", code: "docker compose up -d" }] }] });
   assert.ok(r.pageText(p).includes("docker compose up -d"));

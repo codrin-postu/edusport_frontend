@@ -27,7 +27,7 @@ export const hostingPage: GhidPage = {
       ],
     },
     { t: "p", text: "Pașii de instalare sunt în **Instalare pe un server nou**." },
-    { t: "links", items: [{ slug: "inainte-de-inceput", label: "Instalare pe un server nou" }] },
+    { t: "links", items: [{ slug: "ce-iti-trebuie", label: "Instalare pe un server nou" }] },
     { t: "h2", text: "Hosting administrat" },
     { t: "p", text: "Site-ul, panoul și portalurile rulează azi în această variantă. Cost: **6 euro pe lună**. Include:" },
     {
