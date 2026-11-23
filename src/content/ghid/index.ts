@@ -1,6 +1,7 @@
 import type { GhidGroup, ShotData } from "@/lib/ghid/types";
 import shotsJson from "./shots.json";
 import { ceEsteEdusportPage } from "./pages/ce-este-edusport";
+import { cumSuntLegatePartilePage } from "./pages/cum-sunt-legate-partile";
 import { sigurantaPage } from "./pages/siguranta";
 import { intraInPanouPage } from "./pages/intra-in-panou";
 import { meniulSiPaginaAcasaPage } from "./pages/meniul-si-pagina-acasa";
@@ -79,7 +80,7 @@ import { copiiSiVerificareaFinalaPage } from "./pages/copii-de-siguranta-si-veri
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
-  { title: "Primii pași", pages: [ceEsteEdusportPage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
+  { title: "Primii pași", pages: [ceEsteEdusportPage, cumSuntLegatePartilePage, intraInPanouPage, meniulSiPaginaAcasaPage, contulTauPage, inceputDeSezonPage] },
   {
     title: "Înscrieri",
     pages: [
