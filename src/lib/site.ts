@@ -1,13 +1,14 @@
 // Single source of truth for site-wide constants. Imported by layout metadata,
 // robots, sitemap, and JSON-LD so the canonical origin and branding never drift.
 
+import { siteUrlFrom } from "./env";
+
 /**
- * Canonical site origin. Env-first so each deploy can override; falls back to
- * the real production domain. `||` (not `??`) so an empty string from a missing
- * build arg also falls back instead of producing an invalid URL.
+ * Canonical site origin, from NEXT_PUBLIC_SITE_URL. Required in production builds
+ * (the build fails with a clear message when it is missing or empty); outside
+ * production it defaults to http://localhost:3000.
  */
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://scoaladepatinaj.com";
+export const SITE_URL = siteUrlFrom(process.env.NEXT_PUBLIC_SITE_URL, process.env.NODE_ENV);
 
 export const SITE_NAME = "EduSport - Școala de Patinaj";
 

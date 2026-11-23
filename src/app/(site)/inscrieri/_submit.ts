@@ -1,8 +1,9 @@
 import type { CustomAnswer } from "@/lib/strapi-forms";
+import { envOr } from "@/lib/env";
 import { buildPayload, parseSubmitResponse, type SubmitFailure, type SubmitSuccess } from "./_rules";
 
 // Public url on purpose: this request and the PDF links are made from the browser.
-export const PUBLIC_STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+export const PUBLIC_STRAPI_URL = envOr(process.env.NEXT_PUBLIC_STRAPI_URL, "http://localhost:1337");
 
 /**
  * POST /api/forms/inscriere?scoala=<slug> (plan 2A Task 9, extended by 2D).

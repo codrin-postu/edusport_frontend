@@ -1,3 +1,5 @@
+import { envText } from "./env";
+
 /**
  * Single source of truth for the Strapi base URL.
  *
@@ -15,6 +17,6 @@
  * correct in both contexts with no branching on `typeof window`.
  */
 export const STRAPI_BASE =
-  process.env.STRAPI_INTERNAL_URL ??
-  process.env.NEXT_PUBLIC_STRAPI_URL ??
+  envText(process.env.STRAPI_INTERNAL_URL) ??
+  envText(process.env.NEXT_PUBLIC_STRAPI_URL) ??
   "http://localhost:1337";

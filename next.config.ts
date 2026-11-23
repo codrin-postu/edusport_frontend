@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
+import { strapiImagePattern } from "./src/lib/env";
+
+const strapiImage = strapiImagePattern(process.env.NEXT_PUBLIC_STRAPI_URL);
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -42,16 +45,8 @@ const nextConfig: NextConfig = {
         hostname: "**.strapi.io",
         pathname: "/uploads/**",
       },
-      // Production Strapi host — set NEXT_PUBLIC_STRAPI_IMAGE_HOST in env.
-      ...(process.env.NEXT_PUBLIC_STRAPI_IMAGE_HOST
-        ? [
-          {
-            protocol: "https" as const,
-            hostname: process.env.NEXT_PUBLIC_STRAPI_IMAGE_HOST,
-            pathname: "/uploads/**",
-          },
-        ]
-        : []),
+      // The Strapi uploads host, derived from NEXT_PUBLIC_STRAPI_URL (no separate image host setting).
+      ...(strapiImage ? [strapiImage] : []),
     ],
   },
 

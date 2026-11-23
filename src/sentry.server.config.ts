@@ -1,14 +1,14 @@
 // Sentry server-runtime initialization (Node.js).
 // Loaded lazily from `instrumentation.ts` -> register().
 //
-// This is INERT when no DSN is set: if neither SENTRY_DSN nor
-// NEXT_PUBLIC_SENTRY_DSN is present, Sentry.init is never called, so nothing
-// is captured and nothing throws. Server env vars are read at runtime, which
-// keeps the same build image promotable across environments.
+// This is INERT when no DSN is set: without NEXT_PUBLIC_SENTRY_DSN, Sentry.init
+// is never called, so nothing is captured and nothing throws. The server uses
+// the same NEXT_PUBLIC_SENTRY_* values as the browser (inlined at build time).
 import * as Sentry from "@sentry/nextjs";
+import { envText } from "@/lib/env";
 import { scrubBreadcrumb, scrubEvent, scrubSpan, tracesSampler } from "@/lib/portal/sentry-scrub";
 
-const dsn = process.env.SENTRY_DSN ?? process.env.NEXT_PUBLIC_SENTRY_DSN;
+const dsn = envText(process.env.NEXT_PUBLIC_SENTRY_DSN);
 
 if (dsn) {
   Sentry.init({
@@ -19,8 +19,8 @@ if (dsn) {
     sendDefaultPii: false,
     // 0 on portal paths, the site's 0.1 elsewhere.
     tracesSampler,
-    release: process.env.SENTRY_RELEASE || process.env.NEXT_PUBLIC_SENTRY_RELEASE || process.env.NEXT_PUBLIC_COMMIT_SHA,
-    environment: process.env.SENTRY_ENVIRONMENT || process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV,
+    release: envText(process.env.NEXT_PUBLIC_SENTRY_RELEASE) ?? envText(process.env.NEXT_PUBLIC_COMMIT_SHA),
+    environment: envText(process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT) ?? process.env.NODE_ENV,
     debug: false,
     // Invite secrets and credentials never leave the process unmasked.
     beforeSend: (event) => scrubEvent(event),

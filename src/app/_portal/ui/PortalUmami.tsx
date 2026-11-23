@@ -3,6 +3,7 @@
 import { useCallback, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { envText } from "@/lib/env";
 import { trackPath, type TrackPortal } from "@/lib/portal/track-path";
 
 type UmamiPayload = Record<string, unknown>;
@@ -20,10 +21,12 @@ export function PortalUmami({ portal, websiteId }: { portal: TrackPortal; websit
   }, [portal, pathname]);
   // Runs on every path change; the first view goes out from onLoad once the script exists.
   useEffect(send, [send]);
-  if (!websiteId) return null;
+  const src = envText(process.env.NEXT_PUBLIC_UMAMI_URL);
+  // Analytics is off unless both the website id and the script URL are set: no fallback to Umami Cloud.
+  if (!websiteId || !src) return null;
   return (
     <Script
-      src={process.env.NEXT_PUBLIC_UMAMI_URL ?? "https://analytics.umami.is/script.js"}
+      src={src}
       data-website-id={websiteId}
       data-auto-track="false"
       data-exclude-search="true"

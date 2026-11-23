@@ -36,6 +36,8 @@ export default defineConfig({
       command: `NEXT_DIST_DIR=.next-e2e npm run build && NEXT_DIST_DIR=.next-e2e npx next start -p ${PORT}`,
       url: `http://localhost:${PORT}/api/health`,
       env: {
+        // Required by the production build (no fallback domain).
+        NEXT_PUBLIC_SITE_URL: `http://localhost:${PORT}`,
         STRAPI_INTERNAL_URL: MOCK_URL,
         NEXT_PUBLIC_STRAPI_URL: MOCK_URL,
         PORTAL_BFF_SECRET: "test-bff-secret-000000000000000000",
