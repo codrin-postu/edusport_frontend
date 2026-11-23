@@ -36,7 +36,7 @@ export const ceSeSchimbaFataDeAcumPage: GhidPage = {
       ],
     },
     { t: "h2", text: "Site-ul vechi" },
-    { t: "p", text: "**Acum**: un site separat de restul instrumentelor." },
+    { t: "p", text: "**Acum**: site-ul nu are legătură cu înscrierile, prezența sau programul grupelor." },
     { t: "p", text: "**Cu EduSport**:" },
     {
       t: "list",
