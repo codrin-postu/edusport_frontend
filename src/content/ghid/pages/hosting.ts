@@ -1,8 +1,8 @@
 import type { GhidPage } from "@/lib/ghid/types";
 
-export const gazduirePage: GhidPage = {
-  slug: "gazduire",
-  title: "Găzduire",
+export const hostingPage: GhidPage = {
+  slug: "hosting",
+  title: "Hosting",
   lead: "Unde rulează site-ul și panoul, și de ce recomand să rămână acolo.",
   blocks: [
     { t: "h2", text: "Rămâne pe serverul meu" },

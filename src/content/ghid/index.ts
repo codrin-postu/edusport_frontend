@@ -55,7 +55,7 @@ import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sporti
 import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
-import { gazduirePage } from "./pages/gazduire";
+import { hostingPage } from "./pages/hosting";
 
 /** The wiki tree: group, page. Add a page module under ./pages and list it here, in reading order. */
 export const GHID_GROUPS: GhidGroup[] = [
@@ -114,7 +114,7 @@ export const GHID_GROUPS: GhidGroup[] = [
       sportiviInactiviPage,
     ],
   },
-  { title: "Despre EduSport", pages: [sigurantaPage, gazduirePage] },
+  { title: "Despre EduSport", pages: [sigurantaPage, hostingPage] },
 ];
 
 /** Screenshot metadata by id; the image is content/ghid/img/<id>.jpg. */
