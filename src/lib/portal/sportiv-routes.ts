@@ -1,3 +1,5 @@
+import { ALL_FEATURES, sportivFeatureOff, type PortalFeatures } from "./features.ts";
+
 // The sportiv routes the BFF may forward: exactly those of the backend's 04-sportiv.ts. Pure.
 const ID = "[A-Za-z0-9]{1,64}";
 const RESULT = "[A-Za-z0-9_-]{1,64}";
@@ -16,8 +18,9 @@ const ROUTES: [string, string][] = [
 
 const COMPILED = ROUTES.map(([method, pattern]) => ({ method, re: new RegExp(`^${pattern}$`) }));
 
-/** `path` is what follows `/api/portal/sportiv`, without the query string. */
-export function allowedSportivRoute(method: string, path: string): boolean {
+/** `path` is what follows `/api/portal/sportiv`, without the query string; a route of a switched-off feature is refused. */
+export function allowedSportivRoute(method: string, path: string, features: PortalFeatures = ALL_FEATURES): boolean {
+  if (sportivFeatureOff(path, features)) return false;
   return COMPILED.some((r) => r.method === method && r.re.test(path));
 }
 

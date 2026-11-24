@@ -10,12 +10,13 @@ import { ListRow } from "@/app/_portal/ui/ListRow";
 import { LoadError } from "@/app/_portal/ui/LoadError";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Sheet } from "@/app/_portal/ui/Sheet";
-import { useMe } from "../../_lib/me-context";
+import { useFeatures, useMe } from "../../_lib/me-context";
 import { usePortal } from "../../_lib/use-portal";
 
 /** "Antrenamentele clubului azi": every session of the club today, as a popup over Azi (`?club=1`). */
 export function ClubTodayPopup({ onClose }: { onClose: () => void }) {
   const me = useMe();
+  const { prezenta } = useFeatures();
   const club = usePortal<CoachClubToday>("coach/today/club");
   const close = (o: boolean) => { if (!o) onClose(); };
   if (club.state === "error") return <Sheet open onOpenChange={close} title={CLUB_TODAY.title} popup={{ closeLabel: CLUB_TODAY.close }}><LoadError onRetry={club.reload} /></Sheet>;
@@ -42,7 +43,7 @@ export function ClubTodayPopup({ onClose }: { onClose: () => void }) {
     return (
       <ListRow
         key={`l${r.lessonId ?? ""}${r.startTime}${i}`}
-        {...(r.own && r.lessonId && !r.cancelled ? { href: `/lectie/${encodeURIComponent(r.lessonId)}` } : { end: null })}
+        {...(prezenta && r.own && r.lessonId && !r.cancelled ? { href: `/lectie/${encodeURIComponent(r.lessonId)}` } : { end: null })}
         lead={r.cancelled ? <DateBlock word={weekdayShort(date)} day={String(Number(date.slice(8)))} time={r.startTime} dim /> : lead}
         dim={r.cancelled}
         title={CLUB_TODAY.lesson}

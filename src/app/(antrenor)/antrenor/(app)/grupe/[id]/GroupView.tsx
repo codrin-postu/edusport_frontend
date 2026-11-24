@@ -7,6 +7,7 @@ import { GROUP, GRUPE, PROGRAM } from "@/lib/portal/copy";
 import { shortWhen, weekdayShort } from "@/lib/portal/format";
 import type { CoachGroupPage } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
+import { useFeatures } from "../../../_lib/me-context";
 import { useNoAccess } from "../../../_lib/use-portal";
 import { GroupInfoCard } from "../../../_ui/GroupInfoCard";
 import { DateBlock } from "@/app/_portal/ui/DateBlock";
@@ -66,12 +67,13 @@ const BACK = { href: "/grupe", label: GRUPE.title };
 
 function OwnGroup({ page }: { page: Extract<CoachGroupPage, { own: true }> }) {
   const router = useRouter();
+  const { prezenta } = useFeatures();
   const pathname = usePathname();
   const params = useSearchParams();
   const tab: Tab = params.get("tab") === "program" ? "program" : "members";
   const [rev, setRev] = useState(0);
   const members = page.members;
-  const presence = page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
+  const presence = prezenta && page.todayKey ? `/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa` : null;
   const setTab = (t: Tab) => router.replace(t === "program" ? `${pathname}?tab=program` : pathname, { scroll: false });
   const tabs = <GroupTabs tab={tab} count={members.length} onChange={setTab} />;
   // Same header and side column on both tabs; "+ Adaugă program" lives under "Modifică grupa" (editable groups only: the backend sets programPublic for them).
@@ -125,6 +127,7 @@ function todayTime(page: Extract<CoachGroupPage, { own: false }>): string | null
 
 function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> }) {
   const router = useRouter();
+  const { prezenta } = useFeatures();
   const pathname = usePathname();
   const params = useSearchParams();
   const tab: Tab = params.get("tab") === "program" ? "program" : "members";
@@ -139,7 +142,7 @@ function OtherGroup({ page }: { page: Extract<CoachGroupPage, { own: false }> })
             <p data-other-coach className="text-(length:--portal-text-14) text-muted">{GROUP.otherCoach}</p>
             <GroupInfoCard program={page.program} location={page.location} coaches={page.coaches} />
             <div className="flex flex-col gap-3">
-              {page.todayKey ? (
+              {!prezenta ? null : page.todayKey ? (
                 <Button href={`/prezenta?occurrence=${encodeURIComponent(page.todayKey)}&from=grupa`} className="w-full">{GROUP.standIn(todayTime(page))}</Button>
               ) : page.standIn.length > 0 ? (
                 <Button onClick={() => setOpen(true)} className="w-full">{GROUP.standInPresence}</Button>

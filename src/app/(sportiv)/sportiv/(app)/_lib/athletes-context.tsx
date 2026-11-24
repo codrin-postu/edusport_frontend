@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
+import { notFound, usePathname } from "next/navigation";
 import type { SportivAthleteRow, SportivAthletes } from "@/lib/portal/sportiv-types";
 import { portalApi } from "@/app/_portal/lib/api";
 
-type Loaded = { key: number; athletes: SportivAthleteRow[] | null };
+type Loaded = { key: number; athletes: SportivAthleteRow[] | null; gone: boolean };
 
 type AthletesValue = {
   /** Every athlete the account holds, `inPicker: false` ones too (they stay reachable by URL). */
@@ -38,7 +38,7 @@ export function AthletesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     void portalApi<SportivAthletes>("GET", "sportiv/athletes").then((r) => {
-      if (!cancelled) setLoaded({ key: tick, athletes: r.ok ? r.data.athletes : null });
+      if (!cancelled) setLoaded({ key: tick, athletes: r.ok ? r.data.athletes : null, gone: !r.ok && r.status === 404 });
     });
     return () => {
       cancelled = true;
@@ -46,6 +46,8 @@ export function AthletesProvider({ children }: { children: React.ReactNode }) {
   }, [tick]);
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
+  // The portal was switched off while the session was open: the not-found page.
+  if (loaded?.gone) notFound();
   const value = useMemo<AthletesValue>(() => {
     const fresh = loaded !== null && loaded.key === tick;
     const athletes = loaded?.athletes ?? [];

@@ -8,6 +8,7 @@ import { logout } from "@/app/_portal/lib/logout";
 import type { AccountMenuItem } from "@/app/_portal/ui/Sidebar";
 import { PortalShell } from "@/app/_portal/ui/PortalShell";
 import { athleteIdOf, useAthletes } from "../_lib/athletes-context";
+import { useFeatures } from "../_lib/features-context";
 import { sportivNav } from "../_lib/nav";
 import { NoticesButton } from "./NoticesButton";
 import { NoticesPanel } from "./NoticesPanel";
@@ -39,7 +40,8 @@ export function SportivShell({ children }: { children: React.ReactNode }) {
   // The remembered athlete counts only while the account still lists it.
   const navId = fromUrl ?? (athletes.some((a) => a.id === last) ? last : null) ?? picker[0]?.id ?? null;
   const performance = athletes.find((a) => a.id === navId)?.performance ?? false;
-  const nav = useMemo(() => (navId === null ? [] : sportivNav(navId, performance)), [navId, performance]);
+  const features = useFeatures();
+  const nav = useMemo(() => (navId === null ? [] : sportivNav(navId, performance, features)), [navId, performance, features]);
 
   // Another athlete opens on the same section root when it has that section, else on its own Acasă; never a result id or deeper path.
   const section = fromUrl !== null ? sectionOf(pathname.slice(fromUrl.length + 1)) : "";

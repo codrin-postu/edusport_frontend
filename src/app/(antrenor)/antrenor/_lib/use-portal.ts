@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { STATES } from "@/lib/portal/copy";
 import { useToast } from "@/app/_portal/ui/Toast";
 import { portalApi, type ApiResult } from "@/app/_portal/lib/api";
 
-type Loaded<T> = { key: string; ok: boolean; data: T | null };
+type Loaded<T> = { key: string; ok: boolean; data: T | null; gone: boolean };
 
 /** GET of a BFF path. A null path is idle (stays "loading", no request). `previous` is the last good answer, kept while a reload runs so a screen can stay on it. */
 export function usePortal<T>(path: string | null): { state: "loading" | "error" | "ready"; data: T | null; previous: T | null; reload: () => void } {
@@ -18,7 +18,7 @@ export function usePortal<T>(path: string | null): { state: "loading" | "error" 
     if (path === null || key === null) return;
     let cancelled = false;
     void portalApi<T>("GET", path).then((r) => {
-      if (!cancelled) setLoaded({ key, ok: r.ok, data: r.ok ? r.data : null });
+      if (!cancelled) setLoaded({ key, ok: r.ok, data: r.ok ? r.data : null, gone: !r.ok && r.status === 404 });
     });
     return () => {
       cancelled = true;
@@ -26,6 +26,8 @@ export function usePortal<T>(path: string | null): { state: "loading" | "error" 
   }, [path, key]);
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
+  // The backend answers 404 for a switched-off feature or portal: the existing not-found page.
+  if (loaded?.gone) notFound();
   const previous = loaded?.data ?? null;
   if (key === null || loaded === null || loaded.key !== key) return { state: "loading", data: null, previous, reload };
   return { state: loaded.ok ? "ready" : "error", data: loaded.data, previous, reload };

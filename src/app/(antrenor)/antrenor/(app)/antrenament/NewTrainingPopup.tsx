@@ -6,7 +6,7 @@ import { dayMonth } from "@/lib/portal/format";
 import { groupBody, lessonBody, type TrainingValue } from "@/lib/portal/training-form";
 import type { CoachGroups, CoachLessonCreated, SessionCheck } from "@/lib/portal/api-types";
 import { portalApi } from "@/app/_portal/lib/api";
-import { useMe } from "../../_lib/me-context";
+import { useFeatures, useMe } from "../../_lib/me-context";
 import { bucharestToday } from "../../_lib/today";
 import { useNoAccess, usePortal } from "../../_lib/use-portal";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -19,6 +19,7 @@ const programHref = (groupId: string): string => `/grupe/${encodeURIComponent(gr
 /** "Antrenament nou" as a popup over its opener: group or individual, once or repeating. `group` presets the group (from "+ Adaugă program"), `individual` the tab. */
 export function NewTrainingPopup({ group, individual, onClose, onDone }: { group: string | null; individual: boolean; onClose: () => void; onDone?: () => void }) {
   const me = useMe();
+  const { prezenta } = useFeatures();
   const router = useRouter();
   const toast = useToast();
   const noAccess = useNoAccess();
@@ -47,7 +48,7 @@ export function NewTrainingPopup({ group, individual, onClose, onDone }: { group
     onDone?.();
     toast.show(r.data.date ? PROGRAM.toasts.classAdded(dayMonth(r.data.date)) : PROGRAM.toasts.programAdded);
     // A one-off class already held (today or the last 7 days): go straight to its Prezență (decided by Claude, user ruling 2026-11-10).
-    if (v.repeat === "none" && v.date <= today) {
+    if (prezenta && v.repeat === "none" && v.date <= today) {
       const c = await portalApi<SessionCheck>("POST", "coach/session/check", { groupId, date: v.date, startTime: v.startTime });
       if (c.ok && c.data.kind === "occurrence") return go(`/prezenta?${new URLSearchParams({ occurrence: c.data.occurrenceKey }).toString()}`);
       if (c.ok && c.data.kind === "free") return go(`/prezenta?${new URLSearchParams({ group: groupId, date: v.date, time: v.startTime, duration: String(v.durationMin) }).toString()}`);

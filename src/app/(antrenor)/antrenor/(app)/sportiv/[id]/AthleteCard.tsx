@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { CARD, COMPETITIONS, GRUPE, GROUP } from "@/lib/portal/copy";
 import { dayMonthShort, phoneLinks, shortWhen } from "@/lib/portal/format";
 import type { CoachAthleteCard } from "@/lib/portal/api-types";
+import { useFeatures } from "../../../_lib/me-context";
 import { usePortal } from "../../../_lib/use-portal";
 import { ContactButton } from "@/app/_portal/ui/ContactButton";
 import { CopyButton } from "@/app/_portal/ui/CopyButton";
@@ -85,6 +86,7 @@ function CompetitionsSection({ athleteId, competitions }: { athleteId: string; c
 }
 
 export function AthleteCard({ id }: { id: string }) {
+  const features = useFeatures();
   const card = usePortal<CoachAthleteCard>(`coach/athletes/${encodeURIComponent(id)}`);
   const from = useSearchParams().get("grupa");
   if (card.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
@@ -127,7 +129,7 @@ export function AthleteCard({ id }: { id: string }) {
           </Column>
           <Column grow={1} className="contents portal:flex">
             <div className="order-3 portal:order-none"><CompetitionsSection athleteId={a.athleteId} competitions={a.competitions} /></div>
-            {a.own && <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>}
+            {a.own && features.parcurs && <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>}
             {ab && (
               <div className="order-5 portal:order-none">
                 <Section title={CARD.school}>

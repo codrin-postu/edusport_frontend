@@ -7,6 +7,7 @@ import { Select } from "@/components/ui/select";
 import { TRAINING } from "@/lib/portal/copy";
 import type { CoachGroupRow, CoachMe } from "@/lib/portal/api-types";
 import { dayKeyOf, initialValue, ready, trainingSummary, type RepeatChoice, type TrainingKind, type TrainingMode, type TrainingValue } from "@/lib/portal/training-form";
+import { useFeatures } from "../../_lib/me-context";
 import { AthleteSearch } from "../../_ui/AthleteSearch";
 import { DaySquares } from "@/app/_portal/ui/DaySquares";
 import { Sheet } from "@/app/_portal/ui/Sheet";
@@ -40,11 +41,12 @@ type TrainingFormProps = {
 /** One form for a new training (group or individual, once or repeating) and for editing a lesson. */
 export function TrainingForm({ mode, title, onClose, today, me, groups, startKind, onSubmit }: TrainingFormProps) {
   const ids = { group: useId(), repeat: useId(), time: useId(), duration: useId(), until: useId() };
+  const { prezenta } = useFeatures();
   const edit = mode.kind === "edit";
   const noGroups = groups.length === 0;
   const [v, setV] = useState<TrainingValue>(() => {
     const first = initialValue(mode, today, me.coachId);
-    return { ...first, kind: noGroups || startKind === "individual" ? "individual" : first.kind };
+    return { ...first, kind: prezenta && (noGroups || startKind === "individual") ? "individual" : first.kind };
   });
   const [daysTouched, setDaysTouched] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -93,7 +95,7 @@ export function TrainingForm({ mode, title, onClose, today, me, groups, startKin
       footer={<SheetFooter message={message} busy={busy} disabled={!ready(v)} confirm={edit ? TRAINING.save : TRAINING.submit} onClose={onClose} onConfirm={() => void submit()} />}
     >
     <div data-training-form className="flex flex-col gap-(--portal-form-gap)">
-      {!edit && !noGroups && (
+      {!edit && !noGroups && prezenta && (
         <Segmented
           label={TRAINING.title}
           value={v.kind}

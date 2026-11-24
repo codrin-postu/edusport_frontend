@@ -22,7 +22,7 @@ import { useNow } from "@/app/_portal/lib/use-now";
 import { usePortal } from "../_lib/use-portal";
 import { NewTrainingPopup } from "./antrenament/NewTrainingPopup";
 import { ClubTodayPopup } from "./club/ClubTodayPopup";
-import { useMe } from "../_lib/me-context";
+import { useFeatures, useMe } from "../_lib/me-context";
 import { SessionRow, presenceHref, type SessionRowData } from "../_ui/SessionRow";
 
 /** Both Azi heading rows share this box on the desktop so their tops line up. */
@@ -30,13 +30,14 @@ const ROW1 = "portal:min-h-(--portal-tap) portal:items-center";
 
 function groupRow(c: CoachClassRow): SessionRowData {
   return {
-    kind: "grup", date: c.date, startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done, standIn: c.standIn,
+    kind: "grup", date: c.date, startTime: c.startTime, title: c.groupName, children: c.children, location: c.location, durationMin: null, done: c.done === true, standIn: c.standIn,
     sessionId: c.sessionId, occurrenceKey: c.occurrenceKey, lessonId: null,
   };
 }
 
 export default function AziPage() {
   const me = useMe();
+  const { prezenta } = useFeatures();
   const router = useRouter();
   const params = useSearchParams();
   const nou = params.get("nou");
@@ -61,7 +62,7 @@ export default function AziPage() {
   const rows: SessionRowData[] = [
     ...data.groups.map(groupRow),
     ...data.lessons.map((l): SessionRowData => ({
-      kind: "individual", date: data.today, startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done, cancelled: l.cancelled, reason: l.reason,
+      kind: "individual", date: data.today, startTime: l.startTime, title: l.athleteName, children: null, location: null, durationMin: l.durationMin, done: l.done === true, cancelled: l.cancelled, reason: l.reason,
       sessionId: null, occurrenceKey: null, lessonId: l.lessonId,
     })),
   ].sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -75,8 +76,8 @@ export default function AziPage() {
       </ListCard>
     );
   const todayMore = rows.length > LIST.azi && <SeeAllLink href={`/calendar?luna=${data.today.slice(0, 7)}&zi=${data.today}`} label={LIST.seeAll(rows.length)} />;
-  const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={[{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }]} />;
-  const addLesson = (
+  const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={prezenta ? [{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }] : undefined} />;
+  const addLesson = prezenta && (
     <div className="portal:hidden">
       <Button variant="secondary" href="/?nou=1" className="w-full">{AZI.addTraining}</Button>
     </div>
@@ -104,7 +105,7 @@ export default function AziPage() {
     <Section title={AZI.nextHeading}>
       <ListCard>
         <ListRow
-          href={next.kind === "individual" ? `/lectie/${encodeURIComponent(next.lessonId ?? "")}` : presenceHref({ sessionId: null, occurrenceKey: next.occurrenceKey })}
+          href={!prezenta ? undefined : next.kind === "individual" ? `/lectie/${encodeURIComponent(next.lessonId ?? "")}` : presenceHref({ sessionId: null, occurrenceKey: next.occurrenceKey })}
           lead={<DateBlock word={weekdayShort(next.date)} day={String(Number(next.date.slice(8)))} time={next.startTime} />}
           title={next.title}
           sub={next.location}
@@ -118,7 +119,7 @@ export default function AziPage() {
         rows={[
           { key: AZI.weekGroups, value: AZI.weekCount(week.groupsHeld, week.groupsLeft) },
           { key: AZI.weekLessons, value: AZI.weekCount(week.lessonsHeld, week.lessonsLeft) },
-          { key: AZI.weekMissing, value: String(week.missing) },
+          ...(prezenta ? [{ key: AZI.weekMissing, value: String(week.missing) }] : []),
         ]}
       />
     </Section>
@@ -130,7 +131,7 @@ export default function AziPage() {
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
         tileOnPhone
-        actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
+        actions={prezenta ? <Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button> : undefined}
       />
       <PageBody>
         {/* Desktop: list left, summary right, half each (user 2026-11-11); headings on grid row 1, content on row 2, so both columns start on the same line. */}
@@ -150,7 +151,7 @@ export default function AziPage() {
         </div>
       </PageBody>
       {club && <ClubTodayPopup onClose={() => router.replace("/")} />}
-      {nou && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
+      {nou && prezenta && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
     </>
   );
 }
