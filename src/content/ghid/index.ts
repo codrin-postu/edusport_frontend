@@ -62,6 +62,7 @@ import { exportaDateleSportivuluiPage } from "./pages/exporta-datele-unui-sporti
 import { anonimizeazaSportivPage } from "./pages/anonimizeaza-un-sportiv";
 import { ceRamaneDupaAnonimizarePage } from "./pages/ce-ramane-dupa-anonimizare";
 import { sportiviInactiviPage } from "./pages/sportivi-inactivi";
+import { functiilePlatformeiPage } from "./pages/functiile-platformei";
 import { cumFunctioneazaContulPage } from "./pages/cum-functioneaza-contul-de-parinte";
 import { invitaParinteInPortalPage } from "./pages/invita-un-parinte-in-portal";
 import { ceVedeParinteleaPage } from "./pages/ce-vede-si-ce-poate-face-parintele";
@@ -158,6 +159,7 @@ export const GHID_GROUPS: GhidGroup[] = [
       anonimizeazaSportivPage,
       ceRamaneDupaAnonimizarePage,
       sportiviInactiviPage,
+      functiilePlatformeiPage,
     ],
   },
   {
