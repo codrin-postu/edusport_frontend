@@ -50,3 +50,13 @@ it("the allow-lists refuse the routes of a switched-off feature", () => {
   assert.equal(coach.allowedCoachRoute("POST", "/athletes/a1/awards", { ...ON, parcurs: false }), false);
   assert.equal(coach.allowedCoachRoute("GET", "/today", { prezenta: false, abonamente: false, parcurs: false }), true);
 });
+
+it("the coach athlete card hides the attendance and money blocks of a switched-off feature", () => {
+  const card = { presence: { season: 4, lessons: 1, last: null, missedThisMonth: 0 }, abonament: { code: null, next: 1, slots: 8, validUntil: "2026-11-28", location: null } };
+  assert.deepEqual(f.cardBlocks(card, ON), card);
+  assert.equal(f.cardBlocks(card, { ...ON, prezenta: false }).presence, null);
+  assert.equal(f.cardBlocks(card, { ...ON, prezenta: false }).abonament, card.abonament);
+  assert.equal(f.cardBlocks(card, { ...ON, abonamente: false }).abonament, null);
+  assert.equal(f.cardBlocks(card, { ...ON, abonamente: false }).presence, card.presence);
+  assert.equal(f.cardBlocks({ abonament: null }, ON).presence, null);
+});

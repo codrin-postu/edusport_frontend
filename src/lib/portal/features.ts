@@ -1,3 +1,5 @@
+import type { CoachAthleteCard } from "./api-types";
+
 // The club-wide switches the portals follow. Pure. The backend sends them in both `/me` answers; a missing or non-boolean value counts as on.
 export type PortalFeatures = { prezenta: boolean; abonamente: boolean; parcurs: boolean };
 
@@ -30,3 +32,8 @@ function blocked(table: Record<keyof PortalFeatures, RegExp[]>, path: string, fe
 
 export const coachFeatureOff = (path: string, features: PortalFeatures): boolean => blocked(COACH_OFF, path, features);
 export const sportivFeatureOff = (path: string, features: PortalFeatures): boolean => blocked(SPORTIV_OFF, path, features);
+
+/** The attendance and money blocks of a coach athlete card: each is null while its switch is off (or the answer left it out). */
+export function cardBlocks(card: Pick<CoachAthleteCard, "presence" | "abonament">, features: PortalFeatures): { presence: NonNullable<CoachAthleteCard["presence"]> | null; abonament: CoachAthleteCard["abonament"] } {
+  return { presence: features.prezenta ? (card.presence ?? null) : null, abonament: features.abonamente ? card.abonament : null };
+}

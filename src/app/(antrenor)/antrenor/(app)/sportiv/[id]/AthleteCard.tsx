@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { CARD, COMPETITIONS, GRUPE, GROUP } from "@/lib/portal/copy";
 import { dayMonthShort, phoneLinks, shortWhen } from "@/lib/portal/format";
 import type { CoachAthleteCard } from "@/lib/portal/api-types";
+import { cardBlocks } from "@/lib/portal/features";
 import { useFeatures } from "../../../_lib/me-context";
 import { usePortal } from "../../../_lib/use-portal";
 import { ContactButton } from "@/app/_portal/ui/ContactButton";
@@ -95,13 +96,13 @@ export function AthleteCard({ id }: { id: string }) {
   const origin = a.groupRows.find((g) => g.groupId === from);
   const back = origin ? { href: `/grupe/${encodeURIComponent(origin.groupId)}`, label: origin.name } : { href: "/grupe", label: GRUPE.title };
   const sub = a.age === null ? (a.sectionName ?? undefined) : CARD.ageSection(GROUP.age(a.age), a.sectionName);
-  const ab = a.abonament;
-  const presenceRows = [
-    { key: CARD.inSeason, value: CARD.presences(a.presence.season) },
-    { key: CARD.lessons, value: CARD.lessonsValue(a.presence.lessons) },
-    ...(a.presence.last ? [{ key: CARD.last, value: shortWhen(a.presence.last) }] : []),
-    { key: CARD.missed, value: String(a.presence.missedThisMonth) },
-  ];
+  const { presence: p, abonament: ab } = cardBlocks(a, features);
+  const presenceRows = p ? [
+    { key: CARD.inSeason, value: CARD.presences(p.season) },
+    { key: CARD.lessons, value: CARD.lessonsValue(p.lessons) },
+    ...(p.last ? [{ key: CARD.last, value: shortWhen(p.last) }] : []),
+    { key: CARD.missed, value: String(p.missedThisMonth) },
+  ] : null;
   return (
     <>
       <PageHeader back={back} title={a.name} sub={sub} />
@@ -110,11 +111,13 @@ export function AthleteCard({ id }: { id: string }) {
         <Columns>
           <Column grow={1} className="contents portal:flex">
             {a.contact?.phone && <div className="order-1 portal:order-none"><ContactSection contact={a.contact} /></div>}
-            <div className="order-2 portal:order-none">
-              <Section title={CARD.presence}>
-                <KeyValueCard rows={presenceRows} />
-              </Section>
-            </div>
+            {presenceRows && (
+              <div className="order-2 portal:order-none">
+                <Section title={CARD.presence}>
+                  <KeyValueCard rows={presenceRows} />
+                </Section>
+              </div>
+            )}
             {a.groupRows.length > 0 && (
               <div className="order-4 portal:order-none">
                 <Section title={CARD.groups}>

@@ -77,7 +77,7 @@ export default function AziPage() {
     );
   const todayMore = rows.length > LIST.azi && <SeeAllLink href={`/calendar?luna=${data.today.slice(0, 7)}&zi=${data.today}`} label={LIST.seeAll(rows.length)} />;
   const stat = <StatCard big={String(rows.length)} label={AZI.statLabel} side={prezenta ? [{ value: String(done), label: done === 1 ? AZI.doneOne : AZI.doneMany }] : undefined} />;
-  const addLesson = prezenta && (
+  const addLesson = (
     <div className="portal:hidden">
       <Button variant="secondary" href="/?nou=1" className="w-full">{AZI.addTraining}</Button>
     </div>
@@ -131,7 +131,7 @@ export default function AziPage() {
         kicker={AZI.greeting(me?.firstName ?? "")}
         title={AZI.title}
         tileOnPhone
-        actions={prezenta ? <Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button> : undefined}
+        actions={<Button variant="secondary" href="/?nou=1" className="h-auto">{AZI.addTraining}</Button>}
       />
       <PageBody>
         {/* Desktop: list left, summary right, half each (user 2026-11-11); headings on grid row 1, content on row 2, so both columns start on the same line. */}
@@ -151,7 +151,7 @@ export default function AziPage() {
         </div>
       </PageBody>
       {club && <ClubTodayPopup onClose={() => router.replace("/")} />}
-      {nou && prezenta && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
+      {nou && <NewTrainingPopup group={null} individual={nou === "individual"} onClose={() => router.replace("/")} />}
     </>
   );
 }
