@@ -13,6 +13,7 @@ import { fetchDisabledPages, fetchNavPromoOverrides } from "@/lib/strapi-navigat
 import { filterNavItems } from "@/lib/pages";
 import { mergeNavOverrides } from "@/components/blocks/header/mergeNavOverrides";
 import { navItems as staticNavItems } from "@/components/blocks/header/navItems";
+import { envText } from "@/lib/env";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import { Announcement } from "@/components/blocks/announcement-popup";
 import type { SiteContactInfo } from "@/components/blocks/footer/Footer";
@@ -81,6 +82,10 @@ export default async function RootLayout({
   const registrationOpen: boolean | undefined = siteSettings.registrationOpen;
 
   const announcement = await fetchAnnouncement();
+
+  // Analytics is off unless both the website id and the script URL are set (no fallback to Umami Cloud).
+  const umamiSiteId = envText(process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID);
+  const umamiUrl = envText(process.env.NEXT_PUBLIC_UMAMI_URL);
 
   // The menu structure comes from code; the CMS may only override each promo
   // card's description and image. Header is a client component, so the fetch
@@ -172,10 +177,10 @@ export default async function RootLayout({
             device (its only storage touch is reading an opt-out flag) and does no
             profiling, so it falls under the audience-measurement exemption rather
             than art. 4(5) of Legea 506/2004. Disclosed in the privacy policy. */}
-        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+        {umamiSiteId && umamiUrl && (
           <Script
-            src={process.env.NEXT_PUBLIC_UMAMI_URL ?? "https://analytics.umami.is/script.js"}
-            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            src={umamiUrl}
+            data-website-id={umamiSiteId}
             strategy="afterInteractive"
           />
         )}

@@ -13,6 +13,8 @@
  * Type-only module: loaded by Node tests through type stripping.
  */
 
+import type { PortalFeatures } from "./features.ts";
+
 export type DayKey = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 export type WeekOfMonth = "first" | "second" | "third" | "fourth" | "last";
 export type RepeatFreq = "weekly" | "biweekly" | "monthly";
@@ -104,16 +106,18 @@ export type CoachMe = { name: string; firstName: string; initials: string; email
   coachId: string;
   /** Team members who coach any group: id and name only, for choosing a lesson's coaches. */
   coachOptions: { id: string; name: string }[];
+  /** The club-wide switches (effective values). */
+  features: PortalFeatures;
 };
 /** Dates of one month (`YYYY-MM-DD`, ascending) that have a saved session the coach may read. */
 export type CoachSavedDays = { month: string; dates: string[] };
 /** `twoFactorUntil`: the end of this device's remembered 2FA skip, null when it must answer the second step. */
 export type CoachDevice = { id: string; label: string; lastSeenAt: string; current: boolean; twoFactorUntil: string | null };
 export type CoachClassRow = {
-  sessionId: string | null; occurrenceKey: string | null; groupId: string; groupName: string; date: string; startTime: string; children: number; done: boolean; standIn: boolean;
+  sessionId: string | null; occurrenceKey: string | null; groupId: string; groupName: string; date: string; startTime: string; children: number; done?: boolean; standIn: boolean;
   location: string | null;
 };
-export type CoachLessonRow = { lessonId: string; athleteName: string; date: string; startTime: string; durationMin: number; done: boolean; cancelled: boolean; reason: string | null };
+export type CoachLessonRow = { lessonId: string; athleteName: string; date: string; startTime: string; durationMin: number; done?: boolean; cancelled: boolean; reason: string | null };
 /** The first own class or lesson after now, 14 days ahead at most. */
 export type CoachNext = { kind: "grup" | "individual"; date: string; startTime: string; title: string; location: string | null; occurrenceKey: string | null; lessonId: string | null };
 /** Monday to Sunday of today: held (start time passed) and left, and held classes still without saved presence. */
@@ -188,8 +192,9 @@ export type CoachAthleteCard = {
   sectionName: string | null;
   /** Current groups, main first. */
   groupRows: { groupId: string; name: string; program: string[] }[];
-  presence: { season: number; lessons: number; last: string | null; missedThisMonth: number };
-  /** Own children only. */
+  /** Absent while the Prezență switch is off. */
+  presence?: { season: number; lessons: number; last: string | null; missedThisMonth: number };
+  /** Own children only; null while the Abonamente switch is off. */
   abonament: { code: string | null; next: number; slots: number; validUntil: string; location: string | null } | null;
   competitions: CoachAthleteCompetitions;
 };

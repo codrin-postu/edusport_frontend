@@ -1,4 +1,5 @@
 import React from "react";
+import { envOr } from "@/lib/env";
 
 // Tiny safe markdown renderer for the season-calendar weekend popover.
 // Supported subset: **bold**, *italic*, [text](url), paragraph breaks (blank line),
@@ -12,7 +13,7 @@ const SAFE_URL = /^(https?:\/\/|\/|mailto:)/i;
 // Deliberately the PUBLIC url, not STRAPI_BASE: this builds <img src> values
 // that the browser has to fetch, so an internal container address would break
 // every image when rendered on the server.
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+const STRAPI_URL = envOr(process.env.NEXT_PUBLIC_STRAPI_URL, "http://localhost:1337");
 
 // Strapi stores uploaded files as `/uploads/...`. Prepend the backend host so
 // the browser actually loads them (the frontend lives on a different origin

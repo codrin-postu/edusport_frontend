@@ -1,12 +1,13 @@
 // Sentry edge-runtime initialization (middleware, edge routes).
 // Loaded lazily from `instrumentation.ts` -> register().
 //
-// INERT when no DSN is set: without SENTRY_DSN / NEXT_PUBLIC_SENTRY_DSN,
+// INERT when no DSN is set: without NEXT_PUBLIC_SENTRY_DSN,
 // Sentry.init is never called, so this is a no-op that cannot throw.
 import * as Sentry from "@sentry/nextjs";
+import { envText } from "@/lib/env";
 import { scrubBreadcrumb, scrubEvent, scrubSpan, tracesSampler } from "@/lib/portal/sentry-scrub";
 
-const dsn = process.env.SENTRY_DSN ?? process.env.NEXT_PUBLIC_SENTRY_DSN;
+const dsn = envText(process.env.NEXT_PUBLIC_SENTRY_DSN);
 
 if (dsn) {
   Sentry.init({
@@ -17,8 +18,8 @@ if (dsn) {
     sendDefaultPii: false,
     // 0 on portal paths, the site's 0.1 elsewhere.
     tracesSampler,
-    release: process.env.SENTRY_RELEASE || process.env.NEXT_PUBLIC_SENTRY_RELEASE || process.env.NEXT_PUBLIC_COMMIT_SHA,
-    environment: process.env.SENTRY_ENVIRONMENT || process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV,
+    release: envText(process.env.NEXT_PUBLIC_SENTRY_RELEASE) ?? envText(process.env.NEXT_PUBLIC_COMMIT_SHA),
+    environment: envText(process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT) ?? process.env.NODE_ENV,
     debug: false,
     // Invite secrets, Google codes and credentials never leave the process unmasked.
     beforeSend: (event) => scrubEvent(event),

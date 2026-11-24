@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { CARD, COMPETITIONS, GRUPE, GROUP } from "@/lib/portal/copy";
 import { dayMonthShort, phoneLinks, shortWhen } from "@/lib/portal/format";
 import type { CoachAthleteCard } from "@/lib/portal/api-types";
+import { cardBlocks } from "@/lib/portal/features";
+import { useFeatures } from "../../../_lib/me-context";
 import { usePortal } from "../../../_lib/use-portal";
 import { ContactButton } from "@/app/_portal/ui/ContactButton";
 import { CopyButton } from "@/app/_portal/ui/CopyButton";
@@ -85,6 +87,7 @@ function CompetitionsSection({ athleteId, competitions }: { athleteId: string; c
 }
 
 export function AthleteCard({ id }: { id: string }) {
+  const features = useFeatures();
   const card = usePortal<CoachAthleteCard>(`coach/athletes/${encodeURIComponent(id)}`);
   const from = useSearchParams().get("grupa");
   if (card.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
@@ -93,13 +96,13 @@ export function AthleteCard({ id }: { id: string }) {
   const origin = a.groupRows.find((g) => g.groupId === from);
   const back = origin ? { href: `/grupe/${encodeURIComponent(origin.groupId)}`, label: origin.name } : { href: "/grupe", label: GRUPE.title };
   const sub = a.age === null ? (a.sectionName ?? undefined) : CARD.ageSection(GROUP.age(a.age), a.sectionName);
-  const ab = a.abonament;
-  const presenceRows = [
-    { key: CARD.inSeason, value: CARD.presences(a.presence.season) },
-    { key: CARD.lessons, value: CARD.lessonsValue(a.presence.lessons) },
-    ...(a.presence.last ? [{ key: CARD.last, value: shortWhen(a.presence.last) }] : []),
-    { key: CARD.missed, value: String(a.presence.missedThisMonth) },
-  ];
+  const { presence: p, abonament: ab } = cardBlocks(a, features);
+  const presenceRows = p ? [
+    { key: CARD.inSeason, value: CARD.presences(p.season) },
+    { key: CARD.lessons, value: CARD.lessonsValue(p.lessons) },
+    ...(p.last ? [{ key: CARD.last, value: shortWhen(p.last) }] : []),
+    { key: CARD.missed, value: String(p.missedThisMonth) },
+  ] : null;
   return (
     <>
       <PageHeader back={back} title={a.name} sub={sub} />
@@ -108,11 +111,13 @@ export function AthleteCard({ id }: { id: string }) {
         <Columns>
           <Column grow={1} className="contents portal:flex">
             {a.contact?.phone && <div className="order-1 portal:order-none"><ContactSection contact={a.contact} /></div>}
-            <div className="order-2 portal:order-none">
-              <Section title={CARD.presence}>
-                <KeyValueCard rows={presenceRows} />
-              </Section>
-            </div>
+            {presenceRows && (
+              <div className="order-2 portal:order-none">
+                <Section title={CARD.presence}>
+                  <KeyValueCard rows={presenceRows} />
+                </Section>
+              </div>
+            )}
             {a.groupRows.length > 0 && (
               <div className="order-4 portal:order-none">
                 <Section title={CARD.groups}>
@@ -127,7 +132,7 @@ export function AthleteCard({ id }: { id: string }) {
           </Column>
           <Column grow={1} className="contents portal:flex">
             <div className="order-3 portal:order-none"><CompetitionsSection athleteId={a.athleteId} competitions={a.competitions} /></div>
-            {a.own && <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>}
+            {a.own && features.parcurs && <div className="order-6 portal:order-none"><ParcursSection athleteId={a.athleteId} /></div>}
             {ab && (
               <div className="order-5 portal:order-none">
                 <Section title={CARD.school}>

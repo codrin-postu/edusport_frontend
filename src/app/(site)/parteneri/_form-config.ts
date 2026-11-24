@@ -3,6 +3,7 @@
 // endpoint /api/forms/parteneri.
 // ---------------------------------------------------------------------------
 
+import { envOr } from "@/lib/env";
 import {
   PARTENERI_BUILTIN_BOOL_KEYS,
   PARTENERI_BUILTIN_KEYS,
@@ -20,7 +21,7 @@ export type SubmitStatus = "idle" | "sending" | "sent" | "error";
 
 // Public url on purpose: this request is made from the browser.
 const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+  envOr(process.env.NEXT_PUBLIC_STRAPI_URL, "http://localhost:1337");
 
 const asString = (v: CustomAnswer | undefined): string =>
   typeof v === "string" ? v : v === true ? "Da" : v === false ? "Nu" : "";

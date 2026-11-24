@@ -3,6 +3,7 @@
 // endpoint /api/forms/voluntariat.
 // ---------------------------------------------------------------------------
 
+import { envOr } from "@/lib/env";
 import {
   VOLUNTARIAT_BUILTIN_BOOL_KEYS,
   VOLUNTARIAT_BUILTIN_KEYS,
@@ -51,7 +52,7 @@ export function ageFromBirthDate(v: string): number | null {
 
 // Public url on purpose: this request is made from the browser.
 const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+  envOr(process.env.NEXT_PUBLIC_STRAPI_URL, "http://localhost:1337");
 
 const asString = (v: CustomAnswer | undefined): string =>
   typeof v === "string" ? v : v === true ? "Da" : v === false ? "Nu" : "";

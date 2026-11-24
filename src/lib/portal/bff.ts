@@ -3,6 +3,7 @@
 // Never logs a token, a secret or an invite secret: a call logs method, masked path, status.
 import { NextResponse, type NextRequest } from "next/server";
 import { STRAPI_BASE } from "@/lib/strapi-base";
+import { envText } from "@/lib/env";
 import type { ApiRefusal } from "./api-types";
 import { STATES } from "./copy";
 import { clearSessionCookies, cookieNames, isSecureRequest, sessionCookies, type CookieNames, type CookieSpec } from "./cookies";
@@ -63,7 +64,7 @@ async function readAnswer(res: Response): Promise<unknown> {
 
 export async function callStrapi(path: string, init: StrapiInit, ctx: BffContext): Promise<Answer> {
   if (!secretReady()) return { status: 503, body: refusal(503, STATES.loadFailed) };
-  const base = process.env.PORTAL_STRAPI_URL ?? STRAPI_BASE;
+  const base = envText(process.env.PORTAL_STRAPI_URL) ?? STRAPI_BASE;
   const headers = bffHeaders({
     secret: process.env.PORTAL_BFF_SECRET ?? "", ip: ctx.ip, userAgent: init.userAgent ? ctx.userAgent : null,
     device: init.device, access: init.access,

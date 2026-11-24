@@ -9,6 +9,7 @@ import { LoadError } from "@/app/_portal/ui/LoadError";
 import { Column, Columns, PageBody } from "@/app/_portal/ui/PageBody";
 import { PageHeader, PageSub } from "@/app/_portal/ui/PageHeader";
 import { Spinner } from "@/app/_portal/ui/Spinner";
+import { useFeatures } from "../_lib/features-context";
 import { useSportiv } from "../_lib/use-sportiv";
 import { AccountButton } from "../_ui/AccountSheet";
 import { AbonamentCard } from "./_parts/AbonamentCard";
@@ -21,6 +22,7 @@ import { UpcomingList } from "./_parts/UpcomingList";
 export default function HomePage() {
   const { athleteId } = useParams<{ athleteId: string }>();
   const home = useSportiv<SportivHome>(`athletes/${athleteId}/home`);
+  const features = useFeatures();
   const [seen, setSeen] = useState<string | null>(null);
   if (home.state === "loading") return <PageBody><div className="flex justify-center py-6"><Spinner /></div></PageBody>;
   if (home.data === null) return <PageBody><LoadError onRetry={home.reload} /></PageBody>;
@@ -40,9 +42,9 @@ export default function HomePage() {
         {athlete.inactive && <p className="text-(length:--portal-sub-size) text-muted">{INACTIVE}</p>}
         <Columns>
           <Column grow={2} className="contents portal:flex">
-            <div className="order-1 portal:order-none"><PresenceCard total={presences.total} months={presences.months} /></div>
+            {features.prezenta && presences && <div className="order-1 portal:order-none"><PresenceCard total={presences.total} months={presences.months} /></div>}
             {lastCompetition !== null && <div className="order-2 portal:order-none"><LastCompetitionCard last={lastCompetition} allHref={`/${athleteId}/concursuri`} /></div>}
-            {abonament !== null && <div className="order-4 portal:order-none"><AbonamentCard abonament={abonament} detailsHref={`/${athleteId}/plati`} /></div>}
+            {features.abonamente && abonament && <div className="order-4 portal:order-none"><AbonamentCard abonament={abonament} detailsHref={`/${athleteId}/plati`} /></div>}
           </Column>
           <Column grow={1} className="contents portal:flex">
             {(upcoming.length > 0 || !athlete.inactive) && <div className="order-3 portal:order-none"><UpcomingList items={upcoming} calendarHref={`/${athleteId}/calendar`} /></div>}

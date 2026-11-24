@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { LOST_ATHLETE } from "@/lib/portal/copy-sportiv";
 import { portalApi } from "@/app/_portal/lib/api";
 import { useToast } from "@/app/_portal/ui/Toast";
@@ -40,6 +40,8 @@ export function useSportiv<T>(path: string): { state: "loading" | "ready" | "err
   }, [path, key, reloadAthletes, toast, router]);
 
   const reload = useCallback(() => setTick((n) => n + 1), []);
+  // The backend answers 404 for a switched-off feature or portal: the existing not-found page.
+  if (loaded?.status === 404) notFound();
   if (loaded === null || loaded.key !== key) return { state: "loading", data: null, status: 0, reload };
   return { state: loaded.data === null ? "error" : "ready", data: loaded.data, status: loaded.status, reload };
 }

@@ -10,6 +10,7 @@ import { ListRow } from "@/app/_portal/ui/ListRow";
 import { ListCard } from "@/app/_portal/ui/PortalCard";
 import { Sheet } from "@/app/_portal/ui/Sheet";
 import { SheetFooter } from "../../_ui/SheetFooter";
+import { useFeatures } from "../../_lib/me-context";
 import { presenceHref } from "../../_ui/SessionRow";
 import { DateSheet, type DateChoice } from "../grupe/[id]/_program/DateSheet";
 import { useSend } from "../grupe/[id]/_program/useSend";
@@ -25,11 +26,14 @@ const LABEL: Record<SessionAction, string> = { prezenta: SESSION_SHEET.presence,
 export function SessionSheet({ item, today, onClose, onDone }: Props) {
   const [step, setStep] = useState<SessionAction | null>(null);
   const lesson = item.kind === "individual";
+  const { prezenta } = useFeatures();
   const target = dateTargetOf(item);
   const all = sessionActions({
     kind: lesson ? "lesson" : "group", archived: isArchived(item.date, today, item.done), future: item.date >= today, cancelled: item.cancelled, done: item.done,
   });
-  const actions = lesson || target !== null ? all : all.filter((a) => a === "prezenta");
+  const own = lesson || target !== null ? all : all.filter((a) => a === "prezenta");
+  // Without Prezență a lesson has no action (its routes are off) and a group session has no Prezență.
+  const actions = prezenta ? own : lesson ? [] : own.filter((a) => a !== "prezenta");
   if (target !== null && step !== null && step !== "prezenta") return <DateSheet occurrence={target} today={today} initial={DATE_CHOICE[step]} onClose={() => setStep(null)} onDone={onDone} />;
   if (lesson && (step === "anuleaza" || step === "sterge")) return <LessonStep action={step} item={item} onBack={() => setStep(null)} onDone={onDone} />;
   const href = lesson ? `/lectie/${encodeURIComponent(item.lessonId ?? "")}` : presenceHref(item, "calendar");

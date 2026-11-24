@@ -1,3 +1,5 @@
+import { ALL_FEATURES, coachFeatureOff, type PortalFeatures } from "./features.ts";
+
 // The coach routes the BFF may forward: exactly those of the backend's 02-coach.ts. Pure.
 const ID = "[A-Za-z0-9]{1,64}";
 const DATE = "\\d{4}-\\d{2}-\\d{2}";
@@ -17,8 +19,9 @@ const ROUTES: [string, string][] = [
 
 const COMPILED = ROUTES.map(([method, pattern]) => ({ method, re: new RegExp(`^${pattern}$`) }));
 
-/** `path` is what follows `/api/portal/coach`, without the query string. */
-export function allowedCoachRoute(method: string, path: string): boolean {
+/** `path` is what follows `/api/portal/coach`, without the query string; a route of a switched-off feature is refused. */
+export function allowedCoachRoute(method: string, path: string, features: PortalFeatures = ALL_FEATURES): boolean {
+  if (coachFeatureOff(path, features)) return false;
   return COMPILED.some((r) => r.method === method && r.re.test(path));
 }
 

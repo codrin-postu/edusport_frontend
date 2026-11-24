@@ -62,7 +62,7 @@ That keeps the runtime image well under 200 MB.
 
 `next/image` is the only way images load. Allowed remote hosts are declared
 in `next.config.ts` via `images.remotePatterns`. The CMS upload host is
-whitelisted dynamically from `NEXT_PUBLIC_STRAPI_IMAGE_HOST`. Local dev
+whitelisted dynamically, derived from `NEXT_PUBLIC_STRAPI_URL`. Local dev
 also whitelists `localhost:1337/uploads/**`.
 
 ## Health endpoint
@@ -80,11 +80,9 @@ marked `dynamic = "force-dynamic"` so it never gets cached.
 
 See `.env.example` for the full list. Important runtime variables:
 
-- `NEXT_PUBLIC_SITE_URL` — used by sitemap, robots, OpenGraph.
+- `NEXT_PUBLIC_SITE_URL` — used by sitemap, robots, OpenGraph. Required in production builds (no fallback).
 - `NEXT_PUBLIC_STRAPI_URL` — base URL for server-side and client-side
   Strapi reads.
-- `NEXT_PUBLIC_STRAPI_IMAGE_HOST` — hostname (no protocol) added to
-  `next/image` remote patterns.
 - `STRAPI_API_TOKEN` — server-only read token.
 - `REVALIDATE_SECRET` — shared with the Strapi webhook.
 - `NEXT_PUBLIC_COMMIT_SHA` — injected by `scripts/deploy.sh`.

@@ -7,8 +7,10 @@
  * public page renders without the results section rather than erroring.
  */
 
+import { envOr } from "./env";
+
 const SKATE_API = (
-  process.env.SKATE_RESULTS_API ?? "https://skate-api.codrin.space"
+  envOr(process.env.SKATE_RESULTS_API, "https://skate-api.codrin.space")
 ).replace(/\/+$/, "");
 
 export interface SkateSegment {

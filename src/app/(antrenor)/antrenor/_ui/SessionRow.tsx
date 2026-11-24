@@ -6,6 +6,7 @@ import { DateBlock } from "@/app/_portal/ui/DateBlock";
 import { IndividualTag, StandInTag } from "@/app/_portal/ui/IndividualTag";
 import { ListRow } from "@/app/_portal/ui/ListRow";
 import { StatusBlock } from "@/app/_portal/ui/StatusBlock";
+import { useFeatures } from "../_lib/me-context";
 
 /** What a today or calendar row needs; both answers map onto it. */
 export type SessionRowData = {
@@ -18,7 +19,7 @@ export type SessionRowData = {
   children: number | null;
   location: string | null;
   durationMin: number | null;
-  done: boolean;
+  done?: boolean;
   cancelled?: boolean;
   /** Why it was cancelled; shown after the cancelled word. */
   reason?: string | null;
@@ -35,9 +36,12 @@ export const presenceHref = (r: { sessionId: string | null; occurrenceKey: strin
 const hrefOf = (r: SessionRowData, from: PresenceFrom | null): string =>
   r.kind === "individual" ? `/lectie/${encodeURIComponent(r.lessonId ?? "")}` : presenceHref(r, from);
 
-/** One row of the today and day lists (with `onOpen` a button that opens a sheet instead of a link): date square (weekday, day, hour), title, sub line, and the Grup or Individual status block. `now` is HH:mm; earlier rows are dimmed. */
+/** One row of the today and day lists (with `onOpen` a button that opens a sheet instead of a link; without Prezență no link and no status block): date square (weekday, day, hour), title, sub line, and the Grup or Individual status block. `now` is HH:mm; earlier rows are dimmed. */
 export function SessionRow({ row, now, from = null, onOpen }: { row: SessionRowData; now?: string; from?: PresenceFrom | null; onOpen?: () => void }) {
+  const { prezenta } = useFeatures();
   const cancelled = row.cancelled === true;
+  // A lesson has no sheet without Prezență: its routes are off.
+  const open = row.kind === "individual" && !prezenta ? undefined : onOpen;
   const dim = cancelled || (now !== undefined && row.startTime < now);
   const sub =
     row.kind === "individual" ? (
@@ -53,13 +57,13 @@ export function SessionRow({ row, now, from = null, onOpen }: { row: SessionRowD
     );
   return (
     <ListRow
-      href={onOpen || cancelled ? undefined : hrefOf(row, from)}
-      onClick={onOpen}
+      href={open || cancelled || !prezenta ? undefined : hrefOf(row, from)}
+      onClick={open}
       lead={<DateBlock word={weekdayShort(row.date)} day={String(Number(row.date.slice(8)))} time={row.startTime} dim={dim} />}
       title={row.title}
       sub={cancelled ? [CALENDAR.legendCancelled, row.reason].filter(Boolean).join(", ") : sub}
       dim={dim}
-      end={cancelled ? null : <StatusBlock kind={row.kind === "grup" ? "Grup" : "Individual"} done={row.done} popId={row.sessionId} />}
+      end={cancelled || !prezenta ? null : <StatusBlock kind={row.kind === "grup" ? "Grup" : "Individual"} done={row.done === true} popId={row.sessionId} />}
     />
   );
 }
