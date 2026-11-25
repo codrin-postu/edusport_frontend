@@ -9,7 +9,7 @@ export const inceputDeSezonPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniu apasă **Sezoane**, apoi **Sezon nou**.", shot: "sezoane-lista", marks: ["sezon-nou"] },
+        { text: "În meniu, la **Setări**, apasă **Sezoane**, apoi **Sezon nou**.", shot: "sezoane-lista", marks: ["sezon-nou"] },
         { text: "Completează **Sezon** (în formatul 2026-2027), **Început**, **Sfârșit** și **Taxă de membru**. Câmpurile sunt precompletate după sezonul anterior: verifică-le." },
         { text: "Apasă **Salvează**." },
       ],

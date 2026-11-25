@@ -12,7 +12,7 @@ export const roluriPage: GhidPage = {
       items: [
         "**Super Admin**: toate paginile. Doar el vede **Administratori**, în **Securitate**.",
         "**Administrator club**: toate paginile, cu excepția celor rezervate rolului Super Admin.",
-        "**Editor site**: **Panou EduSport**, **Securitate** și paginile site-ului, de exemplu **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Sponsori**, **Membri echipă**, **Voluntariat** și **Prețuri**.",
+        "**Editor site**: **Panou EduSport**, **Securitate** și paginile site-ului, de exemplu **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Parteneri** (cu **Sponsori**), **Membri echipă**, **Voluntariat** și **Prețuri**.",
       ],
     },
     { t: "h2", text: "Pagini doar pentru Administrator club și Super Admin" },

@@ -8,7 +8,7 @@ export const setariSitePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Setări site**, în meniu, sus." },
+        { text: "În meniu, la **Setări**, deschide **Setări site**." },
         {
           text: "La cardul **Înscrieri**, comutatorul **Înscrieri deschise** deschide sau închide înscrierile.",
           shot: "date-setari",

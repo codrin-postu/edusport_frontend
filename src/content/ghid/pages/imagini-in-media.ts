@@ -2,7 +2,7 @@ import type { GhidPage } from "@/lib/ghid/types";
 
 export const imaginiInMediaPage: GhidPage = {
   slug: "imagini-in-media",
-  title: "Imagini în Media",
+  title: "Imagini",
   lead: "Imaginile se încarcă în Biblioteca Media și se aleg de acolo în articole.",
   blocks: [
     {

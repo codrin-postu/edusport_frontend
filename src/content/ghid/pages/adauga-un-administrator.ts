@@ -8,7 +8,7 @@ export const adaugaAdministratorPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniul din stânga apasă **Comută la meniul Strapi**, apoi **Setări**. La **Panou de administrare** alege **Utilizatori**." },
+        { text: "În meniul din stânga apasă **Comută la meniul Strapi**, apoi **Setări** din meniul Strapi. La **Panou de administrare** alege **Utilizatori**." },
         {
           text: "Apasă **Invită utilizator nou**.",
           shot: "echipa-utilizatori",

@@ -8,7 +8,7 @@ export const anunturiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Anunțuri**, în meniu, sus. **Filtre** restrânge lista. Apasă pe un anunț ca să îl editezi." },
+        { text: "În meniu, la **Noutăți**, deschide **Anunțuri**. **Filtre** restrânge lista. Apasă pe un anunț ca să îl editezi." },
         {
           text: "Apasă **+ Anunț nou**. La **Unde apare** bifează **Site**, **Portal sportiv** sau amândouă. Trebuie să rămână bifat cel puțin un loc.",
           shot: "anunturi-noul",

@@ -7,7 +7,7 @@ export const echipaSponsoriPage: GhidPage = {
   blocks: [
     {
       t: "p",
-      text: "**Membri echipă** este în grupa **Club și școală**, iar **Discipline** în **Setări**. **Sponsori** și **Evenimente colaborare** sunt taburi în pagina **Parteneri**, iar **Momente istoric** este tab în pagina **Istoric**, ambele în grupa **Pagini site**.",
+      text: "**Membri echipă** este în grupa **Club și școală**, iar **Discipline** în **Setări**. **Sponsori** și **Evenimente colaborare** sunt taburi în pagina **Parteneri**, iar **Momente istoric** este tab în pagina **Istoric**. Paginile **Parteneri** și **Istoric** sunt în grupa **Pagini site**.",
     },
     { t: "h2", text: "Membri echipă" },
     {

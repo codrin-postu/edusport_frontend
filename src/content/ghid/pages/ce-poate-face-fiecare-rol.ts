@@ -48,7 +48,7 @@ export const cePoateFaceFiecareRolPage: GhidPage = {
       t: "list",
       items: [
         "**Panou EduSport** și **Securitate**.",
-        "Paginile site-ului: **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Sponsori**, **Membri echipă**, **Voluntariat** și **Prețuri**.",
+        "Paginile site-ului: **Pagina principală**, **Meniu site**, **Anunțuri**, **Competiții**, **Parteneri** (cu **Sponsori**), **Membri echipă**, **Voluntariat** și **Prețuri**.",
       ],
     },
     { t: "p", text: "**Nu poate**" },

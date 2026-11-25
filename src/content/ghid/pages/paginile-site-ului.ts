@@ -30,14 +30,14 @@ export const paginiSitePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Meniu site**, în meniu, sus. **Secțiuni** arată meniul de sus al site-ului." },
+        { text: "În meniu, la **Pagini site**, deschide **Meniu site**. **Secțiuni** arată meniul de sus al site-ului." },
         {
           text: "Alege **Despre Noi** sau **Cursuri**: doar ele au eticheta **card**, adică un card cu imagine în meniul site-ului.",
           shot: "site-meniu",
           marks: ["despre-noi", "cursuri"],
         },
         { text: "La **Descriere** scrie textul de sub titlul cardului." },
-        { text: "La **Imagine** apasă **Alege** (sau **Schimbă**) și alege imaginea din Media. Dimensiunea recomandată este 640 x 400 px, sub 300 KB. **Elimină** scoate imaginea." },
+        { text: "La **Imagine** apasă **Alege** (sau **Schimbă**) și alege imaginea din **Imagini**. Dimensiunea recomandată este 640 x 400 px, sub 300 KB. **Elimină** scoate imaginea." },
         { text: "Apasă **Salvează**, în bara de jos." },
       ],
     },

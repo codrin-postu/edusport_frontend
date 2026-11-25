@@ -30,11 +30,11 @@ export const articolePage: GhidPage = {
     },
     {
       t: "p",
-      text: "**coverImage** și **gallery** primesc doar imagini. Imaginile se încarcă întâi în Media.",
+      text: "**coverImage** și **gallery** primesc doar imagini. Imaginile se încarcă întâi în **Imagini**.",
     },
     {
       t: "p",
-      text: "În **body**, bara de sus oferă stiluri de text, aldin, cursiv, link și liste. Pictograma de imagine de la capătul barei inserează o imagine din Media.",
+      text: "În **body**, bara de sus oferă stiluri de text, aldin, cursiv, link și liste. Pictograma de imagine de la capătul barei inserează o imagine din **Imagini**.",
     },
     { t: "warn", text: "**Salvează** nu pune articolul pe site. Fără **Publică**, articolul rămâne ciornă." },
     { t: "p", text: "Pe site, un articol publicat apare după câteva minute." },
