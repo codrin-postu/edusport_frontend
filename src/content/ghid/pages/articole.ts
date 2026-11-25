@@ -10,7 +10,7 @@ export const articolePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniu deschide **Articole și media**, apoi **Articole**. Apasă **Creează intrare nouă**." },
+        { text: "În meniu deschide **Noutăți**, apoi **Articole**. Apasă **Creează intrare nouă**." },
         {
           text: "Completează **title** (titlul), **description** (cel mult 300 de caractere), **body** (textul), **category** și **date**.",
           shot: "site-articol",

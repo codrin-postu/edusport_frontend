@@ -51,7 +51,7 @@ https://sportiv.<domeniu>/api/portal/google/callback`,
         },
       ],
     },
-    { t: "p", text: "După instalare, activează portalul din panou, la **Sistem**, **Funcții**." },
+    { t: "p", text: "După instalare, activează portalul din panou, la **Setări**, **Funcții**." },
     { t: "h2", text: "Variabile, backend" },
     {
       t: "list",

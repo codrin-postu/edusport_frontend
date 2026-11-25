@@ -10,7 +10,7 @@ export const functiilePlatformeiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniul din stânga, la **Sistem**, deschide **Funcții**. Pagina apare doar pentru Super Admin." },
+        { text: "În meniul din stânga, la **Setări**, deschide **Funcții**. Pagina apare doar pentru Super Admin." },
         { text: "Apasă comutatorul de lângă funcție." },
         { text: "La dezactivare, citește avertizarea și apasă **Dezactivează**. Activarea se face imediat, fără avertizare." },
       ],

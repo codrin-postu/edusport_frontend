@@ -5,7 +5,7 @@ export const contulTauPage: GhidPage = {
   title: "Securitatea contului",
   lead: "2FA, cheile de acces și parola contului tău.",
   blocks: [
-    { t: "p", text: "În meniu, la **Sistem**, deschide **Securitate**. Pagina se referă la contul cu care ești conectat." },
+    { t: "p", text: "În meniu, la **Setări**, deschide **Securitate**. Pagina se referă la contul cu care ești conectat." },
     { t: "h2", text: "Activează 2FA" },
     {
       t: "steps",

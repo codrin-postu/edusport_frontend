@@ -10,7 +10,7 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Apasă o grupă din stânga, de exemplu **Club și școală**, ca să vezi paginile ei.", shot: "primii-meniu", marks: ["club-scoala"] },
-        { text: "Sus, sub **Acasă**, sunt paginile folosite frecvent: **Anunțuri**, **Setări site**, **Sezoane** și **Meniu site**." },
+        { text: "Sub **Acasă**, paginile sunt grupate după subiect: **Formulare**, **Club și școală**, **Noutăți**, **Pagini site** și **Setări**." },
         { text: "Jos sunt **Contul meu** și **Ieși din cont**." },
       ],
     },

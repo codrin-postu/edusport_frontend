@@ -8,7 +8,7 @@ export const imaginiInMediaPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniu deschide **Sistem**, apoi **Media**." },
+        { text: "În meniu deschide **Setări**, apoi **Imagini**." },
         {
           text: "Apasă **Adaugă resurse noi**. La **De pe calculator** trage fișierul în fereastră. La **De la URL** lipește adresa imaginii.",
           shot: "site-media",

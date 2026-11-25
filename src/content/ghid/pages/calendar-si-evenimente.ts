@@ -8,7 +8,7 @@ export const calendarSiEvenimentePage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Calendar și serii**, în meniu, la **Program și calendar**. Pagina se numește **Program** și arată luna curentă.", shot: "program-calendar", marks: ["meniu"] },
+        { text: "Deschide **Calendar și serii**, în meniu, la **Club și școală**. Pagina se numește **Program** și arată luna curentă.", shot: "program-calendar", marks: ["meniu"] },
         { text: "**Lună** și **Listă** schimbă afișarea. Săgețile de lângă lună și **Azi** schimbă perioada afișată.", shot: "program-calendar", marks: ["afisare"] },
         {
           text: "La **Arată:** bifezi ce vrei să vezi: **Antrenament**, **Școala de patinaj**, **Competiție, cantonament, spectacol, eveniment** și **Liber, vacanță, sărbătoare**.",

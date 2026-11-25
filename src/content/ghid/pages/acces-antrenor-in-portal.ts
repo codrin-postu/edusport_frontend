@@ -8,7 +8,7 @@ export const accesAntrenorPortalPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Deschide **Membri echipă**, din grupa **Sportivi și echipă**, și apasă pe antrenor. Se deschide **Editează membrul**." },
+        { text: "Deschide **Membri echipă**, din grupa **Club și școală**, și apasă pe antrenor. Se deschide **Editează membrul**." },
         {
           text: "La **Cont portal** scrie adresa la **E-mail pentru cont** (1) și apasă **Trimite invitația** (2). Apare **Invitație trimisă.**",
           shot: "echipa-cont-portal", marks: ["email", "trimite-invitatia"], numbered: true,

@@ -25,7 +25,7 @@ export const competitiiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "În meniu deschide **Sportivi și echipă**, apoi **Competiții**." },
+        { text: "În meniu deschide **Club și școală**, apoi **Competiții**." },
         {
           text: "La **Importă o competiție** (1) scrie numele și apasă **Caută competiție** (2). Alege-o din listă cu **Importă**.",
           shot: "site-competitii",
