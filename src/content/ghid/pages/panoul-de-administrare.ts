@@ -15,18 +15,18 @@ export const panoulDeAdministrarePage: GhidPage = {
       t: "list",
       items: [
         "**Acasă**: **Ce e nou**, comutatorul **Înscrieri pe site** și **Acțiuni rapide**.",
-        "**Formulare**: **Înscrieri**, mesajele de **Contact** și cererile de la **Voluntari** și **Parteneri**.",
-        "**Club și școală**: **Sportivi**, **Grupe**, **Prezență**, **Contabilitate**, **Calendar și serii** (ședințe, evenimente și pauze), **Prețuri**, **Tabele**, **Membri echipă** și **Competiții**.",
         "**Noutăți**: **Anunțuri** și **Articole**.",
+        "**Formulare**: **Înscrieri**, mesajele de **Contact**, cererile de la **Voluntari** și **Parteneri** și **Întrebările formularelor**.",
+        "**Club și școală**: **Sportivi**, **Grupe**, **Prețuri**, **Prezență**, **Contabilitate**, **Calendar și serii** (ședințe, evenimente și pauze), **Tabele**, **Membri echipă** și **Competiții**.",
         "**Pagini site**: textele paginilor, de la **Pagina principală** la **Parteneri**, și **Meniu site**. **Sponsori** și **Evenimente colaborare** sunt taburi în pagina **Parteneri**, iar **Momente istoric** este tab în pagina **Istoric**.",
-        "**Setări**: **Setări site**, **Sezoane**, **Discipline**, **Imagini**, **Securitate** (parola, 2FA și cheile de acces ale contului) și **Funcții** (doar Super Admin).",
+        "**Setări**: **Setări site**, **Sezoane**, **Discipline**, **Imagini**, **Securitate** (parola, 2FA și passkey-urile contului), **Funcții** (doar Super Admin), **Meniul Strapi** (doar Super Admin) și **Primii pași**.",
       ],
     },
     { t: "p", text: "Câteva activități se fac din mai multe pagini:" },
     {
       t: "list",
       items: [
-        "Echipă și acces: administratorii se invită din **Utilizatori**, în meniul Strapi, antrenorii din **Membri echipă**, la **Cont portal**, iar părinții din fișa sportivului, la **Acces portal**.",
+        "Echipă și acces: administratorii se invită din **Utilizatori**, în meniul Strapi (doar Super Admin), antrenorii din **Membri echipă**, la **Cont portal**, iar părinții din fișa sportivului, la **Acces portal**.",
         "Date personale: **Exportă datele** și **Anonimizează**, din fișa sportivului, și limita pentru sportivii inactivi, în **Setări site**.",
         "Evidența modificărilor: fiecare schimbare la un sportiv, o înscriere, o prezență, un abonament sau o plată intră în **Istoric**.",
       ],

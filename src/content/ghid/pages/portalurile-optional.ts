@@ -13,7 +13,7 @@ export const portalurileOptionalPage: GhidPage = {
       t: "p",
       text: "Portalurile sunt oprite după instalarea de bază. Backend-ul le pornește numai dacă **PORTAL_HOSTS** listează portalurile; gol sau lipsă înseamnă oprit: adresele de portal răspund 404, sarcinile programate ale portalurilor nu rulează, iar invitațiile din panou sunt refuzate cu un mesaj. Frontend-ul le pornește numai pentru gazdele din **PORTAL_HOST_ANTRENOR** și **PORTAL_HOST_SPORTIV**.",
     },
-    { t: "p", text: "Invitațiile ajung la antrenori și părinți prin e-mail, deci configurează întâi Brevo (pagina **Servicii opționale**). Autentificarea în portal este cu parolă sau cu Google; nu există 2FA sau chei de acces în portaluri." },
+    { t: "p", text: "Invitațiile ajung la antrenori și părinți prin e-mail, deci configurează întâi Brevo (pagina **Servicii opționale**). Autentificarea în portal este cu parolă sau cu Google; nu există 2FA sau passkey-uri în portaluri." },
     {
       t: "steps",
       steps: [

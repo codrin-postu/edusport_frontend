@@ -10,11 +10,12 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
       t: "steps",
       steps: [
         { text: "Apasă o grupă din stânga, de exemplu **Club și școală**, ca să vezi paginile ei.", shot: "primii-meniu", marks: ["club-scoala"] },
-        { text: "Sub **Acasă**, paginile sunt grupate după subiect: **Formulare**, **Club și școală**, **Noutăți**, **Pagini site** și **Setări**." },
-        { text: "Jos sunt **Contul meu** și **Ieși din cont**." },
+        { text: "Sub **Acasă**, paginile sunt grupate după subiect: **Noutăți**, **Formulare**, **Club și școală**, **Pagini site** și **Setări**." },
+        { text: "Jos sunt **Primii pași** (cu progresul tău) și **Ghid EduSport**, apoi **Contul meu** și **Ieși din cont**." },
       ],
     },
     { t: "p", text: "Fiecare cont vede doar grupele și paginile permise de rolul lui." },
+    { t: "p", text: "**Primii pași** te lasă să exersezi sarcinile de bază pe date de exemplu; nimic nu se salvează. La prima intrare în panou apar un mesaj de bun venit și un scurt tur. Îl poți relua oricând din **Primii pași**, jos în meniu sau la **Setări**." },
     { t: "h2", text: "Pe telefon" },
     {
       t: "steps",
@@ -49,7 +50,7 @@ export const meniulSiPaginaAcasaPage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "Pentru paginile care nu au încă ecran propriu în panou, apasă jos **Comută la meniul Strapi**.",
+          text: "Pentru paginile care nu au încă ecran propriu în panou, apasă jos **Comută la meniul Strapi** (doar pentru Super Admin).",
           shot: "primii-meniu",
           marks: ["strapi"],
         },

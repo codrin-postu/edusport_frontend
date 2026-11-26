@@ -19,7 +19,7 @@ export const roluriPage: GhidPage = {
     {
       t: "list",
       items: [
-        "**Înscrieri**, **Formulare**, **Contact**, **Voluntari** și **Parteneri**.",
+        "**Înscrieri**, **Întrebările formularelor**, **Contact**, **Voluntari** și **Parteneri**.",
         "**Grupe**, **Sportivi**, **Prezență**, **Contabilitate** și **Calendar și serii**.",
         "**Tabele**.",
         "**Setări site** și **Sezoane**.",

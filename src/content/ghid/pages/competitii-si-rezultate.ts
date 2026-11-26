@@ -39,7 +39,7 @@ export const competitiiPage: GhidPage = {
     {
       t: "steps",
       steps: [
-        { text: "Apasă **Comută la meniul Strapi** și alege **Editor competiție**." },
+        { text: "Apasă **Comută la meniul Strapi** (doar pentru Super Admin) și alege **Editor competiție**." },
         {
           text: "Completează **Nume**, **Data** și **Sezon** (de exemplu 2024-2025), apoi **Locație** și **Nivel** (**Național** sau **Internațional**).",
           shot: "site-competitie-noua",

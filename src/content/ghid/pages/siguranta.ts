@@ -10,7 +10,7 @@ export const sigurantaPage: GhidPage = {
       t: "list",
       items: [
         "Panoul are trei roluri. Rolul stabilește ce pagini poate folosi fiecare administrator, iar serverul impune aceste limite. Detalii în pagina Roluri.",
-        "Se intră cu e-mail și parolă, cu Google sau cu o cheie de acces. 2FA se pornește cu aplicație de autentificare sau cod pe e-mail, cu coduri de rezervă.",
+        "Se intră cu e-mail și parolă, cu Google sau cu un passkey. 2FA se pornește cu aplicație de autentificare sau cod pe e-mail, cu coduri de rezervă.",
         "După 5 parole greșite, intrarea se blochează 15 minute.",
         "O intrare de pe un dispozitiv nou trimite un e-mail către cont.",
         "Intrarea în portaluri se face cu e-mail și parolă sau cu Google, deocamdată fără 2FA.",

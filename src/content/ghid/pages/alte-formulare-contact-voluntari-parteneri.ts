@@ -9,7 +9,7 @@ export const alteFormularePage: GhidPage = {
       t: "steps",
       steps: [
         {
-          text: "În meniu, în grupa **Formulare**, deschide **Formulare**. Fiecare formular arată câte sunt **noi**.",
+          text: "În meniu, în grupa **Formulare**, deschide **Întrebările formularelor**. Fiecare formular arată câte sunt **noi**.",
           shot: "formulare-hub", marks: ["noi"],
         },
         {

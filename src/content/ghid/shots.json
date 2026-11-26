@@ -2159,7 +2159,7 @@
   "securitate": {
     "w": 1280,
     "h": 900,
-    "alt": "Pagina Securitate, cu 2FA, Chei de acces și Parolă",
+    "alt": "Pagina Securitate, cu 2FA, Passkey și Parolă",
     "marks": [
       {
         "key": "activeaza",

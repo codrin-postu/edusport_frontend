@@ -26,16 +26,16 @@ export const contulTauPage: GhidPage = {
     },
     { t: "warn", text: "Codurile de rezervă nu se mai arată după **Gata**. Fiecare cod se poate folosi o singură dată." },
     { t: "p", text: "Pentru coduri noi apasă **Generează coduri noi**; cele vechi devin invalide. **Oprește** dezactivează o metodă; la ultima metodă, fereastra anunță că se șterg și codurile de rezervă." },
-    { t: "h2", text: "Cheie de acces" },
+    { t: "h2", text: "Passkey" },
     {
       t: "steps",
       steps: [
-        { text: "La **Chei de acces** apasă **Creează o cheie de acces**.", shot: "securitate", marks: ["cheie"] },
+        { text: "La **Passkey** apasă **Creează un passkey**.", shot: "securitate", marks: ["cheie"] },
         { text: "Dacă apare **Confirmă din nou ca să continui.**, scrie parola sau codul cerut și apasă **Confirmă**." },
-        { text: "Urmează pașii ceruți de telefon sau de calculator (amprentă, recunoaștere facială sau cod). Cheia apare în listă, cu **Redenumește** și **Șterge**. Sunt permise cel mult 10 chei." },
+        { text: "Urmează pașii ceruți de telefon sau de calculator (amprentă, recunoaștere facială sau cod). Passkey-ul apare în listă, cu **Redenumește** și **Șterge**. Sunt permise cel mult 10 passkey-uri." },
       ],
     },
-    { t: "p", text: "Cheia de acces este o metodă de intrare fără parolă: pe pagina de intrare apasă **Folosește cheia de acces**. Nu este o metodă 2FA." },
+    { t: "p", text: "Passkey-ul este o metodă de intrare fără parolă: pe pagina de intrare apasă **Folosește un passkey**. Nu este o metodă 2FA." },
     { t: "h2", text: "Schimbă parola" },
     {
       t: "steps",
